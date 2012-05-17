@@ -10,3 +10,8 @@ Development Environment Setup (OS X)
 * In Sublime go to Tools -> Build Systems and select InDesign 5.5 JavaScript
 
 Now you are able to execute InDesign Scripts from within Sublime with Tools -> Build.
+
+Coding Conventions and Rules
+----------------------------
+basil.js uses "[Code Conventions for the JavaScript Programming Language](http://javascript.crockford.com/code.html)" by [Douglas Crockford](http://crockford.com/) with these modifications:
+* The unit of indentation is two spaces
