@@ -1,0 +1,1 @@
+﻿#include "../../basil.js";function draw() {  b.colorMode( b.CMYK );  b.text('hello basil.js', 0, 0, 300, 300);}
