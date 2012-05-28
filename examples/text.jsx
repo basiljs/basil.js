@@ -1,1 +1,1 @@
-﻿#include "../basil.js";function draw() {  b.text('hello basil.js', 0, 0, 300, 300);}
+﻿#include "../basil.js";function draw() {  b.text('hello basil', 0, 0, 300, 300);}
