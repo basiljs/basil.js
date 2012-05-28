@@ -211,7 +211,23 @@
 
   // ----------------------------------------
   // Typography
-  // FIXME, set color + tint is missing
+  
+  /**
+   * Creates a text frame on the current layer on the current page in the current document. 
+   * The text frame gets created in the position specified by the x and y parameters.
+   * The default document font will be used unless a font is set with the textFont() function. 
+   * Change the color of the text with the fill() function.
+   * The text displays in relation to the textAlign() function, which gives the option to draw to the left, 
+   * right, and center of the coordinates. 
+   * The width and height parameters define a rectangular area.
+   * @param  {String} txt The text content to set in the text frame.
+   * @param  {Number} x   x-coordinate of text frame
+   * @param  {Number} y   y-coordinate of text frame
+   * @param  {Number} w   width of text frame
+   * @param  {Number} h   height of text frame
+   * @return {TextFrame}  The created text frame instance.
+   */
+  // FIXME, set color + tint + align is missing
   pub.text = function(txt, x, y, w, h) {
     var textFrame = currentPage().textFrames.add( currentLayer() );
     textFrame.geometricBounds = [y, x, (y+h), (x+w)];
