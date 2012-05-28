@@ -38,6 +38,12 @@ b.test('InputTests', {
     var found = b.findByLabel(label);
 
     assert(found.length === 2);
+  },
+
+  testFindByLabelWithNotExistingLabel: function(b) {
+    var found = b.findByLabel('bar');
+
+    assert(found.length === 0);
   }
 });
 
