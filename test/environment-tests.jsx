@@ -41,6 +41,50 @@ b.test('EnvironmentTests', {
     
     assert(doc == currDoc);
     assert(app.documents.length === 1);
+  },
+
+  testDocWithNotExistingDocumentThrowsError: function(b) {
+    var doc = app.documents.add();
+    doc.close(SaveOptions.no);
+
+    try {
+      b.doc(doc);
+      assert(false);
+    } catch (expected) {}
+  },
+
+  testPageSetsPageByInstance: function(b) {
+    var doc = app.documents.add();
+    doc.pages.add();
+    var secondPage = doc.pages.add();
+    b.doc(doc);
+
+    var page = b.page(doc.pages.item(2));
+    
+    assert(page instanceof Page);
+    assert(secondPage == page);
+  },
+
+  testPageSetsPageByIndex: function(b) {
+    var doc = app.documents.add();
+    doc.pages.add();
+    var secondPage = doc.pages.add();
+    b.doc(doc);
+
+    var page = b.page(2);
+    
+    assert(page instanceof Page);
+    assert(secondPage == page);
+  },
+
+  testPageWithNotExistingPageIndexThrowsError: function(b) {
+    var doc = app.documents.add();
+    b.doc(doc);
+
+    try {
+      b.page(500);
+      assert(false);
+    } catch (expected) {}
   }
 });
 
