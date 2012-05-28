@@ -252,10 +252,53 @@
    * @param  {String|Object} property  The text property name of an object of key/value property/value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
    * @param  {String|Number} [value]   The value to apply to the property.
-   * @return {String|Number|String[]|Number[]}  The property value(s).
+   * @return {String[]|Number[]}  The property value(s).
    */
   pub.typo = function(item, property, value) {
-    
+    var result = [],
+      actsAsGetter = typeof property === 'string' && (typeof value === 'undefined' || value === null),
+      getOrSetProperties = function(textItem) {
+        if (actsAsGetter) {
+          result.push(textItem[prop]);
+        } else {
+          setProperties(textItem);
+        }
+      },
+      setProperties = function(textItem) {
+        if (typeof property === 'string') {
+          result.push(value);
+          setProperty(textItem, property, value);  
+        } else if (typeof property === 'object') {
+          result.push(property);
+          for (var prop in property) {
+            setProperty(textItem, prop, property[prop]);  
+          }
+        }
+      },
+      setProperty = function(textItem, prop, val) {
+        textItem[prop] = val;
+      };
+
+    if (item instanceof Document) {
+      forEach(item.stories, function(story) {
+        getOrSetProperties(story);
+      });
+    } else if (item instanceof Spread ||
+               item instanceof Page ||
+               item instanceof Layer) {
+      forEach(item.textFrames, function(textFrame) {
+        forEach(textFrame.paragraphs, function(para) {
+          getOrSetProperties(para);
+        });
+      });
+    } else if (item instanceof TextFrame) {
+      forEach(item.paragraphs, function(para) {
+        getOrSetProperties(para);
+      });
+    } else if (item instanceof Text) {
+      getOrSetProperties(item);
+    }
+    return result;
   };
   
 
