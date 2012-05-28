@@ -43,7 +43,7 @@
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i < len; i++) {
-        cb(collection[i]);
+        cb(collection[i],i);
       }
     };
   }
@@ -64,6 +64,7 @@
     if (doc instanceof Document) {
       currDoc = doc;
       addCurrDocCloseEventListener();
+      updatePublicPageSizeVars();
     }
     return currentDoc();
   };
@@ -86,6 +87,7 @@
       }
       currPage = tempPage;
     }
+    updatePublicPageSizeVars();
     return currentPage();
   };
 
@@ -131,7 +133,7 @@
 
   /**
    * Sets the units of the document (like right clicking the rulers).
-   * @param  {Constant} supported: PT, PX, CM or MM
+   * @param  {Constant} [units] supported: PT, PX, CM or MM
    * @return {Constant} current unit setting
    */
   pub.units = function (units) {
@@ -168,12 +170,77 @@
 
   // ----------------------------------------
   // Shape
+  
+  /**
+   * Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.
+   * The first two parameters set the location, the third sets the width, and the fourth sets the height.
+   * @param  {Number} x Location x-value
+   * @param  {Number} y Location y-value
+   * @param  {Number} w Width
+   * @param  {Number} h Height
+   * @return {Oval} new oval (in Adobe Scripting the type is Oval, not ellipse)
+   */
+  pub.ellipse = function(x, y, w, h){
+    var ellipseBounds = [0,0,0,0];
+    ellipseBounds[0] = y;
+    ellipseBounds[1] = x;
+    ellipseBounds[2] = y+h;
+    ellipseBounds[3] = x+w;
+    var ovals = app.activeWindow.activeSpread.ovals;
+    var newOval = ovals.add( currentLayer() );
+    with(newOval) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint; 
+      fillColor = currFillColor;
+      fillTint = currFillTint; 
+      strokeColor = currStrokeColor;  
+      geometricBounds = ellipseBounds;
+    } 
+    return newOval;
+  };
+
+  /**
+   * Draws a line (a direct path between two points) to the screen.
+   * @param  {Number} [x1] Point A x-value
+   * @param  {Number} [y1] Point A y-value
+   * @param  {Number} [x2] Point B x-value
+   * @param  {Number} [y2] Point B y-value
+   * @return {Rectangle} new rectangle
+   */
+  pub.line = function(x1, y1, x2, y2) {
+    var lines = currentPage().graphicLines;
+    var lineBounds = [];
+    lineBounds[0] = y1;
+    lineBounds[1] = x1;
+    lineBounds[2] = y2;
+    lineBounds[3] = x2;
+    
+    var newLine = lines.add( currentLayer() );
+    with(newLine) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint; 
+      fillColor = currFillColor;
+      fillTint = currFillTint; 
+      strokeColor = currStrokeColor; 
+      geometricBounds = lineBounds;
+    }
+
+    var scaleX = 1.0, scaleY = 1.0;
+    if (x2 < x1) scaleX = -1.0;
+    if (y2 < y1) scaleY = -1.0;
+    var scaleMatrix = app.transformationMatrices.add({'horizontalScaleFactor': scaleX, 'verticalScaleFactor': scaleY});
+    newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.CENTER_ANCHOR,
+                   scaleMatrix);
+    return newLine;
+  };
+
   /**
    * Draws a rectangle to the page.
-   * @param  {Number} Position X
-   * @param  {Number} Position Y
-   * @param  {Number} Width
-   * @param  {Number} Height
+   * @param  {Number} [x] Position X
+   * @param  {Number} [y] Position Y
+   * @param  {Number} [w] Width
+   * @param  {Number} [h] Height
    * @return {Rectangle}   new Rectangle
    */
   pub.rect = function(x, y, w, h){
@@ -197,10 +264,11 @@
 
   // ----------------------------------------
   // Color
+  
   /**
    * Sets the color mode of basil, supported: CMYK or RGB.
-   * @param  {Object} new color mode (optional)
-   * @return {Object} current color mode
+   * @param  {Constant} [colorMode] new color mode (optional)
+   * @return {Constant} current color mode
    */
   pub.colorMode = function(colorMode) {
     if (!colorMode) return currLayer;
@@ -304,6 +372,7 @@
 
   // ----------------------------------------
   // Math
+  
   var currentRandom = Math.random;
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
@@ -401,6 +470,8 @@
   var init = function() {
     glob.b = pub;
 
+    // -- setup document --
+    currentDoc().viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
     pub.units(pub.PT);
 
     // -- init internal state vars --
@@ -412,9 +483,7 @@
     currFillTint = 100;
 
     // -- init public vars --
-    var pageSize = currentPageSize();
-    pub.width = pageSize.width;
-    pub.height = pageSize.height;
+    updatePublicPageSizeVars();
 
     welcome();
     runUserScript();
@@ -483,11 +552,13 @@
     return currPage;
   };
 
-  var currentPageSize = function () {
+  var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
     var w = pageBounds[3] - pageBounds[1];
     var h = pageBounds[2] - pageBounds[0];
-    return {width: w, height: h};
+    pub.width = w;
+    pub.height = h;
+    //return {width: w, height: h};
   };
 
   var error = function(msg) {
