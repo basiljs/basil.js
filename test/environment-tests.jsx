@@ -59,7 +59,7 @@ b.test('EnvironmentTests', {
     var secondPage = doc.pages.add();
     b.doc(doc);
 
-    var page = b.page(doc.pages.item(2));
+    var page = b.page(secondPage);
     
     assert(page instanceof Page);
     assert(secondPage == page);
@@ -78,8 +78,7 @@ b.test('EnvironmentTests', {
   },
 
   testPageWithNotExistingPageIndexThrowsError: function(b) {
-    var doc = app.documents.add();
-    b.doc(doc);
+    b.doc(app.documents.add());
 
     try {
       b.page(500);
@@ -93,7 +92,7 @@ b.test('EnvironmentTests', {
     var secondSpread = doc.spreads.add();
     b.doc(doc);
 
-    var spread = b.spread(doc.spreads.item(2));
+    var spread = b.spread(secondSpread);
     
     assert(spread instanceof Spread);
     assert(secondSpread == spread);
@@ -112,13 +111,44 @@ b.test('EnvironmentTests', {
   },
 
   testSpreadWithNotExistingSpreadIndexThrowsError: function(b) {
-    var doc = app.documents.add();
-    b.doc(doc);
+    b.doc(app.documents.add());
 
     try {
       b.spread(500);
       assert(false);
     } catch (expected) {}
+  },
+
+  testLayerSetsLayerByInstance: function(b) {
+    var doc = app.documents.add();
+    var addedLayer = doc.layers.add({name: 'foo'});
+    b.doc(doc);
+
+    var layer = b.layer(addedLayer);
+    
+    assert(layer instanceof Layer);
+    assert(addedLayer == layer);
+  },
+
+  testLayerSetsLayerByName: function(b) {
+    var doc = app.documents.add();
+    var addedLayer = doc.layers.add({name: 'foo'});
+    b.doc(doc);
+
+    var layer = b.layer('foo');
+    
+    assert(layer instanceof Layer);
+    assert(addedLayer == layer);
+  },
+
+  testLayerWithNotExistingLayerNameAddsLayer: function(b) {
+    var doc = app.documents.add();
+    b.doc(doc);
+
+    var layer = b.layer('foo');
+    
+    assert(layer instanceof Layer);
+    assert(doc.layers.item('foo') == layer);
   }
 });
 
