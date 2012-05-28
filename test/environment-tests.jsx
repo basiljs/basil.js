@@ -85,6 +85,40 @@ b.test('EnvironmentTests', {
       b.page(500);
       assert(false);
     } catch (expected) {}
+  },
+
+  testSpreadSetsSpreadByInstance: function(b) {
+    var doc = app.documents.add();
+    doc.spreads.add();
+    var secondSpread = doc.spreads.add();
+    b.doc(doc);
+
+    var spread = b.spread(doc.spreads.item(2));
+    
+    assert(spread instanceof Spread);
+    assert(secondSpread == spread);
+  },
+
+  testSpreadSetsSpreadByIndex: function(b) {
+    var doc = app.documents.add();
+    doc.spreads.add();
+    var secondSpread = doc.spreads.add();
+    b.doc(doc);
+
+    var spread = b.spread(2);
+    
+    assert(spread instanceof Spread);
+    assert(secondSpread == spread);
+  },
+
+  testSpreadWithNotExistingSpreadIndexThrowsError: function(b) {
+    var doc = app.documents.add();
+    b.doc(doc);
+
+    try {
+      b.spread(500);
+      assert(false);
+    } catch (expected) {}
   }
 });
 
