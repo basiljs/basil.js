@@ -1,6 +1,7 @@
 /**
  * Copyright...
  */
+#targetengine "basil"
 #target "InDesign";
 
 (function(glob, app) {
@@ -519,13 +520,17 @@
     return currDoc;
   };
 
-  var addCurrDocCloseEventListener = function(doc) {
-    currDoc.addEventListener(Event.BEFORE_CLOSE, function() {
+  var addCurrDocCloseEventListener = function() {
+    function onBeforeClose() {
+      if (currDoc) {
+        currDoc.removeEventListener(Event.BEFORE_CLOSE, onBeforeClose);
+      }
       currDoc = null;
       currSpread = null;
       currPage = null;
       currLayer = null;
-    });
+    }
+    currDoc.addEventListener(Event.BEFORE_CLOSE, onBeforeClose);
   }
 
   var currentLayer = function() {
