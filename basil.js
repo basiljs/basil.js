@@ -297,7 +297,6 @@
         result.push(pageItem);
       }
     }
-
     return result;
   };
 
