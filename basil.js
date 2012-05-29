@@ -10,8 +10,6 @@
   // ----------------------------------------
   // constants
   pub.VERSION = "0.1";
-  pub.CMYK = "CMYK";
-  pub.RGB = "RGB";
   pub.PT = "pt";
   pub.PX = "px";
   pub.CM = "cm";
@@ -33,6 +31,7 @@
     currUnits = null,
     currColorMode = null,
     currFillColor = null,
+    currNoFillColor = null,
     currStrokeColor = null,
     currStrokeTint = null,
     currFillTint = null,
@@ -266,20 +265,91 @@
   // ----------------------------------------
   // Color
   
-  /**
-   * Sets the color mode of basil, supported: CMYK or RGB.
-   * @param  {Constant} [colorMode] new color mode (optional)
-   * @return {Constant} current color mode
-   */
-  pub.colorMode = function(colorMode) {
-    if (!colorMode) return currLayer;
-
-    if (colorMode === pub.CMYK || colorMode === pub.RGB) {
-      currColorMode = colorMode;
+  pub.fill = function (fillColor) {
+    if (fillColor instanceof Color || fillColor instanceof Swatch) {
+      currFillColor = fillColor;
     } else {
-      error("Not supported color mode");
+      currFillColor = pub.color(arguments);
     }
-    return currColorMode;
+  };
+
+  pub.noFill = function () {
+    currFillColor = currNoFillColor;
+  };
+
+  /**
+   * Creates a new RGB or CMYK color and adds the new color to the document,
+   * or gets a color by name from the document
+   * @param  {Numbers|String} Get color: name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
+   * @return {Color} new color
+   */
+  pub.color = function() {
+    var newCol = null;
+    var props = {};
+    var a = arguments[0],
+        b = arguments[1],
+        c = arguments[2],
+        d = arguments[3],
+        e = arguments[4];
+    if (arguments.length === 1) {
+      if (typeof a === 'string') {
+        try {
+          newCol = currentDoc().swatches.item(a);
+          newCol.name;
+        } catch (e) {
+          error("Color doesn't exist. "+e);
+        }
+        return newCol;
+      } else if (typeof a === 'number') {
+        props.model = ColorModel.PROCESS;
+        props.space = ColorSpace.CMYK;
+        props.colorValue = [0,0,0,a];
+        props.name = "C="+0+" M="+0+" Y="+0+" K="+a;
+      } else {
+        error("Color doesn't exist.");
+      }
+
+    } else if (arguments.length === 2) {
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.CMYK;
+      props.colorValue = [0,0,0,a];
+      props.name = b;
+
+    } else if (arguments.length === 3) {
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.RGB;
+      props.colorValue = [a,b,c];
+      props.name = "R="+a+" G="+b+" B="+c;
+
+    } else if (arguments.length === 4) {
+      if (typeof d === 'string') {
+        props.model = ColorModel.PROCESS;
+        props.space = ColorSpace.RGB;
+        props.colorValue = [a,b,c];
+        props.name = d;
+      } else {
+        props.model = ColorModel.PROCESS;
+        props.space = ColorSpace.CMYK;
+        props.colorValue = [a,b,c,d];
+        props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+      }
+
+    } else if (arguments.length === 5) {
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.CMYK;
+      props.colorValue = [a,b,c,d];
+      props.name = e;
+
+    } else {
+      error("Wrong parameters. Use: "
+        + "R,G,B,name or "
+        + "C,M,Y,K,name. "
+        + "Grey,name "
+        + "Name is optional");
+    }
+    newCol = currentDoc().colors.add();
+    newCol.properties = props;
+    return newCol;
   };
 
   // ----------------------------------------
@@ -476,9 +546,9 @@
     pub.units(pub.PT);
 
     // -- init internal state vars --
-    currColorMode = pub.CMYK;
-    currFillColor = currentDoc().swatches.item("Black"),
-    currStrokeColor = currentDoc().swatches.item("Black");
+    currFillColor = "Black";
+    currNoFillColor = "None";
+    currStrokeColor = "Black";
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
