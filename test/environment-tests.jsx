@@ -13,9 +13,7 @@ b.test('EnvironmentTests', {
   },
 
   tearDown: function(b) {
-    forEach(app.documents, function(doc) {
-      doc.close(SaveOptions.no);
-    });
+    b.close(SaveOptions.no);
   },
 
   testDocCreatesDocument: function(b) {
@@ -38,7 +36,7 @@ b.test('EnvironmentTests', {
     var doc = app.documents.add();
 
     var currDoc = b.doc({});
-    
+
     assert(doc == currDoc);
     assert(app.documents.length === 1);
   },
@@ -82,39 +80,6 @@ b.test('EnvironmentTests', {
 
     try {
       b.page(500);
-      assert(false);
-    } catch (expected) {}
-  },
-
-  testSpreadSetsSpreadByInstance: function(b) {
-    var doc = app.documents.add();
-    doc.spreads.add();
-    var secondSpread = doc.spreads.add();
-    b.doc(doc);
-
-    var spread = b.spread(secondSpread);
-    
-    assert(spread instanceof Spread);
-    assert(secondSpread == spread);
-  },
-
-  testSpreadSetsSpreadByIndex: function(b) {
-    var doc = app.documents.add();
-    doc.spreads.add();
-    var secondSpread = doc.spreads.add();
-    b.doc(doc);
-
-    var spread = b.spread(2);
-    
-    assert(spread instanceof Spread);
-    assert(secondSpread == spread);
-  },
-
-  testSpreadWithNotExistingSpreadIndexThrowsError: function(b) {
-    b.doc(app.documents.add());
-
-    try {
-      b.spread(500);
       assert(false);
     } catch (expected) {}
   },

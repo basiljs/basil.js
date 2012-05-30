@@ -1,7 +1,6 @@
 /**
  * Copyright...
  */
-#targetengine "basil"
 #target "InDesign";
 
 (function(glob, app) {
@@ -25,7 +24,6 @@
   // ----------------------------------------
   // private vars
   var currDoc = null,
-    currSpread = null,
     currPage = null,
     currLayer = null,
     currUnits = null,
@@ -62,12 +60,23 @@
    */
   pub.doc = function(doc) {
     if (doc instanceof Document) {
-      currDoc = doc;
-      addCurrDocCloseEventListener();
-      updatePublicPageSizeVars();
+      setCurrDoc(doc);
     }
     return currentDoc();
   };
+
+  /**
+   * Closes the current document.
+   * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
+   * @param  {File} [file] The indesign file instance to save the document to
+   */
+  pub.close = function(saveOptions, file) {
+    var doc = currentDoc();
+    if (doc) {
+      doc.close(saveOptions, file);
+      resetCurrDoc();
+    }
+  }
 
   /**
    * Returns the current page and possibly sets it.
@@ -89,27 +98,6 @@
     }
     updatePublicPageSizeVars();
     return currentPage();
-  };
-
-  /**
-   * Returns the current spread and possibly sets it.
-   * 
-   * @param  {Spread|Number} [spread] The spread or spread index to set the current spread to.
-   * @return {Spread} The current spread instance.
-   */
-  pub.spread = function(spread) {
-    if (spread instanceof Spread) {
-      currSpread = spread;
-    } else if (typeof spread === 'number') {
-      var tempSpread = currentDoc().spreads[spread];
-      try {
-        tempSpread.id;
-      } catch (e) {
-        error('Spread ' + spread + ' does not exist.');
-      }
-      currSpread = tempSpread;
-    }
-    return currentSpread();
   };
 
   /**
@@ -371,11 +359,20 @@
    * @param  {Number} h   height of text frame
    * @return {TextFrame}  The created text frame instance.
    */
-  // FIXME, set color + tint + align is missing
   pub.text = function(txt, x, y, w, h) {
     var textFrame = currentPage().textFrames.add( currentLayer() );
-    textFrame.geometricBounds = [y, x, (y+h), (x+w)];
-    textFrame.contents = txt;
+    with (textFrame) {
+      contents = txt;
+      geometricBounds = [y, x, (y+h), (x+w)];
+      /* TODO
+      strokeWeight = currStrokeWeight;
+      strokeColor = currStrokeColor;
+      strokeTint = currStrokeTint;
+      fillColor = currFillColor;
+      fillTint = currFillTint;
+      //align
+      */
+    }
     return textFrame;
   };
 
@@ -391,7 +388,7 @@
    * @param  {String|Object} property  The text property name of an object of key/value property/value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
    * @param  {String|Number} [value]   The value to apply to the property.
-   * @return {String[]|Number[]}  The property value(s).
+   * @return {String[]|Number[]}  The property value(s) or the items the property was assigned to.
    */
   pub.typo = function(item, property, value) {
     var result = [],
@@ -405,10 +402,10 @@
       },
       setProperties = function(textItem) {
         if (typeof property === 'string') {
-          result.push(value);
+          result.push(textItem);
           setProperty(textItem, property, value);  
         } else if (typeof property === 'object') {
-          result.push(property);
+          result.push(textItem);
           for (var prop in property) {
             setProperty(textItem, prop, property[prop]);  
           }
@@ -418,23 +415,25 @@
         textItem[prop] = val;
       };
 
-    if (item instanceof Document) {
-      forEach(item.stories, function(story) {
-        getOrSetProperties(story);
-      });
-    } else if (item instanceof Spread ||
-               item instanceof Page ||
-               item instanceof Layer) {
+    if (item instanceof Document ||
+        item instanceof Spread ||
+        item instanceof Page ||
+        item instanceof Layer) {
       forEach(item.textFrames, function(textFrame) {
-        forEach(textFrame.paragraphs, function(para) {
-          getOrSetProperties(para);
-        });
+        pub.typo(textFrame, property, value);
       });
     } else if (item instanceof TextFrame) {
       forEach(item.paragraphs, function(para) {
         getOrSetProperties(para);
       });
-    } else if (item instanceof Text) {
+    } else if (item instanceof Character ||
+               item instanceof InsertionPoint ||
+               item instanceof Line ||
+               item instanceof Paragraph ||
+               item instanceof TextColumn ||
+               item instanceof TextStyleRange ||
+               item instanceof Word) 
+    {
       getOrSetProperties(item);
     }
     return result;
@@ -516,7 +515,8 @@
     for (var i = 0, len = doc.pageItems.length; i < len; i++) {
       var pageItem = doc.pageItems[i];
       if (pageItem.label === label) {
-        result.push(pageItem);
+        // push pageItem's 1st element to get the concrete PageItem instance, e.g. a TextFrame 
+        result.push(pageItem.getElements()[0]);
       }
     }
     return result;
@@ -541,20 +541,10 @@
   var init = function() {
     glob.b = pub;
 
-    // -- setup document --
-    currentDoc().viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-    pub.units(pub.PT);
-
     // -- init internal state vars --
-    currFillColor = "Black";
-    currNoFillColor = "None";
-    currStrokeColor = "Black";
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
-
-    // -- init public vars --
-    updatePublicPageSizeVars();
 
     welcome();
     runUserScript();
@@ -580,28 +570,35 @@
   
   var currentDoc = function() {
     if (!currDoc) {
+      var doc = null;
       try {
-        currDoc = app.activeDocument;  
+        doc = app.activeDocument;  
       } catch(e) {
-        currDoc = app.documents.add();
+        doc = app.documents.add();
       }
-      addCurrDocCloseEventListener();
+      setCurrDoc(doc);
     }
     return currDoc;
   };
 
-  var addCurrDocCloseEventListener = function() {
-    function onBeforeClose() {
-      if (currDoc) {
-        currDoc.removeEventListener(Event.BEFORE_CLOSE, onBeforeClose);
-      }
-      currDoc = null;
-      currSpread = null;
-      currPage = null;
-      currLayer = null;
-    }
-    currDoc.addEventListener(Event.BEFORE_CLOSE, onBeforeClose);
-  }
+  var setCurrDoc = function(doc) {
+    resetCurrDoc();
+    currDoc = doc;
+    // -- setup document --
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+    pub.units(pub.PT);
+    updatePublicPageSizeVars();
+  };
+
+  var resetCurrDoc = function() {
+    // resets doc and doc specific vars
+    currDoc = null;
+    currPage = null;
+    currLayer = null;
+    currFillColor = "Black";
+    currNoFillColor = "None";
+    currStrokeColor = "Black";
+  };
 
   var currentLayer = function() {
     if (!currLayer) {
@@ -609,14 +606,6 @@
       currLayer = app.activeDocument.activeLayer;
     }
     return currLayer;
-  };
-  
-  var currentSpread = function() {
-    if (!currSpread) {
-      currentDoc();
-      currSpread = app.activeWindow.activeSpread;
-    }
-    return currSpread;
   };
   
   var currentPage = function() {

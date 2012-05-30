@@ -10,7 +10,7 @@ b.test('TypographyTests', {
   },
 
   tearDownTest: function(b) {
-    doc.close(SaveOptions.no);
+    b.close(SaveOptions.no);
   },
 
   setUp: function(b) {

@@ -13,9 +13,7 @@ b.test('InputTests', {
   },
 
   tearDown: function(b) {
-    forEach(app.documents, function(doc) {
-      doc.close(SaveOptions.no);
-    });
+    b.close(SaveOptions.no);
   },
 
   testFindByLabel: function(b) {
@@ -26,9 +24,10 @@ b.test('InputTests', {
     var found = b.findByLabel(label);
     
     assert(found.length === 1);
+    assert(found[0] instanceof TextFrame);
   },
 
-  testFindByLabelWithMultipleItemsWithSameLabelThrowsError: function(b) {
+  testFindByLabelWithMultipleItemsWithSameLabel: function(b) {
     var label = 'foo';
     var textFrame1 = b.text('foo', 0, 0, 300, 300);
     textFrame1.label = label;
