@@ -1,10 +1,10 @@
 #target "InDesign";
 
-/**
- * @class basil
- * @static
- */
 (function(glob, app, undef) {
+  /**
+   * @class basil
+   * @static
+   */
   var pub = {};
 
   // ----------------------------------------
