@@ -1,10 +1,14 @@
 #target "InDesign";
 
+<<<<<<< HEAD
 (function(glob, app) {
   /**
    * @class basil
    * @static
    */
+=======
+(function(glob, app, undef) {
+>>>>>>> complete math packages. stroke(), strokeWeight(), fillTint(), strokeTint(). all perlin noise related functions. new examples: fill.jsx, stroke.jsx
   var pub = {};
 
   // ----------------------------------------
@@ -262,6 +266,16 @@
   };
 
 
+  pub.strokeWeight = function (weight) {
+    if (typeof weight === 'string' || typeof weight === 'number') {
+      currStrokeWeight = weight;
+    } else {
+      error("Not supported type. Please make sure the strokeweight is a number or string");
+    }
+  };
+  
+
+
   // ----------------------------------------
   // Color
   
@@ -275,6 +289,30 @@
 
   pub.noFill = function () {
     currFillColor = currNoFillColor;
+  };
+
+  pub.stroke = function (strokeColor) {
+    if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
+      currStrokeColor = strokeColor;
+    } else {
+      currStrokeColor = pub.color(arguments);
+    }
+  };
+
+  pub.fillTint = function (tint) {
+    if (typeof tint === 'string' || typeof tint === 'number') {
+      currFillTint = tint;
+    } else {
+      error("Not supported type. Please make sure the strokeweight is a number or string");
+    }
+  };
+
+  pub.strokeTint = function (tint) {
+    if (typeof tint === 'string' || typeof tint === 'number') {
+      currStrokeTint = tint;
+    } else {
+      error("Not supported type. Please make sure the strokeweight is a number or string");
+    }
   };
 
   /**
@@ -455,6 +493,220 @@
   // ----------------------------------------
   // Math
   
+  pub.PVector = function() {
+    function PVector(x, y, z) {
+      this.x = x || 0;
+      this.y = y || 0;
+      this.z = z || 0
+    }
+    PVector.dist = function(v1, v2) {
+      return v1.dist(v2)
+    };
+    PVector.dot = function(v1, v2) {
+      return v1.dot(v2)
+    };
+    PVector.cross = function(v1, v2) {
+      return v1.cross(v2)
+    };
+    PVector.angleBetween = function(v1, v2) {
+      return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()))
+    };
+    PVector.prototype = {
+      set: function(v, y, z) {
+        if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
+        else {
+          this.x = v;
+          this.y = y;
+          this.z = z
+        }
+      },
+      get: function() {
+        return new PVector(this.x, this.y, this.z)
+      },
+      mag: function() {
+        var x = this.x,
+          y = this.y,
+          z = this.z;
+        return Math.sqrt(x * x + y * y + z * z)
+      },
+      add: function(v, y, z) {
+        if (arguments.length === 1) {
+          this.x += v.x;
+          this.y += v.y;
+          this.z += v.z
+        } else {
+          this.x += v;
+          this.y += y;
+          this.z += z
+        }
+      },
+      sub: function(v, y, z) {
+        if (arguments.length === 1) {
+          this.x -= v.x;
+          this.y -= v.y;
+          this.z -= v.z
+        } else {
+          this.x -= v;
+          this.y -= y;
+          this.z -= z
+        }
+      },
+      mult: function(v) {
+        if (typeof v === "number") {
+          this.x *= v;
+          this.y *= v;
+          this.z *= v
+        } else {
+          this.x *= v.x;
+          this.y *= v.y;
+          this.z *= v.z
+        }
+      },
+      div: function(v) {
+        if (typeof v === "number") {
+          this.x /= v;
+          this.y /= v;
+          this.z /= v
+        } else {
+          this.x /= v.x;
+          this.y /= v.y;
+          this.z /= v.z
+        }
+      },
+      dist: function(v) {
+        var dx = this.x - v.x,
+          dy = this.y - v.y,
+          dz = this.z - v.z;
+        return Math.sqrt(dx * dx + dy * dy + dz * dz)
+      },
+      dot: function(v, y, z) {
+        if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
+        return this.x * v + this.y * y + this.z * z
+      },
+      cross: function(v) {
+        var x = this.x,
+          y = this.y,
+          z = this.z;
+        return new PVector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y)
+      },
+      normalize: function() {
+        var m = this.mag();
+        if (m > 0) this.div(m)
+      },
+      limit: function(high) {
+        if (this.mag() > high) {
+          this.normalize();
+          this.mult(high)
+        }
+      },
+      heading2D: function() {
+        return -Math.atan2(-this.y, this.x)
+      },
+      toString: function() {
+        return "[" + this.x + ", " + this.y + ", " + this.z + "]"
+      },
+      array: function() {
+        return [this.x, this.y, this.z]
+      }
+    };
+
+    function createPVectorMethod(method) {
+      return function(v1, v2) {
+        var v = v1.get();
+        v[method](v2);
+        return v
+      }
+    }
+    for (var method in PVector.prototype) if (PVector.prototype.hasOwnProperty(method) && !PVector.hasOwnProperty(method)) PVector[method] = createPVectorMethod(method);
+    return PVector
+  }();
+  
+  pub.abs = Math.abs;
+
+  pub.ceil = Math.ceil;
+
+  pub.constrain = function(aNumber, aMin, aMax) {
+    return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber
+  };
+
+  pub.dist = function() {
+    var dx, dy, dz;
+    if (arguments.length === 4) {
+      dx = arguments[0] - arguments[2];
+      dy = arguments[1] - arguments[3];
+      return Math.sqrt(dx * dx + dy * dy)
+    }
+  };
+
+  pub.exp = Math.exp;
+
+  pub.floor = Math.floor;
+
+  pub.lerp = function(value1, value2, amt) {
+    return (value2 - value1) * amt + value1
+  };
+
+  pub.log = Math.log;
+
+  pub.mag = function(a, b, c) {
+    if (c) return Math.sqrt(a * a + b * b + c * c);
+    return Math.sqrt(a * a + b * b)
+  };
+
+  pub.map = function(value, istart, istop, ostart, ostop) {
+    return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+  };
+
+  pub.max = function() {
+    if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
+    var numbers = arguments.length === 1 ? arguments[0] : arguments;
+    if (! ("length" in numbers && numbers.length > 0)) error("Non-empty array is expected");
+    var max = numbers[0],
+      count = numbers.length;
+    for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
+    return max
+  };
+
+  pub.min = function() {
+    if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
+    var numbers = arguments.length === 1 ? arguments[0] : arguments;
+    if (! ("length" in numbers && numbers.length > 0)) error("Non-empty array is expected");
+    var min = numbers[0],
+      count = numbers.length;
+    for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
+    return min
+  };
+
+  pub.norm = function(aNumber, low, high) {
+    return (aNumber - low) / (high - low)
+  };
+
+  pub.pow = Math.pow;
+
+  pub.round = Math.round;
+
+  pub.sq = function(aNumber) {
+    return aNumber * aNumber
+  };
+   
+  pub.sqrt = Math.sqrt;
+  pub.acos = Math.acos;
+  pub.asin = Math.asin;
+  pub.atan = Math.atan;
+  pub.atan2 = Math.atan2;
+  pub.cos = Math.cos;
+
+  pub.degrees = function(aAngle) {
+    return aAngle * 180 / Math.PI
+  };
+
+  pub.radians = function(aAngle) {
+    return aAngle / 180 * Math.PI
+  };
+
+  pub.sin = Math.sin;
+  pub.tan = Math.tan;
+
   var currentRandom = Math.random;
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
@@ -508,13 +760,108 @@
     };
     random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble
   };
-    
-  pub.map = function(value, istart, istop, ostart, ostop) {
-    return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+
+
+  function PerlinNoise(seed) {
+    var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
+    var i, j;
+    var perm = new Uint8Array(512);
+    for (i = 0; i < 256; ++i) perm[i] = i;
+    for (i = 0; i < 256; ++i) {
+      var t = perm[j = rnd.nextInt() & 255];
+      perm[j] = perm[i];
+      perm[i] = t
+    }
+    for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
+
+    function grad3d(i, x, y, z) {
+      var h = i & 15;
+      var u = h < 8 ? x : y,
+      v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+      return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v)
+    }
+    function grad2d(i, x, y) {
+      var v = (i & 1) === 0 ? x : y;
+      return (i & 2) === 0 ? -v : v
+    }
+    function grad1d(i, x) {
+      return (i & 1) === 0 ? -x : x
+    }
+    function lerp(t, a, b) {
+      return a + t * (b - a)
+    }
+    this.noise3d = function(x, y, z) {
+      var X = Math.floor(x) & 255,
+        Y = Math.floor(y) & 255,
+        Z = Math.floor(z) & 255;
+      x -= Math.floor(x);
+      y -= Math.floor(y);
+      z -= Math.floor(z);
+      var fx = (3 - 2 * x) * x * x,
+        fy = (3 - 2 * y) * y * y,
+        fz = (3 - 2 * z) * z * z;
+      var p0 = perm[X] + Y,
+        p00 = perm[p0] + Z,
+        p01 = perm[p0 + 1] + Z,
+        p1 = perm[X + 1] + Y,
+        p10 = perm[p1] + Z,
+        p11 = perm[p1 + 1] + Z;
+      return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))))
+    };
+    this.noise2d = function(x, y) {
+      var X = Math.floor(x) & 255,
+        Y = Math.floor(y) & 255;
+      x -= Math.floor(x);
+      y -= Math.floor(y);
+      var fx = (3 - 2 * x) * x * x,
+        fy = (3 - 2 * y) * y * y;
+      var p0 = perm[X] + Y,
+        p1 = perm[X + 1] + Y;
+      return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)))
+    };
+    this.noise1d = function(x) {
+      var X = Math.floor(x) & 255;
+      x -= Math.floor(x);
+      var fx = (3 - 2 * x) * x * x;
+      return lerp(fx, grad1d(perm[X], x), grad1d(perm[X + 1], x - 1))
+    }
+  }
+  var noiseProfile = {
+    generator: undef,
+    octaves: 4,
+    fallout: 0.5,
+    seed: undef
   };
-    
-  pub.constrain = function(aNumber, aMin, aMax) {
-    return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
+  pub.noise = function(x, y, z) {
+    if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
+    var generator = noiseProfile.generator;
+    var effect = 1,
+      k = 1,
+      sum = 0;
+    for (var i = 0; i < noiseProfile.octaves; ++i) {
+      effect *= noiseProfile.fallout;
+      switch (arguments.length) {
+      case 1:
+        sum += effect * (1 + generator.noise1d(k * x)) / 2;
+        break;
+      case 2:
+        sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
+        break;
+      case 3:
+        sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
+        break
+      }
+      k *= 2
+    }
+    return sum
+  };
+  pub.noiseDetail = function(octaves, fallout) {
+    noiseProfile.octaves = octaves;
+    if (fallout !== undef) noiseProfile.fallout = fallout
+  };
+  pub.noiseSeed = function(seed) {
+    noiseProfile.seed = seed;
+    noiseProfile.generator = undef
   };
 
 
@@ -634,7 +981,6 @@
     var h = pageBounds[2] - pageBounds[0];
     pub.width = w;
     pub.height = h;
-    //return {width: w, height: h};
   };
 
   var error = function(msg) {
