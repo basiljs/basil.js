@@ -1,14 +1,10 @@
 #target "InDesign";
 
-<<<<<<< HEAD
-(function(glob, app) {
-  /**
-   * @class basil
-   * @static
-   */
-=======
+/**
+ * @class basil
+ * @static
+ */
 (function(glob, app, undef) {
->>>>>>> complete math packages. stroke(), strokeWeight(), fillTint(), strokeTint(). all perlin noise related functions. new examples: fill.jsx, stroke.jsx
   var pub = {};
 
   // ----------------------------------------
