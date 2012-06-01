@@ -1,0 +1,333 @@
+{
+    "project": {
+        "name": "basil.js",
+        "description": "basil.js description...",
+        "version": "0.1",
+        "url": "http://basiljs.ch",
+        "logo": "http://basiljs.ch/basil2.jpg"
+    },
+    "files": {
+        "basil.js": {
+            "name": "basil.js",
+            "modules": {},
+            "classes": {
+                "basil": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "basil": {
+            "name": "basil",
+            "shortname": "basil",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "basil.js",
+            "line": 4,
+            "static": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "basil.js",
+            "line": 23,
+            "itemtype": "property",
+            "name": "width",
+            "type": "Number",
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 28,
+            "itemtype": "property",
+            "name": "height",
+            "type": "Number",
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 62,
+            "description": "Sets or possibly creates the current document and returns it. \nIf the param doc is not given the current document gets set to the active document \nin the application. If no document at all is open, a new document gets created.",
+            "itemtype": "method",
+            "name": "doc",
+            "params": [
+                {
+                    "name": "doc",
+                    "description": "The document to set the current document to.",
+                    "type": "Document",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current document instance.",
+                "type": "Document"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 78,
+            "description": "Closes the current document.",
+            "params": [
+                {
+                    "name": "saveOptions",
+                    "description": "The indesign SaveOptions constant",
+                    "type": "SaveOptions",
+                    "optional": true
+                },
+                {
+                    "name": "file",
+                    "description": "The indesign file instance to save the document to",
+                    "type": "File",
+                    "optional": true
+                }
+            ],
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 92,
+            "description": "Returns the current page and possibly sets it.",
+            "params": [
+                {
+                    "name": "page",
+                    "description": "The page or page index to set the current page to.",
+                    "type": "Page|Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current page instance.",
+                "type": "Page"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 114,
+            "description": "Returns the current layer and possibly sets it.",
+            "params": [
+                {
+                    "name": "layer",
+                    "description": "The layer or layer name to set the current layer to.",
+                    "type": "Layer|String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current page instance.",
+                "type": "Layer"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 133,
+            "description": "Sets the units of the document (like right clicking the rulers).",
+            "params": [
+                {
+                    "name": "units",
+                    "description": "supported: PT, PX, CM or MM",
+                    "type": "Constant",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "current unit setting",
+                "type": "Constant"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 174,
+            "description": "Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.\nThe first two parameters set the location, the third sets the width, and the fourth sets the height.",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "Location x-value",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "Location y-value",
+                    "type": "Number"
+                },
+                {
+                    "name": "w",
+                    "description": "Width",
+                    "type": "Number"
+                },
+                {
+                    "name": "h",
+                    "description": "Height",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "new oval (in Adobe Scripting the type is Oval, not ellipse)",
+                "type": "Oval"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 202,
+            "description": "Draws a line (a direct path between two points) to the screen.",
+            "params": [
+                {
+                    "name": "x1",
+                    "description": "Point A x-value",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "y1",
+                    "description": "Point A y-value",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "x2",
+                    "description": "Point B x-value",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "y2",
+                    "description": "Point B y-value",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "new rectangle",
+                "type": "Rectangle"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 238,
+            "description": "Draws a rectangle to the page.",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "Position X",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "y",
+                    "description": "Position Y",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "w",
+                    "description": "Width",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "h",
+                    "description": "Height",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "new Rectangle",
+                "type": "Rectangle"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 280,
+            "description": "Creates a new RGB or CMYK color and adds the new color to the document,\nor gets a color by name from the document",
+            "params": [
+                {
+                    "name": "Get",
+                    "description": "color: name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional",
+                    "type": "Numbers|String"
+                }
+            ],
+            "return": {
+                "description": "new color",
+                "type": "Color"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 358,
+            "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() function, which gives the option to draw to the left, \nright, and center of the coordinates. \nThe width and height parameters define a rectangular area.",
+            "params": [
+                {
+                    "name": "txt",
+                    "description": "The text content to set in the text frame.",
+                    "type": "String"
+                },
+                {
+                    "name": "x",
+                    "description": "x-coordinate of text frame",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "y-coordinate of text frame",
+                    "type": "Number"
+                },
+                {
+                    "name": "w",
+                    "description": "width of text frame",
+                    "type": "Number"
+                },
+                {
+                    "name": "h",
+                    "description": "height of text frame",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The created text frame instance.",
+                "type": "TextFrame"
+            },
+            "class": "basil"
+        },
+        {
+            "file": "basil.js",
+            "line": 391,
+            "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the corresponding value is returned. This can \neither be the value of the concrete item (e.g. character) or an array of values of the item's descendants \n(e.g. paragraphs of given text frame).",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "The object to apply the property to.",
+                    "type": "Document|Spread|Page|Layer|Story|TextFrame|Text"
+                },
+                {
+                    "name": "property",
+                    "description": "The text property name of an object of key/value property/value pairs.\n                                  If property is a string and no value is given, the function acts as getter.",
+                    "type": "String|Object"
+                },
+                {
+                    "name": "value",
+                    "description": "The value to apply to the property.",
+                    "type": "String|Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The property value(s) or the items the property was assigned to.",
+                "type": "String[]|Number[]"
+            },
+            "class": "basil"
+        }
+    ]
+}

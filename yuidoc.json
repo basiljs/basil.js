@@ -1,0 +1,20 @@
+{
+  "name": "basil.js",
+  "description": "basil.js description...",
+  "version": "0.1",
+  "url": "http://basiljs.ch",
+  "logo": "http://basiljs.ch/basil2.jpg",
+  "options": {
+    "linkNatives": "true",
+    "ignorePaths": [
+      "./bin",
+      "./examples",
+      "./lib",
+      "./test"
+    ],
+    "paths": [
+      "."
+    ],
+    "outdir": "./doc/api"
+  }
+}
