@@ -314,7 +314,7 @@
         {
             "file": "basil.js",
             "line": 430,
-            "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the corresponding value is returned. This can \neither be the value of the concrete item (e.g. character) or an array of values of the item's descendants \n(e.g. paragraphs of given text frame).",
+            "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the \ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item \n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "itemtype": "method",
             "name": "typo",
             "params": [
@@ -336,14 +336,14 @@
                 }
             ],
             "return": {
-                "description": "The property value(s) or the items the property was assigned to.",
+                "description": "The property value(s) if the function acts as getter or the items the property \n                             was assigned to.",
                 "type": "String[]|Number[]"
             },
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 873,
+            "line": 874,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",

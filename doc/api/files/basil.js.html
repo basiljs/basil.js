@@ -519,16 +519,17 @@
    * Sets text properties to the given item. If the item is not an instance the text property can be set to, 
    * the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
    * 
-   * If no value is given and the given property is a string, the corresponding value is returned. This can 
-   * either be the value of the concrete item (e.g. character) or an array of values of the item&#x27;s descendants 
-   * (e.g. paragraphs of given text frame).
+   * If no value is given and the given property is a string, the function acts as a getter and returns the 
+   * corresponding value(s) in an array. This can either be an array containing the value of the concrete item 
+   * (e.g. character) the values of the item&#x27;s descendants (e.g. paragraphs of given text frame).
    * 
    * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
    * @param  {String|Object} property  The text property name of an object of key&#x2F;value property&#x2F;value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
    * @param  {String|Number} [value]   The value to apply to the property.
-   * @return {String[]|Number[]}  The property value(s) or the items the property was assigned to.
+   * @return {String[]|Number[]}  The property value(s) if the function acts as getter or the items the property 
+   *                              was assigned to.
    *&#x2F;
   pub.typo = function(item, property, value) {
     var result = [],
