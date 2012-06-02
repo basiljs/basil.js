@@ -32,8 +32,9 @@ function draw() {
 
   // change some more fine granular stuff in text frame on 1st page
   var textFrame = doc.pages[0].textFrames[0];
-  b.typo(textFrame, 'pointSize', 24);
-  b.typo(textFrame.words[1], 'fillColor', green);
+  b.typo(textFrame, 'pointSize', 36);
+  b.typo(textFrame.words[1], 'appliedFont', 'Helvetica\tBold');
+  b.typo(textFrame.words[1], 'underline', true);
   b.typo(textFrame.lines[1], 'pointSize', 48);
   b.typo(textFrame.characters[50], 'pointSize', 96);
   b.typo(textFrame.paragraphs[1], 'strokeColor', red);
