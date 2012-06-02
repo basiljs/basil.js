@@ -153,6 +153,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_image">image</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_layer">layer</a>
 
                                 
@@ -488,7 +495,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l874"><code>basil.js:874</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l931"><code>basil.js:931</code></a>
         
         </p>
 
@@ -537,6 +544,201 @@ in the application. If no document at all is open, a new document gets created.<
                         <span class="type">PageItem</span>:
                     
                     Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_image" class="method item">
+    <h3 class="name"><code>image</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>img</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>itemOrX</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[y]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[w]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code class="optional">[h]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Rectangle | Oval | Polygon</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l499"><code>basil.js:499</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Adds an image to the document. The image file must be in the "[indesign_scripts_path]/data" directory 
+to load correctly (e.g. "~/Library/Preferences/Adobe InDesign/Version 7.5/en_GB/Scripts/Scripts Panel/data").
+The second argument can either be the x position of the frame to create or an instance of a rectangle, 
+oval or polygon to place the image in.
+If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">img</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The image file name in the "[indesign_scripts_path]/data" directory</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">itemOrX</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a> | Rectangle | Oval | Polygon</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The x position on the current page or the item instance to place the image in</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[y]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The y position on the current page. Ignored if itemOrX is not a number.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[w]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The width of the rectangle to add the image to. Ignored if itemOrX is not a number.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[h]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The height of the rectangle to add the image to. Ignored if itemOrX is not a number.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Rectangle | Oval | Polygon</span>:
+                    
+                    The item instance the image was placed in.
                 
             </div>
         </div>

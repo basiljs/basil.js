@@ -343,7 +343,49 @@
         },
         {
             "file": "basil.js",
-            "line": 874,
+            "line": 499,
+            "description": "Adds an image to the document. The image file must be in the \"[indesign\\_scripts\\_path]/data\" directory \nto load correctly (e.g. \"~/Library/Preferences/Adobe InDesign/Version 7.5/en_GB/Scripts/Scripts Panel/data\").\nThe second argument can either be the x position of the frame to create or an instance of a rectangle, \noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
+            "itemtype": "method",
+            "name": "image",
+            "params": [
+                {
+                    "name": "img",
+                    "description": "The image file name in the \"[indesign\\_scripts\\_path]/data\" directory",
+                    "type": "String"
+                },
+                {
+                    "name": "itemOrX",
+                    "description": "The x position on the current page or the item instance to place the image in",
+                    "type": "Number|Rectangle|Oval|Polygon"
+                },
+                {
+                    "name": "y",
+                    "description": "The y position on the current page. Ignored if itemOrX is not a number.",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "w",
+                    "description": "The width of the rectangle to add the image to. Ignored if itemOrX is not a number.",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "h",
+                    "description": "The height of the rectangle to add the image to. Ignored if itemOrX is not a number.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The item instance the image was placed in.",
+                "type": "Rectangle|Oval|Polygon"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 931,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",

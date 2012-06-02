@@ -491,6 +491,63 @@
     }
     return result;
   };
+
+
+  // ----------------------------------------
+  // Image
+  
+  /**
+   * Adds an image to the document. The image file must be in the "[indesign\_scripts\_path]/data" directory 
+   * to load correctly (e.g. "~/Library/Preferences/Adobe InDesign/Version 7.5/en_GB/Scripts/Scripts Panel/data").
+   * The second argument can either be the x position of the frame to create or an instance of a rectangle, 
+   * oval or polygon to place the image in.
+   * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
+   * 
+   * @method image
+   * @param  {String} img The image file name in the "[indesign\_scripts\_path]/data" directory
+   * @param  {Number|Rectangle|Oval|Polygon} itemOrX The x position on the current page or the item instance to place the image in
+   * @param  {Number} [y] The y position on the current page. Ignored if itemOrX is not a number.
+   * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if itemOrX is not a number.
+   * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if itemOrX is not a number.
+   * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
+   */
+  pub.image = function(img, itemOrX, y, w, h) {
+    var file = File(app.scriptPreferences.scriptsFolder.absoluteURI + '/data/' + img);
+    if (!file.exists) {
+      error('The file "' + file + '" does not exist.');
+    }
+
+    var frame = null,
+      fitOptions = null;
+    if (itemOrX instanceof Rectangle ||
+        itemOrX instanceof Oval ||
+        itemOrX instanceof Polygon) {
+      frame = itemOrX;
+    } else {
+      var width = 1,
+        height = 1;
+      if (w && h) {
+        width = itemOrX + w;
+        height = y + h;
+        fitOptions = FitOptions.contentToFrame;
+      } else {
+        fitOptions = FitOptions.frameToContent;
+      }
+      
+      frame = currentPage().rectangles.add();
+      frame.geometricBounds = [y, itemOrX, y + height, itemOrX + width];
+    }
+    
+    frame.place(file);
+
+    // embed graphic in document
+    frame.graphics[0].itemLink.unlink();
+
+    if (fitOptions) {
+      frame.fit(fitOptions);
+    }
+    return frame;
+  };
   
 
   // ----------------------------------------

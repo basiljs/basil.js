@@ -579,6 +579,63 @@
     }
     return result;
   };
+
+
+  &#x2F;&#x2F; ----------------------------------------
+  &#x2F;&#x2F; Image
+  
+  &#x2F;**
+   * Adds an image to the document. The image file must be in the &quot;[indesign\_scripts\_path]&#x2F;data&quot; directory 
+   * to load correctly (e.g. &quot;~&#x2F;Library&#x2F;Preferences&#x2F;Adobe InDesign&#x2F;Version 7.5&#x2F;en_GB&#x2F;Scripts&#x2F;Scripts Panel&#x2F;data&quot;).
+   * The second argument can either be the x position of the frame to create or an instance of a rectangle, 
+   * oval or polygon to place the image in.
+   * If x and y positions are given and width and height are not given, the frame&#x27;s size gets set to the original image size.
+   * 
+   * @method image
+   * @param  {String} img The image file name in the &quot;[indesign\_scripts\_path]&#x2F;data&quot; directory
+   * @param  {Number|Rectangle|Oval|Polygon} itemOrX The x position on the current page or the item instance to place the image in
+   * @param  {Number} [y] The y position on the current page. Ignored if itemOrX is not a number.
+   * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if itemOrX is not a number.
+   * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if itemOrX is not a number.
+   * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
+   *&#x2F;
+  pub.image = function(img, itemOrX, y, w, h) {
+    var file = File(app.scriptPreferences.scriptsFolder.absoluteURI + &#x27;&#x2F;data&#x2F;&#x27; + img);
+    if (!file.exists) {
+      error(&#x27;The file &quot;&#x27; + file + &#x27;&quot; does not exist.&#x27;);
+    }
+
+    var frame = null,
+      fitOptions = null;
+    if (itemOrX instanceof Rectangle ||
+        itemOrX instanceof Oval ||
+        itemOrX instanceof Polygon) {
+      frame = itemOrX;
+    } else {
+      var width = 1,
+        height = 1;
+      if (w &amp;&amp; h) {
+        width = itemOrX + w;
+        height = y + h;
+        fitOptions = FitOptions.contentToFrame;
+      } else {
+        fitOptions = FitOptions.frameToContent;
+      }
+      
+      frame = currentPage().rectangles.add();
+      frame.geometricBounds = [y, itemOrX, y + height, itemOrX + width];
+    }
+    
+    frame.place(file);
+
+    &#x2F;&#x2F; embed graphic in document
+    frame.graphics[0].itemLink.unlink();
+
+    if (fitOptions) {
+      frame.fit(fitOptions);
+    }
+    return frame;
+  };
   
 
   &#x2F;&#x2F; ----------------------------------------
