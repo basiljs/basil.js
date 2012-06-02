@@ -11,7 +11,7 @@
             "name": "basil.js",
             "modules": {},
             "classes": {
-                "basil": 1
+                "b": 1
             },
             "fors": {},
             "namespaces": {}
@@ -19,9 +19,9 @@
     },
     "modules": {},
     "classes": {
-        "basil": {
-            "name": "basil",
-            "shortname": "basil",
+        "b": {
+            "name": "b",
+            "shortname": "b",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -39,7 +39,7 @@
             "itemtype": "property",
             "name": "width",
             "type": "Number",
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -47,7 +47,7 @@
             "itemtype": "property",
             "name": "height",
             "type": "Number",
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -67,7 +67,7 @@
                 "description": "The current document instance.",
                 "type": "Document"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -87,7 +87,7 @@
                     "optional": true
                 }
             ],
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -105,7 +105,7 @@
                 "description": "The current page instance.",
                 "type": "Page"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -123,7 +123,7 @@
                 "description": "The current page instance.",
                 "type": "Layer"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -141,7 +141,7 @@
                 "description": "current unit setting",
                 "type": "Constant"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -173,7 +173,7 @@
                 "description": "new oval (in Adobe Scripting the type is Oval, not ellipse)",
                 "type": "Oval"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -209,7 +209,7 @@
                 "description": "new rectangle",
                 "type": "Rectangle"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -245,11 +245,11 @@
                 "description": "new Rectangle",
                 "type": "Rectangle"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 280,
+            "line": 314,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document,\nor gets a color by name from the document",
             "params": [
                 {
@@ -262,11 +262,11 @@
                 "description": "new color",
                 "type": "Color"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 358,
+            "line": 392,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() function, which gives the option to draw to the left, \nright, and center of the coordinates. \nThe width and height parameters define a rectangular area.",
             "params": [
                 {
@@ -299,11 +299,11 @@
                 "description": "The created text frame instance.",
                 "type": "TextFrame"
             },
-            "class": "basil"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 391,
+            "line": 425,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the corresponding value is returned. This can \neither be the value of the concrete item (e.g. character) or an array of values of the item's descendants \n(e.g. paragraphs of given text frame).",
             "params": [
                 {
@@ -327,7 +327,7 @@
                 "description": "The property value(s) or the items the property was assigned to.",
                 "type": "String[]|Number[]"
             },
-            "class": "basil"
+            "class": "b"
         }
     ]
 }

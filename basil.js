@@ -2,7 +2,7 @@
 
 (function(glob, app, undef) {
   /**
-   * @class basil
+   * @class b
    * @static
    */
   var pub = {};
