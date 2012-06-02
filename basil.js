@@ -410,7 +410,7 @@
     with (textFrame) {
       contents = txt;
       geometricBounds = [y, x, (y+h), (x+w)];
-      /* TODO 
+      /* TODO tbd, what has to be set, e.g. fillColor is balck by default
       strokeWeight = currStrokeWeight;
       strokeColor = currStrokeColor;
       strokeTint = currStrokeTint;
