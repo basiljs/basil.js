@@ -73,6 +73,8 @@
             "file": "basil.js",
             "line": 78,
             "description": "Closes the current document.",
+            "itemtype": "method",
+            "name": "close",
             "params": [
                 {
                     "name": "saveOptions",
@@ -91,8 +93,10 @@
         },
         {
             "file": "basil.js",
-            "line": 92,
+            "line": 93,
             "description": "Returns the current page and possibly sets it.",
+            "itemtype": "method",
+            "name": "page",
             "params": [
                 {
                     "name": "page",
@@ -109,8 +113,10 @@
         },
         {
             "file": "basil.js",
-            "line": 114,
+            "line": 116,
             "description": "Returns the current layer and possibly sets it.",
+            "itemtype": "method",
+            "name": "layer",
             "params": [
                 {
                     "name": "layer",
@@ -127,8 +133,10 @@
         },
         {
             "file": "basil.js",
-            "line": 133,
+            "line": 136,
             "description": "Sets the units of the document (like right clicking the rulers).",
+            "itemtype": "method",
+            "name": "units",
             "params": [
                 {
                     "name": "units",
@@ -145,7 +153,7 @@
         },
         {
             "file": "basil.js",
-            "line": 174,
+            "line": 178,
             "description": "Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.\nThe first two parameters set the location, the third sets the width, and the fourth sets the height.",
             "params": [
                 {
@@ -177,7 +185,7 @@
         },
         {
             "file": "basil.js",
-            "line": 202,
+            "line": 206,
             "description": "Draws a line (a direct path between two points) to the screen.",
             "params": [
                 {
@@ -213,7 +221,7 @@
         },
         {
             "file": "basil.js",
-            "line": 238,
+            "line": 242,
             "description": "Draws a rectangle to the page.",
             "params": [
                 {
@@ -249,7 +257,7 @@
         },
         {
             "file": "basil.js",
-            "line": 314,
+            "line": 318,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document,\nor gets a color by name from the document",
             "params": [
                 {
@@ -266,8 +274,10 @@
         },
         {
             "file": "basil.js",
-            "line": 392,
+            "line": 396,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() function, which gives the option to draw to the left, \nright, and center of the coordinates. \nThe width and height parameters define a rectangular area.",
+            "itemtype": "method",
+            "name": "text",
             "params": [
                 {
                     "name": "txt",
@@ -303,8 +313,10 @@
         },
         {
             "file": "basil.js",
-            "line": 425,
+            "line": 430,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the corresponding value is returned. This can \neither be the value of the concrete item (e.g. character) or an array of values of the item's descendants \n(e.g. paragraphs of given text frame).",
+            "itemtype": "method",
+            "name": "typo",
             "params": [
                 {
                     "name": "item",
@@ -326,6 +338,25 @@
             "return": {
                 "description": "The property value(s) or the items the property was assigned to.",
                 "type": "String[]|Number[]"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 873,
+            "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
+            "itemtype": "method",
+            "name": "findByLabel",
+            "params": [
+                {
+                    "name": "label",
+                    "description": "The label identifier",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Array of concrete PageItem instances, e.g. TextFrame or SplineItem.",
+                "type": "PageItem[]"
             },
             "class": "b"
         }

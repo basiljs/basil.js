@@ -78,6 +78,7 @@
   /**
    * Closes the current document.
    * 
+   * @method close
    * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
    * @param  {File} [file] The indesign file instance to save the document to
    */
@@ -92,6 +93,7 @@
   /**
    * Returns the current page and possibly sets it.
    * 
+   * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to.
    * @return {Page} The current page instance.
    */
@@ -114,6 +116,7 @@
   /**
    * Returns the current layer and possibly sets it.
    * 
+   * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
    * @return {Layer} The current page instance.
    */
@@ -133,6 +136,7 @@
   /**
    * Sets the units of the document (like right clicking the rulers).
    * 
+   * @method units
    * @param  {Constant} [units] supported: PT, PX, CM or MM
    * @return {Constant} current unit setting
    */
@@ -398,6 +402,7 @@
    * right, and center of the coordinates. 
    * The width and height parameters define a rectangular area.
    * 
+   * @method text
    * @param  {String} txt The text content to set in the text frame.
    * @param  {Number} x   x-coordinate of text frame
    * @param  {Number} y   y-coordinate of text frame
@@ -430,6 +435,7 @@
    * either be the value of the concrete item (e.g. character) or an array of values of the item's descendants 
    * (e.g. paragraphs of given text frame).
    * 
+   * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
    * @param  {String|Object} property  The text property name of an object of key/value property/value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
@@ -864,6 +870,13 @@
   // ----------------------------------------
   // Input
   
+  /**
+   * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
+   * 
+   * @method findByLabel
+   * @param  {String} label The label identifier
+   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem. 
+   */
   pub.findByLabel = function(label) {
     var result = [];
     var doc = currentDoc();
