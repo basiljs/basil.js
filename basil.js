@@ -1095,7 +1095,7 @@
 
   var error = function(msg) {
     $.writeln(ERROR_PREFIX + msg);
-    throw msg;
+    throw ERROR_PREFIX + msg;
   };
 
   var warning = function(msg) {
