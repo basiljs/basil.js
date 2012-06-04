@@ -42,7 +42,8 @@
     currStrokeTint = null,
     currFillTint = null,
     currStrokeWeight = null,
-    noneSwatchColor = null;
+    noneSwatchColor = null,
+    start = null;
 
   // ----------------------------------------
   // global functions
@@ -55,6 +56,17 @@
     };
   }
   
+  // ----------------------------------------
+  // Structure
+  
+  /**
+   * Suspends the calling thread for a number of milliseconds.
+   * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
+   * @param  {Number} milliseconds [description]
+   */
+  pub.delay = function (milliseconds) {
+    $.sleep(milliseconds);
+  }
 
   // ----------------------------------------
   // Environment
@@ -934,6 +946,28 @@
   // ----------------------------------------
   // Input
   
+  pub.year = function() {
+    return (new Date).getFullYear()
+  };
+  pub.month = function() {
+    return (new Date).getMonth() + 1
+  };
+  pub.day = function() {
+    return (new Date).getDate()
+  };
+  pub.hour = function() {
+    return (new Date).getHours()
+  };
+  pub.minute = function() {
+    return (new Date).getMinutes()
+  };
+  pub.second = function() {
+    return (new Date).getSeconds()
+  };
+  pub.millis = function() {
+    return Date.now() - start
+  };
+
   /**
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
    * 
@@ -1032,6 +1066,7 @@
     currFillColor = "Black";
     noneSwatchColor = "None";
     currStrokeColor = "Black";
+    start = Date.now();
   };
 
   var currentLayer = function() {
