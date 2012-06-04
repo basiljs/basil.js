@@ -275,6 +275,7 @@
       fillTint = currFillTint;
       strokeColor = currStrokeColor;
     }
+    // FIXME
     /*newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
                    currMatrix);*/
@@ -302,6 +303,7 @@
     if (fillColor instanceof Color || fillColor instanceof Swatch) {
       currFillColor = fillColor;
     } else {
+      // FIXME
       currFillColor = pub.color(arguments);
     }
   };
@@ -314,7 +316,7 @@
     if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
       currStrokeColor = strokeColor;
     } else {
-      // FIXME warning(typeof arguments[0]);
+      // FIXME
       currStrokeColor = pub.color(arguments);
     }
   };
@@ -346,7 +348,6 @@
    * @return {Color} new color
    */
   pub.color = function() {
-    // FIXME warning(typeof arguments[0]);
     var newCol = null;
     var props = {};
     var a = arguments[0],
@@ -1047,7 +1048,8 @@
     if (arguments.length === 1) {
       var newMatrix = app.transformationMatrices.add();
       newMatrix = newMatrix.scaleMatrix(arguments[0],arguments[0]);
-      currMatrix.catenateMatrix(newMatrix);
+      currMatrix = currMatrix.catenateMatrix(newMatrix);
+      //currMatrix = currMatrix.scaleMatrix(arguments[0],arguments[0]);
     } else {
       currMatrix = currMatrix.scaleMatrix(arguments[0],arguments[1]);
     }
