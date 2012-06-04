@@ -36,6 +36,7 @@
     currPage = null,
     currLayer = null,
     currUnits = null,
+    currMatrix = null,
     currColorMode = null,
     currFillColor = null,
     currStrokeColor = null,
@@ -274,6 +275,12 @@
       fillTint = currFillTint;
       strokeColor = currStrokeColor;
     }
+    /*newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.CENTER_ANCHOR,
+                   currMatrix);*/
+    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.TOP_LEFT_ANCHOR,
+                   currMatrix);
     return newRect;
   };
 
@@ -1002,6 +1009,66 @@
   
 
   // ----------------------------------------
+  // Transform
+  
+  pub.applyMatrix = function (argument) {
+    // TODO body...
+  };
+
+  pub.popMatrix = function (argument) {
+    // TODO body...
+  };
+
+  pub.printMatrix = function (argument) {
+    var properties = currMatrix.properties;
+    for (prop in properties) {
+      if(properties.hasOwnProperty(prop)) {
+        $.writeln( prop+": "+properties[prop] );
+      }
+    }
+  };
+
+  pub.pushMatrix = function (argument) {
+    // TODO body...
+  };
+
+  pub.resetMatrix = function (argument) {
+    currMatrix = app.transformationMatrices.add();
+    return currMatrix;
+  };
+
+  // 0° to 360°
+  pub.rotate = function (angle) {
+    currMatrix = currMatrix.rotateMatrix(angle);
+    return currMatrix;
+  };
+
+  pub.scale = function () {
+    if (arguments.length === 1) {
+      var newMatrix = app.transformationMatrices.add();
+      newMatrix = newMatrix.scaleMatrix(arguments[0],arguments[0]);
+      currMatrix.catenateMatrix(newMatrix);
+    } else {
+      currMatrix = currMatrix.scaleMatrix(arguments[0],arguments[1]);
+    }
+    return currMatrix;
+  };
+
+  pub.shearX = function (argument) {
+    // TODO body...
+  };
+
+  pub.shearY = function (argument) {
+    // TODO body...
+  };
+
+  pub.translate = function (x,y) {
+    currMatrix = currMatrix.translateMatrix(x,y);
+    return currMatrix;
+  };
+
+
+  // ----------------------------------------
   // all private from here
 
   var init = function() {
@@ -1067,6 +1134,7 @@
     noneSwatchColor = "None";
     currStrokeColor = "Black";
     start = Date.now();
+    pub.resetMatrix();
   };
 
   var currentLayer = function() {
