@@ -38,11 +38,11 @@
     currUnits = null,
     currColorMode = null,
     currFillColor = null,
-    currNoFillColor = null,
     currStrokeColor = null,
     currStrokeTint = null,
     currFillTint = null,
-    currStrokeWeight = null;
+    currStrokeWeight = null,
+    noneSwatchColor = null;
 
   // ----------------------------------------
   // global functions
@@ -288,15 +288,20 @@
   };
 
   pub.noFill = function () {
-    currFillColor = currNoFillColor;
+    currFillColor = noneSwatchColor;
   };
 
   pub.stroke = function (strokeColor) {
     if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
       currStrokeColor = strokeColor;
     } else {
+      // FIXME warning(typeof arguments[0]);
       currStrokeColor = pub.color(arguments);
     }
+  };
+
+  pub.noStroke = function () {
+    currStrokeColor = noneSwatchColor;
   };
 
   pub.fillTint = function (tint) {
@@ -322,6 +327,7 @@
    * @return {Color} new color
    */
   pub.color = function() {
+    // FIXME warning(typeof arguments[0]);
     var newCol = null;
     var props = {};
     var a = arguments[0],
@@ -1024,7 +1030,7 @@
     currPage = null;
     currLayer = null;
     currFillColor = "Black";
-    currNoFillColor = "None";
+    noneSwatchColor = "None";
     currStrokeColor = "Black";
   };
 
