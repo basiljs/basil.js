@@ -972,6 +972,8 @@
     currStrokeTint = 100;
     currFillTint = 100;
 
+    currentDoc();
+
     welcome();
     runUserScript();
   };
