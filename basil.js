@@ -563,6 +563,60 @@
     return newCol;
   };
 
+  /**
+   * Calculates a color or colors between two color at a specific increment. 
+   * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
+   * N.B.: Both color must be either CMYK or RGB.
+   * 
+   * @method lerpColor
+   * @param  {Color} c1   Input color 1
+   * @param  {Color} c2   Input color 2
+   * @param  {Number} amt The Amount to interpolate between the two colors
+   * @return {Color} Interpolated color
+   */
+  pub.lerpColor = function (c1, c2, amt) {
+    if (c1 instanceof Color && c2 instanceof Color && typeof amt === 'number') {
+      if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
+        var C1 = c1.colorValue[0];
+        var M1 = c1.colorValue[1];
+        var Y1 = c1.colorValue[2];
+        var K1 = c1.colorValue[3];
+
+        var C2 = c2.colorValue[0];
+        var M2 = c2.colorValue[1];
+        var Y2 = c2.colorValue[2];
+        var K2 = c2.colorValue[3];
+
+        var COut = Math.round( pub.lerp(C1,C2,amt) );
+        var MOut = Math.round( pub.lerp(M1,M2,amt) );
+        var YOut = Math.round( pub.lerp(Y1,Y2,amt) );
+        var KOut = Math.round( pub.lerp(K1,K2,amt) );
+        return pub.color(COut,MOut,YOut,KOut);
+
+      } else if (c1.space === ColorSpace.RGB && c2.space === ColorSpace.RGB) {
+        var R1 = c1.colorValue[0];
+        var G1 = c1.colorValue[1];
+        var B1 = c1.colorValue[2];
+
+        var R2 = c2.colorValue[0];
+        var G2 = c2.colorValue[1];
+        var B2 = c2.colorValue[2];
+
+        var ROut = Math.round( pub.lerp(R1,R2,amt) );
+        var GOut = Math.round( pub.lerp(G1,G2,amt) );
+        var BOut = Math.round( pub.lerp(B1,B2,amt) );
+        warning([ROut,GOut,BOut]);
+        return pub.color(ROut,GOut,BOut);
+
+      } else {
+        error("Both color must be either CMYK or RGB.");
+      }
+    } else {
+      error("Wrong parameters. Use: two colors (of the same type) and a number.");
+    }
+  };
+
+  
   // ----------------------------------------
   // Typography
   
