@@ -303,8 +303,23 @@
     if (fillColor instanceof Color || fillColor instanceof Swatch) {
       currFillColor = fillColor;
     } else {
-      // FIXME
-      currFillColor = pub.color(arguments);
+      if (arguments.length === 1) {
+        currFillColor = pub.color(arguments[0]);
+      } else if (arguments.length === 2) {
+        currFillColor = pub.color(arguments[0],arguments[1]);
+      } else if (arguments.length === 3) {
+        currFillColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      } else if (arguments.length === 4) {
+        currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      } else if (arguments.length === 5) {
+        currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      } else {
+        error("Wrong parameters. Use: "
+          + "R,G,B,name or "
+          + "C,M,Y,K,name. "
+          + "Grey,name "
+          + "Name is optional");
+      }
     }
   };
 
@@ -316,8 +331,23 @@
     if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
       currStrokeColor = strokeColor;
     } else {
-      // FIXME
-      currStrokeColor = pub.color(arguments);
+      if (arguments.length === 1) {
+        currStrokeColor = pub.color(arguments[0]);
+      } else if (arguments.length === 2) {
+        currStrokeColor = pub.color(arguments[0],arguments[1]);
+      } else if (arguments.length === 3) {
+        currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      } else if (arguments.length === 4) {
+        currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      } else if (arguments.length === 5) {
+        currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      } else {
+        error("Wrong parameters. Use: "
+          + "R,G,B,name or "
+          + "C,M,Y,K,name. "
+          + "Grey,name "
+          + "Name is optional");
+      }
     }
   };
 
@@ -471,7 +501,7 @@
    */
   pub.typo = function(item, property, value) {
     var result = [],
-      actsAsGetter = typeof property === 'string' && (typeof value === 'undefined' || value === null),
+      actsAsGetter = typeof property === 'string' && (typeof value === undef || value === null),
       getOrSetProperties = function(textItem) {
         if (actsAsGetter) {
           result.push(textItem[prop]);
@@ -1095,7 +1125,7 @@
       if (typeof glob.draw === 'function') {
         glob.draw();
       }      
-    }, ScriptLanguage.javascript, undefined, UndoModes.entireScript);
+    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
   };
 
   var welcome = function() {
