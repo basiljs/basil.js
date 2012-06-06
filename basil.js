@@ -37,6 +37,7 @@
     currLayer = null,
     currUnits = null,
     currMatrix = null,
+    matrixStack = null,
     currColorMode = null,
     currFillColor = null,
     currStrokeColor = null,
@@ -185,6 +186,120 @@
     return currUnits;
   }
 
+
+  // ----------------------------------------
+  // Data
+
+  // -- String Functions --
+  pub.join = function(array, seperator) {
+    return array.join(seperator)
+  };
+
+  pub.split = function(str, delim) {
+    return str.split(delim)
+  };
+
+  pub.match = function(str, regexp) {
+    return str.match(regexp)
+  };
+
+  pub.matchAll = function(aString, aRegExp) {
+    var results = [],
+      latest;
+    var regexp = new RegExp(aRegExp, "g");
+    while ((latest = regexp.exec(aString)) !== null) {
+      results.push(latest);
+      if (latest[0].length === 0)++regexp.lastIndex
+    }
+    return results.length > 0 ? results : null
+  };
+
+  function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
+    var sign = value < 0 ? minus : plus;
+    var autoDetectDecimals = rightDigits === 0;
+    var rightDigitsOfDefault = rightDigits === undef || rightDigits < 0 ? 0 : rightDigits;
+    var absValue = Math.abs(value);
+    if (autoDetectDecimals) {
+      rightDigitsOfDefault = 1;
+      absValue *= 10;
+      while (Math.abs(Math.round(absValue) - absValue) > 1.0E-6 && rightDigitsOfDefault < 7) {
+        ++rightDigitsOfDefault;
+        absValue *= 10
+      }
+    } else if (rightDigitsOfDefault !== 0) absValue *= Math.pow(10, rightDigitsOfDefault);
+    var number, doubled = absValue * 2;
+    if (Math.floor(absValue) === absValue) number = absValue;
+    else if (Math.floor(doubled) === doubled) {
+      var floored = Math.floor(absValue);
+      number = floored + floored % 2
+    } else number = Math.round(absValue);
+    var buffer = "";
+    var totalDigits = leftDigits + rightDigitsOfDefault;
+    while (totalDigits > 0 || number > 0) {
+      totalDigits--;
+      buffer = "" + number % 10 + buffer;
+      number = Math.floor(number / 10)
+    }
+    if (group !== undef) {
+      var i = buffer.length - 3 - rightDigitsOfDefault;
+      while (i > 0) {
+        buffer = buffer.substring(0, i) + group + buffer.substring(i);
+        i -= 3
+      }
+    }
+    if (rightDigitsOfDefault > 0) return sign + buffer.substring(0, buffer.length - rightDigitsOfDefault) + "." + buffer.substring(buffer.length - rightDigitsOfDefault, buffer.length);
+    return sign + buffer
+  }
+  function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
+    if (value instanceof Array) {
+      var arr = [];
+      for (var i = 0, len = value.length; i < len; i++) arr.push(nfCoreScalar(value[i], plus, minus, leftDigits, rightDigits, group));
+      return arr
+    }
+    return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group)
+  }
+  pub.nf = function(value, leftDigits, rightDigits) {
+    return nfCore(value, "", "-", leftDigits, rightDigits)
+  };
+  pub.nfs = function(value, leftDigits, rightDigits) {
+    return nfCore(value, " ", "-", leftDigits, rightDigits)
+  };
+  pub.nfp = function(value, leftDigits, rightDigits) {
+    return nfCore(value, "+", "-", leftDigits, rightDigits)
+  };
+  pub.nfc = function(value, leftDigits, rightDigits) {
+    return nfCore(value, "", "-", leftDigits, rightDigits, ",")
+  };
+
+  pub.splitTokens = function(str, tokens) {
+    if (arguments.length === 1) tokens = "\n\t\r\u000c ";
+    tokens = "[" + tokens + "]";
+    var ary = [];
+    var index = 0;
+    var pos = str.search(tokens);
+    while (pos >= 0) {
+      if (pos === 0) str = str.substring(1);
+      else {
+        ary[index] = str.substring(0, pos);
+        index++;
+        str = str.substring(pos)
+      }
+      pos = str.search(tokens)
+    }
+    if (str.length > 0) ary[index] = str;
+    if (ary.length === 0) ary = undef;
+    return ary
+  };
+
+  pub.trim = function(str) {
+    if (str instanceof Array) {
+      var arr = [];
+      for (var i = 0; i < str.length; i++) arr.push(str[i].replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, ""));
+      return arr
+    }
+    return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, "")
+  };
+
   // ----------------------------------------
   // Shape
   
@@ -279,9 +394,11 @@
     /*newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
                    currMatrix);*/
+    
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix);
+                   currMatrix.adobeMatrix() );
+    // warning( currMatrix.adobeMatrix() );
     return newRect;
   };
 
@@ -609,7 +726,7 @@
   // ----------------------------------------
   // Math
   
-  pub.PVector = function() {
+  var PVector = pub.PVector = function() {
     function PVector(x, y, z) {
       this.x = x || 0;
       this.y = y || 0;
@@ -737,6 +854,8 @@
     return PVector
   }();
   
+
+  // -- Calculation --
   pub.abs = Math.abs;
 
   pub.ceil = Math.ceil;
@@ -804,7 +923,9 @@
   pub.sq = function(aNumber) {
     return aNumber * aNumber
   };
-   
+  
+
+  // -- Trigonometry -- 
   pub.sqrt = Math.sqrt;
   pub.acos = Math.acos;
   pub.asin = Math.asin;
@@ -823,6 +944,7 @@
   pub.sin = Math.sin;
   pub.tan = Math.tan;
 
+  // -- Random --
   var currentRandom = Math.random;
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
@@ -876,7 +998,6 @@
     };
     random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble
   };
-
 
   function PerlinNoise(seed) {
     var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
@@ -1042,6 +1163,174 @@
   // ----------------------------------------
   // Transform
   
+  
+  var printMatrixHelper = function(elements) {
+    var big = 0;
+    for (var i = 0; i < elements.length; i++) if (i !== 0) big = Math.max(big, Math.abs(elements[i]));
+    else big = Math.abs(elements[i]);
+    var digits = (big + "").indexOf(".");
+    if (digits === 0) digits = 1;
+    else if (digits === -1) digits = (big + "").length;
+    return digits
+  };
+
+  var PMatrix2D = pub.PMatrix2D = function() {
+    if (arguments.length === 0) this.reset();
+    else if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) this.set(arguments[0].array());
+    else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5])
+  };
+  PMatrix2D.prototype = {
+    set: function() {
+      if (arguments.length === 6) {
+        var a = arguments;
+        this.set([a[0], a[1], a[2], a[3], a[4], a[5]])
+      } else if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) this.elements = arguments[0].array();
+      else if (arguments.length === 1 && arguments[0] instanceof Array) this.elements = arguments[0].slice()
+    },
+    get: function() {
+      var outgoing = new PMatrix2D;
+      outgoing.set(this.elements);
+      return outgoing
+    },
+    reset: function() {
+      this.set([1, 0, 0, 0, 1, 0])
+    },
+    array: function array() {
+      return this.elements.slice()
+    },
+    adobeMatrix: function array() {
+      return [this.elements[0], 
+              this.elements[3],  
+              this.elements[1], 
+              this.elements[4],
+              this.elements[2], 
+              this.elements[5]];
+    },
+    translate: function(tx, ty) {
+      this.elements[2] = tx * this.elements[0] + ty * this.elements[1] + this.elements[2];
+      this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5]
+    },
+    invTranslate: function(tx, ty) {
+      this.translate(-tx, -ty)
+    },
+    transpose: function() {},
+    mult: function(source, target) {
+      var x, y;
+      if (source instanceof PVector) {
+        x = source.x;
+        y = source.y;
+        if (!target) target = new PVector
+      } else if (source instanceof Array) {
+        x = source[0];
+        y = source[1];
+        if (!target) target = []
+      }
+      if (target instanceof Array) {
+        target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
+        target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5]
+      } else if (target instanceof PVector) {
+        target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
+        target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
+        target.z = 0
+      }
+      return target
+    },
+    multX: function(x, y) {
+      return x * this.elements[0] + y * this.elements[1] + this.elements[2]
+    },
+    multY: function(x, y) {
+      return x * this.elements[3] + y * this.elements[4] + this.elements[5]
+    },
+    skewX: function(angle) {
+      this.apply(1, 0, 1, angle, 0, 0)
+    },
+    skewY: function(angle) {
+      this.apply(1, 0, 1, 0, angle, 0)
+    },
+    determinant: function() {
+      return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3]
+    },
+    invert: function() {
+      var d = this.determinant();
+      if (Math.abs(d) > -2147483648) {
+        var old00 = this.elements[0];
+        var old01 = this.elements[1];
+        var old02 = this.elements[2];
+        var old10 = this.elements[3];
+        var old11 = this.elements[4];
+        var old12 = this.elements[5];
+        this.elements[0] = old11 / d;
+        this.elements[3] = -old10 / d;
+        this.elements[1] = -old01 / d;
+        this.elements[4] = old00 / d;
+        this.elements[2] = (old01 * old12 - old11 * old02) / d;
+        this.elements[5] = (old10 * old02 - old00 * old12) / d;
+        return true
+      }
+      return false
+    },
+    scale: function(sx, sy) {
+      if (sx && !sy) sy = sx;
+      if (sx && sy) {
+        this.elements[0] *= sx;
+        this.elements[1] *= sy;
+        this.elements[3] *= sx;
+        this.elements[4] *= sy
+      }
+    },
+    invScale: function(sx, sy) {
+      if (sx && !sy) sy = sx;
+      this.scale(1 / sx, 1 / sy)
+    },
+    apply: function() {
+      var source;
+      if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
+      else if (arguments.length === 1 && arguments[0] instanceof Array) source = arguments[0];
+      var result = [0, 0, this.elements[2], 0, 0, this.elements[5]];
+      var e = 0;
+      for (var row = 0; row < 2; row++) for (var col = 0; col < 3; col++, e++) result[e] += this.elements[row * 3 + 0] * source[col + 0] + this.elements[row * 3 + 1] * source[col + 3];
+      this.elements = result.slice()
+    },
+    preApply: function() {
+      var source;
+      if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
+      else if (arguments.length === 1 && arguments[0] instanceof Array) source = arguments[0];
+      var result = [0, 0, source[2], 0, 0, source[5]];
+      result[2] = source[2] + this.elements[2] * source[0] + this.elements[5] * source[1];
+      result[5] = source[5] + this.elements[2] * source[3] + this.elements[5] * source[4];
+      result[0] = this.elements[0] * source[0] + this.elements[3] * source[1];
+      result[3] = this.elements[0] * source[3] + this.elements[3] * source[4];
+      result[1] = this.elements[1] * source[0] + this.elements[4] * source[1];
+      result[4] = this.elements[1] * source[3] + this.elements[4] * source[4];
+      this.elements = result.slice()
+    },
+    rotate: function(angle) {
+      var c = Math.cos(angle);
+      var s = Math.sin(angle);
+      var temp1 = this.elements[0];
+      var temp2 = this.elements[1];
+      this.elements[0] = c * temp1 + s * temp2;
+      this.elements[1] = -s * temp1 + c * temp2;
+      temp1 = this.elements[3];
+      temp2 = this.elements[4];
+      this.elements[3] = c * temp1 + s * temp2;
+      this.elements[4] = -s * temp1 + c * temp2
+    },
+    rotateZ: function(angle) {
+      this.rotate(angle)
+    },
+    invRotateZ: function(angle) {
+      this.rotateZ(angle - Math.PI)
+    },
+    print: function() {
+      var digits = printMatrixHelper(this.elements);
+      var output = "" + pub.nfs(this.elements[0], digits, 4) + " " + pub.nfs(this.elements[1], digits, 4) + " " + pub.nfs(this.elements[2], digits, 4) + "\n" + pub.nfs(this.elements[3], digits, 4) + " " + pub.nfs(this.elements[4], digits, 4) + " " + pub.nfs(this.elements[5], digits, 4) + "\n\n";
+      pub.println(output)
+    }
+  };
+
   pub.applyMatrix = function (argument) {
     // TODO body...
   };
@@ -1051,12 +1340,7 @@
   };
 
   pub.printMatrix = function (argument) {
-    var properties = currMatrix.properties;
-    for (prop in properties) {
-      if(properties.hasOwnProperty(prop)) {
-        $.writeln( prop+": "+properties[prop] );
-      }
-    }
+    currMatrix.print();
   };
 
   pub.pushMatrix = function (argument) {
@@ -1064,39 +1348,29 @@
   };
 
   pub.resetMatrix = function (argument) {
-    currMatrix = app.transformationMatrices.add();
-    return currMatrix;
+    matrixStack = [];
+    currMatrix = new PMatrix2D();
+    matrixStack.push( currMatrix );
   };
 
-  // 0° to 360°
   pub.rotate = function (angle) {
-    currMatrix = currMatrix.rotateMatrix(angle);
-    return currMatrix;
+    currMatrix.rotate(angle);
   };
 
-  pub.scale = function () {
-    if (arguments.length === 1) {
-      var newMatrix = app.transformationMatrices.add();
-      newMatrix = newMatrix.scaleMatrix(arguments[0],arguments[0]);
-      currMatrix = currMatrix.catenateMatrix(newMatrix);
-      //currMatrix = currMatrix.scaleMatrix(arguments[0],arguments[0]);
-    } else {
-      currMatrix = currMatrix.scaleMatrix(arguments[0],arguments[1]);
-    }
-    return currMatrix;
+  pub.scale = function (scaleX,scaleY) {
+    currMatrix.scale(scaleX,scaleY);
   };
 
-  pub.shearX = function (argument) {
-    // TODO body...
+  pub.shearX = function (angle) {
+    currMatrix.skewX(angle);
   };
 
-  pub.shearY = function (argument) {
-    // TODO body...
+  pub.shearY = function (angle) {
+    currMatrix.skewY(angle);
   };
 
   pub.translate = function (x,y) {
-    currMatrix = currMatrix.translateMatrix(x,y);
-    return currMatrix;
+    currMatrix.translate(x,y);
   };
 
 
