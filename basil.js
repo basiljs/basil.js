@@ -55,7 +55,8 @@
     currFontSize = null,
     currAlign = null,
     currYAlign = null,
-    currLeading = null;
+    currLeading = null,
+    currImageMode = null;
 
   // ----------------------------------------
   // global functions
@@ -833,13 +834,13 @@
    * 
    * @method image
    * @param  {String} img The image file name in the document's data directory or a File instance
-   * @param  {Number|Rectangle|Oval|Polygon} itemOrX The x position on the current page or the item instance to place the image in
-   * @param  {Number} [y] The y position on the current page. Ignored if itemOrX is not a number.
-   * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if itemOrX is not a number.
-   * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if itemOrX is not a number.
+   * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
+   * @param  {Number} [y] The y position on the current page. Ignored if x is not a number.
+   * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if x is not a number.
+   * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
    * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
    */
-  pub.image = function(img, itemOrX, y, w, h) {
+  pub.image = function(img, x, y, w, h) {
     var file = null;
     if (img instanceof File) {
       file = img;
@@ -858,23 +859,29 @@
 
     var frame = null,
       fitOptions = null;
-    if (itemOrX instanceof Rectangle ||
-        itemOrX instanceof Oval ||
-        itemOrX instanceof Polygon) {
-      frame = itemOrX;
+    if (x instanceof Rectangle ||
+        x instanceof Oval ||
+        x instanceof Polygon) {
+      frame = x;
     } else {
       var width = 1,
-        height = 1;
-      if (w && h) {
-        width = w;
-        height = h;
+          height = 1;
+      if (currImageMode === pub.CORNERS) {
+        width = w - x;
+        height = h - y;
         fitOptions = FitOptions.contentToFrame;
       } else {
-        fitOptions = FitOptions.frameToContent;
+        if (w && h) {
+          width = w;
+          height = h;
+          fitOptions = FitOptions.contentToFrame;
+        } else {
+          fitOptions = FitOptions.frameToContent;
+        }
       }
       
       frame = currentPage().rectangles.add({
-        geometricBounds:[y, itemOrX, y + height, itemOrX + width]
+        geometricBounds:[y, x, y + height, x + width]
       });
     }
     
@@ -883,7 +890,21 @@
     if (fitOptions) {
       frame.fit(fitOptions);
     }
+    
+    if (currImageMode === pub.CENTER) {
+      var bounds = frame.geometricBounds;
+      var width = bounds[3] - bounds[1];
+      var height = bounds[2] - bounds[0];
+      frame.move(null, [-(width / 2), -(height / 2)]);
+    }
     return frame;
+  };
+
+  pub.imageMode = function(mode) {
+    if (!mode) return currImageMode;
+
+    currImageMode = mode;
+    return currImageMode;
   };
   
 
@@ -1620,6 +1641,7 @@
     currYAlign = VerticalJustification.TOP_ALIGN;
     start = Date.now();
     currFont = null;
+    currImageMode = pub.CORNER;
     pub.resetMatrix();
   };
 
