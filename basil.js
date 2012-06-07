@@ -767,9 +767,6 @@
     
     frame.place(file);
 
-    // embed graphic in document
-    frame.graphics[0].itemLink.unlink();
-
     if (fitOptions) {
       frame.fit(fitOptions);
     }
