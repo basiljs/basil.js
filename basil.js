@@ -1439,20 +1439,26 @@
 
 
   // ----------------------------------------
+  // execution
+   
+  pub.go = function() {
+    currentDoc();
+    runUserScript();
+  }
+
+
+  // ----------------------------------------
   // all private from here
 
   var init = function() {
     glob.b = pub;
+    
+    welcome();
 
     // -- init internal state vars --
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
-
-    currentDoc();
-
-    welcome();
-    runUserScript();
   };
 
   var runUserScript = function() {

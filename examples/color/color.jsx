@@ -31,4 +31,6 @@ function draw() {
   var black = b.color("Black");
   b.fill( black );
   b.rect(0,500,b.width,50); 
-};
+}
+
+b.go();

@@ -13,3 +13,5 @@ function draw() {
     b.ellipse(x, y, size, size);
   }
 }
+
+b.go();

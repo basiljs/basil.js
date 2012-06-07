@@ -11,5 +11,7 @@ function draw() {
     // set stroke tint of current color
     b.strokeTint( newStrokeTint );
     b.line(0,y, b.width,y);
-  };
-};
+  }
+}
+
+b.go();

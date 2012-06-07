@@ -13,5 +13,7 @@ function draw() {
 
     b.fill( b.lerpColor(c1,c2,i/(counter-1)) );
     b.rect(0,y, b.width,rectHeight);
-  };
-};
+  }
+}
+
+b.go();

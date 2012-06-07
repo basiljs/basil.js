@@ -21,3 +21,5 @@ function onIdleEventHandler(idleEvent) {
   textFramePage.paragraphs[0].pointSize = y;
   b.println("onIdleEventHandler "+y);
 }
+
+b.go();

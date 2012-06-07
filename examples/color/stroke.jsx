@@ -11,4 +11,6 @@ function draw() {
   // draw a cross with random color
   b.line(0,0,b.width,b.height);
   b.line(0,b.height,b.width,0);
-};
+}
+
+b.go();

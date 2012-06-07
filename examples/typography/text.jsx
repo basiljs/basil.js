@@ -5,3 +5,5 @@ function draw() {
   b.fill(green);
   b.text('hello basil', 0, 0, 300, 300);
 }
+
+b.go();

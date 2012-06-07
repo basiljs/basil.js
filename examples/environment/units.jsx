@@ -13,3 +13,5 @@ function draw() {
   b.units( b.CM );
   b.text('centimenters', 10, 20, 300, 300);
 }
+
+b.go();

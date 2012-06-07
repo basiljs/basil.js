@@ -9,4 +9,6 @@ function draw() {
   // fill rect with it
   b.fill( newRandomColor );
   b.rect(0,0,b.width,b.height);
-};
+}
+
+b.go();

@@ -23,3 +23,5 @@ function draw() {
     b.typo(textFrame, 'pointSize', 50);
   });
 }
+
+b.go();

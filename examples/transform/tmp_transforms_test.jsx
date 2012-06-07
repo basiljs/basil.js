@@ -18,4 +18,6 @@ function draw() {
                    AnchorPoint.TOP_LEFT_ANCHOR,
                    matrix);
    */
-};
+}
+
+b.go();

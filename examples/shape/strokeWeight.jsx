@@ -11,5 +11,7 @@ function draw() {
 
     b.strokeWeight( weight );
     b.line(0,y, b.width,b.height/2);
-  };
-};
+  }
+}
+
+b.go();

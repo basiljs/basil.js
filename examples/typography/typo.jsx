@@ -39,3 +39,5 @@ function draw() {
   b.typo(textFrame.characters[50], 'pointSize', 96);
   b.typo(textFrame.paragraphs[1], 'strokeColor', red);
 }
+
+b.go();

@@ -7,4 +7,6 @@ function setup() {
   b.delay( 3000 );
 
   b.println( b.hour()+":"+b.minute()+":"+b.second() );
-};
+}
+
+b.go();

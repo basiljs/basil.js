@@ -11,5 +11,7 @@ function draw() {
 
     b.fillTint( fillTint );
     b.rect(0,y, b.width,rectHeight);
-  };
-};
+  }
+}
+
+b.go();

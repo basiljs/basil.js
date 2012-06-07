@@ -19,3 +19,5 @@ function draw() {
   var oval = b.page().ovals.add({geometricBounds:[0, 350, 100, 200]});
   b.image('image-example.jpg', oval);
 }
+
+b.go();
