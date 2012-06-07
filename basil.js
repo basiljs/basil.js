@@ -668,6 +668,9 @@
       'justification': currAlign,
       'leading': currLeading
     });
+
+    // TODO apply currMatrix to textFrame
+
     return textFrame;
   };
 
@@ -897,6 +900,9 @@
       var height = bounds[2] - bounds[0];
       frame.move(null, [-(width / 2), -(height / 2)]);
     }
+
+    // TODO apply currMatrix to frame
+    
     return frame;
   };
 
