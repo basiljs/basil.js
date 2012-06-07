@@ -45,7 +45,12 @@
     currFillTint = null,
     currStrokeWeight = null,
     noneSwatchColor = null,
-    start = null;
+    start = null,
+    currFont = null,
+    currFontSize = null,
+    currAlign = null,
+    currYAlign = null,
+    currLeading = null;
 
   // ----------------------------------------
   // global functions
@@ -105,7 +110,7 @@
   }
 
   /**
-   * Returns the current page and possibly sets it.
+   * Returns the current page and sets it if argument page is given.
    * 
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to.
@@ -128,7 +133,7 @@
   };
 
   /**
-   * Returns the current layer and possibly sets it.
+   * Returns the current layer and sets it if argument layer is given.
    * 
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
@@ -624,9 +629,9 @@
    * Creates a text frame on the current layer on the current page in the current document. 
    * The text frame gets created in the position specified by the x and y parameters.
    * The default document font will be used unless a font is set with the textFont() function. 
+   * The default document font size will be used unless a font size is set with the textSize() function. 
    * Change the color of the text with the fill() function.
-   * The text displays in relation to the textAlign() function, which gives the option to draw to the left, 
-   * right, and center of the coordinates. 
+   * The text displays in relation to the textAlign() and textYAlign() functions. 
    * The width and height parameters define a rectangular area.
    * 
    * @method text
@@ -642,15 +647,15 @@
     with (textFrame) {
       contents = txt;
       geometricBounds = [y, x, (y+h), (x+w)];
-      /* TODO tbd, what has to be set, e.g. fillColor is balck by default
-      strokeWeight = currStrokeWeight;
-      strokeColor = currStrokeColor;
-      strokeTint = currStrokeTint;
-      fillColor = currFillColor;
-      fillTint = currFillTint;
-      //align
-      */
+      textFramePreferences.verticalJustification = currYAlign;
     }
+    pub.typo(textFrame, {
+      'appliedFont': currFont,
+      'pointSize': currFontSize,
+      'fillColor': currFillColor,
+      'justification': currAlign,
+      'leading': currLeading
+    });
     return textFrame;
   };
 
@@ -717,6 +722,85 @@
       getOrSetProperties(item);
     }
     return result;
+  };
+
+  /**
+   * Returns the current font and sets it if argument fontName is given.
+   * 
+   * @param  {String} [fontName] The name of the font to set. Font style can be separated with a tab, e.g. Helvetica\tBold
+   * @return {String}            The name of the current font.
+   */
+  pub.textFont = function(fontName) {
+    if (!fontName) return currFont;
+
+    currFont = fontName;
+    return currFont;
+  };
+
+  /**
+   * Returns the current font size in points and sets it if argument pointSize is given.
+   * 
+   * @param  {Number} [pointSize] The size in points to set.
+   * @return {Number}             The current point size.
+   */
+  pub.textSize = function(pointSize) {
+    if (!pointSize) return currFontSize;
+
+    currFontSize = pointSize;
+    return currFontSize;
+  };
+
+  /**
+   * Returns the current horizontal text alignment and sets it if argument align is given.
+   * 
+   * @param  {String} [align] The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
+   *                          Justification.AWAY_FROM_BINDING_SIDE
+   *                          Justification.CENTER_ALIGN
+   *                          Justification.CENTER_JUSTIFIED
+   *                          Justification.FULLY_JUSTIFIED
+   *                          Justification.LEFT_ALIGN
+   *                          Justification.LEFT_ALIGN
+   *                          Justification.RIGHT_ALIGN
+   *                          Justification.RIGHT_JUSTIFIED
+   *                          Justification.TO_BINDING_SIDE
+   * @return {String}         The current horizontal alignment.
+   */
+  pub.textAlign = function(align) {
+    if (!align) return currAlign;
+
+    currAlign = align;
+    return currAlign;
+  };
+
+  /**
+   * Returns the current vertical text alignment and sets it if argument yAlign is given.
+   * 
+   * @param  {String} [align] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
+   *                          VerticalJustification.BOTTOM_ALIGN
+   *                          VerticalJustification.CENTER_ALIGN
+   *                          VerticalJustification.JUSTIFY_ALIGN
+   *                          VerticalJustification.TOP_ALIGN
+   * @return {String}         The current vertical alignment.
+   */
+  pub.textYAlign = function(yAlign) {
+    if (!yAlign) return currYAlign;
+
+    currYAlign = yAlign;
+    return currYAlign;
+  };
+
+  /**
+   * Returns the spacing between lines of text in units of points and sets it if argument leading is given.
+   * 
+   * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum 
+   *                                   value Leading.AUTO.
+   * @return {Number|String}           The current leading.
+   */
+  pub.textLeading = function(leading) {
+    if (!leading) return currLeading;
+
+    currLeading = leading;
+    return currLeading;
   };
 
 
@@ -1452,7 +1536,7 @@
 
   var init = function() {
     glob.b = pub;
-    
+
     welcome();
 
     // -- init internal state vars --
@@ -1497,6 +1581,11 @@
     currDoc = doc;
     // -- setup document --
     currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+    currFont = currDoc.textDefaults.appliedFont.name;
+    currFontSize = currDoc.textDefaults.pointSize;
+    currAlign = currDoc.textDefaults.justification;
+    currYAlign = VerticalJustification.TOP_ALIGN;
+    currLeading = currDoc.textDefaults.leading;
     pub.units(pub.PT);
     updatePublicPageSizeVars();
   };
@@ -1510,6 +1599,7 @@
     noneSwatchColor = "None";
     currStrokeColor = "Black";
     start = Date.now();
+    currFont = null;
     pub.resetMatrix();
   };
 
