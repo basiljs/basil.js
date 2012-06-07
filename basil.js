@@ -49,6 +49,7 @@
     currFillTint = null,
     currStrokeWeight = null,
     currRectMode = null,
+    currEllipseMode = null,
     noneSwatchColor = null,
     start = null,
     currFont = null,
@@ -321,15 +322,33 @@
    * @param  {Number} y Location y-value
    * @param  {Number} w Width
    * @param  {Number} h Height
-   * @return {Oval} new oval (in Adobe Scripting the type is Oval, not ellipse)
+   * @return {Oval} new oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    */
   pub.ellipse = function(x, y, w, h){
     if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
-    var ellipseBounds = [0,0,0,0];
-    ellipseBounds[0] = y;
-    ellipseBounds[1] = x;
-    ellipseBounds[2] = y+h;
-    ellipseBounds[3] = x+w;
+    var ellipseBounds = [];
+    if (currEllipseMode === pub.CORNER) {
+      ellipseBounds[0] = y;
+      ellipseBounds[1] = x;
+      ellipseBounds[2] = (y+h);
+      ellipseBounds[3] = (x+w);
+    } else if (currEllipseMode === pub.CORNERS) {
+      ellipseBounds[0] = y;
+      ellipseBounds[1] = x;
+      ellipseBounds[2] = h;
+      ellipseBounds[3] = w;
+    } else if (currEllipseMode === pub.CENTER) {
+      ellipseBounds[0] = y-(h/2);
+      ellipseBounds[1] = x-(w/2);
+      ellipseBounds[2] = (y+h)-(h/2);
+      ellipseBounds[3] = (x+w)-(w/2);
+    } else if (currEllipseMode === pub.RADIUS) {
+      ellipseBounds[0] = y-(h);
+      ellipseBounds[1] = x-(w);
+      ellipseBounds[2] = y+(h);
+      ellipseBounds[3] = x+(w);
+    }
+
     var ovals = app.activeWindow.activeSpread.ovals;
     var newOval = ovals.add( currentLayer() );
     with(newOval) {
@@ -339,6 +358,16 @@
       fillTint = currFillTint; 
       strokeColor = currStrokeColor;  
       geometricBounds = ellipseBounds;
+    }
+
+    if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
+      newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
     } 
     return newOval;
   };
@@ -390,10 +419,23 @@
   pub.rect = function(x, y, w, h){
     if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
     var rectBounds = [];
-    rectBounds[0] = y;
-    rectBounds[1] = x;
-    rectBounds[2] = (y+h);
-    rectBounds[3] = (x+w);
+    if (currRectMode === pub.CORNER) {
+      rectBounds[0] = y;
+      rectBounds[1] = x;
+      rectBounds[2] = (y+h);
+      rectBounds[3] = (x+w);
+    } else if (currRectMode === pub.CORNERS) {
+      rectBounds[0] = y;
+      rectBounds[1] = x;
+      rectBounds[2] = h;
+      rectBounds[3] = w;
+    } else if (currRectMode === pub.CENTER) {
+      rectBounds[0] = y-(h/2);
+      rectBounds[1] = x-(w/2);
+      rectBounds[2] = (y+h)-(h/2);
+      rectBounds[3] = (x+w)-(w/2);
+    }
+    
     var newRect = currentPage().rectangles.add( currentLayer() );
     with(newRect) {
       geometricBounds = rectBounds;
@@ -403,22 +445,39 @@
       fillTint = currFillTint;
       strokeColor = currStrokeColor;
     }
-    // FIXME
-    /*newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.CENTER_ANCHOR,
-                   currMatrix);*/
-    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+
+    if (currRectMode === pub.CENTER) {
+      newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
+    }
     return newRect;
   };
 
   // -- Attributes --
   pub.rectMode = function (mode) {
-    currRectMode = mode;
-    return currRectMode;
+    if (arguments.length === 0) return currRectMode;
+    if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+      currRectMode = mode;
+      return currRectMode;
+    } else {
+      error("Unsupported rectMode. Use: CORNER, CORNERS, CENTER.");
+    }
   };
 
+  pub.ellipseMode = function (mode) {
+    if (arguments.length === 0) return currEllipseMode;
+    if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
+      currEllipseMode = mode;
+      return currEllipseMode;
+    } else {
+      error("Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
+    }
+  };
 
   pub.strokeWeight = function (weight) {
     if (typeof weight === 'string' || typeof weight === 'number') {
@@ -1656,6 +1715,7 @@
     noneSwatchColor = "None";
     currStrokeColor = "Black";
     currRectMode = pub.CORNER;
+    currEllipseMode = pub.CENTER;
     currYAlign = VerticalJustification.TOP_ALIGN;
     start = Date.now();
     currFont = null;
