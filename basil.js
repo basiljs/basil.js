@@ -890,7 +890,7 @@
     if (fitOptions) {
       frame.fit(fitOptions);
     }
-    
+
     if (currImageMode === pub.CENTER) {
       var bounds = frame.geometricBounds;
       var width = bounds[3] - bounds[1];
@@ -1332,6 +1332,18 @@
     return result;
   };
 
+  /**
+   * Returns the currently selected object(s). 
+   * @return {Object[]} Array of selected object(s).
+   */
+  pub.selection = function() {
+    var selection = app.selection;
+    if (!isArray(selection)) {
+      selection = [selection];
+    }
+    return selection;
+  };
+
 
   // ----------------------------------------
   // Output
@@ -1667,6 +1679,10 @@
     var h = pageBounds[2] - pageBounds[0];
     pub.width = w;
     pub.height = h;
+  };
+
+  var isArray = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
   };
 
   var error = function(msg) {
