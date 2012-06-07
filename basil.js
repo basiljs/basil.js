@@ -20,6 +20,10 @@
   pub.CORNERS = "corners";
   pub.CENTER = "center";
   pub.RADIUS = "radius";
+  pub.TWO_PI = Math.PI*2;
+  pub.PI = Math.PI;
+  pub.HALF_PI = Math.PI/2;
+  pub.QUARTER_PI = Math.PI/4;
   
   var ERROR_PREFIX = "\n\n### Basil Error -> ",
     WARNING_PREFIX = "### Basil Warning -> ";
