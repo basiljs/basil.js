@@ -14,7 +14,11 @@
   pub.PX = "px";
   pub.CM = "cm";
   pub.MM = "mm";
-  var ERROR_PREFIX = "### Basil Error -> ",
+  pub.CORNER = "corner";
+  pub.CORNERS = "corners";
+  pub.CENTER = "center";
+  pub.RADIUS = "radius";
+  var ERROR_PREFIX = "\n\n### Basil Error -> ",
     WARNING_PREFIX = "### Basil Warning -> ";
 
   // ----------------------------------------
@@ -44,6 +48,7 @@
     currStrokeTint = null,
     currFillTint = null,
     currStrokeWeight = null,
+    currRectMode = null,
     noneSwatchColor = null,
     start = null,
     currFont = null,
@@ -318,6 +323,7 @@
    * @return {Oval} new oval (in Adobe Scripting the type is Oval, not ellipse)
    */
   pub.ellipse = function(x, y, w, h){
+    if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
     var ellipseBounds = [0,0,0,0];
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
@@ -374,13 +380,14 @@
 
   /**
    * Draws a rectangle to the page.
-   * @param  {Number} [x] Position X
-   * @param  {Number} [y] Position Y
-   * @param  {Number} [w] Width
-   * @param  {Number} [h] Height
-   * @return {Rectangle}   new Rectangle
+   * @param  {Number} x Position X
+   * @param  {Number} y Position Y
+   * @param  {Number} w Width
+   * @param  {Number} h Height
+   * @return {Rectangle} new rectangle
    */
   pub.rect = function(x, y, w, h){
+    if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
     var rectBounds = [];
     rectBounds[0] = y;
     rectBounds[1] = x;
@@ -399,12 +406,16 @@
     /*newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
                    currMatrix);*/
-    
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
                    currMatrix.adobeMatrix() );
-    // warning( currMatrix.adobeMatrix() );
     return newRect;
+  };
+
+  // -- Attributes --
+  pub.rectMode = function (mode) {
+    currRectMode = mode;
+    return currRectMode;
   };
 
 
@@ -1394,12 +1405,14 @@
     multY: function(x, y) {
       return x * this.elements[3] + y * this.elements[4] + this.elements[5]
     },
-    skewX: function(angle) {
-      this.apply(1, 0, 1, angle, 0, 0)
+    /*
+    // BUG, seems to be buggy in processing.js, and i am not clever enough to figure it out
+    shearX: function(angle) {
+      this.apply(1, 0, 1, Math.tan(angle), 0, 0)
     },
-    skewY: function(angle) {
-      this.apply(1, 0, 1, 0, angle, 0)
-    },
+    shearY: function(angle) {
+      this.apply(1, 0, 1, 0, Math.tan(angle), 0)
+    },*/
     determinant: function() {
       return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3]
     },
@@ -1484,12 +1497,16 @@
     }
   };
 
-  pub.applyMatrix = function (argument) {
-    // TODO body...
+  pub.applyMatrix = function (matrix) {
+    currMatrix.apply(matrix);
   };
 
   pub.popMatrix = function (argument) {
-    // TODO body...
+    if (matrixStack.length > 0) {
+      currMatrix.set( matrixStack.pop() );
+    } else {
+      error("Missing a pushMatrix() to go with that popMatrix()");
+    }
   };
 
   pub.printMatrix = function (argument) {
@@ -1497,7 +1514,12 @@
   };
 
   pub.pushMatrix = function (argument) {
-    // TODO body...
+    matrixStack.push( currMatrix.array() );
+  };
+
+  pub.resetMatrix = function (argument) {
+    matrixStack = [];
+    currMatrix = new PMatrix2D();
   };
 
   pub.resetMatrix = function (argument) {
@@ -1514,16 +1536,8 @@
     currMatrix.scale(scaleX,scaleY);
   };
 
-  pub.shearX = function (angle) {
-    currMatrix.skewX(angle);
-  };
-
-  pub.shearY = function (angle) {
-    currMatrix.skewY(angle);
-  };
-
-  pub.translate = function (x,y) {
-    currMatrix.translate(x,y);
+  pub.translate = function (tx,ty) {
+    currMatrix.translate(tx,ty);
   };
 
 
@@ -1589,7 +1603,6 @@
     currFont = currDoc.textDefaults.appliedFont.name;
     currFontSize = currDoc.textDefaults.pointSize;
     currAlign = currDoc.textDefaults.justification;
-    currYAlign = VerticalJustification.TOP_ALIGN;
     currLeading = currDoc.textDefaults.leading;
     pub.units(pub.PT);
     updatePublicPageSizeVars();
@@ -1603,6 +1616,8 @@
     currFillColor = "Black";
     noneSwatchColor = "None";
     currStrokeColor = "Black";
+    currRectMode = pub.CORNER;
+    currYAlign = VerticalJustification.TOP_ALIGN;
     start = Date.now();
     currFont = null;
     pub.resetMatrix();
