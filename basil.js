@@ -7,8 +7,10 @@
    */
   var pub = {};
 
+
   // ----------------------------------------
   // constants
+  
   pub.VERSION = "0.1";
   pub.PT = "pt";
   pub.PX = "px";
@@ -18,22 +20,27 @@
   pub.CORNERS = "corners";
   pub.CENTER = "center";
   pub.RADIUS = "radius";
+  
   var ERROR_PREFIX = "\n\n### Basil Error -> ",
     WARNING_PREFIX = "### Basil Warning -> ";
+
 
   // ----------------------------------------
   // public vars
   
   /**
+   * System variable which stores the width of the current page.
    * @property width {Number}
    */
   pub.width = null;
 
   /**
+   * System variable which stores the height of the current page.
    * @property height {Number}
    */
   pub.height = null;
 
+  
   // ----------------------------------------
   // private vars
   var currDoc = null,
@@ -59,6 +66,7 @@
     currLeading = null,
     currImageMode = null;
 
+  
   // ----------------------------------------
   // global functions
 
@@ -70,13 +78,14 @@
     };
   }
   
+  
   // ----------------------------------------
   // Structure
   
   /**
    * Suspends the calling thread for a number of milliseconds.
    * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
-   * @param  {Number} milliseconds [description]
+   * @param  {Number} milliseconds  The delay time in milliseconds
    */
   pub.delay = function (milliseconds) {
     $.sleep(milliseconds);
@@ -91,8 +100,8 @@
    * in the application. If no document at all is open, a new document gets created.
    * 
    * @method doc
-   * @param  {Document} [doc] The document to set the current document to.
-   * @return {Document} The current document instance.
+   * @param  {Document} [doc] The document to set the current document to
+   * @return {Document} The current document instance
    */
   pub.doc = function(doc) {
     if (doc instanceof Document) {
@@ -120,8 +129,8 @@
    * Returns the current page and sets it if argument page is given.
    * 
    * @method page
-   * @param  {Page|Number} [page] The page or page index to set the current page to.
-   * @return {Page} The current page instance.
+   * @param  {Page|Number} [page] The page or page index to set the current page to
+   * @return {Page} The current page instance
    */
   pub.page = function(page) {
     if (page instanceof Page) {
@@ -143,8 +152,8 @@
    * Returns the current layer and sets it if argument layer is given.
    * 
    * @method layer
-   * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
-   * @return {Layer} The current page instance.
+   * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
+   * @return {Layer} The current layer instance
    */
   pub.layer = function(layer) {
     if (layer instanceof Layer) {
@@ -163,8 +172,8 @@
    * Sets the units of the document (like right clicking the rulers).
    * 
    * @method units
-   * @param  {Constant} [units] supported: PT, PX, CM or MM
-   * @return {Constant} current unit setting
+   * @param  {Constant} [units] Supported units: PT, PX, CM or MM
+   * @return {Constant} Current unit setting
    */
   pub.units = function (units) {
     if (!units) return currUnits;
@@ -318,11 +327,13 @@
   /**
    * Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.
    * The first two parameters set the location, the third sets the width, and the fourth sets the height.
-   * @param  {Number} x Location x-value
-   * @param  {Number} y Location y-value
+   *
+   * @method ellipse
+   * @param  {Number} x Location X
+   * @param  {Number} y Location Y
    * @param  {Number} w Width
    * @param  {Number} h Height
-   * @return {Oval} new oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
+   * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    */
   pub.ellipse = function(x, y, w, h){
     if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
@@ -373,48 +384,41 @@
   };
 
   /**
-   * Draws a line (a direct path between two points) to the screen.
+   * Draws a line (a direct path between two points) to the page.
+   *
+   * @method line
    * @param  {Number} [x1] Point A x-value
    * @param  {Number} [y1] Point A y-value
    * @param  {Number} [x2] Point B x-value
    * @param  {Number} [y2] Point B y-value
-   * @return {Rectangle} new rectangle
+   * @return {GraphicLine} New GraphicLine
    */
   pub.line = function(x1, y1, x2, y2) {
     var lines = currentPage().graphicLines;
-    var lineBounds = [];
-    lineBounds[0] = y1;
-    lineBounds[1] = x1;
-    lineBounds[2] = y2;
-    lineBounds[3] = x2;
-    
     var newLine = lines.add( currentLayer() );
     with(newLine) {
       strokeWeight = currStrokeWeight;
       strokeTint = currStrokeTint; 
       fillColor = currFillColor;
       fillTint = currFillTint; 
-      strokeColor = currStrokeColor; 
-      geometricBounds = lineBounds;
+      strokeColor = currStrokeColor;
     }
-
-    var scaleX = 1.0, scaleY = 1.0;
-    if (x2 < x1) scaleX = -1.0;
-    if (y2 < y1) scaleY = -1.0;
-    var scaleMatrix = app.transformationMatrices.add({'horizontalScaleFactor': scaleX, 'verticalScaleFactor': scaleY});
+    newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
     newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.CENTER_ANCHOR,
-                   scaleMatrix);
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
     return newLine;
   };
 
   /**
    * Draws a rectangle to the page.
+   *
+   * @method rect
    * @param  {Number} x Position X
    * @param  {Number} y Position Y
    * @param  {Number} w Width
    * @param  {Number} h Height
-   * @return {Rectangle} new rectangle
+   * @return {Rectangle} New rectangle
    */
   pub.rect = function(x, y, w, h){
     if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
@@ -459,6 +463,7 @@
   };
 
   // -- Attributes --
+
   pub.rectMode = function (mode) {
     if (arguments.length === 0) return currRectMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
@@ -492,6 +497,11 @@
   // ----------------------------------------
   // Color
   
+  /**
+   * Sets the color used to fill shapes.  
+   * @method fill
+   * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
+   */
   pub.fill = function (fillColor) {
     if (fillColor instanceof Color || fillColor instanceof Swatch) {
       currFillColor = fillColor;
@@ -520,6 +530,11 @@
     currFillColor = noneSwatchColor;
   };
 
+  /**
+   * Sets the color used to draw lines and borders around shapes.  
+   * @method stroke
+   * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
+   */
   pub.stroke = function (strokeColor) {
     if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
       currStrokeColor = strokeColor;
@@ -548,6 +563,12 @@
     currStrokeColor = noneSwatchColor;
   };
 
+  /**
+   * Sets the tint of the color used to fill shapes.
+   * 
+   * @method fillTint
+   * @param  {Number} tint Number from 0 to 100
+   */
   pub.fillTint = function (tint) {
     if (typeof tint === 'string' || typeof tint === 'number') {
       currFillTint = tint;
@@ -556,6 +577,12 @@
     }
   };
 
+  /**
+   * Sets the tint of the color used to draw lines and borders around shapes.
+   * 
+   * @method strokeTint
+   * @param  {Number} tint Number from 0 to 100
+   */
   pub.strokeTint = function (tint) {
     if (typeof tint === 'string' || typeof tint === 'number') {
       currStrokeTint = tint;
@@ -565,10 +592,11 @@
   };
 
   /**
-   * Creates a new RGB or CMYK color and adds the new color to the document,
-   * or gets a color by name from the document
-   * @param  {Numbers|String} Get color: name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
-   * @return {Color} new color
+   * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document
+   *
+   * @method color
+   * @param  {String|Numbers} Get color: the color name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
+   * @return {Color} found or new color
    */
   pub.color = function() {
     var newCol = null;
@@ -1425,7 +1453,6 @@
   // ----------------------------------------
   // Transform
   
-  
   var printMatrixHelper = function(elements) {
     var big = 0;
     for (var i = 0; i < elements.length; i++) if (i !== 0) big = Math.max(big, Math.abs(elements[i]));
@@ -1620,12 +1647,6 @@
     currMatrix = new PMatrix2D();
   };
 
-  pub.resetMatrix = function (argument) {
-    matrixStack = [];
-    currMatrix = new PMatrix2D();
-    matrixStack.push( currMatrix );
-  };
-
   pub.rotate = function (angle) {
     currMatrix.rotate(angle);
   };
@@ -1641,7 +1662,12 @@
 
   // ----------------------------------------
   // execution
-   
+  
+  /**
+   * Run the sketch! Has to be called in every sketch a the very end of the code.
+   *
+   * @method go
+   */ 
   pub.go = function() {
     currentDoc();
     runUserScript();
