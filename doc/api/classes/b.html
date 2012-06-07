@@ -188,6 +188,41 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_textAlign">textAlign</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_textFont">textFont</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_textLeading">textLeading</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_textSize">textSize</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_textYAlign">textYAlign</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_typo">typo</a>
 
                                 
@@ -287,7 +322,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l92"><code>basil.js:92</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l97"><code>basil.js:97</code></a>
         
         </p>
 
@@ -395,7 +430,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l76"><code>basil.js:76</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l81"><code>basil.js:81</code></a>
         
         </p>
 
@@ -502,7 +537,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1194"><code>basil.js:1194</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1283"><code>basil.js:1283</code></a>
         
         </p>
 
@@ -630,7 +665,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l726"><code>basil.js:726</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l815"><code>basil.js:815</code></a>
         
         </p>
 
@@ -802,7 +837,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l130"><code>basil.js:130</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l135"><code>basil.js:135</code></a>
         
         </p>
 
@@ -813,7 +848,7 @@ If x and y positions are given and width and height are not given, the frame's s
     </div>
 
     <div class="description">
-        <p>Returns the current layer and possibly sets it.</p>
+        <p>Returns the current layer and sets it if argument layer is given.</p>
     </div>
 
     
@@ -919,7 +954,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l566"><code>basil.js:566</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l571"><code>basil.js:571</code></a>
         
         </p>
 
@@ -1055,7 +1090,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l107"><code>basil.js:107</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l112"><code>basil.js:112</code></a>
         
         </p>
 
@@ -1066,7 +1101,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
     </div>
 
     <div class="description">
-        <p>Returns the current page and possibly sets it.</p>
+        <p>Returns the current page and sets it if argument page is given.</p>
     </div>
 
     
@@ -1184,7 +1219,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l623"><code>basil.js:623</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l628"><code>basil.js:628</code></a>
         
         </p>
 
@@ -1198,9 +1233,9 @@ N.B.: Both color must be either CMYK or RGB.</p>
         <p>Creates a text frame on the current layer on the current page in the current document. 
 The text frame gets created in the position specified by the x and y parameters.
 The default document font will be used unless a font is set with the textFont() function. 
+The default document font size will be used unless a font size is set with the textSize() function. 
 Change the color of the text with the fill() function.
-The text displays in relation to the textAlign() function, which gives the option to draw to the left, 
-right, and center of the coordinates. 
+The text displays in relation to the textAlign() and textYAlign() functions. 
 The width and height parameters define a rectangular area.</p>
     </div>
 
@@ -1308,6 +1343,545 @@ The width and height parameters define a rectangular area.</p>
 </div>
 
                 
+                    <div id="method_textAlign" class="method item">
+    <h3 class="name"><code>textAlign</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[align]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l755"><code>basil.js:755</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns the current horizontal text alignment and sets it if argument align is given.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[align]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
+                         Justification.AWAY<em>FROM</em>BINDING<em>SIDE
+                         Justification.CENTER</em>ALIGN
+                         Justification.CENTER<em>JUSTIFIED
+                         Justification.FULLY</em>JUSTIFIED
+                         Justification.LEFT<em>ALIGN
+                         Justification.LEFT</em>ALIGN
+                         Justification.RIGHT<em>ALIGN
+                         Justification.RIGHT</em>JUSTIFIED
+                         Justification.TO<em>BINDING</em>SIDE</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    
+                    The current horizontal alignment.
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_textFont" class="method item">
+    <h3 class="name"><code>textFont</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[fontName]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l727"><code>basil.js:727</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns the current font and sets it if argument fontName is given.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[fontName]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The name of the font to set. Font style can be separated with a tab, e.g. Helvetica\tBold</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    
+                    The name of the current font.
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_textLeading" class="method item">
+    <h3 class="name"><code>textLeading</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[leading]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a> | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l796"><code>basil.js:796</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns the spacing between lines of text in units of points and sets it if argument leading is given.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[leading]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a> | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The spacing between lines of text in units of points or the default Indesign enum 
+                                  value Leading.AUTO.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a> | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    
+                    The current leading.
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_textSize" class="method item">
+    <h3 class="name"><code>textSize</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[pointSize]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l741"><code>basil.js:741</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns the current font size in points and sets it if argument pointSize is given.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[pointSize]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The size in points to set.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    
+                    The current point size.
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_textYAlign" class="method item">
+    <h3 class="name"><code>textYAlign</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[align]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l778"><code>basil.js:778</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns the current vertical text alignment and sets it if argument yAlign is given.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[align]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
+                         VerticalJustification.BOTTOM<em>ALIGN
+                         VerticalJustification.CENTER</em>ALIGN
+                         VerticalJustification.JUSTIFY<em>ALIGN
+                         VerticalJustification.TOP</em>ALIGN</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>:
+                    
+                    The current vertical alignment.
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_typo" class="method item">
     <h3 class="name"><code>typo</code></h3>
 
@@ -1366,7 +1940,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l657"><code>basil.js:657</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l662"><code>basil.js:662</code></a>
         
         </p>
 
@@ -1508,7 +2082,7 @@ corresponding value(s) in an array. This can either be an array containing the v
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l150"><code>basil.js:150</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l155"><code>basil.js:155</code></a>
         
         </p>
 

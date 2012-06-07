@@ -73,7 +73,7 @@
    */
   pub.delay = function (milliseconds) {
     $.sleep(milliseconds);
-  }
+  };
 
   // ----------------------------------------
   // Environment
@@ -727,6 +727,7 @@
   /**
    * Returns the current font and sets it if argument fontName is given.
    * 
+   * @method textFont
    * @param  {String} [fontName] The name of the font to set. Font style can be separated with a tab, e.g. Helvetica\tBold
    * @return {String}            The name of the current font.
    */
@@ -740,6 +741,7 @@
   /**
    * Returns the current font size in points and sets it if argument pointSize is given.
    * 
+   * @method textSize
    * @param  {Number} [pointSize] The size in points to set.
    * @return {Number}             The current point size.
    */
@@ -753,6 +755,7 @@
   /**
    * Returns the current horizontal text alignment and sets it if argument align is given.
    * 
+   * @method textAlign
    * @param  {String} [align] The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
    *                          Justification.AWAY_FROM_BINDING_SIDE
    *                          Justification.CENTER_ALIGN
@@ -775,6 +778,7 @@
   /**
    * Returns the current vertical text alignment and sets it if argument yAlign is given.
    * 
+   * @method textYAlign
    * @param  {String} [align] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
    *                          VerticalJustification.BOTTOM_ALIGN
    *                          VerticalJustification.CENTER_ALIGN
@@ -792,6 +796,7 @@
   /**
    * Returns the spacing between lines of text in units of points and sets it if argument leading is given.
    * 
+   * @method textLeading
    * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum 
    *                                   value Leading.AUTO.
    * @return {Number|String}           The current leading.

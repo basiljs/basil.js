@@ -133,7 +133,12 @@
     currFillTint = null,
     currStrokeWeight = null,
     noneSwatchColor = null,
-    start = null;
+    start = null,
+    currFont = null,
+    currFontSize = null,
+    currAlign = null,
+    currYAlign = null,
+    currLeading = null;
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; global functions
@@ -156,7 +161,7 @@
    *&#x2F;
   pub.delay = function (milliseconds) {
     $.sleep(milliseconds);
-  }
+  };
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Environment
@@ -193,7 +198,7 @@
   }
 
   &#x2F;**
-   * Returns the current page and possibly sets it.
+   * Returns the current page and sets it if argument page is given.
    * 
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to.
@@ -216,7 +221,7 @@
   };
 
   &#x2F;**
-   * Returns the current layer and possibly sets it.
+   * Returns the current layer and sets it if argument layer is given.
    * 
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
@@ -712,9 +717,9 @@
    * Creates a text frame on the current layer on the current page in the current document. 
    * The text frame gets created in the position specified by the x and y parameters.
    * The default document font will be used unless a font is set with the textFont() function. 
+   * The default document font size will be used unless a font size is set with the textSize() function. 
    * Change the color of the text with the fill() function.
-   * The text displays in relation to the textAlign() function, which gives the option to draw to the left, 
-   * right, and center of the coordinates. 
+   * The text displays in relation to the textAlign() and textYAlign() functions. 
    * The width and height parameters define a rectangular area.
    * 
    * @method text
@@ -730,15 +735,15 @@
     with (textFrame) {
       contents = txt;
       geometricBounds = [y, x, (y+h), (x+w)];
-      &#x2F;* TODO tbd, what has to be set, e.g. fillColor is balck by default
-      strokeWeight = currStrokeWeight;
-      strokeColor = currStrokeColor;
-      strokeTint = currStrokeTint;
-      fillColor = currFillColor;
-      fillTint = currFillTint;
-      &#x2F;&#x2F;align
-      *&#x2F;
+      textFramePreferences.verticalJustification = currYAlign;
     }
+    pub.typo(textFrame, {
+      &#x27;appliedFont&#x27;: currFont,
+      &#x27;pointSize&#x27;: currFontSize,
+      &#x27;fillColor&#x27;: currFillColor,
+      &#x27;justification&#x27;: currAlign,
+      &#x27;leading&#x27;: currLeading
+    });
     return textFrame;
   };
 
@@ -805,6 +810,90 @@
       getOrSetProperties(item);
     }
     return result;
+  };
+
+  &#x2F;**
+   * Returns the current font and sets it if argument fontName is given.
+   * 
+   * @method textFont
+   * @param  {String} [fontName] The name of the font to set. Font style can be separated with a tab, e.g. Helvetica\tBold
+   * @return {String}            The name of the current font.
+   *&#x2F;
+  pub.textFont = function(fontName) {
+    if (!fontName) return currFont;
+
+    currFont = fontName;
+    return currFont;
+  };
+
+  &#x2F;**
+   * Returns the current font size in points and sets it if argument pointSize is given.
+   * 
+   * @method textSize
+   * @param  {Number} [pointSize] The size in points to set.
+   * @return {Number}             The current point size.
+   *&#x2F;
+  pub.textSize = function(pointSize) {
+    if (!pointSize) return currFontSize;
+
+    currFontSize = pointSize;
+    return currFontSize;
+  };
+
+  &#x2F;**
+   * Returns the current horizontal text alignment and sets it if argument align is given.
+   * 
+   * @method textAlign
+   * @param  {String} [align] The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
+   *                          Justification.AWAY_FROM_BINDING_SIDE
+   *                          Justification.CENTER_ALIGN
+   *                          Justification.CENTER_JUSTIFIED
+   *                          Justification.FULLY_JUSTIFIED
+   *                          Justification.LEFT_ALIGN
+   *                          Justification.LEFT_ALIGN
+   *                          Justification.RIGHT_ALIGN
+   *                          Justification.RIGHT_JUSTIFIED
+   *                          Justification.TO_BINDING_SIDE
+   * @return {String}         The current horizontal alignment.
+   *&#x2F;
+  pub.textAlign = function(align) {
+    if (!align) return currAlign;
+
+    currAlign = align;
+    return currAlign;
+  };
+
+  &#x2F;**
+   * Returns the current vertical text alignment and sets it if argument yAlign is given.
+   * 
+   * @method textYAlign
+   * @param  {String} [align] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
+   *                          VerticalJustification.BOTTOM_ALIGN
+   *                          VerticalJustification.CENTER_ALIGN
+   *                          VerticalJustification.JUSTIFY_ALIGN
+   *                          VerticalJustification.TOP_ALIGN
+   * @return {String}         The current vertical alignment.
+   *&#x2F;
+  pub.textYAlign = function(yAlign) {
+    if (!yAlign) return currYAlign;
+
+    currYAlign = yAlign;
+    return currYAlign;
+  };
+
+  &#x2F;**
+   * Returns the spacing between lines of text in units of points and sets it if argument leading is given.
+   * 
+   * @method textLeading
+   * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum 
+   *                                   value Leading.AUTO.
+   * @return {Number|String}           The current leading.
+   *&#x2F;
+  pub.textLeading = function(leading) {
+    if (!leading) return currLeading;
+
+    currLeading = leading;
+    return currLeading;
   };
 
 
@@ -1527,20 +1616,26 @@
 
 
   &#x2F;&#x2F; ----------------------------------------
+  &#x2F;&#x2F; execution
+   
+  pub.go = function() {
+    currentDoc();
+    runUserScript();
+  }
+
+
+  &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; all private from here
 
   var init = function() {
     glob.b = pub;
 
+    welcome();
+
     &#x2F;&#x2F; -- init internal state vars --
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
-
-    currentDoc();
-
-    welcome();
-    runUserScript();
   };
 
   var runUserScript = function() {
@@ -1579,6 +1674,11 @@
     currDoc = doc;
     &#x2F;&#x2F; -- setup document --
     currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+    currFont = currDoc.textDefaults.appliedFont.name;
+    currFontSize = currDoc.textDefaults.pointSize;
+    currAlign = currDoc.textDefaults.justification;
+    currYAlign = VerticalJustification.TOP_ALIGN;
+    currLeading = currDoc.textDefaults.leading;
     pub.units(pub.PT);
     updatePublicPageSizeVars();
   };
@@ -1592,6 +1692,7 @@
     noneSwatchColor = &quot;None&quot;;
     currStrokeColor = &quot;Black&quot;;
     start = Date.now();
+    currFont = null;
     pub.resetMatrix();
   };
 
