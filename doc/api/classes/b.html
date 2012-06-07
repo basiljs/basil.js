@@ -167,6 +167,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_lerpColor">lerpColor</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_page">page</a>
 
                                 
@@ -280,7 +287,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l78"><code>basil.js:78</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l92"><code>basil.js:92</code></a>
         
         </p>
 
@@ -388,7 +395,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l62"><code>basil.js:62</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l76"><code>basil.js:76</code></a>
         
         </p>
 
@@ -495,7 +502,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l931"><code>basil.js:931</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1194"><code>basil.js:1194</code></a>
         
         </p>
 
@@ -623,7 +630,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l499"><code>basil.js:499</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l726"><code>basil.js:726</code></a>
         
         </p>
 
@@ -634,8 +641,9 @@ in the application. If no document at all is open, a new document gets created.<
     </div>
 
     <div class="description">
-        <p>Adds an image to the document. The image file must be in the "[indesign_scripts_path]/data" directory 
-to load correctly (e.g. "~/Library/Preferences/Adobe InDesign/Version 7.5/en_GB/Scripts/Scripts Panel/data").
+        <p>Adds an image to the document. If the image argument is given as a string the image file  must be in the document's 
+data directory which is in the same directory where the document is saved in. The image argument can also be a File 
+instance which can be placed even before the document was saved.
 The second argument can either be the x position of the frame to create or an instance of a rectangle, 
 oval or polygon to place the image in.
 If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.</p>
@@ -656,7 +664,7 @@ If x and y positions are given and width and height are not given, the frame's s
                     
 
                     <div class="param-description">
-                        <p>The image file name in the "[indesign_scripts_path]/data" directory</p>
+                        <p>The image file name in the document's data directory or a File instance</p>
                     </div>
 
                     
@@ -794,7 +802,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l116"><code>basil.js:116</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l130"><code>basil.js:130</code></a>
         
         </p>
 
@@ -853,6 +861,154 @@ If x and y positions are given and width and height are not given, the frame's s
 </div>
 
                 
+                    <div id="method_lerpColor" class="method item">
+    <h3 class="name"><code>lerpColor</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>c1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>c2</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>amt</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Color</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l566"><code>basil.js:566</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Calculates a color or colors between two color at a specific increment. 
+The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
+N.B.: Both color must be either CMYK or RGB.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">c1</code>
+                        <span class="type">Color</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Input color 1</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">c2</code>
+                        <span class="type">Color</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Input color 2</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">amt</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The Amount to interpolate between the two colors</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Color</span>:
+                    
+                    Interpolated color
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_page" class="method item">
     <h3 class="name"><code>page</code></h3>
 
@@ -899,7 +1055,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l93"><code>basil.js:93</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l107"><code>basil.js:107</code></a>
         
         </p>
 
@@ -1028,7 +1184,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l396"><code>basil.js:396</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l623"><code>basil.js:623</code></a>
         
         </p>
 
@@ -1210,7 +1366,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l430"><code>basil.js:430</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l657"><code>basil.js:657</code></a>
         
         </p>
 
@@ -1352,7 +1508,7 @@ corresponding value(s) in an array. This can either be an array containing the v
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l136"><code>basil.js:136</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l150"><code>basil.js:150</code></a>
         
         </p>
 

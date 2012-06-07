@@ -124,13 +124,16 @@
     currPage = null,
     currLayer = null,
     currUnits = null,
+    currMatrix = null,
+    matrixStack = null,
     currColorMode = null,
     currFillColor = null,
-    currNoFillColor = null,
     currStrokeColor = null,
     currStrokeTint = null,
     currFillTint = null,
-    currStrokeWeight = null;
+    currStrokeWeight = null,
+    noneSwatchColor = null,
+    start = null;
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; global functions
@@ -143,6 +146,17 @@
     };
   }
   
+  &#x2F;&#x2F; ----------------------------------------
+  &#x2F;&#x2F; Structure
+  
+  &#x2F;**
+   * Suspends the calling thread for a number of milliseconds.
+   * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
+   * @param  {Number} milliseconds [description]
+   *&#x2F;
+  pub.delay = function (milliseconds) {
+    $.sleep(milliseconds);
+  }
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Environment
@@ -260,6 +274,120 @@
     return currUnits;
   }
 
+
+  &#x2F;&#x2F; ----------------------------------------
+  &#x2F;&#x2F; Data
+
+  &#x2F;&#x2F; -- String Functions --
+  pub.join = function(array, seperator) {
+    return array.join(seperator)
+  };
+
+  pub.split = function(str, delim) {
+    return str.split(delim)
+  };
+
+  pub.match = function(str, regexp) {
+    return str.match(regexp)
+  };
+
+  pub.matchAll = function(aString, aRegExp) {
+    var results = [],
+      latest;
+    var regexp = new RegExp(aRegExp, &quot;g&quot;);
+    while ((latest = regexp.exec(aString)) !== null) {
+      results.push(latest);
+      if (latest[0].length === 0)++regexp.lastIndex
+    }
+    return results.length &gt; 0 ? results : null
+  };
+
+  function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
+    var sign = value &lt; 0 ? minus : plus;
+    var autoDetectDecimals = rightDigits === 0;
+    var rightDigitsOfDefault = rightDigits === undef || rightDigits &lt; 0 ? 0 : rightDigits;
+    var absValue = Math.abs(value);
+    if (autoDetectDecimals) {
+      rightDigitsOfDefault = 1;
+      absValue *= 10;
+      while (Math.abs(Math.round(absValue) - absValue) &gt; 1.0E-6 &amp;&amp; rightDigitsOfDefault &lt; 7) {
+        ++rightDigitsOfDefault;
+        absValue *= 10
+      }
+    } else if (rightDigitsOfDefault !== 0) absValue *= Math.pow(10, rightDigitsOfDefault);
+    var number, doubled = absValue * 2;
+    if (Math.floor(absValue) === absValue) number = absValue;
+    else if (Math.floor(doubled) === doubled) {
+      var floored = Math.floor(absValue);
+      number = floored + floored % 2
+    } else number = Math.round(absValue);
+    var buffer = &quot;&quot;;
+    var totalDigits = leftDigits + rightDigitsOfDefault;
+    while (totalDigits &gt; 0 || number &gt; 0) {
+      totalDigits--;
+      buffer = &quot;&quot; + number % 10 + buffer;
+      number = Math.floor(number &#x2F; 10)
+    }
+    if (group !== undef) {
+      var i = buffer.length - 3 - rightDigitsOfDefault;
+      while (i &gt; 0) {
+        buffer = buffer.substring(0, i) + group + buffer.substring(i);
+        i -= 3
+      }
+    }
+    if (rightDigitsOfDefault &gt; 0) return sign + buffer.substring(0, buffer.length - rightDigitsOfDefault) + &quot;.&quot; + buffer.substring(buffer.length - rightDigitsOfDefault, buffer.length);
+    return sign + buffer
+  }
+  function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
+    if (value instanceof Array) {
+      var arr = [];
+      for (var i = 0, len = value.length; i &lt; len; i++) arr.push(nfCoreScalar(value[i], plus, minus, leftDigits, rightDigits, group));
+      return arr
+    }
+    return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group)
+  }
+  pub.nf = function(value, leftDigits, rightDigits) {
+    return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits)
+  };
+  pub.nfs = function(value, leftDigits, rightDigits) {
+    return nfCore(value, &quot; &quot;, &quot;-&quot;, leftDigits, rightDigits)
+  };
+  pub.nfp = function(value, leftDigits, rightDigits) {
+    return nfCore(value, &quot;+&quot;, &quot;-&quot;, leftDigits, rightDigits)
+  };
+  pub.nfc = function(value, leftDigits, rightDigits) {
+    return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits, &quot;,&quot;)
+  };
+
+  pub.splitTokens = function(str, tokens) {
+    if (arguments.length === 1) tokens = &quot;\n\t\r\u000c &quot;;
+    tokens = &quot;[&quot; + tokens + &quot;]&quot;;
+    var ary = [];
+    var index = 0;
+    var pos = str.search(tokens);
+    while (pos &gt;= 0) {
+      if (pos === 0) str = str.substring(1);
+      else {
+        ary[index] = str.substring(0, pos);
+        index++;
+        str = str.substring(pos)
+      }
+      pos = str.search(tokens)
+    }
+    if (str.length &gt; 0) ary[index] = str;
+    if (ary.length === 0) ary = undef;
+    return ary
+  };
+
+  pub.trim = function(str) {
+    if (str instanceof Array) {
+      var arr = [];
+      for (var i = 0; i &lt; str.length; i++) arr.push(str[i].replace(&#x2F;^\s*&#x2F;, &quot;&quot;).replace(&#x2F;\s*$&#x2F;, &quot;&quot;).replace(&#x2F;\r*$&#x2F;, &quot;&quot;));
+      return arr
+    }
+    return str.replace(&#x2F;^\s*&#x2F;, &quot;&quot;).replace(&#x2F;\s*$&#x2F;, &quot;&quot;).replace(&#x2F;\r*$&#x2F;, &quot;&quot;)
+  };
+
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Shape
   
@@ -350,6 +478,15 @@
       fillTint = currFillTint;
       strokeColor = currStrokeColor;
     }
+    &#x2F;&#x2F; FIXME
+    &#x2F;*newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.CENTER_ANCHOR,
+                   currMatrix);*&#x2F;
+    
+    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.TOP_LEFT_ANCHOR,
+                   currMatrix.adobeMatrix() );
+    &#x2F;&#x2F; warning( currMatrix.adobeMatrix() );
     return newRect;
   };
 
@@ -371,20 +508,56 @@
     if (fillColor instanceof Color || fillColor instanceof Swatch) {
       currFillColor = fillColor;
     } else {
-      currFillColor = pub.color(arguments);
+      if (arguments.length === 1) {
+        currFillColor = pub.color(arguments[0]);
+      } else if (arguments.length === 2) {
+        currFillColor = pub.color(arguments[0],arguments[1]);
+      } else if (arguments.length === 3) {
+        currFillColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      } else if (arguments.length === 4) {
+        currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      } else if (arguments.length === 5) {
+        currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      } else {
+        error(&quot;Wrong parameters. Use: &quot;
+          + &quot;R,G,B,name or &quot;
+          + &quot;C,M,Y,K,name. &quot;
+          + &quot;Grey,name &quot;
+          + &quot;Name is optional&quot;);
+      }
     }
   };
 
   pub.noFill = function () {
-    currFillColor = currNoFillColor;
+    currFillColor = noneSwatchColor;
   };
 
   pub.stroke = function (strokeColor) {
     if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
       currStrokeColor = strokeColor;
     } else {
-      currStrokeColor = pub.color(arguments);
+      if (arguments.length === 1) {
+        currStrokeColor = pub.color(arguments[0]);
+      } else if (arguments.length === 2) {
+        currStrokeColor = pub.color(arguments[0],arguments[1]);
+      } else if (arguments.length === 3) {
+        currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      } else if (arguments.length === 4) {
+        currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      } else if (arguments.length === 5) {
+        currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      } else {
+        error(&quot;Wrong parameters. Use: &quot;
+          + &quot;R,G,B,name or &quot;
+          + &quot;C,M,Y,K,name. &quot;
+          + &quot;Grey,name &quot;
+          + &quot;Name is optional&quot;);
+      }
     }
+  };
+
+  pub.noStroke = function () {
+    currStrokeColor = noneSwatchColor;
   };
 
   pub.fillTint = function (tint) {
@@ -478,6 +651,60 @@
     return newCol;
   };
 
+  &#x2F;**
+   * Calculates a color or colors between two color at a specific increment. 
+   * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
+   * N.B.: Both color must be either CMYK or RGB.
+   * 
+   * @method lerpColor
+   * @param  {Color} c1   Input color 1
+   * @param  {Color} c2   Input color 2
+   * @param  {Number} amt The Amount to interpolate between the two colors
+   * @return {Color} Interpolated color
+   *&#x2F;
+  pub.lerpColor = function (c1, c2, amt) {
+    if (c1 instanceof Color &amp;&amp; c2 instanceof Color &amp;&amp; typeof amt === &#x27;number&#x27;) {
+      if (c1.space === ColorSpace.CMYK &amp;&amp; c2.space === ColorSpace.CMYK) {
+        var C1 = c1.colorValue[0];
+        var M1 = c1.colorValue[1];
+        var Y1 = c1.colorValue[2];
+        var K1 = c1.colorValue[3];
+
+        var C2 = c2.colorValue[0];
+        var M2 = c2.colorValue[1];
+        var Y2 = c2.colorValue[2];
+        var K2 = c2.colorValue[3];
+
+        var COut = Math.round( pub.lerp(C1,C2,amt) );
+        var MOut = Math.round( pub.lerp(M1,M2,amt) );
+        var YOut = Math.round( pub.lerp(Y1,Y2,amt) );
+        var KOut = Math.round( pub.lerp(K1,K2,amt) );
+        return pub.color(COut,MOut,YOut,KOut);
+
+      } else if (c1.space === ColorSpace.RGB &amp;&amp; c2.space === ColorSpace.RGB) {
+        var R1 = c1.colorValue[0];
+        var G1 = c1.colorValue[1];
+        var B1 = c1.colorValue[2];
+
+        var R2 = c2.colorValue[0];
+        var G2 = c2.colorValue[1];
+        var B2 = c2.colorValue[2];
+
+        var ROut = Math.round( pub.lerp(R1,R2,amt) );
+        var GOut = Math.round( pub.lerp(G1,G2,amt) );
+        var BOut = Math.round( pub.lerp(B1,B2,amt) );
+        warning([ROut,GOut,BOut]);
+        return pub.color(ROut,GOut,BOut);
+
+      } else {
+        error(&quot;Both color must be either CMYK or RGB.&quot;);
+      }
+    } else {
+      error(&quot;Wrong parameters. Use: two colors (of the same type) and a number.&quot;);
+    }
+  };
+
+  
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Typography
   
@@ -533,7 +760,7 @@
    *&#x2F;
   pub.typo = function(item, property, value) {
     var result = [],
-      actsAsGetter = typeof property === &#x27;string&#x27; &amp;&amp; (typeof value === &#x27;undefined&#x27; || value === null),
+      actsAsGetter = typeof property === &#x27;string&#x27; &amp;&amp; (typeof value === undef || value === null),
       getOrSetProperties = function(textItem) {
         if (actsAsGetter) {
           result.push(textItem[prop]);
@@ -585,14 +812,15 @@
   &#x2F;&#x2F; Image
   
   &#x2F;**
-   * Adds an image to the document. The image file must be in the &quot;[indesign\_scripts\_path]&#x2F;data&quot; directory 
-   * to load correctly (e.g. &quot;~&#x2F;Library&#x2F;Preferences&#x2F;Adobe InDesign&#x2F;Version 7.5&#x2F;en_GB&#x2F;Scripts&#x2F;Scripts Panel&#x2F;data&quot;).
+   * Adds an image to the document. If the image argument is given as a string the image file  must be in the document&#x27;s 
+   * data directory which is in the same directory where the document is saved in. The image argument can also be a File 
+   * instance which can be placed even before the document was saved.
    * The second argument can either be the x position of the frame to create or an instance of a rectangle, 
    * oval or polygon to place the image in.
    * If x and y positions are given and width and height are not given, the frame&#x27;s size gets set to the original image size.
    * 
    * @method image
-   * @param  {String} img The image file name in the &quot;[indesign\_scripts\_path]&#x2F;data&quot; directory
+   * @param  {String} img The image file name in the document&#x27;s data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} itemOrX The x position on the current page or the item instance to place the image in
    * @param  {Number} [y] The y position on the current page. Ignored if itemOrX is not a number.
    * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if itemOrX is not a number.
@@ -600,7 +828,18 @@
    * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
    *&#x2F;
   pub.image = function(img, itemOrX, y, w, h) {
-    var file = File(app.scriptPreferences.scriptsFolder.absoluteURI + &#x27;&#x2F;data&#x2F;&#x27; + img);
+    var file = null;
+    if (img instanceof File) {
+      file = img;
+    } else {
+      var docPath = null;
+      try {
+        docPath = currentDoc().filePath;
+      } catch (e) {
+        error(&quot;The current document must be saved before an image located in the document&#x27;s data directory can be placed.&quot;);
+      }
+      file = new File(docPath.absoluteURI + &#x27;&#x2F;data&#x2F;&#x27; + img);
+    }
     if (!file.exists) {
       error(&#x27;The file &quot;&#x27; + file + &#x27;&quot; does not exist.&#x27;);
     }
@@ -615,21 +854,19 @@
       var width = 1,
         height = 1;
       if (w &amp;&amp; h) {
-        width = itemOrX + w;
-        height = y + h;
+        width = w;
+        height = h;
         fitOptions = FitOptions.contentToFrame;
       } else {
         fitOptions = FitOptions.frameToContent;
       }
       
-      frame = currentPage().rectangles.add();
-      frame.geometricBounds = [y, itemOrX, y + height, itemOrX + width];
+      frame = currentPage().rectangles.add({
+        geometricBounds:[y, itemOrX, y + height, itemOrX + width]
+      });
     }
     
     frame.place(file);
-
-    &#x2F;&#x2F; embed graphic in document
-    frame.graphics[0].itemLink.unlink();
 
     if (fitOptions) {
       frame.fit(fitOptions);
@@ -641,7 +878,7 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Math
   
-  pub.PVector = function() {
+  var PVector = pub.PVector = function() {
     function PVector(x, y, z) {
       this.x = x || 0;
       this.y = y || 0;
@@ -769,6 +1006,8 @@
     return PVector
   }();
   
+
+  &#x2F;&#x2F; -- Calculation --
   pub.abs = Math.abs;
 
   pub.ceil = Math.ceil;
@@ -836,7 +1075,9 @@
   pub.sq = function(aNumber) {
     return aNumber * aNumber
   };
-   
+  
+
+  &#x2F;&#x2F; -- Trigonometry -- 
   pub.sqrt = Math.sqrt;
   pub.acos = Math.acos;
   pub.asin = Math.asin;
@@ -855,6 +1096,7 @@
   pub.sin = Math.sin;
   pub.tan = Math.tan;
 
+  &#x2F;&#x2F; -- Random --
   var currentRandom = Math.random;
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
@@ -908,7 +1150,6 @@
     };
     random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble
   };
-
 
   function PerlinNoise(seed) {
     var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
@@ -1016,6 +1257,28 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Input
   
+  pub.year = function() {
+    return (new Date).getFullYear()
+  };
+  pub.month = function() {
+    return (new Date).getMonth() + 1
+  };
+  pub.day = function() {
+    return (new Date).getDate()
+  };
+  pub.hour = function() {
+    return (new Date).getHours()
+  };
+  pub.minute = function() {
+    return (new Date).getMinutes()
+  };
+  pub.second = function() {
+    return (new Date).getSeconds()
+  };
+  pub.millis = function() {
+    return Date.now() - start
+  };
+
   &#x2F;**
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
    * 
@@ -1050,6 +1313,220 @@
   
 
   &#x2F;&#x2F; ----------------------------------------
+  &#x2F;&#x2F; Transform
+  
+  
+  var printMatrixHelper = function(elements) {
+    var big = 0;
+    for (var i = 0; i &lt; elements.length; i++) if (i !== 0) big = Math.max(big, Math.abs(elements[i]));
+    else big = Math.abs(elements[i]);
+    var digits = (big + &quot;&quot;).indexOf(&quot;.&quot;);
+    if (digits === 0) digits = 1;
+    else if (digits === -1) digits = (big + &quot;&quot;).length;
+    return digits
+  };
+
+  var PMatrix2D = pub.PMatrix2D = function() {
+    if (arguments.length === 0) this.reset();
+    else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) this.set(arguments[0].array());
+    else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5])
+  };
+  PMatrix2D.prototype = {
+    set: function() {
+      if (arguments.length === 6) {
+        var a = arguments;
+        this.set([a[0], a[1], a[2], a[3], a[4], a[5]])
+      } else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) this.elements = arguments[0].array();
+      else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) this.elements = arguments[0].slice()
+    },
+    get: function() {
+      var outgoing = new PMatrix2D;
+      outgoing.set(this.elements);
+      return outgoing
+    },
+    reset: function() {
+      this.set([1, 0, 0, 0, 1, 0])
+    },
+    array: function array() {
+      return this.elements.slice()
+    },
+    adobeMatrix: function array() {
+      return [this.elements[0], 
+              this.elements[3],  
+              this.elements[1], 
+              this.elements[4],
+              this.elements[2], 
+              this.elements[5]];
+    },
+    translate: function(tx, ty) {
+      this.elements[2] = tx * this.elements[0] + ty * this.elements[1] + this.elements[2];
+      this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5]
+    },
+    invTranslate: function(tx, ty) {
+      this.translate(-tx, -ty)
+    },
+    transpose: function() {},
+    mult: function(source, target) {
+      var x, y;
+      if (source instanceof PVector) {
+        x = source.x;
+        y = source.y;
+        if (!target) target = new PVector
+      } else if (source instanceof Array) {
+        x = source[0];
+        y = source[1];
+        if (!target) target = []
+      }
+      if (target instanceof Array) {
+        target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
+        target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5]
+      } else if (target instanceof PVector) {
+        target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
+        target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
+        target.z = 0
+      }
+      return target
+    },
+    multX: function(x, y) {
+      return x * this.elements[0] + y * this.elements[1] + this.elements[2]
+    },
+    multY: function(x, y) {
+      return x * this.elements[3] + y * this.elements[4] + this.elements[5]
+    },
+    skewX: function(angle) {
+      this.apply(1, 0, 1, angle, 0, 0)
+    },
+    skewY: function(angle) {
+      this.apply(1, 0, 1, 0, angle, 0)
+    },
+    determinant: function() {
+      return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3]
+    },
+    invert: function() {
+      var d = this.determinant();
+      if (Math.abs(d) &gt; -2147483648) {
+        var old00 = this.elements[0];
+        var old01 = this.elements[1];
+        var old02 = this.elements[2];
+        var old10 = this.elements[3];
+        var old11 = this.elements[4];
+        var old12 = this.elements[5];
+        this.elements[0] = old11 &#x2F; d;
+        this.elements[3] = -old10 &#x2F; d;
+        this.elements[1] = -old01 &#x2F; d;
+        this.elements[4] = old00 &#x2F; d;
+        this.elements[2] = (old01 * old12 - old11 * old02) &#x2F; d;
+        this.elements[5] = (old10 * old02 - old00 * old12) &#x2F; d;
+        return true
+      }
+      return false
+    },
+    scale: function(sx, sy) {
+      if (sx &amp;&amp; !sy) sy = sx;
+      if (sx &amp;&amp; sy) {
+        this.elements[0] *= sx;
+        this.elements[1] *= sy;
+        this.elements[3] *= sx;
+        this.elements[4] *= sy
+      }
+    },
+    invScale: function(sx, sy) {
+      if (sx &amp;&amp; !sy) sy = sx;
+      this.scale(1 &#x2F; sx, 1 &#x2F; sy)
+    },
+    apply: function() {
+      var source;
+      if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
+      else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) source = arguments[0];
+      var result = [0, 0, this.elements[2], 0, 0, this.elements[5]];
+      var e = 0;
+      for (var row = 0; row &lt; 2; row++) for (var col = 0; col &lt; 3; col++, e++) result[e] += this.elements[row * 3 + 0] * source[col + 0] + this.elements[row * 3 + 1] * source[col + 3];
+      this.elements = result.slice()
+    },
+    preApply: function() {
+      var source;
+      if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
+      else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) source = arguments[0];
+      var result = [0, 0, source[2], 0, 0, source[5]];
+      result[2] = source[2] + this.elements[2] * source[0] + this.elements[5] * source[1];
+      result[5] = source[5] + this.elements[2] * source[3] + this.elements[5] * source[4];
+      result[0] = this.elements[0] * source[0] + this.elements[3] * source[1];
+      result[3] = this.elements[0] * source[3] + this.elements[3] * source[4];
+      result[1] = this.elements[1] * source[0] + this.elements[4] * source[1];
+      result[4] = this.elements[1] * source[3] + this.elements[4] * source[4];
+      this.elements = result.slice()
+    },
+    rotate: function(angle) {
+      var c = Math.cos(angle);
+      var s = Math.sin(angle);
+      var temp1 = this.elements[0];
+      var temp2 = this.elements[1];
+      this.elements[0] = c * temp1 + s * temp2;
+      this.elements[1] = -s * temp1 + c * temp2;
+      temp1 = this.elements[3];
+      temp2 = this.elements[4];
+      this.elements[3] = c * temp1 + s * temp2;
+      this.elements[4] = -s * temp1 + c * temp2
+    },
+    rotateZ: function(angle) {
+      this.rotate(angle)
+    },
+    invRotateZ: function(angle) {
+      this.rotateZ(angle - Math.PI)
+    },
+    print: function() {
+      var digits = printMatrixHelper(this.elements);
+      var output = &quot;&quot; + pub.nfs(this.elements[0], digits, 4) + &quot; &quot; + pub.nfs(this.elements[1], digits, 4) + &quot; &quot; + pub.nfs(this.elements[2], digits, 4) + &quot;\n&quot; + pub.nfs(this.elements[3], digits, 4) + &quot; &quot; + pub.nfs(this.elements[4], digits, 4) + &quot; &quot; + pub.nfs(this.elements[5], digits, 4) + &quot;\n\n&quot;;
+      pub.println(output)
+    }
+  };
+
+  pub.applyMatrix = function (argument) {
+    &#x2F;&#x2F; TODO body...
+  };
+
+  pub.popMatrix = function (argument) {
+    &#x2F;&#x2F; TODO body...
+  };
+
+  pub.printMatrix = function (argument) {
+    currMatrix.print();
+  };
+
+  pub.pushMatrix = function (argument) {
+    &#x2F;&#x2F; TODO body...
+  };
+
+  pub.resetMatrix = function (argument) {
+    matrixStack = [];
+    currMatrix = new PMatrix2D();
+    matrixStack.push( currMatrix );
+  };
+
+  pub.rotate = function (angle) {
+    currMatrix.rotate(angle);
+  };
+
+  pub.scale = function (scaleX,scaleY) {
+    currMatrix.scale(scaleX,scaleY);
+  };
+
+  pub.shearX = function (angle) {
+    currMatrix.skewX(angle);
+  };
+
+  pub.shearY = function (angle) {
+    currMatrix.skewY(angle);
+  };
+
+  pub.translate = function (x,y) {
+    currMatrix.translate(x,y);
+  };
+
+
+  &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; all private from here
 
   var init = function() {
@@ -1059,6 +1536,8 @@
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
+
+    currentDoc();
 
     welcome();
     runUserScript();
@@ -1072,7 +1551,7 @@
       if (typeof glob.draw === &#x27;function&#x27;) {
         glob.draw();
       }      
-    }, ScriptLanguage.javascript, undefined, UndoModes.entireScript);
+    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
   };
 
   var welcome = function() {
@@ -1110,8 +1589,10 @@
     currPage = null;
     currLayer = null;
     currFillColor = &quot;Black&quot;;
-    currNoFillColor = &quot;None&quot;;
+    noneSwatchColor = &quot;None&quot;;
     currStrokeColor = &quot;Black&quot;;
+    start = Date.now();
+    pub.resetMatrix();
   };
 
   var currentLayer = function() {
@@ -1140,7 +1621,7 @@
 
   var error = function(msg) {
     $.writeln(ERROR_PREFIX + msg);
-    throw msg;
+    throw ERROR_PREFIX + msg;
   };
 
   var warning = function(msg) {

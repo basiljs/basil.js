@@ -724,14 +724,15 @@
   // Image
   
   /**
-   * Adds an image to the document. The image file must be in the "[indesign\_scripts\_path]/data" directory 
-   * to load correctly (e.g. "~/Library/Preferences/Adobe InDesign/Version 7.5/en_GB/Scripts/Scripts Panel/data").
+   * Adds an image to the document. If the image argument is given as a string the image file  must be in the document's 
+   * data directory which is in the same directory where the document is saved in. The image argument can also be a File 
+   * instance which can be placed even before the document was saved.
    * The second argument can either be the x position of the frame to create or an instance of a rectangle, 
    * oval or polygon to place the image in.
    * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
    * 
    * @method image
-   * @param  {String} img The image file name in the "[indesign\_scripts\_path]/data" directory
+   * @param  {String} img The image file name in the document's data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} itemOrX The x position on the current page or the item instance to place the image in
    * @param  {Number} [y] The y position on the current page. Ignored if itemOrX is not a number.
    * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if itemOrX is not a number.
@@ -739,7 +740,18 @@
    * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
    */
   pub.image = function(img, itemOrX, y, w, h) {
-    var file = File(app.scriptPreferences.scriptsFolder.absoluteURI + '/data/' + img);
+    var file = null;
+    if (img instanceof File) {
+      file = img;
+    } else {
+      var docPath = null;
+      try {
+        docPath = currentDoc().filePath;
+      } catch (e) {
+        error("The current document must be saved before an image located in the document's data directory can be placed.");
+      }
+      file = new File(docPath.absoluteURI + '/data/' + img);
+    }
     if (!file.exists) {
       error('The file "' + file + '" does not exist.');
     }
@@ -754,15 +766,16 @@
       var width = 1,
         height = 1;
       if (w && h) {
-        width = itemOrX + w;
-        height = y + h;
+        width = w;
+        height = h;
         fitOptions = FitOptions.contentToFrame;
       } else {
         fitOptions = FitOptions.frameToContent;
       }
       
-      frame = currentPage().rectangles.add();
-      frame.geometricBounds = [y, itemOrX, y + height, itemOrX + width];
+      frame = currentPage().rectangles.add({
+        geometricBounds:[y, itemOrX, y + height, itemOrX + width]
+      });
     }
     
     frame.place(file);
