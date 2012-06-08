@@ -234,6 +234,63 @@
   // ----------------------------------------
   // Data
 
+  // -- Conversion --
+  pub.binary = function(num, numBits) {
+    var bit;
+    if (numBits > 0) bit = numBits;
+    else if (num instanceof Char) {
+      bit = 16;
+      num |= 0
+    } else {
+      bit = 32;
+      while (bit > 1 && !(num >>> bit - 1 & 1)) bit--
+    }
+    var result = "";
+    while (bit > 0) result += num >>> --bit & 1 ? "1" : "0";
+    return result
+  };
+  pub.unbinary = function(binaryString) {
+    var i = binaryString.length - 1,
+      mask = 1,
+      result = 0;
+    while (i >= 0) {
+      var ch = binaryString[i--];
+      if (ch !== "0" && ch !== "1") throw "the value passed into unbinary was not an 8 bit binary number";
+      if (ch === "1") result += mask;
+      mask <<= 1
+    }
+    return result
+  };
+
+  var decimalToHex = function(d, padding) {
+    padding = padding === undef || padding === null ? padding = 8 : padding;
+    if (d < 0) d = 4294967295 + d + 1;
+    var hex = Number(d).toString(16).toUpperCase();
+    while (hex.length < padding) hex = "0" + hex;
+    if (hex.length >= padding) hex = hex.substring(hex.length - padding, hex.length);
+    return hex
+  };
+  pub.hex = function(value, len) {
+    if (arguments.length === 1) if (value instanceof Char) len = 4;
+    else len = 8;
+    return decimalToHex(value, len)
+  };
+
+  function unhexScalar(hex) {
+    var value = parseInt("0x" + hex, 16);
+    if (value > 2147483647) value -= 4294967296;
+    return value
+  }
+  pub.unhex = function(hex) {
+    if (hex instanceof Array) {
+      var arr = [];
+      for (var i = 0; i < hex.length; i++) arr.push(unhexScalar(hex[i]));
+      return arr
+    }
+    return unhexScalar(hex)
+  };
+
+
   // -- String Functions --
   pub.join = function(array, seperator) {
     return array.join(seperator)
