@@ -1061,9 +1061,13 @@
   };
 
   pub.imageMode = function(mode) {
-    if (!mode) return currImageMode;
+    if (arguments.length === 0) return currImageMode;
 
-    currImageMode = mode;
+    if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+      currImageMode = mode;
+    } else {
+      error("Unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
+    }
     return currImageMode;
   };
   
