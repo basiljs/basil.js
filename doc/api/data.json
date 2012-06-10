@@ -572,7 +572,26 @@
         },
         {
             "file": "basil.js",
-            "line": 1016,
+            "line": 1002,
+            "description": "Returns the character style with the given name. If the style does not exist it gets created.",
+            "itemtype": "method",
+            "name": "characterStyle",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the character style to return.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The character style instance.",
+                "type": "CharachterStyle"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1034,
             "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's \ndata directory which is in the same directory where the document is saved in. The image argument can also be a File \ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle, \noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "itemtype": "method",
             "name": "image",
@@ -614,7 +633,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1511,
+            "line": 1529,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",
@@ -633,7 +652,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1531,
+            "line": 1549,
             "description": "Returns the currently selected object(s).",
             "return": {
                 "description": "Array of selected object(s).",
@@ -643,7 +662,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1769,
+            "line": 1787,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
             "itemtype": "method",
             "name": "go",

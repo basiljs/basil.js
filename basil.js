@@ -999,6 +999,24 @@
     return currTracking;
   };
 
+  /**
+   * Returns the character style with the given name. If the style does not exist it gets created.
+   * 
+   * @method characterStyle
+   * @param  {String} name      The name of the character style to return.
+   * @return {CharachterStyle}  The character style instance.
+   */
+  pub.characterStyle = function(name) {
+    var style = null;
+    try {
+      style = currentDoc().characterStyles.item(name);
+      style.name;
+    } catch (e) {
+      style = currentDoc().characterStyles.add({name: name});
+    }
+    return style;
+  };
+
   var isText = function(obj) {
     return obj instanceof Character ||
            obj instanceof InsertionPoint ||
