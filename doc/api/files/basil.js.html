@@ -95,29 +95,44 @@
    *&#x2F;
   var pub = {};
 
+
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; constants
+  
   pub.VERSION = &quot;0.1&quot;;
   pub.PT = &quot;pt&quot;;
   pub.PX = &quot;px&quot;;
   pub.CM = &quot;cm&quot;;
   pub.MM = &quot;mm&quot;;
-  var ERROR_PREFIX = &quot;### Basil Error -&gt; &quot;,
+  pub.CORNER = &quot;corner&quot;;
+  pub.CORNERS = &quot;corners&quot;;
+  pub.CENTER = &quot;center&quot;;
+  pub.RADIUS = &quot;radius&quot;;
+  pub.TWO_PI = Math.PI*2;
+  pub.PI = Math.PI;
+  pub.HALF_PI = Math.PI&#x2F;2;
+  pub.QUARTER_PI = Math.PI&#x2F;4;
+  
+  var ERROR_PREFIX = &quot;\n\n### Basil Error -&gt; &quot;,
     WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
+
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; public vars
   
   &#x2F;**
+   * System variable which stores the width of the current page.
    * @property width {Number}
    *&#x2F;
   pub.width = null;
 
   &#x2F;**
+   * System variable which stores the height of the current page.
    * @property height {Number}
    *&#x2F;
   pub.height = null;
 
+  
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; private vars
   var currDoc = null,
@@ -132,16 +147,39 @@
     currStrokeTint = null,
     currFillTint = null,
     currStrokeWeight = null,
+    currRectMode = null,
+    currEllipseMode = null,
     noneSwatchColor = null,
     start = null,
     currFont = null,
     currFontSize = null,
     currAlign = null,
     currYAlign = null,
-    currLeading = null;
+    currLeading = null,
+    currImageMode = null;
 
+  
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; global functions
+
+  &#x2F;&#x2F;https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array&#x2F;filter
+  if (!Array.prototype.filter) {
+    Array.prototype.filter = function(fun) {
+      if (this == null) throw new TypeError();
+      var t = Object(this);
+      var len = t.length &gt;&gt;&gt; 0;
+      if (typeof fun != &quot;function&quot;) throw new TypeError();
+      var res = [];
+      var thisp = arguments[1];
+      for (var i = 0; i &lt; len; i++) {
+        if (i in t) {
+          var val = t[i]; &#x2F;&#x2F; in case fun mutates this
+          if (fun.call(thisp, val, i, t)) res.push(val);
+        }
+      }
+      return res;
+    };
+  }
 
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
@@ -151,13 +189,14 @@
     };
   }
   
+  
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Structure
   
   &#x2F;**
    * Suspends the calling thread for a number of milliseconds.
    * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
-   * @param  {Number} milliseconds [description]
+   * @param  {Number} milliseconds  The delay time in milliseconds
    *&#x2F;
   pub.delay = function (milliseconds) {
     $.sleep(milliseconds);
@@ -172,8 +211,8 @@
    * in the application. If no document at all is open, a new document gets created.
    * 
    * @method doc
-   * @param  {Document} [doc] The document to set the current document to.
-   * @return {Document} The current document instance.
+   * @param  {Document} [doc] The document to set the current document to
+   * @return {Document} The current document instance
    *&#x2F;
   pub.doc = function(doc) {
     if (doc instanceof Document) {
@@ -201,8 +240,8 @@
    * Returns the current page and sets it if argument page is given.
    * 
    * @method page
-   * @param  {Page|Number} [page] The page or page index to set the current page to.
-   * @return {Page} The current page instance.
+   * @param  {Page|Number} [page] The page or page index to set the current page to
+   * @return {Page} The current page instance
    *&#x2F;
   pub.page = function(page) {
     if (page instanceof Page) {
@@ -224,8 +263,8 @@
    * Returns the current layer and sets it if argument layer is given.
    * 
    * @method layer
-   * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
-   * @return {Layer} The current page instance.
+   * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
+   * @return {Layer} The current layer instance
    *&#x2F;
   pub.layer = function(layer) {
     if (layer instanceof Layer) {
@@ -244,8 +283,8 @@
    * Sets the units of the document (like right clicking the rulers).
    * 
    * @method units
-   * @param  {Constant} [units] supported: PT, PX, CM or MM
-   * @return {Constant} current unit setting
+   * @param  {Constant} [units] Supported units: PT, PX, CM or MM
+   * @return {Constant} Current unit setting
    *&#x2F;
   pub.units = function (units) {
     if (!units) return currUnits;
@@ -282,6 +321,63 @@
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Data
+
+  &#x2F;&#x2F; -- Conversion --
+  pub.binary = function(num, numBits) {
+    var bit;
+    if (numBits &gt; 0) bit = numBits;
+    else if (num instanceof Char) {
+      bit = 16;
+      num |= 0
+    } else {
+      bit = 32;
+      while (bit &gt; 1 &amp;&amp; !(num &gt;&gt;&gt; bit - 1 &amp; 1)) bit--
+    }
+    var result = &quot;&quot;;
+    while (bit &gt; 0) result += num &gt;&gt;&gt; --bit &amp; 1 ? &quot;1&quot; : &quot;0&quot;;
+    return result
+  };
+  pub.unbinary = function(binaryString) {
+    var i = binaryString.length - 1,
+      mask = 1,
+      result = 0;
+    while (i &gt;= 0) {
+      var ch = binaryString[i--];
+      if (ch !== &quot;0&quot; &amp;&amp; ch !== &quot;1&quot;) throw &quot;the value passed into unbinary was not an 8 bit binary number&quot;;
+      if (ch === &quot;1&quot;) result += mask;
+      mask &lt;&lt;= 1
+    }
+    return result
+  };
+
+  var decimalToHex = function(d, padding) {
+    padding = padding === undef || padding === null ? padding = 8 : padding;
+    if (d &lt; 0) d = 4294967295 + d + 1;
+    var hex = Number(d).toString(16).toUpperCase();
+    while (hex.length &lt; padding) hex = &quot;0&quot; + hex;
+    if (hex.length &gt;= padding) hex = hex.substring(hex.length - padding, hex.length);
+    return hex
+  };
+  pub.hex = function(value, len) {
+    if (arguments.length === 1) if (value instanceof Char) len = 4;
+    else len = 8;
+    return decimalToHex(value, len)
+  };
+
+  function unhexScalar(hex) {
+    var value = parseInt(&quot;0x&quot; + hex, 16);
+    if (value &gt; 2147483647) value -= 4294967296;
+    return value
+  }
+  pub.unhex = function(hex) {
+    if (hex instanceof Array) {
+      var arr = [];
+      for (var i = 0; i &lt; hex.length; i++) arr.push(unhexScalar(hex[i]));
+      return arr
+    }
+    return unhexScalar(hex)
+  };
+
 
   &#x2F;&#x2F; -- String Functions --
   pub.join = function(array, seperator) {
@@ -399,18 +495,39 @@
   &#x2F;**
    * Draws an ellipse (oval) in the display window. An ellipse with an equal &lt;b&gt;width&lt;&#x2F;b&gt; and &lt;b&gt;height&lt;&#x2F;b&gt; is a circle.
    * The first two parameters set the location, the third sets the width, and the fourth sets the height.
-   * @param  {Number} x Location x-value
-   * @param  {Number} y Location y-value
+   *
+   * @method ellipse
+   * @param  {Number} x Location X
+   * @param  {Number} y Location Y
    * @param  {Number} w Width
    * @param  {Number} h Height
-   * @return {Oval} new oval (in Adobe Scripting the type is Oval, not ellipse)
+   * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    *&#x2F;
   pub.ellipse = function(x, y, w, h){
-    var ellipseBounds = [0,0,0,0];
-    ellipseBounds[0] = y;
-    ellipseBounds[1] = x;
-    ellipseBounds[2] = y+h;
-    ellipseBounds[3] = x+w;
+    if (arguments.length !== 4) error(&quot;Not enough parameters! Use: x, y, w, h&quot;);
+    var ellipseBounds = [];
+    if (currEllipseMode === pub.CORNER) {
+      ellipseBounds[0] = y;
+      ellipseBounds[1] = x;
+      ellipseBounds[2] = (y+h);
+      ellipseBounds[3] = (x+w);
+    } else if (currEllipseMode === pub.CORNERS) {
+      ellipseBounds[0] = y;
+      ellipseBounds[1] = x;
+      ellipseBounds[2] = h;
+      ellipseBounds[3] = w;
+    } else if (currEllipseMode === pub.CENTER) {
+      ellipseBounds[0] = y-(h&#x2F;2);
+      ellipseBounds[1] = x-(w&#x2F;2);
+      ellipseBounds[2] = (y+h)-(h&#x2F;2);
+      ellipseBounds[3] = (x+w)-(w&#x2F;2);
+    } else if (currEllipseMode === pub.RADIUS) {
+      ellipseBounds[0] = y-(h);
+      ellipseBounds[1] = x-(w);
+      ellipseBounds[2] = y+(h);
+      ellipseBounds[3] = x+(w);
+    }
+
     var ovals = app.activeWindow.activeSpread.ovals;
     var newOval = ovals.add( currentLayer() );
     with(newOval) {
@@ -420,60 +537,77 @@
       fillTint = currFillTint; 
       strokeColor = currStrokeColor;  
       geometricBounds = ellipseBounds;
+    }
+
+    if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
+      newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
     } 
     return newOval;
   };
 
   &#x2F;**
-   * Draws a line (a direct path between two points) to the screen.
+   * Draws a line (a direct path between two points) to the page.
+   *
+   * @method line
    * @param  {Number} [x1] Point A x-value
    * @param  {Number} [y1] Point A y-value
    * @param  {Number} [x2] Point B x-value
    * @param  {Number} [y2] Point B y-value
-   * @return {Rectangle} new rectangle
+   * @return {GraphicLine} New GraphicLine
    *&#x2F;
   pub.line = function(x1, y1, x2, y2) {
     var lines = currentPage().graphicLines;
-    var lineBounds = [];
-    lineBounds[0] = y1;
-    lineBounds[1] = x1;
-    lineBounds[2] = y2;
-    lineBounds[3] = x2;
-    
     var newLine = lines.add( currentLayer() );
     with(newLine) {
       strokeWeight = currStrokeWeight;
       strokeTint = currStrokeTint; 
       fillColor = currFillColor;
       fillTint = currFillTint; 
-      strokeColor = currStrokeColor; 
-      geometricBounds = lineBounds;
+      strokeColor = currStrokeColor;
     }
-
-    var scaleX = 1.0, scaleY = 1.0;
-    if (x2 &lt; x1) scaleX = -1.0;
-    if (y2 &lt; y1) scaleY = -1.0;
-    var scaleMatrix = app.transformationMatrices.add({&#x27;horizontalScaleFactor&#x27;: scaleX, &#x27;verticalScaleFactor&#x27;: scaleY});
+    newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
     newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.CENTER_ANCHOR,
-                   scaleMatrix);
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
     return newLine;
   };
 
   &#x2F;**
    * Draws a rectangle to the page.
-   * @param  {Number} [x] Position X
-   * @param  {Number} [y] Position Y
-   * @param  {Number} [w] Width
-   * @param  {Number} [h] Height
-   * @return {Rectangle}   new Rectangle
+   *
+   * @method rect
+   * @param  {Number} x Position X
+   * @param  {Number} y Position Y
+   * @param  {Number} w Width
+   * @param  {Number} h Height
+   * @return {Rectangle} New rectangle
    *&#x2F;
   pub.rect = function(x, y, w, h){
+    if (arguments.length !== 4) error(&quot;Not enough parameters! Use: x, y, w, h&quot;);
     var rectBounds = [];
-    rectBounds[0] = y;
-    rectBounds[1] = x;
-    rectBounds[2] = (y+h);
-    rectBounds[3] = (x+w);
+    if (currRectMode === pub.CORNER) {
+      rectBounds[0] = y;
+      rectBounds[1] = x;
+      rectBounds[2] = (y+h);
+      rectBounds[3] = (x+w);
+    } else if (currRectMode === pub.CORNERS) {
+      rectBounds[0] = y;
+      rectBounds[1] = x;
+      rectBounds[2] = h;
+      rectBounds[3] = w;
+    } else if (currRectMode === pub.CENTER) {
+      rectBounds[0] = y-(h&#x2F;2);
+      rectBounds[1] = x-(w&#x2F;2);
+      rectBounds[2] = (y+h)-(h&#x2F;2);
+      rectBounds[3] = (x+w)-(w&#x2F;2);
+    }
+    
     var newRect = currentPage().rectangles.add( currentLayer() );
     with(newRect) {
       geometricBounds = rectBounds;
@@ -483,18 +617,40 @@
       fillTint = currFillTint;
       strokeColor = currStrokeColor;
     }
-    &#x2F;&#x2F; FIXME
-    &#x2F;*newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.CENTER_ANCHOR,
-                   currMatrix);*&#x2F;
-    
-    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
-    &#x2F;&#x2F; warning( currMatrix.adobeMatrix() );
+
+    if (currRectMode === pub.CENTER) {
+      newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
+    }
     return newRect;
   };
 
+  &#x2F;&#x2F; -- Attributes --
+
+  pub.rectMode = function (mode) {
+    if (arguments.length === 0) return currRectMode;
+    if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+      currRectMode = mode;
+      return currRectMode;
+    } else {
+      error(&quot;Unsupported rectMode. Use: CORNER, CORNERS, CENTER.&quot;);
+    }
+  };
+
+  pub.ellipseMode = function (mode) {
+    if (arguments.length === 0) return currEllipseMode;
+    if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
+      currEllipseMode = mode;
+      return currEllipseMode;
+    } else {
+      error(&quot;Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.&quot;);
+    }
+  };
 
   pub.strokeWeight = function (weight) {
     if (typeof weight === &#x27;string&#x27; || typeof weight === &#x27;number&#x27;) {
@@ -509,6 +665,11 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Color
   
+  &#x2F;**
+   * Sets the color used to fill shapes.  
+   * @method fill
+   * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color&#x2F;swatch or a string with the name of a color. Or values: C,M,Y,K &#x2F; R,G,B &#x2F; Grey
+   *&#x2F;
   pub.fill = function (fillColor) {
     if (fillColor instanceof Color || fillColor instanceof Swatch) {
       currFillColor = fillColor;
@@ -537,6 +698,11 @@
     currFillColor = noneSwatchColor;
   };
 
+  &#x2F;**
+   * Sets the color used to draw lines and borders around shapes.  
+   * @method stroke
+   * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color&#x2F;swatch or a string with the name of a color. Or values: C,M,Y,K &#x2F; R,G,B &#x2F; Grey
+   *&#x2F;
   pub.stroke = function (strokeColor) {
     if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
       currStrokeColor = strokeColor;
@@ -565,6 +731,12 @@
     currStrokeColor = noneSwatchColor;
   };
 
+  &#x2F;**
+   * Sets the tint of the color used to fill shapes.
+   * 
+   * @method fillTint
+   * @param  {Number} tint Number from 0 to 100
+   *&#x2F;
   pub.fillTint = function (tint) {
     if (typeof tint === &#x27;string&#x27; || typeof tint === &#x27;number&#x27;) {
       currFillTint = tint;
@@ -573,6 +745,12 @@
     }
   };
 
+  &#x2F;**
+   * Sets the tint of the color used to draw lines and borders around shapes.
+   * 
+   * @method strokeTint
+   * @param  {Number} tint Number from 0 to 100
+   *&#x2F;
   pub.strokeTint = function (tint) {
     if (typeof tint === &#x27;string&#x27; || typeof tint === &#x27;number&#x27;) {
       currStrokeTint = tint;
@@ -582,10 +760,11 @@
   };
 
   &#x2F;**
-   * Creates a new RGB or CMYK color and adds the new color to the document,
-   * or gets a color by name from the document
-   * @param  {Numbers|String} Get color: name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
-   * @return {Color} new color
+   * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document
+   *
+   * @method color
+   * @param  {String|Numbers} Get color: the color name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
+   * @return {Color} found or new color
    *&#x2F;
   pub.color = function() {
     var newCol = null;
@@ -744,6 +923,9 @@
       &#x27;justification&#x27;: currAlign,
       &#x27;leading&#x27;: currLeading
     });
+
+    &#x2F;&#x2F; TODO apply currMatrix to textFrame
+
     return textFrame;
   };
 
@@ -841,44 +1023,28 @@
   };
 
   &#x2F;**
-   * Returns the current horizontal text alignment and sets it if argument align is given.
+   * Sets the current horizontal and vertical text alignment.
    * 
    * @method textAlign
-   * @param  {String} [align] The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
-   *                          Justification.AWAY_FROM_BINDING_SIDE
-   *                          Justification.CENTER_ALIGN
-   *                          Justification.CENTER_JUSTIFIED
-   *                          Justification.FULLY_JUSTIFIED
-   *                          Justification.LEFT_ALIGN
-   *                          Justification.LEFT_ALIGN
-   *                          Justification.RIGHT_ALIGN
-   *                          Justification.RIGHT_JUSTIFIED
-   *                          Justification.TO_BINDING_SIDE
-   * @return {String}         The current horizontal alignment.
+   * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
+   *                           Justification.AWAY_FROM_BINDING_SIDE
+   *                           Justification.CENTER_ALIGN
+   *                           Justification.CENTER_JUSTIFIED
+   *                           Justification.FULLY_JUSTIFIED
+   *                           Justification.LEFT_ALIGN
+   *                           Justification.LEFT_ALIGN
+   *                           Justification.RIGHT_ALIGN
+   *                           Justification.RIGHT_JUSTIFIED
+   *                           Justification.TO_BINDING_SIDE
+   * @param  {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
+   *                           VerticalJustification.BOTTOM_ALIGN
+   *                           VerticalJustification.CENTER_ALIGN
+   *                           VerticalJustification.JUSTIFY_ALIGN
+   *                           VerticalJustification.TOP_ALIGN
    *&#x2F;
-  pub.textAlign = function(align) {
-    if (!align) return currAlign;
-
+  pub.textAlign = function(align, yAlign) {
     currAlign = align;
-    return currAlign;
-  };
-
-  &#x2F;**
-   * Returns the current vertical text alignment and sets it if argument yAlign is given.
-   * 
-   * @method textYAlign
-   * @param  {String} [align] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
-   *                          VerticalJustification.BOTTOM_ALIGN
-   *                          VerticalJustification.CENTER_ALIGN
-   *                          VerticalJustification.JUSTIFY_ALIGN
-   *                          VerticalJustification.TOP_ALIGN
-   * @return {String}         The current vertical alignment.
-   *&#x2F;
-  pub.textYAlign = function(yAlign) {
-    if (!yAlign) return currYAlign;
-
-    currYAlign = yAlign;
-    return currYAlign;
+    if (arguments.length === 2) currYAlign = yAlign;
   };
 
   &#x2F;**
@@ -910,13 +1076,13 @@
    * 
    * @method image
    * @param  {String} img The image file name in the document&#x27;s data directory or a File instance
-   * @param  {Number|Rectangle|Oval|Polygon} itemOrX The x position on the current page or the item instance to place the image in
-   * @param  {Number} [y] The y position on the current page. Ignored if itemOrX is not a number.
-   * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if itemOrX is not a number.
-   * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if itemOrX is not a number.
+   * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
+   * @param  {Number} [y] The y position on the current page. Ignored if x is not a number.
+   * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if x is not a number.
+   * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
    * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
    *&#x2F;
-  pub.image = function(img, itemOrX, y, w, h) {
+  pub.image = function(img, x, y, w, h) {
     var file = null;
     if (img instanceof File) {
       file = img;
@@ -935,23 +1101,29 @@
 
     var frame = null,
       fitOptions = null;
-    if (itemOrX instanceof Rectangle ||
-        itemOrX instanceof Oval ||
-        itemOrX instanceof Polygon) {
-      frame = itemOrX;
+    if (x instanceof Rectangle ||
+        x instanceof Oval ||
+        x instanceof Polygon) {
+      frame = x;
     } else {
       var width = 1,
-        height = 1;
-      if (w &amp;&amp; h) {
-        width = w;
-        height = h;
+          height = 1;
+      if (currImageMode === pub.CORNERS) {
+        width = w - x;
+        height = h - y;
         fitOptions = FitOptions.contentToFrame;
       } else {
-        fitOptions = FitOptions.frameToContent;
+        if (w &amp;&amp; h) {
+          width = w;
+          height = h;
+          fitOptions = FitOptions.contentToFrame;
+        } else {
+          fitOptions = FitOptions.frameToContent;
+        }
       }
       
       frame = currentPage().rectangles.add({
-        geometricBounds:[y, itemOrX, y + height, itemOrX + width]
+        geometricBounds:[y, x, y + height, x + width]
       });
     }
     
@@ -960,7 +1132,24 @@
     if (fitOptions) {
       frame.fit(fitOptions);
     }
+
+    if (currImageMode === pub.CENTER) {
+      var bounds = frame.geometricBounds;
+      var width = bounds[3] - bounds[1];
+      var height = bounds[2] - bounds[0];
+      frame.move(null, [-(width &#x2F; 2), -(height &#x2F; 2)]);
+    }
+
+    &#x2F;&#x2F; TODO apply currMatrix to frame
+    
     return frame;
+  };
+
+  pub.imageMode = function(mode) {
+    if (!mode) return currImageMode;
+
+    currImageMode = mode;
+    return currImageMode;
   };
   
 
@@ -1388,6 +1577,18 @@
     return result;
   };
 
+  &#x2F;**
+   * Returns the currently selected object(s). 
+   * @return {Object[]} Array of selected object(s).
+   *&#x2F;
+  pub.selection = function() {
+    var selection = app.selection;
+    if (!isArray(selection)) {
+      selection = [selection];
+    }
+    return selection;
+  };
+
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Output
@@ -1403,7 +1604,6 @@
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Transform
-  
   
   var printMatrixHelper = function(elements) {
     var big = 0;
@@ -1482,12 +1682,14 @@
     multY: function(x, y) {
       return x * this.elements[3] + y * this.elements[4] + this.elements[5]
     },
-    skewX: function(angle) {
-      this.apply(1, 0, 1, angle, 0, 0)
+    &#x2F;*
+    &#x2F;&#x2F; BUG, seems to be buggy in processing.js, and i am not clever enough to figure it out
+    shearX: function(angle) {
+      this.apply(1, 0, 1, Math.tan(angle), 0, 0)
     },
-    skewY: function(angle) {
-      this.apply(1, 0, 1, 0, angle, 0)
-    },
+    shearY: function(angle) {
+      this.apply(1, 0, 1, 0, Math.tan(angle), 0)
+    },*&#x2F;
     determinant: function() {
       return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3]
     },
@@ -1572,12 +1774,16 @@
     }
   };
 
-  pub.applyMatrix = function (argument) {
-    &#x2F;&#x2F; TODO body...
+  pub.applyMatrix = function (matrix) {
+    currMatrix.apply(matrix);
   };
 
   pub.popMatrix = function (argument) {
-    &#x2F;&#x2F; TODO body...
+    if (matrixStack.length &gt; 0) {
+      currMatrix.set( matrixStack.pop() );
+    } else {
+      error(&quot;Missing a pushMatrix() to go with that popMatrix()&quot;);
+    }
   };
 
   pub.printMatrix = function (argument) {
@@ -1585,13 +1791,12 @@
   };
 
   pub.pushMatrix = function (argument) {
-    &#x2F;&#x2F; TODO body...
+    matrixStack.push( currMatrix.array() );
   };
 
   pub.resetMatrix = function (argument) {
     matrixStack = [];
     currMatrix = new PMatrix2D();
-    matrixStack.push( currMatrix );
   };
 
   pub.rotate = function (angle) {
@@ -1602,22 +1807,19 @@
     currMatrix.scale(scaleX,scaleY);
   };
 
-  pub.shearX = function (angle) {
-    currMatrix.skewX(angle);
-  };
-
-  pub.shearY = function (angle) {
-    currMatrix.skewY(angle);
-  };
-
-  pub.translate = function (x,y) {
-    currMatrix.translate(x,y);
+  pub.translate = function (tx,ty) {
+    currMatrix.translate(tx,ty);
   };
 
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; execution
-   
+  
+  &#x2F;**
+   * Run the sketch! Has to be called in every sketch a the very end of the code.
+   *
+   * @method go
+   *&#x2F; 
   pub.go = function() {
     currentDoc();
     runUserScript();
@@ -1677,7 +1879,6 @@
     currFont = currDoc.textDefaults.appliedFont.name;
     currFontSize = currDoc.textDefaults.pointSize;
     currAlign = currDoc.textDefaults.justification;
-    currYAlign = VerticalJustification.TOP_ALIGN;
     currLeading = currDoc.textDefaults.leading;
     pub.units(pub.PT);
     updatePublicPageSizeVars();
@@ -1691,8 +1892,12 @@
     currFillColor = &quot;Black&quot;;
     noneSwatchColor = &quot;None&quot;;
     currStrokeColor = &quot;Black&quot;;
+    currRectMode = pub.CORNER;
+    currEllipseMode = pub.CENTER;
+    currYAlign = VerticalJustification.TOP_ALIGN;
     start = Date.now();
     currFont = null;
+    currImageMode = pub.CORNER;
     pub.resetMatrix();
   };
 
@@ -1718,6 +1923,10 @@
     var h = pageBounds[2] - pageBounds[0];
     pub.width = w;
     pub.height = h;
+  };
+
+  var isArray = function(obj) {
+    return Object.prototype.toString.call(obj) === &#x27;[object Array]&#x27;;
   };
 
   var error = function(msg) {

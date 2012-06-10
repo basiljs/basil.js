@@ -935,44 +935,28 @@
   };
 
   /**
-   * Returns the current horizontal text alignment and sets it if argument align is given.
+   * Sets the current horizontal and vertical text alignment.
    * 
    * @method textAlign
-   * @param  {String} [align] The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
-   *                          Justification.AWAY_FROM_BINDING_SIDE
-   *                          Justification.CENTER_ALIGN
-   *                          Justification.CENTER_JUSTIFIED
-   *                          Justification.FULLY_JUSTIFIED
-   *                          Justification.LEFT_ALIGN
-   *                          Justification.LEFT_ALIGN
-   *                          Justification.RIGHT_ALIGN
-   *                          Justification.RIGHT_JUSTIFIED
-   *                          Justification.TO_BINDING_SIDE
-   * @return {String}         The current horizontal alignment.
+   * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
+   *                           Justification.AWAY_FROM_BINDING_SIDE
+   *                           Justification.CENTER_ALIGN
+   *                           Justification.CENTER_JUSTIFIED
+   *                           Justification.FULLY_JUSTIFIED
+   *                           Justification.LEFT_ALIGN
+   *                           Justification.LEFT_ALIGN
+   *                           Justification.RIGHT_ALIGN
+   *                           Justification.RIGHT_JUSTIFIED
+   *                           Justification.TO_BINDING_SIDE
+   * @param  {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
+   *                           VerticalJustification.BOTTOM_ALIGN
+   *                           VerticalJustification.CENTER_ALIGN
+   *                           VerticalJustification.JUSTIFY_ALIGN
+   *                           VerticalJustification.TOP_ALIGN
    */
-  pub.textAlign = function(align) {
-    if (!align) return currAlign;
-
+  pub.textAlign = function(align, yAlign) {
     currAlign = align;
-    return currAlign;
-  };
-
-  /**
-   * Returns the current vertical text alignment and sets it if argument yAlign is given.
-   * 
-   * @method textYAlign
-   * @param  {String} [align] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
-   *                          VerticalJustification.BOTTOM_ALIGN
-   *                          VerticalJustification.CENTER_ALIGN
-   *                          VerticalJustification.JUSTIFY_ALIGN
-   *                          VerticalJustification.TOP_ALIGN
-   * @return {String}         The current vertical alignment.
-   */
-  pub.textYAlign = function(yAlign) {
-    if (!yAlign) return currYAlign;
-
-    currYAlign = yAlign;
-    return currYAlign;
+    if (arguments.length === 2) currYAlign = yAlign;
   };
 
   /**

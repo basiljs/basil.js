@@ -7,8 +7,7 @@ function draw() {
   b.text('hello basil.js', 0, 0, 400, 300);
 
   b.fill(b.color(255, 0, 0, "red"));
-  b.textAlign(Justification.RIGHT_ALIGN);
-  b.textYAlign(VerticalJustification.BOTTOM_ALIGN);
+  b.textAlign(Justification.RIGHT_ALIGN, VerticalJustification.BOTTOM_ALIGN);
   b.textLeading(72);
   b.text('hello basil.js', 0, 400, 400, 400);
 }
