@@ -274,7 +274,26 @@
         },
         {
             "file": "basil.js",
-            "line": 582,
+            "line": 577,
+            "description": "Returns the object style with the given name. If the style does not exist it gets created.",
+            "itemtype": "method",
+            "name": "objectStyle",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The name of the object style to return.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The object style instance.",
+                "type": "ObjectStyle"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 600,
             "description": "Sets the color used to fill shapes.",
             "itemtype": "method",
             "name": "fill",
@@ -289,7 +308,7 @@
         },
         {
             "file": "basil.js",
-            "line": 615,
+            "line": 633,
             "description": "Sets the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "stroke",
@@ -304,7 +323,7 @@
         },
         {
             "file": "basil.js",
-            "line": 648,
+            "line": 666,
             "description": "Sets the tint of the color used to fill shapes.",
             "itemtype": "method",
             "name": "fillTint",
@@ -319,7 +338,7 @@
         },
         {
             "file": "basil.js",
-            "line": 662,
+            "line": 680,
             "description": "Sets the tint of the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "strokeTint",
@@ -334,7 +353,7 @@
         },
         {
             "file": "basil.js",
-            "line": 676,
+            "line": 694,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document",
             "itemtype": "method",
             "name": "color",
@@ -353,7 +372,7 @@
         },
         {
             "file": "basil.js",
-            "line": 752,
+            "line": 770,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "itemtype": "method",
             "name": "lerpColor",
@@ -382,7 +401,7 @@
         },
         {
             "file": "basil.js",
-            "line": 809,
+            "line": 827,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nThe default document font size will be used unless a font size is set with the textSize() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() and textYAlign() functions. \nThe width and height parameters define a rectangular area.",
             "itemtype": "method",
             "name": "text",
@@ -421,7 +440,7 @@
         },
         {
             "file": "basil.js",
-            "line": 848,
+            "line": 866,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the \ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item \n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "itemtype": "method",
             "name": "typo",
@@ -451,7 +470,7 @@
         },
         {
             "file": "basil.js",
-            "line": 906,
+            "line": 924,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "itemtype": "method",
             "name": "textFont",
@@ -471,7 +490,7 @@
         },
         {
             "file": "basil.js",
-            "line": 920,
+            "line": 938,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "itemtype": "method",
             "name": "textSize",
@@ -491,7 +510,7 @@
         },
         {
             "file": "basil.js",
-            "line": 934,
+            "line": 952,
             "description": "Sets the current horizontal and vertical text alignment.",
             "itemtype": "method",
             "name": "textAlign",
@@ -512,7 +531,7 @@
         },
         {
             "file": "basil.js",
-            "line": 959,
+            "line": 977,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "itemtype": "method",
             "name": "textLeading",
@@ -532,7 +551,7 @@
         },
         {
             "file": "basil.js",
-            "line": 974,
+            "line": 992,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "itemtype": "method",
             "name": "textKerning",
@@ -552,7 +571,7 @@
         },
         {
             "file": "basil.js",
-            "line": 988,
+            "line": 1006,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "itemtype": "method",
             "name": "textTracking",
@@ -572,7 +591,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1002,
+            "line": 1020,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "characterStyle",
@@ -591,7 +610,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1020,
+            "line": 1038,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "paragraphStyle",
@@ -604,13 +623,13 @@
             ],
             "return": {
                 "description": "The paragraph style instance.",
-                "type": "CharachterStyle"
+                "type": "ParagraphStyle"
             },
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 1052,
+            "line": 1070,
             "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's \ndata directory which is in the same directory where the document is saved in. The image argument can also be a File \ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle, \noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "itemtype": "method",
             "name": "image",
@@ -652,7 +671,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1547,
+            "line": 1565,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",
@@ -671,7 +690,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1567,
+            "line": 1585,
             "description": "Returns the currently selected object(s).",
             "return": {
                 "description": "Array of selected object(s).",
@@ -681,7 +700,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1805,
+            "line": 1823,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
             "itemtype": "method",
             "name": "go",

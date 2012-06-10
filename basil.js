@@ -573,6 +573,24 @@
       error("Not supported type. Please make sure the strokeweight is a number or string");
     }
   };
+
+  /**
+   * Returns the object style with the given name. If the style does not exist it gets created.
+   * 
+   * @method objectStyle
+   * @param  {String} name  The name of the object style to return.
+   * @return {ObjectStyle}  The object style instance.
+   */
+  pub.objectStyle = function(name) {
+    var style = null;
+    try {
+      style = currentDoc().objectStyles.item(name);
+      style.name;
+    } catch (e) {
+      style = currentDoc().objectStyles.add({name: name});
+    }
+    return style;
+  };
   
 
 
@@ -1021,8 +1039,8 @@
    * Returns the paragraph style with the given name. If the style does not exist it gets created.
    * 
    * @method paragraphStyle
-   * @param  {String} name      The name of the paragraph style to return.
-   * @return {CharachterStyle}  The paragraph style instance.
+   * @param  {String} name     The name of the paragraph style to return.
+   * @return {ParagraphStyle}  The paragraph style instance.
    */
   pub.paragraphStyle = function(name) {
     var style = null;
