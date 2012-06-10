@@ -1017,6 +1017,24 @@
     return style;
   };
 
+  /**
+   * Returns the paragraph style with the given name. If the style does not exist it gets created.
+   * 
+   * @method paragraphStyle
+   * @param  {String} name      The name of the paragraph style to return.
+   * @return {CharachterStyle}  The paragraph style instance.
+   */
+  pub.paragraphStyle = function(name) {
+    var style = null;
+    try {
+      style = currentDoc().paragraphStyles.item(name);
+      style.name;
+    } catch (e) {
+      style = currentDoc().paragraphStyles.add({name: name});
+    }
+    return style;
+  };
+
   var isText = function(obj) {
     return obj instanceof Character ||
            obj instanceof InsertionPoint ||
