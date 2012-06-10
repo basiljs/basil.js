@@ -68,6 +68,8 @@
     currAlign = null,
     currYAlign = null,
     currLeading = null,
+    currKerning = null,
+    currTracking = null,
     currImageMode = null;
 
   
@@ -833,7 +835,9 @@
       'pointSize': currFontSize,
       'fillColor': currFillColor,
       'justification': currAlign,
-      'leading': currLeading
+      'leading': currLeading,
+      'kerningValue': currKerning,
+      'tracking': currTracking
     });
 
     // TODO apply currMatrix to textFrame
@@ -907,9 +911,9 @@
    * @return {String}            The name of the current font.
    */
   pub.textFont = function(fontName) {
-    if (!fontName) return currFont;
-
-    currFont = fontName;
+    if (arguments.length === 1) {
+      currFont = fontName;
+    }
     return currFont;
   };
 
@@ -921,9 +925,9 @@
    * @return {Number}             The current point size.
    */
   pub.textSize = function(pointSize) {
-    if (!pointSize) return currFontSize;
-
-    currFontSize = pointSize;
+    if (arguments.length === 1) {
+      currFontSize = pointSize;
+    }
     return currFontSize;
   };
 
@@ -961,10 +965,38 @@
    * @return {Number|String}           The current leading.
    */
   pub.textLeading = function(leading) {
-    if (!leading) return currLeading;
-
-    currLeading = leading;
+    if (arguments.length === 1) {
+      currLeading = leading;
+    }
     return currLeading;
+  };
+
+  /**
+   * Returns the current kerning and sets it if argument kerning is given.
+   * 
+   * @method textKerning
+   * @param  {Number} [kerning] The value to set.
+   * @return {Number}           The current kerning.
+   */
+  pub.textKerning = function(kerning) {
+    if (arguments.length === 1) {
+      currKerning = kerning;
+    }
+    return currKerning;
+  };
+
+  /**
+   * Returns the current tracking and sets it if argument tracking is given.
+   * 
+   * @method textTracking
+   * @param  {Number} [tracking] The value to set.
+   * @return {Number}            The current tracking.
+   */
+  pub.textTracking = function(tracking) {
+    if (arguments.length === 1) {
+      currTracking = tracking;
+    }
+    return currTracking;
   };
 
   var isText = function(obj) {
@@ -1799,6 +1831,8 @@
     currFontSize = currDoc.textDefaults.pointSize;
     currAlign = currDoc.textDefaults.justification;
     currLeading = currDoc.textDefaults.leading;
+    currKerning = 0;
+    currTracking = currDoc.textDefaults.tracking;
     pub.units(pub.PT);
     updatePublicPageSizeVars();
   };

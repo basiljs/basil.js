@@ -156,6 +156,8 @@
     currAlign = null,
     currYAlign = null,
     currLeading = null,
+    currKerning = null,
+    currTracking = null,
     currImageMode = null;
 
   
@@ -921,7 +923,9 @@
       &#x27;pointSize&#x27;: currFontSize,
       &#x27;fillColor&#x27;: currFillColor,
       &#x27;justification&#x27;: currAlign,
-      &#x27;leading&#x27;: currLeading
+      &#x27;leading&#x27;: currLeading,
+      &#x27;kerningValue&#x27;: currKerning,
+      &#x27;tracking&#x27;: currTracking
     });
 
     &#x2F;&#x2F; TODO apply currMatrix to textFrame
@@ -981,14 +985,7 @@
       forEach(item.paragraphs, function(para) {
         getOrSetProperties(para);
       });
-    } else if (item instanceof Character ||
-               item instanceof InsertionPoint ||
-               item instanceof Line ||
-               item instanceof Paragraph ||
-               item instanceof TextColumn ||
-               item instanceof TextStyleRange ||
-               item instanceof Word) 
-    {
+    } else if (isText(item)) {
       getOrSetProperties(item);
     }
     return result;
@@ -1002,9 +999,9 @@
    * @return {String}            The name of the current font.
    *&#x2F;
   pub.textFont = function(fontName) {
-    if (!fontName) return currFont;
-
-    currFont = fontName;
+    if (arguments.length === 1) {
+      currFont = fontName;
+    }
     return currFont;
   };
 
@@ -1016,9 +1013,9 @@
    * @return {Number}             The current point size.
    *&#x2F;
   pub.textSize = function(pointSize) {
-    if (!pointSize) return currFontSize;
-
-    currFontSize = pointSize;
+    if (arguments.length === 1) {
+      currFontSize = pointSize;
+    }
     return currFontSize;
   };
 
@@ -1056,10 +1053,48 @@
    * @return {Number|String}           The current leading.
    *&#x2F;
   pub.textLeading = function(leading) {
-    if (!leading) return currLeading;
-
-    currLeading = leading;
+    if (arguments.length === 1) {
+      currLeading = leading;
+    }
     return currLeading;
+  };
+
+  &#x2F;**
+   * Returns the current kerning and sets it if argument kerning is given.
+   * 
+   * @method textKerning
+   * @param  {Number} [kerning] The value to set.
+   * @return {Number}           The current kerning.
+   *&#x2F;
+  pub.textKerning = function(kerning) {
+    if (arguments.length === 1) {
+      currKerning = kerning;
+    }
+    return currKerning;
+  };
+
+  &#x2F;**
+   * Returns the current tracking and sets it if argument tracking is given.
+   * 
+   * @method textTracking
+   * @param  {Number} [tracking] The value to set.
+   * @return {Number}            The current tracking.
+   *&#x2F;
+  pub.textTracking = function(tracking) {
+    if (arguments.length === 1) {
+      currTracking = tracking;
+    }
+    return currTracking;
+  };
+
+  var isText = function(obj) {
+    return obj instanceof Character ||
+           obj instanceof InsertionPoint ||
+           obj instanceof Line ||
+           obj instanceof Paragraph ||
+           obj instanceof TextColumn ||
+           obj instanceof TextStyleRange ||
+           obj instanceof Word;
   };
 
 
@@ -1146,9 +1181,13 @@
   };
 
   pub.imageMode = function(mode) {
-    if (!mode) return currImageMode;
+    if (arguments.length === 0) return currImageMode;
 
-    currImageMode = mode;
+    if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+      currImageMode = mode;
+    } else {
+      error(&quot;Unsupported imageMode. Use: CORNER, CORNERS, CENTER.&quot;);
+    }
     return currImageMode;
   };
   
@@ -1880,6 +1919,8 @@
     currFontSize = currDoc.textDefaults.pointSize;
     currAlign = currDoc.textDefaults.justification;
     currLeading = currDoc.textDefaults.leading;
+    currKerning = 0;
+    currTracking = currDoc.textDefaults.tracking;
     pub.units(pub.PT);
     updatePublicPageSizeVars();
   };
