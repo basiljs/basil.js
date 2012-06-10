@@ -893,14 +893,7 @@
       forEach(item.paragraphs, function(para) {
         getOrSetProperties(para);
       });
-    } else if (item instanceof Character ||
-               item instanceof InsertionPoint ||
-               item instanceof Line ||
-               item instanceof Paragraph ||
-               item instanceof TextColumn ||
-               item instanceof TextStyleRange ||
-               item instanceof Word) 
-    {
+    } else if (isText(item)) {
       getOrSetProperties(item);
     }
     return result;
@@ -972,6 +965,16 @@
 
     currLeading = leading;
     return currLeading;
+  };
+
+  var isText = function(obj) {
+    return obj instanceof Character ||
+           obj instanceof InsertionPoint ||
+           obj instanceof Line ||
+           obj instanceof Paragraph ||
+           obj instanceof TextColumn ||
+           obj instanceof TextStyleRange ||
+           obj instanceof Word;
   };
 
 
