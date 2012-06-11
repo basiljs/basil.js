@@ -1191,10 +1191,14 @@
       var width = bounds[3] - bounds[1];
       var height = bounds[2] - bounds[0];
       frame.move(null, [-(width / 2), -(height / 2)]);
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
     }
-
-    // TODO apply currMatrix to frame
-    
     return frame;
   };
 
