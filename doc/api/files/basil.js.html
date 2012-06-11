@@ -104,6 +104,7 @@
   pub.PX = &quot;px&quot;;
   pub.CM = &quot;cm&quot;;
   pub.MM = &quot;mm&quot;;
+  pub.IN = &quot;inch&quot;;
   pub.CORNER = &quot;corner&quot;;
   pub.CORNERS = &quot;corners&quot;;
   pub.CENTER = &quot;center&quot;;
@@ -198,6 +199,8 @@
   &#x2F;**
    * Suspends the calling thread for a number of milliseconds.
    * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
+   *
+   * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
    *&#x2F;
   pub.delay = function (milliseconds) {
@@ -285,21 +288,23 @@
    * Sets the units of the document (like right clicking the rulers).
    * 
    * @method units
-   * @param  {Constant} [units] Supported units: PT, PX, CM or MM
+   * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
    * @return {Constant} Current unit setting
    *&#x2F;
   pub.units = function (units) {
-    if (!units) return currUnits;
+    if (arguments.length === 0) return currUnits;
 
     if (units === pub.CM || 
         units === pub.MM ||
         units === pub.PT || 
-        units === pub.PX ) {
+        units === pub.PX ||
+        units === pub.IN) {
       var unitType = null;
       if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
       else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
       else if (units === pub.PT) unitType = MeasurementUnits.points;
       else if (units === pub.PX) unitType = MeasurementUnits.pixels;
+      else if (units === pub.IN) unitType = MeasurementUnits.inches;
       var doc = currentDoc(); 
       with (doc.viewPreferences){
         &#x2F;&#x2F;* MeasurementUnits.agates
@@ -319,6 +324,42 @@
     }
     return currUnits;
   }
+
+  &#x2F;**
+   * Creates a vertical guide line at the current spread and current layer.
+   *
+   * @method guideX
+   * @param  {Number} x Position of the new guide
+   * @return {Guide} New guide
+   *&#x2F;
+  pub.guideX = function (x) {
+    var guides = currentPage().guides;
+    var guide = guides.add( currentLayer() );
+    with(guide) {
+      fitToPage = true;
+      orientation = HorizontalOrVertical.VERTICAL;
+      location = x;
+    }
+    return guide;
+  };
+
+  &#x2F;**
+   * Creates a horizontal guide line at the current spread and current layer.
+   *
+   * @method guideY
+   * @param  {Number} y Position of the new guide
+   * @return {Guide} New guide
+   *&#x2F;
+  pub.guideY = function (y) {
+    var guides = currentPage().guides;
+    var guide = guides.add( currentLayer() );
+    with(guide) {
+      fitToPage = true;
+      orientation = HorizontalOrVertical.HORIZONTAL;
+      location = y;
+    }
+    return guide;
+  };
 
 
   &#x2F;&#x2F; ----------------------------------------
@@ -506,7 +547,7 @@
    * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    *&#x2F;
   pub.ellipse = function(x, y, w, h){
-    if (arguments.length !== 4) error(&quot;Not enough parameters! Use: x, y, w, h&quot;);
+    if (arguments.length !== 4) error(&quot;Not enough parameters to draw a ellipse! Use: x, y, w, h&quot;);
     var ellipseBounds = [];
     if (currEllipseMode === pub.CORNER) {
       ellipseBounds[0] = y;
@@ -530,7 +571,7 @@
       ellipseBounds[3] = x+(w);
     }
 
-    var ovals = app.activeWindow.activeSpread.ovals;
+    var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
     with(newOval) {
       strokeWeight = currStrokeWeight;
@@ -557,13 +598,14 @@
    * Draws a line (a direct path between two points) to the page.
    *
    * @method line
-   * @param  {Number} [x1] Point A x-value
-   * @param  {Number} [y1] Point A y-value
-   * @param  {Number} [x2] Point B x-value
-   * @param  {Number} [y2] Point B y-value
+   * @param  {Number} x1 Point A x-value
+   * @param  {Number} y1 Point A y-value
+   * @param  {Number} x2 Point B x-value
+   * @param  {Number} y2 Point B y-value
    * @return {GraphicLine} New GraphicLine
    *&#x2F;
   pub.line = function(x1, y1, x2, y2) {
+    if (arguments.length !== 4) error(&quot;Not enough parameters to draw a line! Use: x1, y1, x2, y2&quot;);
     var lines = currentPage().graphicLines;
     var newLine = lines.add( currentLayer() );
     with(newLine) {
@@ -591,7 +633,7 @@
    * @return {Rectangle} New rectangle
    *&#x2F;
   pub.rect = function(x, y, w, h){
-    if (arguments.length !== 4) error(&quot;Not enough parameters! Use: x, y, w, h&quot;);
+    if (arguments.length !== 4) error(&quot;Not enough parameters to draw a rect! Use: x, y, w, h&quot;);
     var rectBounds = [];
     if (currRectMode === pub.CORNER) {
       rectBounds[0] = y;
@@ -850,9 +892,19 @@
         + &quot;Grey,name &quot;
         + &quot;Name is optional&quot;);
     }
-    newCol = currentDoc().colors.add();
-    newCol.properties = props;
-    return newCol;
+
+    &#x2F;&#x2F; check whether color was already created and added to swatches,
+    &#x2F;&#x2F; keeps the document clean ...
+    try {
+      var col = currentDoc().swatches.item(props.name);
+      col.name;
+      col.properties = props;
+      return col;
+    } catch (e) {
+      newCol = currentDoc().colors.add();
+      newCol.properties = props;
+      return newCol;
+    }
   };
 
   &#x2F;**
@@ -927,9 +979,10 @@
    * @param  {Number} y   y-coordinate of text frame
    * @param  {Number} w   width of text frame
    * @param  {Number} h   height of text frame
-   * @return {TextFrame}  The created text frame instance.
+   * @return {TextFrame}  The created text frame instance
    *&#x2F;
   pub.text = function(txt, x, y, w, h) {
+    if (arguments.length !== 5) error(&quot;Not enough parameters to draw a text! Use: txt, x, y, w, h&quot;);
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
       contents = txt;
@@ -946,7 +999,16 @@
       &#x27;tracking&#x27;: currTracking
     });
 
-    &#x2F;&#x2F; TODO apply currMatrix to textFrame
+    
+    if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
+      textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
+    }
 
     return textFrame;
   };
@@ -1047,7 +1109,6 @@
    *                           Justification.CENTER_JUSTIFIED
    *                           Justification.FULLY_JUSTIFIED
    *                           Justification.LEFT_ALIGN
-   *                           Justification.LEFT_ALIGN
    *                           Justification.RIGHT_ALIGN
    *                           Justification.RIGHT_JUSTIFIED
    *                           Justification.TO_BINDING_SIDE
@@ -1141,7 +1202,7 @@
     return style;
   };
 
-  var isText = function(obj) {
+  var isText = pub.isText = function(obj) {
     return obj instanceof Character ||
            obj instanceof InsertionPoint ||
            obj instanceof Line ||
@@ -1149,6 +1210,21 @@
            obj instanceof TextColumn ||
            obj instanceof TextStyleRange ||
            obj instanceof Word;
+  };
+
+  &#x2F;**
+   * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
+   *
+   * @method linkTextFrames
+   * @param  {TextFrame} textFrameA
+   * @param  {TextFrame} textFrameB
+   *&#x2F;
+  pub.linkTextFrames = function (textFrameA, textFrameB) {
+    if (textFrameA instanceof TextFrame &amp;&amp; textFrameB instanceof TextFrame) {
+      textFrameA.nextTextFrame = textFrameB;
+    } else {
+      error(&quot;Wrong type! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB&quot;);
+    }
   };
 
 
@@ -1172,7 +1248,7 @@
    * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
    *&#x2F;
   pub.image = function(img, x, y, w, h) {
-    var file = initDataFile(img),
+    var file = initDataFile(img, true),
       frame = null,
       fitOptions = null;
     if (x instanceof Rectangle ||
@@ -1212,10 +1288,14 @@
       var width = bounds[3] - bounds[1];
       var height = bounds[2] - bounds[0];
       frame.move(null, [-(width &#x2F; 2), -(height &#x2F; 2)]);
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
     }
-
-    &#x2F;&#x2F; TODO apply currMatrix to frame
-    
     return frame;
   };
 
@@ -1230,7 +1310,7 @@
     return currImageMode;
   };
 
-  var initDataFile = function(file) {
+  var initDataFile = function(file, mustExist) {
     var result = null;
     if (file instanceof File) {
       result = file;
@@ -1239,11 +1319,11 @@
       try {
         docPath = currentDoc().filePath;
       } catch (e) {
-        error(&quot;The current document must be saved before an image located in the document&#x27;s data directory can be placed.&quot;);
+        error(&quot;The current document must be saved before its data directory can be accessed.&quot;);
       }
       result = new File(docPath.absoluteURI + &#x27;&#x2F;data&#x2F;&#x27; + file);
     }
-    if (!result.exists) {
+    if (mustExist &amp;&amp; !result.exists) {
       error(&#x27;The file &quot;&#x27; + result + &#x27;&quot; does not exist.&#x27;);
     }
     return result;
@@ -1697,7 +1777,7 @@
    * @return {String[]}  Array of the individual lines in the given file.
    *&#x2F;
   pub.loadStrings = function(file) {
-    var inputFile = initDataFile(file),
+    var inputFile = initDataFile(file, true),
       result = [];
 
     inputFile.open(&#x27;r&#x27;);
@@ -1719,6 +1799,23 @@
 
   pub.print = function(msg) {
     $.write(msg);
+  };
+
+  &#x2F;**
+   * Writes an array of strings to a file, one line per string. This file is saved to the document&#x27;s data directory.
+   * If the given file exists it gets overridden.
+   * 
+   * @method saveStrings
+   * @param  {String|File} file The file name or a File instance
+   * @param  {String[]} strings The string array to be written
+   *&#x2F;
+  pub.saveStrings = function(file, strings) {
+    var outputFile = initDataFile(file);
+    outputFile.open(&#x27;w&#x27;);
+    forEach(strings, function(s) {
+      outputFile.writeln(s);
+    });
+    outputFile.close();
   };
   
 

@@ -1160,7 +1160,7 @@
    * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
    */
   pub.image = function(img, x, y, w, h) {
-    var file = initDataFile(img),
+    var file = initDataFile(img, true),
       frame = null,
       fitOptions = null;
     if (x instanceof Rectangle ||
@@ -1222,7 +1222,7 @@
     return currImageMode;
   };
 
-  var initDataFile = function(file) {
+  var initDataFile = function(file, mustExist) {
     var result = null;
     if (file instanceof File) {
       result = file;
@@ -1231,11 +1231,11 @@
       try {
         docPath = currentDoc().filePath;
       } catch (e) {
-        error("The current document must be saved before an image located in the document's data directory can be placed.");
+        error("The current document must be saved before its data directory can be accessed.");
       }
       result = new File(docPath.absoluteURI + '/data/' + file);
     }
-    if (!result.exists) {
+    if (mustExist && !result.exists) {
       error('The file "' + result + '" does not exist.');
     }
     return result;
@@ -1689,7 +1689,7 @@
    * @return {String[]}  Array of the individual lines in the given file.
    */
   pub.loadStrings = function(file) {
-    var inputFile = initDataFile(file),
+    var inputFile = initDataFile(file, true),
       result = [];
 
     inputFile.open('r');
@@ -1711,6 +1711,23 @@
 
   pub.print = function(msg) {
     $.write(msg);
+  };
+
+  /**
+   * Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.
+   * If the given file exists it gets overridden.
+   * 
+   * @method saveStrings
+   * @param  {String|File} file The file name or a File instance
+   * @param  {String[]} strings The string array to be written
+   */
+  pub.saveStrings = function(file, strings) {
+    var outputFile = initDataFile(file);
+    outputFile.open('w');
+    forEach(strings, function(s) {
+      outputFile.writeln(s);
+    });
+    outputFile.close();
   };
   
 
