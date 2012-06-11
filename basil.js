@@ -235,6 +235,38 @@
     return currUnits;
   }
 
+  /**
+   * Creates a vertical guide line at the current spread and current layer.
+   * @param  {Number} x Position of the new guide
+   * @return {Guide} new guide
+   */
+  pub.guideX = function (x) {
+    var guides = currentPage().guides;
+    var guide = guides.add( currentLayer() );
+    with(guide) {
+      fitToPage = true;
+      orientation = HorizontalOrVertical.VERTICAL;
+      location = x;
+    }
+    return guide;
+  };
+
+  /**
+   * Creates a horizontal guide line at the current spread and current layer.
+   * @param  {Number} y Position of the new guide
+   * @return {Guide} new guide
+   */
+  pub.guideY = function (y) {
+    var guides = currentPage().guides;
+    var guide = guides.add( currentLayer() );
+    with(guide) {
+      fitToPage = true;
+      orientation = HorizontalOrVertical.HORIZONTAL;
+      location = y;
+    }
+    return guide;
+  };
+
 
   // ----------------------------------------
   // Data
