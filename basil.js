@@ -891,9 +891,10 @@
    * @param  {Number} y   y-coordinate of text frame
    * @param  {Number} w   width of text frame
    * @param  {Number} h   height of text frame
-   * @return {TextFrame}  The created text frame instance.
+   * @return {TextFrame}  The created text frame instance
    */
   pub.text = function(txt, x, y, w, h) {
+    if (arguments.length !== 5) error("Not enough parameters to draw a text! Use: txt, x, y, w, h");
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
       contents = txt;
@@ -910,7 +911,16 @@
       'tracking': currTracking
     });
 
-    // TODO apply currMatrix to textFrame
+    
+    if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
+      textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
+    }
 
     return textFrame;
   };
@@ -1010,7 +1020,6 @@
    *                           Justification.CENTER_ALIGN
    *                           Justification.CENTER_JUSTIFIED
    *                           Justification.FULLY_JUSTIFIED
-   *                           Justification.LEFT_ALIGN
    *                           Justification.LEFT_ALIGN
    *                           Justification.RIGHT_ALIGN
    *                           Justification.RIGHT_JUSTIFIED
