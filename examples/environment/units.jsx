@@ -12,6 +12,9 @@ function draw() {
   
   b.units( b.CM );
   b.text('centimenters', 10, 20, 300, 300);
+
+  b.units( b.IN );
+  b.text('inches', 1, 2, 300, 300);
 }
 
 b.go();

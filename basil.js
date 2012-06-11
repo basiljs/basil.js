@@ -198,11 +198,11 @@
    * Sets the units of the document (like right clicking the rulers).
    * 
    * @method units
-   * @param  {Constant} [units] Supported units: PT, PX, CM or MM
+   * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
    * @return {Constant} Current unit setting
    */
   pub.units = function (units) {
-    if (!units) return currUnits;
+    if (arguments.length === 0) return currUnits;
 
     if (units === pub.CM || 
         units === pub.MM ||
@@ -214,7 +214,7 @@
       else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
       else if (units === pub.PT) unitType = MeasurementUnits.points;
       else if (units === pub.PX) unitType = MeasurementUnits.pixels;
-      else if (units === pub.PX) unitType = MeasurementUnits.inches;
+      else if (units === pub.IN) unitType = MeasurementUnits.inches;
       var doc = currentDoc(); 
       with (doc.viewPreferences){
         //* MeasurementUnits.agates
@@ -237,8 +237,10 @@
 
   /**
    * Creates a vertical guide line at the current spread and current layer.
+   *
+   * @method guideX
    * @param  {Number} x Position of the new guide
-   * @return {Guide} new guide
+   * @return {Guide} New guide
    */
   pub.guideX = function (x) {
     var guides = currentPage().guides;
@@ -253,8 +255,10 @@
 
   /**
    * Creates a horizontal guide line at the current spread and current layer.
+   *
+   * @method guideY
    * @param  {Number} y Position of the new guide
-   * @return {Guide} new guide
+   * @return {Guide} New guide
    */
   pub.guideY = function (y) {
     var guides = currentPage().guides;
@@ -477,7 +481,7 @@
       ellipseBounds[3] = x+(w);
     }
 
-    var ovals = app.activeWindow.activeSpread.ovals;
+    var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
     with(newOval) {
       strokeWeight = currStrokeWeight;
