@@ -16,6 +16,7 @@
   pub.PX = "px";
   pub.CM = "cm";
   pub.MM = "mm";
+  pub.IN = "inch";
   pub.CORNER = "corner";
   pub.CORNERS = "corners";
   pub.CENTER = "center";
@@ -110,6 +111,8 @@
   /**
    * Suspends the calling thread for a number of milliseconds.
    * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
+   *
+   * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
    */
   pub.delay = function (milliseconds) {
@@ -197,21 +200,23 @@
    * Sets the units of the document (like right clicking the rulers).
    * 
    * @method units
-   * @param  {Constant} [units] Supported units: PT, PX, CM or MM
+   * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
    * @return {Constant} Current unit setting
    */
   pub.units = function (units) {
-    if (!units) return currUnits;
+    if (arguments.length === 0) return currUnits;
 
     if (units === pub.CM || 
         units === pub.MM ||
         units === pub.PT || 
-        units === pub.PX ) {
+        units === pub.PX ||
+        units === pub.IN) {
       var unitType = null;
       if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
       else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
       else if (units === pub.PT) unitType = MeasurementUnits.points;
       else if (units === pub.PX) unitType = MeasurementUnits.pixels;
+      else if (units === pub.IN) unitType = MeasurementUnits.inches;
       var doc = currentDoc(); 
       with (doc.viewPreferences){
         //* MeasurementUnits.agates
@@ -231,6 +236,42 @@
     }
     return currUnits;
   }
+
+  /**
+   * Creates a vertical guide line at the current spread and current layer.
+   *
+   * @method guideX
+   * @param  {Number} x Position of the new guide
+   * @return {Guide} New guide
+   */
+  pub.guideX = function (x) {
+    var guides = currentPage().guides;
+    var guide = guides.add( currentLayer() );
+    with(guide) {
+      fitToPage = true;
+      orientation = HorizontalOrVertical.VERTICAL;
+      location = x;
+    }
+    return guide;
+  };
+
+  /**
+   * Creates a horizontal guide line at the current spread and current layer.
+   *
+   * @method guideY
+   * @param  {Number} y Position of the new guide
+   * @return {Guide} New guide
+   */
+  pub.guideY = function (y) {
+    var guides = currentPage().guides;
+    var guide = guides.add( currentLayer() );
+    with(guide) {
+      fitToPage = true;
+      orientation = HorizontalOrVertical.HORIZONTAL;
+      location = y;
+    }
+    return guide;
+  };
 
 
   // ----------------------------------------
@@ -418,7 +459,7 @@
    * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    */
   pub.ellipse = function(x, y, w, h){
-    if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
+    if (arguments.length !== 4) error("Not enough parameters to draw a ellipse! Use: x, y, w, h");
     var ellipseBounds = [];
     if (currEllipseMode === pub.CORNER) {
       ellipseBounds[0] = y;
@@ -442,7 +483,7 @@
       ellipseBounds[3] = x+(w);
     }
 
-    var ovals = app.activeWindow.activeSpread.ovals;
+    var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
     with(newOval) {
       strokeWeight = currStrokeWeight;
@@ -469,13 +510,14 @@
    * Draws a line (a direct path between two points) to the page.
    *
    * @method line
-   * @param  {Number} [x1] Point A x-value
-   * @param  {Number} [y1] Point A y-value
-   * @param  {Number} [x2] Point B x-value
-   * @param  {Number} [y2] Point B y-value
+   * @param  {Number} x1 Point A x-value
+   * @param  {Number} y1 Point A y-value
+   * @param  {Number} x2 Point B x-value
+   * @param  {Number} y2 Point B y-value
    * @return {GraphicLine} New GraphicLine
    */
   pub.line = function(x1, y1, x2, y2) {
+    if (arguments.length !== 4) error("Not enough parameters to draw a line! Use: x1, y1, x2, y2");
     var lines = currentPage().graphicLines;
     var newLine = lines.add( currentLayer() );
     with(newLine) {
@@ -503,7 +545,7 @@
    * @return {Rectangle} New rectangle
    */
   pub.rect = function(x, y, w, h){
-    if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
+    if (arguments.length !== 4) error("Not enough parameters to draw a rect! Use: x, y, w, h");
     var rectBounds = [];
     if (currRectMode === pub.CORNER) {
       rectBounds[0] = y;
@@ -762,9 +804,19 @@
         + "Grey,name "
         + "Name is optional");
     }
-    newCol = currentDoc().colors.add();
-    newCol.properties = props;
-    return newCol;
+
+    // check whether color was already created and added to swatches,
+    // keeps the document clean ...
+    try {
+      var col = currentDoc().swatches.item(props.name);
+      col.name;
+      col.properties = props;
+      return col;
+    } catch (e) {
+      newCol = currentDoc().colors.add();
+      newCol.properties = props;
+      return newCol;
+    }
   };
 
   /**
@@ -839,9 +891,10 @@
    * @param  {Number} y   y-coordinate of text frame
    * @param  {Number} w   width of text frame
    * @param  {Number} h   height of text frame
-   * @return {TextFrame}  The created text frame instance.
+   * @return {TextFrame}  The created text frame instance
    */
   pub.text = function(txt, x, y, w, h) {
+    if (arguments.length !== 5) error("Not enough parameters to draw a text! Use: txt, x, y, w, h");
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
       contents = txt;
@@ -858,7 +911,16 @@
       'tracking': currTracking
     });
 
-    // TODO apply currMatrix to textFrame
+    
+    if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
+      textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
+    }
 
     return textFrame;
   };
@@ -959,7 +1021,6 @@
    *                           Justification.CENTER_JUSTIFIED
    *                           Justification.FULLY_JUSTIFIED
    *                           Justification.LEFT_ALIGN
-   *                           Justification.LEFT_ALIGN
    *                           Justification.RIGHT_ALIGN
    *                           Justification.RIGHT_JUSTIFIED
    *                           Justification.TO_BINDING_SIDE
@@ -1053,7 +1114,7 @@
     return style;
   };
 
-  var isText = function(obj) {
+  var isText = pub.isText = function(obj) {
     return obj instanceof Character ||
            obj instanceof InsertionPoint ||
            obj instanceof Line ||
@@ -1061,6 +1122,21 @@
            obj instanceof TextColumn ||
            obj instanceof TextStyleRange ||
            obj instanceof Word;
+  };
+
+  /**
+   * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
+   *
+   * @method linkTextFrames
+   * @param  {TextFrame} textFrameA
+   * @param  {TextFrame} textFrameB
+   */
+  pub.linkTextFrames = function (textFrameA, textFrameB) {
+    if (textFrameA instanceof TextFrame && textFrameB instanceof TextFrame) {
+      textFrameA.nextTextFrame = textFrameB;
+    } else {
+      error("Wrong type! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB");
+    }
   };
 
 
@@ -1124,10 +1200,14 @@
       var width = bounds[3] - bounds[1];
       var height = bounds[2] - bounds[0];
       frame.move(null, [-(width / 2), -(height / 2)]);
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    } else {
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
     }
-
-    // TODO apply currMatrix to frame
-    
     return frame;
   };
 
