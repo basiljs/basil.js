@@ -1114,7 +1114,7 @@
     return style;
   };
 
-  var isText = function(obj) {
+  var isText = pub.isText = function(obj) {
     return obj instanceof Character ||
            obj instanceof InsertionPoint ||
            obj instanceof Line ||
@@ -1122,6 +1122,21 @@
            obj instanceof TextColumn ||
            obj instanceof TextStyleRange ||
            obj instanceof Word;
+  };
+
+  /**
+   * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
+   *
+   * @method linkTextFrames
+   * @param  {TextFrame} textFrameA
+   * @param  {TextFrame} textFrameB
+   */
+  pub.linkTextFrames = function (textFrameA, textFrameB) {
+    if (textFrameA instanceof TextFrame && textFrameB instanceof TextFrame) {
+      textFrameA.nextTextFrame = textFrameB;
+    } else {
+      error("Wrong type! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB");
+    }
   };
 
 
