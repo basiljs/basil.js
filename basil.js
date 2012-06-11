@@ -111,6 +111,8 @@
   /**
    * Suspends the calling thread for a number of milliseconds.
    * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
+   *
+   * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
    */
   pub.delay = function (milliseconds) {
@@ -457,7 +459,7 @@
    * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    */
   pub.ellipse = function(x, y, w, h){
-    if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
+    if (arguments.length !== 4) error("Not enough parameters to draw a ellipse! Use: x, y, w, h");
     var ellipseBounds = [];
     if (currEllipseMode === pub.CORNER) {
       ellipseBounds[0] = y;
@@ -508,13 +510,14 @@
    * Draws a line (a direct path between two points) to the page.
    *
    * @method line
-   * @param  {Number} [x1] Point A x-value
-   * @param  {Number} [y1] Point A y-value
-   * @param  {Number} [x2] Point B x-value
-   * @param  {Number} [y2] Point B y-value
+   * @param  {Number} x1 Point A x-value
+   * @param  {Number} y1 Point A y-value
+   * @param  {Number} x2 Point B x-value
+   * @param  {Number} y2 Point B y-value
    * @return {GraphicLine} New GraphicLine
    */
   pub.line = function(x1, y1, x2, y2) {
+    if (arguments.length !== 4) error("Not enough parameters to draw a line! Use: x1, y1, x2, y2");
     var lines = currentPage().graphicLines;
     var newLine = lines.add( currentLayer() );
     with(newLine) {
@@ -542,7 +545,7 @@
    * @return {Rectangle} New rectangle
    */
   pub.rect = function(x, y, w, h){
-    if (arguments.length !== 4) error("Not enough parameters! Use: x, y, w, h");
+    if (arguments.length !== 4) error("Not enough parameters to draw a rect! Use: x, y, w, h");
     var rectBounds = [];
     if (currRectMode === pub.CORNER) {
       rectBounds[0] = y;
@@ -801,9 +804,19 @@
         + "Grey,name "
         + "Name is optional");
     }
-    newCol = currentDoc().colors.add();
-    newCol.properties = props;
-    return newCol;
+
+    // check whether color was already created and added to swatches,
+    // keeps the document clean ...
+    try {
+      var col = currentDoc().swatches.item(props.name);
+      col.name;
+      col.properties = props;
+      return col;
+    } catch (e) {
+      newCol = currentDoc().colors.add();
+      newCol.properties = props;
+      return newCol;
+    }
   };
 
   /**

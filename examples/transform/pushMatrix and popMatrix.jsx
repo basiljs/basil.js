@@ -2,11 +2,17 @@
 
 function draw() {
   var tileCount = 10;
+  var rectWidth = 80;
   var randomX = b.random(0,b.width);
   var randomY = b.random(0,b.height);
 
   b.noStroke();
-  b.fill("Black");
+  b.rectMode( b.CENTER );
+
+  var black = b.color("Black");
+  var red = b.color(255,0,0);
+  var green = b.color(0,255,0);
+  var white = b.color(0); // cmyk white
 
   for (var gridY = 0; gridY < tileCount; gridY++) {
     for (var gridX = 0; gridX < tileCount; gridX++) {
@@ -17,12 +23,21 @@ function draw() {
       b.pushMatrix();
       b.translate(posX,posY);
       b.rotate(angle);
-      b.rect(0,0,75,10);
+
+      b.fill( black );
+      b.rect(0,0,rectWidth,10);
+
+      b.fill( white );
+      b.ellipse(0,0,5,5);
+
+      b.translate(rectWidth/2,0);
+      b.fill( red );
+      b.ellipse(0,0,12,12);
       b.popMatrix();
     }
   }
 
-  b.fill(0,255,0);
+  b.fill( green );
   b.ellipse(randomX,randomY,30,30);
 };
 
