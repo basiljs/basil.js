@@ -637,7 +637,7 @@
                 {
                     "name": "img",
                     "description": "The image file name in the document's data directory or a File instance",
-                    "type": "String"
+                    "type": "String|File"
                 },
                 {
                     "name": "x",
@@ -671,7 +671,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1565,
+            "line": 1569,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",
@@ -690,8 +690,10 @@
         },
         {
             "file": "basil.js",
-            "line": 1585,
+            "line": 1589,
             "description": "Returns the currently selected object(s).",
+            "itemtype": "method",
+            "name": "selection",
             "return": {
                 "description": "Array of selected object(s).",
                 "type": "Object[]"
@@ -700,7 +702,26 @@
         },
         {
             "file": "basil.js",
-            "line": 1823,
+            "line": 1603,
+            "description": "Reads the contents of a file and creates a String array of its individual lines. \nIf the file is specified by name as String, it must be located in the document's data directory.",
+            "itemtype": "method",
+            "name": "loadStrings",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "The text file name in the document's data directory or a File instance",
+                    "type": "String|File"
+                }
+            ],
+            "return": {
+                "description": "Array of the individual lines in the given file.",
+                "type": "String[]"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1850,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
             "itemtype": "method",
             "name": "go",

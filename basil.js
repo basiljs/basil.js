@@ -1076,7 +1076,7 @@
    * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
    * 
    * @method image
-   * @param  {String} img The image file name in the document's data directory or a File instance
+   * @param  {String|File} img The image file name in the document's data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
    * @param  {Number} [y] The y position on the current page. Ignored if x is not a number.
    * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if x is not a number.
@@ -1084,23 +1084,8 @@
    * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
    */
   pub.image = function(img, x, y, w, h) {
-    var file = null;
-    if (img instanceof File) {
-      file = img;
-    } else {
-      var docPath = null;
-      try {
-        docPath = currentDoc().filePath;
-      } catch (e) {
-        error("The current document must be saved before an image located in the document's data directory can be placed.");
-      }
-      file = new File(docPath.absoluteURI + '/data/' + img);
-    }
-    if (!file.exists) {
-      error('The file "' + file + '" does not exist.');
-    }
-
-    var frame = null,
+    var file = initDataFile(img),
+      frame = null,
       fitOptions = null;
     if (x instanceof Rectangle ||
         x instanceof Oval ||
@@ -1155,6 +1140,25 @@
       error("Unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
     }
     return currImageMode;
+  };
+
+  var initDataFile = function(file) {
+    var result = null;
+    if (file instanceof File) {
+      result = file;
+    } else {
+      var docPath = null;
+      try {
+        docPath = currentDoc().filePath;
+      } catch (e) {
+        error("The current document must be saved before an image located in the document's data directory can be placed.");
+      }
+      result = new File(docPath.absoluteURI + '/data/' + file);
+    }
+    if (!result.exists) {
+      error('The file "' + result + '" does not exist.');
+    }
+    return result;
   };
   
 
@@ -1584,6 +1588,8 @@
 
   /**
    * Returns the currently selected object(s). 
+   * 
+   * @method selection
    * @return {Object[]} Array of selected object(s).
    */
   pub.selection = function() {
@@ -1592,6 +1598,27 @@
       selection = [selection];
     }
     return selection;
+  };
+
+  /**
+   * Reads the contents of a file and creates a String array of its individual lines. 
+   * If the file is specified by name as String, it must be located in the document's data directory.
+   * 
+   * @method loadStrings
+   * @param  {String|File} file The text file name in the document's data directory or a File instance
+   * @return {String[]}  Array of the individual lines in the given file.
+   */
+  pub.loadStrings = function(file) {
+    var inputFile = initDataFile(file),
+      result = [];
+
+    inputFile.open('r');
+    while (!inputFile.eof) { 
+      result.push(inputFile.readln());
+    }
+    inputFile.close();
+
+    return result;
   };
 
 
