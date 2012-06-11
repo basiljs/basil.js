@@ -16,6 +16,7 @@
   pub.PX = "px";
   pub.CM = "cm";
   pub.MM = "mm";
+  pub.IN = "inch";
   pub.CORNER = "corner";
   pub.CORNERS = "corners";
   pub.CENTER = "center";
@@ -206,12 +207,14 @@
     if (units === pub.CM || 
         units === pub.MM ||
         units === pub.PT || 
-        units === pub.PX ) {
+        units === pub.PX ||
+        units === pub.IN) {
       var unitType = null;
       if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
       else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
       else if (units === pub.PT) unitType = MeasurementUnits.points;
       else if (units === pub.PX) unitType = MeasurementUnits.pixels;
+      else if (units === pub.PX) unitType = MeasurementUnits.inches;
       var doc = currentDoc(); 
       with (doc.viewPreferences){
         //* MeasurementUnits.agates
