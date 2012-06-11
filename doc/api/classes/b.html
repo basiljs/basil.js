@@ -132,6 +132,13 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
+                                <a href="#method_characters">characters</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_characterStyle">characterStyle</a>
 
                                 
@@ -244,6 +251,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_lines">lines</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_linkTextFrames">linkTextFrames</a>
 
                                 
@@ -272,6 +286,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_paragraphs">paragraphs</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_paragraphStyle">paragraphStyle</a>
 
                                 
@@ -294,6 +315,13 @@
                         
                             <li class="index-item method">
                                 <a href="#method_selection">selection</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_stories">stories</a>
 
                                 
                                 
@@ -376,6 +404,13 @@
                                 
                             </li>
                         
+                            <li class="index-item method">
+                                <a href="#method_words">words</a>
+
+                                
+                                
+                            </li>
+                        
                     </ul>
                 </div>
             
@@ -412,6 +447,115 @@
         
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_characters" class="method item">
+    <h3 class="name"><code>characters</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>item</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cb</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l198"><code>basil.js:198</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">item</code>
+                        <span class="type">Document | Story | TextFrame | Paragraph | Line | Word</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The document, story, text frame, paragraph, line or word instance to 
+                                                   iterate the characters in</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cb</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The callback function to call with each character, passed arguments: character, loopCount</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
 
                 
                     <div id="method_characterStyle" class="method item">
@@ -460,7 +604,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1081"><code>basil.js:1081</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1180"><code>basil.js:1180</code></a>
         
         </p>
 
@@ -566,7 +710,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l141"><code>basil.js:141</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l239"><code>basil.js:239</code></a>
         
         </p>
 
@@ -674,7 +818,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l736"><code>basil.js:736</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l834"><code>basil.js:834</code></a>
         
         </p>
 
@@ -866,7 +1010,7 @@ During a sleep period, checks at 100 millisecond intervals to see whether the sl
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l125"><code>basil.js:125</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l223"><code>basil.js:223</code></a>
         
         </p>
 
@@ -991,7 +1135,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l450"><code>basil.js:450</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l548"><code>basil.js:548</code></a>
         
         </p>
 
@@ -1137,7 +1281,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l642"><code>basil.js:642</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l740"><code>basil.js:740</code></a>
         
         </p>
 
@@ -1224,7 +1368,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l708"><code>basil.js:708</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l806"><code>basil.js:806</code></a>
         
         </p>
 
@@ -1315,7 +1459,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1649"><code>basil.js:1649</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1748"><code>basil.js:1748</code></a>
         
         </p>
 
@@ -1405,7 +1549,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1947"><code>basil.js:1947</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l2046"><code>basil.js:2046</code></a>
         
         </p>
 
@@ -1473,7 +1617,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l240"><code>basil.js:240</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l338"><code>basil.js:338</code></a>
         
         </p>
 
@@ -1577,7 +1721,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l258"><code>basil.js:258</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l356"><code>basil.js:356</code></a>
         
         </p>
 
@@ -1705,7 +1849,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1146"><code>basil.js:1146</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1245"><code>basil.js:1245</code></a>
         
         </p>
 
@@ -1877,7 +2021,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l179"><code>basil.js:179</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l277"><code>basil.js:277</code></a>
         
         </p>
 
@@ -1994,7 +2138,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l822"><code>basil.js:822</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l920"><code>basil.js:920</code></a>
         
         </p>
 
@@ -2148,7 +2292,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l509"><code>basil.js:509</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l607"><code>basil.js:607</code></a>
         
         </p>
 
@@ -2251,6 +2395,115 @@ N.B.: Both color must be either CMYK or RGB.</p>
 </div>
 
                 
+                    <div id="method_lines" class="method item">
+    <h3 class="name"><code>lines</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>item</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cb</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l154"><code>basil.js:154</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Calls the given callback function with each line of the given document, story, text frame or paragraph.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">item</code>
+                        <span class="type">Document | Story | TextFrame | Paragraph</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The document, story, text frame or paragraph instance to 
+                                                  iterate the lines in</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cb</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The callback function to call with each line, passed arguments: line, loopCount</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_linkTextFrames" class="method item">
     <h3 class="name"><code>linkTextFrames</code></h3>
 
@@ -2299,7 +2552,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1127"><code>basil.js:1127</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1226"><code>basil.js:1226</code></a>
         
         </p>
 
@@ -2405,7 +2658,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1683"><code>basil.js:1683</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1782"><code>basil.js:1782</code></a>
         
         </p>
 
@@ -2510,7 +2763,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l619"><code>basil.js:619</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l717"><code>basil.js:717</code></a>
         
         </p>
 
@@ -2614,7 +2867,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l156"><code>basil.js:156</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l254"><code>basil.js:254</code></a>
         
         </p>
 
@@ -2673,6 +2926,114 @@ If the file is specified by name as String, it must be located in the document's
 </div>
 
                 
+                    <div id="method_paragraphs" class="method item">
+    <h3 class="name"><code>paragraphs</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>item</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cb</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l133"><code>basil.js:133</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Calls the given callback function with each paragraph of the given document, story or text frame.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">item</code>
+                        <span class="type">Document | Story | TextFrame</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The story or text frame instance to iterate the paragraphs in</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cb</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The callback function to call with each paragraph, passed arguments: para, loopCount</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_paragraphStyle" class="method item">
     <h3 class="name"><code>paragraphStyle</code></h3>
 
@@ -2719,7 +3080,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1099"><code>basil.js:1099</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1198"><code>basil.js:1198</code></a>
         
         </p>
 
@@ -2841,7 +3202,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l537"><code>basil.js:537</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l635"><code>basil.js:635</code></a>
         
         </p>
 
@@ -2992,7 +3353,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1716"><code>basil.js:1716</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1815"><code>basil.js:1815</code></a>
         
         </p>
 
@@ -3089,7 +3450,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1669"><code>basil.js:1669</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1768"><code>basil.js:1768</code></a>
         
         </p>
 
@@ -3118,6 +3479,114 @@ If the given file exists it gets overridden.</p>
                 
             </div>
         </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_stories" class="method item">
+    <h3 class="name"><code>stories</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>doc</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cb</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l122"><code>basil.js:122</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Calls the given callback function with each story of the given document.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">doc</code>
+                        <span class="type">Document</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The document instance to iterate the stories in</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cb</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The callback function to call with each story, passed arguments: story, loopCount</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
     
 
     
@@ -3166,7 +3635,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l675"><code>basil.js:675</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l773"><code>basil.js:773</code></a>
         
         </p>
 
@@ -3253,7 +3722,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l722"><code>basil.js:722</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l820"><code>basil.js:820</code></a>
         
         </p>
 
@@ -3368,7 +3837,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l879"><code>basil.js:879</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l977"><code>basil.js:977</code></a>
         
         </p>
 
@@ -3540,7 +4009,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1014"><code>basil.js:1014</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1113"><code>basil.js:1113</code></a>
         
         </p>
 
@@ -3659,7 +4128,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l986"><code>basil.js:986</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1085"><code>basil.js:1085</code></a>
         
         </p>
 
@@ -3764,7 +4233,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1053"><code>basil.js:1053</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1152"><code>basil.js:1152</code></a>
         
         </p>
 
@@ -3869,7 +4338,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1038"><code>basil.js:1038</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1137"><code>basil.js:1137</code></a>
         
         </p>
 
@@ -3975,7 +4444,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1000"><code>basil.js:1000</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1099"><code>basil.js:1099</code></a>
         
         </p>
 
@@ -4080,7 +4549,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1067"><code>basil.js:1067</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1166"><code>basil.js:1166</code></a>
         
         </p>
 
@@ -4197,7 +4666,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l928"><code>basil.js:928</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1026"><code>basil.js:1026</code></a>
         
         </p>
 
@@ -4339,7 +4808,7 @@ corresponding value(s) in an array. This can either be an array containing the v
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l199"><code>basil.js:199</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l297"><code>basil.js:297</code></a>
         
         </p>
 
@@ -4392,6 +4861,115 @@ corresponding value(s) in an array. This can either be an array containing the v
                 
             </div>
         </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_words" class="method item">
+    <h3 class="name"><code>words</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>item</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cb</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l176"><code>basil.js:176</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Calls the given callback function with each word of the given document, story, text frame, paragraph or line.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">item</code>
+                        <span class="type">Document | Story | TextFrame | Paragraph | Line</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The document, story, text frame, paragraph or line instance 
+                                                       to iterate the words in</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cb</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The callback function to call with each word, passed arguments: word, loopCount</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
     
 
     
