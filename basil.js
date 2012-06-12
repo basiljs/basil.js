@@ -684,6 +684,74 @@
     return newRect;
   };
 
+  /**
+   * The function calculates the geometric bounds of any given object. 
+   * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
+   *
+   * @method bounds
+   * @param  {Text|Object} obj The object to calculate the geometric bounds
+   * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
+   */
+  pub.bounds = function (obj) {
+    var x1,y1,x2,y2,w,h;
+
+    if (isText(obj)) {
+      var baseline = obj.baseline;
+      var ascent = obj.ascent;
+      var descent = obj.descent;
+
+      x1 = obj.horizontalOffset;
+      y1 = baseline - ascent;
+      x2 = obj.endHorizontalOffset;
+      y2 = baseline + descent;
+      w = x2-x1;
+      h = y2-y1;
+
+      if (w < 0 || h <0) {
+        warning("bounds(textObj), not possible to get correct bounds, possible linebreak within textObj");
+      };
+
+      // TODO: not sure if this 100% correct, check
+      // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
+      var xHeight = y1+descent;
+
+      return {'width':w, 
+              'height':h, 
+              'left':x1, 
+              'right':x2, 
+              'top':y1, 
+              'bottom':y2,
+              'baseline':baseline,
+              'xHeight':xHeight };
+    } else {
+      // is it a pageItem?
+      try {
+        var geometricBounds = obj.geometricBounds; //[y1, x1, y2, x2]
+        x1 = geometricBounds[1];
+        y1 = geometricBounds[0];
+        x2 = geometricBounds[3];
+        y2 = geometricBounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      } catch(e) {}
+
+      // everything else e.g. page, spread
+      try {
+        var bounds = obj.bounds; //[y1, x1, y2, x2]
+        x1 = bounds[1];
+        y1 = bounds[0];
+        x2 = bounds[3];
+        y2 = bounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      } catch(e) {
+        error("bounds(obj), invalide type! Can't get bounds for this object.");
+      }
+    } 
+  };
+
   // -- Attributes --
 
   pub.rectMode = function (mode) {
