@@ -724,6 +724,7 @@
               'baseline':baseline,
               'xHeight':xHeight };
     } else {
+      // TODO, get rid of try catch and use hasOwnProp() ...
       // is it a pageItem?
       try {
         var geometricBounds = obj.geometricBounds; //[y1, x1, y2, x2]
