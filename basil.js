@@ -138,17 +138,11 @@
    * @param  {Function} cb  The callback function to call with each paragraph, passed arguments: para, loopCount
    */
   pub.paragraphs = function(item, cb) {
-    var paras = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.paragraphs(story, function(para) {
-          paras.push(para);
-        });
-      });
+      forEachStoryProperty(item, 'paragraphs', cb);
     } else {
-      paras = item.paragraphs;
+      forEach(item.paragraphs, cb);
     }
-    forEach(paras, cb);
   };
 
   /**
@@ -160,17 +154,11 @@
    * @param  {Function} cb The callback function to call with each line, passed arguments: line, loopCount
    */
   pub.lines = function(item, cb) {
-    var lines = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.lines(story, function(line) {
-          lines.push(line);
-        });
-      });
+      forEachStoryProperty(item, 'lines', cb);
     } else {
-      lines = item.lines;
+      forEach(item.lines, cb);
     }
-    forEach(lines, cb);
   };
 
   /**
@@ -182,17 +170,11 @@
    * @param  {Function} cb The callback function to call with each word, passed arguments: word, loopCount
    */
   pub.words = function(item, cb) {
-    var words = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.words(story, function(word) {
-          words.push(word);
-        });
-      });
+      forEachStoryProperty(item, 'words', cb);
     } else {
-      words = item.words;
+      forEach(item.words, cb);
     }
-    forEach(words, cb);
   };
 
   /**
@@ -204,17 +186,21 @@
    * @param  {Function} cb The callback function to call with each character, passed arguments: character, loopCount
    */
   pub.characters = function(item, cb) {
-    var characters = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.characters(story, function(character) {
-          characters.push(character);
-        });
-      });
+      forEachStoryProperty(item, 'characters', cb);
     } else {
-      characters = item.characters;
+      forEach(item.characters, cb);
     }
-    forEach(characters, cb);
+  };
+
+  var forEachStoryProperty = function(doc, property, cb) {
+    var loopCount = 0;
+    pub.stories(doc, function(story) {
+      var properties = story[property];
+      for (var i = 0, len = properties.length; i < len; i++) {
+        cb(properties[i], loopCount++);
+      };
+    });
   };
 
   // ----------------------------------------
