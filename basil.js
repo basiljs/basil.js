@@ -724,9 +724,8 @@
               'baseline':baseline,
               'xHeight':xHeight };
     } else {
-      // TODO, get rid of try catch and use hasOwnProp() ...
       // is it a pageItem?
-      try {
+      if (obj.hasOwnProperty("geometricBounds")) {
         var geometricBounds = obj.geometricBounds; //[y1, x1, y2, x2]
         x1 = geometricBounds[1];
         y1 = geometricBounds[0];
@@ -735,10 +734,9 @@
         w = x2-x1;
         h = y2-y1;
         return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
-      } catch(e) {}
-
+      } 
       // everything else e.g. page, spread
-      try {
+      else if (obj.hasOwnProperty("bounds")) {
         var bounds = obj.bounds; //[y1, x1, y2, x2]
         x1 = bounds[1];
         y1 = bounds[0];
@@ -747,7 +745,9 @@
         w = x2-x1;
         h = y2-y1;
         return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
-      } catch(e) {
+      } 
+      // no idea what that might be, give up
+      else {
         error("bounds(obj), invalide type! Can't get bounds for this object.");
       }
     } 
