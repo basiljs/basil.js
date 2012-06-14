@@ -2130,8 +2130,50 @@
    */ 
   pub.go = function() {
     currentDoc();
-    runUserScript();
-  }
+    runSetup();
+    runDraw();
+  };
+
+  /**
+   * EXPERIMENTAL!
+   * 
+   * Causes basil to continuously execute the code within draw() when InDesign is idle. 
+   * #targetengine "loop"; must be at the very top in the script file.
+   * If noLoop() is called, the code in draw() stops executing.
+   * It is essential to call noLoop() or execute the script lib/noLoop.jsx when the script is finished!
+   * The sleep property is the amount of time that elapses before draw() is called again.
+   * 
+   * @method loop
+   * @param  {Number} sleep The amount of time in milliseconds that elapses before draw() is called again
+   */
+  pub.loop = function(sleep) {
+    if ($.engineName !== 'loop') {
+      error('Add #targetengine "loop"; at the very top of your script.');
+    }
+
+    currentDoc();
+    runSetup();
+
+    var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
+    idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
+      runDraw();
+    }, false);
+    alert("Run the script lib/noLoop.jsx to end the draw loop and clean up!");
+  };
+
+  /**
+   * EXPERIMENTAL!
+   * 
+   * Stops basil from continuously executing the code within draw().
+   * 
+   * @method noLoop
+   */
+  pub.noLoop = function() {
+    var allIdleTasks = app.idleTasks;
+    for (var i = app.idleTasks.length - 1; i >= 0; i--) {
+      allIdleTasks[i].remove();
+    };
+  };
 
 
   // ----------------------------------------
@@ -2148,11 +2190,16 @@
     currFillTint = 100;
   };
 
-  var runUserScript = function() {
+  var runSetup = function() {
     app.doScript(function() {
       if (typeof glob.setup === 'function') {
         glob.setup();
-      }
+      }    
+    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+  };
+
+  var runDraw = function() {
+    app.doScript(function() {
       if (typeof glob.draw === 'function') {
         glob.draw();
       }      

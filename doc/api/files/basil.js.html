@@ -226,17 +226,11 @@
    * @param  {Function} cb  The callback function to call with each paragraph, passed arguments: para, loopCount
    *&#x2F;
   pub.paragraphs = function(item, cb) {
-    var paras = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.paragraphs(story, function(para) {
-          paras.push(para);
-        });
-      });
+      forEachStoryProperty(item, &#x27;paragraphs&#x27;, cb);
     } else {
-      paras = item.paragraphs;
+      forEach(item.paragraphs, cb);
     }
-    forEach(paras, cb);
   };
 
   &#x2F;**
@@ -248,17 +242,11 @@
    * @param  {Function} cb The callback function to call with each line, passed arguments: line, loopCount
    *&#x2F;
   pub.lines = function(item, cb) {
-    var lines = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.lines(story, function(line) {
-          lines.push(line);
-        });
-      });
+      forEachStoryProperty(item, &#x27;lines&#x27;, cb);
     } else {
-      lines = item.lines;
+      forEach(item.lines, cb);
     }
-    forEach(lines, cb);
   };
 
   &#x2F;**
@@ -270,17 +258,11 @@
    * @param  {Function} cb The callback function to call with each word, passed arguments: word, loopCount
    *&#x2F;
   pub.words = function(item, cb) {
-    var words = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.words(story, function(word) {
-          words.push(word);
-        });
-      });
+      forEachStoryProperty(item, &#x27;words&#x27;, cb);
     } else {
-      words = item.words;
+      forEach(item.words, cb);
     }
-    forEach(words, cb);
   };
 
   &#x2F;**
@@ -292,17 +274,21 @@
    * @param  {Function} cb The callback function to call with each character, passed arguments: character, loopCount
    *&#x2F;
   pub.characters = function(item, cb) {
-    var characters = [];
     if (item instanceof Document) {
-      pub.stories(item, function(story) {
-        pub.characters(story, function(character) {
-          characters.push(character);
-        });
-      });
+      forEachStoryProperty(item, &#x27;characters&#x27;, cb);
     } else {
-      characters = item.characters;
+      forEach(item.characters, cb);
     }
-    forEach(characters, cb);
+  };
+
+  var forEachStoryProperty = function(doc, property, cb) {
+    var loopCount = 0;
+    pub.stories(doc, function(story) {
+      var properties = story[property];
+      for (var i = 0, len = properties.length; i &lt; len; i++) {
+        cb(properties[i], loopCount++);
+      };
+    });
   };
 
   &#x2F;&#x2F; ----------------------------------------
@@ -770,6 +756,75 @@
                      currMatrix.adobeMatrix() );
     }
     return newRect;
+  };
+
+  &#x2F;**
+   * The function calculates the geometric bounds of any given object. 
+   * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
+   *
+   * @method bounds
+   * @param  {Text|Object} obj The object to calculate the geometric bounds
+   * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
+   *&#x2F;
+  pub.bounds = function (obj) {
+    var x1,y1,x2,y2,w,h;
+
+    if (isText(obj)) {
+      var baseline = obj.baseline;
+      var ascent = obj.ascent;
+      var descent = obj.descent;
+
+      x1 = obj.horizontalOffset;
+      y1 = baseline - ascent;
+      x2 = obj.endHorizontalOffset;
+      y2 = baseline + descent;
+      w = x2-x1;
+      h = y2-y1;
+
+      if (w &lt; 0 || h &lt;0) {
+        warning(&quot;bounds(textObj), not possible to get correct bounds, possible linebreak within textObj&quot;);
+      };
+
+      &#x2F;&#x2F; TODO: not sure if this 100% correct, check
+      &#x2F;&#x2F; http:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;File:Typography_Line_Terms.svg
+      var xHeight = y1+descent;
+
+      return {&#x27;width&#x27;:w, 
+              &#x27;height&#x27;:h, 
+              &#x27;left&#x27;:x1, 
+              &#x27;right&#x27;:x2, 
+              &#x27;top&#x27;:y1, 
+              &#x27;bottom&#x27;:y2,
+              &#x27;baseline&#x27;:baseline,
+              &#x27;xHeight&#x27;:xHeight };
+    } else {
+      &#x2F;&#x2F; is it a pageItem?
+      if (obj.hasOwnProperty(&quot;geometricBounds&quot;)) {
+        var geometricBounds = obj.geometricBounds; &#x2F;&#x2F;[y1, x1, y2, x2]
+        x1 = geometricBounds[1];
+        y1 = geometricBounds[0];
+        x2 = geometricBounds[3];
+        y2 = geometricBounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
+      } 
+      &#x2F;&#x2F; everything else e.g. page, spread
+      else if (obj.hasOwnProperty(&quot;bounds&quot;)) {
+        var bounds = obj.bounds; &#x2F;&#x2F;[y1, x1, y2, x2]
+        x1 = bounds[1];
+        y1 = bounds[0];
+        x2 = bounds[3];
+        y2 = bounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
+      } 
+      &#x2F;&#x2F; no idea what that might be, give up
+      else {
+        error(&quot;bounds(obj), invalide type! Can&#x27;t get bounds for this object.&quot;);
+      }
+    } 
   };
 
   &#x2F;&#x2F; -- Attributes --
@@ -1396,6 +1451,31 @@
                      currMatrix.adobeMatrix() );
     }
     return frame;
+  };
+
+  &#x2F;**
+   * Transforms position and size of an image. 
+   * The image fit options are always &quot;contentToFrame&quot;.
+   *
+   * @method transformImage
+   * @param  {Graphic} img The image to transform
+   * @param  {Number} x       New x
+   * @param  {Number} y       New y
+   * @param  {Number} width   New width
+   * @param  {Number} height  New height
+   *&#x2F;
+  pub.transformImage = function(img, x, y, width, height) {
+    if (img.hasOwnProperty(&quot;geometricBounds&quot;) &amp;&amp; img.hasOwnProperty(&quot;fit&quot;)) {
+      &#x2F;&#x2F;[y1, x1, y2, x2]
+      img.geometricBounds = [y,x,y+height,x+width];
+      if (currImageMode === pub.CENTER) {
+        img.move(null, [-(width &#x2F; 2), -(height &#x2F; 2)]);
+      } 
+      img.fit( FitOptions.CENTER_CONTENT );
+      img.fit( FitOptions.contentToFrame );
+    } else {
+      error(&quot;transformImage(). Wrong type! Use: img, x, y, width, height&quot;);
+    }
   };
 
   pub.imageMode = function(mode) {
@@ -2138,8 +2218,50 @@
    *&#x2F; 
   pub.go = function() {
     currentDoc();
-    runUserScript();
-  }
+    runSetup();
+    runDraw();
+  };
+
+  &#x2F;**
+   * EXPERIMENTAL!
+   * 
+   * Causes basil to continuously execute the code within draw() when InDesign is idle. 
+   * #targetengine &quot;loop&quot;; must be at the very top in the script file.
+   * If noLoop() is called, the code in draw() stops executing.
+   * It is essential to call noLoop() or execute the script lib&#x2F;noLoop.jsx when the script is finished!
+   * The sleep property is the amount of time that elapses before draw() is called again.
+   * 
+   * @method loop
+   * @param  {Number} sleep The amount of time in milliseconds that elapses before draw() is called again
+   *&#x2F;
+  pub.loop = function(sleep) {
+    if ($.engineName !== &#x27;loop&#x27;) {
+      error(&#x27;Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
+    }
+
+    currentDoc();
+    runSetup();
+
+    var idleTask = app.idleTasks.add({name: &quot;basil_idle_task&quot;, sleep: sleep});
+    idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
+      runDraw();
+    }, false);
+    alert(&quot;Run the script lib&#x2F;noLoop.jsx to end the draw loop and clean up!&quot;);
+  };
+
+  &#x2F;**
+   * EXPERIMENTAL!
+   * 
+   * Stops basil from continuously executing the code within draw().
+   * 
+   * @method noLoop
+   *&#x2F;
+  pub.noLoop = function() {
+    var allIdleTasks = app.idleTasks;
+    for (var i = app.idleTasks.length - 1; i &gt;= 0; i--) {
+      allIdleTasks[i].remove();
+    };
+  };
 
 
   &#x2F;&#x2F; ----------------------------------------
@@ -2156,11 +2278,16 @@
     currFillTint = 100;
   };
 
-  var runUserScript = function() {
+  var runSetup = function() {
     app.doScript(function() {
       if (typeof glob.setup === &#x27;function&#x27;) {
         glob.setup();
-      }
+      }    
+    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+  };
+
+  var runDraw = function() {
+    app.doScript(function() {
       if (typeof glob.draw === &#x27;function&#x27;) {
         glob.draw();
       }      

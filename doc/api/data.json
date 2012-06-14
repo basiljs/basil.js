@@ -108,7 +108,7 @@
         },
         {
             "file": "basil.js",
-            "line": 154,
+            "line": 148,
             "description": "Calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "itemtype": "method",
             "name": "lines",
@@ -128,7 +128,7 @@
         },
         {
             "file": "basil.js",
-            "line": 176,
+            "line": 164,
             "description": "Calls the given callback function with each word of the given document, story, text frame, paragraph or line.",
             "itemtype": "method",
             "name": "words",
@@ -148,7 +148,7 @@
         },
         {
             "file": "basil.js",
-            "line": 198,
+            "line": 180,
             "description": "Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.",
             "itemtype": "method",
             "name": "characters",
@@ -168,7 +168,7 @@
         },
         {
             "file": "basil.js",
-            "line": 223,
+            "line": 209,
             "description": "Sets or possibly creates the current document and returns it. \nIf the param doc is not given the current document gets set to the active document \nin the application. If no document at all is open, a new document gets created.",
             "itemtype": "method",
             "name": "doc",
@@ -188,7 +188,7 @@
         },
         {
             "file": "basil.js",
-            "line": 239,
+            "line": 225,
             "description": "Closes the current document.",
             "itemtype": "method",
             "name": "close",
@@ -210,7 +210,7 @@
         },
         {
             "file": "basil.js",
-            "line": 254,
+            "line": 240,
             "description": "Returns the current page and sets it if argument page is given.",
             "itemtype": "method",
             "name": "page",
@@ -230,7 +230,7 @@
         },
         {
             "file": "basil.js",
-            "line": 277,
+            "line": 263,
             "description": "Returns the current layer and sets it if argument layer is given.",
             "itemtype": "method",
             "name": "layer",
@@ -250,7 +250,7 @@
         },
         {
             "file": "basil.js",
-            "line": 297,
+            "line": 283,
             "description": "Sets the units of the document (like right clicking the rulers).",
             "itemtype": "method",
             "name": "units",
@@ -270,7 +270,7 @@
         },
         {
             "file": "basil.js",
-            "line": 338,
+            "line": 324,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "itemtype": "method",
             "name": "guideX",
@@ -289,7 +289,7 @@
         },
         {
             "file": "basil.js",
-            "line": 356,
+            "line": 342,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "itemtype": "method",
             "name": "guideY",
@@ -308,7 +308,7 @@
         },
         {
             "file": "basil.js",
-            "line": 548,
+            "line": 534,
             "description": "Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.\nThe first two parameters set the location, the third sets the width, and the fourth sets the height.",
             "itemtype": "method",
             "name": "ellipse",
@@ -342,7 +342,7 @@
         },
         {
             "file": "basil.js",
-            "line": 607,
+            "line": 593,
             "description": "Draws a line (a direct path between two points) to the page.",
             "itemtype": "method",
             "name": "line",
@@ -376,7 +376,7 @@
         },
         {
             "file": "basil.js",
-            "line": 635,
+            "line": 621,
             "description": "Draws a rectangle to the page.",
             "itemtype": "method",
             "name": "rect",
@@ -410,7 +410,26 @@
         },
         {
             "file": "basil.js",
-            "line": 717,
+            "line": 673,
+            "description": "The function calculates the geometric bounds of any given object. \nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
+            "itemtype": "method",
+            "name": "bounds",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The object to calculate the geometric bounds",
+                    "type": "Text|Object"
+                }
+            ],
+            "return": {
+                "description": "Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight",
+                "type": "Object"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 772,
             "description": "Returns the object style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "objectStyle",
@@ -429,7 +448,7 @@
         },
         {
             "file": "basil.js",
-            "line": 740,
+            "line": 795,
             "description": "Sets the color used to fill shapes.",
             "itemtype": "method",
             "name": "fill",
@@ -444,7 +463,7 @@
         },
         {
             "file": "basil.js",
-            "line": 773,
+            "line": 828,
             "description": "Sets the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "stroke",
@@ -459,7 +478,7 @@
         },
         {
             "file": "basil.js",
-            "line": 806,
+            "line": 861,
             "description": "Sets the tint of the color used to fill shapes.",
             "itemtype": "method",
             "name": "fillTint",
@@ -474,7 +493,7 @@
         },
         {
             "file": "basil.js",
-            "line": 820,
+            "line": 875,
             "description": "Sets the tint of the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "strokeTint",
@@ -489,7 +508,7 @@
         },
         {
             "file": "basil.js",
-            "line": 834,
+            "line": 889,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document",
             "itemtype": "method",
             "name": "color",
@@ -508,7 +527,7 @@
         },
         {
             "file": "basil.js",
-            "line": 920,
+            "line": 975,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "itemtype": "method",
             "name": "lerpColor",
@@ -537,7 +556,7 @@
         },
         {
             "file": "basil.js",
-            "line": 977,
+            "line": 1032,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nThe default document font size will be used unless a font size is set with the textSize() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() and textYAlign() functions. \nThe width and height parameters define a rectangular area.",
             "itemtype": "method",
             "name": "text",
@@ -576,7 +595,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1026,
+            "line": 1081,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the \ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item \n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "itemtype": "method",
             "name": "typo",
@@ -606,7 +625,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1085,
+            "line": 1140,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "itemtype": "method",
             "name": "textFont",
@@ -626,7 +645,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1099,
+            "line": 1154,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "itemtype": "method",
             "name": "textSize",
@@ -646,7 +665,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1113,
+            "line": 1168,
             "description": "Sets the current horizontal and vertical text alignment.",
             "itemtype": "method",
             "name": "textAlign",
@@ -667,7 +686,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1137,
+            "line": 1192,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "itemtype": "method",
             "name": "textLeading",
@@ -687,7 +706,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1152,
+            "line": 1207,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "itemtype": "method",
             "name": "textKerning",
@@ -707,7 +726,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1166,
+            "line": 1221,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "itemtype": "method",
             "name": "textTracking",
@@ -727,7 +746,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1180,
+            "line": 1235,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "characterStyle",
@@ -746,7 +765,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1198,
+            "line": 1253,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "paragraphStyle",
@@ -765,7 +784,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1226,
+            "line": 1281,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
             "itemtype": "method",
             "name": "linkTextFrames",
@@ -785,7 +804,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1245,
+            "line": 1300,
             "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's \ndata directory which is in the same directory where the document is saved in. The image argument can also be a File \ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle, \noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "itemtype": "method",
             "name": "image",
@@ -827,7 +846,42 @@
         },
         {
             "file": "basil.js",
-            "line": 1748,
+            "line": 1368,
+            "description": "Transforms position and size of an image. \nThe image fit options are always \"contentToFrame\".",
+            "itemtype": "method",
+            "name": "transformImage",
+            "params": [
+                {
+                    "name": "img",
+                    "description": "The image to transform",
+                    "type": "Graphic"
+                },
+                {
+                    "name": "x",
+                    "description": "New x",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "New y",
+                    "type": "Number"
+                },
+                {
+                    "name": "width",
+                    "description": "New width",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "New height",
+                    "type": "Number"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1828,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",
@@ -846,7 +900,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1768,
+            "line": 1848,
             "description": "Returns the currently selected object(s).",
             "itemtype": "method",
             "name": "selection",
@@ -858,7 +912,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1782,
+            "line": 1862,
             "description": "Reads the contents of a file and creates a String array of its individual lines. \nIf the file is specified by name as String, it must be located in the document's data directory.",
             "itemtype": "method",
             "name": "loadStrings",
@@ -877,7 +931,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1815,
+            "line": 1895,
             "description": "Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.\nIf the given file exists it gets overridden.",
             "itemtype": "method",
             "name": "saveStrings",
@@ -897,10 +951,33 @@
         },
         {
             "file": "basil.js",
-            "line": 2046,
+            "line": 2126,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
             "itemtype": "method",
             "name": "go",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2137,
+            "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle. \n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/noLoop.jsx when the script is finished!\nThe sleep property is the amount of time that elapses before draw() is called again.",
+            "itemtype": "method",
+            "name": "loop",
+            "params": [
+                {
+                    "name": "sleep",
+                    "description": "The amount of time in milliseconds that elapses before draw() is called again",
+                    "type": "Number"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2164,
+            "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
+            "itemtype": "method",
+            "name": "noLoop",
             "class": "b"
         }
     ]

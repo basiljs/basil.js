@@ -132,6 +132,13 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
+                                <a href="#method_bounds">bounds</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_characters">characters</a>
 
                                 
@@ -272,6 +279,20 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_loop">loop</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_noLoop">noLoop</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_objectStyle">objectStyle</a>
 
                                 
@@ -391,6 +412,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_transformImage">transformImage</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_typo">typo</a>
 
                                 
@@ -449,6 +477,111 @@
                 <h2 class="off-left">Methods</h2>
 
                 
+                    <div id="method_bounds" class="method item">
+    <h3 class="name"><code>bounds</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>obj</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l673"><code>basil.js:673</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The function calculates the geometric bounds of any given object. 
+In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">obj</code>
+                        <span class="type">Text | <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The object to calculate the geometric bounds</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    
+                    Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_characters" class="method item">
     <h3 class="name"><code>characters</code></h3>
 
@@ -497,7 +630,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l198"><code>basil.js:198</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l180"><code>basil.js:180</code></a>
         
         </p>
 
@@ -604,7 +737,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1180"><code>basil.js:1180</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1235"><code>basil.js:1235</code></a>
         
         </p>
 
@@ -710,7 +843,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l239"><code>basil.js:239</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l225"><code>basil.js:225</code></a>
         
         </p>
 
@@ -818,7 +951,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l834"><code>basil.js:834</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l889"><code>basil.js:889</code></a>
         
         </p>
 
@@ -1010,7 +1143,7 @@ During a sleep period, checks at 100 millisecond intervals to see whether the sl
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l223"><code>basil.js:223</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l209"><code>basil.js:209</code></a>
         
         </p>
 
@@ -1135,7 +1268,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l548"><code>basil.js:548</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l534"><code>basil.js:534</code></a>
         
         </p>
 
@@ -1281,7 +1414,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l740"><code>basil.js:740</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l795"><code>basil.js:795</code></a>
         
         </p>
 
@@ -1368,7 +1501,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l806"><code>basil.js:806</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l861"><code>basil.js:861</code></a>
         
         </p>
 
@@ -1459,7 +1592,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1748"><code>basil.js:1748</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1828"><code>basil.js:1828</code></a>
         
         </p>
 
@@ -1549,7 +1682,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l2046"><code>basil.js:2046</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l2126"><code>basil.js:2126</code></a>
         
         </p>
 
@@ -1617,7 +1750,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l338"><code>basil.js:338</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l324"><code>basil.js:324</code></a>
         
         </p>
 
@@ -1721,7 +1854,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l356"><code>basil.js:356</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l342"><code>basil.js:342</code></a>
         
         </p>
 
@@ -1849,7 +1982,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1245"><code>basil.js:1245</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1300"><code>basil.js:1300</code></a>
         
         </p>
 
@@ -2021,7 +2154,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l277"><code>basil.js:277</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l263"><code>basil.js:263</code></a>
         
         </p>
 
@@ -2138,7 +2271,7 @@ If x and y positions are given and width and height are not given, the frame's s
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l920"><code>basil.js:920</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l975"><code>basil.js:975</code></a>
         
         </p>
 
@@ -2292,7 +2425,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l607"><code>basil.js:607</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l593"><code>basil.js:593</code></a>
         
         </p>
 
@@ -2443,7 +2576,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l154"><code>basil.js:154</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l148"><code>basil.js:148</code></a>
         
         </p>
 
@@ -2552,7 +2685,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1226"><code>basil.js:1226</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1281"><code>basil.js:1281</code></a>
         
         </p>
 
@@ -2658,7 +2791,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1782"><code>basil.js:1782</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1862"><code>basil.js:1862</code></a>
         
         </p>
 
@@ -2717,6 +2850,157 @@ If the file is specified by name as String, it must be located in the document's
 </div>
 
                 
+                    <div id="method_loop" class="method item">
+    <h3 class="name"><code>loop</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>sleep</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l2137"><code>basil.js:2137</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>EXPERIMENTAL!</p>
+
+<p>Causes basil to continuously execute the code within draw() when InDesign is idle. </p>
+
+<h1>targetengine "loop"; must be at the very top in the script file.</h1>
+
+<p>If noLoop() is called, the code in draw() stops executing.
+It is essential to call noLoop() or execute the script lib/noLoop.jsx when the script is finished!
+The sleep property is the amount of time that elapses before draw() is called again.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">sleep</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The amount of time in milliseconds that elapses before draw() is called again</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_noLoop" class="method item">
+    <h3 class="name"><code>noLoop</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l2164"><code>basil.js:2164</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>EXPERIMENTAL!</p>
+
+<p>Stops basil from continuously executing the code within draw().</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_objectStyle" class="method item">
     <h3 class="name"><code>objectStyle</code></h3>
 
@@ -2763,7 +3047,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l717"><code>basil.js:717</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l772"><code>basil.js:772</code></a>
         
         </p>
 
@@ -2867,7 +3151,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l254"><code>basil.js:254</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l240"><code>basil.js:240</code></a>
         
         </p>
 
@@ -3080,7 +3364,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1198"><code>basil.js:1198</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1253"><code>basil.js:1253</code></a>
         
         </p>
 
@@ -3202,7 +3486,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l635"><code>basil.js:635</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l621"><code>basil.js:621</code></a>
         
         </p>
 
@@ -3353,7 +3637,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1815"><code>basil.js:1815</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1895"><code>basil.js:1895</code></a>
         
         </p>
 
@@ -3450,7 +3734,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1768"><code>basil.js:1768</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1848"><code>basil.js:1848</code></a>
         
         </p>
 
@@ -3635,7 +3919,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l773"><code>basil.js:773</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l828"><code>basil.js:828</code></a>
         
         </p>
 
@@ -3722,7 +4006,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l820"><code>basil.js:820</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l875"><code>basil.js:875</code></a>
         
         </p>
 
@@ -3837,7 +4121,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l977"><code>basil.js:977</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1032"><code>basil.js:1032</code></a>
         
         </p>
 
@@ -4009,7 +4293,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1113"><code>basil.js:1113</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1168"><code>basil.js:1168</code></a>
         
         </p>
 
@@ -4128,7 +4412,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1085"><code>basil.js:1085</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1140"><code>basil.js:1140</code></a>
         
         </p>
 
@@ -4233,7 +4517,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1152"><code>basil.js:1152</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1207"><code>basil.js:1207</code></a>
         
         </p>
 
@@ -4338,7 +4622,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1137"><code>basil.js:1137</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1192"><code>basil.js:1192</code></a>
         
         </p>
 
@@ -4444,7 +4728,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1099"><code>basil.js:1099</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1154"><code>basil.js:1154</code></a>
         
         </p>
 
@@ -4549,7 +4833,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1166"><code>basil.js:1166</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1221"><code>basil.js:1221</code></a>
         
         </p>
 
@@ -4602,6 +4886,178 @@ The width and height parameters define a rectangular area.</p>
                 
             </div>
         </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_transformImage" class="method item">
+    <h3 class="name"><code>transformImage</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>img</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>x</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>y</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>width</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>height</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1368"><code>basil.js:1368</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Transforms position and size of an image. 
+The image fit options are always "contentToFrame".</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">img</code>
+                        <span class="type">Graphic</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The image to transform</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">x</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>New x</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">y</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>New y</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">width</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>New width</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">height</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>New height</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
     
 
     
@@ -4666,7 +5122,7 @@ The width and height parameters define a rectangular area.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l1026"><code>basil.js:1026</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l1081"><code>basil.js:1081</code></a>
         
         </p>
 
@@ -4808,7 +5264,7 @@ corresponding value(s) in an array. This can either be an array containing the v
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l297"><code>basil.js:297</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l283"><code>basil.js:283</code></a>
         
         </p>
 
@@ -4915,7 +5371,7 @@ corresponding value(s) in an array. This can either be an array containing the v
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l176"><code>basil.js:176</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l164"><code>basil.js:164</code></a>
         
         </p>
 
