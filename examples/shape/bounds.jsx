@@ -25,6 +25,9 @@ function draw() {
 
   // bounds of page items
   var pagebounds = b.bounds( b.page() );
+  for (var prop in pagebounds) {
+    b.println(prop+" "+pagebounds[prop]);
+  }
   b.println( pagebounds.width);
   b.text("pagebounds", pagebounds.left, pagebounds.top, pagebounds.width, pagebounds.height);
 };

@@ -1379,6 +1379,31 @@
     return frame;
   };
 
+  /**
+   * Transforms position and size of an image. 
+   * The image fit options are always "contentToFrame".
+   *
+   * @method transformImage
+   * @param  {Graphic} img The image to transform
+   * @param  {Number} x       New x
+   * @param  {Number} y       New y
+   * @param  {Number} width   New width
+   * @param  {Number} height  New height
+   */
+  pub.transformImage = function(img, x, y, width, height) {
+    if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
+      //[y1, x1, y2, x2]
+      img.geometricBounds = [y,x,y+height,x+width];
+      if (currImageMode === pub.CENTER) {
+        img.move(null, [-(width / 2), -(height / 2)]);
+      } 
+      img.fit( FitOptions.CENTER_CONTENT );
+      img.fit( FitOptions.contentToFrame );
+    } else {
+      error("transformImage(). Wrong type! Use: img, x, y, width, height");
+    }
+  };
+
   pub.imageMode = function(mode) {
     if (arguments.length === 0) return currImageMode;
 
