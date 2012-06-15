@@ -4,14 +4,17 @@
 var ctrl, textFramePage;
 
 function setup() {
-  ctrl = b.text("move me",-250,100, 50,30);
+  b.textSize(20);
+  ctrl = b.text("move me!",-250,100, 100,50);
   textFramePage = b.text("basel", 0,0,b.width,b.height);
 }
 
 function draw() {
   var y = ctrl.geometricBounds[0];
-  textFramePage.contents = "basel "+y;
+  y = b.round(y);
+  textFramePage.contents = "basel "+ y;
   textFramePage.paragraphs[0].pointSize = y;
+  ctrl.contents = "move me!\n"+ y;
 }
 
-b.loop(100);
+b.loop(33);

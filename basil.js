@@ -203,6 +203,46 @@
     });
   };
 
+  /**
+   * Checks whether a var is a Array, returns true if this is the case
+   *
+   * @method isArray
+   * @param  {Object|String|Number}  obj The object to check
+   * @return {Boolean}     [description]
+   */
+  var isArray = pub.isArray = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
+  };
+
+  /**
+   * Checks whether a var is a number, returns true if this is the case
+   * 
+   * @method isNumber
+   * @param  {Object|String|Number}  num The number to ckeck
+   * @return {Boolean}
+   */
+  var isNumber = pub.isNumber = function(num) {
+    return !isNaN(parseFloat(num)) && isFinite(num);
+  };
+
+  /**
+   * Checks whether a var is a indesign text object, returns true if this is the case
+   *
+   * @method isText
+   * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
+   * @return {Boolean}     [description]
+   */
+  var isText = pub.isText = function(obj) {
+    return obj instanceof Character ||
+           obj instanceof InsertionPoint ||
+           obj instanceof Line ||
+           obj instanceof Paragraph ||
+           obj instanceof TextColumn ||
+           obj instanceof TextStyleRange ||
+           obj instanceof Word;
+  };
+
+
   // ----------------------------------------
   // Environment
   
@@ -1268,16 +1308,6 @@
     return style;
   };
 
-  var isText = pub.isText = function(obj) {
-    return obj instanceof Character ||
-           obj instanceof InsertionPoint ||
-           obj instanceof Line ||
-           obj instanceof Paragraph ||
-           obj instanceof TextColumn ||
-           obj instanceof TextStyleRange ||
-           obj instanceof Word;
-  };
-
   /**
    * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
    *
@@ -1621,7 +1651,6 @@
   pub.sq = function(aNumber) {
     return aNumber * aNumber
   };
-  
 
   // -- Trigonometry -- 
   pub.sqrt = Math.sqrt;
@@ -1884,7 +1913,7 @@
   // ----------------------------------------
   // Output
   
-  pub.println = function(msg) {
+  var println = pub.println = function(msg) {
     $.writeln(msg);
   };
 
@@ -2173,6 +2202,7 @@
     for (var i = app.idleTasks.length - 1; i >= 0; i--) {
       allIdleTasks[i].remove();
     };
+    println("noLoop()");
   };
 
 
@@ -2280,10 +2310,6 @@
     var h = pageBounds[2] - pageBounds[0];
     pub.width = w;
     pub.height = h;
-  };
-
-  var isArray = function(obj) {
-    return Object.prototype.toString.call(obj) === '[object Array]';
   };
 
   var error = function(msg) {
