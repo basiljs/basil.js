@@ -2242,11 +2242,9 @@
   };
 
   var runDrawLoop = function() {
-    app.doScript(function() {
-      if (typeof glob.draw === 'function') {
-        glob.draw();
-      }      
-    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+    if (typeof glob.draw === 'function') {
+      glob.draw();
+    }
   };
 
   var welcome = function() {
