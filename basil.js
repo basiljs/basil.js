@@ -2160,7 +2160,7 @@
   pub.go = function() {
     currentDoc();
     runSetup();
-    runDraw();
+    runDrawOnce();
   };
 
   /**
@@ -2177,8 +2177,8 @@
    */
   pub.loop = function(framerate) {
     var sleep = null;
-    if (arguments.length === 0) sleep = 1000/25;
-    else sleep = 1000/framerate;
+    if (arguments.length === 0) sleep = Math.round(1000/25);
+    else sleep = Math.round(1000/framerate);
 
     if ($.engineName !== 'loop') {
       error('Add #targetengine "loop"; at the very top of your script.');
@@ -2189,9 +2189,10 @@
 
     var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
     idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
-      runDraw();
+      runDrawLoop();
     }, false);
     alert("Run the script lib/stop.jsx to end the draw loop and clean up!");
+    println("loop()");
   };
 
   /**
@@ -2232,12 +2233,20 @@
     }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
   };
 
-  var runDraw = function() {
+  var runDrawOnce = function() {
     app.doScript(function() {
       if (typeof glob.draw === 'function') {
         glob.draw();
       }      
     }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+  };
+
+  var runDrawLoop = function() {
+    app.doScript(function() {
+      if (typeof glob.draw === 'function') {
+        glob.draw();
+      }      
+    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
   };
 
   var welcome = function() {
