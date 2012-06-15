@@ -15,3 +15,13 @@ Coding Conventions and Rules
 ----------------------------
 basil.js uses "[Code Conventions for the JavaScript Programming Language](http://javascript.crockford.com/code.html)" by [Douglas Crockford](http://crockford.com/) with these modifications:
 * The unit of indentation is two spaces
+
+API Documentation
+-----------------
+basil.js uses [YUIDoc](http://yui.github.com/yuidoc/) to document public API functionality.
+Installation and usage:
+* Download and install [Node.js](http://nodejs.org/#download)
+* Open up a terminal window and run 
+    npm -g install yuidocjs
+* To generate the documetation in doc/api open up a terminal window and simply run the following command in the basil.js project directory
+    yuidoc .
