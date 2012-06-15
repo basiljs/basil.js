@@ -21,7 +21,6 @@ API Documentation
 basil.js uses [YUIDoc](http://yui.github.com/yuidoc/) to document public API functionality.
 Installation and usage:
 * Download and install [Node.js](http://nodejs.org/#download)
-* Open up a terminal window and run 
-    npm -g install yuidocjs
-* To generate the documetation in doc/api open up a terminal window and simply run the following command in the basil.js project directory
-    yuidoc .
+* Open up a terminal window and run "npm -g install yuidocjs"
+* To generate the documetation in doc/api open up a terminal window and simply run "yuidoc ." in the basil.js project directory
+    
