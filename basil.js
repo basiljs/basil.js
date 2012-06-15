@@ -2169,13 +2169,17 @@
    * Causes basil to continuously execute the code within draw() when InDesign is idle. 
    * #targetengine "loop"; must be at the very top in the script file.
    * If noLoop() is called, the code in draw() stops executing.
-   * It is essential to call noLoop() or execute the script lib/noLoop.jsx when the script is finished!
-   * The sleep property is the amount of time that elapses before draw() is called again.
+   * It is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!
+   * The framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.
    * 
    * @method loop
-   * @param  {Number} sleep The amount of time in milliseconds that elapses before draw() is called again
+   * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
    */
-  pub.loop = function(sleep) {
+  pub.loop = function(framerate) {
+    var sleep = null;
+    if (arguments.length === 0) sleep = 1000/25;
+    else sleep = 1000/framerate;
+
     if ($.engineName !== 'loop') {
       error('Add #targetengine "loop"; at the very top of your script.');
     }
@@ -2187,7 +2191,7 @@
     idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
       runDraw();
     }, false);
-    alert("Run the script lib/noLoop.jsx to end the draw loop and clean up!");
+    alert("Run the script lib/stop.jsx to end the draw loop and clean up!");
   };
 
   /**

@@ -17,4 +17,4 @@ function draw() {
   ctrl.contents = "move me!\n"+ y;
 }
 
-b.loop(33);
+b.loop();
