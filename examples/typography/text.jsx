@@ -2,7 +2,7 @@
 
 function draw() {
   b.fill(b.color(0, 255, 0, "green"));
-  b.textFont('Helvetica\tBold');
+  b.textFont('Helvetica','Bold');
   b.textSize(96);
   b.text('hello basil.js', 0, 0, 400, 300);
 

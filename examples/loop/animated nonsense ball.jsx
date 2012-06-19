@@ -43,4 +43,4 @@ function draw() {
   ellipse.geometricBounds = [pos.y-ellipseRadius, pos.x-ellipseRadius, pos.y+ellipseRadius, pos.x+ellipseRadius];
 };
 
-b.loop(60); // try to run in 30 FPS :)
+b.loop(60); // try to run in 60 FPS :)

@@ -1181,12 +1181,16 @@
    * Returns the current font and sets it if argument fontName is given.
    * 
    * @method textFont
-   * @param  {String} [fontName] The name of the font to set. Font style can be separated with a tab, e.g. Helvetica\tBold
-   * @return {String}            The name of the current font.
+   * @param  {String} [fontName] The name of the font to set e.g. Helvetica
+   * @param  {String} [fontStyle] The Font style e.g. Bold
+   * @return {String}            The name of the current font
    */
-  pub.textFont = function(fontName) {
+  pub.textFont = function(fontName, fontStyle) {
     if (arguments.length === 1) {
       currFont = fontName;
+    }
+    if (arguments.length === 2) {
+      currFont = fontName+"\t"+fontStyle;
     }
     return currFont;
   };
@@ -2242,9 +2246,11 @@
   };
 
   var runDrawLoop = function() {
-    if (typeof glob.draw === 'function') {
-      glob.draw();
-    }
+    app.doScript(function() {
+      if (typeof glob.draw === 'function') {
+        glob.draw();
+      }      
+    }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
   };
 
   var welcome = function() {
