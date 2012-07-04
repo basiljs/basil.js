@@ -1885,11 +1885,7 @@
    * @return {Object[]} Array of selected object(s).
    */
   pub.selection = function() {
-    var selection = app.selection;
-    if (!isArray(selection)) {
-      selection = [selection];
-    }
-    return selection;
+    return app.selection;
   };
 
   /**
