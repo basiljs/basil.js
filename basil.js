@@ -1,3 +1,32 @@
+/*
+  ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
+
+  B A S I L . J S 
+  An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
+  
+  License        - MIT 
+  Developers     - Benedikt Groß, http://benedikt-gross.de/
+                 - Ludwig Zeller 
+                 - Ted Davis
+  Contributers   - Stefan Lansbek, inital code architecture, http://www.47nord.de/
+  Web Site       - http://basiljs.ch/  
+  Github Repo.   - https://github.com/basiljs/basil.js
+  Processing     - http://processing.org
+  Processing.js  - http://processingjs.org
+
+  basil.js  is generously supported / is a project of / is hosted by
+  The Visual Communication Institute / The Basel School of Design
+  Department of the University of Applied Sciences Northwestern Switzerland (FHNW)
+
+  Please note: Big general parts e.g. random() of the basil.js source code are copy & paste 
+  of the fantasic processing.js project around John Resig. We would have had a hard time 
+  to figure all that out on our own!
+
+  Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
+  
+  .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
+*/
+
 #target "InDesign";
 
 (function(glob, app, undef) {
