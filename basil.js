@@ -384,6 +384,7 @@
         verticalMeasurementUnits = unitType;
       }
       currUnits = units;
+      updatePublicPageSizeVars();
     } else {
       error("Not supported unit");
     }
