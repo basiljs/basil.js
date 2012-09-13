@@ -6,24 +6,23 @@
   
   License        - MIT 
   Developers     - Benedikt Groß, http://benedikt-gross.de
-                 - Ludwig Zeller http://www.ludwigzeller.de
-                 - Ted Davis http://www.teddavis.org
-  Contributers   - Stefan Lansbek, inital code architecture, http://www.47nord.de
+                 - Ludwig Zeller http://ludwigzeller.de
+                 - Ted Davis http://teddavis.org
+  Contributers   - Stefan Lansbek, inital code architecture, http://47nord.de
   Web Site       - http://basiljs.ch
   Github Repo.   - https://github.com/basiljs/basil.js
   Processing     - http://processing.org
   Processing.js  - http://processingjs.org
 
-  basil.js  is generously supported / is a project of / is hosted by
+  basil.js  was conceived and is generously supported by
   The Visual Communication Institute / The Basel School of Design
   Department of the University of Applied Sciences Northwestern Switzerland (FHNW)
   
-  http://www.fhnw.ch/hgk/ivk
   http://thebaselschoolofdesign.ch  
 
   Please note: Big general parts e.g. random() of the basil.js source code are copy & paste 
   of the fantasic processing.js project created by John Resig. We would have had a hard time 
-  to figure all that out on our own!
+  to figure all of that out on our own!
 
   Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
   
