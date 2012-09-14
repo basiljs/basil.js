@@ -1969,6 +1969,24 @@
     });
     outputFile.close();
   };
+
+  /**
+   * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
+   *
+   * @todo data folder is not created automatically, 
+   * @method savePDF 
+   * @param {String|File } file The file name or a File instance
+   * @param {Boolean} showOptions Whether to show the export dialog
+   */
+  pub.savePDF = function(myFile, showOptions){
+    var outputFile = initDataFile(myFile);  
+    
+    if(showOptions == null){
+      showOptions = false;
+    }
+    
+    b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions); 
+  }  
   
 
   // ----------------------------------------
