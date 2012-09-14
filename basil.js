@@ -1472,19 +1472,38 @@
     if (file instanceof File) {
       result = file;
     } else {
-      var docPath = null;
-      try {
-        docPath = currentDoc().filePath;
-      } catch (e) {
-        error("The current document must be saved before its data directory can be accessed.");
-      }
-      result = new File(docPath.absoluteURI + '/data/' + file);
+      var folder = new Folder(projectPath().absoluteURI + '/data');
+      folder.create(); // creates data folder if not existing, otherwise it just skips
+      result = new File(folder.absoluteURI + '/' + file);
     }
     if (mustExist && !result.exists) {
       error('The file "' + result + '" does not exist.');
     }
     return result;
   };
+  
+  var initExportFile = function(file, mustExist) {
+    var result = null;
+    if (file instanceof File) {
+      result = file;
+    } else {
+      result = new File(projectPath().absoluteURI + '/' + file);
+    }
+    if (mustExist && !result.exists) {
+      error('The file "' + result + '" does not exist.');
+    }
+    return result;
+  };  
+  
+  var projectPath = function() {
+      var docPath = null;
+      try {
+        docPath = currentDoc().filePath;
+      } catch (e) {
+        error("The current document must be saved before its data directory can be accessed.");
+      }
+      return docPath;
+  }
   
 
   // ----------------------------------------
@@ -1962,7 +1981,7 @@
    * @param  {String[]} strings The string array to be written
    */
   pub.saveStrings = function(file, strings) {
-    var outputFile = initDataFile(file);
+    var outputFile = initExportFile(file);
     outputFile.open('w');
     forEach(strings, function(s) {
       outputFile.writeln(s);
@@ -1979,7 +1998,7 @@
    * @param {Boolean} showOptions Whether to show the export dialog
    */
   pub.savePDF = function(myFile, showOptions){
-    var outputFile = initDataFile(myFile);  
+    var outputFile = initExportFile(myFile); 
     
     if(showOptions == null){
       showOptions = false;
