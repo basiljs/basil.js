@@ -8,7 +8,7 @@
   Developers     - Benedikt Groß, http://benedikt-gross.de
                  - Ludwig Zeller http://ludwigzeller.de
                  - Ted Davis http://teddavis.org
-  Contributers   - Stefan Lansbek, inital code architecture, http://47nord.de
+  Contributers   - Stefan Landsbek, inital code architecture, http://47nord.de
   Web Site       - http://basiljs.ch
   Github Repo.   - https://github.com/basiljs/basil.js
   Processing     - http://processing.org
