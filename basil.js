@@ -14,7 +14,7 @@
   Processing     - http://processing.org
   Processing.js  - http://processingjs.org
 
-  basil.js  was conceived and is generously supported by
+  basil.js was conceived and is generously supported by
   The Visual Communication Institute / The Basel School of Design
   Department of the University of Applied Sciences Northwestern Switzerland (FHNW)
   
@@ -1500,10 +1500,10 @@
       try {
         docPath = currentDoc().filePath;
       } catch (e) {
-        error("The current document must be saved before its data directory can be accessed.");
+        error("The current document must be saved before its project directory can be accessed.");
       }
       return docPath;
-  }
+  };
   
 
   // ----------------------------------------
@@ -1998,14 +1998,10 @@
    * @param {Boolean} showOptions Whether to show the export dialog
    */
   pub.savePDF = function(myFile, showOptions){
-    var outputFile = initExportFile(myFile); 
-    
-    if(showOptions == null){
-      showOptions = false;
-    }
-    
+    var outputFile = initExportFile(myFile);
+    if (typeof showOptions !== "boolean") showOptions = false;
     b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions); 
-  }  
+  }; 
   
 
   // ----------------------------------------

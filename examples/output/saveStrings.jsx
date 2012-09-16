@@ -8,7 +8,7 @@ function draw() {
 
   b.doc().save();
 
-  // when doc is saved files can be saved to data directory in same folder as document
+  // when doc is saved files can be saved to the same folder where the indesign document is around
   b.saveStrings('saveStrings-example-2.txt', words);
 }
 
