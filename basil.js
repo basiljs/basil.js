@@ -5,7 +5,7 @@
   An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
   
   License        - MIT 
-  Developers     - Benedikt Groß, http://benedikt-gross.de
+  Developers     - Benedikt Groß http://benedikt-gross.de
                  - Ludwig Zeller http://ludwigzeller.de
                  - Ted Davis http://teddavis.org
   Contributers   - Stefan Landsbek, inital code architecture, http://47nord.de
