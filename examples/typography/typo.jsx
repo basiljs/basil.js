@@ -1,4 +1,4 @@
-#include "../../basil.js";
+﻿#include "../../basil.js";
 
 function draw() {
   var content = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr,\r";
@@ -38,6 +38,10 @@ function draw() {
   b.typo(textFrame.lines[1], 'pointSize', 48);
   b.typo(textFrame.characters[50], 'pointSize', 96);
   b.typo(textFrame.paragraphs[1], 'strokeColor', red);
+
+// todo: add more relevant fields as a list here
+// b.typo(textFrame, 'justification', Justification.RIGHT_ALIGN);     
+
 }
 
 b.go();
