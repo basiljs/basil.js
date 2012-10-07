@@ -2006,6 +2006,138 @@
 
   // ----------------------------------------
   // Transform
+  // geometricBounds hint: [y1, x1, y2, x2]
+
+  /**
+   * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
+   *
+   * @method itemX 
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [x] The new x position
+   * @returns {Number} The current x position
+   */  
+  pub.itemX = function(pItem, x) {
+    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {
+      if( x != null ){
+        b.itemPosition(pItem, x, pItem.geometricBounds[0]);
+      } else {
+        return pItem.geometricBounds[1];
+      }
+    } else {
+      throw new Error("pItem has to be a valid PageItem");
+    }      
+  }
+
+  /**
+   * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
+   *
+   * @method itemY 
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [y] The new y position
+   * @returns {Number} The current y position   
+   */    
+  pub.itemY = function(pItem, y) {
+    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
+      if( y != null ) {
+        b.itemPosition(pItem, pItem.geometricBounds[1], y);
+      } else {
+        return pItem.geometricBounds[0];
+      }
+    } else {
+      throw new Error("pItem has to be a valid PageItem");
+    }    
+  }
+  
+  /**
+   * Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
+   *
+   * @method itemWidth 
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [width] The new width
+   * @returns {Number} The current width
+   */    
+  pub.itemWidth = function(pItem, width) {
+    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
+      if( width != null ){
+        b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
+      } else {
+        return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
+      }
+    } else {
+      throw new Error("pItem has to be a valid PageItem");
+    }    
+  }
+
+  /**
+   * Scales the given PageItem to the given height. If height is not given as argument the current height is returned.
+   *
+   * @method itemHeight 
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [height] The new height
+   * @returns {Number} The current height
+   */    
+  pub.itemHeight = function(pItem, height) {
+    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
+      if( height != null ){
+        b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
+      } else {
+        return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
+      }
+    } else {
+      throw new Error("pItem has to be a valid PageItem");
+    }    
+  }
+
+  /**
+   * Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.
+   *
+   * @method itemPosition 
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [x] The new x coordinate
+   * @param {Number} [y] The new y coordinate   
+   * @returns {Object} Returns an object with the fields x and y
+   */    
+  pub.itemPosition = function(pItem, x, y) {
+    if (pItem != null && pItem.hasOwnProperty("geometricBounds")) {
+    
+      if( x != null && y != null) {
+        var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
+        var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];             
+        pItem.geometricBounds = [ y, x, y + height, x + width ];
+      } else {
+        return { x: pItem.geometricBounds[1], y: pItem.geometricBounds[0] };
+      }
+      
+    } else {
+      throw new Error("itemPosition() only works with child classes of PageItem.");
+    }
+  }
+
+  /**
+   * Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.
+   *
+   * @method itemSize 
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [width] The new width
+   * @param {Number} [height] The new height
+   * @returns {Object} Returns an object with the fields width and height
+   */   
+  pub.itemSize = function(pItem, width, height) {
+    if (pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
+    
+      if( width != null && height != null ) {
+        var x = pItem.geometricBounds[1];
+        var y = pItem.geometricBounds[0];
+        pItem.geometricBounds = [ y, x, y + height, x + width ];
+      } else {
+        return { width: pItem.geometricBounds[3] - pItem.geometricBounds[1] , height: pItem.geometricBounds[2] - pItem.geometricBounds[0] };
+      }
+      
+    } else {
+      throw new Error("itemSize() only works with child classes of PageItem.");
+    }  
+  }
+  
   
   var printMatrixHelper = function(elements) {
     var big = 0;
@@ -2256,7 +2388,7 @@
     idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
       runDrawLoop();
     }, false);
-    alert("Run the script lib/stop.jsx to end the draw loop and clean up!");
+    //alert("Run the script lib/stop.jsx to end the draw loop and clean up!");
     println("loop()");
   };
 
