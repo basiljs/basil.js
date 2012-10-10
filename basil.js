@@ -313,7 +313,7 @@
    * 
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to
-   * @return {Page} The current page instance
+   * @return {Page} The current page instance or false if the Page doesn't exists
    */
   pub.page = function(page) {
     if (page instanceof Page) {
@@ -323,7 +323,7 @@
       try {
         tempPage.id;
       } catch (e) {
-        error('Page ' + page + ' does not exist.');
+        return false;    
       }
       currPage = tempPage;
     }
