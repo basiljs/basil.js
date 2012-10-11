@@ -130,8 +130,11 @@
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i < len; i++) {
-        cb(collection[i],i);
+        if(cb(collection[i],i) === false) {
+          return false;
+        }
       }
+      return true;
     };
   }
   
@@ -158,7 +161,7 @@
    * @param  {Function} cb  The callback function to call with each story, passed arguments: story, loopCount
    */
   pub.stories = function(doc, cb) {
-    forEach(doc.stories, cb);
+    return forEach(doc.stories, cb);
   };
 
   /**
@@ -170,9 +173,9 @@
    */
   pub.paragraphs = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, 'paragraphs', cb);
+      return forEachStoryProperty(item, 'paragraphs', cb);
     } else {
-      forEach(item.paragraphs, cb);
+      return forEach(item.paragraphs, cb);
     }
   };
 
@@ -186,9 +189,9 @@
    */
   pub.lines = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, 'lines', cb);
+      return forEachStoryProperty(item, 'lines', cb);
     } else {
-      forEach(item.lines, cb);
+      return forEach(item.lines, cb);
     }
   };
 
@@ -202,9 +205,9 @@
    */
   pub.words = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, 'words', cb);
+      return forEachStoryProperty(item, 'words', cb);
     } else {
-      forEach(item.words, cb);
+      return forEach(item.words, cb);
     }
   };
 
@@ -218,9 +221,9 @@
    */
   pub.characters = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, 'characters', cb);
+      return forEachStoryProperty(item, 'characters', cb);
     } else {
-      forEach(item.characters, cb);
+      return forEach(item.characters, cb);
     }
   };
 
@@ -229,8 +232,11 @@
     pub.stories(doc, function(story) {
       var properties = story[property];
       for (var i = 0, len = properties.length; i < len; i++) {
-        cb(properties[i], loopCount++);
+        if(cb(properties[i], loopCount++) === false) {
+          return false;
+        };
       };
+      return true;
     });
   };
 
