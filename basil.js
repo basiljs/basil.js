@@ -1,13 +1,14 @@
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
-  B A S I L . J S 
+  B A S I L . J S
   An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
   
-  License        - MIT 
+  License        - MIT
   Developers     - Benedikt Groß http://benedikt-gross.de
                  - Ludwig Zeller http://ludwigzeller.de
                  - Ted Davis http://teddavis.org
+                 - Philipp Adrian http://www.philippadrian.com/
   Contributers   - Stefan Landsbek, inital code architecture, http://47nord.de
   Web Site       - http://basiljs.ch
   Github Repo.   - https://github.com/basiljs/basil.js
@@ -18,10 +19,10 @@
   The Visual Communication Institute / The Basel School of Design
   Department of the University of Applied Sciences Northwestern Switzerland (FHNW)
   
-  http://thebaselschoolofdesign.ch  
+  http://thebaselschoolofdesign.ch
 
-  Please note: Big general parts e.g. random() of the basil.js source code are copy & paste 
-  of the fantasic processing.js project created by John Resig. We would have had a hard time 
+  Please note: Big general parts e.g. random() of the basil.js source code are copy & paste
+  of the fantasic processing.js project created by John Resig. We would have had a hard time
   to figure all of that out on our own!
 
   Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
@@ -111,7 +112,7 @@
   //https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter
   if (!Array.prototype.filter) {
     Array.prototype.filter = function(fun) {
-      if (this == null) throw new TypeError();
+      if (this === null) throw new TypeError();
       var t = Object(this);
       var len = t.length >>> 0;
       if (typeof fun != "function") throw new TypeError();
@@ -144,7 +145,7 @@
   
   /**
    * Suspends the calling thread for a number of milliseconds.
-   * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
+   * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
    *
    * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
@@ -155,7 +156,7 @@
 
   /**
    * Calls the given callback function with each story of the given document.
-   * 
+   *
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
    * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
@@ -166,7 +167,7 @@
 
   /**
    * Calls the given callback function with each paragraph of the given document, story or text frame.
-   * 
+   *
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
    * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
@@ -181,9 +182,9 @@
 
   /**
    * Calls the given callback function with each line of the given document, story, text frame or paragraph.
-   * 
+   *
    * @method lines
-   * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to 
+   * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
    * @param  {Function} cb The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
    */
@@ -197,9 +198,9 @@
 
   /**
    * Calls the given callback function with each word of the given document, story, text frame, paragraph or line.
-   * 
+   *
    * @method words
-   * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance 
+   * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
    * @param  {Function} cb The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
    */
@@ -213,9 +214,9 @@
 
   /**
    * Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
-   * 
+   *
    * @method characters
-   * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to 
+   * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
    * @param  {Function} cb The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
    */
@@ -234,8 +235,8 @@
       for (var i = 0, len = properties.length; i < len; i++) {
         if(cb(properties[i], loopCount++) === false) {
           return false;
-        };
-      };
+        }
+      }
       return true;
     });
   };
@@ -253,7 +254,7 @@
 
   /**
    * Checks whether a var is a number, returns true if this is the case
-   * 
+   *
    * @method isNumber
    * @param  {Object|String|Number}  num The number to ckeck
    * @return {Boolean}
@@ -284,10 +285,10 @@
   // Environment
   
   /**
-   * Sets or possibly creates the current document and returns it. 
-   * If the param doc is not given the current document gets set to the active document 
+   * Sets or possibly creates the current document and returns it.
+   * If the param doc is not given the current document gets set to the active document
    * in the application. If no document at all is open, a new document gets created.
-   * 
+   *
    * @method doc
    * @param  {Document} [doc] The document to set the current document to
    * @return {Document} The current document instance
@@ -301,7 +302,7 @@
 
   /**
    * Closes the current document.
-   * 
+   *
    * @method close
    * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
    * @param  {File} [file] The indesign file instance to save the document to
@@ -312,11 +313,11 @@
       doc.close(saveOptions, file);
       resetCurrDoc();
     }
-  }
+  };
 
   /**
    * Returns the current page and sets it if argument page is given.
-   * 
+   *
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to
    * @return {Page} The current page instance or false if the Page doesn't exists
@@ -329,7 +330,7 @@
       try {
         tempPage.id;
       } catch (e) {
-        return false;    
+        return false;
       }
       currPage = tempPage;
     }
@@ -339,7 +340,7 @@
 
   /**
    * Returns the current layer and sets it if argument layer is given.
-   * 
+   *
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
    * @return {Layer} The current layer instance
@@ -359,7 +360,7 @@
 
   /**
    * Sets the units of the document (like right clicking the rulers).
-   * 
+   *
    * @method units
    * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
    * @return {Constant} Current unit setting
@@ -367,9 +368,9 @@
   pub.units = function (units) {
     if (arguments.length === 0) return currUnits;
 
-    if (units === pub.CM || 
+    if (units === pub.CM ||
         units === pub.MM ||
-        units === pub.PT || 
+        units === pub.PT ||
         units === pub.PX ||
         units === pub.IN) {
       var unitType = null;
@@ -378,7 +379,7 @@
       else if (units === pub.PT) unitType = MeasurementUnits.points;
       else if (units === pub.PX) unitType = MeasurementUnits.pixels;
       else if (units === pub.IN) unitType = MeasurementUnits.inches;
-      var doc = currentDoc(); 
+      var doc = currentDoc();
       with (doc.viewPreferences){
         //* MeasurementUnits.agates
         //* MeasurementUnits.picas
@@ -388,7 +389,7 @@
         //* MeasurementUnits.millimeters
         //* MeasurementUnits.centimeters
         //* MeasurementUnits.ciceros
-        horizontalMeasurementUnits = unitType; 
+        horizontalMeasurementUnits = unitType;
         verticalMeasurementUnits = unitType;
       }
       currUnits = units;
@@ -397,7 +398,7 @@
       error("Not supported unit");
     }
     return currUnits;
-  }
+  };
 
   /**
    * Creates a vertical guide line at the current spread and current layer.
@@ -409,7 +410,7 @@
   pub.guideX = function (x) {
     var guides = currentPage().guides;
     var guide = guides.add( currentLayer() );
-    with(guide) {
+    with (guide) {
       fitToPage = true;
       orientation = HorizontalOrVertical.VERTICAL;
       location = x;
@@ -427,7 +428,7 @@
   pub.guideY = function (y) {
     var guides = currentPage().guides;
     var guide = guides.add( currentLayer() );
-    with(guide) {
+    with (guide) {
       fitToPage = true;
       orientation = HorizontalOrVertical.HORIZONTAL;
       location = y;
@@ -445,14 +446,14 @@
     if (numBits > 0) bit = numBits;
     else if (num instanceof Char) {
       bit = 16;
-      num |= 0
+      num |= 0;
     } else {
       bit = 32;
-      while (bit > 1 && !(num >>> bit - 1 & 1)) bit--
+      while (bit > 1 && !(num >>> bit - 1 & 1)) bit--;
     }
     var result = "";
     while (bit > 0) result += num >>> --bit & 1 ? "1" : "0";
-    return result
+    return result;
   };
   pub.unbinary = function(binaryString) {
     var i = binaryString.length - 1,
@@ -462,9 +463,9 @@
       var ch = binaryString[i--];
       if (ch !== "0" && ch !== "1") throw "the value passed into unbinary was not an 8 bit binary number";
       if (ch === "1") result += mask;
-      mask <<= 1
+      mask <<= 1;
     }
-    return result
+    return result;
   };
 
   var decimalToHex = function(d, padding) {
@@ -473,40 +474,40 @@
     var hex = Number(d).toString(16).toUpperCase();
     while (hex.length < padding) hex = "0" + hex;
     if (hex.length >= padding) hex = hex.substring(hex.length - padding, hex.length);
-    return hex
+    return hex;
   };
   pub.hex = function(value, len) {
     if (arguments.length === 1) if (value instanceof Char) len = 4;
     else len = 8;
-    return decimalToHex(value, len)
+    return decimalToHex(value, len);
   };
 
   function unhexScalar(hex) {
     var value = parseInt("0x" + hex, 16);
     if (value > 2147483647) value -= 4294967296;
-    return value
+    return value;
   }
   pub.unhex = function(hex) {
     if (hex instanceof Array) {
       var arr = [];
       for (var i = 0; i < hex.length; i++) arr.push(unhexScalar(hex[i]));
-      return arr
+      return arr;
     }
-    return unhexScalar(hex)
+    return unhexScalar(hex);
   };
 
 
   // -- String Functions --
   pub.join = function(array, seperator) {
-    return array.join(seperator)
+    return array.join(seperator);
   };
 
   pub.split = function(str, delim) {
-    return str.split(delim)
+    return str.split(delim);
   };
 
   pub.match = function(str, regexp) {
-    return str.match(regexp)
+    return str.match(regexp);
   };
 
   pub.matchAll = function(aString, aRegExp) {
@@ -515,9 +516,9 @@
     var regexp = new RegExp(aRegExp, "g");
     while ((latest = regexp.exec(aString)) !== null) {
       results.push(latest);
-      if (latest[0].length === 0)++regexp.lastIndex
+      if (latest[0].length === 0)++regexp.lastIndex;
     }
-    return results.length > 0 ? results : null
+    return results.length > 0 ? results : null;
   };
 
   function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
@@ -530,51 +531,51 @@
       absValue *= 10;
       while (Math.abs(Math.round(absValue) - absValue) > 1.0E-6 && rightDigitsOfDefault < 7) {
         ++rightDigitsOfDefault;
-        absValue *= 10
+        absValue *= 10;
       }
     } else if (rightDigitsOfDefault !== 0) absValue *= Math.pow(10, rightDigitsOfDefault);
     var number, doubled = absValue * 2;
     if (Math.floor(absValue) === absValue) number = absValue;
     else if (Math.floor(doubled) === doubled) {
       var floored = Math.floor(absValue);
-      number = floored + floored % 2
+      number = floored + floored % 2;
     } else number = Math.round(absValue);
     var buffer = "";
     var totalDigits = leftDigits + rightDigitsOfDefault;
     while (totalDigits > 0 || number > 0) {
       totalDigits--;
       buffer = "" + number % 10 + buffer;
-      number = Math.floor(number / 10)
+      number = Math.floor(number / 10);
     }
     if (group !== undef) {
       var i = buffer.length - 3 - rightDigitsOfDefault;
       while (i > 0) {
         buffer = buffer.substring(0, i) + group + buffer.substring(i);
-        i -= 3
+        i -= 3;
       }
     }
     if (rightDigitsOfDefault > 0) return sign + buffer.substring(0, buffer.length - rightDigitsOfDefault) + "." + buffer.substring(buffer.length - rightDigitsOfDefault, buffer.length);
-    return sign + buffer
+    return sign + buffer;
   }
   function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
     if (value instanceof Array) {
       var arr = [];
       for (var i = 0, len = value.length; i < len; i++) arr.push(nfCoreScalar(value[i], plus, minus, leftDigits, rightDigits, group));
-      return arr
+      return arr;
     }
-    return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group)
+    return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group);
   }
   pub.nf = function(value, leftDigits, rightDigits) {
-    return nfCore(value, "", "-", leftDigits, rightDigits)
+    return nfCore(value, "", "-", leftDigits, rightDigits);
   };
   pub.nfs = function(value, leftDigits, rightDigits) {
-    return nfCore(value, " ", "-", leftDigits, rightDigits)
+    return nfCore(value, " ", "-", leftDigits, rightDigits);
   };
   pub.nfp = function(value, leftDigits, rightDigits) {
-    return nfCore(value, "+", "-", leftDigits, rightDigits)
+    return nfCore(value, "+", "-", leftDigits, rightDigits);
   };
   pub.nfc = function(value, leftDigits, rightDigits) {
-    return nfCore(value, "", "-", leftDigits, rightDigits, ",")
+    return nfCore(value, "", "-", leftDigits, rightDigits, ",");
   };
 
   pub.splitTokens = function(str, tokens) {
@@ -588,22 +589,22 @@
       else {
         ary[index] = str.substring(0, pos);
         index++;
-        str = str.substring(pos)
+        str = str.substring(pos);
       }
-      pos = str.search(tokens)
+      pos = str.search(tokens);
     }
     if (str.length > 0) ary[index] = str;
     if (ary.length === 0) ary = undef;
-    return ary
+    return ary;
   };
 
   pub.trim = function(str) {
     if (str instanceof Array) {
       var arr = [];
       for (var i = 0; i < str.length; i++) arr.push(str[i].replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, ""));
-      return arr
+      return arr;
     }
-    return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, "")
+    return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, "");
   };
 
   // ----------------------------------------
@@ -647,12 +648,12 @@
 
     var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
-    with(newOval) {
+    with (newOval) {
       strokeWeight = currStrokeWeight;
-      strokeTint = currStrokeTint; 
+      strokeTint = currStrokeTint;
       fillColor = currFillColor;
-      fillTint = currFillTint; 
-      strokeColor = currStrokeColor;  
+      fillTint = currFillTint;
+      strokeColor = currStrokeColor;
       geometricBounds = ellipseBounds;
     }
 
@@ -664,7 +665,7 @@
       newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                      AnchorPoint.TOP_LEFT_ANCHOR,
                      currMatrix.adobeMatrix() );
-    } 
+    }
     return newOval;
   };
 
@@ -682,11 +683,11 @@
     if (arguments.length !== 4) error("Not enough parameters to draw a line! Use: x1, y1, x2, y2");
     var lines = currentPage().graphicLines;
     var newLine = lines.add( currentLayer() );
-    with(newLine) {
+    with (newLine) {
       strokeWeight = currStrokeWeight;
-      strokeTint = currStrokeTint; 
+      strokeTint = currStrokeTint;
       fillColor = currFillColor;
-      fillTint = currFillTint; 
+      fillTint = currFillTint;
       strokeColor = currStrokeColor;
     }
     newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
@@ -727,7 +728,7 @@
     }
     
     var newRect = currentPage().rectangles.add( currentLayer() );
-    with(newRect) {
+    with (newRect) {
       geometricBounds = rectBounds;
       strokeWeight = currStrokeWeight;
       strokeTint = currStrokeTint;
@@ -749,7 +750,7 @@
   };
 
   /**
-   * The function calculates the geometric bounds of any given object. 
+   * The function calculates the geometric bounds of any given object.
    * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
    *
    * @method bounds
@@ -773,17 +774,17 @@
 
       if (w < 0 || h <0) {
         warning("bounds(textObj), not possible to get correct bounds, possible linebreak within textObj");
-      };
+      }
 
       // TODO: not sure if this 100% correct, check
       // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
       var xHeight = y1+descent;
 
-      return {'width':w, 
-              'height':h, 
-              'left':x1, 
-              'right':x2, 
-              'top':y1, 
+      return {'width':w,
+              'height':h,
+              'left':x1,
+              'right':x2,
+              'top':y1,
               'bottom':y2,
               'baseline':baseline,
               'xHeight':xHeight };
@@ -798,7 +799,7 @@
         w = x2-x1;
         h = y2-y1;
         return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
-      } 
+      }
       // everything else e.g. page, spread
       else if (obj.hasOwnProperty("bounds")) {
         var bounds = obj.bounds; //[y1, x1, y2, x2]
@@ -809,12 +810,12 @@
         w = x2-x1;
         h = y2-y1;
         return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
-      } 
+      }
       // no idea what that might be, give up
       else {
         error("bounds(obj), invalide type! Can't get bounds for this object.");
       }
-    } 
+    }
   };
 
   // -- Attributes --
@@ -849,7 +850,7 @@
 
   /**
    * Returns the object style with the given name. If the style does not exist it gets created.
-   * 
+   *
    * @method objectStyle
    * @param  {String} name  The name of the object style to return.
    * @return {ObjectStyle}  The object style instance.
@@ -871,7 +872,7 @@
   // Color
   
   /**
-   * Sets the color used to fill shapes.  
+   * Sets the color used to fill shapes.
    * @method fill
    * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
    */
@@ -904,7 +905,7 @@
   };
 
   /**
-   * Sets the color used to draw lines and borders around shapes.  
+   * Sets the color used to draw lines and borders around shapes.
    * @method stroke
    * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
    */
@@ -1157,19 +1158,19 @@
   };
 
   /**
-   * Sets text properties to the given item. If the item is not an instance the text property can be set to, 
+   * Sets text properties to the given item. If the item is not an instance the text property can be set to,
    * the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
-   * 
-   * If no value is given and the given property is a string, the function acts as a getter and returns the 
-   * corresponding value(s) in an array. This can either be an array containing the value of the concrete item 
+   *
+   * If no value is given and the given property is a string, the function acts as a getter and returns the
+   * corresponding value(s) in an array. This can either be an array containing the value of the concrete item
    * (e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).
-   * 
+   *
    * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
    * @param  {String|Object} property  The text property name of an object of key/value property/value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
    * @param  {String|Number} [value]   The value to apply to the property.
-   * @return {String[]|Number[]}  The property value(s) if the function acts as getter or the items the property 
+   * @return {String[]|Number[]}  The property value(s) if the function acts as getter or the items the property
    *                              was assigned to.
    */
   pub.typo = function(item, property, value) {
@@ -1185,11 +1186,11 @@
       setProperties = function(textItem) {
         if (typeof property === 'string') {
           result.push(textItem);
-          setProperty(textItem, property, value);  
+          setProperty(textItem, property, value);
         } else if (typeof property === 'object') {
           result.push(textItem);
           for (var prop in property) {
-            setProperty(textItem, prop, property[prop]);  
+            setProperty(textItem, prop, property[prop]);
           }
         }
       },
@@ -1204,7 +1205,7 @@
       forEach(item.textFrames, function(textFrame) {
         pub.typo(textFrame, property, value);
       });
-    } else if (item instanceof Story || 
+    } else if (item instanceof Story ||
                item instanceof TextFrame) {
       forEach(item.paragraphs, function(para) {
         getOrSetProperties(para);
@@ -1217,7 +1218,7 @@
 
   /**
    * Returns the current font and sets it if argument fontName is given.
-   * 
+   *
    * @method textFont
    * @param  {String} [fontName] The name of the font to set e.g. Helvetica
    * @param  {String} [fontStyle] The Font style e.g. Bold
@@ -1235,7 +1236,7 @@
 
   /**
    * Returns the current font size in points and sets it if argument pointSize is given.
-   * 
+   *
    * @method textSize
    * @param  {Number} [pointSize] The size in points to set.
    * @return {Number}             The current point size.
@@ -1249,7 +1250,7 @@
 
   /**
    * Sets the current horizontal and vertical text alignment.
-   * 
+   *
    * @method textAlign
    * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
    *                           Justification.AWAY_FROM_BINDING_SIDE
@@ -1273,9 +1274,9 @@
 
   /**
    * Returns the spacing between lines of text in units of points and sets it if argument leading is given.
-   * 
+   *
    * @method textLeading
-   * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum 
+   * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
    *                                   value Leading.AUTO.
    * @return {Number|String}           The current leading.
    */
@@ -1288,7 +1289,7 @@
 
   /**
    * Returns the current kerning and sets it if argument kerning is given.
-   * 
+   *
    * @method textKerning
    * @param  {Number} [kerning] The value to set.
    * @return {Number}           The current kerning.
@@ -1302,7 +1303,7 @@
 
   /**
    * Returns the current tracking and sets it if argument tracking is given.
-   * 
+   *
    * @method textTracking
    * @param  {Number} [tracking] The value to set.
    * @return {Number}            The current tracking.
@@ -1316,7 +1317,7 @@
 
   /**
    * Returns the character style with the given name. If the style does not exist it gets created.
-   * 
+   *
    * @method characterStyle
    * @param  {String} name      The name of the character style to return.
    * @return {CharachterStyle}  The character style instance.
@@ -1334,7 +1335,7 @@
 
   /**
    * Returns the paragraph style with the given name. If the style does not exist it gets created.
-   * 
+   *
    * @method paragraphStyle
    * @param  {String} name     The name of the paragraph style to return.
    * @return {ParagraphStyle}  The paragraph style instance.
@@ -1370,13 +1371,13 @@
   // Image
   
   /**
-   * Adds an image to the document. If the image argument is given as a string the image file  must be in the document's 
-   * data directory which is in the same directory where the document is saved in. The image argument can also be a File 
+   * Adds an image to the document. If the image argument is given as a string the image file  must be in the document's
+   * data directory which is in the same directory where the document is saved in. The image argument can also be a File
    * instance which can be placed even before the document was saved.
-   * The second argument can either be the x position of the frame to create or an instance of a rectangle, 
+   * The second argument can either be the x position of the frame to create or an instance of a rectangle,
    * oval or polygon to place the image in.
    * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
-   * 
+   *
    * @method image
    * @param  {String|File} img The image file name in the document's data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
@@ -1388,14 +1389,16 @@
   pub.image = function(img, x, y, w, h) {
     var file = initDataFile(img, true),
       frame = null,
-      fitOptions = null;
+      fitOptions = null,
+      width = null,
+      height = null;
     if (x instanceof Rectangle ||
         x instanceof Oval ||
         x instanceof Polygon) {
       frame = x;
     } else {
-      var width = 1,
-          height = 1;
+      width = 1;
+      height = 1;
       if (currImageMode === pub.CORNERS) {
         width = w - x;
         height = h - y;
@@ -1423,8 +1426,8 @@
 
     if (currImageMode === pub.CENTER) {
       var bounds = frame.geometricBounds;
-      var width = bounds[3] - bounds[1];
-      var height = bounds[2] - bounds[0];
+      width = bounds[3] - bounds[1];
+      height = bounds[2] - bounds[0];
       frame.move(null, [-(width / 2), -(height / 2)]);
       frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                          AnchorPoint.CENTER_ANCHOR,
@@ -1438,7 +1441,7 @@
   };
 
   /**
-   * Transforms position and size of an image. 
+   * Transforms position and size of an image.
    * The image fit options are always "contentToFrame".
    *
    * @method transformImage
@@ -1454,7 +1457,7 @@
       img.geometricBounds = [y,x,y+height,x+width];
       if (currImageMode === pub.CENTER) {
         img.move(null, [-(width / 2), -(height / 2)]);
-      } 
+      }
       img.fit( FitOptions.CENTER_CONTENT );
       img.fit( FitOptions.contentToFrame );
     } else {
@@ -1499,7 +1502,7 @@
       error('The file "' + result + '" does not exist.');
     }
     return result;
-  };  
+  };
   
   var projectPath = function() {
       var docPath = null;
@@ -1519,19 +1522,19 @@
     function PVector(x, y, z) {
       this.x = x || 0;
       this.y = y || 0;
-      this.z = z || 0
+      this.z = z || 0;
     }
     PVector.dist = function(v1, v2) {
-      return v1.dist(v2)
+      return v1.dist(v2);
     };
     PVector.dot = function(v1, v2) {
-      return v1.dot(v2)
+      return v1.dot(v2);
     };
     PVector.cross = function(v1, v2) {
-      return v1.cross(v2)
+      return v1.cross(v2);
     };
     PVector.angleBetween = function(v1, v2) {
-      return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()))
+      return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
     };
     PVector.prototype = {
       set: function(v, y, z) {
@@ -1539,96 +1542,96 @@
         else {
           this.x = v;
           this.y = y;
-          this.z = z
+          this.z = z;
         }
       },
       get: function() {
-        return new PVector(this.x, this.y, this.z)
+        return new PVector(this.x, this.y, this.z);
       },
       mag: function() {
         var x = this.x,
           y = this.y,
           z = this.z;
-        return Math.sqrt(x * x + y * y + z * z)
+        return Math.sqrt(x * x + y * y + z * z);
       },
       add: function(v, y, z) {
         if (arguments.length === 1) {
           this.x += v.x;
           this.y += v.y;
-          this.z += v.z
+          this.z += v.z;
         } else {
           this.x += v;
           this.y += y;
-          this.z += z
+          this.z += z;
         }
       },
       sub: function(v, y, z) {
         if (arguments.length === 1) {
           this.x -= v.x;
           this.y -= v.y;
-          this.z -= v.z
+          this.z -= v.z;
         } else {
           this.x -= v;
           this.y -= y;
-          this.z -= z
+          this.z -= z;
         }
       },
       mult: function(v) {
         if (typeof v === "number") {
           this.x *= v;
           this.y *= v;
-          this.z *= v
+          this.z *= v;
         } else {
           this.x *= v.x;
           this.y *= v.y;
-          this.z *= v.z
+          this.z *= v.z;
         }
       },
       div: function(v) {
         if (typeof v === "number") {
           this.x /= v;
           this.y /= v;
-          this.z /= v
+          this.z /= v;
         } else {
           this.x /= v.x;
           this.y /= v.y;
-          this.z /= v.z
+          this.z /= v.z;
         }
       },
       dist: function(v) {
         var dx = this.x - v.x,
           dy = this.y - v.y,
           dz = this.z - v.z;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz)
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
       },
       dot: function(v, y, z) {
         if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
-        return this.x * v + this.y * y + this.z * z
+        return this.x * v + this.y * y + this.z * z;
       },
       cross: function(v) {
         var x = this.x,
           y = this.y,
           z = this.z;
-        return new PVector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y)
+        return new PVector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
       },
       normalize: function() {
         var m = this.mag();
-        if (m > 0) this.div(m)
+        if (m > 0) this.div(m);
       },
       limit: function(high) {
         if (this.mag() > high) {
           this.normalize();
-          this.mult(high)
+          this.mult(high);
         }
       },
       heading2D: function() {
-        return -Math.atan2(-this.y, this.x)
+        return -Math.atan2(-this.y, this.x);
       },
       toString: function() {
-        return "[" + this.x + ", " + this.y + ", " + this.z + "]"
+        return "[" + this.x + ", " + this.y + ", " + this.z + "]";
       },
       array: function() {
-        return [this.x, this.y, this.z]
+        return [this.x, this.y, this.z];
       }
     };
 
@@ -1636,11 +1639,11 @@
       return function(v1, v2) {
         var v = v1.get();
         v[method](v2);
-        return v
-      }
+        return v;
+      };
     }
     for (var method in PVector.prototype) if (PVector.prototype.hasOwnProperty(method) && !PVector.hasOwnProperty(method)) PVector[method] = createPVectorMethod(method);
-    return PVector
+    return PVector;
   }();
   
 
@@ -1650,7 +1653,7 @@
   pub.ceil = Math.ceil;
 
   pub.constrain = function(aNumber, aMin, aMax) {
-    return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber
+    return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
   };
 
   pub.dist = function() {
@@ -1658,7 +1661,7 @@
     if (arguments.length === 4) {
       dx = arguments[0] - arguments[2];
       dy = arguments[1] - arguments[3];
-      return Math.sqrt(dx * dx + dy * dy)
+      return Math.sqrt(dx * dx + dy * dy);
     }
   };
 
@@ -1667,18 +1670,18 @@
   pub.floor = Math.floor;
 
   pub.lerp = function(value1, value2, amt) {
-    return (value2 - value1) * amt + value1
+    return (value2 - value1) * amt + value1;
   };
 
   pub.log = Math.log;
 
   pub.mag = function(a, b, c) {
     if (c) return Math.sqrt(a * a + b * b + c * c);
-    return Math.sqrt(a * a + b * b)
+    return Math.sqrt(a * a + b * b);
   };
 
   pub.map = function(value, istart, istop, ostart, ostop) {
-    return ostart + (ostop - ostart) * ((value - istart) / (istop - istart))
+    return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
 
   pub.max = function() {
@@ -1688,7 +1691,7 @@
     var max = numbers[0],
       count = numbers.length;
     for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
-    return max
+    return max;
   };
 
   pub.min = function() {
@@ -1698,11 +1701,11 @@
     var min = numbers[0],
       count = numbers.length;
     for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
-    return min
+    return min;
   };
 
   pub.norm = function(aNumber, low, high) {
-    return (aNumber - low) / (high - low)
+    return (aNumber - low) / (high - low);
   };
 
   pub.pow = Math.pow;
@@ -1710,10 +1713,10 @@
   pub.round = Math.round;
 
   pub.sq = function(aNumber) {
-    return aNumber * aNumber
+    return aNumber * aNumber;
   };
 
-  // -- Trigonometry -- 
+  // -- Trigonometry --
   pub.sqrt = Math.sqrt;
   pub.acos = Math.acos;
   pub.asin = Math.asin;
@@ -1722,11 +1725,11 @@
   pub.cos = Math.cos;
 
   pub.degrees = function(aAngle) {
-    return aAngle * 180 / Math.PI
+    return aAngle * 180 / Math.PI;
   };
 
   pub.radians = function(aAngle) {
-    return aAngle / 180 * Math.PI
+    return aAngle / 180 * Math.PI;
   };
 
   pub.sin = Math.sin;
@@ -1739,7 +1742,7 @@
     if (arguments.length === 1) return currentRandom() * arguments[0];
     var aMin = arguments[0],
       aMax = arguments[1];
-    return currentRandom() * (aMax - aMin) + aMin
+    return currentRandom() * (aMax - aMin) + aMin;
   };
 
   function Marsaglia(i1, i2) {
@@ -1748,21 +1751,21 @@
     var nextInt = function() {
       z = 36969 * (z & 65535) + (z >>> 16) & 4294967295;
       w = 18E3 * (w & 65535) + (w >>> 16) & 4294967295;
-      return ((z & 65535) << 16 | w & 65535) & 4294967295
+      return ((z & 65535) << 16 | w & 65535) & 4294967295;
     };
     this.nextDouble = function() {
       var i = nextInt() / 4294967296;
-      return i < 0 ? 1 + i : i
+      return i < 0 ? 1 + i : i;
     };
-    this.nextInt = nextInt
+    this.nextInt = nextInt;
   }
   Marsaglia.createRandomized = function() {
-    var now = new Date;
-    return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295)
+    var now = new Date();
+    return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295);
   };
 
   pub.randomSeed = function(seed) {
-    currentRandom = (new Marsaglia(seed)).nextDouble
+    currentRandom = (new Marsaglia(seed)).nextDouble;
   };
 
   pub.Random = function(seed) {
@@ -1771,20 +1774,20 @@
     this.nextGaussian = function() {
       if (haveNextNextGaussian) {
         haveNextNextGaussian = false;
-        return nextNextGaussian
+        return nextNextGaussian;
       }
       var v1, v2, s;
       do {
         v1 = 2 * random() - 1;
         v2 = 2 * random() - 1;
-        s = v1 * v1 + v2 * v2
+        s = v1 * v1 + v2 * v2;
       } while (s >= 1 || s === 0);
       var multiplier = Math.sqrt(-2 * Math.log(s) / s);
       nextNextGaussian = v2 * multiplier;
       haveNextNextGaussian = true;
-      return v1 * multiplier
+      return v1 * multiplier;
     };
-    random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble
+    random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble;
   };
 
   function PerlinNoise(seed) {
@@ -1795,7 +1798,7 @@
     for (i = 0; i < 256; ++i) {
       var t = perm[j = rnd.nextInt() & 255];
       perm[j] = perm[i];
-      perm[i] = t
+      perm[i] = t;
     }
     for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
 
@@ -1803,17 +1806,17 @@
       var h = i & 15;
       var u = h < 8 ? x : y,
       v = h < 4 ? y : h === 12 || h === 14 ? x : z;
-      return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v)
+      return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
     }
     function grad2d(i, x, y) {
       var v = (i & 1) === 0 ? x : y;
-      return (i & 2) === 0 ? -v : v
+      return (i & 2) === 0 ? -v : v;
     }
     function grad1d(i, x) {
-      return (i & 1) === 0 ? -x : x
+      return (i & 1) === 0 ? -x : x;
     }
     function lerp(t, a, b) {
-      return a + t * (b - a)
+      return a + t * (b - a);
     }
     this.noise3d = function(x, y, z) {
       var X = Math.floor(x) & 255,
@@ -1831,7 +1834,7 @@
         p1 = perm[X + 1] + Y,
         p10 = perm[p1] + Z,
         p11 = perm[p1 + 1] + Z;
-      return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))))
+      return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
     };
     this.noise2d = function(x, y) {
       var X = Math.floor(x) & 255,
@@ -1842,14 +1845,14 @@
         fy = (3 - 2 * y) * y * y;
       var p0 = perm[X] + Y,
         p1 = perm[X + 1] + Y;
-      return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)))
+      return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
     };
     this.noise1d = function(x) {
       var X = Math.floor(x) & 255;
       x -= Math.floor(x);
       var fx = (3 - 2 * x) * x * x;
-      return lerp(fx, grad1d(perm[X], x), grad1d(perm[X + 1], x - 1))
-    }
+      return lerp(fx, grad1d(perm[X], x), grad1d(perm[X + 1], x - 1));
+    };
   }
   var noiseProfile = {
     generator: undef,
@@ -1874,19 +1877,19 @@
         break;
       case 3:
         sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
-        break
+        break;
       }
-      k *= 2
+      k *= 2;
     }
-    return sum
+    return sum;
   };
   pub.noiseDetail = function(octaves, fallout) {
     noiseProfile.octaves = octaves;
-    if (fallout !== undef) noiseProfile.fallout = fallout
+    if (fallout !== undef) noiseProfile.fallout = fallout;
   };
   pub.noiseSeed = function(seed) {
     noiseProfile.seed = seed;
-    noiseProfile.generator = undef
+    noiseProfile.generator = undef;
   };
 
 
@@ -1894,33 +1897,33 @@
   // Input
   
   pub.year = function() {
-    return (new Date).getFullYear()
+    return (new Date()).getFullYear()();
   };
   pub.month = function() {
-    return (new Date).getMonth() + 1
+    return (new Date()).getMonth() + 1;
   };
   pub.day = function() {
-    return (new Date).getDate()
+    return (new Date()).getDate();
   };
   pub.hour = function() {
-    return (new Date).getHours()
+    return (new Date()).getHours();
   };
   pub.minute = function() {
-    return (new Date).getMinutes()
+    return (new Date()).getMinutes();
   };
   pub.second = function() {
-    return (new Date).getSeconds()
+    return (new Date()).getSeconds();
   };
   pub.millis = function() {
-    return Date.now() - start
+    return Date.now() - start;
   };
 
   /**
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
-   * 
+   *
    * @method findByLabel
    * @param  {String} label The label identifier
-   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem. 
+   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
    */
   pub.findByLabel = function(label) {
     var result = [];
@@ -1928,7 +1931,7 @@
     for (var i = 0, len = doc.pageItems.length; i < len; i++) {
       var pageItem = doc.pageItems[i];
       if (pageItem.label === label) {
-        // push pageItem's 1st element to get the concrete PageItem instance, e.g. a TextFrame 
+        // push pageItem's 1st element to get the concrete PageItem instance, e.g. a TextFrame
         result.push(pageItem.getElements()[0]);
       }
     }
@@ -1936,8 +1939,8 @@
   };
 
   /**
-   * Returns the currently selected object(s). 
-   * 
+   * Returns the currently selected object(s)
+   *
    * @method selection
    * @return {Object[]} Array of selected object(s).
    */
@@ -1946,9 +1949,9 @@
   };
 
   /**
-   * Reads the contents of a file and creates a String array of its individual lines. 
+   * Reads the contents of a file and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document's data directory.
-   * 
+   *
    * @method loadStrings
    * @param  {String|File} file The text file name in the document's data directory or a File instance
    * @return {String[]}  Array of the individual lines in the given file.
@@ -1958,7 +1961,7 @@
       result = [];
 
     inputFile.open('r');
-    while (!inputFile.eof) { 
+    while (!inputFile.eof) {
       result.push(inputFile.readln());
     }
     inputFile.close();
@@ -1981,7 +1984,7 @@
   /**
    * Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.
    * If the given file exists it gets overridden.
-   * 
+   *
    * @method saveStrings
    * @param  {String|File} file The file name or a File instance
    * @param  {String[]} strings The string array to be written
@@ -1998,16 +2001,16 @@
   /**
    * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
    *
-   * @todo data folder is not created automatically, 
-   * @method savePDF 
+   * @todo data folder is not created automatically,
+   * @method savePDF
    * @param {String|File} file The file name or a File instance
    * @param {Boolean} showOptions Whether to show the export dialog
    */
   pub.savePDF = function(file, showOptions){
     var outputFile = initExportFile(file);
     if (typeof showOptions !== "boolean") showOptions = false;
-    b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions); 
-  }; 
+    b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  };
   
 
   // ----------------------------------------
@@ -2017,121 +2020,121 @@
   /**
    * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
    *
-   * @method itemX 
+   * @method itemX
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [x] The new x position
    * @returns {Number} The current x position
-   */  
+   */
   pub.itemX = function(pItem, x) {
-    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {
-      if( x != null ){
+    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
+      if( x !== null ){
         b.itemPosition(pItem, x, pItem.geometricBounds[0]);
       } else {
         return pItem.geometricBounds[1];
       }
     } else {
-      throw new Error("pItem has to be a valid PageItem");
-    }      
-  }
+      error("pItem has to be a valid PageItem");
+    }
+  };
 
   /**
    * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
    *
-   * @method itemY 
+   * @method itemY
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [y] The new y position
-   * @returns {Number} The current y position   
-   */    
+   * @returns {Number} The current y position
+   */
   pub.itemY = function(pItem, y) {
-    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
-      if( y != null ) {
+    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
+      if( y !== null ) {
         b.itemPosition(pItem, pItem.geometricBounds[1], y);
       } else {
         return pItem.geometricBounds[0];
       }
     } else {
-      throw new Error("pItem has to be a valid PageItem");
-    }    
-  }
+      error("pItem has to be a valid PageItem");
+    }
+  };
   
   /**
    * Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
    *
-   * @method itemWidth 
+   * @method itemWidth
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [width] The new width
    * @returns {Number} The current width
-   */    
+   */
   pub.itemWidth = function(pItem, width) {
-    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
-      if( width != null ){
+    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
+      if( width !== null ){
         b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
       } else {
         return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
       }
     } else {
-      throw new Error("pItem has to be a valid PageItem");
-    }    
-  }
+      error("pItem has to be a valid PageItem");
+    }
+  };
 
   /**
    * Scales the given PageItem to the given height. If height is not given as argument the current height is returned.
    *
-   * @method itemHeight 
+   * @method itemHeight
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [height] The new height
    * @returns {Number} The current height
-   */    
+   */
   pub.itemHeight = function(pItem, height) {
-    if(pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
-      if( height != null ){
+    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
+      if( height !== null ){
         b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
       } else {
         return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
       }
     } else {
-      throw new Error("pItem has to be a valid PageItem");
-    }    
-  }
+      error("pItem has to be a valid PageItem");
+    }
+  };
 
   /**
    * Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.
    *
-   * @method itemPosition 
+   * @method itemPosition
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [x] The new x coordinate
-   * @param {Number} [y] The new y coordinate   
+   * @param {Number} [y] The new y coordinate
    * @returns {Object} Returns an object with the fields x and y
-   */    
+   */
   pub.itemPosition = function(pItem, x, y) {
-    if (pItem != null && pItem.hasOwnProperty("geometricBounds")) {
+    if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
     
-      if( x != null && y != null) {
+      if( x !== null && y !== null) {
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-        var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];             
+        var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
         pItem.geometricBounds = [ y, x, y + height, x + width ];
       } else {
         return { x: pItem.geometricBounds[1], y: pItem.geometricBounds[0] };
       }
       
     } else {
-      throw new Error("itemPosition() only works with child classes of PageItem.");
+      error("itemPosition() only works with child classes of PageItem.");
     }
-  }
+  };
 
   /**
    * Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.
    *
-   * @method itemSize 
+   * @method itemSize
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [width] The new width
    * @param {Number} [height] The new height
    * @returns {Object} Returns an object with the fields width and height
-   */   
+   */
   pub.itemSize = function(pItem, width, height) {
-    if (pItem != null && pItem.hasOwnProperty("geometricBounds")) {  
+    if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
     
-      if( width != null && height != null ) {
+      if( width !== null && height !== null ) {
         var x = pItem.geometricBounds[1];
         var y = pItem.geometricBounds[0];
         pItem.geometricBounds = [ y, x, y + height, x + width ];
@@ -2140,9 +2143,9 @@
       }
       
     } else {
-      throw new Error("itemSize() only works with child classes of PageItem.");
-    }  
-  }
+      error("itemSize() only works with child classes of PageItem.");
+    }
+  };
   
   
   var printMatrixHelper = function(elements) {
@@ -2152,47 +2155,47 @@
     var digits = (big + "").indexOf(".");
     if (digits === 0) digits = 1;
     else if (digits === -1) digits = (big + "").length;
-    return digits
+    return digits;
   };
 
   var PMatrix2D = pub.PMatrix2D = function() {
     if (arguments.length === 0) this.reset();
     else if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) this.set(arguments[0].array());
-    else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5])
+    else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   };
   PMatrix2D.prototype = {
     set: function() {
       if (arguments.length === 6) {
         var a = arguments;
-        this.set([a[0], a[1], a[2], a[3], a[4], a[5]])
+        this.set([a[0], a[1], a[2], a[3], a[4], a[5]]);
       } else if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) this.elements = arguments[0].array();
-      else if (arguments.length === 1 && arguments[0] instanceof Array) this.elements = arguments[0].slice()
+      else if (arguments.length === 1 && arguments[0] instanceof Array) this.elements = arguments[0].slice();
     },
     get: function() {
-      var outgoing = new PMatrix2D;
+      var outgoing = new PMatrix2D();
       outgoing.set(this.elements);
-      return outgoing
+      return outgoing;
     },
     reset: function() {
-      this.set([1, 0, 0, 0, 1, 0])
+      this.set([1, 0, 0, 0, 1, 0]);
     },
     array: function array() {
-      return this.elements.slice()
+      return this.elements.slice();
     },
     adobeMatrix: function array() {
-      return [this.elements[0], 
-              this.elements[3],  
-              this.elements[1], 
+      return [this.elements[0],
+              this.elements[3],
+              this.elements[1],
               this.elements[4],
-              this.elements[2], 
+              this.elements[2],
               this.elements[5]];
     },
     translate: function(tx, ty) {
       this.elements[2] = tx * this.elements[0] + ty * this.elements[1] + this.elements[2];
-      this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5]
+      this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5];
     },
     invTranslate: function(tx, ty) {
-      this.translate(-tx, -ty)
+      this.translate(-tx, -ty);
     },
     transpose: function() {},
     mult: function(source, target) {
@@ -2200,27 +2203,27 @@
       if (source instanceof PVector) {
         x = source.x;
         y = source.y;
-        if (!target) target = new PVector
+        if (!target) target = new PVector();
       } else if (source instanceof Array) {
         x = source[0];
         y = source[1];
-        if (!target) target = []
+        if (!target) target = [];
       }
       if (target instanceof Array) {
         target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
-        target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5]
+        target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5];
       } else if (target instanceof PVector) {
         target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
         target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-        target.z = 0
+        target.z = 0;
       }
-      return target
+      return target;
     },
     multX: function(x, y) {
-      return x * this.elements[0] + y * this.elements[1] + this.elements[2]
+      return x * this.elements[0] + y * this.elements[1] + this.elements[2];
     },
     multY: function(x, y) {
-      return x * this.elements[3] + y * this.elements[4] + this.elements[5]
+      return x * this.elements[3] + y * this.elements[4] + this.elements[5];
     },
     /*
     // BUG, seems to be buggy in processing.js, and i am not clever enough to figure it out
@@ -2231,7 +2234,7 @@
       this.apply(1, 0, 1, 0, Math.tan(angle), 0)
     },*/
     determinant: function() {
-      return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3]
+      return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3];
     },
     invert: function() {
       var d = this.determinant();
@@ -2248,9 +2251,9 @@
         this.elements[4] = old00 / d;
         this.elements[2] = (old01 * old12 - old11 * old02) / d;
         this.elements[5] = (old10 * old02 - old00 * old12) / d;
-        return true
+        return true;
       }
-      return false
+      return false;
     },
     scale: function(sx, sy) {
       if (sx && !sy) sy = sx;
@@ -2258,12 +2261,12 @@
         this.elements[0] *= sx;
         this.elements[1] *= sy;
         this.elements[3] *= sx;
-        this.elements[4] *= sy
+        this.elements[4] *= sy;
       }
     },
     invScale: function(sx, sy) {
       if (sx && !sy) sy = sx;
-      this.scale(1 / sx, 1 / sy)
+      this.scale(1 / sx, 1 / sy);
     },
     apply: function() {
       var source;
@@ -2273,7 +2276,7 @@
       var result = [0, 0, this.elements[2], 0, 0, this.elements[5]];
       var e = 0;
       for (var row = 0; row < 2; row++) for (var col = 0; col < 3; col++, e++) result[e] += this.elements[row * 3 + 0] * source[col + 0] + this.elements[row * 3 + 1] * source[col + 3];
-      this.elements = result.slice()
+      this.elements = result.slice();
     },
     preApply: function() {
       var source;
@@ -2287,7 +2290,7 @@
       result[3] = this.elements[0] * source[3] + this.elements[3] * source[4];
       result[1] = this.elements[1] * source[0] + this.elements[4] * source[1];
       result[4] = this.elements[1] * source[3] + this.elements[4] * source[4];
-      this.elements = result.slice()
+      this.elements = result.slice();
     },
     rotate: function(angle) {
       var c = Math.cos(angle);
@@ -2299,18 +2302,18 @@
       temp1 = this.elements[3];
       temp2 = this.elements[4];
       this.elements[3] = c * temp1 + s * temp2;
-      this.elements[4] = -s * temp1 + c * temp2
+      this.elements[4] = -s * temp1 + c * temp2;
     },
     rotateZ: function(angle) {
-      this.rotate(angle)
+      this.rotate(angle);
     },
     invRotateZ: function(angle) {
-      this.rotateZ(angle - Math.PI)
+      this.rotateZ(angle - Math.PI);
     },
     print: function() {
       var digits = printMatrixHelper(this.elements);
       var output = "" + pub.nfs(this.elements[0], digits, 4) + " " + pub.nfs(this.elements[1], digits, 4) + " " + pub.nfs(this.elements[2], digits, 4) + "\n" + pub.nfs(this.elements[3], digits, 4) + " " + pub.nfs(this.elements[4], digits, 4) + " " + pub.nfs(this.elements[5], digits, 4) + "\n\n";
-      pub.println(output)
+      pub.println(output);
     }
   };
 
@@ -2359,7 +2362,7 @@
    * Run the sketch! Has to be called in every sketch a the very end of the code.
    *
    * @method go
-   */ 
+   */
   pub.go = function() {
     currentDoc();
     runSetup();
@@ -2368,13 +2371,13 @@
 
   /**
    * EXPERIMENTAL!
-   * 
-   * Causes basil to continuously execute the code within draw() when InDesign is idle. 
+   *
+   * Causes basil to continuously execute the code within draw() when InDesign is idle.
    * #targetengine "loop"; must be at the very top in the script file.
    * If noLoop() is called, the code in draw() stops executing.
    * It is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!
    * The framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.
-   * 
+   *
    * @method loop
    * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
    */
@@ -2400,16 +2403,16 @@
 
   /**
    * EXPERIMENTAL!
-   * 
+   *
    * Stops basil from continuously executing the code within draw().
-   * 
+   *
    * @method noLoop
    */
   pub.noLoop = function() {
     var allIdleTasks = app.idleTasks;
     for (var i = app.idleTasks.length - 1; i >= 0; i--) {
       allIdleTasks[i].remove();
-    };
+    }
     println("noLoop()");
   };
 
@@ -2432,7 +2435,7 @@
     app.doScript(function() {
       if (typeof glob.setup === 'function') {
         glob.setup();
-      }    
+      }
     }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
   };
 
@@ -2440,7 +2443,7 @@
     app.doScript(function() {
       if (typeof glob.draw === 'function') {
         glob.draw();
-      }      
+      }
     }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
   };
 
@@ -2448,7 +2451,7 @@
     app.doScript(function() {
       if (typeof glob.draw === 'function') {
         glob.draw();
-      }      
+      }
     }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
   };
 
@@ -2463,7 +2466,7 @@
     if (!currDoc) {
       var doc = null;
       try {
-        doc = app.activeDocument;  
+        doc = app.activeDocument;
       } catch(e) {
         doc = app.documents.add();
       }
