@@ -158,7 +158,7 @@
    * 
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
-   * @param  {Function} cb  The callback function to call with each story, passed arguments: story, loopCount
+   * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
    */
   pub.stories = function(doc, cb) {
     return forEach(doc.stories, cb);
@@ -169,7 +169,7 @@
    * 
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
-   * @param  {Function} cb  The callback function to call with each paragraph, passed arguments: para, loopCount
+   * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
    */
   pub.paragraphs = function(item, cb) {
     if (item instanceof Document) {
@@ -185,7 +185,7 @@
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to 
    *                                                   iterate the lines in
-   * @param  {Function} cb The callback function to call with each line, passed arguments: line, loopCount
+   * @param  {Function} cb The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
    */
   pub.lines = function(item, cb) {
     if (item instanceof Document) {
@@ -201,7 +201,7 @@
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance 
    *                                                        to iterate the words in
-   * @param  {Function} cb The callback function to call with each word, passed arguments: word, loopCount
+   * @param  {Function} cb The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
    */
   pub.words = function(item, cb) {
     if (item instanceof Document) {
@@ -217,7 +217,7 @@
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to 
    *                                                    iterate the characters in
-   * @param  {Function} cb The callback function to call with each character, passed arguments: character, loopCount
+   * @param  {Function} cb The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
    */
   pub.characters = function(item, cb) {
     if (item instanceof Document) {
