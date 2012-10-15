@@ -440,6 +440,46 @@
   // ----------------------------------------
   // Data
 
+/*
+ * From: jQuery JavaScript Library v1.7.1 http://jquery.com/
+ * Function validates and parses a String as JSON-Object.
+ * 
+ * @method parseJSON()
+ * @param  {String} String to be parsed as JSON-object.
+ * @return {Object} Returns JSON-Object or throws an error if invalid JSON has been provided.
+*/ 
+ pub.parseJSON = function( data ) {
+    if ( typeof data !== "string" || !data ) {
+      return null;
+    }
+
+    //trim data.. not sure if needed..
+//    data = pub.trim(data);
+   
+    // Attempt to parse using the native JSON parser first
+    try {
+      return JSON.parse( data );
+    }
+    catch(e) {
+      warning("JSON Library not found! Json validation and parsing would be faster if you would use the json2.js library: www.basiljs.ch/json2");
+    }
+    var rvalidchars = /^[\],:{}\s]*$/,
+      rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
+      rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
+      rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
+
+    // Make sure the incoming data is actual JSON
+    // Logic borrowed from http://json.org/json2.js
+    if ( rvalidchars.test( data.replace( rvalidescape, "@" )
+      .replace( rvalidtokens, "]" )
+      .replace( rvalidbraces, "")) ) {
+
+      return ( new Function( "return " + data ) )();
+
+    }
+    error( "Invalid JSON: " + data );
+  };
+
   // -- Conversion --
   pub.binary = function(num, numBits) {
     var bit;
