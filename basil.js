@@ -440,29 +440,22 @@
   // ----------------------------------------
   // Data
 
-/*
- * From: jQuery JavaScript Library v1.7.1 http://jquery.com/
- * Function validates and parses a String as JSON-Object.
- * 
- * @method parseJSON()
- * @param  {String} String to be parsed as JSON-object.
- * @return {Object} Returns JSON-Object or throws an error if invalid JSON has been provided.
-*/ 
- pub.parseJSON = function( data ) {
+  /*
+   * Function parses and validates a string as JSON-object.
+   *
+   * @method parseJSON()
+   * @param  {String} String to be parsed as JSON-object.
+   * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
+  */
+  // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
+  pub.parseJSON = function( data ) {
     if ( typeof data !== "string" || !data ) {
       return null;
     }
 
     //trim data.. not sure if needed..
-//    data = pub.trim(data);
+    //data = pub.trim(data);
    
-    // Attempt to parse using the native JSON parser first
-    try {
-      return JSON.parse( data );
-    }
-    catch(e) {
-      warning("JSON Library not found! Json validation and parsing would be faster if you would use the json2.js library: www.basiljs.ch/json2");
-    }
     var rvalidchars = /^[\],:{}\s]*$/,
       rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
       rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
@@ -478,6 +471,36 @@
 
     }
     error( "Invalid JSON: " + data );
+  };
+
+  /**
+   * Function convert an javascript object to a JSON-string.
+   *
+   * @method toJSON()
+   * @param  {Object} Object to be converted to a JSON-string
+   * @return {String} Returns JSON-string
+   */
+  // From: https://gist.github.com/754454
+  pub.toJSON = function(obj) {
+    var t = typeof (obj);
+    if (t !== "object" || obj === null) {
+      // simple data type
+      if (t === "string") obj = '"' + obj + '"';
+      return String(obj);
+    } else {
+      // recurse array or object
+      var n, v, json = [], arr = (obj && obj.constructor === Array);
+
+      for (n in obj) {
+        v = obj[n];
+        t = typeof(v);
+        if (obj.hasOwnProperty(n)) {
+          if (t === "string") v = '"' + v + '"'; else if (t === "object" && v !== null) v = pub.toJSON(v);
+          json.push((arr ? "" : '"' + n + '":') + String(v));
+        }
+      }
+      return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
   };
 
   // -- Conversion --
