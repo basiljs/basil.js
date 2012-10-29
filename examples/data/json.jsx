@@ -33,14 +33,14 @@ var jsonString = '{\
 
 function setup() {
   // parse JSON
-  var jsonData = b.parseJSON( jsonString );
+  var jsonData = b.JSON.decode( jsonString );
 
   b.text(jsonData.firstName, 0,0, b.width, 50);
   b.text(jsonData.address.city, 0,50, b.width, 50);
   b.text(jsonData.phoneNumber[0].number, 0,100, b.width, 50);
 
   // convert a object to a JSON-string
-  b.println( b.toJSON(jsonData) );
+  b.println( b.JSON.encode(jsonData) );
 }
 
 b.go();
