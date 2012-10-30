@@ -17,7 +17,7 @@
 
   basil.js was conceived and is generously supported by
   The Visual Communication Institute / The Basel School of Design
-  Department of the University of Applied Sciences Northwestern Switzerland (FHNW)
+  Department of the Academy of Art and Design Basel (HGK FHNW)
   
   http://thebaselschoolofdesign.ch
 
