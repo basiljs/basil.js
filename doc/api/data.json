@@ -11,7 +11,8 @@
             "name": "basil.js",
             "modules": {},
             "classes": {
-                "b": 1
+                "b": 1,
+                "Vector": 1
             },
             "fors": {},
             "namespaces": {}
@@ -28,14 +29,152 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "basil.js",
-            "line": 36,
+            "line": 2154,
             "static": 1
+        },
+        "Vector": {
+            "name": "Vector",
+            "shortname": "Vector",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "basil.js",
+            "line": 1876,
+            "description": "A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some \"vector\" math, which is made easy by the methods inside the PVector class."
         }
     },
     "classitems": [
         {
             "file": "basil.js",
-            "line": 68,
+            "line": 46,
+            "description": "The basil version",
+            "itemtype": "property",
+            "name": "VERSION",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 51,
+            "description": "Points",
+            "itemtype": "property",
+            "name": "PT",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 56,
+            "description": "Pixels",
+            "itemtype": "property",
+            "name": "PX",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 61,
+            "description": "Centimeter",
+            "itemtype": "property",
+            "name": "CM",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 66,
+            "description": "Millimeter",
+            "itemtype": "property",
+            "name": "MM",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 71,
+            "description": "Inch",
+            "itemtype": "property",
+            "name": "IN",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 76,
+            "description": "Corner, used for drawing modes.",
+            "itemtype": "property",
+            "name": "CORNER",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 81,
+            "description": "Corners, used for drawing modes.",
+            "itemtype": "property",
+            "name": "CORNERS",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 86,
+            "description": "Center, used for drawing modes.",
+            "itemtype": "property",
+            "name": "CENTER",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 91,
+            "description": "Radius, used for drawing modes.",
+            "itemtype": "property",
+            "name": "RADIUS",
+            "type": "String",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 96,
+            "description": "Two Pi",
+            "itemtype": "property",
+            "name": "TWO_PI",
+            "type": "Number",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 101,
+            "description": "Pi",
+            "itemtype": "property",
+            "name": "PI",
+            "type": "Number",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 106,
+            "description": "Half Pi",
+            "itemtype": "property",
+            "name": "HALF_PI",
+            "type": "Number",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 111,
+            "description": "Quarter Pi",
+            "itemtype": "property",
+            "name": "QUARTER_PI",
+            "type": "Number",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 124,
             "description": "System variable which stores the width of the current page.",
             "itemtype": "property",
             "name": "width",
@@ -44,7 +183,7 @@
         },
         {
             "file": "basil.js",
-            "line": 74,
+            "line": 130,
             "description": "System variable which stores the height of the current page.",
             "itemtype": "property",
             "name": "height",
@@ -53,7 +192,7 @@
         },
         {
             "file": "basil.js",
-            "line": 133,
+            "line": 189,
             "description": "Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.",
             "itemtype": "method",
             "name": "forEach",
@@ -73,7 +212,7 @@
         },
         {
             "file": "basil.js",
-            "line": 155,
+            "line": 211,
             "description": "Suspends the calling thread for a number of milliseconds.\nDuring a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.",
             "itemtype": "method",
             "name": "delay",
@@ -88,7 +227,7 @@
         },
         {
             "file": "basil.js",
-            "line": 166,
+            "line": 222,
             "description": "Calls the given callback function with each story of the given document.",
             "itemtype": "method",
             "name": "stories",
@@ -108,7 +247,7 @@
         },
         {
             "file": "basil.js",
-            "line": 177,
+            "line": 233,
             "description": "Calls the given callback function with each paragraph of the given document, story or text frame.",
             "itemtype": "method",
             "name": "paragraphs",
@@ -128,7 +267,7 @@
         },
         {
             "file": "basil.js",
-            "line": 192,
+            "line": 248,
             "description": "Calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "itemtype": "method",
             "name": "lines",
@@ -148,7 +287,7 @@
         },
         {
             "file": "basil.js",
-            "line": 208,
+            "line": 264,
             "description": "Calls the given callback function with each word of the given document, story, text frame, paragraph or line.",
             "itemtype": "method",
             "name": "words",
@@ -168,7 +307,7 @@
         },
         {
             "file": "basil.js",
-            "line": 224,
+            "line": 280,
             "description": "Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.",
             "itemtype": "method",
             "name": "characters",
@@ -188,7 +327,7 @@
         },
         {
             "file": "basil.js",
-            "line": 253,
+            "line": 309,
             "description": "Checks whether a var is an Array, returns true if this is the case",
             "itemtype": "method",
             "name": "isArray",
@@ -207,7 +346,7 @@
         },
         {
             "file": "basil.js",
-            "line": 264,
+            "line": 320,
             "description": "Checks whether a var is a number, returns true if this is the case",
             "itemtype": "method",
             "name": "isNumber",
@@ -226,7 +365,7 @@
         },
         {
             "file": "basil.js",
-            "line": 275,
+            "line": 331,
             "description": "Checks whether a var is a indesign text object, returns true if this is the case",
             "itemtype": "method",
             "name": "isText",
@@ -245,7 +384,7 @@
         },
         {
             "file": "basil.js",
-            "line": 296,
+            "line": 352,
             "description": "Sets or possibly creates the current document and returns it.\nIf the param doc is not given the current document gets set to the active document\nin the application. If no document at all is open, a new document gets created.",
             "itemtype": "method",
             "name": "doc",
@@ -265,7 +404,7 @@
         },
         {
             "file": "basil.js",
-            "line": 312,
+            "line": 368,
             "description": "Closes the current document.",
             "itemtype": "method",
             "name": "close",
@@ -287,7 +426,7 @@
         },
         {
             "file": "basil.js",
-            "line": 327,
+            "line": 383,
             "description": "Returns the current page and sets it if argument page is given.",
             "itemtype": "method",
             "name": "page",
@@ -307,7 +446,7 @@
         },
         {
             "file": "basil.js",
-            "line": 350,
+            "line": 406,
             "description": "Returns the current layer and sets it if argument layer is given.",
             "itemtype": "method",
             "name": "layer",
@@ -327,7 +466,7 @@
         },
         {
             "file": "basil.js",
-            "line": 370,
+            "line": 426,
             "description": "Sets the units of the document (like right clicking the rulers).",
             "itemtype": "method",
             "name": "units",
@@ -347,7 +486,7 @@
         },
         {
             "file": "basil.js",
-            "line": 412,
+            "line": 468,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "itemtype": "method",
             "name": "guideX",
@@ -366,7 +505,7 @@
         },
         {
             "file": "basil.js",
-            "line": 430,
+            "line": 486,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "itemtype": "method",
             "name": "guideY",
@@ -385,7 +524,7 @@
         },
         {
             "file": "basil.js",
-            "line": 482,
+            "line": 538,
             "description": "Function convert an javascript object to a JSON-string. Usage:\nvar str = b.JSON.encode(obj);\nvar obj = b.JSON.decode(str);",
             "itemtype": "method",
             "name": "JSON.encode()",
@@ -404,7 +543,7 @@
         },
         {
             "file": "basil.js",
-            "line": 517,
+            "line": 573,
             "description": "Converts a byte, char, int, or color to a String containing the\nequivalent binary notation. For example color(0, 102, 153, 255) \nwill convert to the String \"11111111000000000110011010011001\". This \nfunction can help make your geeky debugging sessions much happier.",
             "itemtype": "method",
             "name": "binary",
@@ -429,7 +568,7 @@
         },
         {
             "file": "basil.js",
-            "line": 544,
+            "line": 600,
             "description": "Converts a String representation of a binary number to its \nequivalent integer value. For example, unbinary(\"00001000\") will \nreturn 8.",
             "itemtype": "method",
             "name": "unbinary",
@@ -448,7 +587,7 @@
         },
         {
             "file": "basil.js",
-            "line": 577,
+            "line": 633,
             "description": "Convert a number to a hex representation.",
             "itemtype": "method",
             "name": "hex",
@@ -473,7 +612,7 @@
         },
         {
             "file": "basil.js",
-            "line": 596,
+            "line": 652,
             "description": "Convert a hex representation to a number.",
             "itemtype": "method",
             "name": "unhex",
@@ -492,7 +631,7 @@
         },
         {
             "file": "basil.js",
-            "line": 615,
+            "line": 671,
             "description": "Combines an array of Strings into one String, each separated by \nthe character(s) used for the separator parameter. To join arrays \nof ints or floats, it's necessary to first convert them to strings \nusing nf() or nfs().",
             "itemtype": "method",
             "name": "join",
@@ -516,7 +655,7 @@
         },
         {
             "file": "basil.js",
-            "line": 631,
+            "line": 687,
             "description": "The split() function breaks a string into pieces using a\ncharacter or string as the divider. The delim parameter specifies the\ncharacter or characters that mark the boundaries between each piece. A\nString[] array is returned that contains each of the pieces.\n\nIf the result is a set of numbers, you can convert the String[] array\nto to a float[] or int[] array using the datatype conversion functions\nint() and float() (see example above).\n\nThe splitTokens() function works in a similar fashion, except that it\nsplits using a range of characters instead of a specific character or\nsequence.",
             "itemtype": "method",
             "name": "split",
@@ -541,7 +680,7 @@
         },
         {
             "file": "basil.js",
-            "line": 655,
+            "line": 711,
             "description": "The splitTokens() function splits a String at one or many character \n\"tokens.\" The tokens parameter specifies the character or characters \nto be used as a boundary.\n\nIf no tokens character is specified, any whitespace character is used \nto split. Whitespace characters include tab (\\t), line feed (\\n), \ncarriage return (\\r), form feed (\\f), and space. To convert a String \nto an array of integers or floats, use the datatype conversion functions \nint() and float() to convert the array of Strings.",
             "itemtype": "method",
             "name": "splitTokens",
@@ -566,7 +705,7 @@
         },
         {
             "file": "basil.js",
-            "line": 754,
+            "line": 810,
             "description": "Utility function for formatting numbers into strings. There\nare two versions, one for formatting floats and one for formatting\nints. The values for the digits, left, and right parameters should\nalways be positive integers.\n\nAs shown in the above example, nf() is used to add zeros to the\nleft and/or right of a number. This is typically for aligning a list\nof numbers. To remove digits from a floating-point number, use the\nint(), ceil(), floor(), or round() functions.",
             "itemtype": "method",
             "name": "nf",
@@ -595,7 +734,7 @@
         },
         {
             "file": "basil.js",
-            "line": 776,
+            "line": 832,
             "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut leaves a blank space in front of positive numbers so they align \nwith negative numbers in spite of the minus symbol. There are two \nversions, one for formatting floats and one for formatting ints. The \nvalues for the digits, left, and right parameters should always be \npositive integers.",
             "itemtype": "method",
             "name": "nfs",
@@ -624,7 +763,7 @@
         },
         {
             "file": "basil.js",
-            "line": 795,
+            "line": 851,
             "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut puts a \"+\" in front of positive numbers and a \"-\" in front of \nnegative numbers. There are two versions, one for formatting floats \nand one for formatting ints. The values for the digits, left, and right \nparameters should always be positive integers.",
             "itemtype": "method",
             "name": "nfp",
@@ -653,7 +792,7 @@
         },
         {
             "file": "basil.js",
-            "line": 813,
+            "line": 869,
             "description": "Utility function for formatting numbers into strings and placing \nappropriate commas to mark units of 1000. There are two versions, one \nfor formatting ints and one for formatting an array of ints. The value \nfor the digits parameter should always be a positive integer.",
             "itemtype": "method",
             "name": "nfc",
@@ -682,7 +821,7 @@
         },
         {
             "file": "basil.js",
-            "line": 831,
+            "line": 887,
             "description": "Removes whitespace characters from the beginning and end of a String. \nIn addition to standard whitespace characters such as space, carriage \nreturn, and tab, this function also removes the Unicode \"nbsp\" character.",
             "itemtype": "method",
             "name": "trim",
@@ -701,7 +840,7 @@
         },
         {
             "file": "basil.js",
-            "line": 853,
+            "line": 909,
             "description": "Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.\nThe first two parameters set the location, the third sets the width, and the fourth sets the height.",
             "itemtype": "method",
             "name": "ellipse",
@@ -735,7 +874,7 @@
         },
         {
             "file": "basil.js",
-            "line": 912,
+            "line": 968,
             "description": "Draws a line (a direct path between two points) to the page.",
             "itemtype": "method",
             "name": "line",
@@ -769,7 +908,7 @@
         },
         {
             "file": "basil.js",
-            "line": 940,
+            "line": 996,
             "description": "Draws a rectangle to the page.",
             "itemtype": "method",
             "name": "rect",
@@ -803,7 +942,7 @@
         },
         {
             "file": "basil.js",
-            "line": 992,
+            "line": 1048,
             "description": "The function calculates the geometric bounds of any given object.\nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
             "itemtype": "method",
             "name": "bounds",
@@ -822,7 +961,52 @@
         },
         {
             "file": "basil.js",
-            "line": 1094,
+            "line": 1119,
+            "description": "Modifies the location from which rectangles draw. The default mode is \nrectMode(CORNER), which specifies the location to be the upper left \ncorner of the shape and uses the third and fourth parameters of rect() \nto specify the width and height. The syntax rectMode(CORNERS) uses the \nfirst and second parameters of rect() to set the location of one corner \nand uses the third and fourth parameters to set the opposite corner. \nThe syntax rectMode(CENTER) draws the image from its center point and \nuses the third and forth parameters of rect() to specify the image's \nwidth and height. The syntax rectMode(RADIUS) draws the image from its \ncenter point and uses the third and forth parameters of rect() to specify \nhalf of the image's width and height. The parameter must be written in \n\"ALL CAPS\".",
+            "itemtype": "method",
+            "name": "rectMode",
+            "params": [
+                {
+                    "name": "mode",
+                    "description": "Either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1147,
+            "description": "The origin of the ellipse is modified by the ellipseMode() function. \nThe default configuration is ellipseMode(CENTER), which specifies the \nlocation of the ellipse as the center of the shape. The RADIUS mode is \nthe same, but the width and height parameters to ellipse() specify the \nradius of the ellipse, rather than the diameter. The CORNER mode draws \nthe shape from the upper-left corner of its bounding box. The CORNERS \nmode uses the four parameters to ellipse() to set two opposing corners \nof the ellipse's bounding box. The parameter must be written in \"ALL CAPS\".",
+            "itemtype": "method",
+            "name": "ellipseMode",
+            "params": [
+                {
+                    "name": "mode",
+                    "description": "Either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1171,
+            "description": "Sets the width of the stroke used for lines and the border \naround shapes.",
+            "itemtype": "method",
+            "name": "strokeWeight",
+            "params": [
+                {
+                    "name": "weight",
+                    "description": "The width of the stroke",
+                    "type": "Number"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1186,
             "description": "Returns the object style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "objectStyle",
@@ -841,7 +1025,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1117,
+            "line": 1209,
             "description": "Sets the color used to fill shapes.",
             "itemtype": "method",
             "name": "fill",
@@ -856,7 +1040,15 @@
         },
         {
             "file": "basil.js",
-            "line": 1151,
+            "line": 1238,
+            "description": "Disables filling geometry. If both noStroke() and noFill() are called, \nnewly drawn shapes will be invisible.",
+            "itemtype": "method",
+            "name": "noFill",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1248,
             "description": "Sets the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "stroke",
@@ -871,7 +1063,15 @@
         },
         {
             "file": "basil.js",
-            "line": 1185,
+            "line": 1277,
+            "description": "Disables drawing the stroke (outline). If both noStroke() and noFill() \nare called, nothing will be drawn to the screen.",
+            "itemtype": "method",
+            "name": "noStroke",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1287,
             "description": "Sets the tint of the color used to fill shapes.",
             "itemtype": "method",
             "name": "fillTint",
@@ -886,7 +1086,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1199,
+            "line": 1301,
             "description": "Sets the tint of the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "strokeTint",
@@ -901,7 +1101,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1213,
+            "line": 1315,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document",
             "itemtype": "method",
             "name": "color",
@@ -920,7 +1120,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1299,
+            "line": 1401,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "itemtype": "method",
             "name": "lerpColor",
@@ -949,7 +1149,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1356,
+            "line": 1458,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nThe default document font size will be used unless a font size is set with the textSize() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() and textYAlign() functions. \nThe width and height parameters define a rectangular area.",
             "itemtype": "method",
             "name": "text",
@@ -988,7 +1188,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1405,
+            "line": 1507,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to,\nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the\ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item\n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "itemtype": "method",
             "name": "typo",
@@ -1018,7 +1218,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1464,
+            "line": 1566,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "itemtype": "method",
             "name": "textFont",
@@ -1044,7 +1244,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1482,
+            "line": 1584,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "itemtype": "method",
             "name": "textSize",
@@ -1064,7 +1264,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1496,
+            "line": 1598,
             "description": "Sets the current horizontal and vertical text alignment.",
             "itemtype": "method",
             "name": "textAlign",
@@ -1085,7 +1285,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1520,
+            "line": 1622,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "itemtype": "method",
             "name": "textLeading",
@@ -1105,7 +1305,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1535,
+            "line": 1637,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "itemtype": "method",
             "name": "textKerning",
@@ -1125,7 +1325,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1549,
+            "line": 1651,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "itemtype": "method",
             "name": "textTracking",
@@ -1145,7 +1345,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1563,
+            "line": 1665,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "characterStyle",
@@ -1164,7 +1364,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1581,
+            "line": 1683,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "paragraphStyle",
@@ -1183,7 +1383,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1599,
+            "line": 1701,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
             "itemtype": "method",
             "name": "linkTextFrames",
@@ -1203,7 +1403,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1618,
+            "line": 1720,
             "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's\ndata directory which is in the same directory where the document is saved in. The image argument can also be a File\ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle,\noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "itemtype": "method",
             "name": "image",
@@ -1245,7 +1445,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1688,
+            "line": 1790,
             "description": "Transforms position and size of an image.\nThe image fit options are always \"contentToFrame\".",
             "itemtype": "method",
             "name": "transformImage",
@@ -1280,7 +1480,465 @@
         },
         {
             "file": "basil.js",
-            "line": 2191,
+            "line": 1815,
+            "description": "Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.\nIf no parameter is passed the currently set mode is returned as String.",
+            "itemtype": "method",
+            "name": "imageMode",
+            "params": [
+                {
+                    "name": "mode",
+                    "description": "Either b.CORNER, b.CORNERS, or b.CENTER",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current mode",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1883,
+            "description": "Constructor of Vector, can be two- or three-dimensional.",
+            "is_constructor": 1,
+            "itemtype": "method",
+            "name": "Vector",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "z",
+                    "description": "",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1896,
+            "description": "Calculates the Euclidean distance between two points (considering a point as a vector object).\nIs meant to be called \"static\" i.e. Vector.dist(v1, v2);",
+            "itemtype": "method",
+            "name": "dist",
+            "static": 1,
+            "params": [
+                {
+                    "name": "v1",
+                    "description": "The first vector",
+                    "type": "Vector"
+                },
+                {
+                    "name": "v2",
+                    "description": "The second vector",
+                    "type": "Vector"
+                }
+            ],
+            "return": {
+                "description": "The distance",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1909,
+            "description": "Calculates the dot product of two vectors.\nIs meant to be called \"static\" i.e. Vector.dot(v1, v2);",
+            "itemtype": "method",
+            "name": "dot",
+            "static": 1,
+            "params": [
+                {
+                    "name": "v1",
+                    "description": "The first vector",
+                    "type": "Vector"
+                },
+                {
+                    "name": "v2",
+                    "description": "The second vector",
+                    "type": "Vector"
+                }
+            ],
+            "return": {
+                "description": "The dot product",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1922,
+            "description": "Calculates the cross product of two vectors.\nIs meant to be called \"static\" i.e. Vector.cross(v1, v2);",
+            "itemtype": "method",
+            "name": "cross",
+            "static": 1,
+            "params": [
+                {
+                    "name": "v1",
+                    "description": "The first vector",
+                    "type": "Vector"
+                },
+                {
+                    "name": "v2",
+                    "description": "The second vector",
+                    "type": "Vector"
+                }
+            ],
+            "return": {
+                "description": "The cross product",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1935,
+            "description": "Calculates the angle between two vectors.\nIs meant to be called \"static\" i.e. Vector.angleBetween(v1, v2);",
+            "itemtype": "method",
+            "name": "angleBetween",
+            "static": 1,
+            "params": [
+                {
+                    "name": "v1",
+                    "description": "The first vector",
+                    "type": "Vector"
+                },
+                {
+                    "name": "v2",
+                    "description": "The second vector",
+                    "type": "Vector"
+                }
+            ],
+            "return": {
+                "description": "The angle",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1950,
+            "description": "Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a vector, array or x component",
+                    "type": "Number|Array|Vector"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1965,
+            "description": "Gets a copy of the vector, returns a Vector object.",
+            "itemtype": "method",
+            "name": "get",
+            "return": {
+                "description": "A copy of the vector",
+                "type": "Vector"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1973,
+            "description": "Calculates the magnitude (length) of the vector and returns the result as a float",
+            "itemtype": "method",
+            "name": "mag",
+            "return": {
+                "description": "The length",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 1984,
+            "description": "Adds x, y, and z components to a vector, adds one vector to another.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a full vector or an x component",
+                    "type": "Vector|Number"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2002,
+            "description": "Substract x, y, and z components or a full vector from this vector",
+            "itemtype": "method",
+            "name": "sub",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a full vector or an x component",
+                    "type": "Vector|Number"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2020,
+            "description": "Multiplies this vector with x, y, and z components or another vector.",
+            "itemtype": "method",
+            "name": "mult",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a full vector or an x component",
+                    "type": "Vector|Number"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2038,
+            "description": "Divides this vector through x, y, and z components or another vector.",
+            "itemtype": "method",
+            "name": "div",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a full vector or an x component",
+                    "type": "Vector|Number"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2056,
+            "description": "Calculates the distance from this vector to another as x, y, and z components or full vector.",
+            "itemtype": "method",
+            "name": "dist",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a full vector or an x component",
+                    "type": "Vector|Number"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The distance",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2070,
+            "description": "Calculates the dot product from this vector to another as x, y, and z components or full vector.",
+            "itemtype": "method",
+            "name": "dot",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a full vector or an x component",
+                    "type": "Vector|Number"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The dot product",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2082,
+            "description": "Calculates the cross product from this vector to another as x, y, and z components or full vector.",
+            "itemtype": "method",
+            "name": "cross",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Either a full vector or an x component",
+                    "type": "Vector|Number"
+                },
+                {
+                    "name": "y",
+                    "description": "The y component",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "z",
+                    "description": "The z component",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The cross product",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2096,
+            "description": "Normalizes the length of this vector to 1.",
+            "itemtype": "method",
+            "name": "normalize",
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2104,
+            "description": "Normalizes the length of this vector to the given parameter.",
+            "itemtype": "method",
+            "name": "limit",
+            "params": [
+                {
+                    "name": "high",
+                    "description": "The value to scale to.",
+                    "type": "Number"
+                }
+            ],
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2115,
+            "description": "The 2D orientation (heading) of this vector in radian.",
+            "itemtype": "method",
+            "name": "heading2D",
+            "return": {
+                "description": "A radian angle value",
+                "type": "Number"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2123,
+            "description": "Returns data about this vector as a string.",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "The x, y and z components as a string.",
+                "type": "String"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2131,
+            "description": "Returns this vector as an array [x,y,z].",
+            "itemtype": "method",
+            "name": "array",
+            "return": {
+                "description": "[x,y,z]",
+                "type": "Array"
+            },
+            "class": "Vector"
+        },
+        {
+            "file": "basil.js",
+            "line": 2449,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",
@@ -1299,7 +1957,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2211,
+            "line": 2469,
             "description": "Returns the currently selected object(s)",
             "itemtype": "method",
             "name": "selection",
@@ -1311,7 +1969,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2221,
+            "line": 2479,
             "description": "Reads the contents of a file and creates a String array of its individual lines.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "itemtype": "method",
             "name": "loadStrings",
@@ -1330,7 +1988,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2256,
+            "line": 2514,
             "description": "Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.\nIf the given file exists it gets overridden.",
             "itemtype": "method",
             "name": "saveStrings",
@@ -1350,7 +2008,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2273,
+            "line": 2531,
             "description": "Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.",
             "todo": [
                 "data folder is not created automatically",
@@ -1374,7 +2032,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2292,
+            "line": 2550,
             "description": "Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.",
             "itemtype": "method",
             "name": "itemX",
@@ -1399,7 +2057,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2312,
+            "line": 2570,
             "description": "Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.",
             "itemtype": "method",
             "name": "itemY",
@@ -1424,7 +2082,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2332,
+            "line": 2590,
             "description": "Scales the given PageItem to the given width. If width is not given as argument the current width is returned.",
             "itemtype": "method",
             "name": "itemWidth",
@@ -1449,7 +2107,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2352,
+            "line": 2610,
             "description": "Scales the given PageItem to the given height. If height is not given as argument the current height is returned.",
             "itemtype": "method",
             "name": "itemHeight",
@@ -1474,7 +2132,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2372,
+            "line": 2630,
             "description": "Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.",
             "itemtype": "method",
             "name": "itemPosition",
@@ -1505,7 +2163,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2397,
+            "line": 2655,
             "description": "Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.",
             "itemtype": "method",
             "name": "itemSize",
@@ -1536,7 +2194,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2633,
+            "line": 2891,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
             "itemtype": "method",
             "name": "go",
@@ -1544,7 +2202,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2644,
+            "line": 2902,
             "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle.\n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!\nThe framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.",
             "itemtype": "method",
             "name": "loop",
@@ -1559,7 +2217,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2676,
+            "line": 2934,
             "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
             "itemtype": "method",
             "name": "noLoop",

@@ -42,20 +42,76 @@
 
   // ----------------------------------------
   // constants
-
+  
+  /**
+   * The basil version
+   * @property VERSION {String}
+   */
   pub.VERSION = "0.1";
+  /**
+   * Points
+   * @property PT {String}
+   */
   pub.PT = "pt";
+  /**
+   * Pixels
+   * @property PX {String}
+   */
   pub.PX = "px";
+  /**
+   * Centimeter
+   * @property CM {String}
+   */
   pub.CM = "cm";
+  /**
+   * Millimeter
+   * @property MM {String}
+   */
   pub.MM = "mm";
+  /**
+   * Inch
+   * @property IN {String}
+   */
   pub.IN = "inch";
+  /**
+   * Corner, used for drawing modes.
+   * @property CORNER {String}
+   */
   pub.CORNER = "corner";
+  /**
+   * Corners, used for drawing modes.
+   * @property CORNERS {String}
+   */
   pub.CORNERS = "corners";
+  /**
+   * Center, used for drawing modes.
+   * @property CENTER {String}
+   */
   pub.CENTER = "center";
+  /**
+   * Radius, used for drawing modes.
+   * @property RADIUS {String}
+   */
   pub.RADIUS = "radius";
+  /**
+   * Two Pi
+   * @property TWO_PI {Number}
+   */
   pub.TWO_PI = Math.PI*2;
+  /**
+   * Pi
+   * @property PI {Number}
+   */
   pub.PI = Math.PI;
+  /**
+   * Half Pi
+   * @property HALF_PI {Number}
+   */
   pub.HALF_PI = Math.PI/2;
+  /**
+   * Quarter Pi
+   * @property QUARTER_PI {Number}
+   */
   pub.QUARTER_PI = Math.PI/4;
   
   var ERROR_PREFIX = "\n\n### Basil Error -> ",
@@ -1060,7 +1116,24 @@
 
   // -- Attributes --
 
-  /* todo */
+  /**
+   * Modifies the location from which rectangles draw. The default mode is 
+   * rectMode(CORNER), which specifies the location to be the upper left 
+   * corner of the shape and uses the third and fourth parameters of rect() 
+   * to specify the width and height. The syntax rectMode(CORNERS) uses the 
+   * first and second parameters of rect() to set the location of one corner 
+   * and uses the third and fourth parameters to set the opposite corner. 
+   * The syntax rectMode(CENTER) draws the image from its center point and 
+   * uses the third and forth parameters of rect() to specify the image's 
+   * width and height. The syntax rectMode(RADIUS) draws the image from its 
+   * center point and uses the third and forth parameters of rect() to specify 
+   * half of the image's width and height. The parameter must be written in 
+   * "ALL CAPS".
+   *
+   * @method rectMode
+   * @param {String} mode Either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS
+   * 
+   */
   pub.rectMode = function (mode) {
     if (arguments.length === 0) return currRectMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
@@ -1071,7 +1144,19 @@
     }
   };
 
-  /* todo */
+  /**
+   * The origin of the ellipse is modified by the ellipseMode() function. 
+   * The default configuration is ellipseMode(CENTER), which specifies the 
+   * location of the ellipse as the center of the shape. The RADIUS mode is 
+   * the same, but the width and height parameters to ellipse() specify the 
+   * radius of the ellipse, rather than the diameter. The CORNER mode draws 
+   * the shape from the upper-left corner of its bounding box. The CORNERS 
+   * mode uses the four parameters to ellipse() to set two opposing corners 
+   * of the ellipse's bounding box. The parameter must be written in "ALL CAPS".
+   *
+   * @method ellipseMode
+   * @param {String} mode Either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS
+   */ 
   pub.ellipseMode = function (mode) {
     if (arguments.length === 0) return currEllipseMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
@@ -1082,7 +1167,14 @@
     }
   };
 
-  /* todo */
+  
+  /**
+   * Sets the width of the stroke used for lines and the border 
+   * around shapes. 
+   * 
+   * @method strokeWeight
+   * @param {Number} weight The width of the stroke
+   */
   pub.strokeWeight = function (weight) {
     if (typeof weight === 'string' || typeof weight === 'number') {
       currStrokeWeight = weight;
@@ -1143,7 +1235,12 @@
     }
   };
 
-  /* todo */
+  /**
+   * Disables filling geometry. If both noStroke() and noFill() are called, 
+   * newly drawn shapes will be invisible.
+   *
+   * @method noFill
+   */
   pub.noFill = function () {
     currFillColor = noneSwatchColor;
   };
@@ -1177,7 +1274,12 @@
     }
   };
 
-  /* todo */
+  /**
+   * Disables drawing the stroke (outline). If both noStroke() and noFill() 
+   * are called, nothing will be drawn to the screen.
+   * 
+   * @method noStroke
+   */
   pub.noStroke = function () {
     currStrokeColor = noneSwatchColor;
   };
@@ -1710,7 +1812,14 @@
     }
   };
 
-  /* todo */
+  /**
+   * Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.
+   * If no parameter is passed the currently set mode is returned as String.
+   *
+   * @method imageMode
+   * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER
+   * @return {String} The current mode
+   */
   pub.imageMode = function(mode) {
     if (arguments.length === 0) return currImageMode;
 
@@ -1764,26 +1873,87 @@
   // ----------------------------------------
   // Math
   
-  /* todo */
-  var PVector = pub.PVector = function() {
-    function PVector(x, y, z) {
+  /**
+   * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the PVector class.
+   *
+   * @class Vector
+   */
+  var Vector = pub.Vector = function() {
+
+    /**
+     * Constructor of Vector, can be two- or three-dimensional.
+     * @constructor
+     * @method Vector
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} [z]
+     */
+    function Vector(x, y, z) {
       this.x = x || 0;
       this.y = y || 0;
       this.z = z || 0;
     }
-    PVector.dist = function(v1, v2) {
+    /**
+     * Calculates the Euclidean distance between two points (considering a point as a vector object).
+     * Is meant to be called "static" i.e. Vector.dist(v1, v2);
+     * @method dist
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The distance
+     */
+    Vector.dist = function(v1, v2) {
       return v1.dist(v2);
     };
-    PVector.dot = function(v1, v2) {
+
+    /**
+     * Calculates the dot product of two vectors.
+     * Is meant to be called "static" i.e. Vector.dot(v1, v2);
+     * @method dot
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The dot product
+     */
+    Vector.dot = function(v1, v2) {
       return v1.dot(v2);
     };
-    PVector.cross = function(v1, v2) {
+
+    /**
+     * Calculates the cross product of two vectors.
+     * Is meant to be called "static" i.e. Vector.cross(v1, v2);
+     * @method cross
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The cross product
+     */
+    Vector.cross = function(v1, v2) {
       return v1.cross(v2);
     };
-    PVector.angleBetween = function(v1, v2) {
+
+    /**
+     * Calculates the angle between two vectors.
+     * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
+     * @method angleBetween
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The angle
+     */
+    Vector.angleBetween = function(v1, v2) {
       return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
     };
-    PVector.prototype = {
+
+    Vector.prototype = {
+
+      /**
+       * Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.
+       * @method set
+       * @param {Number|Array|Vector} v Either a vector, array or x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       set: function(v, y, z) {
         if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
         else {
@@ -1792,15 +1962,32 @@
           this.z = z;
         }
       },
+      /**
+       * Gets a copy of the vector, returns a Vector object.
+       * @method get
+       * @return {Vector} A copy of the vector
+       */
       get: function() {
-        return new PVector(this.x, this.y, this.z);
+        return new Vector(this.x, this.y, this.z);
       },
+      /**
+       * Calculates the magnitude (length) of the vector and returns the result as a float
+       * @method mag
+       * @return {Number} The length
+       */
       mag: function() {
         var x = this.x,
           y = this.y,
           z = this.z;
         return Math.sqrt(x * x + y * y + z * z);
       },
+      /**
+       * Adds x, y, and z components to a vector, adds one vector to another.
+       * @method add
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       add: function(v, y, z) {
         if (arguments.length === 1) {
           this.x += v.x;
@@ -1812,6 +1999,13 @@
           this.z += z;
         }
       },
+      /**
+       * Substract x, y, and z components or a full vector from this vector
+       * @method sub
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       sub: function(v, y, z) {
         if (arguments.length === 1) {
           this.x -= v.x;
@@ -1823,6 +2017,13 @@
           this.z -= z;
         }
       },
+      /**
+       * Multiplies this vector with x, y, and z components or another vector.
+       * @method mult
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       mult: function(v) {
         if (typeof v === "number") {
           this.x *= v;
@@ -1834,6 +2035,13 @@
           this.z *= v.z;
         }
       },
+      /**
+       * Divides this vector through x, y, and z components or another vector.
+       * @method div
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       div: function(v) {
         if (typeof v === "number") {
           this.x /= v;
@@ -1845,57 +2053,107 @@
           this.z /= v.z;
         }
       },
+      /**
+       * Calculates the distance from this vector to another as x, y, and z components or full vector.
+       * @method dist
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       * @return {Number} The distance
+       */
       dist: function(v) {
         var dx = this.x - v.x,
           dy = this.y - v.y,
           dz = this.z - v.z;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
       },
+      /**
+       * Calculates the dot product from this vector to another as x, y, and z components or full vector.
+       * @method dot
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       * @return {Number} The dot product
+       */
       dot: function(v, y, z) {
         if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
         return this.x * v + this.y * y + this.z * z;
       },
+      /**
+       * Calculates the cross product from this vector to another as x, y, and z components or full vector.
+       * @method cross
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       * @return {Number} The cross product
+       */
       cross: function(v) {
         var x = this.x,
           y = this.y,
           z = this.z;
-        return new PVector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
+        return new Vector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
       },
+      /**
+       * Normalizes the length of this vector to 1.
+       * @method normalize
+       */
       normalize: function() {
         var m = this.mag();
         if (m > 0) this.div(m);
       },
+      /**
+       * Normalizes the length of this vector to the given parameter.
+       * @method limit
+       * @param {Number} high The value to scale to.
+       */
       limit: function(high) {
         if (this.mag() > high) {
           this.normalize();
           this.mult(high);
         }
       },
+      /**
+       * The 2D orientation (heading) of this vector in radian.
+       * @method heading2D
+       * @return {Number} A radian angle value
+       */
       heading2D: function() {
         return -Math.atan2(-this.y, this.x);
       },
+      /**
+       * Returns data about this vector as a string.
+       * @method toString
+       * @return {String} The x, y and z components as a string.
+       */
       toString: function() {
         return "[" + this.x + ", " + this.y + ", " + this.z + "]";
       },
+      /** 
+       * Returns this vector as an array [x,y,z].
+       * @method array
+       * @return {Array} [x,y,z]
+       */
       array: function() {
         return [this.x, this.y, this.z];
       }
     };
 
-    function createPVectorMethod(method) {
+    function createVectorMethod(method) {
       return function(v1, v2) {
         var v = v1.get();
         v[method](v2);
         return v;
       };
     }
-    for (var method in PVector.prototype) if (PVector.prototype.hasOwnProperty(method) && !PVector.hasOwnProperty(method)) PVector[method] = createPVectorMethod(method);
-    return PVector;
+    for (var method in Vector.prototype) if (Vector.prototype.hasOwnProperty(method) && !Vector.hasOwnProperty(method)) Vector[method] = createVectorMethod(method);
+    return Vector;
   }();
   
 
-  // -- Calculation --
-  /* todo */
+  // -- Calculation --  
+  /**
+   * @class b
+   */
   pub.abs = Math.abs;
 
   /* todo */
@@ -2472,10 +2730,10 @@
     transpose: function() {},
     mult: function(source, target) {
       var x, y;
-      if (source instanceof PVector) {
+      if (source instanceof Vector) {
         x = source.x;
         y = source.y;
-        if (!target) target = new PVector();
+        if (!target) target = new Vector();
       } else if (source instanceof Array) {
         x = source[0];
         y = source[1];
@@ -2484,7 +2742,7 @@
       if (target instanceof Array) {
         target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
         target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-      } else if (target instanceof PVector) {
+      } else if (target instanceof Vector) {
         target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
         target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
         target.z = 0;
