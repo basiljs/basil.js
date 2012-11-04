@@ -28,14 +28,14 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "basil.js",
-            "line": 4,
+            "line": 36,
             "static": 1
         }
     },
     "classitems": [
         {
             "file": "basil.js",
-            "line": 36,
+            "line": 68,
             "description": "System variable which stores the width of the current page.",
             "itemtype": "property",
             "name": "width",
@@ -44,7 +44,7 @@
         },
         {
             "file": "basil.js",
-            "line": 42,
+            "line": 74,
             "description": "System variable which stores the height of the current page.",
             "itemtype": "property",
             "name": "height",
@@ -53,7 +53,27 @@
         },
         {
             "file": "basil.js",
-            "line": 111,
+            "line": 133,
+            "description": "Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.",
+            "itemtype": "method",
+            "name": "forEach",
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "The array to be processed.",
+                    "type": "Array"
+                },
+                {
+                    "name": "cb",
+                    "description": "The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 155,
             "description": "Suspends the calling thread for a number of milliseconds.\nDuring a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.",
             "itemtype": "method",
             "name": "delay",
@@ -68,7 +88,7 @@
         },
         {
             "file": "basil.js",
-            "line": 122,
+            "line": 166,
             "description": "Calls the given callback function with each story of the given document.",
             "itemtype": "method",
             "name": "stories",
@@ -80,7 +100,7 @@
                 },
                 {
                     "name": "cb",
-                    "description": "The callback function to call with each story, passed arguments: story, loopCount",
+                    "description": "The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;",
                     "type": "Function"
                 }
             ],
@@ -88,7 +108,7 @@
         },
         {
             "file": "basil.js",
-            "line": 133,
+            "line": 177,
             "description": "Calls the given callback function with each paragraph of the given document, story or text frame.",
             "itemtype": "method",
             "name": "paragraphs",
@@ -100,7 +120,7 @@
                 },
                 {
                     "name": "cb",
-                    "description": "The callback function to call with each paragraph, passed arguments: para, loopCount",
+                    "description": "The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount",
                     "type": "Function"
                 }
             ],
@@ -108,19 +128,19 @@
         },
         {
             "file": "basil.js",
-            "line": 148,
+            "line": 192,
             "description": "Calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "itemtype": "method",
             "name": "lines",
             "params": [
                 {
                     "name": "item",
-                    "description": "The document, story, text frame or paragraph instance to \n                                                  iterate the lines in",
+                    "description": "The document, story, text frame or paragraph instance to\n                                                  iterate the lines in",
                     "type": "Document|Story|TextFrame|Paragraph"
                 },
                 {
                     "name": "cb",
-                    "description": "The callback function to call with each line, passed arguments: line, loopCount",
+                    "description": "The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount",
                     "type": "Function"
                 }
             ],
@@ -128,19 +148,19 @@
         },
         {
             "file": "basil.js",
-            "line": 164,
+            "line": 208,
             "description": "Calls the given callback function with each word of the given document, story, text frame, paragraph or line.",
             "itemtype": "method",
             "name": "words",
             "params": [
                 {
                     "name": "item",
-                    "description": "The document, story, text frame, paragraph or line instance \n                                                       to iterate the words in",
+                    "description": "The document, story, text frame, paragraph or line instance\n                                                       to iterate the words in",
                     "type": "Document|Story|TextFrame|Paragraph|Line"
                 },
                 {
                     "name": "cb",
-                    "description": "The callback function to call with each word, passed arguments: word, loopCount",
+                    "description": "The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount",
                     "type": "Function"
                 }
             ],
@@ -148,19 +168,19 @@
         },
         {
             "file": "basil.js",
-            "line": 180,
+            "line": 224,
             "description": "Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.",
             "itemtype": "method",
             "name": "characters",
             "params": [
                 {
                     "name": "item",
-                    "description": "The document, story, text frame, paragraph, line or word instance to \n                                                   iterate the characters in",
+                    "description": "The document, story, text frame, paragraph, line or word instance to\n                                                   iterate the characters in",
                     "type": "Document|Story|TextFrame|Paragraph|Line|Word"
                 },
                 {
                     "name": "cb",
-                    "description": "The callback function to call with each character, passed arguments: character, loopCount",
+                    "description": "The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount",
                     "type": "Function"
                 }
             ],
@@ -168,8 +188,65 @@
         },
         {
             "file": "basil.js",
-            "line": 209,
-            "description": "Sets or possibly creates the current document and returns it. \nIf the param doc is not given the current document gets set to the active document \nin the application. If no document at all is open, a new document gets created.",
+            "line": 253,
+            "description": "Checks whether a var is an Array, returns true if this is the case",
+            "itemtype": "method",
+            "name": "isArray",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The object to check",
+                    "type": "Object|String|Number"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 264,
+            "description": "Checks whether a var is a number, returns true if this is the case",
+            "itemtype": "method",
+            "name": "isNumber",
+            "params": [
+                {
+                    "name": "num",
+                    "description": "The number to ckeck",
+                    "type": "Object|String|Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 275,
+            "description": "Checks whether a var is a indesign text object, returns true if this is the case",
+            "itemtype": "method",
+            "name": "isText",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The object to check",
+                    "type": "Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 296,
+            "description": "Sets or possibly creates the current document and returns it.\nIf the param doc is not given the current document gets set to the active document\nin the application. If no document at all is open, a new document gets created.",
             "itemtype": "method",
             "name": "doc",
             "params": [
@@ -188,7 +265,7 @@
         },
         {
             "file": "basil.js",
-            "line": 225,
+            "line": 312,
             "description": "Closes the current document.",
             "itemtype": "method",
             "name": "close",
@@ -210,7 +287,7 @@
         },
         {
             "file": "basil.js",
-            "line": 240,
+            "line": 327,
             "description": "Returns the current page and sets it if argument page is given.",
             "itemtype": "method",
             "name": "page",
@@ -230,7 +307,7 @@
         },
         {
             "file": "basil.js",
-            "line": 263,
+            "line": 350,
             "description": "Returns the current layer and sets it if argument layer is given.",
             "itemtype": "method",
             "name": "layer",
@@ -250,7 +327,7 @@
         },
         {
             "file": "basil.js",
-            "line": 283,
+            "line": 370,
             "description": "Sets the units of the document (like right clicking the rulers).",
             "itemtype": "method",
             "name": "units",
@@ -270,7 +347,7 @@
         },
         {
             "file": "basil.js",
-            "line": 324,
+            "line": 412,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "itemtype": "method",
             "name": "guideX",
@@ -289,7 +366,7 @@
         },
         {
             "file": "basil.js",
-            "line": 342,
+            "line": 430,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "itemtype": "method",
             "name": "guideY",
@@ -308,7 +385,323 @@
         },
         {
             "file": "basil.js",
-            "line": 534,
+            "line": 482,
+            "description": "Function convert an javascript object to a JSON-string. Usage:\nvar str = b.JSON.encode(obj);\nvar obj = b.JSON.decode(str);",
+            "itemtype": "method",
+            "name": "JSON.encode()",
+            "params": [
+                {
+                    "name": "Object",
+                    "description": "to be converted to a JSON-string",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns JSON-string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 517,
+            "description": "Converts a byte, char, int, or color to a String containing the\nequivalent binary notation. For example color(0, 102, 153, 255) \nwill convert to the String \"11111111000000000110011010011001\". This \nfunction can help make your geeky debugging sessions much happier.",
+            "itemtype": "method",
+            "name": "binary",
+            "params": [
+                {
+                    "name": "num",
+                    "description": "value to convert",
+                    "type": "Number"
+                },
+                {
+                    "name": "numBits",
+                    "description": "number of digits to return",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A formatted string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 544,
+            "description": "Converts a String representation of a binary number to its \nequivalent integer value. For example, unbinary(\"00001000\") will \nreturn 8.",
+            "itemtype": "method",
+            "name": "unbinary",
+            "params": [
+                {
+                    "name": "binaryString",
+                    "description": "value to convert",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The integer representation",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 577,
+            "description": "Convert a number to a hex representation.",
+            "itemtype": "method",
+            "name": "hex",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The number to convert",
+                    "type": "Number"
+                },
+                {
+                    "name": "len",
+                    "description": "The length of the hex number to be created, default: 8",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The hex representation as a string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 596,
+            "description": "Convert a hex representation to a number.",
+            "itemtype": "method",
+            "name": "unhex",
+            "params": [
+                {
+                    "name": "hex",
+                    "description": "The hex representation",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The number",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 615,
+            "description": "Combines an array of Strings into one String, each separated by \nthe character(s) used for the separator parameter. To join arrays \nof ints or floats, it's necessary to first convert them to strings \nusing nf() or nfs().",
+            "itemtype": "method",
+            "name": "join",
+            "params": [
+                {
+                    "name": "array",
+                    "description": "A string array",
+                    "type": "Array"
+                },
+                {
+                    "name": "separator",
+                    "description": "The separator to be inserted",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The joined string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 631,
+            "description": "The split() function breaks a string into pieces using a\ncharacter or string as the divider. The delim parameter specifies the\ncharacter or characters that mark the boundaries between each piece. A\nString[] array is returned that contains each of the pieces.\n\nIf the result is a set of numbers, you can convert the String[] array\nto to a float[] or int[] array using the datatype conversion functions\nint() and float() (see example above).\n\nThe splitTokens() function works in a similar fashion, except that it\nsplits using a range of characters instead of a specific character or\nsequence.",
+            "itemtype": "method",
+            "name": "split",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "the String to be split",
+                    "type": "String"
+                },
+                {
+                    "name": "delim",
+                    "description": "The string used to separate the data",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Array of strings",
+                "type": "Array"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 655,
+            "description": "The splitTokens() function splits a String at one or many character \n\"tokens.\" The tokens parameter specifies the character or characters \nto be used as a boundary.\n\nIf no tokens character is specified, any whitespace character is used \nto split. Whitespace characters include tab (\\t), line feed (\\n), \ncarriage return (\\r), form feed (\\f), and space. To convert a String \nto an array of integers or floats, use the datatype conversion functions \nint() and float() to convert the array of Strings.",
+            "itemtype": "method",
+            "name": "splitTokens",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "the String to be split",
+                    "type": "String"
+                },
+                {
+                    "name": "tokens",
+                    "description": "list of individual characters that will be used as separators",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Array of strings",
+                "type": "Array"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 754,
+            "description": "Utility function for formatting numbers into strings. There\nare two versions, one for formatting floats and one for formatting\nints. The values for the digits, left, and right parameters should\nalways be positive integers.\n\nAs shown in the above example, nf() is used to add zeros to the\nleft and/or right of a number. This is typically for aligning a list\nof numbers. To remove digits from a floating-point number, use the\nint(), ceil(), floor(), or round() functions.",
+            "itemtype": "method",
+            "name": "nf",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The Number to convert",
+                    "type": "Number"
+                },
+                {
+                    "name": "leftDigits",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "rightDigits",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The formatted string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 776,
+            "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut leaves a blank space in front of positive numbers so they align \nwith negative numbers in spite of the minus symbol. There are two \nversions, one for formatting floats and one for formatting ints. The \nvalues for the digits, left, and right parameters should always be \npositive integers.",
+            "itemtype": "method",
+            "name": "nfs",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The Number to convert",
+                    "type": "Number"
+                },
+                {
+                    "name": "leftDigits",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "rightDigits",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The formatted string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 795,
+            "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut puts a \"+\" in front of positive numbers and a \"-\" in front of \nnegative numbers. There are two versions, one for formatting floats \nand one for formatting ints. The values for the digits, left, and right \nparameters should always be positive integers.",
+            "itemtype": "method",
+            "name": "nfp",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The Number to convert",
+                    "type": "Number"
+                },
+                {
+                    "name": "leftDigits",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "rightDigits",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The formatted string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 813,
+            "description": "Utility function for formatting numbers into strings and placing \nappropriate commas to mark units of 1000. There are two versions, one \nfor formatting ints and one for formatting an array of ints. The value \nfor the digits parameter should always be a positive integer.",
+            "itemtype": "method",
+            "name": "nfc",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The Number to convert",
+                    "type": "Number"
+                },
+                {
+                    "name": "leftDigits",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "rightDigits",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The formatted string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 831,
+            "description": "Removes whitespace characters from the beginning and end of a String. \nIn addition to standard whitespace characters such as space, carriage \nreturn, and tab, this function also removes the Unicode \"nbsp\" character.",
+            "itemtype": "method",
+            "name": "trim",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "A string or an array of strings to be trimmed",
+                    "type": "String|Array"
+                }
+            ],
+            "return": {
+                "description": "Returns the input in a trimmed way",
+                "type": "String|Array"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 853,
             "description": "Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.\nThe first two parameters set the location, the third sets the width, and the fourth sets the height.",
             "itemtype": "method",
             "name": "ellipse",
@@ -342,7 +735,7 @@
         },
         {
             "file": "basil.js",
-            "line": 593,
+            "line": 912,
             "description": "Draws a line (a direct path between two points) to the page.",
             "itemtype": "method",
             "name": "line",
@@ -376,7 +769,7 @@
         },
         {
             "file": "basil.js",
-            "line": 621,
+            "line": 940,
             "description": "Draws a rectangle to the page.",
             "itemtype": "method",
             "name": "rect",
@@ -410,8 +803,8 @@
         },
         {
             "file": "basil.js",
-            "line": 673,
-            "description": "The function calculates the geometric bounds of any given object. \nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
+            "line": 992,
+            "description": "The function calculates the geometric bounds of any given object.\nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
             "itemtype": "method",
             "name": "bounds",
             "params": [
@@ -429,7 +822,7 @@
         },
         {
             "file": "basil.js",
-            "line": 772,
+            "line": 1094,
             "description": "Returns the object style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "objectStyle",
@@ -448,7 +841,7 @@
         },
         {
             "file": "basil.js",
-            "line": 795,
+            "line": 1117,
             "description": "Sets the color used to fill shapes.",
             "itemtype": "method",
             "name": "fill",
@@ -463,7 +856,7 @@
         },
         {
             "file": "basil.js",
-            "line": 828,
+            "line": 1151,
             "description": "Sets the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "stroke",
@@ -478,7 +871,7 @@
         },
         {
             "file": "basil.js",
-            "line": 861,
+            "line": 1185,
             "description": "Sets the tint of the color used to fill shapes.",
             "itemtype": "method",
             "name": "fillTint",
@@ -493,7 +886,7 @@
         },
         {
             "file": "basil.js",
-            "line": 875,
+            "line": 1199,
             "description": "Sets the tint of the color used to draw lines and borders around shapes.",
             "itemtype": "method",
             "name": "strokeTint",
@@ -508,7 +901,7 @@
         },
         {
             "file": "basil.js",
-            "line": 889,
+            "line": 1213,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document",
             "itemtype": "method",
             "name": "color",
@@ -527,7 +920,7 @@
         },
         {
             "file": "basil.js",
-            "line": 975,
+            "line": 1299,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "itemtype": "method",
             "name": "lerpColor",
@@ -556,7 +949,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1032,
+            "line": 1356,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nThe default document font size will be used unless a font size is set with the textSize() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() and textYAlign() functions. \nThe width and height parameters define a rectangular area.",
             "itemtype": "method",
             "name": "text",
@@ -595,8 +988,8 @@
         },
         {
             "file": "basil.js",
-            "line": 1081,
-            "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to, \nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the \ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item \n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
+            "line": 1405,
+            "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to,\nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the\ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item\n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "itemtype": "method",
             "name": "typo",
             "params": [
@@ -618,34 +1011,40 @@
                 }
             ],
             "return": {
-                "description": "The property value(s) if the function acts as getter or the items the property \n                             was assigned to.",
+                "description": "The property value(s) if the function acts as getter or the items the property\n                             was assigned to.",
                 "type": "String[]|Number[]"
             },
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 1140,
+            "line": 1464,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "itemtype": "method",
             "name": "textFont",
             "params": [
                 {
                     "name": "fontName",
-                    "description": "The name of the font to set. Font style can be separated with a tab, e.g. Helvetica\\tBold",
+                    "description": "The name of the font to set e.g. Helvetica",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "fontStyle",
+                    "description": "The Font style e.g. Bold",
                     "type": "String",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "The name of the current font.",
+                "description": "The name of the current font",
                 "type": "String"
             },
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 1154,
+            "line": 1482,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "itemtype": "method",
             "name": "textSize",
@@ -665,7 +1064,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1168,
+            "line": 1496,
             "description": "Sets the current horizontal and vertical text alignment.",
             "itemtype": "method",
             "name": "textAlign",
@@ -686,14 +1085,14 @@
         },
         {
             "file": "basil.js",
-            "line": 1192,
+            "line": 1520,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "itemtype": "method",
             "name": "textLeading",
             "params": [
                 {
                     "name": "leading",
-                    "description": "The spacing between lines of text in units of points or the default Indesign enum \n                                  value Leading.AUTO.",
+                    "description": "The spacing between lines of text in units of points or the default Indesign enum\n                                  value Leading.AUTO.",
                     "type": "Number|String",
                     "optional": true
                 }
@@ -706,7 +1105,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1207,
+            "line": 1535,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "itemtype": "method",
             "name": "textKerning",
@@ -726,7 +1125,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1221,
+            "line": 1549,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "itemtype": "method",
             "name": "textTracking",
@@ -746,7 +1145,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1235,
+            "line": 1563,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "characterStyle",
@@ -765,7 +1164,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1253,
+            "line": 1581,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "itemtype": "method",
             "name": "paragraphStyle",
@@ -784,7 +1183,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1281,
+            "line": 1599,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
             "itemtype": "method",
             "name": "linkTextFrames",
@@ -804,8 +1203,8 @@
         },
         {
             "file": "basil.js",
-            "line": 1300,
-            "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's \ndata directory which is in the same directory where the document is saved in. The image argument can also be a File \ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle, \noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
+            "line": 1618,
+            "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's\ndata directory which is in the same directory where the document is saved in. The image argument can also be a File\ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle,\noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "itemtype": "method",
             "name": "image",
             "params": [
@@ -846,8 +1245,8 @@
         },
         {
             "file": "basil.js",
-            "line": 1368,
-            "description": "Transforms position and size of an image. \nThe image fit options are always \"contentToFrame\".",
+            "line": 1688,
+            "description": "Transforms position and size of an image.\nThe image fit options are always \"contentToFrame\".",
             "itemtype": "method",
             "name": "transformImage",
             "params": [
@@ -881,7 +1280,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1828,
+            "line": 2191,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "itemtype": "method",
             "name": "findByLabel",
@@ -900,8 +1299,8 @@
         },
         {
             "file": "basil.js",
-            "line": 1848,
-            "description": "Returns the currently selected object(s).",
+            "line": 2211,
+            "description": "Returns the currently selected object(s)",
             "itemtype": "method",
             "name": "selection",
             "return": {
@@ -912,8 +1311,8 @@
         },
         {
             "file": "basil.js",
-            "line": 1862,
-            "description": "Reads the contents of a file and creates a String array of its individual lines. \nIf the file is specified by name as String, it must be located in the document's data directory.",
+            "line": 2221,
+            "description": "Reads the contents of a file and creates a String array of its individual lines.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "itemtype": "method",
             "name": "loadStrings",
             "params": [
@@ -931,7 +1330,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1895,
+            "line": 2256,
             "description": "Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.\nIf the given file exists it gets overridden.",
             "itemtype": "method",
             "name": "saveStrings",
@@ -951,7 +1350,193 @@
         },
         {
             "file": "basil.js",
-            "line": 2126,
+            "line": 2273,
+            "description": "Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.",
+            "todo": [
+                "data folder is not created automatically",
+                ""
+            ],
+            "itemtype": "method",
+            "name": "savePDF",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "The file name or a File instance",
+                    "type": "String|File"
+                },
+                {
+                    "name": "showOptions",
+                    "description": "Whether to show the export dialog",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2292,
+            "description": "Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.",
+            "itemtype": "method",
+            "name": "itemX",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "x",
+                    "description": "The new x position",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current x position",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2312,
+            "description": "Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.",
+            "itemtype": "method",
+            "name": "itemY",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "y",
+                    "description": "The new y position",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current y position",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2332,
+            "description": "Scales the given PageItem to the given width. If width is not given as argument the current width is returned.",
+            "itemtype": "method",
+            "name": "itemWidth",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "width",
+                    "description": "The new width",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current width",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2352,
+            "description": "Scales the given PageItem to the given height. If height is not given as argument the current height is returned.",
+            "itemtype": "method",
+            "name": "itemHeight",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "height",
+                    "description": "The new height",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current height",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2372,
+            "description": "Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.",
+            "itemtype": "method",
+            "name": "itemPosition",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "x",
+                    "description": "The new x coordinate",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "y",
+                    "description": "The new y coordinate",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Returns an object with the fields x and y",
+                "type": "Object"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2397,
+            "description": "Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.",
+            "itemtype": "method",
+            "name": "itemSize",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "width",
+                    "description": "The new width",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "height",
+                    "description": "The new height",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Returns an object with the fields width and height",
+                "type": "Object"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2633,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
             "itemtype": "method",
             "name": "go",
@@ -959,14 +1544,14 @@
         },
         {
             "file": "basil.js",
-            "line": 2137,
-            "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle. \n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/noLoop.jsx when the script is finished!\nThe sleep property is the amount of time that elapses before draw() is called again.",
+            "line": 2644,
+            "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle.\n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!\nThe framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.",
             "itemtype": "method",
             "name": "loop",
             "params": [
                 {
-                    "name": "sleep",
-                    "description": "The amount of time in milliseconds that elapses before draw() is called again",
+                    "name": "framerate",
+                    "description": "The framerate per second, determines how often draw() is called per second.",
                     "type": "Number"
                 }
             ],
@@ -974,7 +1559,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2164,
+            "line": 2676,
             "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
             "itemtype": "method",
             "name": "noLoop",

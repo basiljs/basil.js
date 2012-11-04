@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>basil.js - basil.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.5.1&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.5.1&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -86,6 +86,38 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+&#x2F;*
+  ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
+
+  B A S I L . J S
+  An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
+  
+  License        - MIT
+  Developers     - Benedikt Groß http:&#x2F;&#x2F;benedikt-gross.de
+                 - Ludwig Zeller http:&#x2F;&#x2F;ludwigzeller.de
+                 - Ted Davis http:&#x2F;&#x2F;teddavis.org
+                 - Philipp Adrian http:&#x2F;&#x2F;www.philippadrian.com&#x2F;
+  Contributers   - Stefan Landsbek, inital code architecture, http:&#x2F;&#x2F;47nord.de
+  Web Site       - http:&#x2F;&#x2F;basiljs.ch
+  Github Repo.   - https:&#x2F;&#x2F;github.com&#x2F;basiljs&#x2F;basil.js
+  Processing     - http:&#x2F;&#x2F;processing.org
+  Processing.js  - http:&#x2F;&#x2F;processingjs.org
+
+  basil.js was conceived and is generously supported by
+  The Visual Communication Institute &#x2F; The Basel School of Design
+  Department of the Academy of Art and Design Basel (HGK FHNW)
+  
+  http:&#x2F;&#x2F;thebaselschoolofdesign.ch
+
+  Please note: Big general parts e.g. random() of the basil.js source code are copy &amp; paste
+  of the fantasic processing.js project created by John Resig. We would have had a hard time
+  to figure all of that out on our own!
+
+  Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
+  
+  .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
+*&#x2F;
+
 #target &quot;InDesign&quot;;
 
 (function(glob, app, undef) {
@@ -98,7 +130,7 @@
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; constants
-  
+
   pub.VERSION = &quot;0.1&quot;;
   pub.PT = &quot;pt&quot;;
   pub.PX = &quot;px&quot;;
@@ -165,10 +197,12 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; global functions
 
-  &#x2F;&#x2F;https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array&#x2F;filter
+
+  &#x2F;* todo *&#x2F;
+  &#x2F;&#x2F; https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array&#x2F;filter
   if (!Array.prototype.filter) {
     Array.prototype.filter = function(fun) {
-      if (this == null) throw new TypeError();
+      if (this === null) throw new TypeError();
       var t = Object(this);
       var len = t.length &gt;&gt;&gt; 0;
       if (typeof fun != &quot;function&quot;) throw new TypeError();
@@ -184,11 +218,21 @@
     };
   }
 
+  &#x2F;**
+  * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
+  *
+  * @method forEach
+  * @param {Array} collection The array to be processed.
+  * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+  *&#x2F;
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i &lt; len; i++) {
-        cb(collection[i],i);
+        if(cb(collection[i],i) === false) {
+          return false;
+        }
       }
+      return true;
     };
   }
   
@@ -198,7 +242,7 @@
   
   &#x2F;**
    * Suspends the calling thread for a number of milliseconds.
-   * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated. 
+   * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
    *
    * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
@@ -209,75 +253,75 @@
 
   &#x2F;**
    * Calls the given callback function with each story of the given document.
-   * 
+   *
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
-   * @param  {Function} cb  The callback function to call with each story, passed arguments: story, loopCount
+   * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
    *&#x2F;
   pub.stories = function(doc, cb) {
-    forEach(doc.stories, cb);
+    return forEach(doc.stories, cb);
   };
 
   &#x2F;**
    * Calls the given callback function with each paragraph of the given document, story or text frame.
-   * 
+   *
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
-   * @param  {Function} cb  The callback function to call with each paragraph, passed arguments: para, loopCount
+   * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
    *&#x2F;
   pub.paragraphs = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, &#x27;paragraphs&#x27;, cb);
+      return forEachStoryProperty(item, &#x27;paragraphs&#x27;, cb);
     } else {
-      forEach(item.paragraphs, cb);
+      return forEach(item.paragraphs, cb);
     }
   };
 
   &#x2F;**
    * Calls the given callback function with each line of the given document, story, text frame or paragraph.
-   * 
+   *
    * @method lines
-   * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to 
+   * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
-   * @param  {Function} cb The callback function to call with each line, passed arguments: line, loopCount
+   * @param  {Function} cb The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
    *&#x2F;
   pub.lines = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, &#x27;lines&#x27;, cb);
+      return forEachStoryProperty(item, &#x27;lines&#x27;, cb);
     } else {
-      forEach(item.lines, cb);
+      return forEach(item.lines, cb);
     }
   };
 
   &#x2F;**
    * Calls the given callback function with each word of the given document, story, text frame, paragraph or line.
-   * 
+   *
    * @method words
-   * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance 
+   * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
-   * @param  {Function} cb The callback function to call with each word, passed arguments: word, loopCount
+   * @param  {Function} cb The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
    *&#x2F;
   pub.words = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, &#x27;words&#x27;, cb);
+      return forEachStoryProperty(item, &#x27;words&#x27;, cb);
     } else {
-      forEach(item.words, cb);
+      return forEach(item.words, cb);
     }
   };
 
   &#x2F;**
    * Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
-   * 
+   *
    * @method characters
-   * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to 
+   * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
-   * @param  {Function} cb The callback function to call with each character, passed arguments: character, loopCount
+   * @param  {Function} cb The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
    *&#x2F;
   pub.characters = function(item, cb) {
     if (item instanceof Document) {
-      forEachStoryProperty(item, &#x27;characters&#x27;, cb);
+      return forEachStoryProperty(item, &#x27;characters&#x27;, cb);
     } else {
-      forEach(item.characters, cb);
+      return forEach(item.characters, cb);
     }
   };
 
@@ -286,19 +330,62 @@
     pub.stories(doc, function(story) {
       var properties = story[property];
       for (var i = 0, len = properties.length; i &lt; len; i++) {
-        cb(properties[i], loopCount++);
-      };
+        if(cb(properties[i], loopCount++) === false) {
+          return false;
+        }
+      }
+      return true;
     });
   };
+
+  &#x2F;**
+   * Checks whether a var is an Array, returns true if this is the case
+   *
+   * @method isArray
+   * @param  {Object|String|Number}  obj The object to check
+   * @return {Boolean}     [description]
+   *&#x2F;
+  var isArray = pub.isArray = function(obj) {
+    return Object.prototype.toString.call(obj) === &#x27;[object Array]&#x27;;
+  };
+
+  &#x2F;**
+   * Checks whether a var is a number, returns true if this is the case
+   *
+   * @method isNumber
+   * @param  {Object|String|Number}  num The number to ckeck
+   * @return {Boolean}
+   *&#x2F;
+  var isNumber = pub.isNumber = function(num) {
+    return !isNaN(parseFloat(num)) &amp;&amp; isFinite(num);
+  };
+
+  &#x2F;**
+   * Checks whether a var is a indesign text object, returns true if this is the case
+   *
+   * @method isText
+   * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
+   * @return {Boolean}     [description]
+   *&#x2F;
+  var isText = pub.isText = function(obj) {
+    return obj instanceof Character ||
+           obj instanceof InsertionPoint ||
+           obj instanceof Line ||
+           obj instanceof Paragraph ||
+           obj instanceof TextColumn ||
+           obj instanceof TextStyleRange ||
+           obj instanceof Word;
+  };
+
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Environment
   
   &#x2F;**
-   * Sets or possibly creates the current document and returns it. 
-   * If the param doc is not given the current document gets set to the active document 
+   * Sets or possibly creates the current document and returns it.
+   * If the param doc is not given the current document gets set to the active document
    * in the application. If no document at all is open, a new document gets created.
-   * 
+   *
    * @method doc
    * @param  {Document} [doc] The document to set the current document to
    * @return {Document} The current document instance
@@ -312,7 +399,7 @@
 
   &#x2F;**
    * Closes the current document.
-   * 
+   *
    * @method close
    * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
    * @param  {File} [file] The indesign file instance to save the document to
@@ -323,11 +410,11 @@
       doc.close(saveOptions, file);
       resetCurrDoc();
     }
-  }
+  };
 
   &#x2F;**
    * Returns the current page and sets it if argument page is given.
-   * 
+   *
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to
    * @return {Page} The current page instance
@@ -350,7 +437,7 @@
 
   &#x2F;**
    * Returns the current layer and sets it if argument layer is given.
-   * 
+   *
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
    * @return {Layer} The current layer instance
@@ -370,7 +457,7 @@
 
   &#x2F;**
    * Sets the units of the document (like right clicking the rulers).
-   * 
+   *
    * @method units
    * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
    * @return {Constant} Current unit setting
@@ -378,9 +465,9 @@
   pub.units = function (units) {
     if (arguments.length === 0) return currUnits;
 
-    if (units === pub.CM || 
+    if (units === pub.CM ||
         units === pub.MM ||
-        units === pub.PT || 
+        units === pub.PT ||
         units === pub.PX ||
         units === pub.IN) {
       var unitType = null;
@@ -389,7 +476,7 @@
       else if (units === pub.PT) unitType = MeasurementUnits.points;
       else if (units === pub.PX) unitType = MeasurementUnits.pixels;
       else if (units === pub.IN) unitType = MeasurementUnits.inches;
-      var doc = currentDoc(); 
+      var doc = currentDoc();
       with (doc.viewPreferences){
         &#x2F;&#x2F;* MeasurementUnits.agates
         &#x2F;&#x2F;* MeasurementUnits.picas
@@ -399,15 +486,16 @@
         &#x2F;&#x2F;* MeasurementUnits.millimeters
         &#x2F;&#x2F;* MeasurementUnits.centimeters
         &#x2F;&#x2F;* MeasurementUnits.ciceros
-        horizontalMeasurementUnits = unitType; 
+        horizontalMeasurementUnits = unitType;
         verticalMeasurementUnits = unitType;
       }
       currUnits = units;
+      updatePublicPageSizeVars();
     } else {
       error(&quot;Not supported unit&quot;);
     }
     return currUnits;
-  }
+  };
 
   &#x2F;**
    * Creates a vertical guide line at the current spread and current layer.
@@ -419,7 +507,7 @@
   pub.guideX = function (x) {
     var guides = currentPage().guides;
     var guide = guides.add( currentLayer() );
-    with(guide) {
+    with (guide) {
       fitToPage = true;
       orientation = HorizontalOrVertical.VERTICAL;
       location = x;
@@ -437,7 +525,7 @@
   pub.guideY = function (y) {
     var guides = currentPage().guides;
     var guide = guides.add( currentLayer() );
-    with(guide) {
+    with (guide) {
       fitToPage = true;
       orientation = HorizontalOrVertical.HORIZONTAL;
       location = y;
@@ -448,22 +536,109 @@
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Data
+  
+
+  pub.JSON = {
+    &#x2F;*
+     * Function parses and validates a string as JSON-object. Usage:
+     * var obj = b.JSON.decode(str);
+     * var str = b.JSON.encode(obj);
+     *
+     * @method JSON.decode()
+     * @param  {String} String to be parsed as JSON-object.
+     * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
+    *&#x2F;
+    &#x2F;&#x2F; From: jQuery JavaScript Library v1.7.1 http:&#x2F;&#x2F;jquery.com&#x2F;
+    decode: function( data ) {
+      if ( typeof data !== &quot;string&quot; || !data ) {
+        return null;
+      }
+      var rvalidchars = &#x2F;^[\],:{}\s]*$&#x2F;,
+        rvalidescape = &#x2F;\\(?:[&quot;\\\&#x2F;bfnrt]|u[0-9a-fA-F]{4})&#x2F;g,
+        rvalidtokens = &#x2F;&quot;[^&quot;\\\n\r]*&quot;|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?&#x2F;g,
+        rvalidbraces = &#x2F;(?:^|:|,)(?:\s*\[)+&#x2F;g;
+
+      &#x2F;&#x2F; Make sure the incoming data is actual JSON
+      &#x2F;&#x2F; Logic borrowed from http:&#x2F;&#x2F;json.org&#x2F;json2.js
+      if ( rvalidchars.test( data.replace( rvalidescape, &quot;@&quot; )
+        .replace( rvalidtokens, &quot;]&quot; )
+        .replace( rvalidbraces, &quot;&quot;)) ) {
+        return ( new Function( &quot;return &quot; + data ) )();
+      }
+      error( &quot;Invalid JSON: &quot; + data );
+    },
+    &#x2F;**
+     * Function convert an javascript object to a JSON-string. Usage:
+     * var str = b.JSON.encode(obj);
+     * var obj = b.JSON.decode(str);
+     * 
+     * @method JSON.encode()
+     * @param  {Object} Object to be converted to a JSON-string
+     * @return {String} Returns JSON-string
+     *&#x2F;
+    &#x2F;&#x2F; From: https:&#x2F;&#x2F;gist.github.com&#x2F;754454
+    encode: function(obj) {
+      var t = typeof (obj);
+      if (t !== &quot;object&quot; || obj === null) {
+        &#x2F;&#x2F; simple data type
+        if (t === &quot;string&quot;) obj = &#x27;&quot;&#x27; + obj + &#x27;&quot;&#x27;;
+        return String(obj);
+      } else {
+        &#x2F;&#x2F; recurse array or object
+        var n, v, json = [], arr = (obj &amp;&amp; obj.constructor === Array);
+
+        for (n in obj) {
+          v = obj[n];
+          t = typeof(v);
+          if (obj.hasOwnProperty(n)) {
+            if (t === &quot;string&quot;) v = &#x27;&quot;&#x27; + v + &#x27;&quot;&#x27;; else if (t === &quot;object&quot; &amp;&amp; v !== null) v = pub.JSON.encode(v);
+            json.push((arr ? &quot;&quot; : &#x27;&quot;&#x27; + n + &#x27;&quot;:&#x27;) + String(v));
+          }
+        }
+        return (arr ? &quot;[&quot; : &quot;{&quot;) + String(json) + (arr ? &quot;]&quot; : &quot;}&quot;);
+      }
+    }
+  };
 
   &#x2F;&#x2F; -- Conversion --
+  
+  &#x2F;** 
+   * Converts a byte, char, int, or color to a String containing the
+   * equivalent binary notation. For example color(0, 102, 153, 255) 
+   * will convert to the String &quot;11111111000000000110011010011001&quot;. This 
+   * function can help make your geeky debugging sessions much happier.
+   *
+   * @method binary
+   * @param {Number} num value to convert
+   * @param {Number} [numBits] number of digits to return
+   * @return {String} A formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;binary_&#x2F;
   pub.binary = function(num, numBits) {
     var bit;
     if (numBits &gt; 0) bit = numBits;
     else if (num instanceof Char) {
       bit = 16;
-      num |= 0
+      num |= 0;
     } else {
       bit = 32;
-      while (bit &gt; 1 &amp;&amp; !(num &gt;&gt;&gt; bit - 1 &amp; 1)) bit--
+      while (bit &gt; 1 &amp;&amp; !(num &gt;&gt;&gt; bit - 1 &amp; 1)) bit--;
     }
     var result = &quot;&quot;;
     while (bit &gt; 0) result += num &gt;&gt;&gt; --bit &amp; 1 ? &quot;1&quot; : &quot;0&quot;;
-    return result
+    return result;
   };
+
+  &#x2F;** 
+   * Converts a String representation of a binary number to its 
+   * equivalent integer value. For example, unbinary(&quot;00001000&quot;) will 
+   * return 8.
+   *
+   * @method unbinary
+   * @param {String} binaryString value to convert
+   * @return {Number} The integer representation
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;unbinary_&#x2F;
   pub.unbinary = function(binaryString) {
     var i = binaryString.length - 1,
       mask = 1,
@@ -472,10 +647,11 @@
       var ch = binaryString[i--];
       if (ch !== &quot;0&quot; &amp;&amp; ch !== &quot;1&quot;) throw &quot;the value passed into unbinary was not an 8 bit binary number&quot;;
       if (ch === &quot;1&quot;) result += mask;
-      mask &lt;&lt;= 1
+      mask &lt;&lt;= 1;
     }
-    return result
+    return result;
   };
+
 
   var decimalToHex = function(d, padding) {
     padding = padding === undef || padding === null ? padding = 8 : padding;
@@ -483,51 +659,139 @@
     var hex = Number(d).toString(16).toUpperCase();
     while (hex.length &lt; padding) hex = &quot;0&quot; + hex;
     if (hex.length &gt;= padding) hex = hex.substring(hex.length - padding, hex.length);
-    return hex
-  };
-  pub.hex = function(value, len) {
-    if (arguments.length === 1) if (value instanceof Char) len = 4;
-    else len = 8;
-    return decimalToHex(value, len)
+    return hex;
   };
 
-  function unhexScalar(hex) {
+  &#x2F;**
+   * Convert a number to a hex representation. 
+   *
+   * @method hex
+   * @param {Number} value The number to convert
+   * @param {Number} [len] The length of the hex number to be created, default: 8
+   * @return {String} The hex representation as a string
+   *&#x2F;
+  pub.hex = function(value, len) {
+    if (arguments.length === 1) len = 8;
+    return decimalToHex(value, len);
+  };
+
+  var unhexScalar = function(hex) {
     var value = parseInt(&quot;0x&quot; + hex, 16);
     if (value &gt; 2147483647) value -= 4294967296;
-    return value
+    return value;
   }
+
+  &#x2F;**
+   * Convert a hex representation to a number.
+   *
+   * @method unhex
+   * @param {String} hex The hex representation
+   * @return {Number} The number
+   *&#x2F;
   pub.unhex = function(hex) {
     if (hex instanceof Array) {
       var arr = [];
       for (var i = 0; i &lt; hex.length; i++) arr.push(unhexScalar(hex[i]));
-      return arr
+      return arr;
     }
-    return unhexScalar(hex)
+    return unhexScalar(hex);
   };
 
 
   &#x2F;&#x2F; -- String Functions --
-  pub.join = function(array, seperator) {
-    return array.join(seperator)
+
+  &#x2F;**
+   * Combines an array of Strings into one String, each separated by 
+   * the character(s) used for the separator parameter. To join arrays 
+   * of ints or floats, it&#x27;s necessary to first convert them to strings 
+   * using nf() or nfs().
+   *
+   * @method join
+   * @param {Array} array A string array
+   * @param {String} separator The separator to be inserted
+   * @return {String} The joined string
+   *&#x2F;
+   &#x2F;&#x2F; http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;join_&#x2F;
+  pub.join = function(array, separator) {
+    return array.join(separator);
   };
 
-  pub.split = function(str, delim) {
-    return str.split(delim)
+  &#x2F;**
+   * The split() function breaks a string into pieces using a
+   * character or string as the divider. The delim parameter specifies the
+   * character or characters that mark the boundaries between each piece. A
+   * String[] array is returned that contains each of the pieces.
+   *
+   * If the result is a set of numbers, you can convert the String[] array
+   * to to a float[] or int[] array using the datatype conversion functions
+   * int() and float() (see example above).
+   *
+   * The splitTokens() function works in a similar fashion, except that it
+   * splits using a range of characters instead of a specific character or
+   * sequence.    
+   *  
+   * @method split
+   * @param {String} str the String to be split
+   * @param {String} [delim] The string used to separate the data
+   * @return {Array} Array of strings
+   *&#x2F;
+   &#x2F;&#x2F; http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;split_&#x2F;
+  pub.split = function(str, delim) {     
+    return str.split(delim);   
   };
 
+  &#x2F;**
+   * The splitTokens() function splits a String at one or many character 
+   * &quot;tokens.&quot; The tokens parameter specifies the character or characters 
+   * to be used as a boundary.
+   *
+   * If no tokens character is specified, any whitespace character is used 
+   * to split. Whitespace characters include tab (\t), line feed (\n), 
+   * carriage return (\r), form feed (\f), and space. To convert a String 
+   * to an array of integers or floats, use the datatype conversion functions 
+   * int() and float() to convert the array of Strings.
+   *  
+   * @method splitTokens
+   * @param {String} str the String to be split
+   * @param {String} [tokens] list of individual characters that will be used as separators
+   * @return {Array} Array of strings
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;splitTokens_&#x2F;
+  pub.splitTokens = function(str, tokens) {
+    if (arguments.length === 1) tokens = &quot;\n\t\r\u000c &quot;;
+    tokens = &quot;[&quot; + tokens + &quot;]&quot;;
+    var ary = [];
+    var index = 0;
+    var pos = str.search(tokens);
+    while (pos &gt;= 0) {
+      if (pos === 0) str = str.substring(1);
+      else {
+        ary[index] = str.substring(0, pos);
+        index++;
+        str = str.substring(pos);
+      }
+      pos = str.search(tokens);
+    }
+    if (str.length &gt; 0) ary[index] = str;
+    if (ary.length === 0) ary = undef;
+    return ary;
+  };  
+
+  &#x2F;* todo *&#x2F;
   pub.match = function(str, regexp) {
-    return str.match(regexp)
+    return str.match(regexp);
   };
 
+  &#x2F;* todo *&#x2F;
   pub.matchAll = function(aString, aRegExp) {
     var results = [],
       latest;
     var regexp = new RegExp(aRegExp, &quot;g&quot;);
     while ((latest = regexp.exec(aString)) !== null) {
       results.push(latest);
-      if (latest[0].length === 0)++regexp.lastIndex
+      if (latest[0].length === 0)++regexp.lastIndex;
     }
-    return results.length &gt; 0 ? results : null
+    return results.length &gt; 0 ? results : null;
   };
 
   function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
@@ -540,80 +804,135 @@
       absValue *= 10;
       while (Math.abs(Math.round(absValue) - absValue) &gt; 1.0E-6 &amp;&amp; rightDigitsOfDefault &lt; 7) {
         ++rightDigitsOfDefault;
-        absValue *= 10
+        absValue *= 10;
       }
     } else if (rightDigitsOfDefault !== 0) absValue *= Math.pow(10, rightDigitsOfDefault);
     var number, doubled = absValue * 2;
     if (Math.floor(absValue) === absValue) number = absValue;
     else if (Math.floor(doubled) === doubled) {
       var floored = Math.floor(absValue);
-      number = floored + floored % 2
+      number = floored + floored % 2;
     } else number = Math.round(absValue);
     var buffer = &quot;&quot;;
     var totalDigits = leftDigits + rightDigitsOfDefault;
     while (totalDigits &gt; 0 || number &gt; 0) {
       totalDigits--;
       buffer = &quot;&quot; + number % 10 + buffer;
-      number = Math.floor(number &#x2F; 10)
+      number = Math.floor(number &#x2F; 10);
     }
     if (group !== undef) {
       var i = buffer.length - 3 - rightDigitsOfDefault;
       while (i &gt; 0) {
         buffer = buffer.substring(0, i) + group + buffer.substring(i);
-        i -= 3
+        i -= 3;
       }
     }
     if (rightDigitsOfDefault &gt; 0) return sign + buffer.substring(0, buffer.length - rightDigitsOfDefault) + &quot;.&quot; + buffer.substring(buffer.length - rightDigitsOfDefault, buffer.length);
-    return sign + buffer
+    return sign + buffer;
   }
   function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
     if (value instanceof Array) {
       var arr = [];
       for (var i = 0, len = value.length; i &lt; len; i++) arr.push(nfCoreScalar(value[i], plus, minus, leftDigits, rightDigits, group));
-      return arr
+      return arr;
     }
-    return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group)
+    return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group);
   }
+
+  &#x2F;**    
+   * Utility function for formatting numbers into strings. There
+   * are two versions, one for formatting floats and one for formatting
+   * ints. The values for the digits, left, and right parameters should
+   * always be positive integers.
+
+   * As shown in the above example, nf() is used to add zeros to the
+   * left and&#x2F;or right of a number. This is typically for aligning a list
+   * of numbers. To remove digits from a floating-point number, use the
+   * int(), ceil(), floor(), or round() functions.    
+   * 
+   * @method nf
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nf_&#x2F;
   pub.nf = function(value, leftDigits, rightDigits) {
-    return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits)
+    return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits);
   };
+
+  &#x2F;**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but leaves a blank space in front of positive numbers so they align 
+   * with negative numbers in spite of the minus symbol. There are two 
+   * versions, one for formatting floats and one for formatting ints. The 
+   * values for the digits, left, and right parameters should always be 
+   * positive integers.   
+   * 
+   * @method nfs
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nfs_&#x2F;
   pub.nfs = function(value, leftDigits, rightDigits) {
-    return nfCore(value, &quot; &quot;, &quot;-&quot;, leftDigits, rightDigits)
+    return nfCore(value, &quot; &quot;, &quot;-&quot;, leftDigits, rightDigits);
   };
+  
+  &#x2F;**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but puts a &quot;+&quot; in front of positive numbers and a &quot;-&quot; in front of 
+   * negative numbers. There are two versions, one for formatting floats 
+   * and one for formatting ints. The values for the digits, left, and right 
+   * parameters should always be positive integers.      
+   * 
+   * @method nfp
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nfp_&#x2F;
   pub.nfp = function(value, leftDigits, rightDigits) {
-    return nfCore(value, &quot;+&quot;, &quot;-&quot;, leftDigits, rightDigits)
+    return nfCore(value, &quot;+&quot;, &quot;-&quot;, leftDigits, rightDigits);
   };
+
+  &#x2F;**    
+   * Utility function for formatting numbers into strings and placing 
+   * appropriate commas to mark units of 1000. There are two versions, one 
+   * for formatting ints and one for formatting an array of ints. The value 
+   * for the digits parameter should always be a positive integer.     
+   * 
+   * @method nfc
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nfc_&#x2F;
   pub.nfc = function(value, leftDigits, rightDigits) {
-    return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits, &quot;,&quot;)
+    return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits, &quot;,&quot;);
   };
 
-  pub.splitTokens = function(str, tokens) {
-    if (arguments.length === 1) tokens = &quot;\n\t\r\u000c &quot;;
-    tokens = &quot;[&quot; + tokens + &quot;]&quot;;
-    var ary = [];
-    var index = 0;
-    var pos = str.search(tokens);
-    while (pos &gt;= 0) {
-      if (pos === 0) str = str.substring(1);
-      else {
-        ary[index] = str.substring(0, pos);
-        index++;
-        str = str.substring(pos)
-      }
-      pos = str.search(tokens)
-    }
-    if (str.length &gt; 0) ary[index] = str;
-    if (ary.length === 0) ary = undef;
-    return ary
-  };
 
+  &#x2F;**    
+   * Removes whitespace characters from the beginning and end of a String. 
+   * In addition to standard whitespace characters such as space, carriage 
+   * return, and tab, this function also removes the Unicode &quot;nbsp&quot; character.    
+   * 
+   * @method trim
+   * @param {String|Array} str A string or an array of strings to be trimmed
+   * @return {String|Array} Returns the input in a trimmed way
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;trim_&#x2F;
   pub.trim = function(str) {
     if (str instanceof Array) {
       var arr = [];
       for (var i = 0; i &lt; str.length; i++) arr.push(str[i].replace(&#x2F;^\s*&#x2F;, &quot;&quot;).replace(&#x2F;\s*$&#x2F;, &quot;&quot;).replace(&#x2F;\r*$&#x2F;, &quot;&quot;));
-      return arr
+      return arr;
     }
-    return str.replace(&#x2F;^\s*&#x2F;, &quot;&quot;).replace(&#x2F;\s*$&#x2F;, &quot;&quot;).replace(&#x2F;\r*$&#x2F;, &quot;&quot;)
+    return str.replace(&#x2F;^\s*&#x2F;, &quot;&quot;).replace(&#x2F;\s*$&#x2F;, &quot;&quot;).replace(&#x2F;\r*$&#x2F;, &quot;&quot;);
   };
 
   &#x2F;&#x2F; ----------------------------------------
@@ -657,12 +976,12 @@
 
     var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
-    with(newOval) {
+    with (newOval) {
       strokeWeight = currStrokeWeight;
-      strokeTint = currStrokeTint; 
+      strokeTint = currStrokeTint;
       fillColor = currFillColor;
-      fillTint = currFillTint; 
-      strokeColor = currStrokeColor;  
+      fillTint = currFillTint;
+      strokeColor = currStrokeColor;
       geometricBounds = ellipseBounds;
     }
 
@@ -674,7 +993,7 @@
       newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                      AnchorPoint.TOP_LEFT_ANCHOR,
                      currMatrix.adobeMatrix() );
-    } 
+    }
     return newOval;
   };
 
@@ -692,11 +1011,11 @@
     if (arguments.length !== 4) error(&quot;Not enough parameters to draw a line! Use: x1, y1, x2, y2&quot;);
     var lines = currentPage().graphicLines;
     var newLine = lines.add( currentLayer() );
-    with(newLine) {
+    with (newLine) {
       strokeWeight = currStrokeWeight;
-      strokeTint = currStrokeTint; 
+      strokeTint = currStrokeTint;
       fillColor = currFillColor;
-      fillTint = currFillTint; 
+      fillTint = currFillTint;
       strokeColor = currStrokeColor;
     }
     newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
@@ -737,7 +1056,7 @@
     }
     
     var newRect = currentPage().rectangles.add( currentLayer() );
-    with(newRect) {
+    with (newRect) {
       geometricBounds = rectBounds;
       strokeWeight = currStrokeWeight;
       strokeTint = currStrokeTint;
@@ -759,7 +1078,7 @@
   };
 
   &#x2F;**
-   * The function calculates the geometric bounds of any given object. 
+   * The function calculates the geometric bounds of any given object.
    * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
    *
    * @method bounds
@@ -783,17 +1102,17 @@
 
       if (w &lt; 0 || h &lt;0) {
         warning(&quot;bounds(textObj), not possible to get correct bounds, possible linebreak within textObj&quot;);
-      };
+      }
 
       &#x2F;&#x2F; TODO: not sure if this 100% correct, check
       &#x2F;&#x2F; http:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;File:Typography_Line_Terms.svg
       var xHeight = y1+descent;
 
-      return {&#x27;width&#x27;:w, 
-              &#x27;height&#x27;:h, 
-              &#x27;left&#x27;:x1, 
-              &#x27;right&#x27;:x2, 
-              &#x27;top&#x27;:y1, 
+      return {&#x27;width&#x27;:w,
+              &#x27;height&#x27;:h,
+              &#x27;left&#x27;:x1,
+              &#x27;right&#x27;:x2,
+              &#x27;top&#x27;:y1,
               &#x27;bottom&#x27;:y2,
               &#x27;baseline&#x27;:baseline,
               &#x27;xHeight&#x27;:xHeight };
@@ -808,7 +1127,7 @@
         w = x2-x1;
         h = y2-y1;
         return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
-      } 
+      }
       &#x2F;&#x2F; everything else e.g. page, spread
       else if (obj.hasOwnProperty(&quot;bounds&quot;)) {
         var bounds = obj.bounds; &#x2F;&#x2F;[y1, x1, y2, x2]
@@ -819,16 +1138,17 @@
         w = x2-x1;
         h = y2-y1;
         return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
-      } 
+      }
       &#x2F;&#x2F; no idea what that might be, give up
       else {
         error(&quot;bounds(obj), invalide type! Can&#x27;t get bounds for this object.&quot;);
       }
-    } 
+    }
   };
 
   &#x2F;&#x2F; -- Attributes --
 
+  &#x2F;* todo *&#x2F;
   pub.rectMode = function (mode) {
     if (arguments.length === 0) return currRectMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
@@ -839,6 +1159,7 @@
     }
   };
 
+  &#x2F;* todo *&#x2F;
   pub.ellipseMode = function (mode) {
     if (arguments.length === 0) return currEllipseMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
@@ -849,6 +1170,7 @@
     }
   };
 
+  &#x2F;* todo *&#x2F;
   pub.strokeWeight = function (weight) {
     if (typeof weight === &#x27;string&#x27; || typeof weight === &#x27;number&#x27;) {
       currStrokeWeight = weight;
@@ -859,7 +1181,7 @@
 
   &#x2F;**
    * Returns the object style with the given name. If the style does not exist it gets created.
-   * 
+   *
    * @method objectStyle
    * @param  {String} name  The name of the object style to return.
    * @return {ObjectStyle}  The object style instance.
@@ -881,7 +1203,7 @@
   &#x2F;&#x2F; Color
   
   &#x2F;**
-   * Sets the color used to fill shapes.  
+   * Sets the color used to fill shapes.
    * @method fill
    * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color&#x2F;swatch or a string with the name of a color. Or values: C,M,Y,K &#x2F; R,G,B &#x2F; Grey
    *&#x2F;
@@ -909,12 +1231,13 @@
     }
   };
 
+  &#x2F;* todo *&#x2F;
   pub.noFill = function () {
     currFillColor = noneSwatchColor;
   };
 
   &#x2F;**
-   * Sets the color used to draw lines and borders around shapes.  
+   * Sets the color used to draw lines and borders around shapes.
    * @method stroke
    * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color&#x2F;swatch or a string with the name of a color. Or values: C,M,Y,K &#x2F; R,G,B &#x2F; Grey
    *&#x2F;
@@ -942,6 +1265,7 @@
     }
   };
 
+  &#x2F;* todo *&#x2F;
   pub.noStroke = function () {
     currStrokeColor = noneSwatchColor;
   };
@@ -1167,19 +1491,19 @@
   };
 
   &#x2F;**
-   * Sets text properties to the given item. If the item is not an instance the text property can be set to, 
+   * Sets text properties to the given item. If the item is not an instance the text property can be set to,
    * the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
-   * 
-   * If no value is given and the given property is a string, the function acts as a getter and returns the 
-   * corresponding value(s) in an array. This can either be an array containing the value of the concrete item 
+   *
+   * If no value is given and the given property is a string, the function acts as a getter and returns the
+   * corresponding value(s) in an array. This can either be an array containing the value of the concrete item
    * (e.g. character) the values of the item&#x27;s descendants (e.g. paragraphs of given text frame).
-   * 
+   *
    * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
    * @param  {String|Object} property  The text property name of an object of key&#x2F;value property&#x2F;value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
    * @param  {String|Number} [value]   The value to apply to the property.
-   * @return {String[]|Number[]}  The property value(s) if the function acts as getter or the items the property 
+   * @return {String[]|Number[]}  The property value(s) if the function acts as getter or the items the property
    *                              was assigned to.
    *&#x2F;
   pub.typo = function(item, property, value) {
@@ -1195,11 +1519,11 @@
       setProperties = function(textItem) {
         if (typeof property === &#x27;string&#x27;) {
           result.push(textItem);
-          setProperty(textItem, property, value);  
+          setProperty(textItem, property, value);
         } else if (typeof property === &#x27;object&#x27;) {
           result.push(textItem);
           for (var prop in property) {
-            setProperty(textItem, prop, property[prop]);  
+            setProperty(textItem, prop, property[prop]);
           }
         }
       },
@@ -1214,7 +1538,7 @@
       forEach(item.textFrames, function(textFrame) {
         pub.typo(textFrame, property, value);
       });
-    } else if (item instanceof Story || 
+    } else if (item instanceof Story ||
                item instanceof TextFrame) {
       forEach(item.paragraphs, function(para) {
         getOrSetProperties(para);
@@ -1227,21 +1551,25 @@
 
   &#x2F;**
    * Returns the current font and sets it if argument fontName is given.
-   * 
+   *
    * @method textFont
-   * @param  {String} [fontName] The name of the font to set. Font style can be separated with a tab, e.g. Helvetica\tBold
-   * @return {String}            The name of the current font.
+   * @param  {String} [fontName] The name of the font to set e.g. Helvetica
+   * @param  {String} [fontStyle] The Font style e.g. Bold
+   * @return {String}            The name of the current font
    *&#x2F;
-  pub.textFont = function(fontName) {
+  pub.textFont = function(fontName, fontStyle) {
     if (arguments.length === 1) {
       currFont = fontName;
+    }
+    if (arguments.length === 2) {
+      currFont = fontName+&quot;\t&quot;+fontStyle;
     }
     return currFont;
   };
 
   &#x2F;**
    * Returns the current font size in points and sets it if argument pointSize is given.
-   * 
+   *
    * @method textSize
    * @param  {Number} [pointSize] The size in points to set.
    * @return {Number}             The current point size.
@@ -1255,7 +1583,7 @@
 
   &#x2F;**
    * Sets the current horizontal and vertical text alignment.
-   * 
+   *
    * @method textAlign
    * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
    *                           Justification.AWAY_FROM_BINDING_SIDE
@@ -1279,9 +1607,9 @@
 
   &#x2F;**
    * Returns the spacing between lines of text in units of points and sets it if argument leading is given.
-   * 
+   *
    * @method textLeading
-   * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum 
+   * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
    *                                   value Leading.AUTO.
    * @return {Number|String}           The current leading.
    *&#x2F;
@@ -1294,7 +1622,7 @@
 
   &#x2F;**
    * Returns the current kerning and sets it if argument kerning is given.
-   * 
+   *
    * @method textKerning
    * @param  {Number} [kerning] The value to set.
    * @return {Number}           The current kerning.
@@ -1308,7 +1636,7 @@
 
   &#x2F;**
    * Returns the current tracking and sets it if argument tracking is given.
-   * 
+   *
    * @method textTracking
    * @param  {Number} [tracking] The value to set.
    * @return {Number}            The current tracking.
@@ -1322,7 +1650,7 @@
 
   &#x2F;**
    * Returns the character style with the given name. If the style does not exist it gets created.
-   * 
+   *
    * @method characterStyle
    * @param  {String} name      The name of the character style to return.
    * @return {CharachterStyle}  The character style instance.
@@ -1340,7 +1668,7 @@
 
   &#x2F;**
    * Returns the paragraph style with the given name. If the style does not exist it gets created.
-   * 
+   *
    * @method paragraphStyle
    * @param  {String} name     The name of the paragraph style to return.
    * @return {ParagraphStyle}  The paragraph style instance.
@@ -1354,16 +1682,6 @@
       style = currentDoc().paragraphStyles.add({name: name});
     }
     return style;
-  };
-
-  var isText = pub.isText = function(obj) {
-    return obj instanceof Character ||
-           obj instanceof InsertionPoint ||
-           obj instanceof Line ||
-           obj instanceof Paragraph ||
-           obj instanceof TextColumn ||
-           obj instanceof TextStyleRange ||
-           obj instanceof Word;
   };
 
   &#x2F;**
@@ -1386,13 +1704,13 @@
   &#x2F;&#x2F; Image
   
   &#x2F;**
-   * Adds an image to the document. If the image argument is given as a string the image file  must be in the document&#x27;s 
-   * data directory which is in the same directory where the document is saved in. The image argument can also be a File 
+   * Adds an image to the document. If the image argument is given as a string the image file  must be in the document&#x27;s
+   * data directory which is in the same directory where the document is saved in. The image argument can also be a File
    * instance which can be placed even before the document was saved.
-   * The second argument can either be the x position of the frame to create or an instance of a rectangle, 
+   * The second argument can either be the x position of the frame to create or an instance of a rectangle,
    * oval or polygon to place the image in.
    * If x and y positions are given and width and height are not given, the frame&#x27;s size gets set to the original image size.
-   * 
+   *
    * @method image
    * @param  {String|File} img The image file name in the document&#x27;s data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
@@ -1404,14 +1722,16 @@
   pub.image = function(img, x, y, w, h) {
     var file = initDataFile(img, true),
       frame = null,
-      fitOptions = null;
+      fitOptions = null,
+      width = null,
+      height = null;
     if (x instanceof Rectangle ||
         x instanceof Oval ||
         x instanceof Polygon) {
       frame = x;
     } else {
-      var width = 1,
-          height = 1;
+      width = 1;
+      height = 1;
       if (currImageMode === pub.CORNERS) {
         width = w - x;
         height = h - y;
@@ -1439,8 +1759,8 @@
 
     if (currImageMode === pub.CENTER) {
       var bounds = frame.geometricBounds;
-      var width = bounds[3] - bounds[1];
-      var height = bounds[2] - bounds[0];
+      width = bounds[3] - bounds[1];
+      height = bounds[2] - bounds[0];
       frame.move(null, [-(width &#x2F; 2), -(height &#x2F; 2)]);
       frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                          AnchorPoint.CENTER_ANCHOR,
@@ -1454,7 +1774,7 @@
   };
 
   &#x2F;**
-   * Transforms position and size of an image. 
+   * Transforms position and size of an image.
    * The image fit options are always &quot;contentToFrame&quot;.
    *
    * @method transformImage
@@ -1470,7 +1790,7 @@
       img.geometricBounds = [y,x,y+height,x+width];
       if (currImageMode === pub.CENTER) {
         img.move(null, [-(width &#x2F; 2), -(height &#x2F; 2)]);
-      } 
+      }
       img.fit( FitOptions.CENTER_CONTENT );
       img.fit( FitOptions.contentToFrame );
     } else {
@@ -1478,6 +1798,7 @@
     }
   };
 
+  &#x2F;* todo *&#x2F;
   pub.imageMode = function(mode) {
     if (arguments.length === 0) return currImageMode;
 
@@ -1494,13 +1815,9 @@
     if (file instanceof File) {
       result = file;
     } else {
-      var docPath = null;
-      try {
-        docPath = currentDoc().filePath;
-      } catch (e) {
-        error(&quot;The current document must be saved before its data directory can be accessed.&quot;);
-      }
-      result = new File(docPath.absoluteURI + &#x27;&#x2F;data&#x2F;&#x27; + file);
+      var folder = new Folder(projectPath().absoluteURI + &#x27;&#x2F;data&#x27;);
+      folder.create(); &#x2F;&#x2F; creates data folder if not existing, otherwise it just skips
+      result = new File(folder.absoluteURI + &#x27;&#x2F;&#x27; + file);
     }
     if (mustExist &amp;&amp; !result.exists) {
       error(&#x27;The file &quot;&#x27; + result + &#x27;&quot; does not exist.&#x27;);
@@ -1508,27 +1825,51 @@
     return result;
   };
   
+  var initExportFile = function(file, mustExist) {
+    var result = null;
+    if (file instanceof File) {
+      result = file;
+    } else {
+      result = new File(projectPath().absoluteURI + &#x27;&#x2F;&#x27; + file);
+    }
+    if (mustExist &amp;&amp; !result.exists) {
+      error(&#x27;The file &quot;&#x27; + result + &#x27;&quot; does not exist.&#x27;);
+    }
+    return result;
+  };
+  
+  var projectPath = function() {
+      var docPath = null;
+      try {
+        docPath = currentDoc().filePath;
+      } catch (e) {
+        error(&quot;The current document must be saved before its project directory can be accessed.&quot;);
+      }
+      return docPath;
+  };
+  
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Math
   
+  &#x2F;* todo *&#x2F;
   var PVector = pub.PVector = function() {
     function PVector(x, y, z) {
       this.x = x || 0;
       this.y = y || 0;
-      this.z = z || 0
+      this.z = z || 0;
     }
     PVector.dist = function(v1, v2) {
-      return v1.dist(v2)
+      return v1.dist(v2);
     };
     PVector.dot = function(v1, v2) {
-      return v1.dot(v2)
+      return v1.dot(v2);
     };
     PVector.cross = function(v1, v2) {
-      return v1.cross(v2)
+      return v1.cross(v2);
     };
     PVector.angleBetween = function(v1, v2) {
-      return Math.acos(v1.dot(v2) &#x2F; (v1.mag() * v2.mag()))
+      return Math.acos(v1.dot(v2) &#x2F; (v1.mag() * v2.mag()));
     };
     PVector.prototype = {
       set: function(v, y, z) {
@@ -1536,96 +1877,96 @@
         else {
           this.x = v;
           this.y = y;
-          this.z = z
+          this.z = z;
         }
       },
       get: function() {
-        return new PVector(this.x, this.y, this.z)
+        return new PVector(this.x, this.y, this.z);
       },
       mag: function() {
         var x = this.x,
           y = this.y,
           z = this.z;
-        return Math.sqrt(x * x + y * y + z * z)
+        return Math.sqrt(x * x + y * y + z * z);
       },
       add: function(v, y, z) {
         if (arguments.length === 1) {
           this.x += v.x;
           this.y += v.y;
-          this.z += v.z
+          this.z += v.z;
         } else {
           this.x += v;
           this.y += y;
-          this.z += z
+          this.z += z;
         }
       },
       sub: function(v, y, z) {
         if (arguments.length === 1) {
           this.x -= v.x;
           this.y -= v.y;
-          this.z -= v.z
+          this.z -= v.z;
         } else {
           this.x -= v;
           this.y -= y;
-          this.z -= z
+          this.z -= z;
         }
       },
       mult: function(v) {
         if (typeof v === &quot;number&quot;) {
           this.x *= v;
           this.y *= v;
-          this.z *= v
+          this.z *= v;
         } else {
           this.x *= v.x;
           this.y *= v.y;
-          this.z *= v.z
+          this.z *= v.z;
         }
       },
       div: function(v) {
         if (typeof v === &quot;number&quot;) {
           this.x &#x2F;= v;
           this.y &#x2F;= v;
-          this.z &#x2F;= v
+          this.z &#x2F;= v;
         } else {
           this.x &#x2F;= v.x;
           this.y &#x2F;= v.y;
-          this.z &#x2F;= v.z
+          this.z &#x2F;= v.z;
         }
       },
       dist: function(v) {
         var dx = this.x - v.x,
           dy = this.y - v.y,
           dz = this.z - v.z;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz)
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
       },
       dot: function(v, y, z) {
         if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
-        return this.x * v + this.y * y + this.z * z
+        return this.x * v + this.y * y + this.z * z;
       },
       cross: function(v) {
         var x = this.x,
           y = this.y,
           z = this.z;
-        return new PVector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y)
+        return new PVector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
       },
       normalize: function() {
         var m = this.mag();
-        if (m &gt; 0) this.div(m)
+        if (m &gt; 0) this.div(m);
       },
       limit: function(high) {
         if (this.mag() &gt; high) {
           this.normalize();
-          this.mult(high)
+          this.mult(high);
         }
       },
       heading2D: function() {
-        return -Math.atan2(-this.y, this.x)
+        return -Math.atan2(-this.y, this.x);
       },
       toString: function() {
-        return &quot;[&quot; + this.x + &quot;, &quot; + this.y + &quot;, &quot; + this.z + &quot;]&quot;
+        return &quot;[&quot; + this.x + &quot;, &quot; + this.y + &quot;, &quot; + this.z + &quot;]&quot;;
       },
       array: function() {
-        return [this.x, this.y, this.z]
+        return [this.x, this.y, this.z];
       }
     };
 
@@ -1633,51 +1974,56 @@
       return function(v1, v2) {
         var v = v1.get();
         v[method](v2);
-        return v
-      }
+        return v;
+      };
     }
     for (var method in PVector.prototype) if (PVector.prototype.hasOwnProperty(method) &amp;&amp; !PVector.hasOwnProperty(method)) PVector[method] = createPVectorMethod(method);
-    return PVector
+    return PVector;
   }();
   
 
   &#x2F;&#x2F; -- Calculation --
+  &#x2F;* todo *&#x2F;
   pub.abs = Math.abs;
 
+  &#x2F;* todo *&#x2F;
   pub.ceil = Math.ceil;
 
+  &#x2F;* todo *&#x2F;
   pub.constrain = function(aNumber, aMin, aMax) {
-    return aNumber &gt; aMax ? aMax : aNumber &lt; aMin ? aMin : aNumber
+    return aNumber &gt; aMax ? aMax : aNumber &lt; aMin ? aMin : aNumber;
   };
 
+  &#x2F;* todo *&#x2F;
   pub.dist = function() {
     var dx, dy, dz;
     if (arguments.length === 4) {
       dx = arguments[0] - arguments[2];
       dy = arguments[1] - arguments[3];
-      return Math.sqrt(dx * dx + dy * dy)
+      return Math.sqrt(dx * dx + dy * dy);
     }
   };
 
+  &#x2F;* todo *&#x2F;
   pub.exp = Math.exp;
-
+  &#x2F;* todo *&#x2F;
   pub.floor = Math.floor;
-
+  &#x2F;* todo *&#x2F;
   pub.lerp = function(value1, value2, amt) {
-    return (value2 - value1) * amt + value1
+    return (value2 - value1) * amt + value1;
   };
-
+  &#x2F;* todo *&#x2F;
   pub.log = Math.log;
-
+  &#x2F;* todo *&#x2F;
   pub.mag = function(a, b, c) {
     if (c) return Math.sqrt(a * a + b * b + c * c);
-    return Math.sqrt(a * a + b * b)
+    return Math.sqrt(a * a + b * b);
   };
-
+  &#x2F;* todo *&#x2F;
   pub.map = function(value, istart, istop, ostart, ostop) {
-    return ostart + (ostop - ostart) * ((value - istart) &#x2F; (istop - istart))
+    return ostart + (ostop - ostart) * ((value - istart) &#x2F; (istop - istart));
   };
-
+  &#x2F;* todo *&#x2F;
   pub.max = function() {
     if (arguments.length === 2) return arguments[0] &lt; arguments[1] ? arguments[1] : arguments[0];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1685,9 +2031,9 @@
     var max = numbers[0],
       count = numbers.length;
     for (var i = 1; i &lt; count; ++i) if (max &lt; numbers[i]) max = numbers[i];
-    return max
+    return max;
   };
-
+  &#x2F;* todo *&#x2F;
   pub.min = function() {
     if (arguments.length === 2) return arguments[0] &lt; arguments[1] ? arguments[0] : arguments[1];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1695,49 +2041,51 @@
     var min = numbers[0],
       count = numbers.length;
     for (var i = 1; i &lt; count; ++i) if (min &gt; numbers[i]) min = numbers[i];
-    return min
+    return min;
   };
-
+  &#x2F;* todo *&#x2F;
   pub.norm = function(aNumber, low, high) {
-    return (aNumber - low) &#x2F; (high - low)
+    return (aNumber - low) &#x2F; (high - low);
   };
-
+  &#x2F;* todo *&#x2F;
   pub.pow = Math.pow;
-
+  &#x2F;* todo *&#x2F;
   pub.round = Math.round;
-
+  &#x2F;* todo *&#x2F;
   pub.sq = function(aNumber) {
-    return aNumber * aNumber
+    return aNumber * aNumber;
   };
-  
 
-  &#x2F;&#x2F; -- Trigonometry -- 
+  &#x2F;&#x2F; -- Trigonometry --
+  &#x2F;* todo *&#x2F;
   pub.sqrt = Math.sqrt;
   pub.acos = Math.acos;
   pub.asin = Math.asin;
   pub.atan = Math.atan;
   pub.atan2 = Math.atan2;
   pub.cos = Math.cos;
-
+  &#x2F;* todo *&#x2F;
   pub.degrees = function(aAngle) {
-    return aAngle * 180 &#x2F; Math.PI
+    return aAngle * 180 &#x2F; Math.PI;
   };
-
+  &#x2F;* todo *&#x2F;
   pub.radians = function(aAngle) {
-    return aAngle &#x2F; 180 * Math.PI
+    return aAngle &#x2F; 180 * Math.PI;
   };
-
+  &#x2F;* todo *&#x2F;
   pub.sin = Math.sin;
   pub.tan = Math.tan;
 
   &#x2F;&#x2F; -- Random --
+  
   var currentRandom = Math.random;
+  &#x2F;* todo *&#x2F;
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
     if (arguments.length === 1) return currentRandom() * arguments[0];
     var aMin = arguments[0],
       aMax = arguments[1];
-    return currentRandom() * (aMax - aMin) + aMin
+    return currentRandom() * (aMax - aMin) + aMin;
   };
 
   function Marsaglia(i1, i2) {
@@ -1746,45 +2094,46 @@
     var nextInt = function() {
       z = 36969 * (z &amp; 65535) + (z &gt;&gt;&gt; 16) &amp; 4294967295;
       w = 18E3 * (w &amp; 65535) + (w &gt;&gt;&gt; 16) &amp; 4294967295;
-      return ((z &amp; 65535) &lt;&lt; 16 | w &amp; 65535) &amp; 4294967295
+      return ((z &amp; 65535) &lt;&lt; 16 | w &amp; 65535) &amp; 4294967295;
     };
     this.nextDouble = function() {
       var i = nextInt() &#x2F; 4294967296;
-      return i &lt; 0 ? 1 + i : i
+      return i &lt; 0 ? 1 + i : i;
     };
-    this.nextInt = nextInt
+    this.nextInt = nextInt;
   }
   Marsaglia.createRandomized = function() {
-    var now = new Date;
-    return new Marsaglia(now &#x2F; 6E4 &amp; 4294967295, now &amp; 4294967295)
+    var now = new Date();
+    return new Marsaglia(now &#x2F; 6E4 &amp; 4294967295, now &amp; 4294967295);
   };
-
+  &#x2F;* todo *&#x2F;
   pub.randomSeed = function(seed) {
-    currentRandom = (new Marsaglia(seed)).nextDouble
+    currentRandom = (new Marsaglia(seed)).nextDouble;
   };
-
+  &#x2F;* todo *&#x2F;
   pub.Random = function(seed) {
     var haveNextNextGaussian = false,
       nextNextGaussian, random;
     this.nextGaussian = function() {
       if (haveNextNextGaussian) {
         haveNextNextGaussian = false;
-        return nextNextGaussian
+        return nextNextGaussian;
       }
       var v1, v2, s;
       do {
         v1 = 2 * random() - 1;
         v2 = 2 * random() - 1;
-        s = v1 * v1 + v2 * v2
+        s = v1 * v1 + v2 * v2;
       } while (s &gt;= 1 || s === 0);
       var multiplier = Math.sqrt(-2 * Math.log(s) &#x2F; s);
       nextNextGaussian = v2 * multiplier;
       haveNextNextGaussian = true;
-      return v1 * multiplier
+      return v1 * multiplier;
     };
-    random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble
+    random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble;
   };
 
+  &#x2F;* todo *&#x2F;
   function PerlinNoise(seed) {
     var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
     var i, j;
@@ -1793,26 +2142,29 @@
     for (i = 0; i &lt; 256; ++i) {
       var t = perm[j = rnd.nextInt() &amp; 255];
       perm[j] = perm[i];
-      perm[i] = t
+      perm[i] = t;
     }
     for (i = 0; i &lt; 256; ++i) perm[i + 256] = perm[i];
-
+    
     function grad3d(i, x, y, z) {
       var h = i &amp; 15;
       var u = h &lt; 8 ? x : y,
       v = h &lt; 4 ? y : h === 12 || h === 14 ? x : z;
-      return ((h &amp; 1) === 0 ? u : -u) + ((h &amp; 2) === 0 ? v : -v)
+      return ((h &amp; 1) === 0 ? u : -u) + ((h &amp; 2) === 0 ? v : -v);
     }
+    
     function grad2d(i, x, y) {
       var v = (i &amp; 1) === 0 ? x : y;
-      return (i &amp; 2) === 0 ? -v : v
+      return (i &amp; 2) === 0 ? -v : v;
     }
+    
     function grad1d(i, x) {
-      return (i &amp; 1) === 0 ? -x : x
+      return (i &amp; 1) === 0 ? -x : x;
     }
     function lerp(t, a, b) {
-      return a + t * (b - a)
+      return a + t * (b - a);
     }
+    &#x2F;* noise3d *&#x2F;
     this.noise3d = function(x, y, z) {
       var X = Math.floor(x) &amp; 255,
         Y = Math.floor(y) &amp; 255,
@@ -1829,8 +2181,9 @@
         p1 = perm[X + 1] + Y,
         p10 = perm[p1] + Z,
         p11 = perm[p1 + 1] + Z;
-      return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))))
+      return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
     };
+    &#x2F;* todo *&#x2F;
     this.noise2d = function(x, y) {
       var X = Math.floor(x) &amp; 255,
         Y = Math.floor(y) &amp; 255;
@@ -1840,14 +2193,15 @@
         fy = (3 - 2 * y) * y * y;
       var p0 = perm[X] + Y,
         p1 = perm[X + 1] + Y;
-      return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)))
+      return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
     };
+    &#x2F;* todo *&#x2F;
     this.noise1d = function(x) {
       var X = Math.floor(x) &amp; 255;
       x -= Math.floor(x);
       var fx = (3 - 2 * x) * x * x;
-      return lerp(fx, grad1d(perm[X], x), grad1d(perm[X + 1], x - 1))
-    }
+      return lerp(fx, grad1d(perm[X], x), grad1d(perm[X + 1], x - 1));
+    };
   }
   var noiseProfile = {
     generator: undef,
@@ -1855,6 +2209,7 @@
     fallout: 0.5,
     seed: undef
   };
+  &#x2F;* todo *&#x2F;
   pub.noise = function(x, y, z) {
     if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
     var generator = noiseProfile.generator;
@@ -1872,53 +2227,61 @@
         break;
       case 3:
         sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) &#x2F; 2;
-        break
+        break;
       }
-      k *= 2
+      k *= 2;
     }
-    return sum
+    return sum;
   };
+  &#x2F;* todo *&#x2F;
   pub.noiseDetail = function(octaves, fallout) {
     noiseProfile.octaves = octaves;
-    if (fallout !== undef) noiseProfile.fallout = fallout
+    if (fallout !== undef) noiseProfile.fallout = fallout;
   };
+  &#x2F;* todo *&#x2F;
   pub.noiseSeed = function(seed) {
     noiseProfile.seed = seed;
-    noiseProfile.generator = undef
+    noiseProfile.generator = undef;
   };
 
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Input
-  
+  &#x2F;* todo *&#x2F;
   pub.year = function() {
-    return (new Date).getFullYear()
+    return (new Date()).getFullYear()();
   };
+  &#x2F;* todo *&#x2F;
   pub.month = function() {
-    return (new Date).getMonth() + 1
+    return (new Date()).getMonth() + 1;
   };
+  &#x2F;* todo *&#x2F;
   pub.day = function() {
-    return (new Date).getDate()
+    return (new Date()).getDate();
   };
+  &#x2F;* todo *&#x2F;
   pub.hour = function() {
-    return (new Date).getHours()
+    return (new Date()).getHours();
   };
+  &#x2F;* todo *&#x2F;
   pub.minute = function() {
-    return (new Date).getMinutes()
+    return (new Date()).getMinutes();
   };
+  &#x2F;* todo *&#x2F;
   pub.second = function() {
-    return (new Date).getSeconds()
+    return (new Date()).getSeconds();
   };
+  &#x2F;* todo *&#x2F;
   pub.millis = function() {
-    return Date.now() - start
+    return Date.now() - start;
   };
 
   &#x2F;**
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
-   * 
+   *
    * @method findByLabel
    * @param  {String} label The label identifier
-   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem. 
+   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
    *&#x2F;
   pub.findByLabel = function(label) {
     var result = [];
@@ -1926,7 +2289,7 @@
     for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
       var pageItem = doc.pageItems[i];
       if (pageItem.label === label) {
-        &#x2F;&#x2F; push pageItem&#x27;s 1st element to get the concrete PageItem instance, e.g. a TextFrame 
+        &#x2F;&#x2F; push pageItem&#x27;s 1st element to get the concrete PageItem instance, e.g. a TextFrame
         result.push(pageItem.getElements()[0]);
       }
     }
@@ -1934,23 +2297,19 @@
   };
 
   &#x2F;**
-   * Returns the currently selected object(s). 
-   * 
+   * Returns the currently selected object(s)
+   *
    * @method selection
    * @return {Object[]} Array of selected object(s).
    *&#x2F;
   pub.selection = function() {
-    var selection = app.selection;
-    if (!isArray(selection)) {
-      selection = [selection];
-    }
-    return selection;
+    return app.selection;
   };
 
   &#x2F;**
-   * Reads the contents of a file and creates a String array of its individual lines. 
+   * Reads the contents of a file and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
-   * 
+   *
    * @method loadStrings
    * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
    * @return {String[]}  Array of the individual lines in the given file.
@@ -1960,7 +2319,7 @@
       result = [];
 
     inputFile.open(&#x27;r&#x27;);
-    while (!inputFile.eof) { 
+    while (!inputFile.eof) {
       result.push(inputFile.readln());
     }
     inputFile.close();
@@ -1972,10 +2331,12 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Output
   
-  pub.println = function(msg) {
+  &#x2F;* todo *&#x2F;
+  var println = pub.println = function(msg) {
     $.writeln(msg);
   };
 
+  &#x2F;* todo *&#x2F;
   pub.print = function(msg) {
     $.write(msg);
   };
@@ -1983,23 +2344,169 @@
   &#x2F;**
    * Writes an array of strings to a file, one line per string. This file is saved to the document&#x27;s data directory.
    * If the given file exists it gets overridden.
-   * 
+   *
    * @method saveStrings
    * @param  {String|File} file The file name or a File instance
    * @param  {String[]} strings The string array to be written
    *&#x2F;
   pub.saveStrings = function(file, strings) {
-    var outputFile = initDataFile(file);
+    var outputFile = initExportFile(file);
     outputFile.open(&#x27;w&#x27;);
     forEach(strings, function(s) {
       outputFile.writeln(s);
     });
     outputFile.close();
   };
+
+  &#x2F;**
+   * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
+   *
+   * @todo data folder is not created automatically,
+   * @method savePDF
+   * @param {String|File} file The file name or a File instance
+   * @param {Boolean} showOptions Whether to show the export dialog
+   *&#x2F;
+  pub.savePDF = function(file, showOptions){
+    var outputFile = initExportFile(file);
+    if (typeof showOptions !== &quot;boolean&quot;) showOptions = false;
+    b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  };
   
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Transform
+  &#x2F;&#x2F; geometricBounds hint: [y1, x1, y2, x2]
+
+  &#x2F;**
+   * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
+   *
+   * @method itemX
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [x] The new x position
+   * @returns {Number} The current x position
+   *&#x2F;
+  pub.itemX = function(pItem, x) {
+    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( x !== null ){
+        b.itemPosition(pItem, x, pItem.geometricBounds[0]);
+      } else {
+        return pItem.geometricBounds[1];
+      }
+    } else {
+      error(&quot;pItem has to be a valid PageItem&quot;);
+    }
+  };
+
+  &#x2F;**
+   * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
+   *
+   * @method itemY
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [y] The new y position
+   * @returns {Number} The current y position
+   *&#x2F;
+  pub.itemY = function(pItem, y) {
+    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( y !== null ) {
+        b.itemPosition(pItem, pItem.geometricBounds[1], y);
+      } else {
+        return pItem.geometricBounds[0];
+      }
+    } else {
+      error(&quot;pItem has to be a valid PageItem&quot;);
+    }
+  };
+  
+  &#x2F;**
+   * Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
+   *
+   * @method itemWidth
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [width] The new width
+   * @returns {Number} The current width
+   *&#x2F;
+  pub.itemWidth = function(pItem, width) {
+    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( width !== null ){
+        b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
+      } else {
+        return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
+      }
+    } else {
+      error(&quot;pItem has to be a valid PageItem&quot;);
+    }
+  };
+
+  &#x2F;**
+   * Scales the given PageItem to the given height. If height is not given as argument the current height is returned.
+   *
+   * @method itemHeight
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [height] The new height
+   * @returns {Number} The current height
+   *&#x2F;
+  pub.itemHeight = function(pItem, height) {
+    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( height !== null ){
+        b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
+      } else {
+        return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
+      }
+    } else {
+      error(&quot;pItem has to be a valid PageItem&quot;);
+    }
+  };
+
+  &#x2F;**
+   * Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.
+   *
+   * @method itemPosition
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [x] The new x coordinate
+   * @param {Number} [y] The new y coordinate
+   * @returns {Object} Returns an object with the fields x and y
+   *&#x2F;
+  pub.itemPosition = function(pItem, x, y) {
+    if (pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+    
+      if( x !== null &amp;&amp; y !== null) {
+        var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
+        var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
+        pItem.geometricBounds = [ y, x, y + height, x + width ];
+      } else {
+        return { x: pItem.geometricBounds[1], y: pItem.geometricBounds[0] };
+      }
+      
+    } else {
+      error(&quot;itemPosition() only works with child classes of PageItem.&quot;);
+    }
+  };
+
+  &#x2F;**
+   * Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.
+   *
+   * @method itemSize
+   * @param {PageItem} pItem The PageItem to alter
+   * @param {Number} [width] The new width
+   * @param {Number} [height] The new height
+   * @returns {Object} Returns an object with the fields width and height
+   *&#x2F;
+  pub.itemSize = function(pItem, width, height) {
+    if (pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+    
+      if( width !== null &amp;&amp; height !== null ) {
+        var x = pItem.geometricBounds[1];
+        var y = pItem.geometricBounds[0];
+        pItem.geometricBounds = [ y, x, y + height, x + width ];
+      } else {
+        return { width: pItem.geometricBounds[3] - pItem.geometricBounds[1] , height: pItem.geometricBounds[2] - pItem.geometricBounds[0] };
+      }
+      
+    } else {
+      error(&quot;itemSize() only works with child classes of PageItem.&quot;);
+    }
+  };
+  
   
   var printMatrixHelper = function(elements) {
     var big = 0;
@@ -2008,47 +2515,47 @@
     var digits = (big + &quot;&quot;).indexOf(&quot;.&quot;);
     if (digits === 0) digits = 1;
     else if (digits === -1) digits = (big + &quot;&quot;).length;
-    return digits
+    return digits;
   };
 
   var PMatrix2D = pub.PMatrix2D = function() {
     if (arguments.length === 0) this.reset();
     else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) this.set(arguments[0].array());
-    else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5])
+    else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   };
   PMatrix2D.prototype = {
     set: function() {
       if (arguments.length === 6) {
         var a = arguments;
-        this.set([a[0], a[1], a[2], a[3], a[4], a[5]])
+        this.set([a[0], a[1], a[2], a[3], a[4], a[5]]);
       } else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) this.elements = arguments[0].array();
-      else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) this.elements = arguments[0].slice()
+      else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) this.elements = arguments[0].slice();
     },
     get: function() {
-      var outgoing = new PMatrix2D;
+      var outgoing = new PMatrix2D();
       outgoing.set(this.elements);
-      return outgoing
+      return outgoing;
     },
     reset: function() {
-      this.set([1, 0, 0, 0, 1, 0])
+      this.set([1, 0, 0, 0, 1, 0]);
     },
     array: function array() {
-      return this.elements.slice()
+      return this.elements.slice();
     },
     adobeMatrix: function array() {
-      return [this.elements[0], 
-              this.elements[3],  
-              this.elements[1], 
+      return [this.elements[0],
+              this.elements[3],
+              this.elements[1],
               this.elements[4],
-              this.elements[2], 
+              this.elements[2],
               this.elements[5]];
     },
     translate: function(tx, ty) {
       this.elements[2] = tx * this.elements[0] + ty * this.elements[1] + this.elements[2];
-      this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5]
+      this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5];
     },
     invTranslate: function(tx, ty) {
-      this.translate(-tx, -ty)
+      this.translate(-tx, -ty);
     },
     transpose: function() {},
     mult: function(source, target) {
@@ -2056,27 +2563,27 @@
       if (source instanceof PVector) {
         x = source.x;
         y = source.y;
-        if (!target) target = new PVector
+        if (!target) target = new PVector();
       } else if (source instanceof Array) {
         x = source[0];
         y = source[1];
-        if (!target) target = []
+        if (!target) target = [];
       }
       if (target instanceof Array) {
         target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
-        target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5]
+        target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5];
       } else if (target instanceof PVector) {
         target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
         target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-        target.z = 0
+        target.z = 0;
       }
-      return target
+      return target;
     },
     multX: function(x, y) {
-      return x * this.elements[0] + y * this.elements[1] + this.elements[2]
+      return x * this.elements[0] + y * this.elements[1] + this.elements[2];
     },
     multY: function(x, y) {
-      return x * this.elements[3] + y * this.elements[4] + this.elements[5]
+      return x * this.elements[3] + y * this.elements[4] + this.elements[5];
     },
     &#x2F;*
     &#x2F;&#x2F; BUG, seems to be buggy in processing.js, and i am not clever enough to figure it out
@@ -2087,7 +2594,7 @@
       this.apply(1, 0, 1, 0, Math.tan(angle), 0)
     },*&#x2F;
     determinant: function() {
-      return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3]
+      return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3];
     },
     invert: function() {
       var d = this.determinant();
@@ -2104,9 +2611,9 @@
         this.elements[4] = old00 &#x2F; d;
         this.elements[2] = (old01 * old12 - old11 * old02) &#x2F; d;
         this.elements[5] = (old10 * old02 - old00 * old12) &#x2F; d;
-        return true
+        return true;
       }
-      return false
+      return false;
     },
     scale: function(sx, sy) {
       if (sx &amp;&amp; !sy) sy = sx;
@@ -2114,12 +2621,12 @@
         this.elements[0] *= sx;
         this.elements[1] *= sy;
         this.elements[3] *= sx;
-        this.elements[4] *= sy
+        this.elements[4] *= sy;
       }
     },
     invScale: function(sx, sy) {
       if (sx &amp;&amp; !sy) sy = sx;
-      this.scale(1 &#x2F; sx, 1 &#x2F; sy)
+      this.scale(1 &#x2F; sx, 1 &#x2F; sy);
     },
     apply: function() {
       var source;
@@ -2129,7 +2636,7 @@
       var result = [0, 0, this.elements[2], 0, 0, this.elements[5]];
       var e = 0;
       for (var row = 0; row &lt; 2; row++) for (var col = 0; col &lt; 3; col++, e++) result[e] += this.elements[row * 3 + 0] * source[col + 0] + this.elements[row * 3 + 1] * source[col + 3];
-      this.elements = result.slice()
+      this.elements = result.slice();
     },
     preApply: function() {
       var source;
@@ -2143,7 +2650,7 @@
       result[3] = this.elements[0] * source[3] + this.elements[3] * source[4];
       result[1] = this.elements[1] * source[0] + this.elements[4] * source[1];
       result[4] = this.elements[1] * source[3] + this.elements[4] * source[4];
-      this.elements = result.slice()
+      this.elements = result.slice();
     },
     rotate: function(angle) {
       var c = Math.cos(angle);
@@ -2155,18 +2662,18 @@
       temp1 = this.elements[3];
       temp2 = this.elements[4];
       this.elements[3] = c * temp1 + s * temp2;
-      this.elements[4] = -s * temp1 + c * temp2
+      this.elements[4] = -s * temp1 + c * temp2;
     },
     rotateZ: function(angle) {
-      this.rotate(angle)
+      this.rotate(angle);
     },
     invRotateZ: function(angle) {
-      this.rotateZ(angle - Math.PI)
+      this.rotateZ(angle - Math.PI);
     },
     print: function() {
       var digits = printMatrixHelper(this.elements);
       var output = &quot;&quot; + pub.nfs(this.elements[0], digits, 4) + &quot; &quot; + pub.nfs(this.elements[1], digits, 4) + &quot; &quot; + pub.nfs(this.elements[2], digits, 4) + &quot;\n&quot; + pub.nfs(this.elements[3], digits, 4) + &quot; &quot; + pub.nfs(this.elements[4], digits, 4) + &quot; &quot; + pub.nfs(this.elements[5], digits, 4) + &quot;\n\n&quot;;
-      pub.println(output)
+      pub.println(output);
     }
   };
 
@@ -2215,26 +2722,30 @@
    * Run the sketch! Has to be called in every sketch a the very end of the code.
    *
    * @method go
-   *&#x2F; 
+   *&#x2F;
   pub.go = function() {
     currentDoc();
     runSetup();
-    runDraw();
+    runDrawOnce();
   };
 
   &#x2F;**
    * EXPERIMENTAL!
-   * 
-   * Causes basil to continuously execute the code within draw() when InDesign is idle. 
+   *
+   * Causes basil to continuously execute the code within draw() when InDesign is idle.
    * #targetengine &quot;loop&quot;; must be at the very top in the script file.
    * If noLoop() is called, the code in draw() stops executing.
-   * It is essential to call noLoop() or execute the script lib&#x2F;noLoop.jsx when the script is finished!
-   * The sleep property is the amount of time that elapses before draw() is called again.
-   * 
+   * It is essential to call noLoop() or execute the script lib&#x2F;stop.jsx when the script is finished!
+   * The framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.
+   *
    * @method loop
-   * @param  {Number} sleep The amount of time in milliseconds that elapses before draw() is called again
+   * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
    *&#x2F;
-  pub.loop = function(sleep) {
+  pub.loop = function(framerate) {
+    var sleep = null;
+    if (arguments.length === 0) sleep = Math.round(1000&#x2F;25);
+    else sleep = Math.round(1000&#x2F;framerate);
+
     if ($.engineName !== &#x27;loop&#x27;) {
       error(&#x27;Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
     }
@@ -2244,23 +2755,25 @@
 
     var idleTask = app.idleTasks.add({name: &quot;basil_idle_task&quot;, sleep: sleep});
     idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
-      runDraw();
+      runDrawLoop();
     }, false);
-    alert(&quot;Run the script lib&#x2F;noLoop.jsx to end the draw loop and clean up!&quot;);
+    &#x2F;&#x2F;alert(&quot;Run the script lib&#x2F;stop.jsx to end the draw loop and clean up!&quot;);
+    println(&quot;loop()&quot;);
   };
 
   &#x2F;**
    * EXPERIMENTAL!
-   * 
+   *
    * Stops basil from continuously executing the code within draw().
-   * 
+   *
    * @method noLoop
    *&#x2F;
   pub.noLoop = function() {
     var allIdleTasks = app.idleTasks;
     for (var i = app.idleTasks.length - 1; i &gt;= 0; i--) {
       allIdleTasks[i].remove();
-    };
+    }
+    println(&quot;noLoop()&quot;);
   };
 
 
@@ -2282,16 +2795,24 @@
     app.doScript(function() {
       if (typeof glob.setup === &#x27;function&#x27;) {
         glob.setup();
-      }    
+      }
     }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
   };
 
-  var runDraw = function() {
+  var runDrawOnce = function() {
     app.doScript(function() {
       if (typeof glob.draw === &#x27;function&#x27;) {
         glob.draw();
-      }      
+      }
     }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+  };
+
+  var runDrawLoop = function() {
+    app.doScript(function() {
+      if (typeof glob.draw === &#x27;function&#x27;) {
+        glob.draw();
+      }
+    }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
   };
 
   var welcome = function() {
@@ -2305,7 +2826,7 @@
     if (!currDoc) {
       var doc = null;
       try {
-        doc = app.activeDocument;  
+        doc = app.activeDocument;
       } catch(e) {
         doc = app.documents.add();
       }
@@ -2368,10 +2889,6 @@
     var h = pageBounds[2] - pageBounds[0];
     pub.width = w;
     pub.height = h;
-  };
-
-  var isArray = function(obj) {
-    return Object.prototype.toString.call(obj) === &#x27;[object Array]&#x27;;
   };
 
   var error = function(msg) {

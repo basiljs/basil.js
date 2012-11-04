@@ -42,7 +42,7 @@
 
   // ----------------------------------------
   // constants
-  
+
   pub.VERSION = "0.1";
   pub.PT = "pt";
   pub.PX = "px";
@@ -109,7 +109,9 @@
   // ----------------------------------------
   // global functions
 
-  //https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter
+
+  /* todo */
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter
   if (!Array.prototype.filter) {
     Array.prototype.filter = function(fun) {
       if (this === null) throw new TypeError();
@@ -128,6 +130,13 @@
     };
   }
 
+  /**
+  * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
+  *
+  * @method forEach
+  * @param {Array} collection The array to be processed.
+  * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+  */
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i < len; i++) {
@@ -242,7 +251,7 @@
   };
 
   /**
-   * Checks whether a var is a Array, returns true if this is the case
+   * Checks whether a var is an Array, returns true if this is the case
    *
    * @method isArray
    * @param  {Object|String|Number}  obj The object to check
@@ -504,6 +513,19 @@
   };
 
   // -- Conversion --
+  
+  /** 
+   * Converts a byte, char, int, or color to a String containing the
+   * equivalent binary notation. For example color(0, 102, 153, 255) 
+   * will convert to the String "11111111000000000110011010011001". This 
+   * function can help make your geeky debugging sessions much happier.
+   *
+   * @method binary
+   * @param {Number} num value to convert
+   * @param {Number} [numBits] number of digits to return
+   * @return {String} A formatted string
+   */
+   // From: http://processingjs.org/reference/binary_/
   pub.binary = function(num, numBits) {
     var bit;
     if (numBits > 0) bit = numBits;
@@ -518,6 +540,17 @@
     while (bit > 0) result += num >>> --bit & 1 ? "1" : "0";
     return result;
   };
+
+  /** 
+   * Converts a String representation of a binary number to its 
+   * equivalent integer value. For example, unbinary("00001000") will 
+   * return 8.
+   *
+   * @method unbinary
+   * @param {String} binaryString value to convert
+   * @return {Number} The integer representation
+   */
+   // From: http://processingjs.org/reference/unbinary_/
   pub.unbinary = function(binaryString) {
     var i = binaryString.length - 1,
       mask = 1,
@@ -531,6 +564,7 @@
     return result;
   };
 
+
   var decimalToHex = function(d, padding) {
     padding = padding === undef || padding === null ? padding = 8 : padding;
     if (d < 0) d = 4294967295 + d + 1;
@@ -539,17 +573,33 @@
     if (hex.length >= padding) hex = hex.substring(hex.length - padding, hex.length);
     return hex;
   };
+
+  /**
+   * Convert a number to a hex representation. 
+   *
+   * @method hex
+   * @param {Number} value The number to convert
+   * @param {Number} [len] The length of the hex number to be created, default: 8
+   * @return {String} The hex representation as a string
+   */
   pub.hex = function(value, len) {
-    if (arguments.length === 1) if (value instanceof Char) len = 4;
-    else len = 8;
+    if (arguments.length === 1) len = 8;
     return decimalToHex(value, len);
   };
 
-  function unhexScalar(hex) {
+  var unhexScalar = function(hex) {
     var value = parseInt("0x" + hex, 16);
     if (value > 2147483647) value -= 4294967296;
     return value;
   }
+
+  /**
+   * Convert a hex representation to a number.
+   *
+   * @method unhex
+   * @param {String} hex The hex representation
+   * @return {Number} The number
+   */
   pub.unhex = function(hex) {
     if (hex instanceof Array) {
       var arr = [];
@@ -561,18 +611,90 @@
 
 
   // -- String Functions --
-  pub.join = function(array, seperator) {
-    return array.join(seperator);
+
+  /**
+   * Combines an array of Strings into one String, each separated by 
+   * the character(s) used for the separator parameter. To join arrays 
+   * of ints or floats, it's necessary to first convert them to strings 
+   * using nf() or nfs().
+   *
+   * @method join
+   * @param {Array} array A string array
+   * @param {String} separator The separator to be inserted
+   * @return {String} The joined string
+   */
+   // http://processingjs.org/reference/join_/
+  pub.join = function(array, separator) {
+    return array.join(separator);
   };
 
-  pub.split = function(str, delim) {
-    return str.split(delim);
+  /**
+   * The split() function breaks a string into pieces using a
+   * character or string as the divider. The delim parameter specifies the
+   * character or characters that mark the boundaries between each piece. A
+   * String[] array is returned that contains each of the pieces.
+   *
+   * If the result is a set of numbers, you can convert the String[] array
+   * to to a float[] or int[] array using the datatype conversion functions
+   * int() and float() (see example above).
+   *
+   * The splitTokens() function works in a similar fashion, except that it
+   * splits using a range of characters instead of a specific character or
+   * sequence.    
+   *  
+   * @method split
+   * @param {String} str the String to be split
+   * @param {String} [delim] The string used to separate the data
+   * @return {Array} Array of strings
+   */
+   // http://processingjs.org/reference/split_/
+  pub.split = function(str, delim) {     
+    return str.split(delim);   
   };
 
+  /**
+   * The splitTokens() function splits a String at one or many character 
+   * "tokens." The tokens parameter specifies the character or characters 
+   * to be used as a boundary.
+   *
+   * If no tokens character is specified, any whitespace character is used 
+   * to split. Whitespace characters include tab (\t), line feed (\n), 
+   * carriage return (\r), form feed (\f), and space. To convert a String 
+   * to an array of integers or floats, use the datatype conversion functions 
+   * int() and float() to convert the array of Strings.
+   *  
+   * @method splitTokens
+   * @param {String} str the String to be split
+   * @param {String} [tokens] list of individual characters that will be used as separators
+   * @return {Array} Array of strings
+   */
+   // From: http://processingjs.org/reference/splitTokens_/
+  pub.splitTokens = function(str, tokens) {
+    if (arguments.length === 1) tokens = "\n\t\r\u000c ";
+    tokens = "[" + tokens + "]";
+    var ary = [];
+    var index = 0;
+    var pos = str.search(tokens);
+    while (pos >= 0) {
+      if (pos === 0) str = str.substring(1);
+      else {
+        ary[index] = str.substring(0, pos);
+        index++;
+        str = str.substring(pos);
+      }
+      pos = str.search(tokens);
+    }
+    if (str.length > 0) ary[index] = str;
+    if (ary.length === 0) ary = undef;
+    return ary;
+  };  
+
+  /* todo */
   pub.match = function(str, regexp) {
     return str.match(regexp);
   };
 
+  /* todo */
   pub.matchAll = function(aString, aRegExp) {
     var results = [],
       latest;
@@ -628,39 +750,94 @@
     }
     return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group);
   }
+
+  /**    
+   * Utility function for formatting numbers into strings. There
+   * are two versions, one for formatting floats and one for formatting
+   * ints. The values for the digits, left, and right parameters should
+   * always be positive integers.
+
+   * As shown in the above example, nf() is used to add zeros to the
+   * left and/or right of a number. This is typically for aligning a list
+   * of numbers. To remove digits from a floating-point number, use the
+   * int(), ceil(), floor(), or round() functions.    
+   * 
+   * @method nf
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nf_/
   pub.nf = function(value, leftDigits, rightDigits) {
     return nfCore(value, "", "-", leftDigits, rightDigits);
   };
+
+  /**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but leaves a blank space in front of positive numbers so they align 
+   * with negative numbers in spite of the minus symbol. There are two 
+   * versions, one for formatting floats and one for formatting ints. The 
+   * values for the digits, left, and right parameters should always be 
+   * positive integers.   
+   * 
+   * @method nfs
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nfs_/
   pub.nfs = function(value, leftDigits, rightDigits) {
     return nfCore(value, " ", "-", leftDigits, rightDigits);
   };
+  
+  /**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but puts a "+" in front of positive numbers and a "-" in front of 
+   * negative numbers. There are two versions, one for formatting floats 
+   * and one for formatting ints. The values for the digits, left, and right 
+   * parameters should always be positive integers.      
+   * 
+   * @method nfp
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nfp_/
   pub.nfp = function(value, leftDigits, rightDigits) {
     return nfCore(value, "+", "-", leftDigits, rightDigits);
   };
+
+  /**    
+   * Utility function for formatting numbers into strings and placing 
+   * appropriate commas to mark units of 1000. There are two versions, one 
+   * for formatting ints and one for formatting an array of ints. The value 
+   * for the digits parameter should always be a positive integer.     
+   * 
+   * @method nfc
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nfc_/
   pub.nfc = function(value, leftDigits, rightDigits) {
     return nfCore(value, "", "-", leftDigits, rightDigits, ",");
   };
 
-  pub.splitTokens = function(str, tokens) {
-    if (arguments.length === 1) tokens = "\n\t\r\u000c ";
-    tokens = "[" + tokens + "]";
-    var ary = [];
-    var index = 0;
-    var pos = str.search(tokens);
-    while (pos >= 0) {
-      if (pos === 0) str = str.substring(1);
-      else {
-        ary[index] = str.substring(0, pos);
-        index++;
-        str = str.substring(pos);
-      }
-      pos = str.search(tokens);
-    }
-    if (str.length > 0) ary[index] = str;
-    if (ary.length === 0) ary = undef;
-    return ary;
-  };
 
+  /**    
+   * Removes whitespace characters from the beginning and end of a String. 
+   * In addition to standard whitespace characters such as space, carriage 
+   * return, and tab, this function also removes the Unicode "nbsp" character.    
+   * 
+   * @method trim
+   * @param {String|Array} str A string or an array of strings to be trimmed
+   * @return {String|Array} Returns the input in a trimmed way
+   */
+   // From: http://processingjs.org/reference/trim_/
   pub.trim = function(str) {
     if (str instanceof Array) {
       var arr = [];
@@ -883,6 +1060,7 @@
 
   // -- Attributes --
 
+  /* todo */
   pub.rectMode = function (mode) {
     if (arguments.length === 0) return currRectMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
@@ -893,6 +1071,7 @@
     }
   };
 
+  /* todo */
   pub.ellipseMode = function (mode) {
     if (arguments.length === 0) return currEllipseMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
@@ -903,6 +1082,7 @@
     }
   };
 
+  /* todo */
   pub.strokeWeight = function (weight) {
     if (typeof weight === 'string' || typeof weight === 'number') {
       currStrokeWeight = weight;
@@ -963,6 +1143,7 @@
     }
   };
 
+  /* todo */
   pub.noFill = function () {
     currFillColor = noneSwatchColor;
   };
@@ -996,6 +1177,7 @@
     }
   };
 
+  /* todo */
   pub.noStroke = function () {
     currStrokeColor = noneSwatchColor;
   };
@@ -1528,6 +1710,7 @@
     }
   };
 
+  /* todo */
   pub.imageMode = function(mode) {
     if (arguments.length === 0) return currImageMode;
 
@@ -1581,6 +1764,7 @@
   // ----------------------------------------
   // Math
   
+  /* todo */
   var PVector = pub.PVector = function() {
     function PVector(x, y, z) {
       this.x = x || 0;
@@ -1711,14 +1895,18 @@
   
 
   // -- Calculation --
+  /* todo */
   pub.abs = Math.abs;
 
+  /* todo */
   pub.ceil = Math.ceil;
 
+  /* todo */
   pub.constrain = function(aNumber, aMin, aMax) {
     return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
   };
 
+  /* todo */
   pub.dist = function() {
     var dx, dy, dz;
     if (arguments.length === 4) {
@@ -1728,25 +1916,26 @@
     }
   };
 
+  /* todo */
   pub.exp = Math.exp;
-
+  /* todo */
   pub.floor = Math.floor;
-
+  /* todo */
   pub.lerp = function(value1, value2, amt) {
     return (value2 - value1) * amt + value1;
   };
-
+  /* todo */
   pub.log = Math.log;
-
+  /* todo */
   pub.mag = function(a, b, c) {
     if (c) return Math.sqrt(a * a + b * b + c * c);
     return Math.sqrt(a * a + b * b);
   };
-
+  /* todo */
   pub.map = function(value, istart, istop, ostart, ostop) {
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
-
+  /* todo */
   pub.max = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1756,7 +1945,7 @@
     for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
     return max;
   };
-
+  /* todo */
   pub.min = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1766,40 +1955,43 @@
     for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
     return min;
   };
-
+  /* todo */
   pub.norm = function(aNumber, low, high) {
     return (aNumber - low) / (high - low);
   };
-
+  /* todo */
   pub.pow = Math.pow;
-
+  /* todo */
   pub.round = Math.round;
-
+  /* todo */
   pub.sq = function(aNumber) {
     return aNumber * aNumber;
   };
 
   // -- Trigonometry --
+  /* todo */
   pub.sqrt = Math.sqrt;
   pub.acos = Math.acos;
   pub.asin = Math.asin;
   pub.atan = Math.atan;
   pub.atan2 = Math.atan2;
   pub.cos = Math.cos;
-
+  /* todo */
   pub.degrees = function(aAngle) {
     return aAngle * 180 / Math.PI;
   };
-
+  /* todo */
   pub.radians = function(aAngle) {
     return aAngle / 180 * Math.PI;
   };
-
+  /* todo */
   pub.sin = Math.sin;
   pub.tan = Math.tan;
 
   // -- Random --
+  
   var currentRandom = Math.random;
+  /* todo */
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
     if (arguments.length === 1) return currentRandom() * arguments[0];
@@ -1826,11 +2018,11 @@
     var now = new Date();
     return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295);
   };
-
+  /* todo */
   pub.randomSeed = function(seed) {
     currentRandom = (new Marsaglia(seed)).nextDouble;
   };
-
+  /* todo */
   pub.Random = function(seed) {
     var haveNextNextGaussian = false,
       nextNextGaussian, random;
@@ -1853,6 +2045,7 @@
     random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble;
   };
 
+  /* todo */
   function PerlinNoise(seed) {
     var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
     var i, j;
@@ -1864,23 +2057,26 @@
       perm[i] = t;
     }
     for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
-
+    
     function grad3d(i, x, y, z) {
       var h = i & 15;
       var u = h < 8 ? x : y,
       v = h < 4 ? y : h === 12 || h === 14 ? x : z;
       return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
     }
+    
     function grad2d(i, x, y) {
       var v = (i & 1) === 0 ? x : y;
       return (i & 2) === 0 ? -v : v;
     }
+    
     function grad1d(i, x) {
       return (i & 1) === 0 ? -x : x;
     }
     function lerp(t, a, b) {
       return a + t * (b - a);
     }
+    /* noise3d */
     this.noise3d = function(x, y, z) {
       var X = Math.floor(x) & 255,
         Y = Math.floor(y) & 255,
@@ -1899,6 +2095,7 @@
         p11 = perm[p1 + 1] + Z;
       return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
     };
+    /* todo */
     this.noise2d = function(x, y) {
       var X = Math.floor(x) & 255,
         Y = Math.floor(y) & 255;
@@ -1910,6 +2107,7 @@
         p1 = perm[X + 1] + Y;
       return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
     };
+    /* todo */
     this.noise1d = function(x) {
       var X = Math.floor(x) & 255;
       x -= Math.floor(x);
@@ -1923,6 +2121,7 @@
     fallout: 0.5,
     seed: undef
   };
+  /* todo */
   pub.noise = function(x, y, z) {
     if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
     var generator = noiseProfile.generator;
@@ -1946,10 +2145,12 @@
     }
     return sum;
   };
+  /* todo */
   pub.noiseDetail = function(octaves, fallout) {
     noiseProfile.octaves = octaves;
     if (fallout !== undef) noiseProfile.fallout = fallout;
   };
+  /* todo */
   pub.noiseSeed = function(seed) {
     noiseProfile.seed = seed;
     noiseProfile.generator = undef;
@@ -1958,25 +2159,31 @@
 
   // ----------------------------------------
   // Input
-  
+  /* todo */
   pub.year = function() {
     return (new Date()).getFullYear()();
   };
+  /* todo */
   pub.month = function() {
     return (new Date()).getMonth() + 1;
   };
+  /* todo */
   pub.day = function() {
     return (new Date()).getDate();
   };
+  /* todo */
   pub.hour = function() {
     return (new Date()).getHours();
   };
+  /* todo */
   pub.minute = function() {
     return (new Date()).getMinutes();
   };
+  /* todo */
   pub.second = function() {
     return (new Date()).getSeconds();
   };
+  /* todo */
   pub.millis = function() {
     return Date.now() - start;
   };
@@ -2036,10 +2243,12 @@
   // ----------------------------------------
   // Output
   
+  /* todo */
   var println = pub.println = function(msg) {
     $.writeln(msg);
   };
 
+  /* todo */
   pub.print = function(msg) {
     $.write(msg);
   };
