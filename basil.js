@@ -43,19 +43,75 @@
   // ----------------------------------------
   // constants
   
+  /**
+   * The basil version
+   * @property VERSION {String}
+   */
   pub.VERSION = "0.1";
+  /**
+   * Points
+   * @property PT {String}
+   */
   pub.PT = "pt";
+  /**
+   * Pixels
+   * @property PX {String}
+   */
   pub.PX = "px";
+  /**
+   * Centimeter
+   * @property CM {String}
+   */
   pub.CM = "cm";
+  /**
+   * Millimeter
+   * @property MM {String}
+   */
   pub.MM = "mm";
+  /**
+   * Inch
+   * @property IN {String}
+   */
   pub.IN = "inch";
+  /**
+   * Corner, used for drawing modes.
+   * @property CORNER {String}
+   */
   pub.CORNER = "corner";
+  /**
+   * Corners, used for drawing modes.
+   * @property CORNERS {String}
+   */
   pub.CORNERS = "corners";
+  /**
+   * Center, used for drawing modes.
+   * @property CENTER {String}
+   */
   pub.CENTER = "center";
+  /**
+   * Radius, used for drawing modes.
+   * @property RADIUS {String}
+   */
   pub.RADIUS = "radius";
+  /**
+   * Two Pi
+   * @property TWO_PI {Number}
+   */
   pub.TWO_PI = Math.PI*2;
+  /**
+   * Pi
+   * @property PI {Number}
+   */
   pub.PI = Math.PI;
+  /**
+   * Half Pi
+   * @property HALF_PI {Number}
+   */
   pub.HALF_PI = Math.PI/2;
+  /**
+   * Quarter Pi
+   * @property QUARTER_PI {Number}
+   */
   pub.QUARTER_PI = Math.PI/4;
   
   var ERROR_PREFIX = "\n\n### Basil Error -> ",
@@ -109,7 +165,9 @@
   // ----------------------------------------
   // global functions
 
-  //https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter
+
+  /* todo */
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter
   if (!Array.prototype.filter) {
     Array.prototype.filter = function(fun) {
       if (this === null) throw new TypeError();
@@ -128,6 +186,13 @@
     };
   }
 
+  /**
+  * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
+  *
+  * @method forEach
+  * @param {Array} collection The array to be processed.
+  * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+  */
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i < len; i++) {
@@ -244,7 +309,7 @@
   };
 
   /**
-   * Checks whether a var is a Array, returns true if this is the case
+   * Checks whether a var is an Array, returns true if this is the case
    *
    * @method isArray
    * @param  {Object|String|Number}  obj The object to check
@@ -506,6 +571,19 @@
   };
 
   // -- Conversion --
+  
+  /** 
+   * Converts a byte, char, int, or color to a String containing the
+   * equivalent binary notation. For example color(0, 102, 153, 255) 
+   * will convert to the String "11111111000000000110011010011001". This 
+   * function can help make your geeky debugging sessions much happier.
+   *
+   * @method binary
+   * @param {Number} num value to convert
+   * @param {Number} [numBits] number of digits to return
+   * @return {String} A formatted string
+   */
+   // From: http://processingjs.org/reference/binary_/
   pub.binary = function(num, numBits) {
     var bit;
     if (numBits > 0) bit = numBits;
@@ -520,6 +598,17 @@
     while (bit > 0) result += num >>> --bit & 1 ? "1" : "0";
     return result;
   };
+
+  /** 
+   * Converts a String representation of a binary number to its 
+   * equivalent integer value. For example, unbinary("00001000") will 
+   * return 8.
+   *
+   * @method unbinary
+   * @param {String} binaryString value to convert
+   * @return {Number} The integer representation
+   */
+   // From: http://processingjs.org/reference/unbinary_/
   pub.unbinary = function(binaryString) {
     var i = binaryString.length - 1,
       mask = 1,
@@ -533,6 +622,7 @@
     return result;
   };
 
+
   var decimalToHex = function(d, padding) {
     padding = padding === undef || padding === null ? padding = 8 : padding;
     if (d < 0) d = 4294967295 + d + 1;
@@ -541,17 +631,33 @@
     if (hex.length >= padding) hex = hex.substring(hex.length - padding, hex.length);
     return hex;
   };
+
+  /**
+   * Convert a number to a hex representation. 
+   *
+   * @method hex
+   * @param {Number} value The number to convert
+   * @param {Number} [len] The length of the hex number to be created, default: 8
+   * @return {String} The hex representation as a string
+   */
   pub.hex = function(value, len) {
-    if (arguments.length === 1) if (value instanceof Char) len = 4;
-    else len = 8;
+    if (arguments.length === 1) len = 8;
     return decimalToHex(value, len);
   };
 
-  function unhexScalar(hex) {
+  var unhexScalar = function(hex) {
     var value = parseInt("0x" + hex, 16);
     if (value > 2147483647) value -= 4294967296;
     return value;
   }
+
+  /**
+   * Convert a hex representation to a number.
+   *
+   * @method unhex
+   * @param {String} hex The hex representation
+   * @return {Number} The number
+   */
   pub.unhex = function(hex) {
     if (hex instanceof Array) {
       var arr = [];
@@ -563,18 +669,90 @@
 
 
   // -- String Functions --
-  pub.join = function(array, seperator) {
-    return array.join(seperator);
+
+  /**
+   * Combines an array of Strings into one String, each separated by 
+   * the character(s) used for the separator parameter. To join arrays 
+   * of ints or floats, it's necessary to first convert them to strings 
+   * using nf() or nfs().
+   *
+   * @method join
+   * @param {Array} array A string array
+   * @param {String} separator The separator to be inserted
+   * @return {String} The joined string
+   */
+   // http://processingjs.org/reference/join_/
+  pub.join = function(array, separator) {
+    return array.join(separator);
   };
 
-  pub.split = function(str, delim) {
-    return str.split(delim);
+  /**
+   * The split() function breaks a string into pieces using a
+   * character or string as the divider. The delim parameter specifies the
+   * character or characters that mark the boundaries between each piece. A
+   * String[] array is returned that contains each of the pieces.
+   *
+   * If the result is a set of numbers, you can convert the String[] array
+   * to to a float[] or int[] array using the datatype conversion functions
+   * int() and float() (see example above).
+   *
+   * The splitTokens() function works in a similar fashion, except that it
+   * splits using a range of characters instead of a specific character or
+   * sequence.    
+   *  
+   * @method split
+   * @param {String} str the String to be split
+   * @param {String} [delim] The string used to separate the data
+   * @return {Array} Array of strings
+   */
+   // http://processingjs.org/reference/split_/
+  pub.split = function(str, delim) {     
+    return str.split(delim);   
   };
 
+  /**
+   * The splitTokens() function splits a String at one or many character 
+   * "tokens." The tokens parameter specifies the character or characters 
+   * to be used as a boundary.
+   *
+   * If no tokens character is specified, any whitespace character is used 
+   * to split. Whitespace characters include tab (\t), line feed (\n), 
+   * carriage return (\r), form feed (\f), and space. To convert a String 
+   * to an array of integers or floats, use the datatype conversion functions 
+   * int() and float() to convert the array of Strings.
+   *  
+   * @method splitTokens
+   * @param {String} str the String to be split
+   * @param {String} [tokens] list of individual characters that will be used as separators
+   * @return {Array} Array of strings
+   */
+   // From: http://processingjs.org/reference/splitTokens_/
+  pub.splitTokens = function(str, tokens) {
+    if (arguments.length === 1) tokens = "\n\t\r\u000c ";
+    tokens = "[" + tokens + "]";
+    var ary = [];
+    var index = 0;
+    var pos = str.search(tokens);
+    while (pos >= 0) {
+      if (pos === 0) str = str.substring(1);
+      else {
+        ary[index] = str.substring(0, pos);
+        index++;
+        str = str.substring(pos);
+      }
+      pos = str.search(tokens);
+    }
+    if (str.length > 0) ary[index] = str;
+    if (ary.length === 0) ary = undef;
+    return ary;
+  };  
+
+  /* todo */
   pub.match = function(str, regexp) {
     return str.match(regexp);
   };
 
+  /* todo */
   pub.matchAll = function(aString, aRegExp) {
     var results = [],
       latest;
@@ -630,39 +808,94 @@
     }
     return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group);
   }
+
+  /**    
+   * Utility function for formatting numbers into strings. There
+   * are two versions, one for formatting floats and one for formatting
+   * ints. The values for the digits, left, and right parameters should
+   * always be positive integers.
+
+   * As shown in the above example, nf() is used to add zeros to the
+   * left and/or right of a number. This is typically for aligning a list
+   * of numbers. To remove digits from a floating-point number, use the
+   * int(), ceil(), floor(), or round() functions.    
+   * 
+   * @method nf
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nf_/
   pub.nf = function(value, leftDigits, rightDigits) {
     return nfCore(value, "", "-", leftDigits, rightDigits);
   };
+
+  /**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but leaves a blank space in front of positive numbers so they align 
+   * with negative numbers in spite of the minus symbol. There are two 
+   * versions, one for formatting floats and one for formatting ints. The 
+   * values for the digits, left, and right parameters should always be 
+   * positive integers.   
+   * 
+   * @method nfs
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nfs_/
   pub.nfs = function(value, leftDigits, rightDigits) {
     return nfCore(value, " ", "-", leftDigits, rightDigits);
   };
+  
+  /**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but puts a "+" in front of positive numbers and a "-" in front of 
+   * negative numbers. There are two versions, one for formatting floats 
+   * and one for formatting ints. The values for the digits, left, and right 
+   * parameters should always be positive integers.      
+   * 
+   * @method nfp
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nfp_/
   pub.nfp = function(value, leftDigits, rightDigits) {
     return nfCore(value, "+", "-", leftDigits, rightDigits);
   };
+
+  /**    
+   * Utility function for formatting numbers into strings and placing 
+   * appropriate commas to mark units of 1000. There are two versions, one 
+   * for formatting ints and one for formatting an array of ints. The value 
+   * for the digits parameter should always be a positive integer.     
+   * 
+   * @method nfc
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   */
+   // From: http://processingjs.org/reference/nfc_/
   pub.nfc = function(value, leftDigits, rightDigits) {
     return nfCore(value, "", "-", leftDigits, rightDigits, ",");
   };
 
-  pub.splitTokens = function(str, tokens) {
-    if (arguments.length === 1) tokens = "\n\t\r\u000c ";
-    tokens = "[" + tokens + "]";
-    var ary = [];
-    var index = 0;
-    var pos = str.search(tokens);
-    while (pos >= 0) {
-      if (pos === 0) str = str.substring(1);
-      else {
-        ary[index] = str.substring(0, pos);
-        index++;
-        str = str.substring(pos);
-      }
-      pos = str.search(tokens);
-    }
-    if (str.length > 0) ary[index] = str;
-    if (ary.length === 0) ary = undef;
-    return ary;
-  };
 
+  /**    
+   * Removes whitespace characters from the beginning and end of a String. 
+   * In addition to standard whitespace characters such as space, carriage 
+   * return, and tab, this function also removes the Unicode "nbsp" character.    
+   * 
+   * @method trim
+   * @param {String|Array} str A string or an array of strings to be trimmed
+   * @return {String|Array} Returns the input in a trimmed way
+   */
+   // From: http://processingjs.org/reference/trim_/
   pub.trim = function(str) {
     if (str instanceof Array) {
       var arr = [];
@@ -885,6 +1118,24 @@
 
   // -- Attributes --
 
+  /**
+   * Modifies the location from which rectangles draw. The default mode is 
+   * rectMode(CORNER), which specifies the location to be the upper left 
+   * corner of the shape and uses the third and fourth parameters of rect() 
+   * to specify the width and height. The syntax rectMode(CORNERS) uses the 
+   * first and second parameters of rect() to set the location of one corner 
+   * and uses the third and fourth parameters to set the opposite corner. 
+   * The syntax rectMode(CENTER) draws the image from its center point and 
+   * uses the third and forth parameters of rect() to specify the image's 
+   * width and height. The syntax rectMode(RADIUS) draws the image from its 
+   * center point and uses the third and forth parameters of rect() to specify 
+   * half of the image's width and height. The parameter must be written in 
+   * "ALL CAPS".
+   *
+   * @method rectMode
+   * @param {String} mode Either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS
+   * 
+   */
   pub.rectMode = function (mode) {
     if (arguments.length === 0) return currRectMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
@@ -895,6 +1146,19 @@
     }
   };
 
+  /**
+   * The origin of the ellipse is modified by the ellipseMode() function. 
+   * The default configuration is ellipseMode(CENTER), which specifies the 
+   * location of the ellipse as the center of the shape. The RADIUS mode is 
+   * the same, but the width and height parameters to ellipse() specify the 
+   * radius of the ellipse, rather than the diameter. The CORNER mode draws 
+   * the shape from the upper-left corner of its bounding box. The CORNERS 
+   * mode uses the four parameters to ellipse() to set two opposing corners 
+   * of the ellipse's bounding box. The parameter must be written in "ALL CAPS".
+   *
+   * @method ellipseMode
+   * @param {String} mode Either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS
+   */ 
   pub.ellipseMode = function (mode) {
     if (arguments.length === 0) return currEllipseMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
@@ -905,6 +1169,14 @@
     }
   };
 
+  
+  /**
+   * Sets the width of the stroke used for lines and the border 
+   * around shapes. 
+   * 
+   * @method strokeWeight
+   * @param {Number} weight The width of the stroke
+   */
   pub.strokeWeight = function (weight) {
     if (typeof weight === 'string' || typeof weight === 'number') {
       currStrokeWeight = weight;
@@ -965,6 +1237,12 @@
     }
   };
 
+  /**
+   * Disables filling geometry. If both noStroke() and noFill() are called, 
+   * newly drawn shapes will be invisible.
+   *
+   * @method noFill
+   */
   pub.noFill = function () {
     currFillColor = noneSwatchColor;
   };
@@ -998,6 +1276,12 @@
     }
   };
 
+  /**
+   * Disables drawing the stroke (outline). If both noStroke() and noFill() 
+   * are called, nothing will be drawn to the screen.
+   * 
+   * @method noStroke
+   */
   pub.noStroke = function () {
     currStrokeColor = noneSwatchColor;
   };
@@ -1530,6 +1814,14 @@
     }
   };
 
+  /**
+   * Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.
+   * If no parameter is passed the currently set mode is returned as String.
+   *
+   * @method imageMode
+   * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER
+   * @return {String} The current mode
+   */
   pub.imageMode = function(mode) {
     if (arguments.length === 0) return currImageMode;
 
@@ -1583,25 +1875,87 @@
   // ----------------------------------------
   // Math
   
-  var PVector = pub.PVector = function() {
-    function PVector(x, y, z) {
+  /**
+   * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the PVector class.
+   *
+   * @class Vector
+   */
+  var Vector = pub.Vector = function() {
+
+    /**
+     * Constructor of Vector, can be two- or three-dimensional.
+     * @constructor
+     * @method Vector
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} [z]
+     */
+    function Vector(x, y, z) {
       this.x = x || 0;
       this.y = y || 0;
       this.z = z || 0;
     }
-    PVector.dist = function(v1, v2) {
+    /**
+     * Calculates the Euclidean distance between two points (considering a point as a vector object).
+     * Is meant to be called "static" i.e. Vector.dist(v1, v2);
+     * @method dist
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The distance
+     */
+    Vector.dist = function(v1, v2) {
       return v1.dist(v2);
     };
-    PVector.dot = function(v1, v2) {
+
+    /**
+     * Calculates the dot product of two vectors.
+     * Is meant to be called "static" i.e. Vector.dot(v1, v2);
+     * @method dot
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The dot product
+     */
+    Vector.dot = function(v1, v2) {
       return v1.dot(v2);
     };
-    PVector.cross = function(v1, v2) {
+
+    /**
+     * Calculates the cross product of two vectors.
+     * Is meant to be called "static" i.e. Vector.cross(v1, v2);
+     * @method cross
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The cross product
+     */
+    Vector.cross = function(v1, v2) {
       return v1.cross(v2);
     };
-    PVector.angleBetween = function(v1, v2) {
+
+    /**
+     * Calculates the angle between two vectors.
+     * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
+     * @method angleBetween
+     * @static
+     * @param {Vector} v1 The first vector
+     * @param {Vector} v2 The second vector
+     * @return {Number} The angle
+     */
+    Vector.angleBetween = function(v1, v2) {
       return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
     };
-    PVector.prototype = {
+
+    Vector.prototype = {
+
+      /**
+       * Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.
+       * @method set
+       * @param {Number|Array|Vector} v Either a vector, array or x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       set: function(v, y, z) {
         if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
         else {
@@ -1610,15 +1964,32 @@
           this.z = z;
         }
       },
+      /**
+       * Gets a copy of the vector, returns a Vector object.
+       * @method get
+       * @return {Vector} A copy of the vector
+       */
       get: function() {
-        return new PVector(this.x, this.y, this.z);
+        return new Vector(this.x, this.y, this.z);
       },
+      /**
+       * Calculates the magnitude (length) of the vector and returns the result as a float
+       * @method mag
+       * @return {Number} The length
+       */
       mag: function() {
         var x = this.x,
           y = this.y,
           z = this.z;
         return Math.sqrt(x * x + y * y + z * z);
       },
+      /**
+       * Adds x, y, and z components to a vector, adds one vector to another.
+       * @method add
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       add: function(v, y, z) {
         if (arguments.length === 1) {
           this.x += v.x;
@@ -1630,6 +2001,13 @@
           this.z += z;
         }
       },
+      /**
+       * Substract x, y, and z components or a full vector from this vector
+       * @method sub
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       sub: function(v, y, z) {
         if (arguments.length === 1) {
           this.x -= v.x;
@@ -1641,6 +2019,13 @@
           this.z -= z;
         }
       },
+      /**
+       * Multiplies this vector with x, y, and z components or another vector.
+       * @method mult
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       mult: function(v) {
         if (typeof v === "number") {
           this.x *= v;
@@ -1652,6 +2037,13 @@
           this.z *= v.z;
         }
       },
+      /**
+       * Divides this vector through x, y, and z components or another vector.
+       * @method div
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       */
       div: function(v) {
         if (typeof v === "number") {
           this.x /= v;
@@ -1663,64 +2055,118 @@
           this.z /= v.z;
         }
       },
+      /**
+       * Calculates the distance from this vector to another as x, y, and z components or full vector.
+       * @method dist
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       * @return {Number} The distance
+       */
       dist: function(v) {
         var dx = this.x - v.x,
           dy = this.y - v.y,
           dz = this.z - v.z;
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
       },
+      /**
+       * Calculates the dot product from this vector to another as x, y, and z components or full vector.
+       * @method dot
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       * @return {Number} The dot product
+       */
       dot: function(v, y, z) {
         if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
         return this.x * v + this.y * y + this.z * z;
       },
+      /**
+       * Calculates the cross product from this vector to another as x, y, and z components or full vector.
+       * @method cross
+       * @param {Vector|Number} v Either a full vector or an x component
+       * @param {Number} [y] The y component
+       * @param {Number} [z] The z component
+       * @return {Number} The cross product
+       */
       cross: function(v) {
         var x = this.x,
           y = this.y,
           z = this.z;
-        return new PVector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
+        return new Vector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
       },
+      /**
+       * Normalizes the length of this vector to 1.
+       * @method normalize
+       */
       normalize: function() {
         var m = this.mag();
         if (m > 0) this.div(m);
       },
+      /**
+       * Normalizes the length of this vector to the given parameter.
+       * @method limit
+       * @param {Number} high The value to scale to.
+       */
       limit: function(high) {
         if (this.mag() > high) {
           this.normalize();
           this.mult(high);
         }
       },
+      /**
+       * The 2D orientation (heading) of this vector in radian.
+       * @method heading2D
+       * @return {Number} A radian angle value
+       */
       heading2D: function() {
         return -Math.atan2(-this.y, this.x);
       },
+      /**
+       * Returns data about this vector as a string.
+       * @method toString
+       * @return {String} The x, y and z components as a string.
+       */
       toString: function() {
         return "[" + this.x + ", " + this.y + ", " + this.z + "]";
       },
+      /** 
+       * Returns this vector as an array [x,y,z].
+       * @method array
+       * @return {Array} [x,y,z]
+       */
       array: function() {
         return [this.x, this.y, this.z];
       }
     };
 
-    function createPVectorMethod(method) {
+    function createVectorMethod(method) {
       return function(v1, v2) {
         var v = v1.get();
         v[method](v2);
         return v;
       };
     }
-    for (var method in PVector.prototype) if (PVector.prototype.hasOwnProperty(method) && !PVector.hasOwnProperty(method)) PVector[method] = createPVectorMethod(method);
-    return PVector;
+    for (var method in Vector.prototype) if (Vector.prototype.hasOwnProperty(method) && !Vector.hasOwnProperty(method)) Vector[method] = createVectorMethod(method);
+    return Vector;
   }();
   
 
-  // -- Calculation --
+  // -- Calculation --  
+  /**
+   * @class b
+   */
   pub.abs = Math.abs;
 
+  /* todo */
   pub.ceil = Math.ceil;
 
+  /* todo */
   pub.constrain = function(aNumber, aMin, aMax) {
     return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
   };
 
+  /* todo */
   pub.dist = function() {
     var dx, dy, dz;
     if (arguments.length === 4) {
@@ -1730,25 +2176,26 @@
     }
   };
 
+  /* todo */
   pub.exp = Math.exp;
-
+  /* todo */
   pub.floor = Math.floor;
-
+  /* todo */
   pub.lerp = function(value1, value2, amt) {
     return (value2 - value1) * amt + value1;
   };
-
+  /* todo */
   pub.log = Math.log;
-
+  /* todo */
   pub.mag = function(a, b, c) {
     if (c) return Math.sqrt(a * a + b * b + c * c);
     return Math.sqrt(a * a + b * b);
   };
-
+  /* todo */
   pub.map = function(value, istart, istop, ostart, ostop) {
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
-
+  /* todo */
   pub.max = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1758,7 +2205,7 @@
     for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
     return max;
   };
-
+  /* todo */
   pub.min = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1768,40 +2215,43 @@
     for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
     return min;
   };
-
+  /* todo */
   pub.norm = function(aNumber, low, high) {
     return (aNumber - low) / (high - low);
   };
-
+  /* todo */
   pub.pow = Math.pow;
-
+  /* todo */
   pub.round = Math.round;
-
+  /* todo */
   pub.sq = function(aNumber) {
     return aNumber * aNumber;
   };
 
   // -- Trigonometry --
+  /* todo */
   pub.sqrt = Math.sqrt;
   pub.acos = Math.acos;
   pub.asin = Math.asin;
   pub.atan = Math.atan;
   pub.atan2 = Math.atan2;
   pub.cos = Math.cos;
-
+  /* todo */
   pub.degrees = function(aAngle) {
     return aAngle * 180 / Math.PI;
   };
-
+  /* todo */
   pub.radians = function(aAngle) {
     return aAngle / 180 * Math.PI;
   };
-
+  /* todo */
   pub.sin = Math.sin;
   pub.tan = Math.tan;
 
   // -- Random --
+  
   var currentRandom = Math.random;
+  /* todo */
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
     if (arguments.length === 1) return currentRandom() * arguments[0];
@@ -1828,11 +2278,11 @@
     var now = new Date();
     return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295);
   };
-
+  /* todo */
   pub.randomSeed = function(seed) {
     currentRandom = (new Marsaglia(seed)).nextDouble;
   };
-
+  /* todo */
   pub.Random = function(seed) {
     var haveNextNextGaussian = false,
       nextNextGaussian, random;
@@ -1855,6 +2305,7 @@
     random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble;
   };
 
+  /* todo */
   function PerlinNoise(seed) {
     var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
     var i, j;
@@ -1866,23 +2317,26 @@
       perm[i] = t;
     }
     for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
-
+    
     function grad3d(i, x, y, z) {
       var h = i & 15;
       var u = h < 8 ? x : y,
       v = h < 4 ? y : h === 12 || h === 14 ? x : z;
       return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
     }
+    
     function grad2d(i, x, y) {
       var v = (i & 1) === 0 ? x : y;
       return (i & 2) === 0 ? -v : v;
     }
+    
     function grad1d(i, x) {
       return (i & 1) === 0 ? -x : x;
     }
     function lerp(t, a, b) {
       return a + t * (b - a);
     }
+    /* noise3d */
     this.noise3d = function(x, y, z) {
       var X = Math.floor(x) & 255,
         Y = Math.floor(y) & 255,
@@ -1901,6 +2355,7 @@
         p11 = perm[p1 + 1] + Z;
       return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
     };
+    /* todo */
     this.noise2d = function(x, y) {
       var X = Math.floor(x) & 255,
         Y = Math.floor(y) & 255;
@@ -1912,6 +2367,7 @@
         p1 = perm[X + 1] + Y;
       return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
     };
+    /* todo */
     this.noise1d = function(x) {
       var X = Math.floor(x) & 255;
       x -= Math.floor(x);
@@ -1925,6 +2381,7 @@
     fallout: 0.5,
     seed: undef
   };
+  /* todo */
   pub.noise = function(x, y, z) {
     if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
     var generator = noiseProfile.generator;
@@ -1948,10 +2405,12 @@
     }
     return sum;
   };
+  /* todo */
   pub.noiseDetail = function(octaves, fallout) {
     noiseProfile.octaves = octaves;
     if (fallout !== undef) noiseProfile.fallout = fallout;
   };
+  /* todo */
   pub.noiseSeed = function(seed) {
     noiseProfile.seed = seed;
     noiseProfile.generator = undef;
@@ -1960,25 +2419,31 @@
 
   // ----------------------------------------
   // Input
-  
+  /* todo */
   pub.year = function() {
     return (new Date()).getFullYear()();
   };
+  /* todo */
   pub.month = function() {
     return (new Date()).getMonth() + 1;
   };
+  /* todo */
   pub.day = function() {
     return (new Date()).getDate();
   };
+  /* todo */
   pub.hour = function() {
     return (new Date()).getHours();
   };
+  /* todo */
   pub.minute = function() {
     return (new Date()).getMinutes();
   };
+  /* todo */
   pub.second = function() {
     return (new Date()).getSeconds();
   };
+  /* todo */
   pub.millis = function() {
     return Date.now() - start;
   };
@@ -2038,10 +2503,12 @@
   // ----------------------------------------
   // Output
   
+  /* todo */
   var println = pub.println = function(msg) {
     $.writeln(msg);
   };
 
+  /* todo */
   pub.print = function(msg) {
     $.write(msg);
   };
@@ -2265,10 +2732,10 @@
     transpose: function() {},
     mult: function(source, target) {
       var x, y;
-      if (source instanceof PVector) {
+      if (source instanceof Vector) {
         x = source.x;
         y = source.y;
-        if (!target) target = new PVector();
+        if (!target) target = new Vector();
       } else if (source instanceof Array) {
         x = source[0];
         y = source[1];
@@ -2277,7 +2744,7 @@
       if (target instanceof Array) {
         target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
         target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-      } else if (target instanceof PVector) {
+      } else if (target instanceof Vector) {
         target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
         target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
         target.z = 0;
