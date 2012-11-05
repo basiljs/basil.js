@@ -46,71 +46,98 @@
   /**
    * The basil version
    * @property VERSION {String}
+   * @cat Constants
    */
   pub.VERSION = "0.1";
+
   /**
    * Points
    * @property PT {String}
+   * @cat Constants
    */
   pub.PT = "pt";
+
   /**
    * Pixels
    * @property PX {String}
+   * @cat Constants
    */
   pub.PX = "px";
+
   /**
    * Centimeter
    * @property CM {String}
+   * @cat Constants
    */
+
   pub.CM = "cm";
   /**
    * Millimeter
    * @property MM {String}
+   * @cat Constants
    */
   pub.MM = "mm";
+
   /**
    * Inch
    * @property IN {String}
+   * @cat Constants
    */
   pub.IN = "inch";
+
   /**
    * Corner, used for drawing modes.
    * @property CORNER {String}
+   * @cat Constants
    */
   pub.CORNER = "corner";
+
   /**
    * Corners, used for drawing modes.
    * @property CORNERS {String}
+   * @cat Constants
    */
   pub.CORNERS = "corners";
+
   /**
    * Center, used for drawing modes.
    * @property CENTER {String}
+   * @cat Constants
    */
   pub.CENTER = "center";
+
   /**
    * Radius, used for drawing modes.
    * @property RADIUS {String}
+   * @cat Constants
    */
   pub.RADIUS = "radius";
+
   /**
    * Two Pi
    * @property TWO_PI {Number}
+   * @cat Constants
    */
   pub.TWO_PI = Math.PI*2;
+
   /**
    * Pi
    * @property PI {Number}
+   * @cat Constants
    */
   pub.PI = Math.PI;
+
   /**
    * Half Pi
    * @property HALF_PI {Number}
+   * @cat Constants
    */
   pub.HALF_PI = Math.PI/2;
+
   /**
    * Quarter Pi
    * @property QUARTER_PI {Number}
+   * @cat Constants
    */
   pub.QUARTER_PI = Math.PI/4;
   
@@ -124,12 +151,14 @@
   /**
    * System variable which stores the width of the current page.
    * @property width {Number}
+   * @cat Environment
    */
   pub.width = null;
 
   /**
    * System variable which stores the height of the current page.
    * @property height {Number}
+   * @cat Environment
    */
   pub.height = null;
 
@@ -189,6 +218,8 @@
   /**
   * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
   *
+  * @cat Data
+  * @subcat Array Functions
   * @method forEach
   * @param {Array} collection The array to be processed.
   * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
@@ -212,6 +243,7 @@
    * Suspends the calling thread for a number of milliseconds.
    * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
    *
+   * @cat Environment
    * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
    * @param  {Category} Test
@@ -223,6 +255,7 @@
   /**
    * Calls the given callback function with each story of the given document.
    *
+   * @cat Document
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
    * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
@@ -235,6 +268,7 @@
   /**
    * Calls the given callback function with each paragraph of the given document, story or text frame.
    *
+   * @cat Document
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
    * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
@@ -250,6 +284,7 @@
   /**
    * Calls the given callback function with each line of the given document, story, text frame or paragraph.
    *
+   * @cat Document
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
@@ -266,6 +301,7 @@
   /**
    * Calls the given callback function with each word of the given document, story, text frame, paragraph or line.
    *
+   * @cat Document
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
@@ -282,6 +318,7 @@
   /**
    * Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
    *
+   * @cat Document
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
@@ -311,6 +348,8 @@
   /**
    * Checks whether a var is an Array, returns true if this is the case
    *
+   * @cat Data
+   * @subcat Array Functions
    * @method isArray
    * @param  {Object|String|Number}  obj The object to check
    * @return {Boolean}     [description]
@@ -322,6 +361,7 @@
   /**
    * Checks whether a var is a number, returns true if this is the case
    *
+   * @cat Data
    * @method isNumber
    * @param  {Object|String|Number}  num The number to ckeck
    * @return {Boolean}
@@ -331,8 +371,9 @@
   };
 
   /**
-   * Checks whether a var is a indesign text object, returns true if this is the case
+   * Checks whether a var is an indesign text object, returns true if this is the case
    *
+   * @cat Document
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
    * @return {Boolean}     [description]
@@ -356,6 +397,7 @@
    * If the param doc is not given the current document gets set to the active document
    * in the application. If no document at all is open, a new document gets created.
    *
+   * @cat Document
    * @method doc
    * @param  {Document} [doc] The document to set the current document to
    * @return {Document} The current document instance
@@ -370,6 +412,7 @@
   /**
    * Closes the current document.
    *
+   * @cat Document
    * @method close
    * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
    * @param  {File} [file] The indesign file instance to save the document to
@@ -385,6 +428,7 @@
   /**
    * Returns the current page and sets it if argument page is given.
    *
+   * @cat Document
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to
    * @return {Page} The current page instance
@@ -408,6 +452,7 @@
   /**
    * Returns the current layer and sets it if argument layer is given.
    *
+   * @cat Document
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
    * @return {Layer} The current layer instance
@@ -428,6 +473,7 @@
   /**
    * Sets the units of the document (like right clicking the rulers).
    *
+   * @cat Document
    * @method units
    * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
    * @return {Constant} Current unit setting
@@ -470,6 +516,7 @@
   /**
    * Creates a vertical guide line at the current spread and current layer.
    *
+   * @cat Document
    * @method guideX
    * @param  {Number} x Position of the new guide
    * @return {Guide} New guide
@@ -488,6 +535,7 @@
   /**
    * Creates a horizontal guide line at the current spread and current layer.
    *
+   * @cat Document
    * @method guideY
    * @param  {Number} y Position of the new guide
    * @return {Guide} New guide
@@ -513,7 +561,8 @@
      * Function parses and validates a string as JSON-object. Usage:
      * var obj = b.JSON.decode(str);
      * var str = b.JSON.encode(obj);
-     *
+     * 
+     * @class JSON
      * @method JSON.decode()
      * @param  {String} String to be parsed as JSON-object.
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
@@ -578,6 +627,9 @@
    * will convert to the String "11111111000000000110011010011001". This 
    * function can help make your geeky debugging sessions much happier.
    *
+   * @class b
+   * @cat Data
+   * @subcat Conversion
    * @method binary
    * @param {Number} num value to convert
    * @param {Number} [numBits] number of digits to return
@@ -604,6 +656,8 @@
    * equivalent integer value. For example, unbinary("00001000") will 
    * return 8.
    *
+   * @cat Data
+   * @subcat Conversion
    * @method unbinary
    * @param {String} binaryString value to convert
    * @return {Number} The integer representation
@@ -635,6 +689,8 @@
   /**
    * Convert a number to a hex representation. 
    *
+   * @cat Data
+   * @subcat Conversion
    * @method hex
    * @param {Number} value The number to convert
    * @param {Number} [len] The length of the hex number to be created, default: 8
@@ -654,6 +710,8 @@
   /**
    * Convert a hex representation to a number.
    *
+   * @cat Data
+   * @subcat Conversion
    * @method unhex
    * @param {String} hex The hex representation
    * @return {Number} The number
@@ -677,6 +735,8 @@
    * using nf() or nfs().
    *
    * @method join
+   * @cat Data
+   * @subcat String Functions
    * @param {Array} array A string array
    * @param {String} separator The separator to be inserted
    * @return {String} The joined string
@@ -700,6 +760,8 @@
    * splits using a range of characters instead of a specific character or
    * sequence.    
    *  
+   * @cat Data
+   * @subcat String Functions
    * @method split
    * @param {String} str the String to be split
    * @param {String} [delim] The string used to separate the data
@@ -721,6 +783,8 @@
    * to an array of integers or floats, use the datatype conversion functions 
    * int() and float() to convert the array of Strings.
    *  
+   * @cat Data
+   * @subcat String Functions
    * @method splitTokens
    * @param {String} str the String to be split
    * @param {String} [tokens] list of individual characters that will be used as separators
@@ -820,6 +884,8 @@
    * of numbers. To remove digits from a floating-point number, use the
    * int(), ceil(), floor(), or round() functions.    
    * 
+   * @cat Data
+   * @subcat String Functions
    * @method nf
    * @param {Number} value The Number to convert
    * @param {Number} leftDigits
@@ -839,6 +905,8 @@
    * values for the digits, left, and right parameters should always be 
    * positive integers.   
    * 
+   * @cat Data
+   * @subcat String Functions
    * @method nfs
    * @param {Number} value The Number to convert
    * @param {Number} leftDigits
@@ -857,6 +925,8 @@
    * and one for formatting ints. The values for the digits, left, and right 
    * parameters should always be positive integers.      
    * 
+   * @cat Data
+   * @subcat String Functions
    * @method nfp
    * @param {Number} value The Number to convert
    * @param {Number} leftDigits
@@ -874,6 +944,8 @@
    * for formatting ints and one for formatting an array of ints. The value 
    * for the digits parameter should always be a positive integer.     
    * 
+   * @cat Data
+   * @subcat String Functions
    * @method nfc
    * @param {Number} value The Number to convert
    * @param {Number} leftDigits
@@ -891,6 +963,8 @@
    * In addition to standard whitespace characters such as space, carriage 
    * return, and tab, this function also removes the Unicode "nbsp" character.    
    * 
+   * @cat Data
+   * @subcat String Functions
    * @method trim
    * @param {String|Array} str A string or an array of strings to be trimmed
    * @return {String|Array} Returns the input in a trimmed way
@@ -912,6 +986,8 @@
    * Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.
    * The first two parameters set the location, the third sets the width, and the fourth sets the height.
    *
+   * @cat Document
+   * @subcat Primitives
    * @method ellipse
    * @param  {Number} x Location X
    * @param  {Number} y Location Y
@@ -970,6 +1046,8 @@
   /**
    * Draws a line (a direct path between two points) to the page.
    *
+   * @cat Document
+   * @subcat Primitives
    * @method line
    * @param  {Number} x1 Point A x-value
    * @param  {Number} y1 Point A y-value
@@ -998,6 +1076,8 @@
   /**
    * Draws a rectangle to the page.
    *
+   * @cat Document
+   * @subcat Primitives
    * @method rect
    * @param  {Number} x Position X
    * @param  {Number} y Position Y
@@ -1051,6 +1131,7 @@
    * The function calculates the geometric bounds of any given object.
    * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
    *
+   * @cat Document
    * @method bounds
    * @param  {Text|Object} obj The object to calculate the geometric bounds
    * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
@@ -1132,6 +1213,8 @@
    * half of the image's width and height. The parameter must be written in 
    * "ALL CAPS".
    *
+   * @cat Document
+   * @subcat Attributes
    * @method rectMode
    * @param {String} mode Either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS
    * 
@@ -1156,6 +1239,8 @@
    * mode uses the four parameters to ellipse() to set two opposing corners 
    * of the ellipse's bounding box. The parameter must be written in "ALL CAPS".
    *
+   * @cat Document
+   * @subcat Attributes
    * @method ellipseMode
    * @param {String} mode Either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS
    */ 
@@ -1174,6 +1259,8 @@
    * Sets the width of the stroke used for lines and the border 
    * around shapes. 
    * 
+   * @cat Document
+   * @subcat Attributes
    * @method strokeWeight
    * @param {Number} weight The width of the stroke
    */
@@ -1188,6 +1275,8 @@
   /**
    * Returns the object style with the given name. If the style does not exist it gets created.
    *
+   * @cat Document
+   * @subcat Attributes
    * @method objectStyle
    * @param  {String} name  The name of the object style to return.
    * @return {ObjectStyle}  The object style instance.
@@ -1210,6 +1299,7 @@
   
   /**
    * Sets the color used to fill shapes.
+   * @cat Color
    * @method fill
    * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
    */
@@ -1241,6 +1331,7 @@
    * Disables filling geometry. If both noStroke() and noFill() are called, 
    * newly drawn shapes will be invisible.
    *
+   * @cat Color
    * @method noFill
    */
   pub.noFill = function () {
@@ -1249,6 +1340,7 @@
 
   /**
    * Sets the color used to draw lines and borders around shapes.
+   * @cat Color
    * @method stroke
    * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
    */
@@ -1280,6 +1372,7 @@
    * Disables drawing the stroke (outline). If both noStroke() and noFill() 
    * are called, nothing will be drawn to the screen.
    * 
+   * @cat Color
    * @method noStroke
    */
   pub.noStroke = function () {
@@ -1289,6 +1382,7 @@
   /**
    * Sets the tint of the color used to fill shapes.
    * 
+   * @cat Color
    * @method fillTint
    * @param  {Number} tint Number from 0 to 100
    */
@@ -1303,6 +1397,7 @@
   /**
    * Sets the tint of the color used to draw lines and borders around shapes.
    * 
+   * @cat Color
    * @method strokeTint
    * @param  {Number} tint Number from 0 to 100
    */
@@ -1317,6 +1412,7 @@
   /**
    * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document
    *
+   * @cat Color
    * @method color
    * @param  {String|Numbers} Get color: the color name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
    * @return {Color} found or new color
@@ -1405,6 +1501,7 @@
    * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
    * N.B.: Both color must be either CMYK or RGB.
    * 
+   * @cat Color
    * @method lerpColor
    * @param  {Color} c1   Input color 1
    * @param  {Color} c2   Input color 2
@@ -1466,6 +1563,7 @@
    * The text displays in relation to the textAlign() and textYAlign() functions. 
    * The width and height parameters define a rectangular area.
    * 
+   * @cat Typography
    * @method text
    * @param  {String} txt The text content to set in the text frame.
    * @param  {Number} x   x-coordinate of text frame
@@ -1514,6 +1612,7 @@
    * corresponding value(s) in an array. This can either be an array containing the value of the concrete item
    * (e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).
    *
+   * @cat Typography
    * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
    * @param  {String|Object} property  The text property name of an object of key/value property/value pairs.
@@ -1568,6 +1667,7 @@
   /**
    * Returns the current font and sets it if argument fontName is given.
    *
+   * @cat Typography
    * @method textFont
    * @param  {String} [fontName] The name of the font to set e.g. Helvetica
    * @param  {String} [fontStyle] The Font style e.g. Bold
@@ -1586,6 +1686,7 @@
   /**
    * Returns the current font size in points and sets it if argument pointSize is given.
    *
+   * @cat Typography
    * @method textSize
    * @param  {Number} [pointSize] The size in points to set.
    * @return {Number}             The current point size.
@@ -1600,6 +1701,7 @@
   /**
    * Sets the current horizontal and vertical text alignment.
    *
+   * @cat Typography
    * @method textAlign
    * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
    *                           Justification.AWAY_FROM_BINDING_SIDE
@@ -1624,6 +1726,7 @@
   /**
    * Returns the spacing between lines of text in units of points and sets it if argument leading is given.
    *
+   * @cat Typography
    * @method textLeading
    * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
    *                                   value Leading.AUTO.
@@ -1639,6 +1742,7 @@
   /**
    * Returns the current kerning and sets it if argument kerning is given.
    *
+   * @cat Typography
    * @method textKerning
    * @param  {Number} [kerning] The value to set.
    * @return {Number}           The current kerning.
@@ -1653,6 +1757,7 @@
   /**
    * Returns the current tracking and sets it if argument tracking is given.
    *
+   * @cat Typography
    * @method textTracking
    * @param  {Number} [tracking] The value to set.
    * @return {Number}            The current tracking.
@@ -1667,6 +1772,7 @@
   /**
    * Returns the character style with the given name. If the style does not exist it gets created.
    *
+   * @cat Typography
    * @method characterStyle
    * @param  {String} name      The name of the character style to return.
    * @return {CharachterStyle}  The character style instance.
@@ -1685,6 +1791,7 @@
   /**
    * Returns the paragraph style with the given name. If the style does not exist it gets created.
    *
+   * @cat Typography
    * @method paragraphStyle
    * @param  {String} name     The name of the paragraph style to return.
    * @return {ParagraphStyle}  The paragraph style instance.
@@ -1703,6 +1810,7 @@
   /**
    * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
    *
+   * @cat Typography
    * @method linkTextFrames
    * @param  {TextFrame} textFrameA
    * @param  {TextFrame} textFrameB
@@ -1727,6 +1835,7 @@
    * oval or polygon to place the image in.
    * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
    *
+   * @cat Image
    * @method image
    * @param  {String|File} img The image file name in the document's data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
@@ -1793,6 +1902,7 @@
    * Transforms position and size of an image.
    * The image fit options are always "contentToFrame".
    *
+   * @cat Image
    * @method transformImage
    * @param  {Graphic} img The image to transform
    * @param  {Number} x       New x
@@ -1818,6 +1928,7 @@
    * Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.
    * If no parameter is passed the currently set mode is returned as String.
    *
+   * @cat Image
    * @method imageMode
    * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER
    * @return {String} The current mode
@@ -2155,18 +2266,55 @@
   // -- Calculation --  
   /**
    * @class b
+   * 
+   * Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method abs
+   * @param {Number} val An arbitrary number
+   * @return The absolute value of that number
    */
   pub.abs = Math.abs;
 
-  /* todo */
+  /**
+   * Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method ceil
+   * @param {Number} val An arbitrary number
+   * @return The next highest integer value
+   */
   pub.ceil = Math.ceil;
 
-  /* todo */
+  /**
+   * Constrains a value to not exceed a maximum and minimum value.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method constrain
+   * @param {Number} aNumber the value to constrain
+   * @param {Number} aMin minimum limit
+   * @param {Number} aMax maximum limit
+   * @return The constrained value
+   */
   pub.constrain = function(aNumber, aMin, aMax) {
     return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
   };
 
-  /* todo */
+  /**
+   * Calculates the distance between two points.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method dist
+   * @param {Number} x1 the x-coordinate of the first point
+   * @param {Number} y1 the y-coordinate of the first point
+   * @param {Number} x2 the x-coordinate of the second point
+   * @param {Number} y2 the y-coordinate of the second point
+   * @return {Number} The distance
+   */
   pub.dist = function() {
     var dx, dy, dz;
     if (arguments.length === 4) {
@@ -2176,26 +2324,100 @@
     }
   };
 
-  /* todo */
+  /**
+   * Returns Euler's number e (2.71828...) raised to the power of the value parameter.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method exp
+   * @param {Number} a value
+   * @return {Number}
+   */
   pub.exp = Math.exp;
-  /* todo */
+
+  /**
+   * Calculates the closest int value that is less than or equal to the value of the parameter.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method floor
+   * @param {Number} a value
+   * @return {Number}
+   */
   pub.floor = Math.floor;
-  /* todo */
+
+  /**
+   * Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method lerp
+   * @param {Number} value1 first value
+   * @param {Number} value2 second value
+   * @param {Number} amt between 0.0 and 1.0
+   * @return {Number} The mapped value
+   */
   pub.lerp = function(value1, value2, amt) {
     return (value2 - value1) * amt + value1;
   };
-  /* todo */
+
+  /**
+   * Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than 0.0.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method log
+   * @param {Number} number must be greater then 0.0
+   * @return {Number}
+   */
   pub.log = Math.log;
-  /* todo */
+
+  /**
+   * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method mag
+   * @param {Number} a x-coordinate
+   * @param {Number} b y-coordinate
+   * @param {Number} [c] z-coordinate
+   * @return {Number} the magnitude
+   */
   pub.mag = function(a, b, c) {
     if (c) return Math.sqrt(a * a + b * b + c * c);
     return Math.sqrt(a * a + b * b);
   };
-  /* todo */
+
+  /**
+   * Re-maps a number from one range to another. In the example above, the number '25' is converted from a value in the range 0..100 into a value that ranges from the left edge (0) to the right edge (width) of the screen.
+   * 
+   * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method map
+   * @param {Number} value the value to be mapped
+   * @param {Number} istart start of the input range
+   * @param {Number} istop end of the input range
+   * @param {Number} ostart start of the output range
+   * @param {Number} ostop end of the output range
+   * @return {Number} the mapped value
+   */
   pub.map = function(value, istart, istop, ostart, ostop) {
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
-  /* todo */
+
+  /**
+   * Determines the largest value in a sequence of numbers.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method max
+   * @param {Number|Array} param1 Either the first value or an array of Numbers 
+   * @param {Number} param2 Another value to be compared
+   * @param {Number} param3 Another value to be compared
+   * @return {Number} The highest value
+   */ 
   pub.max = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -2205,7 +2427,18 @@
     for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
     return max;
   };
-  /* todo */
+
+  /**
+   * Determines the smallest value in a sequence of numbers.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method min
+   * @param {Number|Array} param1 Either the first value or an array of Numbers 
+   * @param {Number} param2 Another value to be compared
+   * @param {Number} param3 Another value to be compared
+   * @return {Number} The lowest value
+   */ 
   pub.min = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -2215,43 +2448,195 @@
     for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
     return min;
   };
-  /* todo */
+
+  /**
+   * Normalizes a number from another range into a value between 0 and 1. 
+   *
+   * Identical to map(value, low, high, 0, 1); 
+   *
+   * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method norm
+   * @param {Number} aNumber The value to be normed
+   * @param {Number} low The lowest value to be expected
+   * @param {Number} low The highest value to be expected
+   * @return {Number} The normalized value
+   */
   pub.norm = function(aNumber, low, high) {
     return (aNumber - low) / (high - low);
   };
-  /* todo */
+
+  /**
+   * Facilitates exponential expressions. The pow() function is an efficient way of multiplying numbers by themselves (or their reciprocal) in large quantities. For example, pow(3, 5) is equivalent to the expression 3*3*3*3*3 and pow(3, -5) is equivalent to 1 / 3*3*3*3*3
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method pow
+   * @param {Number} num base of the exponential expression
+   * @param {Number} exponent power of which to raise the base
+   * @return {Number} the result
+   */
   pub.pow = Math.pow;
-  /* todo */
+
+  /**
+   * Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method round
+   * @param {Number} value The value to be rounded
+   * @return {Number} The rounded value
+   */
   pub.round = Math.round;
-  /* todo */
+
+  /**
+   * Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method sq
+   * @param {Number} aNumber The value to be squared
+   * @return {Number} 
+   */
   pub.sq = function(aNumber) {
     return aNumber * aNumber;
   };
 
   // -- Trigonometry --
-  /* todo */
+  
+  /**
+   * Calculates the square root of a number. The square root of a number is always positive, even though there may be a valid negative root. The square root s of number a is such that s*s = a. It is the opposite of squaring.
+   *
+   * @cat Math
+   * @subcat Trigonometry
+   * @method sqrt
+   * @param {Number} val The value to be calculated
+   * @return {Number} 
+   */
   pub.sqrt = Math.sqrt;
+
+  /**
+   * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method acos
+   * @param {Number} value the value whose arc cosine is to be returned
+   * @return {Number} 
+   */
   pub.acos = Math.acos;
+  
+  /**
+   * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method asin
+   * @param {Number} value the value whose arc sine is to be returned
+   * @return {Number} 
+   */  
   pub.asin = Math.asin;
+
+  /**
+   * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method atan
+   * @param {Number} value the value whose arc tangent is to be returned
+   * @return {Number} 
+   */
   pub.atan = Math.atan;
+
+  /**
+   * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method atan2
+   * @param {Number} y the y coordinate
+   * @param {Number} x the x coordinate
+   * @return {Number} 
+   */
   pub.atan2 = Math.atan2;
+
+  /**
+   * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method cos
+   * @param {Number} rad a value in radians
+   * @return {Number} 
+   */
   pub.cos = Math.cos;
-  /* todo */
+  
+  /**
+   * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method degrees
+   * @param {Number} aAngle an angle in radians
+   * @return {Number} The given angle in degree
+   */
   pub.degrees = function(aAngle) {
     return aAngle * 180 / Math.PI;
   };
-  /* todo */
+
+  /**
+   * Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method radians
+   * @param {Number} aAngle an angle in degree
+   * @return {Number} The given angle in radians
+   */
   pub.radians = function(aAngle) {
     return aAngle / 180 * Math.PI;
   };
-  /* todo */
+
+  /**
+   * Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to 6.28). Values are returned in the range -1 to 1.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method sin
+   * @param {Number} rad a value in radians
+   * @return {Number} 
+   */
   pub.sin = Math.sin;
+
+  /**
+   * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method tan
+   * @param {Number} rad a value in radians
+   * @return {Number} 
+   */
   pub.tan = Math.tan;
 
   // -- Random --
   
   var currentRandom = Math.random;
-  /* todo */
+  
+  /**
+   * Generates random numbers. Each time the random() function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call random(5) returns values between 0 and 5. If two parameters are passed, it will return a float with a value between the the parameters. The function call random(-5, 10.2) returns values between -5 and 10.2.
+   * 
+   * One parameter sets the range from 0 to the given parameter, while with two parameters present you set the range from val1 - val2.
+   *
+   * @cat Math
+   * @subcat Random
+   * @method random
+   * @param {Number} [low] The low border of the range
+   * @param {Number} [high] The high border of the range
+   * @return {Number} A random number
+   */
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
     if (arguments.length === 1) return currentRandom() * arguments[0];
@@ -2336,7 +2721,7 @@
     function lerp(t, a, b) {
       return a + t * (b - a);
     }
-    /* noise3d */
+    
     this.noise3d = function(x, y, z) {
       var X = Math.floor(x) & 255,
         Y = Math.floor(y) & 255,
@@ -2355,7 +2740,7 @@
         p11 = perm[p1 + 1] + Z;
       return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
     };
-    /* todo */
+    
     this.noise2d = function(x, y) {
       var X = Math.floor(x) & 255,
         Y = Math.floor(y) & 255;
@@ -2367,7 +2752,7 @@
         p1 = perm[X + 1] + Y;
       return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
     };
-    /* todo */
+    
     this.noise1d = function(x) {
       var X = Math.floor(x) & 255;
       x -= Math.floor(x);
@@ -2381,7 +2766,24 @@
     fallout: 0.5,
     seed: undef
   };
-  /* todo */
+
+  /**
+   * Returns the Perlin noise value at specified coordinates. Perlin noise is a random sequence generator producing a more natural ordered, harmonic succession of numbers compared to the standard random() function. It was invented by Ken Perlin in the 1980s and been used since in graphical applications to produce procedural textures, natural motion, shapes, terrains etc.
+   *
+   * The main difference to the random() function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between 0.0 and 1.0. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.
+   *
+   * The actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result. 
+   *
+   * Another way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn't matter as such, only the distance between successive coordinates does (eg. when using noise() within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of 0.005-0.03 work best for most applications, but this will differ depending on use.
+   *
+   * @cat Math
+   * @subcat Random
+   * @method noise
+   * @param {Number} x Coordinate in x space
+   * @param {Number} [y] Coordinate in y space
+   * @param {Number} [z] Coordinate in z space
+   * @return {Number} the noise value
+   */
   pub.noise = function(x, y, z) {
     if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
     var generator = noiseProfile.generator;
@@ -2405,12 +2807,31 @@
     }
     return sum;
   };
-  /* todo */
+  
+  /**
+   * Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().
+   *
+   * By changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.
+   * 
+   * @cat Math
+   * @subcat Random
+   * @method noiseDetail
+   * @param {Number} octaves number of octaves to be used by the noise() function
+   * @param {Number} fallout falloff factor for each octave
+   */
   pub.noiseDetail = function(octaves, fallout) {
     noiseProfile.octaves = octaves;
     if (fallout !== undef) noiseProfile.fallout = fallout;
   };
-  /* todo */
+  
+  /** 
+   * Sets the seed value for noise(). By default, noise() produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.
+   * 
+   * @cat Math
+   * @subcat Random
+   * @method noiseSeed
+   * @param {Number} seed 
+   */
   pub.noiseSeed = function(seed) {
     noiseProfile.seed = seed;
     noiseProfile.generator = undef;
@@ -2418,32 +2839,88 @@
 
 
   // ----------------------------------------
-  // Input
-  /* todo */
+  // Date
+  
+  /**
+   * The year() function returns the current year as an integer (2012, 2013 etc).
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method year
+   * @return {Number}
+   */
   pub.year = function() {
     return (new Date()).getFullYear()();
   };
-  /* todo */
+
+  /**
+   * The month() function returns the current month as a value from 1 - 12.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method month
+   * @return {Number}
+   */
   pub.month = function() {
     return (new Date()).getMonth() + 1;
   };
-  /* todo */
+
+  /**
+   * The day() function returns the current day as a value from 1 - 31.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method day
+   * @return {Number}
+   */
   pub.day = function() {
     return (new Date()).getDate();
   };
-  /* todo */
+  
+  /**
+   * The hour() function returns the current hour as a value from 0 - 23.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method hour
+   * @return {Number}
+   */
   pub.hour = function() {
     return (new Date()).getHours();
   };
-  /* todo */
+
+  /**
+   * The minute() function returns the current minute as a value from 0 - 59.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method minute
+   * @return {Number}
+   */
   pub.minute = function() {
     return (new Date()).getMinutes();
   };
-  /* todo */
+  
+  /**
+   * The second() function returns the current second as a value from 0 - 59.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method second
+   * @return {Number}
+   */
   pub.second = function() {
     return (new Date()).getSeconds();
   };
-  /* todo */
+  
+  /**
+   * Returns the number of milliseconds (thousandths of a second) since starting an applet. This information is often used for timing animation sequences.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method millis
+   * @return {Number}
+   */
   pub.millis = function() {
     return Date.now() - start;
   };
@@ -2451,6 +2928,7 @@
   /**
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
    *
+   * @cat Document
    * @method findByLabel
    * @param  {String} label The label identifier
    * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
@@ -2471,6 +2949,7 @@
   /**
    * Returns the currently selected object(s)
    *
+   * @cat Document
    * @method selection
    * @return {Object[]} Array of selected object(s).
    */
@@ -2482,6 +2961,7 @@
    * Reads the contents of a file and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
+   * @cat Input
    * @method loadStrings
    * @param  {String|File} file The text file name in the document's data directory or a File instance
    * @return {String[]}  Array of the individual lines in the given file.
@@ -2503,12 +2983,24 @@
   // ----------------------------------------
   // Output
   
-  /* todo */
+  /**
+   * Prints a message line to the console output in the ExtendScript editor. 
+   * 
+   * @cat Output
+   * @method println
+   * @param {String} The message to print
+   */
   var println = pub.println = function(msg) {
     $.writeln(msg);
   };
 
-  /* todo */
+  /**
+   * Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.
+   * 
+   * @cat Output
+   * @method print
+   * @param {String} The message to print
+   */
   pub.print = function(msg) {
     $.write(msg);
   };
@@ -2517,6 +3009,7 @@
    * Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.
    * If the given file exists it gets overridden.
    *
+   * @cat Output
    * @method saveStrings
    * @param  {String|File} file The file name or a File instance
    * @param  {String[]} strings The string array to be written
@@ -2534,6 +3027,7 @@
    * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
    *
    * @todo data folder is not created automatically,
+   * @cat Output
    * @method savePDF
    * @param {String|File} file The file name or a File instance
    * @param {Boolean} showOptions Whether to show the export dialog
@@ -2551,7 +3045,9 @@
 
   /**
    * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
-   *
+   * 
+   * @cat Document
+   * @subcat Transformation
    * @method itemX
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [x] The new x position
@@ -2572,6 +3068,8 @@
   /**
    * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemY
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [y] The new y position
@@ -2592,6 +3090,8 @@
   /**
    * Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemWidth
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [width] The new width
@@ -2612,6 +3112,8 @@
   /**
    * Scales the given PageItem to the given height. If height is not given as argument the current height is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemHeight
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [height] The new height
@@ -2632,6 +3134,8 @@
   /**
    * Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemPosition
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [x] The new x coordinate
@@ -2657,6 +3161,8 @@
   /**
    * Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemSize
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [width] The new width
@@ -2689,22 +3195,24 @@
     else if (digits === -1) digits = (big + "").length;
     return digits;
   };
-
-  var PMatrix2D = pub.PMatrix2D = function() {
+  
+  /* todo */
+  var Matrix2D = pub.Matrix2D = function() {
     if (arguments.length === 0) this.reset();
-    else if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) this.set(arguments[0].array());
+    else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) this.set(arguments[0].array());
     else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   };
-  PMatrix2D.prototype = {
+  /* todo */
+  Matrix2D.prototype = {
     set: function() {
       if (arguments.length === 6) {
         var a = arguments;
         this.set([a[0], a[1], a[2], a[3], a[4], a[5]]);
-      } else if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) this.elements = arguments[0].array();
+      } else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) this.elements = arguments[0].array();
       else if (arguments.length === 1 && arguments[0] instanceof Array) this.elements = arguments[0].slice();
     },
     get: function() {
-      var outgoing = new PMatrix2D();
+      var outgoing = new Matrix2D();
       outgoing.set(this.elements);
       return outgoing;
     },
@@ -2802,7 +3310,7 @@
     },
     apply: function() {
       var source;
-      if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      if (arguments.length === 1 && arguments[0] instanceof Matrix2D) source = arguments[0].array();
       else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
       else if (arguments.length === 1 && arguments[0] instanceof Array) source = arguments[0];
       var result = [0, 0, this.elements[2], 0, 0, this.elements[5]];
@@ -2812,7 +3320,7 @@
     },
     preApply: function() {
       var source;
-      if (arguments.length === 1 && arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      if (arguments.length === 1 && arguments[0] instanceof Matrix2D) source = arguments[0].array();
       else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
       else if (arguments.length === 1 && arguments[0] instanceof Array) source = arguments[0];
       var result = [0, 0, source[2], 0, 0, source[5]];
@@ -2848,11 +3356,13 @@
       pub.println(output);
     }
   };
-
+  
+  /* todo */
   pub.applyMatrix = function (matrix) {
     currMatrix.apply(matrix);
   };
 
+  /* todo */
   pub.popMatrix = function (argument) {
     if (matrixStack.length > 0) {
       currMatrix.set( matrixStack.pop() );
@@ -2861,27 +3371,28 @@
     }
   };
 
+  /* todo */
   pub.printMatrix = function (argument) {
     currMatrix.print();
   };
-
+  /* todo */
   pub.pushMatrix = function (argument) {
     matrixStack.push( currMatrix.array() );
   };
-
+/* todo */
   pub.resetMatrix = function (argument) {
     matrixStack = [];
-    currMatrix = new PMatrix2D();
+    currMatrix = new Matrix2D();
   };
-
+/* todo */
   pub.rotate = function (angle) {
     currMatrix.rotate(angle);
   };
-
+/* todo */
   pub.scale = function (scaleX,scaleY) {
     currMatrix.scale(scaleX,scaleY);
   };
-
+/* todo */
   pub.translate = function (tx,ty) {
     currMatrix.translate(tx,ty);
   };
@@ -2893,6 +3404,7 @@
   /**
    * Run the sketch! Has to be called in every sketch a the very end of the code.
    *
+   * @cat Environment
    * @method go
    */
   pub.go = function() {
@@ -2910,6 +3422,7 @@
    * It is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!
    * The framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.
    *
+   * @cat Environment
    * @method loop
    * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
    */
@@ -2938,6 +3451,7 @@
    *
    * Stops basil from continuously executing the code within draw().
    *
+   * @cat Environment
    * @method noLoop
    */
   pub.noLoop = function() {

@@ -43,6 +43,17 @@
             
                 <li><a href="..&#x2F;classes/b.html">b</a></li>
             
+<<<<<<< HEAD
+=======
+                <li><a href="..&#x2F;classes/b
+
+Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive..html">b
+
+Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.</a></li>
+            
+                <li><a href="..&#x2F;classes/Vector.html">Vector</a></li>
+            
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -131,6 +142,7 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; constants
   
+<<<<<<< HEAD
   pub.VERSION = &quot;0.1&quot;;
   pub.PT = &quot;pt&quot;;
   pub.PX = &quot;px&quot;;
@@ -144,6 +156,104 @@
   pub.TWO_PI = Math.PI*2;
   pub.PI = Math.PI;
   pub.HALF_PI = Math.PI&#x2F;2;
+=======
+  &#x2F;**
+   * The basil version
+   * @property VERSION {String}
+   * @cat Constants
+   *&#x2F;
+  pub.VERSION = &quot;0.1&quot;;
+
+  &#x2F;**
+   * Points
+   * @property PT {String}
+   * @cat Constants
+   *&#x2F;
+  pub.PT = &quot;pt&quot;;
+
+  &#x2F;**
+   * Pixels
+   * @property PX {String}
+   * @cat Constants
+   *&#x2F;
+  pub.PX = &quot;px&quot;;
+
+  &#x2F;**
+   * Centimeter
+   * @property CM {String}
+   * @cat Constants
+   *&#x2F;
+
+  pub.CM = &quot;cm&quot;;
+  &#x2F;**
+   * Millimeter
+   * @property MM {String}
+   * @cat Constants
+   *&#x2F;
+  pub.MM = &quot;mm&quot;;
+
+  &#x2F;**
+   * Inch
+   * @property IN {String}
+   * @cat Constants
+   *&#x2F;
+  pub.IN = &quot;inch&quot;;
+
+  &#x2F;**
+   * Corner, used for drawing modes.
+   * @property CORNER {String}
+   * @cat Constants
+   *&#x2F;
+  pub.CORNER = &quot;corner&quot;;
+
+  &#x2F;**
+   * Corners, used for drawing modes.
+   * @property CORNERS {String}
+   * @cat Constants
+   *&#x2F;
+  pub.CORNERS = &quot;corners&quot;;
+
+  &#x2F;**
+   * Center, used for drawing modes.
+   * @property CENTER {String}
+   * @cat Constants
+   *&#x2F;
+  pub.CENTER = &quot;center&quot;;
+
+  &#x2F;**
+   * Radius, used for drawing modes.
+   * @property RADIUS {String}
+   * @cat Constants
+   *&#x2F;
+  pub.RADIUS = &quot;radius&quot;;
+
+  &#x2F;**
+   * Two Pi
+   * @property TWO_PI {Number}
+   * @cat Constants
+   *&#x2F;
+  pub.TWO_PI = Math.PI*2;
+
+  &#x2F;**
+   * Pi
+   * @property PI {Number}
+   * @cat Constants
+   *&#x2F;
+  pub.PI = Math.PI;
+
+  &#x2F;**
+   * Half Pi
+   * @property HALF_PI {Number}
+   * @cat Constants
+   *&#x2F;
+  pub.HALF_PI = Math.PI&#x2F;2;
+
+  &#x2F;**
+   * Quarter Pi
+   * @property QUARTER_PI {Number}
+   * @cat Constants
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.QUARTER_PI = Math.PI&#x2F;4;
   
   var ERROR_PREFIX = &quot;\n\n### Basil Error -&gt; &quot;,
@@ -156,12 +266,14 @@
   &#x2F;**
    * System variable which stores the width of the current page.
    * @property width {Number}
+   * @cat Environment
    *&#x2F;
   pub.width = null;
 
   &#x2F;**
    * System variable which stores the height of the current page.
    * @property height {Number}
+   * @cat Environment
    *&#x2F;
   pub.height = null;
 
@@ -216,6 +328,18 @@
     };
   }
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+  * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
+  *
+  * @cat Data
+  * @subcat Array Functions
+  * @method forEach
+  * @param {Array} collection The array to be processed.
+  * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+  *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i &lt; len; i++) {
@@ -235,6 +359,7 @@
    * Suspends the calling thread for a number of milliseconds.
    * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
    *
+   * @cat Environment
    * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
    * @param  {Category} Test
@@ -246,6 +371,7 @@
   &#x2F;**
    * Calls the given callback function with each story of the given document.
    *
+   * @cat Document
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
    * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
@@ -258,6 +384,7 @@
   &#x2F;**
    * Calls the given callback function with each paragraph of the given document, story or text frame.
    *
+   * @cat Document
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
    * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
@@ -273,6 +400,7 @@
   &#x2F;**
    * Calls the given callback function with each line of the given document, story, text frame or paragraph.
    *
+   * @cat Document
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
@@ -289,6 +417,7 @@
   &#x2F;**
    * Calls the given callback function with each word of the given document, story, text frame, paragraph or line.
    *
+   * @cat Document
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
@@ -305,6 +434,7 @@
   &#x2F;**
    * Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
    *
+   * @cat Document
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
@@ -334,6 +464,8 @@
   &#x2F;**
    * Checks whether a var is a Array, returns true if this is the case
    *
+   * @cat Data
+   * @subcat Array Functions
    * @method isArray
    * @param  {Object|String|Number}  obj The object to check
    * @return {Boolean}     [description]
@@ -345,6 +477,7 @@
   &#x2F;**
    * Checks whether a var is a number, returns true if this is the case
    *
+   * @cat Data
    * @method isNumber
    * @param  {Object|String|Number}  num The number to ckeck
    * @return {Boolean}
@@ -354,8 +487,9 @@
   };
 
   &#x2F;**
-   * Checks whether a var is a indesign text object, returns true if this is the case
+   * Checks whether a var is an indesign text object, returns true if this is the case
    *
+   * @cat Document
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
    * @return {Boolean}     [description]
@@ -379,6 +513,7 @@
    * If the param doc is not given the current document gets set to the active document
    * in the application. If no document at all is open, a new document gets created.
    *
+   * @cat Document
    * @method doc
    * @param  {Document} [doc] The document to set the current document to
    * @return {Document} The current document instance
@@ -393,6 +528,7 @@
   &#x2F;**
    * Closes the current document.
    *
+   * @cat Document
    * @method close
    * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
    * @param  {File} [file] The indesign file instance to save the document to
@@ -408,6 +544,7 @@
   &#x2F;**
    * Returns the current page and sets it if argument page is given.
    *
+   * @cat Document
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to
    * @return {Page} The current page instance
@@ -431,6 +568,7 @@
   &#x2F;**
    * Returns the current layer and sets it if argument layer is given.
    *
+   * @cat Document
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
    * @return {Layer} The current layer instance
@@ -451,6 +589,7 @@
   &#x2F;**
    * Sets the units of the document (like right clicking the rulers).
    *
+   * @cat Document
    * @method units
    * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
    * @return {Constant} Current unit setting
@@ -493,6 +632,7 @@
   &#x2F;**
    * Creates a vertical guide line at the current spread and current layer.
    *
+   * @cat Document
    * @method guideX
    * @param  {Number} x Position of the new guide
    * @return {Guide} New guide
@@ -511,6 +651,7 @@
   &#x2F;**
    * Creates a horizontal guide line at the current spread and current layer.
    *
+   * @cat Document
    * @method guideY
    * @param  {Number} y Position of the new guide
    * @return {Guide} New guide
@@ -536,7 +677,8 @@
      * Function parses and validates a string as JSON-object. Usage:
      * var obj = b.JSON.decode(str);
      * var str = b.JSON.encode(obj);
-     *
+     * 
+     * @class JSON
      * @method JSON.decode()
      * @param  {String} String to be parsed as JSON-object.
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
@@ -594,6 +736,25 @@
   };
 
   &#x2F;&#x2F; -- Conversion --
+<<<<<<< HEAD
+=======
+  
+  &#x2F;** 
+   * Converts a byte, char, int, or color to a String containing the
+   * equivalent binary notation. For example color(0, 102, 153, 255) 
+   * will convert to the String &quot;11111111000000000110011010011001&quot;. This 
+   * function can help make your geeky debugging sessions much happier.
+   *
+   * @class b
+   * @cat Data
+   * @subcat Conversion
+   * @method binary
+   * @param {Number} num value to convert
+   * @param {Number} [numBits] number of digits to return
+   * @return {String} A formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;binary_&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.binary = function(num, numBits) {
     var bit;
     if (numBits &gt; 0) bit = numBits;
@@ -608,6 +769,22 @@
     while (bit &gt; 0) result += num &gt;&gt;&gt; --bit &amp; 1 ? &quot;1&quot; : &quot;0&quot;;
     return result;
   };
+<<<<<<< HEAD
+=======
+
+  &#x2F;** 
+   * Converts a String representation of a binary number to its 
+   * equivalent integer value. For example, unbinary(&quot;00001000&quot;) will 
+   * return 8.
+   *
+   * @cat Data
+   * @subcat Conversion
+   * @method unbinary
+   * @param {String} binaryString value to convert
+   * @return {Number} The integer representation
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;unbinary_&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.unbinary = function(binaryString) {
     var i = binaryString.length - 1,
       mask = 1,
@@ -629,6 +806,20 @@
     if (hex.length &gt;= padding) hex = hex.substring(hex.length - padding, hex.length);
     return hex;
   };
+<<<<<<< HEAD
+=======
+
+  &#x2F;**
+   * Convert a number to a hex representation. 
+   *
+   * @cat Data
+   * @subcat Conversion
+   * @method hex
+   * @param {Number} value The number to convert
+   * @param {Number} [len] The length of the hex number to be created, default: 8
+   * @return {String} The hex representation as a string
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.hex = function(value, len) {
     if (arguments.length === 1) if (value instanceof Char) len = 4;
     else len = 8;
@@ -640,6 +831,19 @@
     if (value &gt; 2147483647) value -= 4294967296;
     return value;
   }
+<<<<<<< HEAD
+=======
+
+  &#x2F;**
+   * Convert a hex representation to a number.
+   *
+   * @cat Data
+   * @subcat Conversion
+   * @method unhex
+   * @param {String} hex The hex representation
+   * @return {Number} The number
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.unhex = function(hex) {
     if (hex instanceof Array) {
       var arr = [];
@@ -651,6 +855,7 @@
 
 
   &#x2F;&#x2F; -- String Functions --
+<<<<<<< HEAD
   pub.join = function(array, seperator) {
     return array.join(seperator);
   };
@@ -659,6 +864,93 @@
     return str.split(delim);
   };
 
+=======
+
+  &#x2F;**
+   * Combines an array of Strings into one String, each separated by 
+   * the character(s) used for the separator parameter. To join arrays 
+   * of ints or floats, it&#x27;s necessary to first convert them to strings 
+   * using nf() or nfs().
+   *
+   * @method join
+   * @cat Data
+   * @subcat String Functions
+   * @param {Array} array A string array
+   * @param {String} separator The separator to be inserted
+   * @return {String} The joined string
+   *&#x2F;
+   &#x2F;&#x2F; http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;join_&#x2F;
+  pub.join = function(array, separator) {
+    return array.join(separator);
+  };
+
+  &#x2F;**
+   * The split() function breaks a string into pieces using a
+   * character or string as the divider. The delim parameter specifies the
+   * character or characters that mark the boundaries between each piece. A
+   * String[] array is returned that contains each of the pieces.
+   *
+   * If the result is a set of numbers, you can convert the String[] array
+   * to to a float[] or int[] array using the datatype conversion functions
+   * int() and float() (see example above).
+   *
+   * The splitTokens() function works in a similar fashion, except that it
+   * splits using a range of characters instead of a specific character or
+   * sequence.    
+   *  
+   * @cat Data
+   * @subcat String Functions
+   * @method split
+   * @param {String} str the String to be split
+   * @param {String} [delim] The string used to separate the data
+   * @return {Array} Array of strings
+   *&#x2F;
+   &#x2F;&#x2F; http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;split_&#x2F;
+  pub.split = function(str, delim) {     
+    return str.split(delim);   
+  };
+
+  &#x2F;**
+   * The splitTokens() function splits a String at one or many character 
+   * &quot;tokens.&quot; The tokens parameter specifies the character or characters 
+   * to be used as a boundary.
+   *
+   * If no tokens character is specified, any whitespace character is used 
+   * to split. Whitespace characters include tab (\t), line feed (\n), 
+   * carriage return (\r), form feed (\f), and space. To convert a String 
+   * to an array of integers or floats, use the datatype conversion functions 
+   * int() and float() to convert the array of Strings.
+   *  
+   * @cat Data
+   * @subcat String Functions
+   * @method splitTokens
+   * @param {String} str the String to be split
+   * @param {String} [tokens] list of individual characters that will be used as separators
+   * @return {Array} Array of strings
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;splitTokens_&#x2F;
+  pub.splitTokens = function(str, tokens) {
+    if (arguments.length === 1) tokens = &quot;\n\t\r\u000c &quot;;
+    tokens = &quot;[&quot; + tokens + &quot;]&quot;;
+    var ary = [];
+    var index = 0;
+    var pos = str.search(tokens);
+    while (pos &gt;= 0) {
+      if (pos === 0) str = str.substring(1);
+      else {
+        ary[index] = str.substring(0, pos);
+        index++;
+        str = str.substring(pos);
+      }
+      pos = str.search(tokens);
+    }
+    if (str.length &gt; 0) ary[index] = str;
+    if (ary.length === 0) ary = undef;
+    return ary;
+  };  
+
+  &#x2F;* todo *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.match = function(str, regexp) {
     return str.match(regexp);
   };
@@ -718,6 +1010,7 @@
     }
     return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group);
   }
+<<<<<<< HEAD
   pub.nf = function(value, leftDigits, rightDigits) {
     return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits);
   };
@@ -727,6 +1020,89 @@
   pub.nfp = function(value, leftDigits, rightDigits) {
     return nfCore(value, &quot;+&quot;, &quot;-&quot;, leftDigits, rightDigits);
   };
+=======
+
+  &#x2F;**    
+   * Utility function for formatting numbers into strings. There
+   * are two versions, one for formatting floats and one for formatting
+   * ints. The values for the digits, left, and right parameters should
+   * always be positive integers.
+
+   * As shown in the above example, nf() is used to add zeros to the
+   * left and&#x2F;or right of a number. This is typically for aligning a list
+   * of numbers. To remove digits from a floating-point number, use the
+   * int(), ceil(), floor(), or round() functions.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method nf
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nf_&#x2F;
+  pub.nf = function(value, leftDigits, rightDigits) {
+    return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits);
+  };
+
+  &#x2F;**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but leaves a blank space in front of positive numbers so they align 
+   * with negative numbers in spite of the minus symbol. There are two 
+   * versions, one for formatting floats and one for formatting ints. The 
+   * values for the digits, left, and right parameters should always be 
+   * positive integers.   
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method nfs
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nfs_&#x2F;
+  pub.nfs = function(value, leftDigits, rightDigits) {
+    return nfCore(value, &quot; &quot;, &quot;-&quot;, leftDigits, rightDigits);
+  };
+  
+  &#x2F;**    
+   * Utility function for formatting numbers into strings. Similar to nf() 
+   * but puts a &quot;+&quot; in front of positive numbers and a &quot;-&quot; in front of 
+   * negative numbers. There are two versions, one for formatting floats 
+   * and one for formatting ints. The values for the digits, left, and right 
+   * parameters should always be positive integers.      
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method nfp
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nfp_&#x2F;
+  pub.nfp = function(value, leftDigits, rightDigits) {
+    return nfCore(value, &quot;+&quot;, &quot;-&quot;, leftDigits, rightDigits);
+  };
+
+  &#x2F;**    
+   * Utility function for formatting numbers into strings and placing 
+   * appropriate commas to mark units of 1000. There are two versions, one 
+   * for formatting ints and one for formatting an array of ints. The value 
+   * for the digits parameter should always be a positive integer.     
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method nfc
+   * @param {Number} value The Number to convert
+   * @param {Number} leftDigits
+   * @param {Number} rightDigits   
+   * @return {String} The formatted string
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;nfc_&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.nfc = function(value, leftDigits, rightDigits) {
     return nfCore(value, &quot;&quot;, &quot;-&quot;, leftDigits, rightDigits, &quot;,&quot;);
   };
@@ -751,6 +1127,21 @@
     return ary;
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**    
+   * Removes whitespace characters from the beginning and end of a String. 
+   * In addition to standard whitespace characters such as space, carriage 
+   * return, and tab, this function also removes the Unicode &quot;nbsp&quot; character.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method trim
+   * @param {String|Array} str A string or an array of strings to be trimmed
+   * @return {String|Array} Returns the input in a trimmed way
+   *&#x2F;
+   &#x2F;&#x2F; From: http:&#x2F;&#x2F;processingjs.org&#x2F;reference&#x2F;trim_&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.trim = function(str) {
     if (str instanceof Array) {
       var arr = [];
@@ -767,6 +1158,8 @@
    * Draws an ellipse (oval) in the display window. An ellipse with an equal &lt;b&gt;width&lt;&#x2F;b&gt; and &lt;b&gt;height&lt;&#x2F;b&gt; is a circle.
    * The first two parameters set the location, the third sets the width, and the fourth sets the height.
    *
+   * @cat Document
+   * @subcat Primitives
    * @method ellipse
    * @param  {Number} x Location X
    * @param  {Number} y Location Y
@@ -825,6 +1218,8 @@
   &#x2F;**
    * Draws a line (a direct path between two points) to the page.
    *
+   * @cat Document
+   * @subcat Primitives
    * @method line
    * @param  {Number} x1 Point A x-value
    * @param  {Number} y1 Point A y-value
@@ -853,6 +1248,8 @@
   &#x2F;**
    * Draws a rectangle to the page.
    *
+   * @cat Document
+   * @subcat Primitives
    * @method rect
    * @param  {Number} x Position X
    * @param  {Number} y Position Y
@@ -906,6 +1303,7 @@
    * The function calculates the geometric bounds of any given object.
    * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
    *
+   * @cat Document
    * @method bounds
    * @param  {Text|Object} obj The object to calculate the geometric bounds
    * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
@@ -973,6 +1371,29 @@
 
   &#x2F;&#x2F; -- Attributes --
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Modifies the location from which rectangles draw. The default mode is 
+   * rectMode(CORNER), which specifies the location to be the upper left 
+   * corner of the shape and uses the third and fourth parameters of rect() 
+   * to specify the width and height. The syntax rectMode(CORNERS) uses the 
+   * first and second parameters of rect() to set the location of one corner 
+   * and uses the third and fourth parameters to set the opposite corner. 
+   * The syntax rectMode(CENTER) draws the image from its center point and 
+   * uses the third and forth parameters of rect() to specify the image&#x27;s 
+   * width and height. The syntax rectMode(RADIUS) draws the image from its 
+   * center point and uses the third and forth parameters of rect() to specify 
+   * half of the image&#x27;s width and height. The parameter must be written in 
+   * &quot;ALL CAPS&quot;.
+   *
+   * @cat Document
+   * @subcat Attributes
+   * @method rectMode
+   * @param {String} mode Either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS
+   * 
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.rectMode = function (mode) {
     if (arguments.length === 0) return currRectMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
@@ -983,6 +1404,24 @@
     }
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * The origin of the ellipse is modified by the ellipseMode() function. 
+   * The default configuration is ellipseMode(CENTER), which specifies the 
+   * location of the ellipse as the center of the shape. The RADIUS mode is 
+   * the same, but the width and height parameters to ellipse() specify the 
+   * radius of the ellipse, rather than the diameter. The CORNER mode draws 
+   * the shape from the upper-left corner of its bounding box. The CORNERS 
+   * mode uses the four parameters to ellipse() to set two opposing corners 
+   * of the ellipse&#x27;s bounding box. The parameter must be written in &quot;ALL CAPS&quot;.
+   *
+   * @cat Document
+   * @subcat Attributes
+   * @method ellipseMode
+   * @param {String} mode Either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS
+   *&#x2F; 
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.ellipseMode = function (mode) {
     if (arguments.length === 0) return currEllipseMode;
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
@@ -993,6 +1432,19 @@
     }
   };
 
+<<<<<<< HEAD
+=======
+  
+  &#x2F;**
+   * Sets the width of the stroke used for lines and the border 
+   * around shapes. 
+   * 
+   * @cat Document
+   * @subcat Attributes
+   * @method strokeWeight
+   * @param {Number} weight The width of the stroke
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.strokeWeight = function (weight) {
     if (typeof weight === &#x27;string&#x27; || typeof weight === &#x27;number&#x27;) {
       currStrokeWeight = weight;
@@ -1004,6 +1456,8 @@
   &#x2F;**
    * Returns the object style with the given name. If the style does not exist it gets created.
    *
+   * @cat Document
+   * @subcat Attributes
    * @method objectStyle
    * @param  {String} name  The name of the object style to return.
    * @return {ObjectStyle}  The object style instance.
@@ -1026,6 +1480,7 @@
   
   &#x2F;**
    * Sets the color used to fill shapes.
+   * @cat Color
    * @method fill
    * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color&#x2F;swatch or a string with the name of a color. Or values: C,M,Y,K &#x2F; R,G,B &#x2F; Grey
    *&#x2F;
@@ -1053,12 +1508,23 @@
     }
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Disables filling geometry. If both noStroke() and noFill() are called, 
+   * newly drawn shapes will be invisible.
+   *
+   * @cat Color
+   * @method noFill
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.noFill = function () {
     currFillColor = noneSwatchColor;
   };
 
   &#x2F;**
    * Sets the color used to draw lines and borders around shapes.
+   * @cat Color
    * @method stroke
    * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color&#x2F;swatch or a string with the name of a color. Or values: C,M,Y,K &#x2F; R,G,B &#x2F; Grey
    *&#x2F;
@@ -1086,6 +1552,16 @@
     }
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Disables drawing the stroke (outline). If both noStroke() and noFill() 
+   * are called, nothing will be drawn to the screen.
+   * 
+   * @cat Color
+   * @method noStroke
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.noStroke = function () {
     currStrokeColor = noneSwatchColor;
   };
@@ -1093,6 +1569,7 @@
   &#x2F;**
    * Sets the tint of the color used to fill shapes.
    * 
+   * @cat Color
    * @method fillTint
    * @param  {Number} tint Number from 0 to 100
    *&#x2F;
@@ -1107,6 +1584,7 @@
   &#x2F;**
    * Sets the tint of the color used to draw lines and borders around shapes.
    * 
+   * @cat Color
    * @method strokeTint
    * @param  {Number} tint Number from 0 to 100
    *&#x2F;
@@ -1121,6 +1599,7 @@
   &#x2F;**
    * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document
    *
+   * @cat Color
    * @method color
    * @param  {String|Numbers} Get color: the color name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
    * @return {Color} found or new color
@@ -1209,6 +1688,7 @@
    * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
    * N.B.: Both color must be either CMYK or RGB.
    * 
+   * @cat Color
    * @method lerpColor
    * @param  {Color} c1   Input color 1
    * @param  {Color} c2   Input color 2
@@ -1270,6 +1750,7 @@
    * The text displays in relation to the textAlign() and textYAlign() functions. 
    * The width and height parameters define a rectangular area.
    * 
+   * @cat Typography
    * @method text
    * @param  {String} txt The text content to set in the text frame.
    * @param  {Number} x   x-coordinate of text frame
@@ -1318,6 +1799,7 @@
    * corresponding value(s) in an array. This can either be an array containing the value of the concrete item
    * (e.g. character) the values of the item&#x27;s descendants (e.g. paragraphs of given text frame).
    *
+   * @cat Typography
    * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
    * @param  {String|Object} property  The text property name of an object of key&#x2F;value property&#x2F;value pairs.
@@ -1372,6 +1854,7 @@
   &#x2F;**
    * Returns the current font and sets it if argument fontName is given.
    *
+   * @cat Typography
    * @method textFont
    * @param  {String} [fontName] The name of the font to set e.g. Helvetica
    * @param  {String} [fontStyle] The Font style e.g. Bold
@@ -1390,6 +1873,7 @@
   &#x2F;**
    * Returns the current font size in points and sets it if argument pointSize is given.
    *
+   * @cat Typography
    * @method textSize
    * @param  {Number} [pointSize] The size in points to set.
    * @return {Number}             The current point size.
@@ -1404,6 +1888,7 @@
   &#x2F;**
    * Sets the current horizontal and vertical text alignment.
    *
+   * @cat Typography
    * @method textAlign
    * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
    *                           Justification.AWAY_FROM_BINDING_SIDE
@@ -1428,6 +1913,7 @@
   &#x2F;**
    * Returns the spacing between lines of text in units of points and sets it if argument leading is given.
    *
+   * @cat Typography
    * @method textLeading
    * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
    *                                   value Leading.AUTO.
@@ -1443,6 +1929,7 @@
   &#x2F;**
    * Returns the current kerning and sets it if argument kerning is given.
    *
+   * @cat Typography
    * @method textKerning
    * @param  {Number} [kerning] The value to set.
    * @return {Number}           The current kerning.
@@ -1457,6 +1944,7 @@
   &#x2F;**
    * Returns the current tracking and sets it if argument tracking is given.
    *
+   * @cat Typography
    * @method textTracking
    * @param  {Number} [tracking] The value to set.
    * @return {Number}            The current tracking.
@@ -1471,6 +1959,7 @@
   &#x2F;**
    * Returns the character style with the given name. If the style does not exist it gets created.
    *
+   * @cat Typography
    * @method characterStyle
    * @param  {String} name      The name of the character style to return.
    * @return {CharachterStyle}  The character style instance.
@@ -1489,6 +1978,7 @@
   &#x2F;**
    * Returns the paragraph style with the given name. If the style does not exist it gets created.
    *
+   * @cat Typography
    * @method paragraphStyle
    * @param  {String} name     The name of the paragraph style to return.
    * @return {ParagraphStyle}  The paragraph style instance.
@@ -1507,6 +1997,7 @@
   &#x2F;**
    * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
    *
+   * @cat Typography
    * @method linkTextFrames
    * @param  {TextFrame} textFrameA
    * @param  {TextFrame} textFrameB
@@ -1531,6 +2022,7 @@
    * oval or polygon to place the image in.
    * If x and y positions are given and width and height are not given, the frame&#x27;s size gets set to the original image size.
    *
+   * @cat Image
    * @method image
    * @param  {String|File} img The image file name in the document&#x27;s data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
@@ -1597,6 +2089,7 @@
    * Transforms position and size of an image.
    * The image fit options are always &quot;contentToFrame&quot;.
    *
+   * @cat Image
    * @method transformImage
    * @param  {Graphic} img The image to transform
    * @param  {Number} x       New x
@@ -1618,6 +2111,18 @@
     }
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image&#x27;s width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.
+   * If no parameter is passed the currently set mode is returned as String.
+   *
+   * @cat Image
+   * @method imageMode
+   * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER
+   * @return {String} The current mode
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.imageMode = function(mode) {
     if (arguments.length === 0) return currImageMode;
 
@@ -1800,15 +2305,69 @@
   }();
   
 
+<<<<<<< HEAD
   &#x2F;&#x2F; -- Calculation --
   pub.abs = Math.abs;
 
   pub.ceil = Math.ceil;
 
+=======
+  &#x2F;&#x2F; -- Calculation --  
+  &#x2F;**
+   * @class b
+   * 
+   * Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method abs
+   * @param {Number} val An arbitrary number
+   * @return The absolute value of that number
+   *&#x2F;
+  pub.abs = Math.abs;
+
+  &#x2F;**
+   * Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method ceil
+   * @param {Number} val An arbitrary number
+   * @return The next highest integer value
+   *&#x2F;
+  pub.ceil = Math.ceil;
+
+  &#x2F;**
+   * Constrains a value to not exceed a maximum and minimum value.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method constrain
+   * @param {Number} aNumber the value to constrain
+   * @param {Number} aMin minimum limit
+   * @param {Number} aMax maximum limit
+   * @return The constrained value
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.constrain = function(aNumber, aMin, aMax) {
     return aNumber &gt; aMax ? aMax : aNumber &lt; aMin ? aMin : aNumber;
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Calculates the distance between two points.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method dist
+   * @param {Number} x1 the x-coordinate of the first point
+   * @param {Number} y1 the y-coordinate of the first point
+   * @param {Number} x2 the x-coordinate of the second point
+   * @param {Number} y2 the y-coordinate of the second point
+   * @return {Number} The distance
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.dist = function() {
     var dx, dy, dz;
     if (arguments.length === 4) {
@@ -1818,25 +2377,118 @@
     }
   };
 
+<<<<<<< HEAD
   pub.exp = Math.exp;
 
   pub.floor = Math.floor;
 
+=======
+  &#x2F;**
+   * Returns Euler&#x27;s number e (2.71828...) raised to the power of the value parameter.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method exp
+   * @param {Number} a value
+   * @return {Number}
+   *&#x2F;
+  pub.exp = Math.exp;
+
+  &#x2F;**
+   * Calculates the closest int value that is less than or equal to the value of the parameter.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method floor
+   * @param {Number} a value
+   * @return {Number}
+   *&#x2F;
+  pub.floor = Math.floor;
+
+  &#x2F;**
+   * Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method lerp
+   * @param {Number} value1 first value
+   * @param {Number} value2 second value
+   * @param {Number} amt between 0.0 and 1.0
+   * @return {Number} The mapped value
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.lerp = function(value1, value2, amt) {
     return (value2 - value1) * amt + value1;
   };
 
+<<<<<<< HEAD
   pub.log = Math.log;
 
+=======
+  &#x2F;**
+   * Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than 0.0.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method log
+   * @param {Number} number must be greater then 0.0
+   * @return {Number}
+   *&#x2F;
+  pub.log = Math.log;
+
+  &#x2F;**
+   * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no &quot;start&quot; position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing &quot;dist(0, 0, x, y)&quot;.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method mag
+   * @param {Number} a x-coordinate
+   * @param {Number} b y-coordinate
+   * @param {Number} [c] z-coordinate
+   * @return {Number} the magnitude
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.mag = function(a, b, c) {
     if (c) return Math.sqrt(a * a + b * b + c * c);
     return Math.sqrt(a * a + b * b);
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Re-maps a number from one range to another. In the example above, the number &#x27;25&#x27; is converted from a value in the range 0..100 into a value that ranges from the left edge (0) to the right edge (width) of the screen.
+   * 
+   * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method map
+   * @param {Number} value the value to be mapped
+   * @param {Number} istart start of the input range
+   * @param {Number} istop end of the input range
+   * @param {Number} ostart start of the output range
+   * @param {Number} ostop end of the output range
+   * @return {Number} the mapped value
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.map = function(value, istart, istop, ostart, ostop) {
     return ostart + (ostop - ostart) * ((value - istart) &#x2F; (istop - istart));
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Determines the largest value in a sequence of numbers.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method max
+   * @param {Number|Array} param1 Either the first value or an array of Numbers 
+   * @param {Number} param2 Another value to be compared
+   * @param {Number} param3 Another value to be compared
+   * @return {Number} The highest value
+   *&#x2F; 
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.max = function() {
     if (arguments.length === 2) return arguments[0] &lt; arguments[1] ? arguments[1] : arguments[0];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1847,6 +2499,20 @@
     return max;
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Determines the smallest value in a sequence of numbers.
+   * 
+   * @cat Math
+   * @subcat Calculation
+   * @method min
+   * @param {Number|Array} param1 Either the first value or an array of Numbers 
+   * @param {Number} param2 Another value to be compared
+   * @param {Number} param3 Another value to be compared
+   * @return {Number} The lowest value
+   *&#x2F; 
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.min = function() {
     if (arguments.length === 2) return arguments[0] &lt; arguments[1] ? arguments[0] : arguments[1];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -1857,39 +2523,219 @@
     return min;
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Normalizes a number from another range into a value between 0 and 1. 
+   *
+   * Identical to map(value, low, high, 0, 1); 
+   *
+   * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method norm
+   * @param {Number} aNumber The value to be normed
+   * @param {Number} low The lowest value to be expected
+   * @param {Number} low The highest value to be expected
+   * @return {Number} The normalized value
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.norm = function(aNumber, low, high) {
     return (aNumber - low) &#x2F; (high - low);
   };
 
+<<<<<<< HEAD
   pub.pow = Math.pow;
 
   pub.round = Math.round;
 
+=======
+  &#x2F;**
+   * Facilitates exponential expressions. The pow() function is an efficient way of multiplying numbers by themselves (or their reciprocal) in large quantities. For example, pow(3, 5) is equivalent to the expression 3*3*3*3*3 and pow(3, -5) is equivalent to 1 &#x2F; 3*3*3*3*3
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method pow
+   * @param {Number} num base of the exponential expression
+   * @param {Number} exponent power of which to raise the base
+   * @return {Number} the result
+   *&#x2F;
+  pub.pow = Math.pow;
+
+  &#x2F;**
+   * Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method round
+   * @param {Number} value The value to be rounded
+   * @return {Number} The rounded value
+   *&#x2F;
+  pub.round = Math.round;
+
+  &#x2F;**
+   * Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.
+   *
+   * @cat Math
+   * @subcat Calculation
+   * @method sq
+   * @param {Number} aNumber The value to be squared
+   * @return {Number} 
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.sq = function(aNumber) {
     return aNumber * aNumber;
   };
 
   &#x2F;&#x2F; -- Trigonometry --
+<<<<<<< HEAD
+=======
+  
+  &#x2F;**
+   * Calculates the square root of a number. The square root of a number is always positive, even though there may be a valid negative root. The square root s of number a is such that s*s = a. It is the opposite of squaring.
+   *
+   * @cat Math
+   * @subcat Trigonometry
+   * @method sqrt
+   * @param {Number} val The value to be calculated
+   * @return {Number} 
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.sqrt = Math.sqrt;
-  pub.acos = Math.acos;
-  pub.asin = Math.asin;
-  pub.atan = Math.atan;
-  pub.atan2 = Math.atan2;
-  pub.cos = Math.cos;
 
+  &#x2F;**
+   * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method acos
+   * @param {Number} value the value whose arc cosine is to be returned
+   * @return {Number} 
+   *&#x2F;
+  pub.acos = Math.acos;
+  
+  &#x2F;**
+   * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method asin
+   * @param {Number} value the value whose arc sine is to be returned
+   * @return {Number} 
+   *&#x2F;  
+  pub.asin = Math.asin;
+
+  &#x2F;**
+   * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method atan
+   * @param {Number} value the value whose arc tangent is to be returned
+   * @return {Number} 
+   *&#x2F;
+  pub.atan = Math.atan;
+
+  &#x2F;**
+   * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method atan2
+   * @param {Number} y the y coordinate
+   * @param {Number} x the x coordinate
+   * @return {Number} 
+   *&#x2F;
+  pub.atan2 = Math.atan2;
+
+  &#x2F;**
+   * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method cos
+   * @param {Number} rad a value in radians
+   * @return {Number} 
+   *&#x2F;
+  pub.cos = Math.cos;
+<<<<<<< HEAD
+
+=======
+  
+  &#x2F;**
+   * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI&#x2F;2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method degrees
+   * @param {Number} aAngle an angle in radians
+   * @return {Number} The given angle in degree
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.degrees = function(aAngle) {
     return aAngle * 180 &#x2F; Math.PI;
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI&#x2F;2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method radians
+   * @param {Number} aAngle an angle in degree
+   * @return {Number} The given angle in radians
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.radians = function(aAngle) {
     return aAngle &#x2F; 180 * Math.PI;
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to 6.28). Values are returned in the range -1 to 1.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method sin
+   * @param {Number} rad a value in radians
+   * @return {Number} 
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.sin = Math.sin;
+
+  &#x2F;**
+   * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
+   * 
+   * @cat Math
+   * @subcat Trigonometry
+   * @method tan
+   * @param {Number} rad a value in radians
+   * @return {Number} 
+   *&#x2F;
   pub.tan = Math.tan;
 
   &#x2F;&#x2F; -- Random --
   var currentRandom = Math.random;
+<<<<<<< HEAD
+=======
+  
+  &#x2F;**
+   * Generates random numbers. Each time the random() function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call random(5) returns values between 0 and 5. If two parameters are passed, it will return a float with a value between the the parameters. The function call random(-5, 10.2) returns values between -5 and 10.2.
+   * 
+   * One parameter sets the range from 0 to the given parameter, while with two parameters present you set the range from val1 - val2.
+   *
+   * @cat Math
+   * @subcat Random
+   * @method random
+   * @param {Number} [low] The low border of the range
+   * @param {Number} [high] The high border of the range
+   * @return {Number} A random number
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.random = function() {
     if (arguments.length === 0) return currentRandom();
     if (arguments.length === 1) return currentRandom() * arguments[0];
@@ -1971,6 +2817,10 @@
     function lerp(t, a, b) {
       return a + t * (b - a);
     }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
     this.noise3d = function(x, y, z) {
       var X = Math.floor(x) &amp; 255,
         Y = Math.floor(y) &amp; 255,
@@ -1989,6 +2839,10 @@
         p11 = perm[p1 + 1] + Z;
       return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
     };
+<<<<<<< HEAD
+=======
+    
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
     this.noise2d = function(x, y) {
       var X = Math.floor(x) &amp; 255,
         Y = Math.floor(y) &amp; 255;
@@ -2000,6 +2854,10 @@
         p1 = perm[X + 1] + Y;
       return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
     };
+<<<<<<< HEAD
+=======
+    
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
     this.noise1d = function(x) {
       var X = Math.floor(x) &amp; 255;
       x -= Math.floor(x);
@@ -2013,6 +2871,27 @@
     fallout: 0.5,
     seed: undef
   };
+<<<<<<< HEAD
+=======
+
+  &#x2F;**
+   * Returns the Perlin noise value at specified coordinates. Perlin noise is a random sequence generator producing a more natural ordered, harmonic succession of numbers compared to the standard random() function. It was invented by Ken Perlin in the 1980s and been used since in graphical applications to produce procedural textures, natural motion, shapes, terrains etc.
+   *
+   * The main difference to the random() function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between 0.0 and 1.0. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.
+   *
+   * The actual noise is structured similar to an audio signal, in respect to the function&#x27;s use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result. 
+   *
+   * Another way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn&#x27;t matter as such, only the distance between successive coordinates does (eg. when using noise() within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of 0.005-0.03 work best for most applications, but this will differ depending on use.
+   *
+   * @cat Math
+   * @subcat Random
+   * @method noise
+   * @param {Number} x Coordinate in x space
+   * @param {Number} [y] Coordinate in y space
+   * @param {Number} [z] Coordinate in z space
+   * @return {Number} the noise value
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.noise = function(x, y, z) {
     if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
     var generator = noiseProfile.generator;
@@ -2036,10 +2915,37 @@
     }
     return sum;
   };
+<<<<<<< HEAD
+=======
+  
+  &#x2F;**
+   * Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().
+   *
+   * By changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.
+   * 
+   * @cat Math
+   * @subcat Random
+   * @method noiseDetail
+   * @param {Number} octaves number of octaves to be used by the noise() function
+   * @param {Number} fallout falloff factor for each octave
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.noiseDetail = function(octaves, fallout) {
     noiseProfile.octaves = octaves;
     if (fallout !== undef) noiseProfile.fallout = fallout;
   };
+<<<<<<< HEAD
+=======
+  
+  &#x2F;** 
+   * Sets the seed value for noise(). By default, noise() produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.
+   * 
+   * @cat Math
+   * @subcat Random
+   * @method noiseSeed
+   * @param {Number} seed 
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.noiseSeed = function(seed) {
     noiseProfile.seed = seed;
     noiseProfile.generator = undef;
@@ -2047,6 +2953,7 @@
 
 
   &#x2F;&#x2F; ----------------------------------------
+<<<<<<< HEAD
   &#x2F;&#x2F; Input
   
   pub.year = function() {
@@ -2067,6 +2974,90 @@
   pub.second = function() {
     return (new Date()).getSeconds();
   };
+=======
+  &#x2F;&#x2F; Date
+  
+  &#x2F;**
+   * The year() function returns the current year as an integer (2012, 2013 etc).
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method year
+   * @return {Number}
+   *&#x2F;
+  pub.year = function() {
+    return (new Date()).getFullYear()();
+  };
+
+  &#x2F;**
+   * The month() function returns the current month as a value from 1 - 12.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method month
+   * @return {Number}
+   *&#x2F;
+  pub.month = function() {
+    return (new Date()).getMonth() + 1;
+  };
+
+  &#x2F;**
+   * The day() function returns the current day as a value from 1 - 31.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method day
+   * @return {Number}
+   *&#x2F;
+  pub.day = function() {
+    return (new Date()).getDate();
+  };
+  
+  &#x2F;**
+   * The hour() function returns the current hour as a value from 0 - 23.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method hour
+   * @return {Number}
+   *&#x2F;
+  pub.hour = function() {
+    return (new Date()).getHours();
+  };
+
+  &#x2F;**
+   * The minute() function returns the current minute as a value from 0 - 59.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method minute
+   * @return {Number}
+   *&#x2F;
+  pub.minute = function() {
+    return (new Date()).getMinutes();
+  };
+  
+  &#x2F;**
+   * The second() function returns the current second as a value from 0 - 59.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method second
+   * @return {Number}
+   *&#x2F;
+  pub.second = function() {
+    return (new Date()).getSeconds();
+  };
+  
+  &#x2F;**
+   * Returns the number of milliseconds (thousandths of a second) since starting an applet. This information is often used for timing animation sequences.
+   * 
+   * @cat Environment
+   * @subcat Date
+   * @method millis
+   * @return {Number}
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.millis = function() {
     return Date.now() - start;
   };
@@ -2074,6 +3065,7 @@
   &#x2F;**
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
    *
+   * @cat Document
    * @method findByLabel
    * @param  {String} label The label identifier
    * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
@@ -2094,6 +3086,7 @@
   &#x2F;**
    * Returns the currently selected object(s)
    *
+   * @cat Document
    * @method selection
    * @return {Object[]} Array of selected object(s).
    *&#x2F;
@@ -2105,6 +3098,7 @@
    * Reads the contents of a file and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
    *
+   * @cat Input
    * @method loadStrings
    * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
    * @return {String[]}  Array of the individual lines in the given file.
@@ -2126,10 +3120,30 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Output
   
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Prints a message line to the console output in the ExtendScript editor. 
+   * 
+   * @cat Output
+   * @method println
+   * @param {String} The message to print
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   var println = pub.println = function(msg) {
     $.writeln(msg);
   };
 
+<<<<<<< HEAD
+=======
+  &#x2F;**
+   * Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn&#x27;t return the carriage to a new line at the end.
+   * 
+   * @cat Output
+   * @method print
+   * @param {String} The message to print
+   *&#x2F;
+>>>>>>> Major addition for jsdoc, refactored PMatrix2D to Matrix2D
   pub.print = function(msg) {
     $.write(msg);
   };
@@ -2138,6 +3152,7 @@
    * Writes an array of strings to a file, one line per string. This file is saved to the document&#x27;s data directory.
    * If the given file exists it gets overridden.
    *
+   * @cat Output
    * @method saveStrings
    * @param  {String|File} file The file name or a File instance
    * @param  {String[]} strings The string array to be written
@@ -2155,6 +3170,7 @@
    * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
    *
    * @todo data folder is not created automatically,
+   * @cat Output
    * @method savePDF
    * @param {String|File} file The file name or a File instance
    * @param {Boolean} showOptions Whether to show the export dialog
@@ -2172,7 +3188,9 @@
 
   &#x2F;**
    * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
-   *
+   * 
+   * @cat Document
+   * @subcat Transformation
    * @method itemX
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [x] The new x position
@@ -2193,6 +3211,8 @@
   &#x2F;**
    * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemY
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [y] The new y position
@@ -2213,6 +3233,8 @@
   &#x2F;**
    * Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemWidth
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [width] The new width
@@ -2233,6 +3255,8 @@
   &#x2F;**
    * Scales the given PageItem to the given height. If height is not given as argument the current height is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemHeight
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [height] The new height
@@ -2253,6 +3277,8 @@
   &#x2F;**
    * Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemPosition
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [x] The new x coordinate
@@ -2278,6 +3304,8 @@
   &#x2F;**
    * Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.
    *
+   * @cat Document
+   * @subcat Transformation
    * @method itemSize
    * @param {PageItem} pItem The PageItem to alter
    * @param {Number} [width] The new width
@@ -2310,22 +3338,24 @@
     else if (digits === -1) digits = (big + &quot;&quot;).length;
     return digits;
   };
-
-  var PMatrix2D = pub.PMatrix2D = function() {
+  
+  &#x2F;* todo *&#x2F;
+  var Matrix2D = pub.Matrix2D = function() {
     if (arguments.length === 0) this.reset();
-    else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) this.set(arguments[0].array());
+    else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Matrix2D) this.set(arguments[0].array());
     else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   };
-  PMatrix2D.prototype = {
+  &#x2F;* todo *&#x2F;
+  Matrix2D.prototype = {
     set: function() {
       if (arguments.length === 6) {
         var a = arguments;
         this.set([a[0], a[1], a[2], a[3], a[4], a[5]]);
-      } else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) this.elements = arguments[0].array();
+      } else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Matrix2D) this.elements = arguments[0].array();
       else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) this.elements = arguments[0].slice();
     },
     get: function() {
-      var outgoing = new PMatrix2D();
+      var outgoing = new Matrix2D();
       outgoing.set(this.elements);
       return outgoing;
     },
@@ -2423,7 +3453,7 @@
     },
     apply: function() {
       var source;
-      if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Matrix2D) source = arguments[0].array();
       else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
       else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) source = arguments[0];
       var result = [0, 0, this.elements[2], 0, 0, this.elements[5]];
@@ -2433,7 +3463,7 @@
     },
     preApply: function() {
       var source;
-      if (arguments.length === 1 &amp;&amp; arguments[0] instanceof PMatrix2D) source = arguments[0].array();
+      if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Matrix2D) source = arguments[0].array();
       else if (arguments.length === 6) source = Array.prototype.slice.call(arguments);
       else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Array) source = arguments[0];
       var result = [0, 0, source[2], 0, 0, source[5]];
@@ -2469,11 +3499,13 @@
       pub.println(output);
     }
   };
-
+  
+  &#x2F;* todo *&#x2F;
   pub.applyMatrix = function (matrix) {
     currMatrix.apply(matrix);
   };
 
+  &#x2F;* todo *&#x2F;
   pub.popMatrix = function (argument) {
     if (matrixStack.length &gt; 0) {
       currMatrix.set( matrixStack.pop() );
@@ -2482,27 +3514,28 @@
     }
   };
 
+  &#x2F;* todo *&#x2F;
   pub.printMatrix = function (argument) {
     currMatrix.print();
   };
-
+  &#x2F;* todo *&#x2F;
   pub.pushMatrix = function (argument) {
     matrixStack.push( currMatrix.array() );
   };
-
+&#x2F;* todo *&#x2F;
   pub.resetMatrix = function (argument) {
     matrixStack = [];
-    currMatrix = new PMatrix2D();
+    currMatrix = new Matrix2D();
   };
-
+&#x2F;* todo *&#x2F;
   pub.rotate = function (angle) {
     currMatrix.rotate(angle);
   };
-
+&#x2F;* todo *&#x2F;
   pub.scale = function (scaleX,scaleY) {
     currMatrix.scale(scaleX,scaleY);
   };
-
+&#x2F;* todo *&#x2F;
   pub.translate = function (tx,ty) {
     currMatrix.translate(tx,ty);
   };
@@ -2514,6 +3547,7 @@
   &#x2F;**
    * Run the sketch! Has to be called in every sketch a the very end of the code.
    *
+   * @cat Environment
    * @method go
    *&#x2F;
   pub.go = function() {
@@ -2531,6 +3565,7 @@
    * It is essential to call noLoop() or execute the script lib&#x2F;stop.jsx when the script is finished!
    * The framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.
    *
+   * @cat Environment
    * @method loop
    * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
    *&#x2F;
@@ -2559,6 +3594,7 @@
    *
    * Stops basil from continuously executing the code within draw().
    *
+   * @cat Environment
    * @method noLoop
    *&#x2F;
   pub.noLoop = function() {
