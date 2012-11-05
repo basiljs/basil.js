@@ -71,6 +71,7 @@
    */
 
   pub.CM = "cm";
+
   /**
    * Millimeter
    * @property MM {String}
@@ -621,13 +622,15 @@
 
   // -- Conversion --
   
-  /** 
+  /**  @class b */
+
+  /**
    * Converts a byte, char, int, or color to a String containing the
    * equivalent binary notation. For example color(0, 102, 153, 255) 
    * will convert to the String "11111111000000000110011010011001". This 
    * function can help make your geeky debugging sessions much happier.
    *
-   * @class b
+   
    * @cat Data
    * @subcat Conversion
    * @method binary
@@ -1986,15 +1989,13 @@
   // ----------------------------------------
   // Math
   
-  /**
-   * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the PVector class.
-   *
-   * @class Vector
-   */
   var Vector = pub.Vector = function() {
 
     /**
+     * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the PVector class.
+     *
      * Constructor of Vector, can be two- or three-dimensional.
+     * 
      * @constructor
      * @method Vector
      * @param {Number} x
@@ -2009,7 +2010,7 @@
     /**
      * Calculates the Euclidean distance between two points (considering a point as a vector object).
      * Is meant to be called "static" i.e. Vector.dist(v1, v2);
-     * @method dist
+     * @method Vector.dist
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2022,7 +2023,7 @@
     /**
      * Calculates the dot product of two vectors.
      * Is meant to be called "static" i.e. Vector.dot(v1, v2);
-     * @method dot
+     * @method Vector.dot
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2035,7 +2036,7 @@
     /**
      * Calculates the cross product of two vectors.
      * Is meant to be called "static" i.e. Vector.cross(v1, v2);
-     * @method cross
+     * @method Vector.cross
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2048,7 +2049,7 @@
     /**
      * Calculates the angle between two vectors.
      * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
-     * @method angleBetween
+     * @method Vector.angleBetween
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2062,7 +2063,7 @@
 
       /**
        * Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.
-       * @method set
+       * @method Vector.set
        * @param {Number|Array|Vector} v Either a vector, array or x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2077,7 +2078,7 @@
       },
       /**
        * Gets a copy of the vector, returns a Vector object.
-       * @method get
+       * @method Vector.get
        * @return {Vector} A copy of the vector
        */
       get: function() {
@@ -2085,7 +2086,7 @@
       },
       /**
        * Calculates the magnitude (length) of the vector and returns the result as a float
-       * @method mag
+       * @method Vector.mag
        * @return {Number} The length
        */
       mag: function() {
@@ -2096,7 +2097,7 @@
       },
       /**
        * Adds x, y, and z components to a vector, adds one vector to another.
-       * @method add
+       * @method Vector.add
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2114,7 +2115,7 @@
       },
       /**
        * Substract x, y, and z components or a full vector from this vector
-       * @method sub
+       * @method Vector.sub
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2132,7 +2133,7 @@
       },
       /**
        * Multiplies this vector with x, y, and z components or another vector.
-       * @method mult
+       * @method Vector.mult
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2150,7 +2151,7 @@
       },
       /**
        * Divides this vector through x, y, and z components or another vector.
-       * @method div
+       * @method Vector.div
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2168,7 +2169,7 @@
       },
       /**
        * Calculates the distance from this vector to another as x, y, and z components or full vector.
-       * @method dist
+       * @method Vector.dist
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2182,7 +2183,7 @@
       },
       /**
        * Calculates the dot product from this vector to another as x, y, and z components or full vector.
-       * @method dot
+       * @method Vector.dot
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2194,7 +2195,7 @@
       },
       /**
        * Calculates the cross product from this vector to another as x, y, and z components or full vector.
-       * @method cross
+       * @method Vector.cross
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2208,7 +2209,7 @@
       },
       /**
        * Normalizes the length of this vector to 1.
-       * @method normalize
+       * @method Vector.normalize
        */
       normalize: function() {
         var m = this.mag();
@@ -2216,7 +2217,7 @@
       },
       /**
        * Normalizes the length of this vector to the given parameter.
-       * @method limit
+       * @method Vector.limit
        * @param {Number} high The value to scale to.
        */
       limit: function(high) {
@@ -2227,7 +2228,7 @@
       },
       /**
        * The 2D orientation (heading) of this vector in radian.
-       * @method heading2D
+       * @method Vector.heading2D
        * @return {Number} A radian angle value
        */
       heading2D: function() {
@@ -2235,7 +2236,7 @@
       },
       /**
        * Returns data about this vector as a string.
-       * @method toString
+       * @method Vector.toString
        * @return {String} The x, y and z components as a string.
        */
       toString: function() {
@@ -2243,7 +2244,7 @@
       },
       /** 
        * Returns this vector as an array [x,y,z].
-       * @method array
+       * @method Vector.array
        * @return {Array} [x,y,z]
        */
       array: function() {
@@ -2264,9 +2265,8 @@
   
 
   // -- Calculation --  
-  /**
-   * @class b
-   * 
+   
+  /** 
    * Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.
    *
    * @cat Math

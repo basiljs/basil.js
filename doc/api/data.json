@@ -11,9 +11,7 @@
             "name": "basil.js",
             "modules": {},
             "classes": {
-                "b": 1,
-                "Vector": 1,
-                "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.": 1
+                "b": 1
             },
             "fors": {},
             "namespaces": {}
@@ -30,65 +28,8 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "basil.js",
-            "line": 624,
-            "static": 1,
-            "description": "Converts a byte, char, int, or color to a String containing the\nequivalent binary notation. For example color(0, 102, 153, 255) \nwill convert to the String \"11111111000000000110011010011001\". This \nfunction can help make your geeky debugging sessions much happier.",
-            "cat": "Data",
-            "subcat": "Conversion",
-            "itemtype": "method",
-            "params": [
-                {
-                    "name": "num",
-                    "description": "value to convert",
-                    "type": "Number"
-                },
-                {
-                    "name": "numBits",
-                    "description": "number of digits to return",
-                    "type": "Number",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "A formatted string",
-                "type": "String"
-            }
-        },
-        "Vector": {
-            "name": "Vector",
-            "shortname": "Vector",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "basil.js",
-            "line": 1989,
-            "description": "A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some \"vector\" math, which is made easy by the methods inside the PVector class."
-        },
-        "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.": {
-            "name": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.",
-            "shortname": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "basil.js",
-            "line": 2267,
-            "cat": "Math",
-            "subcat": "Calculation",
-            "itemtype": "method",
-            "params": [
-                {
-                    "name": "val",
-                    "description": "An arbitrary number",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "The absolute value of that number"
-            }
+            "line": 36,
+            "static": 1
         }
     },
     "classitems": [
@@ -134,7 +75,7 @@
         },
         {
             "file": "basil.js",
-            "line": 74,
+            "line": 75,
             "description": "Millimeter",
             "itemtype": "property",
             "name": "MM",
@@ -144,7 +85,7 @@
         },
         {
             "file": "basil.js",
-            "line": 81,
+            "line": 82,
             "description": "Inch",
             "itemtype": "property",
             "name": "IN",
@@ -154,7 +95,7 @@
         },
         {
             "file": "basil.js",
-            "line": 88,
+            "line": 89,
             "description": "Corner, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNER",
@@ -164,7 +105,7 @@
         },
         {
             "file": "basil.js",
-            "line": 95,
+            "line": 96,
             "description": "Corners, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNERS",
@@ -174,7 +115,7 @@
         },
         {
             "file": "basil.js",
-            "line": 102,
+            "line": 103,
             "description": "Center, used for drawing modes.",
             "itemtype": "property",
             "name": "CENTER",
@@ -184,7 +125,7 @@
         },
         {
             "file": "basil.js",
-            "line": 109,
+            "line": 110,
             "description": "Radius, used for drawing modes.",
             "itemtype": "property",
             "name": "RADIUS",
@@ -194,7 +135,7 @@
         },
         {
             "file": "basil.js",
-            "line": 116,
+            "line": 117,
             "description": "Two Pi",
             "itemtype": "property",
             "name": "TWO_PI",
@@ -204,7 +145,7 @@
         },
         {
             "file": "basil.js",
-            "line": 123,
+            "line": 124,
             "description": "Pi",
             "itemtype": "property",
             "name": "PI",
@@ -214,7 +155,7 @@
         },
         {
             "file": "basil.js",
-            "line": 130,
+            "line": 131,
             "description": "Half Pi",
             "itemtype": "property",
             "name": "HALF_PI",
@@ -224,7 +165,7 @@
         },
         {
             "file": "basil.js",
-            "line": 137,
+            "line": 138,
             "description": "Quarter Pi",
             "itemtype": "property",
             "name": "QUARTER_PI",
@@ -234,7 +175,7 @@
         },
         {
             "file": "basil.js",
-            "line": 151,
+            "line": 152,
             "description": "System variable which stores the width of the current page.",
             "itemtype": "property",
             "name": "width",
@@ -244,7 +185,7 @@
         },
         {
             "file": "basil.js",
-            "line": 158,
+            "line": 159,
             "description": "System variable which stores the height of the current page.",
             "itemtype": "property",
             "name": "height",
@@ -254,7 +195,7 @@
         },
         {
             "file": "basil.js",
-            "line": 218,
+            "line": 219,
             "description": "Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.",
             "cat": "Data",
             "subcat": "Array Functions",
@@ -276,7 +217,7 @@
         },
         {
             "file": "basil.js",
-            "line": 242,
+            "line": 243,
             "description": "Suspends the calling thread for a number of milliseconds.\nDuring a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.",
             "cat": "Environment",
             "itemtype": "method",
@@ -297,7 +238,7 @@
         },
         {
             "file": "basil.js",
-            "line": 255,
+            "line": 256,
             "description": "Calls the given callback function with each story of the given document.",
             "cat": "Document",
             "itemtype": "method",
@@ -323,7 +264,7 @@
         },
         {
             "file": "basil.js",
-            "line": 268,
+            "line": 269,
             "description": "Calls the given callback function with each paragraph of the given document, story or text frame.",
             "cat": "Document",
             "itemtype": "method",
@@ -344,7 +285,7 @@
         },
         {
             "file": "basil.js",
-            "line": 284,
+            "line": 285,
             "description": "Calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "cat": "Document",
             "itemtype": "method",
@@ -365,7 +306,7 @@
         },
         {
             "file": "basil.js",
-            "line": 301,
+            "line": 302,
             "description": "Calls the given callback function with each word of the given document, story, text frame, paragraph or line.",
             "cat": "Document",
             "itemtype": "method",
@@ -386,7 +327,7 @@
         },
         {
             "file": "basil.js",
-            "line": 318,
+            "line": 319,
             "description": "Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.",
             "cat": "Document",
             "itemtype": "method",
@@ -407,7 +348,7 @@
         },
         {
             "file": "basil.js",
-            "line": 348,
+            "line": 349,
             "description": "Checks whether a var is an Array, returns true if this is the case",
             "cat": "Data",
             "subcat": "Array Functions",
@@ -428,7 +369,7 @@
         },
         {
             "file": "basil.js",
-            "line": 361,
+            "line": 362,
             "description": "Checks whether a var is a number, returns true if this is the case",
             "cat": "Data",
             "itemtype": "method",
@@ -448,7 +389,7 @@
         },
         {
             "file": "basil.js",
-            "line": 373,
+            "line": 374,
             "description": "Checks whether a var is an indesign text object, returns true if this is the case",
             "cat": "Document",
             "itemtype": "method",
@@ -468,7 +409,7 @@
         },
         {
             "file": "basil.js",
-            "line": 395,
+            "line": 396,
             "description": "Sets or possibly creates the current document and returns it.\nIf the param doc is not given the current document gets set to the active document\nin the application. If no document at all is open, a new document gets created.",
             "cat": "Document",
             "itemtype": "method",
@@ -489,7 +430,7 @@
         },
         {
             "file": "basil.js",
-            "line": 412,
+            "line": 413,
             "description": "Closes the current document.",
             "cat": "Document",
             "itemtype": "method",
@@ -512,7 +453,7 @@
         },
         {
             "file": "basil.js",
-            "line": 428,
+            "line": 429,
             "description": "Returns the current page and sets it if argument page is given.",
             "cat": "Document",
             "itemtype": "method",
@@ -533,7 +474,7 @@
         },
         {
             "file": "basil.js",
-            "line": 452,
+            "line": 453,
             "description": "Returns the current layer and sets it if argument layer is given.",
             "cat": "Document",
             "itemtype": "method",
@@ -554,7 +495,7 @@
         },
         {
             "file": "basil.js",
-            "line": 473,
+            "line": 474,
             "description": "Sets the units of the document (like right clicking the rulers).",
             "cat": "Document",
             "itemtype": "method",
@@ -575,7 +516,7 @@
         },
         {
             "file": "basil.js",
-            "line": 516,
+            "line": 517,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -595,7 +536,7 @@
         },
         {
             "file": "basil.js",
-            "line": 535,
+            "line": 536,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -615,7 +556,7 @@
         },
         {
             "file": "basil.js",
-            "line": 589,
+            "line": 590,
             "description": "Function convert an javascript object to a JSON-string. Usage:\nvar str = b.JSON.encode(obj);\nvar obj = b.JSON.decode(str);",
             "itemtype": "method",
             "name": "JSON.encode()",
@@ -634,7 +575,39 @@
         },
         {
             "file": "basil.js",
-            "line": 654,
+            "line": 625,
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 627,
+            "description": "Converts a byte, char, int, or color to a String containing the\nequivalent binary notation. For example color(0, 102, 153, 255) \nwill convert to the String \"11111111000000000110011010011001\". This \nfunction can help make your geeky debugging sessions much happier.",
+            "cat": "Data",
+            "subcat": "Conversion",
+            "itemtype": "method",
+            "name": "binary",
+            "params": [
+                {
+                    "name": "num",
+                    "description": "value to convert",
+                    "type": "Number"
+                },
+                {
+                    "name": "numBits",
+                    "description": "number of digits to return",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "A formatted string",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 657,
             "description": "Converts a String representation of a binary number to its \nequivalent integer value. For example, unbinary(\"00001000\") will \nreturn 8.",
             "cat": "Data",
             "subcat": "Conversion",
@@ -655,7 +628,7 @@
         },
         {
             "file": "basil.js",
-            "line": 689,
+            "line": 692,
             "description": "Convert a number to a hex representation.",
             "cat": "Data",
             "subcat": "Conversion",
@@ -682,7 +655,7 @@
         },
         {
             "file": "basil.js",
-            "line": 710,
+            "line": 713,
             "description": "Convert a hex representation to a number.",
             "cat": "Data",
             "subcat": "Conversion",
@@ -703,7 +676,7 @@
         },
         {
             "file": "basil.js",
-            "line": 731,
+            "line": 734,
             "description": "Combines an array of Strings into one String, each separated by \nthe character(s) used for the separator parameter. To join arrays \nof ints or floats, it's necessary to first convert them to strings \nusing nf() or nfs().",
             "itemtype": "method",
             "name": "join",
@@ -729,7 +702,7 @@
         },
         {
             "file": "basil.js",
-            "line": 749,
+            "line": 752,
             "description": "The split() function breaks a string into pieces using a\ncharacter or string as the divider. The delim parameter specifies the\ncharacter or characters that mark the boundaries between each piece. A\nString[] array is returned that contains each of the pieces.\n\nIf the result is a set of numbers, you can convert the String[] array\nto to a float[] or int[] array using the datatype conversion functions\nint() and float() (see example above).\n\nThe splitTokens() function works in a similar fashion, except that it\nsplits using a range of characters instead of a specific character or\nsequence.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -756,7 +729,7 @@
         },
         {
             "file": "basil.js",
-            "line": 775,
+            "line": 778,
             "description": "The splitTokens() function splits a String at one or many character \n\"tokens.\" The tokens parameter specifies the character or characters \nto be used as a boundary.\n\nIf no tokens character is specified, any whitespace character is used \nto split. Whitespace characters include tab (\\t), line feed (\\n), \ncarriage return (\\r), form feed (\\f), and space. To convert a String \nto an array of integers or floats, use the datatype conversion functions \nint() and float() to convert the array of Strings.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -783,7 +756,7 @@
         },
         {
             "file": "basil.js",
-            "line": 876,
+            "line": 879,
             "description": "Utility function for formatting numbers into strings. There\nare two versions, one for formatting floats and one for formatting\nints. The values for the digits, left, and right parameters should\nalways be positive integers.\n\nAs shown in the above example, nf() is used to add zeros to the\nleft and/or right of a number. This is typically for aligning a list\nof numbers. To remove digits from a floating-point number, use the\nint(), ceil(), floor(), or round() functions.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -814,7 +787,7 @@
         },
         {
             "file": "basil.js",
-            "line": 900,
+            "line": 903,
             "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut leaves a blank space in front of positive numbers so they align \nwith negative numbers in spite of the minus symbol. There are two \nversions, one for formatting floats and one for formatting ints. The \nvalues for the digits, left, and right parameters should always be \npositive integers.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -845,7 +818,7 @@
         },
         {
             "file": "basil.js",
-            "line": 921,
+            "line": 924,
             "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut puts a \"+\" in front of positive numbers and a \"-\" in front of \nnegative numbers. There are two versions, one for formatting floats \nand one for formatting ints. The values for the digits, left, and right \nparameters should always be positive integers.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -876,7 +849,7 @@
         },
         {
             "file": "basil.js",
-            "line": 941,
+            "line": 944,
             "description": "Utility function for formatting numbers into strings and placing \nappropriate commas to mark units of 1000. There are two versions, one \nfor formatting ints and one for formatting an array of ints. The value \nfor the digits parameter should always be a positive integer.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -907,7 +880,7 @@
         },
         {
             "file": "basil.js",
-            "line": 961,
+            "line": 964,
             "description": "Removes whitespace characters from the beginning and end of a String. \nIn addition to standard whitespace characters such as space, carriage \nreturn, and tab, this function also removes the Unicode \"nbsp\" character.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -928,7 +901,7 @@
         },
         {
             "file": "basil.js",
-            "line": 985,
+            "line": 988,
             "description": "Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.\nThe first two parameters set the location, the third sets the width, and the fourth sets the height.",
             "cat": "Document",
             "subcat": "Primitives",
@@ -964,7 +937,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1046,
+            "line": 1049,
             "description": "Draws a line (a direct path between two points) to the page.",
             "cat": "Document",
             "subcat": "Primitives",
@@ -1000,7 +973,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1076,
+            "line": 1079,
             "description": "Draws a rectangle to the page.",
             "cat": "Document",
             "subcat": "Primitives",
@@ -1036,7 +1009,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1130,
+            "line": 1133,
             "description": "The function calculates the geometric bounds of any given object.\nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
             "cat": "Document",
             "itemtype": "method",
@@ -1056,7 +1029,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1202,
+            "line": 1205,
             "description": "Modifies the location from which rectangles draw. The default mode is \nrectMode(CORNER), which specifies the location to be the upper left \ncorner of the shape and uses the third and fourth parameters of rect() \nto specify the width and height. The syntax rectMode(CORNERS) uses the \nfirst and second parameters of rect() to set the location of one corner \nand uses the third and fourth parameters to set the opposite corner. \nThe syntax rectMode(CENTER) draws the image from its center point and \nuses the third and forth parameters of rect() to specify the image's \nwidth and height. The syntax rectMode(RADIUS) draws the image from its \ncenter point and uses the third and forth parameters of rect() to specify \nhalf of the image's width and height. The parameter must be written in \n\"ALL CAPS\".",
             "cat": "Document",
             "subcat": "Attributes",
@@ -1073,7 +1046,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1232,
+            "line": 1235,
             "description": "The origin of the ellipse is modified by the ellipseMode() function. \nThe default configuration is ellipseMode(CENTER), which specifies the \nlocation of the ellipse as the center of the shape. The RADIUS mode is \nthe same, but the width and height parameters to ellipse() specify the \nradius of the ellipse, rather than the diameter. The CORNER mode draws \nthe shape from the upper-left corner of its bounding box. The CORNERS \nmode uses the four parameters to ellipse() to set two opposing corners \nof the ellipse's bounding box. The parameter must be written in \"ALL CAPS\".",
             "cat": "Document",
             "subcat": "Attributes",
@@ -1090,7 +1063,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1258,
+            "line": 1261,
             "description": "Sets the width of the stroke used for lines and the border \naround shapes.",
             "cat": "Document",
             "subcat": "Attributes",
@@ -1107,7 +1080,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1275,
+            "line": 1278,
             "description": "Returns the object style with the given name. If the style does not exist it gets created.",
             "cat": "Document",
             "subcat": "Attributes",
@@ -1128,7 +1101,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1300,
+            "line": 1303,
             "description": "Sets the color used to fill shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1144,7 +1117,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1330,
+            "line": 1333,
             "description": "Disables filling geometry. If both noStroke() and noFill() are called, \nnewly drawn shapes will be invisible.",
             "cat": "Color",
             "itemtype": "method",
@@ -1153,7 +1126,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1341,
+            "line": 1344,
             "description": "Sets the color used to draw lines and borders around shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1169,7 +1142,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1371,
+            "line": 1374,
             "description": "Disables drawing the stroke (outline). If both noStroke() and noFill() \nare called, nothing will be drawn to the screen.",
             "cat": "Color",
             "itemtype": "method",
@@ -1178,7 +1151,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1382,
+            "line": 1385,
             "description": "Sets the tint of the color used to fill shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1194,7 +1167,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1397,
+            "line": 1400,
             "description": "Sets the tint of the color used to draw lines and borders around shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1210,7 +1183,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1412,
+            "line": 1415,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document",
             "cat": "Color",
             "itemtype": "method",
@@ -1230,7 +1203,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1499,
+            "line": 1502,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "cat": "Color",
             "itemtype": "method",
@@ -1260,7 +1233,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1557,
+            "line": 1560,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nThe default document font size will be used unless a font size is set with the textSize() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() and textYAlign() functions. \nThe width and height parameters define a rectangular area.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1300,7 +1273,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1607,
+            "line": 1610,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to,\nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the\ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item\n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "cat": "Typography",
             "itemtype": "method",
@@ -1331,7 +1304,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1667,
+            "line": 1670,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1358,7 +1331,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1686,
+            "line": 1689,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1379,7 +1352,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1701,
+            "line": 1704,
             "description": "Sets the current horizontal and vertical text alignment.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1401,7 +1374,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1726,
+            "line": 1729,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1422,7 +1395,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1742,
+            "line": 1745,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1443,7 +1416,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1757,
+            "line": 1760,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1464,7 +1437,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1772,
+            "line": 1775,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1484,7 +1457,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1791,
+            "line": 1794,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1504,7 +1477,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1810,
+            "line": 1813,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1525,7 +1498,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1830,
+            "line": 1833,
             "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's\ndata directory which is in the same directory where the document is saved in. The image argument can also be a File\ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle,\noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "cat": "Image",
             "itemtype": "method",
@@ -1568,7 +1541,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1901,
+            "line": 1904,
             "description": "Transforms position and size of an image.\nThe image fit options are always \"contentToFrame\".",
             "cat": "Image",
             "itemtype": "method",
@@ -1604,7 +1577,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1927,
+            "line": 1930,
             "description": "Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.\nIf no parameter is passed the currently set mode is returned as String.",
             "cat": "Image",
             "itemtype": "method",
@@ -1625,8 +1598,8 @@
         },
         {
             "file": "basil.js",
-            "line": 1996,
-            "description": "Constructor of Vector, can be two- or three-dimensional.",
+            "line": 1994,
+            "description": "A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some \"vector\" math, which is made easy by the methods inside the PVector class.\n\nConstructor of Vector, can be two- or three-dimensional.",
             "is_constructor": 1,
             "itemtype": "method",
             "name": "Vector",
@@ -1648,14 +1621,14 @@
                     "optional": true
                 }
             ],
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2009,
+            "line": 2010,
             "description": "Calculates the Euclidean distance between two points (considering a point as a vector object).\nIs meant to be called \"static\" i.e. Vector.dist(v1, v2);",
             "itemtype": "method",
-            "name": "dist",
+            "name": "Vector.dist",
             "static": 1,
             "params": [
                 {
@@ -1673,14 +1646,14 @@
                 "description": "The distance",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2022,
+            "line": 2023,
             "description": "Calculates the dot product of two vectors.\nIs meant to be called \"static\" i.e. Vector.dot(v1, v2);",
             "itemtype": "method",
-            "name": "dot",
+            "name": "Vector.dot",
             "static": 1,
             "params": [
                 {
@@ -1698,14 +1671,14 @@
                 "description": "The dot product",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2035,
+            "line": 2036,
             "description": "Calculates the cross product of two vectors.\nIs meant to be called \"static\" i.e. Vector.cross(v1, v2);",
             "itemtype": "method",
-            "name": "cross",
+            "name": "Vector.cross",
             "static": 1,
             "params": [
                 {
@@ -1723,14 +1696,14 @@
                 "description": "The cross product",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2048,
+            "line": 2049,
             "description": "Calculates the angle between two vectors.\nIs meant to be called \"static\" i.e. Vector.angleBetween(v1, v2);",
             "itemtype": "method",
-            "name": "angleBetween",
+            "name": "Vector.angleBetween",
             "static": 1,
             "params": [
                 {
@@ -1748,14 +1721,14 @@
                 "description": "The angle",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2063,
+            "line": 2064,
             "description": "Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.",
             "itemtype": "method",
-            "name": "set",
+            "name": "Vector.set",
             "params": [
                 {
                     "name": "v",
@@ -1775,38 +1748,38 @@
                     "optional": true
                 }
             ],
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2078,
+            "line": 2079,
             "description": "Gets a copy of the vector, returns a Vector object.",
             "itemtype": "method",
-            "name": "get",
+            "name": "Vector.get",
             "return": {
                 "description": "A copy of the vector",
                 "type": "Vector"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2086,
+            "line": 2087,
             "description": "Calculates the magnitude (length) of the vector and returns the result as a float",
             "itemtype": "method",
-            "name": "mag",
+            "name": "Vector.mag",
             "return": {
                 "description": "The length",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2097,
+            "line": 2098,
             "description": "Adds x, y, and z components to a vector, adds one vector to another.",
             "itemtype": "method",
-            "name": "add",
+            "name": "Vector.add",
             "params": [
                 {
                     "name": "v",
@@ -1826,14 +1799,14 @@
                     "optional": true
                 }
             ],
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2115,
+            "line": 2116,
             "description": "Substract x, y, and z components or a full vector from this vector",
             "itemtype": "method",
-            "name": "sub",
+            "name": "Vector.sub",
             "params": [
                 {
                     "name": "v",
@@ -1853,14 +1826,14 @@
                     "optional": true
                 }
             ],
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2133,
+            "line": 2134,
             "description": "Multiplies this vector with x, y, and z components or another vector.",
             "itemtype": "method",
-            "name": "mult",
+            "name": "Vector.mult",
             "params": [
                 {
                     "name": "v",
@@ -1880,14 +1853,14 @@
                     "optional": true
                 }
             ],
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2151,
+            "line": 2152,
             "description": "Divides this vector through x, y, and z components or another vector.",
             "itemtype": "method",
-            "name": "div",
+            "name": "Vector.div",
             "params": [
                 {
                     "name": "v",
@@ -1907,14 +1880,14 @@
                     "optional": true
                 }
             ],
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2169,
+            "line": 2170,
             "description": "Calculates the distance from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
-            "name": "dist",
+            "name": "Vector.dist",
             "params": [
                 {
                     "name": "v",
@@ -1938,14 +1911,14 @@
                 "description": "The distance",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2183,
+            "line": 2184,
             "description": "Calculates the dot product from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
-            "name": "dot",
+            "name": "Vector.dot",
             "params": [
                 {
                     "name": "v",
@@ -1969,14 +1942,14 @@
                 "description": "The dot product",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2195,
+            "line": 2196,
             "description": "Calculates the cross product from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
-            "name": "cross",
+            "name": "Vector.cross",
             "params": [
                 {
                     "name": "v",
@@ -2000,22 +1973,22 @@
                 "description": "The cross product",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2209,
+            "line": 2210,
             "description": "Normalizes the length of this vector to 1.",
             "itemtype": "method",
-            "name": "normalize",
-            "class": "Vector"
+            "name": "Vector.normalize",
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2217,
+            "line": 2218,
             "description": "Normalizes the length of this vector to the given parameter.",
             "itemtype": "method",
-            "name": "limit",
+            "name": "Vector.limit",
             "params": [
                 {
                     "name": "high",
@@ -2023,43 +1996,63 @@
                     "type": "Number"
                 }
             ],
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2228,
+            "line": 2229,
             "description": "The 2D orientation (heading) of this vector in radian.",
             "itemtype": "method",
-            "name": "heading2D",
+            "name": "Vector.heading2D",
             "return": {
                 "description": "A radian angle value",
                 "type": "Number"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2236,
+            "line": 2237,
             "description": "Returns data about this vector as a string.",
             "itemtype": "method",
-            "name": "toString",
+            "name": "Vector.toString",
             "return": {
                 "description": "The x, y and z components as a string.",
                 "type": "String"
             },
-            "class": "Vector"
+            "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 2244,
+            "line": 2245,
             "description": "Returns this vector as an array [x,y,z].",
             "itemtype": "method",
-            "name": "array",
+            "name": "Vector.array",
             "return": {
                 "description": "[x,y,z]",
                 "type": "Array"
             },
-            "class": "Vector"
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2269,
+            "description": "Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.",
+            "cat": "Math",
+            "subcat": "Calculation",
+            "itemtype": "method",
+            "name": "abs",
+            "params": [
+                {
+                    "name": "val",
+                    "description": "An arbitrary number",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The absolute value of that number"
+            },
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2079,7 +2072,7 @@
             "return": {
                 "description": "The next highest integer value"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2109,7 +2102,7 @@
             "return": {
                 "description": "The constrained value"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2145,7 +2138,7 @@
                 "description": "The distance",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2166,7 +2159,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2187,7 +2180,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2218,7 +2211,7 @@
                 "description": "The mapped value",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2239,7 +2232,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2271,7 +2264,7 @@
                 "description": "the magnitude",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2312,7 +2305,7 @@
                 "description": "the mapped value",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2343,7 +2336,7 @@
                 "description": "The highest value",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2374,7 +2367,7 @@
                 "description": "The lowest value",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2405,7 +2398,7 @@
                 "description": "The normalized value",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2431,7 +2424,7 @@
                 "description": "the result",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2452,7 +2445,7 @@
                 "description": "The rounded value",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2473,7 +2466,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2494,7 +2487,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2515,7 +2508,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2536,7 +2529,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2557,7 +2550,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2583,7 +2576,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2604,7 +2597,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2625,7 +2618,7 @@
                 "description": "The given angle in degree",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2646,7 +2639,7 @@
                 "description": "The given angle in radians",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2667,7 +2660,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2688,7 +2681,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2716,7 +2709,7 @@
                 "description": "A random number",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2749,7 +2742,7 @@
                 "description": "the noise value",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2771,7 +2764,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2788,7 +2781,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2802,7 +2795,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2816,7 +2809,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2830,7 +2823,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2844,7 +2837,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2858,7 +2851,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2872,7 +2865,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2886,7 +2879,7 @@
                 "description": "",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2906,7 +2899,7 @@
                 "description": "Array of concrete PageItem instances, e.g. TextFrame or SplineItem.",
                 "type": "PageItem[]"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2919,7 +2912,7 @@
                 "description": "Array of selected object(s).",
                 "type": "Object[]"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2939,7 +2932,7 @@
                 "description": "Array of the individual lines in the given file.",
                 "type": "String[]"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2955,7 +2948,7 @@
                     "type": "String"
                 }
             ],
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2971,7 +2964,7 @@
                     "type": "String"
                 }
             ],
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -2992,7 +2985,7 @@
                     "type": "String[]"
                 }
             ],
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3017,7 +3010,7 @@
                     "type": "Boolean"
                 }
             ],
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3044,7 +3037,7 @@
                 "description": "The current x position",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3071,7 +3064,7 @@
                 "description": "The current y position",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3098,7 +3091,7 @@
                 "description": "The current width",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3125,7 +3118,7 @@
                 "description": "The current height",
                 "type": "Number"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3158,7 +3151,7 @@
                 "description": "Returns an object with the fields x and y",
                 "type": "Object"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3191,7 +3184,7 @@
                 "description": "Returns an object with the fields width and height",
                 "type": "Object"
             },
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3200,7 +3193,7 @@
             "cat": "Environment",
             "itemtype": "method",
             "name": "go",
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3216,7 +3209,7 @@
                     "type": "Number"
                 }
             ],
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         },
         {
             "file": "basil.js",
@@ -3225,7 +3218,7 @@
             "cat": "Environment",
             "itemtype": "method",
             "name": "noLoop",
-            "class": "b\n\nCalculates the absolute value (magnitude) of a number. The absolute value of a number is always positive."
+            "class": "b"
         }
     ]
 }
