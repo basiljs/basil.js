@@ -591,7 +591,8 @@
      * Function convert an javascript object to a JSON-string. Usage:
      * var str = b.JSON.encode(obj);
      * var obj = b.JSON.decode(str);
-     * 
+     *
+     * @class JSON
      * @method JSON.encode()
      * @param  {Object} Object to be converted to a JSON-string
      * @return {String} Returns JSON-string
