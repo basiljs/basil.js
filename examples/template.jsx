@@ -1,0 +1,1 @@
+﻿#includepath "~/Documents/;%USERPROFILE%\My Documents\;%USERPROFILE%\Documents";#include "basiljs/core/basil.js";function setup() {}function draw() {}b.go();
