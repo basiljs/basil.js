@@ -257,6 +257,7 @@
    * Calls the given callback function with each story of the given document.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
    * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
@@ -270,6 +271,7 @@
    * Calls the given callback function with each paragraph of the given document, story or text frame.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
    * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
@@ -286,6 +288,7 @@
    * Calls the given callback function with each line of the given document, story, text frame or paragraph.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
@@ -303,6 +306,7 @@
    * Calls the given callback function with each word of the given document, story, text frame, paragraph or line.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
@@ -320,6 +324,7 @@
    * Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
@@ -375,6 +380,7 @@
    * Checks whether a var is an indesign text object, returns true if this is the case
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
    * @return {Boolean}     [description]
@@ -430,6 +436,7 @@
    * Returns the current page and sets it if argument page is given.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method page
    * @param  {Page|Number} [page] The page or page index to set the current page to
    * @return {Page} The current page instance
@@ -454,6 +461,7 @@
    * Returns the current layer and sets it if argument layer is given.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
    * @return {Layer} The current layer instance
@@ -518,6 +526,7 @@
    * Creates a vertical guide line at the current spread and current layer.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method guideX
    * @param  {Number} x Position of the new guide
    * @return {Guide} New guide
@@ -537,6 +546,7 @@
    * Creates a horizontal guide line at the current spread and current layer.
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method guideY
    * @param  {Number} y Position of the new guide
    * @return {Guide} New guide
@@ -564,6 +574,8 @@
      * var str = b.JSON.encode(obj);
      * 
      * @class JSON
+     * @cat Data
+     * @subcat Input
      * @method JSON.decode()
      * @param  {String} String to be parsed as JSON-object.
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
@@ -591,9 +603,16 @@
      * Function convert an javascript object to a JSON-string. Usage:
      * var str = b.JSON.encode(obj);
      * var obj = b.JSON.decode(str);
+<<<<<<< HEAD
      *
      * @class JSON
      * @method JSON.encode()
+=======
+     * 
+     * @cat Data
+     * @subcat Output
+     * @method JSON.encode
+>>>>>>> Lots of category changes and new yuidoc build
      * @param  {Object} Object to be converted to a JSON-string
      * @return {String} Returns JSON-string
      */
@@ -1136,6 +1155,7 @@
    * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
    *
    * @cat Document
+   * @subcat Transformation
    * @method bounds
    * @param  {Text|Object} obj The object to calculate the geometric bounds
    * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
@@ -1279,8 +1299,7 @@
   /**
    * Returns the object style with the given name. If the style does not exist it gets created.
    *
-   * @cat Document
-   * @subcat Attributes
+   * @cat Typography
    * @method objectStyle
    * @param  {String} name  The name of the object style to return.
    * @return {ObjectStyle}  The object style instance.
@@ -1998,6 +2017,7 @@
      * Constructor of Vector, can be two- or three-dimensional.
      * 
      * @constructor
+     * @cat Vector
      * @method Vector
      * @param {Number} x
      * @param {Number} y
@@ -2011,6 +2031,7 @@
     /**
      * Calculates the Euclidean distance between two points (considering a point as a vector object).
      * Is meant to be called "static" i.e. Vector.dist(v1, v2);
+     * @cat Vector
      * @method Vector.dist
      * @static
      * @param {Vector} v1 The first vector
@@ -2025,6 +2046,7 @@
      * Calculates the dot product of two vectors.
      * Is meant to be called "static" i.e. Vector.dot(v1, v2);
      * @method Vector.dot
+     * @cat Vector
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2038,6 +2060,7 @@
      * Calculates the cross product of two vectors.
      * Is meant to be called "static" i.e. Vector.cross(v1, v2);
      * @method Vector.cross
+     * @cat Vector
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2051,6 +2074,7 @@
      * Calculates the angle between two vectors.
      * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
      * @method Vector.angleBetween
+     * @cat Vector
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2065,6 +2089,7 @@
       /**
        * Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.
        * @method Vector.set
+       * @cat Vector
        * @param {Number|Array|Vector} v Either a vector, array or x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2080,6 +2105,7 @@
       /**
        * Gets a copy of the vector, returns a Vector object.
        * @method Vector.get
+       * @cat Vector
        * @return {Vector} A copy of the vector
        */
       get: function() {
@@ -2088,6 +2114,7 @@
       /**
        * Calculates the magnitude (length) of the vector and returns the result as a float
        * @method Vector.mag
+       * @cat Vector
        * @return {Number} The length
        */
       mag: function() {
@@ -2099,6 +2126,7 @@
       /**
        * Adds x, y, and z components to a vector, adds one vector to another.
        * @method Vector.add
+       * @cat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2117,6 +2145,7 @@
       /**
        * Substract x, y, and z components or a full vector from this vector
        * @method Vector.sub
+       * @cat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2135,6 +2164,7 @@
       /**
        * Multiplies this vector with x, y, and z components or another vector.
        * @method Vector.mult
+       * @cat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2153,6 +2183,7 @@
       /**
        * Divides this vector through x, y, and z components or another vector.
        * @method Vector.div
+       * @cat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2171,6 +2202,7 @@
       /**
        * Calculates the distance from this vector to another as x, y, and z components or full vector.
        * @method Vector.dist
+       * @cat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2185,6 +2217,7 @@
       /**
        * Calculates the dot product from this vector to another as x, y, and z components or full vector.
        * @method Vector.dot
+       * @cat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2197,6 +2230,7 @@
       /**
        * Calculates the cross product from this vector to another as x, y, and z components or full vector.
        * @method Vector.cross
+       * @cat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2210,6 +2244,7 @@
       },
       /**
        * Normalizes the length of this vector to 1.
+       * @cat Vector
        * @method Vector.normalize
        */
       normalize: function() {
@@ -2219,6 +2254,7 @@
       /**
        * Normalizes the length of this vector to the given parameter.
        * @method Vector.limit
+       * @cat Vector
        * @param {Number} high The value to scale to.
        */
       limit: function(high) {
@@ -2230,6 +2266,7 @@
       /**
        * The 2D orientation (heading) of this vector in radian.
        * @method Vector.heading2D
+       * @cat Vector
        * @return {Number} A radian angle value
        */
       heading2D: function() {
@@ -2238,6 +2275,7 @@
       /**
        * Returns data about this vector as a string.
        * @method Vector.toString
+       * @cat Vector
        * @return {String} The x, y and z components as a string.
        */
       toString: function() {
@@ -2246,6 +2284,7 @@
       /** 
        * Returns this vector as an array [x,y,z].
        * @method Vector.array
+       * @cat Vector
        * @return {Array} [x,y,z]
        */
       array: function() {
@@ -2930,6 +2969,7 @@
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method findByLabel
    * @param  {String} label The label identifier
    * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
@@ -2951,6 +2991,7 @@
    * Returns the currently selected object(s)
    *
    * @cat Document
+   * @subcat InDesign Model
    * @method selection
    * @return {Object[]} Array of selected object(s).
    */
@@ -2962,7 +3003,8 @@
    * Reads the contents of a file and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
-   * @cat Input
+   * @cat Data
+   * @subcat Output
    * @method loadStrings
    * @param  {String|File} file The text file name in the document's data directory or a File instance
    * @return {String[]}  Array of the individual lines in the given file.
