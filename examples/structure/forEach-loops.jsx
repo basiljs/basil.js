@@ -1,4 +1,5 @@
-#include "../../basil.js";
+#includepath "~/Documents/;%USERPROFILE%Documents";
+#include "basiljs/bundle/basil.js";
 
 function setup() {
   var contents = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\rUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'

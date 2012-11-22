@@ -1,4 +1,5 @@
-#include "../../basil.js";
+#includepath "~/Documents/;%USERPROFILE%Documents";
+#include "basiljs/bundle/basil.js";
 
 function draw() {
   // create new random RGB color

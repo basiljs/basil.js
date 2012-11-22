@@ -3,7 +3,8 @@
  * no idea waht JSON is? then have a read here: http://en.wikipedia.org/wiki/JSON
  */
 
-#include "../../basil.js";
+#includepath "~/Documents/;%USERPROFILE%Documents";
+#include "basiljs/bundle/basil.js";
 
 // use loadStrings() to get your JSON data into indesign ...
 var jsonString = '{\

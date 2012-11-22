@@ -1,5 +1,7 @@
 #targetengine "loop";
-#include "../../basil.js";
+#includepath "~/Documents/;%USERPROFILE%Documents";
+#include "basiljs/bundle/basil.js";
+
 
 var pos, vel;
 var ellipse;

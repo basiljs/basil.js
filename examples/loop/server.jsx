@@ -1,5 +1,6 @@
 #targetengine "loop";
-#include "../../basil.js";
+#includepath "~/Documents/;%USERPROFILE%Documents";
+#include "basiljs/bundle/basil.js";
 
 // really bad performance... :/
 // try with cs6

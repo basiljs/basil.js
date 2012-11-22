@@ -1,4 +1,5 @@
-#include "../../basil.js";
+#includepath "~/Documents/;%USERPROFILE%Documents";
+#include "basiljs/bundle/basil.js";
 
 // to run this example text file ~/temp/data/loadStrings-example.txt must exist
 function draw() {
