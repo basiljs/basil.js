@@ -2996,6 +2996,9 @@
    * @return {Object[]} Array of selected object(s).
    */
   pub.selection = function() {
+    if(app.selection.length == 0) {
+      error("Nothing selected");
+    }
     return app.selection;
   };
 
@@ -3470,10 +3473,16 @@
    * @cat Environment
    * @method go
    */
-  pub.go = function() {
+    pub.go = function() {
     currentDoc();
-    runSetup();
-    runDrawOnce();
+    try{
+      runSetup();
+      runDrawOnce();
+    } catch (e) { // exception not caught individually
+//      b.println(dump(e));
+      alert(e); // make verbose
+      exit(); // quit program execution
+    }
   };
 
   /**
@@ -3505,8 +3514,8 @@
     idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
       runDrawLoop();
     }, false);
-    //alert("Run the script lib/stop.jsx to end the draw loop and clean up!");
-    println("loop()");
+    println("Run the script lib/stop.jsx to end the draw loop and clean up!");
+//    println("loop()");
   };
 
   /**
@@ -3642,12 +3651,50 @@
 
   var error = function(msg) {
     $.writeln(ERROR_PREFIX + msg);
-    throw ERROR_PREFIX + msg;
+    throw new Error( msg );
   };
 
   var warning = function(msg) {
     $.writeln(WARNING_PREFIX + msg);
   };
+
+  // copied from http://scratchbook.ch/2009/07/11/print_r-fur-javascript/
+  // php style object inspection for javscript
+  pub.dump = function (arr, level) {
+   
+    var dumped_text = "";
+    if (!level) level = 0;
+   
+    //The padding given at the beginning of the line.
+    var level_padding = "";
+    var bracket_level_padding = "";
+   
+    for (var j = 0; j < level + 1; j++) level_padding += "    ";
+    for (var b = 0; b < level; b++) bracket_level_padding += "    ";
+   
+    if (typeof(arr) == 'object') { //Array/Hashes/Objects 
+      dumped_text += "Array\n";
+      dumped_text += bracket_level_padding + "(\n";
+      for (var item in arr) {
+   
+        var value = arr[item];
+   
+        if (typeof(value) == 'object') { //If it is an array,
+          dumped_text += level_padding + "[" + item + "] => ";
+          dumped_text += print_r(value, level + 2);
+        } else {
+          dumped_text += level_padding + "[" + item + "] => " + value + "\n";
+        }
+   
+      }
+      dumped_text += bracket_level_padding + ")\n\n";
+    } else { //Stings/Chars/Numbers etc.
+      dumped_text = "===>" + arr + "<===(" + typeof(arr) + ")";
+    }
+   
+    return dumped_text;
+   
+  };   
   
   init();
   
