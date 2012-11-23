@@ -3000,11 +3000,31 @@
   };
 
   /**
+   * Reads the contents of a file into a String.
+   * If the file is specified by name as String, it must be located in the document's data directory.
+   *
+   * @cat Data
+   * @subcat Input
+   * @method loadString
+   * @param  {String|File} file The text file name in the document's data directory or a File instance
+   * @return {String}  String file content.
+   */
+  pub.loadString = function(file) {
+    var inputFile = initDataFile(file, true),
+      data = null;
+
+    inputFile.open('r');
+    data = inputFile.read();
+    inputFile.close();
+    return data;
+  };
+
+  /**
    * Reads the contents of a file and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
    * @cat Data
-   * @subcat Output
+   * @subcat Input
    * @method loadStrings
    * @param  {String|File} file The text file name in the document's data directory or a File instance
    * @return {String[]}  Array of the individual lines in the given file.
