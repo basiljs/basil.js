@@ -43,6 +43,8 @@
             
                 <li><a href="..&#x2F;classes/b.html">b</a></li>
             
+                <li><a href="..&#x2F;classes/JSON.html">JSON</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -136,7 +138,7 @@
    * @property VERSION {String}
    * @cat Constants
    *&#x2F;
-  pub.VERSION = &quot;0.1&quot;;
+  pub.VERSION = &quot;0.12&quot;;
 
   &#x2F;**
    * Points
@@ -691,10 +693,16 @@
      * Function convert an javascript object to a JSON-string. Usage:
      * var str = b.JSON.encode(obj);
      * var obj = b.JSON.decode(str);
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+     *
+     * @class JSON
+     * @method JSON.encode()
+=======
      * 
      * @cat Data
      * @subcat Output
      * @method JSON.encode
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; Lots of category changes and new yuidoc build
      * @param  {Object} Object to be converted to a JSON-string
      * @return {String} Returns JSON-string
      *&#x2F;
@@ -3078,7 +3086,30 @@
    * @return {Object[]} Array of selected object(s).
    *&#x2F;
   pub.selection = function() {
+    if(app.selection.length == 0) {
+      error(&quot;Nothing selected&quot;);
+    }
     return app.selection;
+  };
+
+  &#x2F;**
+   * Reads the contents of a file into a String.
+   * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
+   *
+   * @cat Data
+   * @subcat Input
+   * @method loadString
+   * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
+   * @return {String}  String file content.
+   *&#x2F;
+  pub.loadString = function(file) {
+    var inputFile = initDataFile(file, true),
+      data = null;
+
+    inputFile.open(&#x27;r&#x27;);
+    data = inputFile.read();
+    inputFile.close();
+    return data;
   };
 
   &#x2F;**
@@ -3086,7 +3117,7 @@
    * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
    *
    * @cat Data
-   * @subcat Output
+   * @subcat Input
    * @method loadStrings
    * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
    * @return {String[]}  Array of the individual lines in the given file.
@@ -3532,10 +3563,16 @@
    * @cat Environment
    * @method go
    *&#x2F;
-  pub.go = function() {
+    pub.go = function() {
     currentDoc();
-    runSetup();
-    runDrawOnce();
+    try{
+      runSetup();
+      runDrawOnce();
+    } catch (e) { &#x2F;&#x2F; exception not caught individually
+&#x2F;&#x2F;      b.println(dump(e));
+      alert(e); &#x2F;&#x2F; make verbose
+      exit(); &#x2F;&#x2F; quit program execution
+    }
   };
 
   &#x2F;**
@@ -3567,8 +3604,8 @@
     idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
       runDrawLoop();
     }, false);
-    &#x2F;&#x2F;alert(&quot;Run the script lib&#x2F;stop.jsx to end the draw loop and clean up!&quot;);
-    println(&quot;loop()&quot;);
+    println(&quot;Run the script lib&#x2F;stop.jsx to end the draw loop and clean up!&quot;);
+&#x2F;&#x2F;    println(&quot;loop()&quot;);
   };
 
   &#x2F;**
@@ -3704,12 +3741,50 @@
 
   var error = function(msg) {
     $.writeln(ERROR_PREFIX + msg);
-    throw ERROR_PREFIX + msg;
+    throw new Error( msg );
   };
 
   var warning = function(msg) {
     $.writeln(WARNING_PREFIX + msg);
   };
+
+  &#x2F;&#x2F; copied from http:&#x2F;&#x2F;scratchbook.ch&#x2F;2009&#x2F;07&#x2F;11&#x2F;print_r-fur-javascript&#x2F;
+  &#x2F;&#x2F; php style object inspection for javscript
+  pub.dump = function (arr, level) {
+   
+    var dumped_text = &quot;&quot;;
+    if (!level) level = 0;
+   
+    &#x2F;&#x2F;The padding given at the beginning of the line.
+    var level_padding = &quot;&quot;;
+    var bracket_level_padding = &quot;&quot;;
+   
+    for (var j = 0; j &lt; level + 1; j++) level_padding += &quot;    &quot;;
+    for (var b = 0; b &lt; level; b++) bracket_level_padding += &quot;    &quot;;
+   
+    if (typeof(arr) == &#x27;object&#x27;) { &#x2F;&#x2F;Array&#x2F;Hashes&#x2F;Objects 
+      dumped_text += &quot;Array\n&quot;;
+      dumped_text += bracket_level_padding + &quot;(\n&quot;;
+      for (var item in arr) {
+   
+        var value = arr[item];
+   
+        if (typeof(value) == &#x27;object&#x27;) { &#x2F;&#x2F;If it is an array,
+          dumped_text += level_padding + &quot;[&quot; + item + &quot;] =&gt; &quot;;
+          dumped_text += print_r(value, level + 2);
+        } else {
+          dumped_text += level_padding + &quot;[&quot; + item + &quot;] =&gt; &quot; + value + &quot;\n&quot;;
+        }
+   
+      }
+      dumped_text += bracket_level_padding + &quot;)\n\n&quot;;
+    } else { &#x2F;&#x2F;Stings&#x2F;Chars&#x2F;Numbers etc.
+      dumped_text = &quot;===&gt;&quot; + arr + &quot;&lt;===(&quot; + typeof(arr) + &quot;)&quot;;
+    }
+   
+    return dumped_text;
+   
+  };   
   
   init();
   
