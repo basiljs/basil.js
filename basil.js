@@ -352,6 +352,73 @@
   };
 
   /**
+   * Calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
+   * If the second parameter is false the actual array is simply returned without any iterations. Use this to do something else with it.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method items
+   * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
+   * @param  {Function|Boolean} cb The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   */
+  pub.items = function(container, cb) {
+
+    if (container instanceof Document 
+      || container instanceof Page 
+      || container instanceof Layer 
+      || container instanceof Group) {
+
+      if(cb === false){
+        return container.allPageItems;
+      } else {
+        return forEach(container.allPageItems, cb);
+      }
+    } else {
+      error("Not a valid PageItem container, should be Document, Page, Layer or Group");
+    }
+
+  }
+
+  /**
+   * Removes all PageItems in the given Document, Page, Layer or Group.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method clear
+   * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
+   */
+  pub.clear = function(container) {
+
+    if (container instanceof Document 
+      || container instanceof Page 
+      || container instanceof Layer 
+      || container instanceof Group) {
+
+        return forEach(container.allPageItems, function(item,n){
+          // Groups have to be avoided for deletion
+          // otherwise deletion process is confused
+          if(item !== null && ! (item instanceof Group) ) {
+            if(item.locked) error("Some items are locked. Please unlock them first.");
+            item.remove();
+          }
+        });
+
+      } else {
+        return false;
+      }
+  };  
+
+
+  pub.clearSwatches = function() {
+
+      forEach(b.doc().swatches, function(swatch, n){
+
+          swatch.remove();
+
+      });
+  };
+
+  /**
    * Checks whether a var is an Array, returns true if this is the case
    *
    * @cat Data
@@ -2989,7 +3056,7 @@
    * @return {Object[]} Array of selected object(s).
    */
   pub.selection = function() {
-    if(app.selection.length == 0) {
+    if(app.selection.length === 0) {
       error("Nothing selected");
     }
     return app.selection;
@@ -3471,6 +3538,8 @@
     try{
       runSetup();
       runDrawOnce();
+      b.println("Finished.");
+      exit();
     } catch (e) { // exception not caught individually
 //      b.println(dump(e));
       alert(e); // make verbose
@@ -3497,6 +3566,7 @@
     else sleep = Math.round(1000/framerate);
 
     if ($.engineName !== 'loop') {
+      error('Add #targetengine "loop"; at the very top of your script.');
       error('Add #targetengine "loop"; at the very top of your script.');
     }
 
@@ -3568,10 +3638,9 @@
 
   var welcome = function() {
     clearConsole();
-    $.writeln("basil.js "
+    $.writeln("Using basil.js "
         + pub.VERSION
-        + " "
-        + "infos, feedback @ http://basiljs.ch");
+        + " ...");
   };
   
   var currentDoc = function() {
@@ -3661,43 +3730,6 @@
     bt.send();
   };
 
-  // copied from http://scratchbook.ch/2009/07/11/print_r-fur-javascript/
-  // php style object inspection for javscript
-  pub.dump = function (arr, level) {
-   
-    var dumped_text = "";
-    if (!level) level = 0;
-   
-    //The padding given at the beginning of the line.
-    var level_padding = "";
-    var bracket_level_padding = "";
-   
-    for (var j = 0; j < level + 1; j++) level_padding += "    ";
-    for (var b = 0; b < level; b++) bracket_level_padding += "    ";
-   
-    if (typeof(arr) == 'object') { //Array/Hashes/Objects 
-      dumped_text += "Array\n";
-      dumped_text += bracket_level_padding + "(\n";
-      for (var item in arr) {
-   
-        var value = arr[item];
-   
-        if (typeof(value) == 'object') { //If it is an array,
-          dumped_text += level_padding + "[" + item + "] => ";
-          dumped_text += print_r(value, level + 2);
-        } else {
-          dumped_text += level_padding + "[" + item + "] => " + value + "\n";
-        }
-   
-      }
-      dumped_text += bracket_level_padding + ")\n\n";
-    } else { //Stings/Chars/Numbers etc.
-      dumped_text = "===>" + arr + "<===(" + typeof(arr) + ")";
-    }
-   
-    return dumped_text;
-   
-  };   
   
   init();
   
