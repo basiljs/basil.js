@@ -1,12 +1,13 @@
 /**
  * show how to parse a raw JSON string to a javascript object.
- * no idea waht JSON is? then have a read here: http://en.wikipedia.org/wiki/JSON
+ * no idea what JSON is? then have a read here: http://en.wikipedia.org/wiki/JSON
  */
 
 #includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
-// use loadStrings() to get your JSON data into indesign ...
+// to load an external json file use 
+// var jsonString = b.loadString("path/to/file.json")
 var jsonString = '{\
                   "firstName": "John",\
                   "lastName": "Smith",\

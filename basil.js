@@ -8,8 +8,8 @@
   Developers     - Benedikt Groß http://benedikt-gross.de
                  - Ludwig Zeller http://ludwigzeller.de
                  - Ted Davis http://teddavis.org
-                 - Philipp Adrian http://www.philippadrian.com/
   Contributers   - Stefan Landsbek, inital code architecture, http://47nord.de
+                 - Philipp Adrian http://www.philippadrian.com/
   Web Site       - http://basiljs.ch
   Github Repo.   - https://github.com/basiljs/basil.js
   Processing     - http://processing.org
@@ -48,7 +48,7 @@
    * @property VERSION {String}
    * @cat Constants
    */
-  pub.VERSION = "0.13";
+  pub.VERSION = "0.14";
 
   /**
    * Points
@@ -3574,6 +3574,7 @@
   };
 
   var welcome = function() {
+    clearConsole();
     $.writeln("basil.js "
         + pub.VERSION
         + " "
@@ -3656,6 +3657,15 @@
 
   var warning = function(msg) {
     $.writeln(WARNING_PREFIX + msg);
+  };
+
+  var clearConsole = function() {
+    var bt = new BridgeTalk();
+    bt.target = "estoolkit";
+    bt.body = "app.clc()"; // works just with cs6
+    bt.onError = function(errObj) {}
+    bt.onResult = function(resObj) {}
+    bt.send();
   };
 
   // copied from http://scratchbook.ch/2009/07/11/print_r-fur-javascript/
