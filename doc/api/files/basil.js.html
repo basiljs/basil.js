@@ -43,8 +43,6 @@
             
                 <li><a href="..&#x2F;classes/b.html">b</a></li>
             
-                <li><a href="..&#x2F;classes/JSON.html">JSON</a></li>
-            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -98,8 +96,8 @@
   Developers     - Benedikt Groß http:&#x2F;&#x2F;benedikt-gross.de
                  - Ludwig Zeller http:&#x2F;&#x2F;ludwigzeller.de
                  - Ted Davis http:&#x2F;&#x2F;teddavis.org
-                 - Philipp Adrian http:&#x2F;&#x2F;www.philippadrian.com&#x2F;
   Contributers   - Stefan Landsbek, inital code architecture, http:&#x2F;&#x2F;47nord.de
+                 - Philipp Adrian http:&#x2F;&#x2F;www.philippadrian.com&#x2F;
   Web Site       - http:&#x2F;&#x2F;basiljs.ch
   Github Repo.   - https:&#x2F;&#x2F;github.com&#x2F;basiljs&#x2F;basil.js
   Processing     - http:&#x2F;&#x2F;processing.org
@@ -138,7 +136,7 @@
    * @property VERSION {String}
    * @cat Constants
    *&#x2F;
-  pub.VERSION = &quot;0.12&quot;;
+  pub.VERSION = &quot;0.14&quot;;
 
   &#x2F;**
    * Points
@@ -442,6 +440,73 @@
   };
 
   &#x2F;**
+   * Calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
+   * If the second parameter is false the actual array is simply returned without any iterations. Use this to do something else with it.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method items
+   * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
+   * @param  {Function|Boolean} cb The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   *&#x2F;
+  pub.items = function(container, cb) {
+
+    if (container instanceof Document 
+      || container instanceof Page 
+      || container instanceof Layer 
+      || container instanceof Group) {
+
+      if(cb === false){
+        return container.allPageItems;
+      } else {
+        return forEach(container.allPageItems, cb);
+      }
+    } else {
+      error(&quot;Not a valid PageItem container, should be Document, Page, Layer or Group&quot;);
+    }
+
+  }
+
+  &#x2F;**
+   * Removes all PageItems in the given Document, Page, Layer or Group.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method clear
+   * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
+   *&#x2F;
+  pub.clear = function(container) {
+
+    if (container instanceof Document 
+      || container instanceof Page 
+      || container instanceof Layer 
+      || container instanceof Group) {
+
+        return forEach(container.allPageItems, function(item,n){
+          &#x2F;&#x2F; Groups have to be avoided for deletion
+          &#x2F;&#x2F; otherwise deletion process is confused
+          if(item !== null &amp;&amp; ! (item instanceof Group) ) {
+            if(item.locked) error(&quot;Some items are locked. Please unlock them first.&quot;);
+            item.remove();
+          }
+        });
+
+      } else {
+        return false;
+      }
+  };  
+
+
+  pub.clearSwatches = function() {
+
+      forEach(b.doc().swatches, function(swatch, n){
+
+          swatch.remove();
+
+      });
+  };
+
+  &#x2F;**
    * Checks whether a var is an Array, returns true if this is the case
    *
    * @cat Data
@@ -663,10 +728,9 @@
      * var obj = b.JSON.decode(str);
      * var str = b.JSON.encode(obj);
      * 
-     * @class JSON
      * @cat Data
      * @subcat Input
-     * @method JSON.decode()
+     * @method JSON.decode
      * @param  {String} String to be parsed as JSON-object.
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
     *&#x2F;
@@ -693,16 +757,10 @@
      * Function convert an javascript object to a JSON-string. Usage:
      * var str = b.JSON.encode(obj);
      * var obj = b.JSON.decode(str);
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
      *
-     * @class JSON
-     * @method JSON.encode()
-=======
-     * 
      * @cat Data
      * @subcat Output
      * @method JSON.encode
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; Lots of category changes and new yuidoc build
      * @param  {Object} Object to be converted to a JSON-string
      * @return {String} Returns JSON-string
      *&#x2F;
@@ -3086,7 +3144,7 @@
    * @return {Object[]} Array of selected object(s).
    *&#x2F;
   pub.selection = function() {
-    if(app.selection.length == 0) {
+    if(app.selection.length === 0) {
       error(&quot;Nothing selected&quot;);
     }
     return app.selection;
@@ -3568,6 +3626,8 @@
     try{
       runSetup();
       runDrawOnce();
+      b.println(&quot;Finished.&quot;);
+      exit();
     } catch (e) { &#x2F;&#x2F; exception not caught individually
 &#x2F;&#x2F;      b.println(dump(e));
       alert(e); &#x2F;&#x2F; make verbose
@@ -3594,6 +3654,7 @@
     else sleep = Math.round(1000&#x2F;framerate);
 
     if ($.engineName !== &#x27;loop&#x27;) {
+      error(&#x27;Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
       error(&#x27;Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
     }
 
@@ -3664,10 +3725,10 @@
   };
 
   var welcome = function() {
-    $.writeln(&quot;basil.js &quot;
+    clearConsole();
+    $.writeln(&quot;Using basil.js &quot;
         + pub.VERSION
-        + &quot; &quot;
-        + &quot;infos, feedback @ http:&#x2F;&#x2F;basiljs.ch&quot;);
+        + &quot; ...&quot;);
   };
   
   var currentDoc = function() {
@@ -3748,43 +3809,15 @@
     $.writeln(WARNING_PREFIX + msg);
   };
 
-  &#x2F;&#x2F; copied from http:&#x2F;&#x2F;scratchbook.ch&#x2F;2009&#x2F;07&#x2F;11&#x2F;print_r-fur-javascript&#x2F;
-  &#x2F;&#x2F; php style object inspection for javscript
-  pub.dump = function (arr, level) {
-   
-    var dumped_text = &quot;&quot;;
-    if (!level) level = 0;
-   
-    &#x2F;&#x2F;The padding given at the beginning of the line.
-    var level_padding = &quot;&quot;;
-    var bracket_level_padding = &quot;&quot;;
-   
-    for (var j = 0; j &lt; level + 1; j++) level_padding += &quot;    &quot;;
-    for (var b = 0; b &lt; level; b++) bracket_level_padding += &quot;    &quot;;
-   
-    if (typeof(arr) == &#x27;object&#x27;) { &#x2F;&#x2F;Array&#x2F;Hashes&#x2F;Objects 
-      dumped_text += &quot;Array\n&quot;;
-      dumped_text += bracket_level_padding + &quot;(\n&quot;;
-      for (var item in arr) {
-   
-        var value = arr[item];
-   
-        if (typeof(value) == &#x27;object&#x27;) { &#x2F;&#x2F;If it is an array,
-          dumped_text += level_padding + &quot;[&quot; + item + &quot;] =&gt; &quot;;
-          dumped_text += print_r(value, level + 2);
-        } else {
-          dumped_text += level_padding + &quot;[&quot; + item + &quot;] =&gt; &quot; + value + &quot;\n&quot;;
-        }
-   
-      }
-      dumped_text += bracket_level_padding + &quot;)\n\n&quot;;
-    } else { &#x2F;&#x2F;Stings&#x2F;Chars&#x2F;Numbers etc.
-      dumped_text = &quot;===&gt;&quot; + arr + &quot;&lt;===(&quot; + typeof(arr) + &quot;)&quot;;
-    }
-   
-    return dumped_text;
-   
-  };   
+  var clearConsole = function() {
+    var bt = new BridgeTalk();
+    bt.target = &quot;estoolkit&quot;;
+    bt.body = &quot;app.clc()&quot;; &#x2F;&#x2F; works just with cs6
+    bt.onError = function(errObj) {}
+    bt.onResult = function(resObj) {}
+    bt.send();
+  };
+
   
   init();
   
