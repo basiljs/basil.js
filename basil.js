@@ -573,10 +573,9 @@
      * var obj = b.JSON.decode(str);
      * var str = b.JSON.encode(obj);
      * 
-     * @class JSON
      * @cat Data
      * @subcat Input
-     * @method JSON.decode()
+     * @method JSON.decode
      * @param  {String} String to be parsed as JSON-object.
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
     */
@@ -603,16 +602,10 @@
      * Function convert an javascript object to a JSON-string. Usage:
      * var str = b.JSON.encode(obj);
      * var obj = b.JSON.decode(str);
-<<<<<<< HEAD
      *
-     * @class JSON
-     * @method JSON.encode()
-=======
-     * 
      * @cat Data
      * @subcat Output
      * @method JSON.encode
->>>>>>> Lots of category changes and new yuidoc build
      * @param  {Object} Object to be converted to a JSON-string
      * @return {String} Returns JSON-string
      */
