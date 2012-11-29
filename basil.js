@@ -1103,6 +1103,9 @@
       ellipseBounds[3] = x+(w);
     }
 
+	if(w === 0 && h === 0)
+		return false;
+
     var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
     with (newOval) {
@@ -1187,6 +1190,9 @@
       rectBounds[2] = (y+h)-(h/2);
       rectBounds[3] = (x+w)-(w/2);
     }
+
+	if(w === 0 && h === 0)
+		return false;
     
     var newRect = currentPage().rectangles.add( currentLayer() );
     with (newRect) {
