@@ -1704,18 +1704,18 @@
    * @cat Typography
    * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
-   * @param  {String|Object} property  The text property name of an object of key/value property/value pairs.
+   * @param  {String|Object} property  The text property name or an object of key/value property/value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
-   * @param  {String|Number} [value]   The value to apply to the property.
-   * @return {String[]|Number[]}  The property value(s) if the function acts as getter or the items the property
-   *                              was assigned to.
+   * @param  {String|Number|Object} [value]  The value to apply to the property.
+   * @return {String[]|Number[]|Object[]}  The property value(s) if the function acts as getter or the items the property
+   *                                       was assigned to.
    */
   pub.typo = function(item, property, value) {
     var result = [],
-      actsAsGetter = typeof property === 'string' && (typeof value === undef || value === null),
+      actsAsGetter = typeof property === 'string' && (value === undef || value === null),
       getOrSetProperties = function(textItem) {
         if (actsAsGetter) {
-          result.push(textItem[prop]);
+          result.push(textItem[property]);
         } else {
           setProperties(textItem);
         }

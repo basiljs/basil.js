@@ -72,6 +72,28 @@ b.test('TypographyTests', {
     assert(layer.textFrames.length === 1);
     assert(layer.textFrames[0].contents === contents);
     assert(layer.textFrames[0].contents.split('\r').length === 3);
+  },
+
+  testGetAppliedFontFromTextFrame: function(b) {
+    b.doc(doc);
+    var textFrame = b.text('foo', 0, 0, 100, 100);
+
+    var font = b.typo(textFrame, 'appliedFont');
+    
+    assert(font.length === 1);
+    assert(font[0] instanceof Font);
+  },
+
+  testSetPointSizeInTextFrame: function(b) {
+    b.doc(doc);
+    var textFrame = b.text('foo', 0, 0, 100, 100),
+      size = 36;
+
+    b.typo(textFrame, 'pointSize', size);
+    
+    var currSize = b.typo(textFrame, 'pointSize');
+    assert(currSize.length === 1);
+    assert(currSize[0] === size);
   }
 });
 
