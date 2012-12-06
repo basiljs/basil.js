@@ -252,6 +252,53 @@
   pub.height = null;
 
   
+  &#x2F;**
+   * 
+   * @property PAPER {Number}
+   * @cat Environment
+   *&#x2F;
+  pub.PAPER = 1;
+
+  &#x2F;**
+   * 
+   * @property PAPER {Number}
+   * @cat Environment
+   *&#x2F;
+  pub.MARGIN = 2;
+
+  &#x2F;**
+   * 
+   * @property PAPER {Number}
+   * @cat Environment
+   *&#x2F;
+  pub.BLEED = 3;
+
+
+  &#x2F;&#x2F; init has to be above the method definition below... otherwise trouble
+  var cMode = pub.PAPER;
+
+  &#x2F;**
+   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
+   * Please note that you will use your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+   * @method canvasMode
+   * @cat Environment
+   *&#x2F;
+  pub.canvasMode = function ( m ) {
+  
+    if(arguments.length == 0) {
+      return cMode;
+    } else if ( typeof m === &quot;number&quot; ) {
+      cMode = m;
+      updatePublicPageSizeVars();
+    } else {
+      error(&quot;Problem setting canvasMode. Please consult the reference.&quot;);
+    }
+
+  };
+
+  
+
+  
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; private vars
   var currDoc = null,
@@ -342,87 +389,112 @@
   };
 
   &#x2F;**
-   * Calls the given callback function with each story of the given document.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
-   * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
+   * @param  {Function} cb  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
    * @param  {Category} Test
+   * @return {Stories} You can use it like an array.
    *&#x2F;
   pub.stories = function(doc, cb) {
-    return forEach(doc.stories, cb);
+    if(arguments.length === 1) {
+      return doc.stories;
+    } else if (cb instanceof Function) {
+      return forEach(doc.stories, cb);
+    }
   };
 
   &#x2F;**
-   * Calls the given callback function with each paragraph of the given document, story or text frame.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each paragraph of the given document, story or text frame.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
-   * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
+   * @param  {Function} cb  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
+   * @return {Paragraphs} You can use it like an array.   
    *&#x2F;
   pub.paragraphs = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, &#x27;paragraphs&#x27;, cb);
-    } else {
-      return forEach(item.paragraphs, cb);
+    if(arguments.length === 1) {
+      return item.paragraphs;
+    } else if (cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, &#x27;paragraphs&#x27;, cb);
+      } else {
+        return forEach(item.paragraphs, cb);
+      }
     }
   };
 
   &#x2F;**
-   * Calls the given callback function with each line of the given document, story, text frame or paragraph.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
-   * @param  {Function} cb The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
+   * @param  {Function} cb Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
+   * @return {Lines} You can use it like an array.
    *&#x2F;
   pub.lines = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, &#x27;lines&#x27;, cb);
-    } else {
-      return forEach(item.lines, cb);
+    if(arguments.length === 1) {
+      return item.lines;
+    } else if (cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, &#x27;lines&#x27;, cb);
+      } else {
+        return forEach(item.lines, cb);
+      }
     }
   };
 
   &#x2F;**
-   * Calls the given callback function with each word of the given document, story, text frame, paragraph or line.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each word of the given document, story, text frame, paragraph or line.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
-   * @param  {Function} cb The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
+   * @param  {Function} cb Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
+   * @return {Words} You can use it like an array.
    *&#x2F;
   pub.words = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, &#x27;words&#x27;, cb);
-    } else {
-      return forEach(item.words, cb);
+    if(arguments.length === 1){
+      return item.words;
+    } else if (cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, &#x27;words&#x27;, cb);
+      } else {
+        return forEach(item.words, cb);
+      }
     }
   };
 
   &#x2F;**
-   * Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
-   * @param  {Function} cb The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
+   * @param  {Function} cb Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
+   * @return {Characters} You can use it like an array.
    *&#x2F;
   pub.characters = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, &#x27;characters&#x27;, cb);
-    } else {
-      return forEach(item.characters, cb);
+    if(arguments.length === 1) {
+      return item.characters;
+    } else if ( cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, &#x27;characters&#x27;, cb);
+      } else {
+        return forEach(item.characters, cb);
+      }
     }
   };
 
@@ -440,14 +512,14 @@
   };
 
   &#x2F;**
-   * Calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
-   * If the second parameter is false the actual array is simply returned without any iterations. Use this to do something else with it.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method items
    * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
-   * @param  {Function|Boolean} cb The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   * @param  {Function|Boolean} cb Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   * @return {PageItems} You can use it like an array.
    *&#x2F;
   pub.items = function(container, cb) {
 
@@ -456,16 +528,16 @@
       || container instanceof Layer 
       || container instanceof Group) {
 
-      if(cb === false){
-        return container.allPageItems;
-      } else {
+      if(arguments.length === 1){
+        return container.pageItems;
+      } else if(cb instanceof Function ) {
         return forEach(container.allPageItems, cb);
       }
     } else {
       error(&quot;Not a valid PageItem container, should be Document, Page, Layer or Group&quot;);
     }
-
-  }
+  };
+  
 
   &#x2F;**
    * Removes all PageItems in the given Document, Page, Layer or Group.
@@ -495,16 +567,6 @@
         return false;
       }
   };  
-
-
-  pub.clearSwatches = function() {
-
-      forEach(b.doc().swatches, function(swatch, n){
-
-          swatch.remove();
-
-      });
-  };
 
   &#x2F;**
    * Checks whether a var is an Array, returns true if this is the case
@@ -1191,6 +1253,9 @@
       ellipseBounds[3] = x+(w);
     }
 
+	if(w === 0 || h === 0)
+		return false;
+
     var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
     with (newOval) {
@@ -1275,6 +1340,9 @@
       rectBounds[2] = (y+h)-(h&#x2F;2);
       rectBounds[3] = (x+w)-(w&#x2F;2);
     }
+
+	if(w === 0 || h === 0)
+		return false;
     
     var newRect = currentPage().rectangles.add( currentLayer() );
     with (newRect) {
@@ -1786,18 +1854,18 @@
    * @cat Typography
    * @method typo
    * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
-   * @param  {String|Object} property  The text property name of an object of key&#x2F;value property&#x2F;value pairs.
+   * @param  {String|Object} property  The text property name or an object of key&#x2F;value property&#x2F;value pairs.
    *                                   If property is a string and no value is given, the function acts as getter.
-   * @param  {String|Number} [value]   The value to apply to the property.
-   * @return {String[]|Number[]}  The property value(s) if the function acts as getter or the items the property
-   *                              was assigned to.
+   * @param  {String|Number|Object} [value]  The value to apply to the property.
+   * @return {String[]|Number[]|Object[]}  The property value(s) if the function acts as getter or the items the property
+   *                                       was assigned to.
    *&#x2F;
   pub.typo = function(item, property, value) {
     var result = [],
-      actsAsGetter = typeof property === &#x27;string&#x27; &amp;&amp; (typeof value === undef || value === null),
+      actsAsGetter = typeof property === &#x27;string&#x27; &amp;&amp; (value === undef || value === null),
       getOrSetProperties = function(textItem) {
         if (actsAsGetter) {
-          result.push(textItem[prop]);
+          result.push(textItem[property]);
         } else {
           setProperties(textItem);
         }
@@ -3794,8 +3862,39 @@
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; &#x2F;&#x2F; [y1, x1, y2, x2]
-    var w = pageBounds[3] - pageBounds[1];
-    var h = pageBounds[2] - pageBounds[0];
+
+    var widthOffset = heightOffset = 0;
+
+    switch(pub.canvasMode()) {
+
+      case pub.PAPER:
+        widthOffset = 0;
+        heightOffset = 0;
+        b.resetMatrix();
+        break;
+
+      case pub.MARGIN:
+        widthOffset = - currentPage().marginPreferences.left - currentPage().marginPreferences.right;
+        heightOffset = - currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
+        b.resetMatrix();
+        b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+        break;
+
+      case pub.BLEED:
+        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+        b.resetMatrix();
+        b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+        break;
+
+      default:
+        b.error(&quot;basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED&quot;);
+        break;
+    }
+
+    var w = pageBounds[3] - pageBounds[1] + widthOffset;
+    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+
     pub.width = w;
     pub.height = h;
   };
