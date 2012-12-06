@@ -1,4 +1,4 @@
 // copy this file to ~/Library/Application Support/Sublime Text 2/Packages/User
 {
-    "cmd": ["osascript", "$project_path/bin/run_idscript_5.scpt", "$file"]
+    "cmd": ["osascript", "$packages/Basiljs/run_idscript_6.0.scpt", "$file"]
 }
