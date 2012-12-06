@@ -574,7 +574,7 @@
     if (page instanceof Page) {
       currPage = page;
     } else if (typeof page === 'number') {
-      var tempPage = currentDoc().pages[page];
+      var tempPage = currentDoc().pages[page - 1];
       try {
         tempPage.id;
       } catch (e) {
