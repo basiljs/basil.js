@@ -378,6 +378,7 @@
     }
 
   }
+  };
 
   /**
    * Removes all PageItems in the given Document, Page, Layer or Group.
