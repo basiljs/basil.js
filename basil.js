@@ -164,6 +164,53 @@
   pub.height = null;
 
   
+  /**
+   * 
+   * @property PAPER {Number}
+   * @cat Environment
+   */
+  pub.PAPER = 1;
+
+  /**
+   * 
+   * @property PAPER {Number}
+   * @cat Environment
+   */
+  pub.MARGIN = 2;
+
+  /**
+   * 
+   * @property PAPER {Number}
+   * @cat Environment
+   */
+  pub.BLEED = 3;
+
+
+  // init has to be above the method definition below... otherwise trouble
+  var cMode = pub.PAPER;
+
+  /**
+   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
+   * Please note that you will use your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+   * @method canvasMode
+   * @cat Environment
+   */
+  pub.canvasMode = function ( m ) {
+  
+    if(arguments.length == 0) {
+      return cMode;
+    } else if ( typeof m === "number" ) {
+      cMode = m;
+      updatePublicPageSizeVars();
+    } else {
+      error("Problem setting canvasMode. Please consult the reference.");
+    }
+
+  };
+
+  
+
+  
   // ----------------------------------------
   // private vars
   var currDoc = null,
@@ -3727,8 +3774,39 @@
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-    var w = pageBounds[3] - pageBounds[1];
-    var h = pageBounds[2] - pageBounds[0];
+
+    var widthOffset = heightOffset = 0;
+
+    switch(pub.canvasMode()) {
+
+      case pub.PAPER:
+        widthOffset = 0;
+        heightOffset = 0;
+        b.resetMatrix();
+        break;
+
+      case pub.MARGIN:
+        widthOffset = - currentPage().marginPreferences.left - currentPage().marginPreferences.right;
+        heightOffset = - currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
+        b.resetMatrix();
+        b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+        break;
+
+      case pub.BLEED:
+        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+        b.resetMatrix();
+        b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+        break;
+
+      default:
+        b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED");
+        break;
+    }
+
+    var w = pageBounds[3] - pageBounds[1] + widthOffset;
+    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+
     pub.width = w;
     pub.height = h;
   };
