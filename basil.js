@@ -254,87 +254,112 @@
   };
 
   /**
-   * Calls the given callback function with each story of the given document.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
-   * @param  {Function} cb  The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
+   * @param  {Function} cb  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
    * @param  {Category} Test
+   * @return {Stories} You can use it like an array.
    */
   pub.stories = function(doc, cb) {
-    return forEach(doc.stories, cb);
+    if(arguments.length === 1) {
+      return doc.stories;
+    } else if (cb instanceof Function) {
+      return forEach(doc.stories, cb);
+    }
   };
 
   /**
-   * Calls the given callback function with each paragraph of the given document, story or text frame.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each paragraph of the given document, story or text frame.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
-   * @param  {Function} cb  The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
+   * @param  {Function} cb  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
+   * @return {Paragraphs} You can use it like an array.   
    */
   pub.paragraphs = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, 'paragraphs', cb);
-    } else {
-      return forEach(item.paragraphs, cb);
+    if(arguments.length === 1) {
+      return item.paragraphs;
+    } else if (cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, 'paragraphs', cb);
+      } else {
+        return forEach(item.paragraphs, cb);
+      }
     }
   };
 
   /**
-   * Calls the given callback function with each line of the given document, story, text frame or paragraph.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
-   * @param  {Function} cb The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
+   * @param  {Function} cb Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
+   * @return {Lines} You can use it like an array.
    */
   pub.lines = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, 'lines', cb);
-    } else {
-      return forEach(item.lines, cb);
+    if(arguments.length === 1) {
+      return item.lines;
+    } else if (cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, 'lines', cb);
+      } else {
+        return forEach(item.lines, cb);
+      }
     }
   };
 
   /**
-   * Calls the given callback function with each word of the given document, story, text frame, paragraph or line.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each word of the given document, story, text frame, paragraph or line.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
-   * @param  {Function} cb The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
+   * @param  {Function} cb Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
+   * @return {Words} You can use it like an array.
    */
   pub.words = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, 'words', cb);
-    } else {
-      return forEach(item.words, cb);
+    if(arguments.length === 1){
+      return item.words;
+    } else if (cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, 'words', cb);
+      } else {
+        return forEach(item.words, cb);
+      }
     }
   };
 
   /**
-   * Calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
-   * @param  {Function} cb The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
+   * @param  {Function} cb Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
+   * @return {Characters} You can use it like an array.
    */
   pub.characters = function(item, cb) {
-    if (item instanceof Document) {
-      return forEachStoryProperty(item, 'characters', cb);
-    } else {
-      return forEach(item.characters, cb);
+    if(arguments.length === 1) {
+      return item.characters;
+    } else if ( cb instanceof Function) {
+      if (item instanceof Document) {
+        return forEachStoryProperty(item, 'characters', cb);
+      } else {
+        return forEach(item.characters, cb);
+      }
     }
   };
 
@@ -352,14 +377,14 @@
   };
 
   /**
-   * Calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
-   * If the second parameter is false the actual array is simply returned without any iterations. Use this to do something else with it.
+   * If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
    *
    * @cat Document
    * @subcat InDesign Model
    * @method items
    * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
-   * @param  {Function|Boolean} cb The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   * @param  {Function|Boolean} cb Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   * @return {PageItems} You can use it like an array.
    */
   pub.items = function(container, cb) {
 
@@ -368,17 +393,16 @@
       || container instanceof Layer 
       || container instanceof Group) {
 
-      if(cb === false){
-        return container.allPageItems;
-      } else {
+      if(arguments.length === 1){
+        return container.pageItems;
+      } else if(cb instanceof Function ) {
         return forEach(container.allPageItems, cb);
       }
     } else {
       error("Not a valid PageItem container, should be Document, Page, Layer or Group");
     }
-
-  }
   };
+  
 
   /**
    * Removes all PageItems in the given Document, Page, Layer or Group.
@@ -408,16 +432,6 @@
         return false;
       }
   };  
-
-
-  pub.clearSwatches = function() {
-
-      forEach(b.doc().swatches, function(swatch, n){
-
-          swatch.remove();
-
-      });
-  };
 
   /**
    * Checks whether a var is an Array, returns true if this is the case

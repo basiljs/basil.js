@@ -1,4 +1,4 @@
-#include "../basil.js";
+﻿#include "../basil.js";
 #include "../lib/basil.test.js";
 
 b.test('EnvironmentTests', {
@@ -167,6 +167,45 @@ b.test('EnvironmentTests', {
     );
     
     assert( result1 === 2 && result2 === 2 && result3 === 2 );
+  },
+
+  testCollectionGetters: function (b) {
+
+    b.doc();
+    b.page();
+    var obj = b.text("Hello Basil!", 0,0,100,100);
+
+// process all items on a layer
+    var arr = b.characters( obj );
+    assert(arr instanceof Characters);
+    var counter = 0;
+    b.characters(obj, function(){counter++;});
+    assert(counter === 12);
+    
+    var arr = b.words( obj );
+    assert(arr instanceof Words);
+    counter = 0;    
+    b.words(obj, function(){counter++;});    
+    assert(counter === 2);
+    
+    var arr = b.lines( obj );
+    assert(arr instanceof Lines);
+    counter = 0;    
+    b.lines(obj, function(){counter++;});    
+    assert(counter === 1);
+    
+    var arr = b.paragraphs( obj );
+    assert(arr instanceof Paragraphs);
+    counter = 0;    
+    b.paragraphs(obj, function(){counter++;});   
+    assert(counter === 1);
+    
+    var arr = b.stories( b.doc() );
+    assert(arr instanceof Stories);
+    counter = 0;    
+    b.stories(b.doc(), function(){counter++;});    
+    assert(counter === 1);
+  
   }
 
 });
