@@ -282,6 +282,85 @@
       return true;
     };
   }
+
+
+  // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
+  glob.Hash = function ()
+  {
+    this.length = 0;
+    this.items = new Object();
+      
+    for (var i = 0; i < arguments.length; i += 2) {
+      if (typeof(arguments[i + 1]) != 'undefined') {
+        this.items[arguments[i]] = arguments[i + 1];
+        this.length++;
+      }
+    }
+
+    this.removeItem = function(in_key)
+    {
+      var tmp_previous;
+      if (typeof(this.items[in_key]) != 'undefined') {
+        this.length--;
+        var tmp_previous = this.items[in_key];
+        delete this.items[in_key];
+      }
+
+      return tmp_previous;
+    }
+
+    this.getItem = function(in_key) {
+           this.checkKey(in_key);        
+      return this.items[in_key];
+    }
+
+      // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
+      this.checkKey = function (in_key) {
+          if(this.items[in_key] instanceof Function) {
+              this.items[in_key] = null; 
+          };
+      }
+
+    this.setItem = function(in_key, in_value)
+    {
+           this.checkKey(in_key);
+          
+      var tmp_previous;
+      if (typeof(in_value) != 'undefined') {
+        if (typeof(this.items[in_key]) == 'undefined') {
+          this.length++;
+        }
+        else {
+          tmp_previous = this.items[in_key];
+        }
+
+        this.items[in_key] = in_value;
+      }
+
+      return tmp_previous;
+    }
+
+    this.hasItem = function(in_key)
+    {
+           this.checkKey(in_key); 
+      return typeof(this.items[in_key]) != 'undefined';
+    }
+      
+      this.getKeysSortedByValues = function() {
+          var obj = this.items;
+          var keys = []; for(var key in obj) keys.push(key);
+          return keys.sort(function(a,b){return obj[b]-obj[a]});
+      }
+
+    this.clear = function()
+    {
+      for (var i in this.items) {
+        delete this.items[i];
+      }
+
+      this.length = 0;
+    }
+  }  
   
   
   // ----------------------------------------
@@ -312,10 +391,12 @@
    * @return {Stories} You can use it like an array.
    */
   pub.stories = function(doc, cb) {
-    if(arguments.length === 1) {
+    if(arguments.length === 1 && doc instanceof Document) {
       return doc.stories;
     } else if (cb instanceof Function) {
       return forEach(doc.stories, cb);
+    } else {
+      error("Incorrect call of b.stories().");
     }
   };
 
@@ -330,6 +411,14 @@
    * @return {Paragraphs} You can use it like an array.   
    */
   pub.paragraphs = function(item, cb) {
+
+    var err = false;
+    try{
+      item[0]; // check if list
+      err = true; // access ok -> error
+    } catch (expected) {};
+    if(err) error("Array/Collection has been passed to b.paragraphs(). Single object expected.");
+
     if(arguments.length === 1) {
       return item.paragraphs;
     } else if (cb instanceof Function) {
@@ -339,6 +428,38 @@
         return forEach(item.paragraphs, cb);
       }
     }
+  };
+
+  // does not work yet...
+  pub.sentences = function(item, cb) {
+
+    var err = false;
+    try{
+      item[0]; // check if list
+      err = true; // access ok -> error
+    } catch (expected) {};
+    if(err) error("Array/Collection has been passed to b.sentences(). Single object expected.");
+
+    if(arguments.length >= 1 ) {
+      var arr;
+      try{
+        str = item.contents;  
+        arr = str.split(/(\!|\?|\.|)+/);
+        
+      } catch (e){
+        error("Object passed to b.sentences() does not have text or is incompatible.");
+      }
+
+      if(arguments.length === 1) {
+        return arr;
+      } else if (cb instanceof Function) {
+        forEach(arr,cb);
+      } else {
+        error("callback is not a Function.");
+      }
+
+    }
+
   };
 
   /**
@@ -353,6 +474,14 @@
    * @return {Lines} You can use it like an array.
    */
   pub.lines = function(item, cb) {
+
+    var err = false;
+    try{
+      item[0]; // check if list
+      err = true; // access ok -> error
+    } catch (expected) {};
+    if(err) error("Array/Collection has been passed to b.lines(). Single object expected.");
+
     if(arguments.length === 1) {
       return item.lines;
     } else if (cb instanceof Function) {
@@ -376,6 +505,14 @@
    * @return {Words} You can use it like an array.
    */
   pub.words = function(item, cb) {
+
+    var err = false;
+    try{
+      item[0]; // check if list
+      err = true; // access ok -> error
+    } catch (expected) {};
+    if(err) error("Array/Collection has been passed to b.words(). Single object expected.");
+    
     if(arguments.length === 1){
       return item.words;
     } else if (cb instanceof Function) {
@@ -399,6 +536,14 @@
    * @return {Characters} You can use it like an array.
    */
   pub.characters = function(item, cb) {
+
+    var err = false;
+    try{
+      item[0]; // check if list
+      err = true; // access ok -> error
+    } catch (expected) {};
+    if(err) error("Array/Collection has been passed to b.characters(). Single object expected.");
+
     if(arguments.length === 1) {
       return item.characters;
     } else if ( cb instanceof Function) {
@@ -872,6 +1017,26 @@
 
 
   // -- String Functions --
+
+
+  
+  /**
+   * Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts "word!" to "word". Especially useful together with b.words();
+   * 
+   * @method wordTrim
+   * @cat Data
+   * @subcat String Functions
+   * @param {String} s The String to trim
+   * @param
+   */
+   // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
+  pub.wordTrim = function(s) { 
+      s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi,"");
+      s = s.replace(/\s*/gi,"");
+  //    s = s.replace(/[ ]{2,}/gi," "); 
+      s = s.replace(/\n*/,"");     
+      return s;
+  }  
 
   /**
    * Combines an array of Strings into one String, each separated by 
@@ -2468,6 +2633,7 @@
    * @return The constrained value
    */
   pub.constrain = function(aNumber, aMin, aMax) {
+    if(arguments.length !== 3 ) error("Wrong argument count for b.constrain().");
     return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
   };
 
@@ -2489,6 +2655,8 @@
       dx = arguments[0] - arguments[2];
       dy = arguments[1] - arguments[3];
       return Math.sqrt(dx * dx + dy * dy);
+    } else {
+      error("Wrong argument count for b.dist().");
     }
   };
 
@@ -2526,6 +2694,7 @@
    * @return {Number} The mapped value
    */
   pub.lerp = function(value1, value2, amt) {
+    if(arguments.length !== 3 ) error("Wrong argument count for b.lerp().");
     return (value2 - value1) * amt + value1;
   };
 
@@ -2552,6 +2721,7 @@
    * @return {Number} the magnitude
    */
   pub.mag = function(a, b, c) {
+    if( ! (arguments.length === 2 || arguments.length === 3 ) )  error("Wrong argument count for b.mag().");
     if (c) return Math.sqrt(a * a + b * b + c * c);
     return Math.sqrt(a * a + b * b);
   };
@@ -2572,6 +2742,7 @@
    * @return {Number} the mapped value
    */
   pub.map = function(value, istart, istop, ostart, ostop) {
+    if(arguments.length !== 5 ) error("Wrong argument count for b.map().");
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
 
@@ -2633,6 +2804,7 @@
    * @return {Number} The normalized value
    */
   pub.norm = function(aNumber, low, high) {
+    if(arguments.length !== 3 ) error("Wrong argument count for b.norm().");
     return (aNumber - low) / (high - low);
   };
 
@@ -2669,6 +2841,7 @@
    * @return {Number} 
    */
   pub.sq = function(aNumber) {
+    if(arguments.length !== 1 ) error("Wrong argument count for b.sq().");
     return aNumber * aNumber;
   };
 
