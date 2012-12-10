@@ -717,7 +717,7 @@
       currPage = page;
     } else if (typeof page === 'number') {
       if( page < 1 ) {
-        page = 1;
+        page = 0;
       } else {
         page = page - 1;
       }
