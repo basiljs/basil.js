@@ -196,7 +196,6 @@
    * @cat Environment
    */
   pub.canvasMode = function ( m ) {
-  
     if(arguments.length == 0) {
       return cMode;
     } else if ( typeof m === "number" ) {
@@ -207,8 +206,6 @@
     }
 
   };
-
-  
 
   
   // ----------------------------------------
@@ -707,7 +704,7 @@
   };
 
   /**
-   * Returns the current page and sets it if argument page is given.
+   * Returns the current page and sets it if argument page is given. Numbering starts with 1.
    *
    * @cat Document
    * @subcat InDesign Model
@@ -719,7 +716,12 @@
     if (page instanceof Page) {
       currPage = page;
     } else if (typeof page === 'number') {
-      var tempPage = currentDoc().pages[page - 1];
+      if( page < 0 ) {
+        page = 0;
+      } else {
+        page = page - 1;
+      }
+      var tempPage = currentDoc().pages[page];
       try {
         tempPage.id;
       } catch (e) {
