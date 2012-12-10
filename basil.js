@@ -716,8 +716,8 @@
     if (page instanceof Page) {
       currPage = page;
     } else if (typeof page === 'number') {
-      if( page < 0 ) {
-        page = 0;
+      if( page < 1 ) {
+        page = 1;
       } else {
         page = page - 1;
       }
