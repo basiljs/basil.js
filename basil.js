@@ -169,21 +169,21 @@
    * @property PAPER {Number}
    * @cat Environment
    */
-  pub.PAPER = 1;
+  pub.PAPER = "paper";
 
   /**
    * 
    * @property PAPER {Number}
    * @cat Environment
    */
-  pub.MARGIN = 2;
+  pub.MARGIN = "margin";
 
   /**
    * 
    * @property PAPER {Number}
    * @cat Environment
    */
-  pub.BLEED = 3;
+  pub.BLEED = "bleed";
 
 
   // init has to be above the method definition below... otherwise trouble
@@ -191,14 +191,14 @@
 
   /**
    * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
-   * Please note that you will use your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
    * @method canvasMode
    * @cat Environment
    */
   pub.canvasMode = function ( m ) {
     if(arguments.length == 0) {
       return cMode;
-    } else if ( typeof m === "number" ) {
+    } else if ( typeof m === "string" ) {
       cMode = m;
       updatePublicPageSizeVars();
     } else {
@@ -282,7 +282,7 @@
 
 
   // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
-  glob.Hash = function ()
+  glob.HashList = function ()
   {
     this.length = 0;
     this.items = new Object();
@@ -294,7 +294,7 @@
       }
     }
 
-    this.removeItem = function(in_key)
+    this.remove = function(in_key)
     {
       var tmp_previous;
       if (typeof(this.items[in_key]) != 'undefined') {
@@ -306,21 +306,21 @@
       return tmp_previous;
     }
 
-    this.getItem = function(in_key) {
+    this.get = function(in_key) {
            this.checkKey(in_key);        
       return this.items[in_key];
     }
 
-      // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
-      this.checkKey = function (in_key) {
-          if(this.items[in_key] instanceof Function) {
-              this.items[in_key] = null; 
-          };
-      }
+    // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
+    this.checkKey = function (in_key) {
+        if(this.items[in_key] instanceof Function) {
+            this.items[in_key] = null; 
+        };
+    }
 
-    this.setItem = function(in_key, in_value)
+    this.set = function(in_key, in_value)
     {
-           this.checkKey(in_key);
+      this.checkKey(in_key);
           
       var tmp_previous;
       if (typeof(in_value) != 'undefined') {
@@ -337,17 +337,22 @@
       return tmp_previous;
     }
 
-    this.hasItem = function(in_key)
+    this.hasKey = function(in_key)
     {
-           this.checkKey(in_key); 
+      this.checkKey(in_key); 
       return typeof(this.items[in_key]) != 'undefined';
     }
+
+    this.hasValue = function(value)
+    {
+
+    }
       
-      this.getKeysSortedByValues = function() {
-          var obj = this.items;
-          var keys = []; for(var key in obj) keys.push(key);
-          return keys.sort(function(a,b){return obj[b]-obj[a]});
-      }
+    this.getKeysSortedByValues = function() {
+        var obj = this.items;
+        var keys = []; for(var key in obj) keys.push(key);
+        return keys.sort(function(a,b){return obj[b]-obj[a]});
+    }
 
     this.clear = function()
     {
@@ -1032,7 +1037,7 @@
    * @param
    */
    // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
-  pub.wordTrim = function(s) { 
+  pub.trimWord = function(s) { 
       s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi,"");
       s = s.replace(/\s*/gi,"");
   //    s = s.replace(/[ ]{2,}/gi," "); 
