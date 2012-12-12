@@ -442,7 +442,8 @@
       var arr;
       try{
         str = item.contents;  
-        arr = str.split(/(\!|\?|\.|)+/);
+        arr = str.match( /[^\.!\?]+[\.!\?]+/g );
+        //arr = str.split(/(\!|\?|\.|)+/);
         
       } catch (e){
         error("Object passed to b.sentences() does not have text or is incompatible.");
