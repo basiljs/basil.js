@@ -282,86 +282,82 @@
 
 
   // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
-  glob.HashList = function ()
-  {
-    this.length = 0;
-    this.items = new Object();
+  glob.HashList = function () {
+    var that = {};
+    that.length = 0;
+    that.items = {};
       
-    for (var i = 0; i < arguments.length; i += 2) {
-      if (typeof(arguments[i + 1]) != 'undefined') {
-        this.items[arguments[i]] = arguments[i + 1];
-        this.length++;
-      }
-    }
-
-    this.remove = function(in_key)
-    {
-      var tmp_previous;
-      if (typeof(this.items[in_key]) != 'undefined') {
-        this.length--;
-        var tmp_previous = this.items[in_key];
-        delete this.items[in_key];
-      }
-
-      return tmp_previous;
-    }
-
-    this.get = function(in_key) {
-           this.checkKey(in_key);        
-      return this.items[in_key];
-    }
-
+    // for (var i = 0; i < arguments.length; i += 2) {
+    //   if (typeof(arguments[i + 1]) != 'undefined') {
+    //     that.items[arguments[i]] = arguments[i + 1];
+    //     that.length++;
+    //   }
+    // }
+    
     // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
-    this.checkKey = function (in_key) {
-        if(this.items[in_key] instanceof Function) {
-            this.items[in_key] = null; 
-        };
+    function checkKey(key) {
+      if(that.items[key] instanceof Function) {
+          that.items[key] = undef; 
+      };
     }
 
-    this.set = function(in_key, in_value)
-    {
-      this.checkKey(in_key);
-          
+    that.remove = function(key) {
       var tmp_previous;
-      if (typeof(in_value) != 'undefined') {
-        if (typeof(this.items[in_key]) == 'undefined') {
-          this.length++;
-        }
-        else {
-          tmp_previous = this.items[in_key];
-        }
-
-        this.items[in_key] = in_value;
+      if (typeof(that.items[key]) != undef) {
+        var tmp_previous = that.items[key];
+        delete that.items[key];
+        that.length--;
       }
-
       return tmp_previous;
     }
 
-    this.hasKey = function(in_key)
-    {
-      this.checkKey(in_key); 
-      return typeof(this.items[in_key]) != 'undefined';
+    that.get = function(key) {    
+      return that.items[key];
     }
 
-    this.hasValue = function(value)
-    {
+    that.set = function(key, value) {
+      //checkKey(key);
+      if (typeof(value) != undef) {
+        if (typeof(that.items[key]) === undef) {
+          that.length++;
+        }
+        that.items[key] = value;
+      }
+      return that.items[key];
+    }
 
+    that.hasKey = function(key) {
+      checkKey(key);
+      return that.items[key] != undef;
+    }
+
+    that.hasValue = function(value) {
+      var obj = that.items;
+      var found = false;
+      for(var key in obj) {
+        if (obj[key] === value) {
+          found = true;
+          break;
+        };
+      }
+      return found;
     }
       
-    this.getKeysSortedByValues = function() {
-        var obj = this.items;
-        var keys = []; for(var key in obj) keys.push(key);
+    that.getKeysSortedByValues = function() {
+        var obj = that.items;
+        var keys = [];
+        for(var key in obj) keys.push(key);
         return keys.sort(function(a,b){return obj[b]-obj[a]});
     }
 
-    this.clear = function()
-    {
-      for (var i in this.items) {
-        delete this.items[i];
+    that.clear = function() {
+      for (var i in that.items) {
+        delete that.items[i];
       }
-
-      this.length = 0;
+      that.length = 0;
     }
+
+    return that;
   }  
   
   

@@ -7,7 +7,7 @@ function draw() {
     
     var hash = new HashList();
 
-    var longString = "Lor!$$em! ipsum!! dolor? ??!! sit amet, consetetur... --- ... sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+    var longString = "Lor!$$em! ipsum!! dolor? ??!! sit amet, consetetur... --- ... sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. watch. watch.";
     var tf1 = b.text( longString, 0,0,b.width,200 );
     var tf2 = b.text( longString, 0,220,b.width,200 );
     var tf3 = b.text( "", 0,440,b.width,200 );
@@ -17,9 +17,10 @@ function draw() {
     for( var i = 0; i < words.length; i++){
         str = words[i].contents;
         str = b.trimWord(str);
-        if (str == "") continue; // special case: nothing left after wordTrim
+        if (str == "") continue; // special case: nothing left after trimWord
         // count the number of occurances
         if( hash.hasKey(str) ){
+            b.println(str);
             hash.set(str, hash.get(str) + 1); 
         } else {
             hash.set( str, 1 );
