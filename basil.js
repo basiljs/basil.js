@@ -428,7 +428,16 @@
     }
   };
 
-  // does not work yet...
+  /**
+   * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method sentences
+   * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
+   * @param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
+   * @return {Array} An array of strings
+   */
   pub.sentences = function(item, cb) {
 
     var err = false;
@@ -443,8 +452,6 @@
       try{
         str = item.contents;  
         arr = str.match( /[^\.!\?]+[\.!\?]+/g );
-        //arr = str.split(/(\!|\?|\.|)+/);
-        
       } catch (e){
         error("Object passed to b.sentences() does not have text or is incompatible.");
       }
