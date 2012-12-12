@@ -3274,12 +3274,12 @@
    *
    * @cat Document
    * @subcat InDesign Model
-   * @method findByLabel
+   * @method labels
    * @param  {String} label The label identifier
    * @param  {Function} cb Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
    */
-  pub.findByLabel = function(label, cb) {
+  pub.labels = function(label, cb) {
     var result = [];
     var doc = currentDoc();
     for (var i = 0, len = doc.pageItems.length; i < len; i++) {
@@ -3300,11 +3300,11 @@
    *
    * @cat Document
    * @subcat InDesign Model
-   * @method selection
+   * @method selections
    * @param  {Function} cb Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {Object[]} Array of selected object(s).
    */
-  pub.selection = function(cb) {
+  pub.selections = function(cb) {
     if(app.selection.length === 0) error("Selection is empty. Please select something :)");
     if (arguments.length === 1 && cb instanceof Function) {
       return forEach(app.selection, cb);

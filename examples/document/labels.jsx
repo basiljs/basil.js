@@ -2,7 +2,7 @@
 #include "basiljs/bundle/basil.js";
 
 // you can get all elements you have marked with a script label (Window -> Utilities -> Script Label) 
-// with b.findByLabel(). there a two different ways to use the b.findByLabel() function
+// with b.labels(). there a two different ways to use the b.labels() function
 
 function draw() {
   var myScriptLabel = "a script label";
@@ -10,7 +10,7 @@ function draw() {
   b.println("---");
   
   // a
-  var myTaggedItems = b.findByLabel(myScriptLabel);
+  var myTaggedItems = b.labels(myScriptLabel);
   for (var i = 0; i < myTaggedItems.length; i++) {
     b.println("element "+i+" is a: "+ myTaggedItems[i] );
   };
@@ -18,7 +18,7 @@ function draw() {
   b.println("---");
 
   // b
-  b.findByLabel(myScriptLabel, function(item,counter){
+  b.labels(myScriptLabel, function(item,counter){
     b.println("element "+counter+" is a: "+ item );
   });
 
