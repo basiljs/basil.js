@@ -722,12 +722,14 @@
    *
    * @cat Document
    * @method close
-   * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
-   * @param  {File} [file] The indesign file instance to save the document to
+   * @param  {SaveOptions|Booleand} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+   * @param  {File} [file] Optional: The indesign file instance to save the document to
    */
   pub.close = function(saveOptions, file) {
     var doc = currentDoc();
     if (doc) {
+      if( typeof saveOptions === 'boolean' && saveOptions === false ) saveOptions = SaveOptions.no;
+      if( typeof saveOptions === 'boolean' && saveOptions === true ) saveOptions = SaveOptions.yes;
       doc.close(saveOptions, file);
       resetCurrDoc();
     }
@@ -760,6 +762,7 @@
       currPage = tempPage;
     }
     updatePublicPageSizeVars();
+    app.activeWindow.activePage = currPage; // focus in GUI
     return currentPage();
   };
 
@@ -827,6 +830,7 @@
       var p = pub.page(page); // get the page object, todo: add an internal method of page retrieval without setting it to current
       p.remove();
       currPage = null; // reset!
+      currentPage();
     } else {
       error("Invalid call of b.removePage().");
     }
@@ -4072,10 +4076,10 @@
       var doc = null;
       try {
         doc = app.activeDocument;
-        if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
+        //if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
       } catch(e) {
         doc = app.documents.add();
-        doc.documentPreferences.facingPages = false; // turn facing pages off on new documents
+        //doc.documentPreferences.facingPages = true; // turn facing pages off on new documents
       }
       setCurrDoc(doc);
     }
