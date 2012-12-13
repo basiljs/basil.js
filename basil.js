@@ -165,25 +165,46 @@
 
   
   /**
-   * 
-   * @property PAPER {Number}
-   * @cat Environment
+   * @property PAPER {String}
+   * @cat Constants
    */
   pub.PAPER = "paper";
 
   /**
-   * 
-   * @property PAPER {Number}
-   * @cat Environment
+   * @property PAPER {String}
+   * @cat Constants
    */
   pub.MARGIN = "margin";
 
   /**
-   * 
-   * @property PAPER {Number}
-   * @cat Environment
+   * @property PAPER {String}
+   * @cat Constants
    */
   pub.BLEED = "bleed";
+
+  /**
+   * @property AT_BEGINNING {String}
+   * @cat Constants
+   */
+  pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
+
+  /**
+   * @property AT_END {String}
+   * @cat Constants
+   */  
+  pub.AT_END = LocationOptions.AT_END;
+
+  /**
+   * @property BEFORE {String}
+   * @cat Constants
+   */
+  pub.BEFORE = LocationOptions.BEFORE;
+
+  /**
+   * @property AFTER {String}
+   * @cat Constants
+   */  
+  pub.AFTER = LocationOptions.AFTER;
 
 
   // init has to be above the method definition below... otherwise trouble
@@ -726,11 +747,11 @@
       currPage = page;
     } else if (typeof page === 'number') {
       if( page < 1 ) {
-        page = 0;
+        p = 0;
       } else {
-        page = page - 1;
+        p = page - 1;
       }
-      var tempPage = currentDoc().pages[page];
+      var tempPage = currentDoc().pages[p];
       try {
         tempPage.id;
       } catch (e) {
@@ -741,6 +762,124 @@
     updatePublicPageSizeVars();
     return currentPage();
   };
+
+  /**
+   * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method addPage
+   * @param  {String} [location] The location placement mode
+   * @return {Page} The new page
+   */
+  pub.addPage = function(location) {
+
+    if(arguments.length === 0) location = b.AT_END; // default
+    
+    var nP;
+    try {
+      
+      switch ( location ) {
+        
+        case b.AT_END:
+          nP = currentDoc().pages.add(location);
+          break;
+
+        case b.AT_BEGINNING:
+          nP = currentDoc().pages.add(location);     
+          break;
+
+        case b.AFTER:
+          nP = currentDoc().pages.add(location, pub.page() ); 
+          break;
+
+        case b.BEFORE:
+          nP = currentDoc().pages.add(location, pub.page() );
+          break;
+
+        default:
+          throw new Error(); 
+          break;
+
+      };
+
+      pub.page( nP ); 
+      return nP;
+
+    } catch (e) {
+      error("Invalid location argument passed to addPage()");
+    }
+
+  };
+
+  /**
+   * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method removePage
+   * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
+   * @throws {Error} e If Page not found or invalid call.
+   */
+  pub.removePage = function (page) {
+
+    if( typeof page === 'number' || arguments.length === 0 || page instanceof Page ){
+      var p = pub.page(page); // get the page object, todo: add an internal method of page retrieval without setting it to current
+      p.remove();
+      currPage = null; // reset!
+    } else {
+      error("Invalid call of b.removePage().");
+    }
+
+  }
+
+  /**
+   * Returns the current page number of either the current page or the given Page object.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method pageNumber
+   * @param  {Page} [pageObj] Optional: The page you want to know the number of.
+   * @return {Number} The page number within the document.
+   * @throws {Error} e If Page not found or invalid call.
+   */
+  pub.pageNumber = function (pageObj) {
+
+    if(typeof pageObj == 'number') error( "b.pageNumber cannot be called with a Number argument." );
+
+    if(pageObj instanceof Page) {
+      return parseInt(pageObj.name); // current number of given page
+    } else {
+      return parseInt(pub.page().name); // number of current page
+    }
+    
+  }
+
+  // does not work?
+  pub.nextPage = function () {
+    var p = pub.doc().pages.nextItem(currentPage());
+    return pub.page(p);
+  }
+
+  // does not work?
+  pub.previousPage = function () {
+    var p = pub.doc().pages.previousItem(currentPage());
+    return pub.page(p);
+  }
+
+  /**
+   * The number of all pages in the current document.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method pageCount
+   * @return The amount of pages.
+   * @throws {Error} e If Page not found or invalid call.
+   */
+  pub.pageCount = function() {
+    return currentDoc().pages.count();
+  };
+
 
   /**
    * Returns the current layer and sets it if argument layer is given.
@@ -3906,8 +4045,10 @@
       var doc = null;
       try {
         doc = app.activeDocument;
+        if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
       } catch(e) {
         doc = app.documents.add();
+        doc.documentPreferences.facingPages = false; // turn facing pages off on new documents
       }
       setCurrDoc(doc);
     }
@@ -3918,6 +4059,7 @@
     resetCurrDoc();
     currDoc = doc;
     // -- setup document --
+    
     currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
     currFont = currDoc.textDefaults.appliedFont.name;
     currFontSize = currDoc.textDefaults.pointSize;
