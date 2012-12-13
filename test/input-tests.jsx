@@ -21,7 +21,7 @@ b.test('InputTests', {
     var textFrame1 = b.text('foo', 0, 0, 300, 300);
     textFrame1.label = label;
 
-    var found = b.findByLabel(label);
+    var found = b.labels(label);
     
     assert(found.length === 1);
     assert(found[0] instanceof TextFrame);
@@ -34,13 +34,13 @@ b.test('InputTests', {
     var textFrame2 = b.text('bar', 0, 0, 300, 300);
     textFrame2.label = label;
 
-    var found = b.findByLabel(label);
+    var found = b.labels(label);
 
     assert(found.length === 2);
   },
 
   testFindByLabelWithNotExistingLabel: function(b) {
-    var found = b.findByLabel('bar');
+    var found = b.labels('bar');
 
     assert(found.length === 0);
   }

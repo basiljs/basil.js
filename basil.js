@@ -845,7 +845,7 @@
    */
   pub.pageNumber = function (pageObj) {
 
-    if(typeof pageObj == 'number') error( "b.pageNumber cannot be called with a Number argument." );
+    if(typeof pageObj === 'number') error( "b.pageNumber cannot be called with a Number argument." );
 
     if(pageObj instanceof Page) {
       return parseInt(pageObj.name); // current number of given page
@@ -1593,76 +1593,6 @@
     return newRect;
   };
 
-  /**
-   * The function calculates the geometric bounds of any given object.
-   * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
-   *
-   * @cat Document
-   * @subcat Transformation
-   * @method bounds
-   * @param  {Text|Object} obj The object to calculate the geometric bounds
-   * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
-   */
-  pub.bounds = function (obj) {
-    var x1,y1,x2,y2,w,h;
-
-    if (isText(obj)) {
-      var baseline = obj.baseline;
-      var ascent = obj.ascent;
-      var descent = obj.descent;
-
-      x1 = obj.horizontalOffset;
-      y1 = baseline - ascent;
-      x2 = obj.endHorizontalOffset;
-      y2 = baseline + descent;
-      w = x2-x1;
-      h = y2-y1;
-
-      if (w < 0 || h <0) {
-        warning("bounds(textObj), not possible to get correct bounds, possible linebreak within textObj");
-      }
-
-      // TODO: not sure if this 100% correct, check
-      // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
-      var xHeight = y1+descent;
-
-      return {'width':w,
-              'height':h,
-              'left':x1,
-              'right':x2,
-              'top':y1,
-              'bottom':y2,
-              'baseline':baseline,
-              'xHeight':xHeight };
-    } else {
-      // is it a pageItem?
-      if (obj.hasOwnProperty("geometricBounds")) {
-        var geometricBounds = obj.geometricBounds; //[y1, x1, y2, x2]
-        x1 = geometricBounds[1];
-        y1 = geometricBounds[0];
-        x2 = geometricBounds[3];
-        y2 = geometricBounds[2];
-        w = x2-x1;
-        h = y2-y1;
-        return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
-      }
-      // everything else e.g. page, spread
-      else if (obj.hasOwnProperty("bounds")) {
-        var bounds = obj.bounds; //[y1, x1, y2, x2]
-        x1 = bounds[1];
-        y1 = bounds[0];
-        x2 = bounds[3];
-        y2 = bounds[2];
-        w = x2-x1;
-        h = y2-y1;
-        return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
-      }
-      // no idea what that might be, give up
-      else {
-        error("bounds(obj), invalide type! Can't get bounds for this object.");
-      }
-    }
-  };
 
   // -- Attributes --
 
@@ -3533,6 +3463,24 @@
   };
 
   /**
+   * Print numerous information about the current environment to the console
+   * 
+   * @cat Output
+   * @method printInfo
+   */
+  pub.printInfo = function() {
+
+    pub.println("###");
+    pub.println("OS: " + $.os);
+    pub.println("ExtendScript Build: " + $.build);
+    pub.println("ExtendScript Version:" + $.version);                    
+    pub.println("Engine: " + $.engineName);         
+    pub.println("memCache: " + $.memCache + " bytes");            
+    pub.println("###");
+
+  };
+
+  /**
    * Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.
    * If the given file exists it gets overridden.
    *
@@ -3570,6 +3518,81 @@
   // Transform
   // geometricBounds hint: [y1, x1, y2, x2]
 
+  var precision = function(num, dec) {
+      return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
+  }  
+
+/**
+   * The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.
+   * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method bounds
+   * @param  {Text|Object} obj The object to calculate the geometric bounds
+   * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
+   */
+  pub.bounds = function (obj) {
+    var x1,y1,x2,y2,w,h;
+
+    if (isText(obj)) {
+      var baseline = obj.baseline;
+      var ascent = obj.ascent;
+      var descent = obj.descent;
+
+      x1 = obj.horizontalOffset;
+      y1 = baseline - ascent;
+      x2 = obj.endHorizontalOffset;
+      y2 = baseline + descent;
+      w = x2-x1;
+      h = y2-y1;
+
+      if (w < 0 || h <0) {
+        warning("bounds(textObj), not possible to get correct bounds, possible linebreak within textObj");
+      }
+
+      // TODO: not sure if this 100% correct, check
+      // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
+      var xHeight = y1+descent;
+
+      return {'width':w,
+              'height':h,
+              'left':x1,
+              'right':x2,
+              'top':y1,
+              'bottom':y2,
+              'baseline':baseline,
+              'xHeight':xHeight };
+    } else {
+      // is it a pageItem?
+      if (obj.hasOwnProperty("geometricBounds")) {
+        var geometricBounds = obj.geometricBounds; //[y1, x1, y2, x2]
+        x1 = geometricBounds[1];
+        y1 = geometricBounds[0];
+        x2 = geometricBounds[3];
+        y2 = geometricBounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      }
+      // everything else e.g. page, spread
+      else if (obj.hasOwnProperty("bounds")) {
+        var bounds = obj.bounds; //[y1, x1, y2, x2]
+        x1 = bounds[1];
+        y1 = bounds[0];
+        x2 = bounds[3];
+        y2 = bounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      }
+      // no idea what that might be, give up
+      else {
+        error("bounds(obj), invalide type! Can't get bounds for this object.");
+      }
+    }
+  };  
+
   /**
    * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
    * 
@@ -3581,11 +3604,11 @@
    * @returns {Number} The current x position
    */
   pub.itemX = function(pItem, x) {
-    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-      if( x !== null ){
+    if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
+      if( typeof x === 'number' ){
         b.itemPosition(pItem, x, pItem.geometricBounds[0]);
       } else {
-        return pItem.geometricBounds[1];
+        return precision(pItem.geometricBounds[1], 5); // CS6 sets geometricBounds to initially slightly off values... terrible workaround
       }
     } else {
       error("pItem has to be a valid PageItem");
@@ -3603,11 +3626,11 @@
    * @returns {Number} The current y position
    */
   pub.itemY = function(pItem, y) {
-    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-      if( y !== null ) {
+    if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
+      if( typeof y === 'number' ) {
         b.itemPosition(pItem, pItem.geometricBounds[1], y);
       } else {
-        return pItem.geometricBounds[0];
+        return precision(pItem.geometricBounds[0], 5);
       }
     } else {
       error("pItem has to be a valid PageItem");
@@ -3625,8 +3648,8 @@
    * @returns {Number} The current width
    */
   pub.itemWidth = function(pItem, width) {
-    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-      if( width !== null ){
+    if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
+      if( typeof width === 'number' ){
         b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
       } else {
         return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
@@ -3647,8 +3670,8 @@
    * @returns {Number} The current height
    */
   pub.itemHeight = function(pItem, height) {
-    if(pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-      if( height !== null ){
+    if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
+      if( typeof height === 'number' ){
         b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
       } else {
         return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
@@ -3670,14 +3693,14 @@
    * @returns {Object} Returns an object with the fields x and y
    */
   pub.itemPosition = function(pItem, x, y) {
-    if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
+    if ( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
     
-      if( x !== null && y !== null) {
+      if( typeof x === 'number' && typeof y === 'number') {
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
         var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
         pItem.geometricBounds = [ y, x, y + height, x + width ];
       } else {
-        return { x: pItem.geometricBounds[1], y: pItem.geometricBounds[0] };
+        return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
       }
       
     } else {
@@ -3699,7 +3722,7 @@
   pub.itemSize = function(pItem, width, height) {
     if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
     
-      if( width !== null && height !== null ) {
+      if( typeof width === 'number'  && typeof height === 'number' ) {
         var x = pItem.geometricBounds[1];
         var y = pItem.geometricBounds[0];
         pItem.geometricBounds = [ y, x, y + height, x + width ];
