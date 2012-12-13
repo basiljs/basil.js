@@ -136,7 +136,7 @@
    * @property VERSION {String}
    * @cat Constants
    *&#x2F;
-  pub.VERSION = &quot;0.15&quot;;
+  pub.VERSION = &quot;0.16&quot;;
 
   &#x2F;**
    * Points
@@ -253,25 +253,46 @@
 
   
   &#x2F;**
-   * 
-   * @property PAPER {Number}
-   * @cat Environment
+   * @property PAPER {String}
+   * @cat Constants
    *&#x2F;
-  pub.PAPER = 1;
+  pub.PAPER = &quot;paper&quot;;
 
   &#x2F;**
-   * 
-   * @property PAPER {Number}
-   * @cat Environment
+   * @property PAPER {String}
+   * @cat Constants
    *&#x2F;
-  pub.MARGIN = 2;
+  pub.MARGIN = &quot;margin&quot;;
 
   &#x2F;**
-   * 
-   * @property PAPER {Number}
-   * @cat Environment
+   * @property PAPER {String}
+   * @cat Constants
    *&#x2F;
-  pub.BLEED = 3;
+  pub.BLEED = &quot;bleed&quot;;
+
+  &#x2F;**
+   * @property AT_BEGINNING {String}
+   * @cat Constants
+   *&#x2F;
+  pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
+
+  &#x2F;**
+   * @property AT_END {String}
+   * @cat Constants
+   *&#x2F;  
+  pub.AT_END = LocationOptions.AT_END;
+
+  &#x2F;**
+   * @property BEFORE {String}
+   * @cat Constants
+   *&#x2F;
+  pub.BEFORE = LocationOptions.BEFORE;
+
+  &#x2F;**
+   * @property AFTER {String}
+   * @cat Constants
+   *&#x2F;  
+  pub.AFTER = LocationOptions.AFTER;
 
 
   &#x2F;&#x2F; init has to be above the method definition below... otherwise trouble
@@ -279,15 +300,14 @@
 
   &#x2F;**
    * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
-   * Please note that you will use your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
    * @method canvasMode
    * @cat Environment
    *&#x2F;
   pub.canvasMode = function ( m ) {
-  
     if(arguments.length == 0) {
       return cMode;
-    } else if ( typeof m === &quot;number&quot; ) {
+    } else if ( typeof m === &quot;string&quot; ) {
       cMode = m;
       updatePublicPageSizeVars();
     } else {
@@ -295,8 +315,6 @@
     }
 
   };
-
-  
 
   
   &#x2F;&#x2F; ----------------------------------------
@@ -373,81 +391,82 @@
 
 
   &#x2F;&#x2F; taken from http:&#x2F;&#x2F;pbrajkumar.wordpress.com&#x2F;2011&#x2F;01&#x2F;17&#x2F;hashmap-in-javascript&#x2F;
-  glob.Hash = function ()
-  {
-    this.length = 0;
-    this.items = new Object();
+  glob.HashList = function () {
+    var that = {};
+    that.length = 0;
+    that.items = {};
       
-    for (var i = 0; i &lt; arguments.length; i += 2) {
-      if (typeof(arguments[i + 1]) != &#x27;undefined&#x27;) {
-        this.items[arguments[i]] = arguments[i + 1];
-        this.length++;
-      }
+    &#x2F;&#x2F; for (var i = 0; i &lt; arguments.length; i += 2) {
+    &#x2F;&#x2F;   if (typeof(arguments[i + 1]) != &#x27;undefined&#x27;) {
+    &#x2F;&#x2F;     that.items[arguments[i]] = arguments[i + 1];
+    &#x2F;&#x2F;     that.length++;
+    &#x2F;&#x2F;   }
+    &#x2F;&#x2F; }
+    
+    &#x2F;&#x2F; Please note: this is removing Object fields, but has to be done to have an empty &quot;bucket&quot;
+    function checkKey(key) {
+      if(that.items[key] instanceof Function) {
+          that.items[key] = undef; 
+      };
     }
 
-    this.removeItem = function(in_key)
-    {
+    that.remove = function(key) {
       var tmp_previous;
-      if (typeof(this.items[in_key]) != &#x27;undefined&#x27;) {
-        this.length--;
-        var tmp_previous = this.items[in_key];
-        delete this.items[in_key];
+      if (typeof(that.items[key]) != undef) {
+        var tmp_previous = that.items[key];
+        delete that.items[key];
+        that.length--;
       }
-
       return tmp_previous;
     }
 
-    this.getItem = function(in_key) {
-           this.checkKey(in_key);        
-      return this.items[in_key];
+    that.get = function(key) {    
+      return that.items[key];
     }
 
-      &#x2F;&#x2F; Please note: this is removing Object fields, but has to be done to have an empty &quot;bucket&quot;
-      this.checkKey = function (in_key) {
-          if(this.items[in_key] instanceof Function) {
-              this.items[in_key] = null; 
-          };
-      }
-
-    this.setItem = function(in_key, in_value)
-    {
-           this.checkKey(in_key);
-          
-      var tmp_previous;
-      if (typeof(in_value) != &#x27;undefined&#x27;) {
-        if (typeof(this.items[in_key]) == &#x27;undefined&#x27;) {
-          this.length++;
+    that.set = function(key, value) {
+      &#x2F;&#x2F;checkKey(key);
+      if (typeof(value) != undef) {
+        if (typeof(that.items[key]) === undef) {
+          that.length++;
         }
-        else {
-          tmp_previous = this.items[in_key];
-        }
-
-        this.items[in_key] = in_value;
+        that.items[key] = value;
       }
-
-      return tmp_previous;
+      return that.items[key];
     }
 
-    this.hasItem = function(in_key)
-    {
-           this.checkKey(in_key); 
-      return typeof(this.items[in_key]) != &#x27;undefined&#x27;;
+    that.hasKey = function(key) {
+      checkKey(key);
+      return that.items[key] != undef;
+    }
+
+    that.hasValue = function(value) {
+      var obj = that.items;
+      var found = false;
+      for(var key in obj) {
+        if (obj[key] === value) {
+          found = true;
+          break;
+        };
+      }
+      return found;
     }
       
-      this.getKeysSortedByValues = function() {
-          var obj = this.items;
-          var keys = []; for(var key in obj) keys.push(key);
-          return keys.sort(function(a,b){return obj[b]-obj[a]});
-      }
-
-    this.clear = function()
-    {
-      for (var i in this.items) {
-        delete this.items[i];
-      }
-
-      this.length = 0;
+    that.getKeysSortedByValues = function() {
+        var obj = that.items;
+        var keys = [];
+        for(var key in obj) keys.push(key);
+        return keys.sort(function(a,b){return obj[b]-obj[a]});
     }
+
+    that.clear = function() {
+      for (var i in that.items) {
+        delete that.items[i];
+      }
+      that.length = 0;
+    }
+
+    return that;
   }  
   
   
@@ -518,7 +537,16 @@
     }
   };
 
-  &#x2F;&#x2F; does not work yet...
+  &#x2F;**
+   * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method sentences
+   * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
+   * @param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
+   * @return {Array} An array of strings
+   *&#x2F;
   pub.sentences = function(item, cb) {
 
     var err = false;
@@ -532,8 +560,7 @@
       var arr;
       try{
         str = item.contents;  
-        arr = str.split(&#x2F;(\!|\?|\.|)+&#x2F;);
-        
+        arr = str.match( &#x2F;[^\.!\?]+[\.!\?]+&#x2F;g );
       } catch (e){
         error(&quot;Object passed to b.sentences() does not have text or is incompatible.&quot;);
       }
@@ -795,7 +822,7 @@
   };
 
   &#x2F;**
-   * Returns the current page and sets it if argument page is given.
+   * Returns the current page and sets it if argument page is given. Numbering starts with 1.
    *
    * @cat Document
    * @subcat InDesign Model
@@ -807,7 +834,12 @@
     if (page instanceof Page) {
       currPage = page;
     } else if (typeof page === &#x27;number&#x27;) {
-      var tempPage = currentDoc().pages[page - 1];
+      if( page &lt; 1 ) {
+        p = 0;
+      } else {
+        p = page - 1;
+      }
+      var tempPage = currentDoc().pages[p];
       try {
         tempPage.id;
       } catch (e) {
@@ -818,6 +850,124 @@
     updatePublicPageSizeVars();
     return currentPage();
   };
+
+  &#x2F;**
+   * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method addPage
+   * @param  {String} [location] The location placement mode
+   * @return {Page} The new page
+   *&#x2F;
+  pub.addPage = function(location) {
+
+    if(arguments.length === 0) location = b.AT_END; &#x2F;&#x2F; default
+    
+    var nP;
+    try {
+      
+      switch ( location ) {
+        
+        case b.AT_END:
+          nP = currentDoc().pages.add(location);
+          break;
+
+        case b.AT_BEGINNING:
+          nP = currentDoc().pages.add(location);     
+          break;
+
+        case b.AFTER:
+          nP = currentDoc().pages.add(location, pub.page() ); 
+          break;
+
+        case b.BEFORE:
+          nP = currentDoc().pages.add(location, pub.page() );
+          break;
+
+        default:
+          throw new Error(); 
+          break;
+
+      };
+
+      pub.page( nP ); 
+      return nP;
+
+    } catch (e) {
+      error(&quot;Invalid location argument passed to addPage()&quot;);
+    }
+
+  };
+
+  &#x2F;**
+   * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method removePage
+   * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
+   * @throws {Error} e If Page not found or invalid call.
+   *&#x2F;
+  pub.removePage = function (page) {
+
+    if( typeof page === &#x27;number&#x27; || arguments.length === 0 || page instanceof Page ){
+      var p = pub.page(page); &#x2F;&#x2F; get the page object, todo: add an internal method of page retrieval without setting it to current
+      p.remove();
+      currPage = null; &#x2F;&#x2F; reset!
+    } else {
+      error(&quot;Invalid call of b.removePage().&quot;);
+    }
+
+  }
+
+  &#x2F;**
+   * Returns the current page number of either the current page or the given Page object.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method pageNumber
+   * @param  {Page} [pageObj] Optional: The page you want to know the number of.
+   * @return {Number} The page number within the document.
+   * @throws {Error} e If Page not found or invalid call.
+   *&#x2F;
+  pub.pageNumber = function (pageObj) {
+
+    if(typeof pageObj == &#x27;number&#x27;) error( &quot;b.pageNumber cannot be called with a Number argument.&quot; );
+
+    if(pageObj instanceof Page) {
+      return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
+    } else {
+      return parseInt(pub.page().name); &#x2F;&#x2F; number of current page
+    }
+    
+  }
+
+  &#x2F;&#x2F; does not work?
+  pub.nextPage = function () {
+    var p = pub.doc().pages.nextItem(currentPage());
+    return pub.page(p);
+  }
+
+  &#x2F;&#x2F; does not work?
+  pub.previousPage = function () {
+    var p = pub.doc().pages.previousItem(currentPage());
+    return pub.page(p);
+  }
+
+  &#x2F;**
+   * The number of all pages in the current document.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method pageCount
+   * @return The amount of pages.
+   * @throws {Error} e If Page not found or invalid call.
+   *&#x2F;
+  pub.pageCount = function() {
+    return currentDoc().pages.count();
+  };
+
 
   &#x2F;**
    * Returns the current layer and sets it if argument layer is given.
@@ -1118,7 +1268,7 @@
    * @param
    *&#x2F;
    &#x2F;&#x2F; from: http:&#x2F;&#x2F;www.qodo.co.uk&#x2F;blog&#x2F;javascript-trim-leading-and-trailing-spaces&#x2F;
-  pub.wordTrim = function(s) { 
+  pub.trimWord = function(s) { 
       s = s.replace(&#x2F;(^[,.!?-]*)|([-,.!?]*$)&#x2F;gi,&quot;&quot;);
       s = s.replace(&#x2F;\s*&#x2F;gi,&quot;&quot;);
   &#x2F;&#x2F;    s = s.replace(&#x2F;[ ]{2,}&#x2F;gi,&quot; &quot;); 
@@ -3359,11 +3509,12 @@
    *
    * @cat Document
    * @subcat InDesign Model
-   * @method findByLabel
+   * @method labels
    * @param  {String} label The label identifier
+   * @param  {Function} cb Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
    *&#x2F;
-  pub.findByLabel = function(label) {
+  pub.labels = function(label, cb) {
     var result = [];
     var doc = currentDoc();
     for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
@@ -3373,6 +3524,9 @@
         result.push(pageItem.getElements()[0]);
       }
     }
+    if (arguments.length === 2 &amp;&amp; cb instanceof Function) {
+      return forEach(result, cb);
+    }
     return result;
   };
 
@@ -3381,13 +3535,15 @@
    *
    * @cat Document
    * @subcat InDesign Model
-   * @method selection
+   * @method selections
+   * @param  {Function} cb Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {Object[]} Array of selected object(s).
    *&#x2F;
-  pub.selection = function() {
-    if(app.selection.length === 0) {
-      error(&quot;Nothing selected&quot;);
-    }
+  pub.selections = function(cb) {
+    if(app.selection.length === 0) error(&quot;Selection is empty. Please select something :)&quot;);
+    if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
+      return forEach(app.selection, cb);
+    } 
     return app.selection;
   };
 
@@ -3977,8 +4133,10 @@
       var doc = null;
       try {
         doc = app.activeDocument;
+        if( doc.documentPreferences.facingPages ) warning(&quot;Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.&quot;);
       } catch(e) {
         doc = app.documents.add();
+        doc.documentPreferences.facingPages = false; &#x2F;&#x2F; turn facing pages off on new documents
       }
       setCurrDoc(doc);
     }
@@ -3989,6 +4147,7 @@
     resetCurrDoc();
     currDoc = doc;
     &#x2F;&#x2F; -- setup document --
+    
     currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
     currFont = currDoc.textDefaults.appliedFont.name;
     currFontSize = currDoc.textDefaults.pointSize;
