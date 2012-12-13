@@ -271,6 +271,15 @@
   pub.BLEED = &quot;bleed&quot;;
 
   &#x2F;**
+   * @property FACING_PAGES {String}
+   * @cat Constants
+   *&#x2F;
+  pub.FACING_PAGES = &quot;facing_pages&quot;;
+
+  
+  &#x2F;&#x2F; pub.FACING_BLEED = &quot;facing_bleed&quot;;  
+
+  &#x2F;**
    * @property AT_BEGINNING {String}
    * @cat Constants
    *&#x2F;
@@ -810,12 +819,14 @@
    *
    * @cat Document
    * @method close
-   * @param  {SaveOptions} [saveOptions] The indesign SaveOptions constant
-   * @param  {File} [file] The indesign file instance to save the document to
+   * @param  {SaveOptions|Booleand} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+   * @param  {File} [file] Optional: The indesign file instance to save the document to
    *&#x2F;
   pub.close = function(saveOptions, file) {
     var doc = currentDoc();
     if (doc) {
+      if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === false ) saveOptions = SaveOptions.no;
+      if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === true ) saveOptions = SaveOptions.yes;
       doc.close(saveOptions, file);
       resetCurrDoc();
     }
@@ -848,6 +859,7 @@
       currPage = tempPage;
     }
     updatePublicPageSizeVars();
+    app.activeWindow.activePage = currPage; &#x2F;&#x2F; focus in GUI
     return currentPage();
   };
 
@@ -915,6 +927,7 @@
       var p = pub.page(page); &#x2F;&#x2F; get the page object, todo: add an internal method of page retrieval without setting it to current
       p.remove();
       currPage = null; &#x2F;&#x2F; reset!
+      currentPage();
     } else {
       error(&quot;Invalid call of b.removePage().&quot;);
     }
@@ -933,7 +946,7 @@
    *&#x2F;
   pub.pageNumber = function (pageObj) {
 
-    if(typeof pageObj == &#x27;number&#x27;) error( &quot;b.pageNumber cannot be called with a Number argument.&quot; );
+    if(typeof pageObj === &#x27;number&#x27;) error( &quot;b.pageNumber cannot be called with a Number argument.&quot; );
 
     if(pageObj instanceof Page) {
       return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
@@ -1681,76 +1694,6 @@
     return newRect;
   };
 
-  &#x2F;**
-   * The function calculates the geometric bounds of any given object.
-   * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
-   *
-   * @cat Document
-   * @subcat Transformation
-   * @method bounds
-   * @param  {Text|Object} obj The object to calculate the geometric bounds
-   * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
-   *&#x2F;
-  pub.bounds = function (obj) {
-    var x1,y1,x2,y2,w,h;
-
-    if (isText(obj)) {
-      var baseline = obj.baseline;
-      var ascent = obj.ascent;
-      var descent = obj.descent;
-
-      x1 = obj.horizontalOffset;
-      y1 = baseline - ascent;
-      x2 = obj.endHorizontalOffset;
-      y2 = baseline + descent;
-      w = x2-x1;
-      h = y2-y1;
-
-      if (w &lt; 0 || h &lt;0) {
-        warning(&quot;bounds(textObj), not possible to get correct bounds, possible linebreak within textObj&quot;);
-      }
-
-      &#x2F;&#x2F; TODO: not sure if this 100% correct, check
-      &#x2F;&#x2F; http:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;File:Typography_Line_Terms.svg
-      var xHeight = y1+descent;
-
-      return {&#x27;width&#x27;:w,
-              &#x27;height&#x27;:h,
-              &#x27;left&#x27;:x1,
-              &#x27;right&#x27;:x2,
-              &#x27;top&#x27;:y1,
-              &#x27;bottom&#x27;:y2,
-              &#x27;baseline&#x27;:baseline,
-              &#x27;xHeight&#x27;:xHeight };
-    } else {
-      &#x2F;&#x2F; is it a pageItem?
-      if (obj.hasOwnProperty(&quot;geometricBounds&quot;)) {
-        var geometricBounds = obj.geometricBounds; &#x2F;&#x2F;[y1, x1, y2, x2]
-        x1 = geometricBounds[1];
-        y1 = geometricBounds[0];
-        x2 = geometricBounds[3];
-        y2 = geometricBounds[2];
-        w = x2-x1;
-        h = y2-y1;
-        return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
-      }
-      &#x2F;&#x2F; everything else e.g. page, spread
-      else if (obj.hasOwnProperty(&quot;bounds&quot;)) {
-        var bounds = obj.bounds; &#x2F;&#x2F;[y1, x1, y2, x2]
-        x1 = bounds[1];
-        y1 = bounds[0];
-        x2 = bounds[3];
-        y2 = bounds[2];
-        w = x2-x1;
-        h = y2-y1;
-        return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
-      }
-      &#x2F;&#x2F; no idea what that might be, give up
-      else {
-        error(&quot;bounds(obj), invalide type! Can&#x27;t get bounds for this object.&quot;);
-      }
-    }
-  };
 
   &#x2F;&#x2F; -- Attributes --
 
@@ -2209,9 +2152,13 @@
       });
     } else if (item instanceof Story ||
                item instanceof TextFrame) {
-      forEach(item.paragraphs, function(para) {
-        getOrSetProperties(para);
-      });
+      var paras = item.paragraphs;
+      &#x2F;&#x2F; loop backwards to prevent invalid object reference error when
+      &#x2F;&#x2F; start of para is overflown in &quot;invisible&quot; textFrame area after
+      &#x2F;&#x2F; applying prop to previous para(s)
+      for (var i = paras.length - 1; i &gt;= 0; i--) {
+        getOrSetProperties(paras[i]);
+      }
     } else if (isText(item)) {
       getOrSetProperties(item);
     }
@@ -3617,6 +3564,24 @@
   };
 
   &#x2F;**
+   * Print numerous information about the current environment to the console
+   * 
+   * @cat Output
+   * @method printInfo
+   *&#x2F;
+  pub.printInfo = function() {
+
+    pub.println(&quot;###&quot;);
+    pub.println(&quot;OS: &quot; + $.os);
+    pub.println(&quot;ExtendScript Build: &quot; + $.build);
+    pub.println(&quot;ExtendScript Version:&quot; + $.version);                    
+    pub.println(&quot;Engine: &quot; + $.engineName);         
+    pub.println(&quot;memCache: &quot; + $.memCache + &quot; bytes&quot;);            
+    pub.println(&quot;###&quot;);
+
+  };
+
+  &#x2F;**
    * Writes an array of strings to a file, one line per string. This file is saved to the document&#x27;s data directory.
    * If the given file exists it gets overridden.
    *
@@ -3654,6 +3619,81 @@
   &#x2F;&#x2F; Transform
   &#x2F;&#x2F; geometricBounds hint: [y1, x1, y2, x2]
 
+  var precision = function(num, dec) {
+      return Math.round(num * Math.pow(10, dec)) &#x2F; Math.pow(10, dec);
+  }  
+
+&#x2F;**
+   * The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.
+   * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method bounds
+   * @param  {Text|Object} obj The object to calculate the geometric bounds
+   * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
+   *&#x2F;
+  pub.bounds = function (obj) {
+    var x1,y1,x2,y2,w,h;
+
+    if (isText(obj)) {
+      var baseline = obj.baseline;
+      var ascent = obj.ascent;
+      var descent = obj.descent;
+
+      x1 = obj.horizontalOffset;
+      y1 = baseline - ascent;
+      x2 = obj.endHorizontalOffset;
+      y2 = baseline + descent;
+      w = x2-x1;
+      h = y2-y1;
+
+      if (w &lt; 0 || h &lt;0) {
+        warning(&quot;bounds(textObj), not possible to get correct bounds, possible linebreak within textObj&quot;);
+      }
+
+      &#x2F;&#x2F; TODO: not sure if this 100% correct, check
+      &#x2F;&#x2F; http:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;File:Typography_Line_Terms.svg
+      var xHeight = y1+descent;
+
+      return {&#x27;width&#x27;:w,
+              &#x27;height&#x27;:h,
+              &#x27;left&#x27;:x1,
+              &#x27;right&#x27;:x2,
+              &#x27;top&#x27;:y1,
+              &#x27;bottom&#x27;:y2,
+              &#x27;baseline&#x27;:baseline,
+              &#x27;xHeight&#x27;:xHeight };
+    } else {
+      &#x2F;&#x2F; is it a pageItem?
+      if (obj.hasOwnProperty(&quot;geometricBounds&quot;)) {
+        var geometricBounds = obj.geometricBounds; &#x2F;&#x2F;[y1, x1, y2, x2]
+        x1 = geometricBounds[1];
+        y1 = geometricBounds[0];
+        x2 = geometricBounds[3];
+        y2 = geometricBounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
+      }
+      &#x2F;&#x2F; everything else e.g. page, spread
+      else if (obj.hasOwnProperty(&quot;bounds&quot;)) {
+        var bounds = obj.bounds; &#x2F;&#x2F;[y1, x1, y2, x2]
+        x1 = bounds[1];
+        y1 = bounds[0];
+        x2 = bounds[3];
+        y2 = bounds[2];
+        w = x2-x1;
+        h = y2-y1;
+        return {&#x27;width&#x27;:w, &#x27;height&#x27;:h, &#x27;left&#x27;:x1, &#x27;right&#x27;:x2, &#x27;top&#x27;:y1, &#x27;bottom&#x27;:y2};
+      }
+      &#x2F;&#x2F; no idea what that might be, give up
+      else {
+        error(&quot;bounds(obj), invalide type! Can&#x27;t get bounds for this object.&quot;);
+      }
+    }
+  };  
+
   &#x2F;**
    * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
    * 
@@ -3665,11 +3705,11 @@
    * @returns {Number} The current x position
    *&#x2F;
   pub.itemX = function(pItem, x) {
-    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
-      if( x !== null ){
+    if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( typeof x === &#x27;number&#x27; ){
         b.itemPosition(pItem, x, pItem.geometricBounds[0]);
       } else {
-        return pItem.geometricBounds[1];
+        return precision(pItem.geometricBounds[1], 5); &#x2F;&#x2F; CS6 sets geometricBounds to initially slightly off values... terrible workaround
       }
     } else {
       error(&quot;pItem has to be a valid PageItem&quot;);
@@ -3687,11 +3727,11 @@
    * @returns {Number} The current y position
    *&#x2F;
   pub.itemY = function(pItem, y) {
-    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
-      if( y !== null ) {
+    if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( typeof y === &#x27;number&#x27; ) {
         b.itemPosition(pItem, pItem.geometricBounds[1], y);
       } else {
-        return pItem.geometricBounds[0];
+        return precision(pItem.geometricBounds[0], 5);
       }
     } else {
       error(&quot;pItem has to be a valid PageItem&quot;);
@@ -3709,8 +3749,8 @@
    * @returns {Number} The current width
    *&#x2F;
   pub.itemWidth = function(pItem, width) {
-    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
-      if( width !== null ){
+    if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( typeof width === &#x27;number&#x27; ){
         b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
       } else {
         return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
@@ -3731,8 +3771,8 @@
    * @returns {Number} The current height
    *&#x2F;
   pub.itemHeight = function(pItem, height) {
-    if(pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
-      if( height !== null ){
+    if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+      if( typeof height === &#x27;number&#x27; ){
         b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
       } else {
         return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
@@ -3754,14 +3794,14 @@
    * @returns {Object} Returns an object with the fields x and y
    *&#x2F;
   pub.itemPosition = function(pItem, x, y) {
-    if (pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
+    if ( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
     
-      if( x !== null &amp;&amp; y !== null) {
+      if( typeof x === &#x27;number&#x27; &amp;&amp; typeof y === &#x27;number&#x27;) {
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
         var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
         pItem.geometricBounds = [ y, x, y + height, x + width ];
       } else {
-        return { x: pItem.geometricBounds[1], y: pItem.geometricBounds[0] };
+        return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
       }
       
     } else {
@@ -3783,7 +3823,7 @@
   pub.itemSize = function(pItem, width, height) {
     if (pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
     
-      if( width !== null &amp;&amp; height !== null ) {
+      if( typeof width === &#x27;number&#x27;  &amp;&amp; typeof height === &#x27;number&#x27; ) {
         var x = pItem.geometricBounds[1];
         var y = pItem.geometricBounds[0];
         pItem.geometricBounds = [ y, x, y + height, x + width ];
@@ -4133,10 +4173,10 @@
       var doc = null;
       try {
         doc = app.activeDocument;
-        if( doc.documentPreferences.facingPages ) warning(&quot;Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.&quot;);
+        &#x2F;&#x2F;if( doc.documentPreferences.facingPages ) warning(&quot;Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.&quot;);
       } catch(e) {
         doc = app.documents.add();
-        doc.documentPreferences.facingPages = false; &#x2F;&#x2F; turn facing pages off on new documents
+        &#x2F;&#x2F;doc.documentPreferences.facingPages = true; &#x2F;&#x2F; turn facing pages off on new documents
       }
       setCurrDoc(doc);
     }
@@ -4218,6 +4258,39 @@
         b.resetMatrix();
         b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
         break;
+
+      case pub.FACING_PAGES:
+        widthOffset = 0;
+        heightOffset = 0;
+        b.resetMatrix();
+        
+        var w = pageBounds[3] - pageBounds[1] + widthOffset;
+        var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+
+        pub.width = w * 2;
+
+        if(currentPage().name === &#x27;1&#x27;) {
+          pub.width = w;
+        } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
+          pub.translate(-w,0);
+        }
+         
+        
+        pub.height = h;
+        return; &#x2F;&#x2F; early exit
+
+      &#x2F;&#x2F; case pub.FACING_BLEED:
+      &#x2F;&#x2F;   widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      &#x2F;&#x2F;   heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+      &#x2F;&#x2F;   b.resetMatrix();
+      &#x2F;&#x2F;   b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+        
+      &#x2F;&#x2F;   var w = pageBounds[3] - pageBounds[1] + widthOffset &#x2F; 2;
+      &#x2F;&#x2F;   var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+
+      &#x2F;&#x2F;   pub.width = w * 2;
+      &#x2F;&#x2F;   pub.height = h;
+      &#x2F;&#x2F;   return; &#x2F;&#x2F; early exit        
 
       default:
         b.error(&quot;basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED&quot;);

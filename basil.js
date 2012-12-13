@@ -183,6 +183,15 @@
   pub.BLEED = "bleed";
 
   /**
+   * @property FACING_PAGES {String}
+   * @cat Constants
+   */
+  pub.FACING_PAGES = "facing_pages";
+
+  
+  // pub.FACING_BLEED = "facing_bleed";  
+
+  /**
    * @property AT_BEGINNING {String}
    * @cat Constants
    */
@@ -4161,6 +4170,39 @@
         b.resetMatrix();
         b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
         break;
+
+      case pub.FACING_PAGES:
+        widthOffset = 0;
+        heightOffset = 0;
+        b.resetMatrix();
+        
+        var w = pageBounds[3] - pageBounds[1] + widthOffset;
+        var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+
+        pub.width = w * 2;
+
+        if(currentPage().name === '1') {
+          pub.width = w;
+        } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
+          pub.translate(-w,0);
+        }
+         
+        
+        pub.height = h;
+        return; // early exit
+
+      // case pub.FACING_BLEED:
+      //   widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      //   heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+      //   b.resetMatrix();
+      //   b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+        
+      //   var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
+      //   var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+
+      //   pub.width = w * 2;
+      //   pub.height = h;
+      //   return; // early exit        
 
       default:
         b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED");
