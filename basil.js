@@ -1974,9 +1974,13 @@
       });
     } else if (item instanceof Story ||
                item instanceof TextFrame) {
-      forEach(item.paragraphs, function(para) {
-        getOrSetProperties(para);
-      });
+      var paras = item.paragraphs;
+      // loop backwards to prevent invalid object reference error when
+      // start of para is overflown in "invisible" textFrame area after
+      // applying prop to previous para(s)
+      for (var i = paras.length - 1; i >= 0; i--) {
+        getOrSetProperties(paras[i]);
+      }
     } else if (isText(item)) {
       getOrSetProperties(item);
     }

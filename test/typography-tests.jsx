@@ -94,6 +94,19 @@ b.test('TypographyTests', {
     var currSize = b.typo(textFrame, 'pointSize');
     assert(currSize.length === 1);
     assert(currSize[0] === size);
+  },
+
+  testSetPointSizeInOverlownPara: function(b) {
+    b.doc(doc);
+    var textFrame = b.text('lorem ipsum dolor sit amet\rlorem ipsum dolor sit amet', 0, 0, 100, 30),
+      size = 30;
+
+    b.typo(textFrame, 'pointSize', size);
+    
+    var currSize = b.typo(textFrame, 'pointSize');
+    forEach(currSize, function(s) {
+      assert(s === size);
+    });
   }
 });
 
