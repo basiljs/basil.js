@@ -346,6 +346,8 @@
     }
 
     that.set = function(key, value) {
+
+      if( value instanceof Function ) error("HashList does not support storing Functions as values.");
       //checkKey(key);
       if (typeof value != 'undefined') {
         if (typeof that.items[key] == 'undefined') {
@@ -4246,7 +4248,6 @@
     bt.onError = function(errObj) {}
     bt.onResult = function(resObj) {}
     bt.send();
-    println("undef:" + undef);
   };
 
   
