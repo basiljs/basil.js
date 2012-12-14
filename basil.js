@@ -302,6 +302,12 @@
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i < len; i++) {
+        if(collection[i].hasOwnProperty("isValid")) {
+          if (!collection[i].isValid) {
+            warning("Invalid object processed in forEach.");
+            continue;
+          }
+        }
         if(cb(collection[i],i) === false) {
           return false;
         }
@@ -638,7 +644,7 @@
       || container instanceof Group) {
 
       if(arguments.length === 1){
-        return container.pageItems;
+        return container.allPageItems;
       } else if(cb instanceof Function ) {
         return forEach(container.allPageItems, cb);
       }
@@ -2070,6 +2076,13 @@
       setProperty = function(textItem, prop, val) {
         textItem[prop] = val;
       };
+
+    if(item.hasOwnProperty("isValid")) {
+      if (!item.isValid) {
+        warning("Invalid object passed to typo()");
+        return;
+      }
+    }
 
     if (item instanceof Document ||
         item instanceof Spread ||
