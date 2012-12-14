@@ -767,17 +767,19 @@
   };
 
   /**
-   * Returns the current page and sets it if argument page is given. Numbering starts with 1.
+   * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
    *
    * @cat Document
    * @subcat InDesign Model
    * @method page
-   * @param  {Page|Number} [page] The page or page index to set the current page to
+   * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
    * @return {Page} The current page instance
    */
   pub.page = function(page) {
     if (page instanceof Page) {
       currPage = page;
+    } else if ( typeof page !== 'undefined' && page.hasOwnProperty("parentPage") ) {
+      currPage = page.parentPage; // page is actually a PageItem
     } else if (typeof page === 'number') {
       if( page < 1 ) {
         p = 0;
@@ -791,6 +793,8 @@
         error('Page ' + page + ' does not exist.');
       }
       currPage = tempPage;
+    } else if (typeof page !== 'undefined') {
+      error("Bad type for b.page().");
     }
     updatePublicPageSizeVars();
     app.activeWindow.activePage = currPage; // focus in GUI
