@@ -327,13 +327,13 @@
     // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
     function checkKey(key) {
       if(that.items[key] instanceof Function) {
-          that.items[key] = undef; 
+          that.items[key] = 'undefined'; 
       };
     }
 
     that.remove = function(key) {
       var tmp_previous;
-      if (typeof(that.items[key]) != undef) {
+      if (typeof that.items[key] != 'undefined') {
         var tmp_previous = that.items[key];
         delete that.items[key];
         that.length--;
@@ -347,8 +347,8 @@
 
     that.set = function(key, value) {
       //checkKey(key);
-      if (typeof(value) != undef) {
-        if (typeof(that.items[key]) === undef) {
+      if (typeof value != 'undefined') {
+        if (typeof that.items[key] == 'undefined') {
           that.length++;
         }
         that.items[key] = value;
@@ -358,7 +358,7 @@
 
     that.hasKey = function(key) {
       checkKey(key);
-      return that.items[key] != undef;
+      return typeof that.items[key] != 'undefined';
     }
 
     that.hasValue = function(value) {
@@ -379,6 +379,20 @@
         for(var key in obj) keys.push(key);
         return keys.sort(function(a,b){return obj[b]-obj[a]});
     }
+
+    that.getSortedKeys = function () {
+        var keys = [];
+
+        for(var key in that.items)
+        {
+            if(that.items.hasOwnProperty(key))
+            {
+                keys.push(key);
+            }
+        }
+        keys.sort(); // ["a", "b", "z"]
+        return keys;
+    }    
 
     that.clear = function() {
       for (var i in that.items) {
@@ -4232,6 +4246,7 @@
     bt.onError = function(errObj) {}
     bt.onResult = function(resObj) {}
     bt.send();
+    println("undef:" + undef);
   };
 
   
