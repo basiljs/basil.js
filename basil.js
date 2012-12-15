@@ -48,7 +48,7 @@
    * @property VERSION {String}
    * @cat Constants
    */
-  pub.VERSION = "0.16";
+  pub.VERSION = "0.17";
 
   /**
    * Points

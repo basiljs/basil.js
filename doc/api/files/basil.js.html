@@ -136,7 +136,7 @@
    * @property VERSION {String}
    * @cat Constants
    *&#x2F;
-  pub.VERSION = &quot;0.16&quot;;
+  pub.VERSION = &quot;0.17&quot;;
 
   &#x2F;**
    * Points
@@ -390,6 +390,12 @@
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i &lt; len; i++) {
+        if(collection[i].hasOwnProperty(&quot;isValid&quot;)) {
+          if (!collection[i].isValid) {
+            warning(&quot;Invalid object processed in forEach.&quot;);
+            continue;
+          }
+        }
         if(cb(collection[i],i) === false) {
           return false;
         }
@@ -415,13 +421,13 @@
     &#x2F;&#x2F; Please note: this is removing Object fields, but has to be done to have an empty &quot;bucket&quot;
     function checkKey(key) {
       if(that.items[key] instanceof Function) {
-          that.items[key] = undef; 
+          that.items[key] = &#x27;undefined&#x27;; 
       };
     }
 
     that.remove = function(key) {
       var tmp_previous;
-      if (typeof(that.items[key]) != undef) {
+      if (typeof that.items[key] != &#x27;undefined&#x27;) {
         var tmp_previous = that.items[key];
         delete that.items[key];
         that.length--;
@@ -434,9 +440,11 @@
     }
 
     that.set = function(key, value) {
+
+      if( value instanceof Function ) error(&quot;HashList does not support storing Functions as values.&quot;);
       &#x2F;&#x2F;checkKey(key);
-      if (typeof(value) != undef) {
-        if (typeof(that.items[key]) === undef) {
+      if (typeof value != &#x27;undefined&#x27;) {
+        if (typeof that.items[key] == &#x27;undefined&#x27;) {
           that.length++;
         }
         that.items[key] = value;
@@ -446,7 +454,7 @@
 
     that.hasKey = function(key) {
       checkKey(key);
-      return that.items[key] != undef;
+      return typeof that.items[key] != &#x27;undefined&#x27;;
     }
 
     that.hasValue = function(value) {
@@ -467,6 +475,20 @@
         for(var key in obj) keys.push(key);
         return keys.sort(function(a,b){return obj[b]-obj[a]});
     }
+
+    that.getSortedKeys = function () {
+        var keys = [];
+
+        for(var key in that.items)
+        {
+            if(that.items.hasOwnProperty(key))
+            {
+                keys.push(key);
+            }
+        }
+        keys.sort(); &#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;, &quot;z&quot;]
+        return keys;
+    }    
 
     that.clear = function() {
       for (var i in that.items) {
@@ -710,7 +732,7 @@
       || container instanceof Group) {
 
       if(arguments.length === 1){
-        return container.pageItems;
+        return container.allPageItems;
       } else if(cb instanceof Function ) {
         return forEach(container.allPageItems, cb);
       }
@@ -833,17 +855,19 @@
   };
 
   &#x2F;**
-   * Returns the current page and sets it if argument page is given. Numbering starts with 1.
+   * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
    *
    * @cat Document
    * @subcat InDesign Model
    * @method page
-   * @param  {Page|Number} [page] The page or page index to set the current page to
+   * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it&#x27;s containing page.
    * @return {Page} The current page instance
    *&#x2F;
   pub.page = function(page) {
     if (page instanceof Page) {
       currPage = page;
+    } else if ( typeof page !== &#x27;undefined&#x27; &amp;&amp; page.hasOwnProperty(&quot;parentPage&quot;) ) {
+      currPage = page.parentPage; &#x2F;&#x2F; page is actually a PageItem
     } else if (typeof page === &#x27;number&#x27;) {
       if( page &lt; 1 ) {
         p = 0;
@@ -857,6 +881,8 @@
         error(&#x27;Page &#x27; + page + &#x27; does not exist.&#x27;);
       }
       currPage = tempPage;
+    } else if (typeof page !== &#x27;undefined&#x27;) {
+      error(&quot;Bad type for b.page().&quot;);
     }
     updatePublicPageSizeVars();
     app.activeWindow.activePage = currPage; &#x2F;&#x2F; focus in GUI
@@ -2142,6 +2168,13 @@
       setProperty = function(textItem, prop, val) {
         textItem[prop] = val;
       };
+
+    if(item.hasOwnProperty(&quot;isValid&quot;)) {
+      if (!item.isValid) {
+        warning(&quot;Invalid object passed to typo()&quot;);
+        return;
+      }
+    }
 
     if (item instanceof Document ||
         item instanceof Spread ||
