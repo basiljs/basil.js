@@ -188,8 +188,17 @@
    */
   pub.FACING_PAGES = "facing_pages";
 
-  
-  // pub.FACING_BLEED = "facing_bleed";  
+  /**
+   * @property FACING_BLEED {String}
+   * @cat Constants
+   */
+  pub.FACING_BLEED = "facing_bleed";  
+
+  /**
+   * @property FACING_BLEED {String}
+   * @cat Constants
+   */
+  pub.FACING_MARGIN = "facing_margin";
 
   /**
    * @property AT_BEGINNING {String}
@@ -4179,6 +4188,7 @@
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
+	var facingPages = app.activeDocument.documentPreferences.facingPages;
 
     var widthOffset = heightOffset = 0;
 
@@ -4198,10 +4208,18 @@
         break;
 
       case pub.BLEED:
-        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+		widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+		if(facingPages){
+			widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+		}
         heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
         b.resetMatrix();
-        b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+		b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+		
+		if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
+			b.resetMatrix();
+			b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
+		}
         break;
 
       case pub.FACING_PAGES:
@@ -4222,20 +4240,43 @@
          
         
         pub.height = h;
-        return; // early exit
+        break; 
 
-      // case pub.FACING_BLEED:
-      //   widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      //   heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      //   b.resetMatrix();
-      //   b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-        
-      //   var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      //   var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      case pub.FACING_BLEED:
+             widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+             heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+             b.resetMatrix();
+             b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+             
+             var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
+             var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
-      //   pub.width = w * 2;
-      //   pub.height = h;
-      //   return; // early exit        
+             pub.width = w * 2;
+             pub.height = h;
+
+			if(currentPage().side === PageSideOptions.RIGHT_HAND){
+				pub.translate(-w+widthOffset/2,0);
+			}
+
+             break;
+
+		case pub.FACING_MARGIN:
+            widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
+            heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
+            b.resetMatrix();
+            b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
+
+            var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
+            var h = pageBounds[2] - pageBounds[0] - heightOffset;    
+
+            pub.width = w * 2;
+            pub.height = h;
+
+			if(currentPage().side === PageSideOptions.RIGHT_HAND){
+				pub.translate(-w-widthOffset/2,0);
+			}
+
+             return; // early exit    
 
       default:
         b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED");
