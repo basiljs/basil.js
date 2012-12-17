@@ -1,27 +1,29 @@
 basil.js
 ========
 
-Development Environment Setup (OS X)
-------------------------------------
-* Install [Sublime Text 2](http://www.sublimetext.com/)
-* Install Sublime package [sublime-jsdocs](https://github.com/spadgos/sublime-jsdocs) 
-* Install Sublime package [SublimeLinter](https://github.com/SublimeLinter/SublimeLinter) 
-* Copy bin/InDesign 5.5 JavaScript.sublime-build to ~/Library/Application Support/Sublime Text 2/Packages/User
-* In Sublime go to Project -> Open Project... and select basil.sublime-project
-* In Sublime go to Tools -> Build Systems and select InDesign 5.5 JavaScript
+An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
 
-Now you are able to execute InDesign Scripts from within Sublime with Tools -> Build.
+For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch)
 
-Coding Conventions and Rules
-----------------------------
-basil.js uses "[Code Conventions for the JavaScript Programming Language](http://javascript.crockford.com/code.html)" by [Douglas Crockford](http://crockford.com/) with these modifications:
-* The unit of indentation is two spaces
+License        - MIT
+Developers     - Benedikt Groß http://benedikt-gross.de
+               - Ludwig Zeller http://ludwigzeller.de
+               - Ted Davis http://teddavis.org
+Contributers   - Stefan Landsbek, inital code architecture, http://47nord.de
+               - Philipp Adrian http://www.philippadrian.com/
+Web Site       - http://basiljs.ch
+Github Repo.   - https://github.com/basiljs/basil.js
+Processing     - http://processing.org
+Processing.js  - http://processingjs.org
 
-API Documentation
------------------
-basil.js uses [YUIDoc](http://yui.github.com/yuidoc/) to document public API functionality.
-Installation and usage:
-* Download and install [Node.js](http://nodejs.org/#download)
-* Open up a terminal window and run "npm -g install yuidocjs"
-* To generate the documetation in doc/api open up a terminal window and simply run "yuidoc ." in the basil.js project directory
-    
+basil.js was conceived and is generously supported by
+The Visual Communication Institute / The Basel School of Design
+Department of the Academy of Art and Design Basel (HGK FHNW)
+
+http://thebaselschoolofdesign.ch
+
+Please note: Big general parts e.g. random() of the basil.js source code are copy & paste
+of the fantasic processing.js project created by John Resig. We would have had a hard time
+to figure all of that out on our own!
+
+Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
