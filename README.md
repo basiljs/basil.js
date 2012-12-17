@@ -5,12 +5,12 @@ An attempt to port the spirit of the Processing visualization language to Adobe 
 
 For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch)
 
-## Developers
+**Developers**
 - Benedikt Groß http://benedikt-gross.de
 - Ludwig Zeller http://ludwigzeller.de
 - Ted Davis http://teddavis.org
 
-## Contributers
+**Contributers**
 - Stefan Landsbek, inital code architecture, http://47nord.de
 - Philipp Adrian http://www.philippadrian.com/
 
