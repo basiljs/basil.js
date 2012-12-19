@@ -1034,6 +1034,66 @@
     return guide;
   };
 
+  /**
+   * Sets the margins of a given page. If one value is given, sets all 4 equally.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method setMargins
+   * @param {Number} [top] Top margin or all if only one
+   * @param {Number} [right] Right margin
+   * @param {Number} [bottom] Bottom margin
+   * @param {Number} [left] Left margin
+   * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank
+   */
+  pub.setMargins = function(top, right, bottom, left, pageNumber) {
+
+    if (arguments.length === 0){
+		error("setMargins() requires at least 1 parameter value.");
+	} else if (arguments.length === 1) {
+		right = bottom = left = top;
+    }
+
+	if(pageNumber != undefined){
+		b.page(pageNumber).marginPreferences.top = top;
+		b.page(pageNumber).marginPreferences.right = right;
+		b.page(pageNumber).marginPreferences.bottom = bottom;
+		b.page(pageNumber).marginPreferences.left = left;
+	}else{
+		currentPage().marginPreferences.top = top;
+		currentPage().marginPreferences.right = right;
+		currentPage().marginPreferences.bottom = bottom;
+		currentPage().marginPreferences.left = left;
+	}
+  };
+
+  /**
+   * Sets the document bleeds. If one value is given, all 4 are set equally.
+   *
+   * @cat Document
+   * @subcat InDesign Model
+   * @method setBleeds
+   * @param {Number} [top] Top bleed or all if only one
+   * @param {Number} [right] Right bleed
+   * @param {Number} [bottom] Bottom bleed
+   * @param {Number} [left] Left bleed
+   */
+  pub.setBleeds = function(top, right, bottom, left) {
+
+    if (arguments.length === 0){
+		error("setBleeds() requires at least 1 parameter value.");
+	} else if (arguments.length === 1) {
+		right = bottom = left = top;
+    }else{
+		b.doc().documentPreferences.documentBleedUniformSize = false;
+	}
+
+		b.doc().documentPreferences.documentBleedTopOffset = top;
+		b.doc().documentPreferences.documentBleedOutsideOrRightOffset = right;
+		b.doc().documentPreferences.documentBleedBottomOffset = bottom;
+		b.doc().documentPreferences.documentBleedInsideOrLeftOffset = left;
+  };
+
 
   // ----------------------------------------
   // Data
@@ -3790,6 +3850,7 @@
     }
   };
   
+
   
   var printMatrixHelper = function(elements) {
     var big = 0;
