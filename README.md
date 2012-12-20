@@ -1,7 +1,7 @@
 basil.js
 ========
 
-An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
+An attempt to port the spirit of the [Processing](http://processing.org/) visualization language to Adobe Indesign.
 
 For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch)
 
