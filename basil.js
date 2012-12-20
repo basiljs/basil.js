@@ -331,13 +331,20 @@
     };
   }
 
-
+  /**
+   * HashList is a data container that allows you to store information as key -> value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
+   * 
+   * @constructor
+   * @cat HashList
+   * @method HashList
+   */
   // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
   glob.HashList = function () {
     var that = {};
     that.length = 0;
     that.items = {};
-      
+    
+    // TODO: initial function removal in items?      
     // for (var i = 0; i < arguments.length; i += 2) {
     //   if (typeof(arguments[i + 1]) != 'undefined') {
     //     that.items[arguments[i]] = arguments[i + 1];
@@ -352,6 +359,15 @@
       };
     }
 
+    /**
+     * 
+     * This removes a key -> value pair by its key.
+     * 
+     * @cat HashList
+     * @method remove
+     * @param {any} key The key to delete
+     * @return {any} The value before deletion
+     */
     that.remove = function(key) {
       var tmp_previous;
       if (typeof that.items[key] != 'undefined') {
@@ -362,10 +378,26 @@
       return tmp_previous;
     }
 
+    /**
+     * This gets a value by its key.
+     * 
+     * @cat HashList
+     * @method get
+     * @param {any} key The key to look for
+     * @return {any} The value
+     */
     that.get = function(key) {    
       return that.items[key];
     }
 
+    /**
+     * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
+     * 
+     * @cat HashList
+     * @method set
+     * @param {any} key The key to use
+     * @return {any} The value after setting
+     */
     that.set = function(key, value) {
 
       if( value instanceof Function ) error("HashList does not support storing Functions as values.");
@@ -379,11 +411,27 @@
       return that.items[key];
     }
 
+    /**
+     * Checks for the existance of a given key.
+     * 
+     * @cat HashList
+     * @method hasKey
+     * @param {any} key The key to check
+     * @return {boolean} 
+     */
     that.hasKey = function(key) {
       checkKey(key);
       return typeof that.items[key] != 'undefined';
     }
 
+    /**
+     * Checks if a certain value exists at least once in all of the key -> value pairs.
+     * 
+     * @cat HashList
+     * @method hasValue
+     * @param {any} value 
+     * @return {boolean} 
+     */
     that.hasValue = function(value) {
       var obj = that.items;
       var found = false;
@@ -395,15 +443,44 @@
       }
       return found;
     }
-      
+    
+    /**
+     * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
+     * 
+     * @cat HashList
+     * @method getKeysSortedByValues
+     * @return {Array} An array with all the keys 
+     */
     that.getKeysSortedByValues = function() {
         var obj = that.items;
         var keys = [];
-        for(var key in obj) keys.push(key);
+        for(var key in obj) 
+          {
+            if( typeof obj[key] != 'number' ) error("getKeysSortedByValues() only works with Numbers as values. ");
+            keys.push(key);
+          }
         return keys.sort(function(a,b){return obj[b]-obj[a]});
     }
 
+    /**
+     * Returns an array with all keys in a sorted order from higher to lower magnitude. 
+     * 
+     * @cat HashList
+     * @method getSortedKeys
+     * @return {Array} An array with all the keys 
+     */
     that.getSortedKeys = function () {
+        return that.getKeys().sort(); // ["a", "b", "z"]
+    }    
+
+    /**
+     * Returns an array with all keys.
+     * 
+     * @cat HashList
+     * @method getKeys
+     * @return {Array} An array with all the keys 
+     */
+    that.getKeys = function () {
         var keys = [];
 
         for(var key in that.items)
@@ -413,10 +490,35 @@
                 keys.push(key);
             }
         }
-        keys.sort(); // ["a", "b", "z"]
         return keys;
-    }    
+    }
 
+    /**
+     * Returns an array with all keys.
+     * 
+     * @cat HashList
+     * @method getKeys
+     * @return {Array} An array with all the keys 
+     */
+    that.getValues = function () {
+
+      var obj = that.items;
+      var values = [];
+
+      for(var key in obj) {
+          values.push(obj[key]);
+      }
+      return values;
+      
+    }
+
+    /**
+     * Deletes all the key -> value pairs in this HashList.
+     * 
+     * @cat HashList
+     * @method clear
+     * @return {Array} An array with all the keys 
+     */
     that.clear = function() {
       for (var i in that.items) {
         delete that.items[i];
@@ -1126,7 +1228,7 @@
   
 
   pub.JSON = {
-    /*
+    /**
      * Function parses and validates a string as JSON-object. Usage:
      * var obj = b.JSON.decode(str);
      * var str = b.JSON.encode(obj);

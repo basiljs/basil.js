@@ -229,29 +229,7 @@
    * @cat Constants
    *&#x2F;
   pub.QUARTER_PI = Math.PI&#x2F;4;
-  
-  var ERROR_PREFIX = &quot;\n\n### Basil Error -&gt; &quot;,
-    WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
 
-
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; public vars
-  
-  &#x2F;**
-   * System variable which stores the width of the current page.
-   * @property width {Number}
-   * @cat Environment
-   *&#x2F;
-  pub.width = null;
-
-  &#x2F;**
-   * System variable which stores the height of the current page.
-   * @property height {Number}
-   * @cat Environment
-   *&#x2F;
-  pub.height = null;
-
-  
   &#x2F;**
    * @property PAPER {String}
    * @cat Constants
@@ -310,29 +288,28 @@
    * @property AFTER {String}
    * @cat Constants
    *&#x2F;  
-  pub.AFTER = LocationOptions.AFTER;
+  pub.AFTER = LocationOptions.AFTER;  
+  
+  var ERROR_PREFIX = &quot;\n\n### Basil Error -&gt; &quot;,
+    WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
 
 
-  &#x2F;&#x2F; init has to be above the method definition below... otherwise trouble
-  var cMode = pub.PAPER;
-
+  &#x2F;&#x2F; ----------------------------------------
+  &#x2F;&#x2F; public vars
+  
   &#x2F;**
-   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
-   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
-   * @method canvasMode
+   * System variable which stores the width of the current page.
+   * @property width {Number}
    * @cat Environment
    *&#x2F;
-  pub.canvasMode = function ( m ) {
-    if(arguments.length == 0) {
-      return cMode;
-    } else if ( typeof m === &quot;string&quot; ) {
-      cMode = m;
-      updatePublicPageSizeVars();
-    } else {
-      error(&quot;Problem setting canvasMode. Please consult the reference.&quot;);
-    }
+  pub.width = null;
 
-  };
+  &#x2F;**
+   * System variable which stores the height of the current page.
+   * @property height {Number}
+   * @cat Environment
+   *&#x2F;
+  pub.height = null;
 
   
   &#x2F;&#x2F; ----------------------------------------
@@ -360,7 +337,21 @@
     currLeading = null,
     currKerning = null,
     currTracking = null,
-    currImageMode = null;
+    currImageMode = null,
+    currCanvasMode = null;
+
+  &#x2F;&#x2F; all initialisations should go here
+  var init = function() {
+    glob.b = pub;
+
+    welcome();
+
+    &#x2F;&#x2F; -- init internal state vars --
+    currStrokeWeight = 1;
+    currStrokeTint = 100;
+    currFillTint = 100;
+    currCanvasMode = pub.PAPER
+  };    
 
   
   &#x2F;&#x2F; ----------------------------------------
@@ -404,7 +395,7 @@
             warning(&quot;Invalid object processed in forEach.&quot;);
             continue;          
         }
-        }
+
         if(cb(collection[i],i) === false) {
           return false;
         }
@@ -413,13 +404,20 @@
     };
   }
 
-
+  &#x2F;**
+   * HashList is a data container that allows you to store information as key -&gt; value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
+   * 
+   * @constructor
+   * @cat HashList
+   * @method HashList
+   *&#x2F;
   &#x2F;&#x2F; taken from http:&#x2F;&#x2F;pbrajkumar.wordpress.com&#x2F;2011&#x2F;01&#x2F;17&#x2F;hashmap-in-javascript&#x2F;
   glob.HashList = function () {
     var that = {};
     that.length = 0;
     that.items = {};
-      
+    
+    &#x2F;&#x2F; TODO: initial function removal in items?      
     &#x2F;&#x2F; for (var i = 0; i &lt; arguments.length; i += 2) {
     &#x2F;&#x2F;   if (typeof(arguments[i + 1]) != &#x27;undefined&#x27;) {
     &#x2F;&#x2F;     that.items[arguments[i]] = arguments[i + 1];
@@ -434,6 +432,15 @@
       };
     }
 
+    &#x2F;**
+     * 
+     * This removes a key -&gt; value pair by its key.
+     * 
+     * @cat HashList
+     * @method remove
+     * @param {any} key The key to delete
+     * @return {any} The value before deletion
+     *&#x2F;
     that.remove = function(key) {
       var tmp_previous;
       if (typeof that.items[key] != &#x27;undefined&#x27;) {
@@ -444,10 +451,26 @@
       return tmp_previous;
     }
 
+    &#x2F;**
+     * This gets a value by its key.
+     * 
+     * @cat HashList
+     * @method get
+     * @param {any} key The key to look for
+     * @return {any} The value
+     *&#x2F;
     that.get = function(key) {    
       return that.items[key];
     }
 
+    &#x2F;**
+     * This sets a key -&gt; value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
+     * 
+     * @cat HashList
+     * @method set
+     * @param {any} key The key to use
+     * @return {any} The value after setting
+     *&#x2F;
     that.set = function(key, value) {
 
       if( value instanceof Function ) error(&quot;HashList does not support storing Functions as values.&quot;);
@@ -461,11 +484,27 @@
       return that.items[key];
     }
 
+    &#x2F;**
+     * Checks for the existance of a given key.
+     * 
+     * @cat HashList
+     * @method hasKey
+     * @param {any} key The key to check
+     * @return {boolean} 
+     *&#x2F;
     that.hasKey = function(key) {
       checkKey(key);
       return typeof that.items[key] != &#x27;undefined&#x27;;
     }
 
+    &#x2F;**
+     * Checks if a certain value exists at least once in all of the key -&gt; value pairs.
+     * 
+     * @cat HashList
+     * @method hasValue
+     * @param {any} value 
+     * @return {boolean} 
+     *&#x2F;
     that.hasValue = function(value) {
       var obj = that.items;
       var found = false;
@@ -477,15 +516,44 @@
       }
       return found;
     }
-      
+    
+    &#x2F;**
+     * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
+     * 
+     * @cat HashList
+     * @method getKeysSortedByValues
+     * @return {Array} An array with all the keys 
+     *&#x2F;
     that.getKeysSortedByValues = function() {
         var obj = that.items;
         var keys = [];
-        for(var key in obj) keys.push(key);
+        for(var key in obj) 
+          {
+            if( typeof obj[key] != &#x27;number&#x27; ) error(&quot;getKeysSortedByValues() only works with Numbers as values. &quot;);
+            keys.push(key);
+          }
         return keys.sort(function(a,b){return obj[b]-obj[a]});
     }
 
+    &#x2F;**
+     * Returns an array with all keys in a sorted order from higher to lower magnitude. 
+     * 
+     * @cat HashList
+     * @method getSortedKeys
+     * @return {Array} An array with all the keys 
+     *&#x2F;
     that.getSortedKeys = function () {
+        return that.getKeys().sort(); &#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;, &quot;z&quot;]
+    }    
+
+    &#x2F;**
+     * Returns an array with all keys.
+     * 
+     * @cat HashList
+     * @method getKeys
+     * @return {Array} An array with all the keys 
+     *&#x2F;
+    that.getKeys = function () {
         var keys = [];
 
         for(var key in that.items)
@@ -495,10 +563,35 @@
                 keys.push(key);
             }
         }
-        keys.sort(); &#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;, &quot;z&quot;]
         return keys;
-    }    
+    }
 
+    &#x2F;**
+     * Returns an array with all keys.
+     * 
+     * @cat HashList
+     * @method getKeys
+     * @return {Array} An array with all the keys 
+     *&#x2F;
+    that.getValues = function () {
+
+      var obj = that.items;
+      var values = [];
+
+      for(var key in obj) {
+          values.push(obj[key]);
+      }
+      return values;
+      
+    }
+
+    &#x2F;**
+     * Deletes all the key -&gt; value pairs in this HashList.
+     * 
+     * @cat HashList
+     * @method clear
+     * @return {Array} An array with all the keys 
+     *&#x2F;
     that.clear = function() {
       for (var i in that.items) {
         delete that.items[i];
@@ -588,7 +681,7 @@
    * return {Array} An array of strings
    * 
    *&#x2F;
-   &#x2F;&#x2F; TODO
+   &#x2F;&#x2F; FIXME
   pub.sentences = function(item, cb) {
 
     var err = false;
@@ -864,6 +957,24 @@
       resetCurrDoc();
     }
   };
+
+  &#x2F;**
+   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
+   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+   * @method canvasMode
+   * @cat Environment
+   *&#x2F;
+  pub.canvasMode = function ( m ) {
+    if(arguments.length == 0) {
+      return currCanvasMode;
+    } else if ( typeof m === &quot;string&quot; ) {
+      currCanvasMode = m;
+      updatePublicPageSizeVars();
+    } else {
+      error(&quot;Problem setting canvasMode. Please consult the reference.&quot;);
+    }
+
+  };  
 
   &#x2F;**
    * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
@@ -1190,7 +1301,7 @@
   
 
   pub.JSON = {
-    &#x2F;*
+    &#x2F;**
      * Function parses and validates a string as JSON-object. Usage:
      * var obj = b.JSON.decode(str);
      * var str = b.JSON.encode(obj);
@@ -4296,17 +4407,6 @@
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; all private from here
 
-  var init = function() {
-    glob.b = pub;
-
-    welcome();
-
-    &#x2F;&#x2F; -- init internal state vars --
-    currStrokeWeight = 1;
-    currStrokeTint = 100;
-    currFillTint = 100;
-  };
-
   var runSetup = function() {
     app.doScript(function() {
       if (typeof glob.setup === &#x27;function&#x27;) {
@@ -4404,7 +4504,7 @@
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; &#x2F;&#x2F; [y1, x1, y2, x2]
-  var facingPages = app.activeDocument.documentPreferences.facingPages;
+    var facingPages = app.activeDocument.documentPreferences.facingPages;
 
     var widthOffset = heightOffset = 0;
 
@@ -4424,18 +4524,18 @@
         break;
 
       case pub.BLEED:
-    widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-    if(facingPages){
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
-    }
-        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-        b.resetMatrix();
-    b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-    
-    if(facingPages &amp;&amp; currentPage().side === PageSideOptions.RIGHT_HAND){
-      b.resetMatrix();
-      b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
-    }
+        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+        if(facingPages){
+          widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        }
+            heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+            b.resetMatrix();
+        b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+        
+        if(facingPages &amp;&amp; currentPage().side === PageSideOptions.RIGHT_HAND){
+          b.resetMatrix();
+          b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
+        }
         break;
 
       case pub.FACING_PAGES:
@@ -4459,40 +4559,40 @@
         break; 
 
       case pub.FACING_BLEED:
-             widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-             heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-             b.resetMatrix();
-             b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-             
-             var w = pageBounds[3] - pageBounds[1] + widthOffset &#x2F; 2;
-             var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+        b.resetMatrix();
+        b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
 
-             pub.width = w * 2;
-             pub.height = h;
+        var w = pageBounds[3] - pageBounds[1] + widthOffset &#x2F; 2;
+        var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w+widthOffset&#x2F;2,0);
-      }
+        pub.width = w * 2;
+        pub.height = h;
 
-             break;
+        if(currentPage().side === PageSideOptions.RIGHT_HAND){
+          pub.translate(-w+widthOffset&#x2F;2,0);
+        }
 
-    case pub.FACING_MARGIN:
-            widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
-            heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-            b.resetMatrix();
-            b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
+        break;
 
-            var w = pageBounds[3] - pageBounds[1] - widthOffset &#x2F; 2;
-            var h = pageBounds[2] - pageBounds[0] - heightOffset;    
+      case pub.FACING_MARGIN:
+        widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
+        heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
+        b.resetMatrix();
+        b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
 
-            pub.width = w * 2;
-            pub.height = h;
+        var w = pageBounds[3] - pageBounds[1] - widthOffset &#x2F; 2;
+        var h = pageBounds[2] - pageBounds[0] - heightOffset;    
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w-widthOffset&#x2F;2,0);
-      }
+        pub.width = w * 2;
+        pub.height = h;
 
-             return; &#x2F;&#x2F; early exit    
+        if(currentPage().side === PageSideOptions.RIGHT_HAND){
+          pub.translate(-w-widthOffset&#x2F;2,0);
+        }
+
+        return; &#x2F;&#x2F; early exit    
 
       default:
         b.error(&quot;basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED&quot;);
@@ -4506,12 +4606,12 @@
     pub.height = h;
   };
 
-  var error = function(msg) {
+  var error = pub.error = function(msg) {
     $.writeln(ERROR_PREFIX + msg);
     throw new Error( msg );
   };
 
-  var warning = function(msg) {
+  var warning = pub.warning = function(msg) {
     $.writeln(WARNING_PREFIX + msg);
   };
 

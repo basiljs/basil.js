@@ -65,6 +65,12 @@ b.test('DataTests', {
     var arr = hash.getSortedKeys();    
     assert(arr.length === 0);
     
+    var arr = hash.getKeys();
+    assert(arr.length === 0);
+    
+    var arr = hash.getValues();
+    assert(arr.length === 0);    
+    
     var arr = hash.getKeysSortedByValues(); 
     assert(arr.length === 0);    
     
@@ -72,7 +78,13 @@ b.test('DataTests', {
     hash.set("thousand", 1000);    
     assert(hash.length === 2);    
     
+    var arr = hash.getKeys();
+    assert(arr[0] === "eight");    
+    assert(arr[1] === "thousand");        
     
+    var arr = hash.getValues();
+    assert(arr[0] === 8);    
+    assert(arr[1] === 1000);            
     
     var arr = hash.getSortedKeys();
     assert(arr[0] === "eight");    
