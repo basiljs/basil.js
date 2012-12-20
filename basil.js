@@ -316,7 +316,7 @@
             warning("Invalid object processed in forEach.");
             continue;          
         }
-        }
+
         if(cb(collection[i],i) === false) {
           return false;
         }
@@ -500,7 +500,7 @@
    * return {Array} An array of strings
    * 
    */
-   // TODO
+   // FIXME
   pub.sentences = function(item, cb) {
 
     var err = false;
@@ -4418,12 +4418,12 @@
     pub.height = h;
   };
 
-  var error = function(msg) {
+  var error = pub.error = function(msg) {
     $.writeln(ERROR_PREFIX + msg);
     throw new Error( msg );
   };
 
-  var warning = function(msg) {
+  var warning = pub.warning = function(msg) {
     $.writeln(WARNING_PREFIX + msg);
   };
 
