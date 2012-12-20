@@ -311,11 +311,11 @@
   if (!glob.forEach) {
     glob.forEach = function(collection, cb) {
       for (var i = 0, len = collection.length; i < len; i++) {
-        if(collection[i].hasOwnProperty("isValid")) {
-          if (!collection[i].isValid) {
+        
+        if(!isValid(collection[i])) {
             warning("Invalid object processed in forEach.");
-            continue;
-          }
+            continue;          
+        }
         }
         if(cb(collection[i],i) === false) {
           return false;
@@ -1049,23 +1049,23 @@
   pub.setMargins = function(top, right, bottom, left, pageNumber) {
 
     if (arguments.length === 0){
-		error("setMargins() requires at least 1 parameter value.");
-	} else if (arguments.length === 1) {
-		right = bottom = left = top;
-    }
+    error("setMargins() requires at least 1 parameter value.");
+    } else if (arguments.length === 1) {
+      right = bottom = left = top;
+      }
 
-	if(pageNumber != undefined){
-		b.page(pageNumber).marginPreferences.top = top;
-		b.page(pageNumber).marginPreferences.right = right;
-		b.page(pageNumber).marginPreferences.bottom = bottom;
-		b.page(pageNumber).marginPreferences.left = left;
-	}else{
-		currentPage().marginPreferences.top = top;
-		currentPage().marginPreferences.right = right;
-		currentPage().marginPreferences.bottom = bottom;
-		currentPage().marginPreferences.left = left;
-	}
-  };
+    if(pageNumber != undefined){
+      b.page(pageNumber).marginPreferences.top = top;
+      b.page(pageNumber).marginPreferences.right = right;
+      b.page(pageNumber).marginPreferences.bottom = bottom;
+      b.page(pageNumber).marginPreferences.left = left;
+    }else{
+      currentPage().marginPreferences.top = top;
+      currentPage().marginPreferences.right = right;
+      currentPage().marginPreferences.bottom = bottom;
+      currentPage().marginPreferences.left = left;
+    }
+    };
 
   /**
    * Sets the document bleeds. If one value is given, all 4 are set equally.
@@ -1081,17 +1081,17 @@
   pub.setBleeds = function(top, right, bottom, left) {
 
     if (arguments.length === 0){
-		error("setBleeds() requires at least 1 parameter value.");
-	} else if (arguments.length === 1) {
-		right = bottom = left = top;
+    error("setBleeds() requires at least 1 parameter value.");
+  } else if (arguments.length === 1) {
+    right = bottom = left = top;
     }else{
-		b.doc().documentPreferences.documentBleedUniformSize = false;
-	}
+    b.doc().documentPreferences.documentBleedUniformSize = false;
+  }
 
-		b.doc().documentPreferences.documentBleedTopOffset = top;
-		b.doc().documentPreferences.documentBleedOutsideOrRightOffset = right;
-		b.doc().documentPreferences.documentBleedBottomOffset = bottom;
-		b.doc().documentPreferences.documentBleedInsideOrLeftOffset = left;
+    b.doc().documentPreferences.documentBleedTopOffset = top;
+    b.doc().documentPreferences.documentBleedOutsideOrRightOffset = right;
+    b.doc().documentPreferences.documentBleedBottomOffset = bottom;
+    b.doc().documentPreferences.documentBleedInsideOrLeftOffset = left;
   };
 
 
@@ -1588,8 +1588,8 @@
       ellipseBounds[3] = x+(w);
     }
 
-	if(w === 0 || h === 0)
-		return false;
+  if(w === 0 || h === 0)
+    return false;
 
     var ovals = currentPage().ovals;
     var newOval = ovals.add( currentLayer() );
@@ -1676,8 +1676,8 @@
       rectBounds[3] = (x+w)-(w/2);
     }
 
-	if(w === 0 || h === 0)
-		return false;
+  if(w === 0 || h === 0)
+    return false;
     
     var newRect = currentPage().rectangles.add( currentLayer() );
     with (newRect) {
@@ -2150,11 +2150,9 @@
         textItem[prop] = val;
       };
 
-    if(item.hasOwnProperty("isValid")) {
-      if (!item.isValid) {
-        warning("Invalid object passed to typo()");
-        return;
-      }
+    if(!isValid(item)){
+      warning("Invalid object passed to typo()");
+      return;
     }
 
     if (item instanceof Document ||
@@ -2178,6 +2176,19 @@
     }
     return result;
   };
+
+  var isValid = function(item) {
+    if(typeof item != 'undefined'){
+      if(item.hasOwnProperty("isValid")) {
+        if (!item.isValid) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    } 
+    return false;
+  }
 
   /**
    * Returns the current font and sets it if argument fontName is given.
@@ -3627,7 +3638,7 @@
     if (typeof showOptions !== "boolean") showOptions = false;
     b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
   };
-
+  
   /**
    * Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.
    *
@@ -3681,8 +3692,7 @@
         println(indent+"--> "+propname+" "+e);
       }
     }
-  }
-  
+  }  
 
   // ----------------------------------------
   // Transform
@@ -4304,7 +4314,7 @@
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-	var facingPages = app.activeDocument.documentPreferences.facingPages;
+  var facingPages = app.activeDocument.documentPreferences.facingPages;
 
     var widthOffset = heightOffset = 0;
 
@@ -4324,18 +4334,18 @@
         break;
 
       case pub.BLEED:
-		widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-		if(facingPages){
-			widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
-		}
+    widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+    if(facingPages){
+      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+    }
         heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
         b.resetMatrix();
-		b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-		
-		if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
-			b.resetMatrix();
-			b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
-		}
+    b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+    
+    if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
+      b.resetMatrix();
+      b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
+    }
         break;
 
       case pub.FACING_PAGES:
@@ -4370,13 +4380,13 @@
              pub.width = w * 2;
              pub.height = h;
 
-			if(currentPage().side === PageSideOptions.RIGHT_HAND){
-				pub.translate(-w+widthOffset/2,0);
-			}
+      if(currentPage().side === PageSideOptions.RIGHT_HAND){
+        pub.translate(-w+widthOffset/2,0);
+      }
 
              break;
 
-		case pub.FACING_MARGIN:
+    case pub.FACING_MARGIN:
             widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
             heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
             b.resetMatrix();
@@ -4388,9 +4398,9 @@
             pub.width = w * 2;
             pub.height = h;
 
-			if(currentPage().side === PageSideOptions.RIGHT_HAND){
-				pub.translate(-w-widthOffset/2,0);
-			}
+      if(currentPage().side === PageSideOptions.RIGHT_HAND){
+        pub.translate(-w-widthOffset/2,0);
+      }
 
              return; // early exit    
 
