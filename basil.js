@@ -87,6 +87,20 @@
   pub.IN = "inch";
 
   /**
+   * RGB
+   * @property RGB {String}
+   * @cat Constants
+   */
+  pub.RGB = "rgb";
+
+  /**
+   * CMYK
+   * @property CMYK {String}
+   * @cat Constants
+   */
+  pub.CMYK = "cmyk";
+
+  /**
    * Corner, used for drawing modes.
    * @property CORNER {String}
    * @cat Constants
@@ -262,7 +276,8 @@
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
-    currCanvasMode = pub.PAPER
+    currCanvasMode = pub.PAPER;
+    currColorMode = pub.RGB;
   };    
 
   
