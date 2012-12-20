@@ -364,7 +364,7 @@
      * This removes a key -> value pair by its key.
      * 
      * @cat HashList
-     * @method remove
+     * @method HashList.remove
      * @param {any} key The key to delete
      * @return {any} The value before deletion
      */
@@ -382,7 +382,7 @@
      * This gets a value by its key.
      * 
      * @cat HashList
-     * @method get
+     * @method HashList.get
      * @param {any} key The key to look for
      * @return {any} The value
      */
@@ -394,7 +394,7 @@
      * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
      * 
      * @cat HashList
-     * @method set
+     * @method HashList.set
      * @param {any} key The key to use
      * @return {any} The value after setting
      */
@@ -415,7 +415,7 @@
      * Checks for the existance of a given key.
      * 
      * @cat HashList
-     * @method hasKey
+     * @method HashList.hasKey
      * @param {any} key The key to check
      * @return {boolean} 
      */
@@ -428,7 +428,7 @@
      * Checks if a certain value exists at least once in all of the key -> value pairs.
      * 
      * @cat HashList
-     * @method hasValue
+     * @method HashList.hasValue
      * @param {any} value 
      * @return {boolean} 
      */
@@ -448,7 +448,7 @@
      * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
      * 
      * @cat HashList
-     * @method getKeysSortedByValues
+     * @method HashList.getKeysSortedByValues
      * @return {Array} An array with all the keys 
      */
     that.getKeysSortedByValues = function() {
@@ -466,7 +466,7 @@
      * Returns an array with all keys in a sorted order from higher to lower magnitude. 
      * 
      * @cat HashList
-     * @method getSortedKeys
+     * @method HashList.getSortedKeys
      * @return {Array} An array with all the keys 
      */
     that.getSortedKeys = function () {
@@ -477,7 +477,7 @@
      * Returns an array with all keys.
      * 
      * @cat HashList
-     * @method getKeys
+     * @method HashList.getKeys
      * @return {Array} An array with all the keys 
      */
     that.getKeys = function () {
@@ -497,7 +497,7 @@
      * Returns an array with all keys.
      * 
      * @cat HashList
-     * @method getKeys
+     * @method HashList.getKeys
      * @return {Array} An array with all the keys 
      */
     that.getValues = function () {
@@ -516,7 +516,7 @@
      * Deletes all the key -> value pairs in this HashList.
      * 
      * @cat HashList
-     * @method clear
+     * @method HashList.clear
      * @return {Array} An array with all the keys 
      */
     that.clear = function() {
@@ -2744,7 +2744,7 @@
       this.z = z || 0;
     }
     /**
-     * Calculates the Euclidean distance between two points (considering a point as a vector object).
+     * Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
      * Is meant to be called "static" i.e. Vector.dist(v1, v2);
      * @cat Vector
      * @method Vector.dist
@@ -2758,7 +2758,7 @@
     };
 
     /**
-     * Calculates the dot product of two vectors.
+     * Static function. Calculates the dot product of two vectors.
      * Is meant to be called "static" i.e. Vector.dot(v1, v2);
      * @method Vector.dot
      * @cat Vector
@@ -2772,7 +2772,7 @@
     };
 
     /**
-     * Calculates the cross product of two vectors.
+     * Static function. Calculates the cross product of two vectors.
      * Is meant to be called "static" i.e. Vector.cross(v1, v2);
      * @method Vector.cross
      * @cat Vector
@@ -2786,7 +2786,7 @@
     };
 
     /**
-     * Calculates the angle between two vectors.
+     * Static function. Calculates the angle between two vectors.
      * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
      * @method Vector.angleBetween
      * @cat Vector

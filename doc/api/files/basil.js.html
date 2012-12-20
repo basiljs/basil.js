@@ -452,7 +452,7 @@
      * This removes a key -&gt; value pair by its key.
      * 
      * @cat HashList
-     * @method remove
+     * @method HashList.remove
      * @param {any} key The key to delete
      * @return {any} The value before deletion
      *&#x2F;
@@ -470,7 +470,7 @@
      * This gets a value by its key.
      * 
      * @cat HashList
-     * @method get
+     * @method HashList.get
      * @param {any} key The key to look for
      * @return {any} The value
      *&#x2F;
@@ -482,7 +482,7 @@
      * This sets a key -&gt; value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
      * 
      * @cat HashList
-     * @method set
+     * @method HashList.set
      * @param {any} key The key to use
      * @return {any} The value after setting
      *&#x2F;
@@ -503,7 +503,7 @@
      * Checks for the existance of a given key.
      * 
      * @cat HashList
-     * @method hasKey
+     * @method HashList.hasKey
      * @param {any} key The key to check
      * @return {boolean} 
      *&#x2F;
@@ -516,7 +516,7 @@
      * Checks if a certain value exists at least once in all of the key -&gt; value pairs.
      * 
      * @cat HashList
-     * @method hasValue
+     * @method HashList.hasValue
      * @param {any} value 
      * @return {boolean} 
      *&#x2F;
@@ -536,7 +536,7 @@
      * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
      * 
      * @cat HashList
-     * @method getKeysSortedByValues
+     * @method HashList.getKeysSortedByValues
      * @return {Array} An array with all the keys 
      *&#x2F;
     that.getKeysSortedByValues = function() {
@@ -554,7 +554,7 @@
      * Returns an array with all keys in a sorted order from higher to lower magnitude. 
      * 
      * @cat HashList
-     * @method getSortedKeys
+     * @method HashList.getSortedKeys
      * @return {Array} An array with all the keys 
      *&#x2F;
     that.getSortedKeys = function () {
@@ -565,7 +565,7 @@
      * Returns an array with all keys.
      * 
      * @cat HashList
-     * @method getKeys
+     * @method HashList.getKeys
      * @return {Array} An array with all the keys 
      *&#x2F;
     that.getKeys = function () {
@@ -585,7 +585,7 @@
      * Returns an array with all keys.
      * 
      * @cat HashList
-     * @method getKeys
+     * @method HashList.getKeys
      * @return {Array} An array with all the keys 
      *&#x2F;
     that.getValues = function () {
@@ -604,7 +604,7 @@
      * Deletes all the key -&gt; value pairs in this HashList.
      * 
      * @cat HashList
-     * @method clear
+     * @method HashList.clear
      * @return {Array} An array with all the keys 
      *&#x2F;
     that.clear = function() {
@@ -2163,9 +2163,9 @@
     var colorErrorMsg = &quot;Wrong parameters. Use: &quot;
         + &quot;R,G,B,name in b.colorMode(b.RGB) or &quot;
         + &quot;C,M,Y,K,name in b.colorMode(b.CMYK) or &quot;
-        + &quot;Grey,name. &quot;
+        + &quot;GREY,name. &quot;
         + &quot;Name is optional. &quot;
-        + &quot;NB: In indesign colors don&#x27;t have an alpha value.&quot;;
+        + &quot;NB: In indesign colors don&#x27;t have an alpha value, use b.opacity() to set alpha.&quot;;
 
     if (arguments.length === 1) {
       &#x2F;&#x2F; get color by name
@@ -2268,6 +2268,14 @@
     }
   };
 
+  &#x2F;**
+   * Sets the opacity property of an object.
+   * 
+   * @cat Color
+   * @method opacity
+   * @param  {Object} obj The object to set opacity property
+   * @param  {Number} opacity The opacity value form 0 to 100
+   *&#x2F;
   pub.opacity = function(obj, opacity){
     if (obj.hasOwnProperty(&quot;transparencySettings&quot;)) {
       obj.transparencySettings.blendingSettings.opacity = opacity;
