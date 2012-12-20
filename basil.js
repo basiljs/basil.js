@@ -1409,7 +1409,7 @@
   /**
    * Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts "word!" to "word". Especially useful together with b.words();
    * 
-   * @method wordTrim
+   * @method trimWord
    * @cat Data
    * @subcat String Functions
    * @param {String} s The String to trim
