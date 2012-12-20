@@ -46,28 +46,31 @@
   /**
    * The basil version
    * @property VERSION {String}
-   * @cat Constants
+   * @cat Environment
    */
-  pub.VERSION = "0.17";
+  pub.VERSION = "0.18";
 
   /**
    * Points
    * @property PT {String}
-   * @cat Constants
+   * @cat Data
+   * @subcat Units
    */
   pub.PT = "pt";
 
   /**
    * Pixels
    * @property PX {String}
-   * @cat Constants
+   * @cat Data
+   * @subcat Units
    */
   pub.PX = "px";
 
   /**
    * Centimeter
    * @property CM {String}
-   * @cat Constants
+   * @cat Data
+   * @subcat Units
    */
 
   pub.CM = "cm";
@@ -75,144 +78,164 @@
   /**
    * Millimeter
    * @property MM {String}
-   * @cat Constants
+   * @cat Data
+   * @subcat Units
    */
   pub.MM = "mm";
 
   /**
    * Inch
    * @property IN {String}
-   * @cat Constants
+   * @cat Data
+   * @subcat Units
    */
   pub.IN = "inch";
 
   /**
    * RGB
    * @property RGB {String}
-   * @cat Constants
+   * @cat Color
    */
   pub.RGB = "rgb";
 
   /**
    * CMYK
    * @property CMYK {String}
-   * @cat Constants
+   * @cat Color
    */
   pub.CMYK = "cmyk";
 
   /**
    * Corner, used for drawing modes.
    * @property CORNER {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Primitives
    */
   pub.CORNER = "corner";
 
   /**
    * Corners, used for drawing modes.
    * @property CORNERS {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Primitives
    */
   pub.CORNERS = "corners";
 
   /**
    * Center, used for drawing modes.
    * @property CENTER {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Primitives
    */
   pub.CENTER = "center";
 
   /**
    * Radius, used for drawing modes.
    * @property RADIUS {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Primitives
    */
   pub.RADIUS = "radius";
 
   /**
    * Two Pi
    * @property TWO_PI {Number}
-   * @cat Constants
+   * @cat Data
+   * @subcat Math Constants
    */
   pub.TWO_PI = Math.PI*2;
 
   /**
    * Pi
    * @property PI {Number}
-   * @cat Constants
+   * @cat Data
+   * @subcat Math Constants
    */
   pub.PI = Math.PI;
 
   /**
    * Half Pi
    * @property HALF_PI {Number}
-   * @cat Constants
+   * @cat Data
+   * @subcat Math Constants
    */
   pub.HALF_PI = Math.PI/2;
 
   /**
    * Quarter Pi
    * @property QUARTER_PI {Number}
-   * @cat Constants
+   * @cat Data
+   * @subcat Math Constants
    */
   pub.QUARTER_PI = Math.PI/4;
 
   /**
    * @property PAPER {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Page
    */
   pub.PAPER = "paper";
 
   /**
-   * @property PAPER {String}
-   * @cat Constants
+   * @property MARGIN {String}
+   * @cat Document
+   * @subcat Page
    */
   pub.MARGIN = "margin";
 
   /**
-   * @property PAPER {String}
-   * @cat Constants
+   * @property BLEED {String}
+   * @cat Document
+   * @subcat Page
    */
   pub.BLEED = "bleed";
 
   /**
    * @property FACING_PAGES {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Page
    */
   pub.FACING_PAGES = "facing_pages";
 
   /**
-   * @property FACING_BLEED {String}
-   * @cat Constants
+   * @property FACING_BLEEDS {String}
+   * @cat Document
+   * @subcat Page
    */
-  pub.FACING_BLEED = "facing_bleed";  
+  pub.FACING_BLEEDS = "facing_bleeds";  
 
   /**
-   * @property FACING_BLEED {String}
-   * @cat Constants
+   * @property FACING_MARGINS {String}
+   * @cat Document
+   * @subcat Page
    */
-  pub.FACING_MARGIN = "facing_margin";
+  pub.FACING_MARGINS = "facing_margins";
 
   /**
    * @property AT_BEGINNING {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Page
    */
   pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
 
   /**
    * @property AT_END {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Page
    */  
   pub.AT_END = LocationOptions.AT_END;
 
   /**
    * @property BEFORE {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Page
    */
   pub.BEFORE = LocationOptions.BEFORE;
 
   /**
    * @property AFTER {String}
-   * @cat Constants
+   * @cat Document
+   * @subcat Page
    */  
   pub.AFTER = LocationOptions.AFTER;  
   
@@ -335,7 +358,8 @@
    * HashList is a data container that allows you to store information as key -> value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
    * 
    * @constructor
-   * @cat HashList
+   * @cat Data
+   * @subcat HashList
    * @method HashList
    */
   // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
@@ -363,7 +387,8 @@
      * 
      * This removes a key -> value pair by its key.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.remove
      * @param {any} key The key to delete
      * @return {any} The value before deletion
@@ -381,7 +406,8 @@
     /**
      * This gets a value by its key.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.get
      * @param {any} key The key to look for
      * @return {any} The value
@@ -393,7 +419,8 @@
     /**
      * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.set
      * @param {any} key The key to use
      * @return {any} The value after setting
@@ -414,7 +441,8 @@
     /**
      * Checks for the existance of a given key.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.hasKey
      * @param {any} key The key to check
      * @return {boolean} 
@@ -427,7 +455,8 @@
     /**
      * Checks if a certain value exists at least once in all of the key -> value pairs.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.hasValue
      * @param {any} value 
      * @return {boolean} 
@@ -447,7 +476,8 @@
     /**
      * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.getKeysSortedByValues
      * @return {Array} An array with all the keys 
      */
@@ -465,7 +495,8 @@
     /**
      * Returns an array with all keys in a sorted order from higher to lower magnitude. 
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.getSortedKeys
      * @return {Array} An array with all the keys 
      */
@@ -476,7 +507,8 @@
     /**
      * Returns an array with all keys.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.getKeys
      * @return {Array} An array with all the keys 
      */
@@ -496,7 +528,8 @@
     /**
      * Returns an array with all keys.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.getKeys
      * @return {Array} An array with all the keys 
      */
@@ -515,7 +548,8 @@
     /**
      * Deletes all the key -> value pairs in this HashList.
      * 
-     * @cat HashList
+     * @cat Data
+     * @subcat HashList
      * @method HashList.clear
      * @return {Array} An array with all the keys 
      */
@@ -550,7 +584,7 @@
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
    * @param  {Function} cb  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
@@ -571,7 +605,7 @@
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each paragraph of the given document, story or text frame.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
    * @param  {Function} cb  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
@@ -601,7 +635,7 @@
    * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
    *
    * cat Document
-   * subcat InDesign Model
+   * subcat Multi-Getters
    * method sentences
    * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
    * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
@@ -643,7 +677,7 @@
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
@@ -674,7 +708,7 @@
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each word of the given document, story, text frame, paragraph or line.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
@@ -705,7 +739,7 @@
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
@@ -749,7 +783,7 @@
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method items
    * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
    * @param  {Function|Boolean} cb Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
@@ -777,7 +811,6 @@
    * Removes all PageItems in the given Document, Page, Layer or Group.
    *
    * @cat Document
-   * @subcat InDesign Model
    * @method clear
    * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
    */
@@ -818,10 +851,10 @@
   /**
    * Checks whether a var is a number, returns true if this is the case
    *
-   * @cat Data
-   * @method isNumber
-   * @param  {Object|String|Number}  num The number to ckeck
-   * @return {Boolean}
+   * cat Data
+   * method isNumber
+   * param  {Object|String|Number}  num The number to check
+   * return {Boolean}
    */
   var isNumber = pub.isNumber = function(num) {
     return !isNaN(parseFloat(num)) && isFinite(num);
@@ -831,7 +864,6 @@
    * Checks whether a var is an indesign text object, returns true if this is the case
    *
    * @cat Document
-   * @subcat InDesign Model
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
    * @return {Boolean}     [description]
@@ -889,7 +921,8 @@
    * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
    * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
    * @method canvasMode
-   * @cat Environment
+   * @cat Document
+   * @subcat Page
    */
   pub.canvasMode = function ( m ) {
     if(arguments.length == 0) {
@@ -907,7 +940,7 @@
    * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Page
    * @method page
    * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
    * @return {Page} The current page instance
@@ -942,7 +975,7 @@
    * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Page
    * @method addPage
    * @param  {String} [location] The location placement mode
    * @return {Page} The new page
@@ -991,7 +1024,7 @@
    * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Page
    * @method removePage
    * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
    * @throws {Error} e If Page not found or invalid call.
@@ -1013,7 +1046,7 @@
    * Returns the current page number of either the current page or the given Page object.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Page
    * @method pageNumber
    * @param  {Page} [pageObj] Optional: The page you want to know the number of.
    * @return {Number} The page number within the document.
@@ -1031,13 +1064,13 @@
     
   }
 
-  // does not work?
+  // TODO: does not work?
   pub.nextPage = function () {
     var p = pub.doc().pages.nextItem(currentPage());
     return pub.page(p);
   }
 
-  // does not work?
+  // TODO: does not work?
   pub.previousPage = function () {
     var p = pub.doc().pages.previousItem(currentPage());
     return pub.page(p);
@@ -1047,7 +1080,7 @@
    * The number of all pages in the current document.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Page
    * @method pageCount
    * @return The amount of pages.
    * @throws {Error} e If Page not found or invalid call.
@@ -1061,7 +1094,7 @@
    * Returns the current layer and sets it if argument layer is given.
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Page
    * @method layer
    * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
    * @return {Layer} The current layer instance
@@ -1126,7 +1159,6 @@
    * Creates a vertical guide line at the current spread and current layer.
    *
    * @cat Document
-   * @subcat InDesign Model
    * @method guideX
    * @param  {Number} x Position of the new guide
    * @return {Guide} New guide
@@ -1146,7 +1178,6 @@
    * Creates a horizontal guide line at the current spread and current layer.
    *
    * @cat Document
-   * @subcat InDesign Model
    * @method guideY
    * @param  {Number} y Position of the new guide
    * @return {Guide} New guide
@@ -1166,8 +1197,8 @@
    * Sets the margins of a given page. If one value is given, sets all 4 equally.
    *
    * @cat Document
-   * @subcat InDesign Model
-   * @method setMargins
+   * @subcat Page
+   * @method margins
    * @param {Number} [top] Top margin or all if only one
    * @param {Number} [right] Right margin
    * @param {Number} [bottom] Bottom margin
@@ -1199,8 +1230,8 @@
    * Sets the document bleeds. If one value is given, all 4 are set equally.
    *
    * @cat Document
-   * @subcat InDesign Model
-   * @method setBleeds
+   * @subcat Page
+   * @method bleeds
    * @param {Number} [top] Top bleed or all if only one
    * @param {Number} [right] Right bleed
    * @param {Number} [bottom] Bottom bleed
@@ -1234,7 +1265,7 @@
      * var str = b.JSON.encode(obj);
      * 
      * @cat Data
-     * @subcat Input
+     * @subcat JSON
      * @method JSON.decode
      * @param  {String} String to be parsed as JSON-object.
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
@@ -1264,7 +1295,7 @@
      * var obj = b.JSON.decode(str);
      *
      * @cat Data
-     * @subcat Output
+     * @subcat JSON
      * @method JSON.encode
      * @param  {Object} Object to be converted to a JSON-string
      * @return {String} Returns JSON-string
@@ -2573,7 +2604,8 @@
    * oval or polygon to place the image in.
    * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
    *
-   * @cat Image
+   * @cat Document
+   * @subcat Image
    * @method image
    * @param  {String|File} img The image file name in the document's data directory or a File instance
    * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
@@ -2640,7 +2672,8 @@
    * Transforms position and size of an image.
    * The image fit options are always "contentToFrame".
    *
-   * @cat Image
+   * @cat Document
+   * @subcat Image
    * @method transformImage
    * @param  {Graphic} img The image to transform
    * @param  {Number} x       New x
@@ -2666,7 +2699,8 @@
    * Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.
    * If no parameter is passed the currently set mode is returned as String.
    *
-   * @cat Image
+   * @cat Document
+   * @subcat Image
    * @method imageMode
    * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER
    * @return {String} The current mode
@@ -2732,7 +2766,8 @@
      * Constructor of Vector, can be two- or three-dimensional.
      * 
      * @constructor
-     * @cat Vector
+     * @cat Data
+     * @subcat Vector
      * @method Vector
      * @param {Number} x
      * @param {Number} y
@@ -2746,7 +2781,8 @@
     /**
      * Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
      * Is meant to be called "static" i.e. Vector.dist(v1, v2);
-     * @cat Vector
+     * @cat Data
+     * @subcat Vector
      * @method Vector.dist
      * @static
      * @param {Vector} v1 The first vector
@@ -2761,7 +2797,8 @@
      * Static function. Calculates the dot product of two vectors.
      * Is meant to be called "static" i.e. Vector.dot(v1, v2);
      * @method Vector.dot
-     * @cat Vector
+     * @cat Data
+     * @subcat Vector
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2775,7 +2812,8 @@
      * Static function. Calculates the cross product of two vectors.
      * Is meant to be called "static" i.e. Vector.cross(v1, v2);
      * @method Vector.cross
-     * @cat Vector
+     * @cat Data
+     * @subcat Vector
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2789,7 +2827,8 @@
      * Static function. Calculates the angle between two vectors.
      * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
      * @method Vector.angleBetween
-     * @cat Vector
+     * @cat Data
+     * @subcat Vector
      * @static
      * @param {Vector} v1 The first vector
      * @param {Vector} v2 The second vector
@@ -2804,7 +2843,8 @@
       /**
        * Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.
        * @method Vector.set
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Number|Array|Vector} v Either a vector, array or x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2820,7 +2860,8 @@
       /**
        * Gets a copy of the vector, returns a Vector object.
        * @method Vector.get
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @return {Vector} A copy of the vector
        */
       get: function() {
@@ -2829,7 +2870,8 @@
       /**
        * Calculates the magnitude (length) of the vector and returns the result as a float
        * @method Vector.mag
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @return {Number} The length
        */
       mag: function() {
@@ -2841,7 +2883,8 @@
       /**
        * Adds x, y, and z components to a vector, adds one vector to another.
        * @method Vector.add
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2860,7 +2903,8 @@
       /**
        * Substract x, y, and z components or a full vector from this vector
        * @method Vector.sub
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2879,7 +2923,8 @@
       /**
        * Multiplies this vector with x, y, and z components or another vector.
        * @method Vector.mult
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2898,7 +2943,8 @@
       /**
        * Divides this vector through x, y, and z components or another vector.
        * @method Vector.div
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2917,7 +2963,8 @@
       /**
        * Calculates the distance from this vector to another as x, y, and z components or full vector.
        * @method Vector.dist
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2932,7 +2979,8 @@
       /**
        * Calculates the dot product from this vector to another as x, y, and z components or full vector.
        * @method Vector.dot
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2945,7 +2993,8 @@
       /**
        * Calculates the cross product from this vector to another as x, y, and z components or full vector.
        * @method Vector.cross
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Vector|Number} v Either a full vector or an x component
        * @param {Number} [y] The y component
        * @param {Number} [z] The z component
@@ -2959,7 +3008,8 @@
       },
       /**
        * Normalizes the length of this vector to 1.
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @method Vector.normalize
        */
       normalize: function() {
@@ -2969,7 +3019,8 @@
       /**
        * Normalizes the length of this vector to the given parameter.
        * @method Vector.limit
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @param {Number} high The value to scale to.
        */
       limit: function(high) {
@@ -2981,7 +3032,8 @@
       /**
        * The 2D orientation (heading) of this vector in radian.
        * @method Vector.heading2D
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @return {Number} A radian angle value
        */
       heading2D: function() {
@@ -2990,7 +3042,8 @@
       /**
        * Returns data about this vector as a string.
        * @method Vector.toString
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @return {String} The x, y and z components as a string.
        */
       toString: function() {
@@ -2999,7 +3052,8 @@
       /** 
        * Returns this vector as an array [x,y,z].
        * @method Vector.array
-       * @cat Vector
+       * @cat Data
+       * @subcat Vector
        * @return {Array} [x,y,z]
        */
       array: function() {
@@ -3692,7 +3746,7 @@
    * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method labels
    * @param  {String} label The label identifier
    * @param  {Function} cb Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
@@ -3718,7 +3772,7 @@
    * Returns the currently selected object(s)
    *
    * @cat Document
-   * @subcat InDesign Model
+   * @subcat Multi-Getters
    * @method selections
    * @param  {Function} cb Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {Object[]} Array of selected object(s).
@@ -4569,7 +4623,7 @@
         pub.height = h;
         break; 
 
-      case pub.FACING_BLEED:
+      case pub.FACING_BLEEDS:
         widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
         heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
         b.resetMatrix();
@@ -4587,7 +4641,7 @@
 
         break;
 
-      case pub.FACING_MARGIN:
+      case pub.FACING_MARGINS:
         widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
         heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
         b.resetMatrix();
