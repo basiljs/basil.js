@@ -51,13 +51,14 @@ b.test('DataTests', {
     hash.remove("one");
     assert(hash.length === 3);
     
-
     hash.clear();
     assert(hash.hasKey("four") === false);
     assert(hash.length === 0);
 
+  },
 
-
+  "testHashList2" : function (b) {
+    
     hash = new HashList(); // start over
 
     assert(hash.length === 0);
@@ -71,29 +72,40 @@ b.test('DataTests', {
     var arr = hash.getValues();
     assert(arr.length === 0);    
     
-    var arr = hash.getKeysSortedByValues(); 
+    var arr = hash.getKeysByValues(); 
     assert(arr.length === 0);    
     
     hash.set("eight", 8);
-    hash.set("thousand", 1000);    
-    assert(hash.length === 2);    
+    hash.set("thousand", 1000);     
+    
+    assert(typeof hash.get("watch") === "function");    // this is not nice
+    hash.set("watch", 0); // it's a prototype function
+    assert(hash.length === 3);    
+    assert(typeof hash.get("watch") === "number");    
     
     var arr = hash.getKeys();
     assert(arr[0] === "eight");    
     assert(arr[1] === "thousand");        
+    assert(arr[2] === "watch"); 
     
     var arr = hash.getValues();
     assert(arr[0] === 8);    
     assert(arr[1] === 1000);            
+    assert(arr[2] === 0);     
     
     var arr = hash.getSortedKeys();
     assert(arr[0] === "eight");    
     assert(arr[1] === "thousand");        
+    assert(arr[2] === "watch");     
     
-    var arr = hash.getKeysSortedByValues();    
+    var arr = hash.getKeysByValues();    
     assert(arr[0] === "thousand");        
     assert(arr[1] === "eight");    
+    assert(arr[2] === "watch");    
     
+    // TODO: initial function removal in items?      
+
+        
   }
 
 });

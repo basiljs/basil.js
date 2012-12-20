@@ -27,7 +27,7 @@ function draw() {
         }
     }
     
-    var keys = (hash.getKeysSortedByValues() ); // sorts it by the number of its occurences.
+    var keys = (hash.getKeysByValues() ); // sorts it by the number of its occurences.
     var result1 = "";
     var result2 = "";
     for ( var i = 0; i < keys.length; i++ ){

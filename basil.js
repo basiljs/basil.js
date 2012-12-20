@@ -369,17 +369,14 @@
     that.items = {};
     
     // TODO: initial function removal in items?      
-    // for (var i = 0; i < arguments.length; i += 2) {
-    //   if (typeof(arguments[i + 1]) != 'undefined') {
-    //     that.items[arguments[i]] = arguments[i + 1];
-    //     that.length++;
-    //   }
-    // }
+    for ( var key in that.items ) {
+      b.println(key);
+    }
     
     // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
     function checkKey(key) {
       if(that.items[key] instanceof Function) {
-          that.items[key] = 'undefined'; 
+          that.items[key] = undefined; 
       };
     }
 
@@ -428,9 +425,9 @@
     that.set = function(key, value) {
 
       if( value instanceof Function ) error("HashList does not support storing Functions as values.");
-      //checkKey(key);
+      checkKey(key);
       if (typeof value != 'undefined') {
-        if (typeof that.items[key] == 'undefined') {
+        if (typeof that.items[key] === 'undefined') {
           that.length++;
         }
         that.items[key] = value;
@@ -478,15 +475,15 @@
      * 
      * @cat Data
      * @subcat HashList
-     * @method HashList.getKeysSortedByValues
+     * @method HashList.getKeysByValues
      * @return {Array} An array with all the keys 
      */
-    that.getKeysSortedByValues = function() {
+    that.getKeysByValues = function() {
         var obj = that.items;
         var keys = [];
         for(var key in obj) 
           {
-            if( typeof obj[key] != 'number' ) error("getKeysSortedByValues() only works with Numbers as values. ");
+            if( typeof obj[key] != 'number' ) error("getKeysByValues() only works with Numbers as values. ");
             keys.push(key);
           }
         return keys.sort(function(a,b){return obj[b]-obj[a]});
