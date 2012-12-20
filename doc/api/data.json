@@ -1989,7 +1989,7 @@
             "params": [
                 {
                     "name": "align",
-                    "description": "The horizontal text alignment to set. Must be one of the InDesign Justification enum values:\n                          Justification.AWAY_FROM_BINDING_SIDE\n                          Justification.CENTER_ALIGN\n                          Justification.CENTER_JUSTIFIED\n                          Justification.FULLY_JUSTIFIED\n                          Justification.LEFT_ALIGN\n                          Justification.RIGHT_ALIGN\n                          Justification.RIGHT_JUSTIFIED\n                          Justification.TO_BINDING_SIDE",
+                    "description": "The horizontal text alignment to set. Must be one of the InDesign Justification enum values:\n                          Justification.AWAY_FROM_BINDING_SIDE <br />\n                          Justification.CENTER_ALIGN <br />\n                          Justification.CENTER_JUSTIFIED <br />\n                          Justification.FULLY_JUSTIFIED <br />\n                          Justification.LEFT_ALIGN <br />\n                          Justification.RIGHT_ALIGN <br />\n                          Justification.RIGHT_JUSTIFIED <br />\n                          Justification.TO_BINDING_SIDE <br />",
                     "type": "String"
                 },
                 {

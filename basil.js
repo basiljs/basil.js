@@ -2494,14 +2494,14 @@
    * @cat Typography
    * @method textAlign
    * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
-   *                           Justification.AWAY_FROM_BINDING_SIDE
-   *                           Justification.CENTER_ALIGN
-   *                           Justification.CENTER_JUSTIFIED
-   *                           Justification.FULLY_JUSTIFIED
-   *                           Justification.LEFT_ALIGN
-   *                           Justification.RIGHT_ALIGN
-   *                           Justification.RIGHT_JUSTIFIED
-   *                           Justification.TO_BINDING_SIDE
+   *                           Justification.AWAY_FROM_BINDING_SIDE <br />
+   *                           Justification.CENTER_ALIGN <br />
+   *                           Justification.CENTER_JUSTIFIED <br />
+   *                           Justification.FULLY_JUSTIFIED <br />
+   *                           Justification.LEFT_ALIGN <br />
+   *                           Justification.RIGHT_ALIGN <br />
+   *                           Justification.RIGHT_JUSTIFIED <br />
+   *                           Justification.TO_BINDING_SIDE <br />
    * @param  {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
    *                           VerticalJustification.BOTTOM_ALIGN
    *                           VerticalJustification.CENTER_ALIGN
