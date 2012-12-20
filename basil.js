@@ -2075,9 +2075,9 @@
     var colorErrorMsg = "Wrong parameters. Use: "
         + "R,G,B,name in b.colorMode(b.RGB) or "
         + "C,M,Y,K,name in b.colorMode(b.CMYK) or "
-        + "Grey,name. "
+        + "GREY,name. "
         + "Name is optional. "
-        + "NB: In indesign colors don't have an alpha value.";
+        + "NB: In indesign colors don't have an alpha value, use b.opacity() to set alpha.";
 
     if (arguments.length === 1) {
       // get color by name
@@ -2180,6 +2180,14 @@
     }
   };
 
+  /**
+   * Sets the opacity property of an object.
+   * 
+   * @cat Color
+   * @method opacity
+   * @param  {Object} obj The object to set opacity property
+   * @param  {Number} opacity The opacity value form 0 to 100
+   */
   pub.opacity = function(obj, opacity){
     if (obj.hasOwnProperty("transparencySettings")) {
       obj.transparencySettings.blendingSettings.opacity = opacity;
