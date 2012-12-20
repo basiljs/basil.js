@@ -2078,6 +2078,14 @@
     }
   };
 
+  pub.opacity = function(obj, opacity){
+    if (obj.hasOwnProperty("transparencySettings")) {
+      obj.transparencySettings.blendingSettings.opacity = opacity;
+    } else {
+      warning("The object "+ obj.toString() +" doesn't have an opacity property");
+    }
+  };
+
   /**
    * Calculates a color or colors between two color at a specific increment. 
    * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
