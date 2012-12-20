@@ -1812,7 +1812,7 @@
         {
             "file": "basil.js",
             "line": 2235,
-            "description": "Sets the blendmode property of an object. Available blendmodes are: BlendMode.NORMAL, BlendMode.MULTIPLY, BlendMode.SCREEN, BlendMode.OVERLAY, BlendMode.SOFT_LIGHT, BlendMode.HARD_LIGHT, BlendMode.COLOR_DODGE, BlendMode.COLOR_BURN, BlendMode.DARKEN, BlendMode.LIGHTEN, BlendMode.DIFFERENCE, BlendMode.EXCLUSION, BlendMode.HUE, BlendMode.SATURATION, BlendMode.COLOR, BlendMode.LUMINOSITY",
+            "description": "Sets the Effects blendMode property of an object.",
             "cat": "Color",
             "itemtype": "method",
             "name": "blendMode",
@@ -1824,7 +1824,7 @@
                 },
                 {
                     "name": "blendMode",
-                    "description": "The blendMode to set e.g. BlendMode.MULTIPLY",
+                    "description": "The blendMode must be one of the InDesign BlendMode enum values:\n                          BlendMode.NORMAL\n                          BlendMode.MULTIPLY\n                          BlendMode.SCREEN\n                          BlendMode.OVERLAY\n                          BlendMode.SOFT_LIGHT\n                          BlendMode.HARD_LIGHT\n                          BlendMode.COLOR_DODGE\n                          BlendMode.COLOR_BURN\n                          BlendMode.DARKEN\n                          BlendMode.LIGHTEN\n                          BlendMode.DIFFERENCE\n                          BlendMode.EXCLUSION\n                          BlendMode.HUE\n                          BlendMode.SATURATION\n                          BlendMode.COLOR\n                          BlendMode.LUMINOSITY",
                     "type": "Number"
                 }
             ],
@@ -1832,7 +1832,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2251,
+            "line": 2267,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "cat": "Color",
             "itemtype": "method",
@@ -1862,7 +1862,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2309,
+            "line": 2325,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nThe default document font size will be used unless a font size is set with the textSize() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() and textYAlign() functions. \nThe width and height parameters define a rectangular area.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1902,7 +1902,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2359,
+            "line": 2375,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to,\nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the\ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item\n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "cat": "Typography",
             "itemtype": "method",
@@ -1933,7 +1933,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2441,
+            "line": 2457,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1960,7 +1960,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2460,
+            "line": 2476,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1981,7 +1981,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2475,
+            "line": 2491,
             "description": "Sets the current horizontal and vertical text alignment.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2003,7 +2003,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2500,
+            "line": 2516,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2024,7 +2024,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2516,
+            "line": 2532,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2045,7 +2045,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2531,
+            "line": 2547,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2066,7 +2066,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2546,
+            "line": 2562,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2086,7 +2086,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2565,
+            "line": 2581,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2106,7 +2106,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2584,
+            "line": 2600,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2127,7 +2127,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2604,
+            "line": 2620,
             "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's\ndata directory which is in the same directory where the document is saved in. The image argument can also be a File\ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle,\noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "cat": "Document",
             "subcat": "Image",
@@ -2171,7 +2171,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2676,
+            "line": 2692,
             "description": "Transforms position and size of an image.\nThe image fit options are always \"contentToFrame\".",
             "cat": "Document",
             "subcat": "Image",
@@ -2208,7 +2208,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2703,
+            "line": 2719,
             "description": "Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.\nIf no parameter is passed the currently set mode is returned as String.",
             "cat": "Document",
             "subcat": "Image",
@@ -2230,7 +2230,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2768,
+            "line": 2784,
             "description": "A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some \"vector\" math, which is made easy by the methods inside the PVector class.\n\nConstructor of Vector, can be two- or three-dimensional.",
             "is_constructor": 1,
             "cat": "Data",
@@ -2259,7 +2259,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2786,
+            "line": 2802,
             "description": "Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).\nIs meant to be called \"static\" i.e. Vector.dist(v1, v2);",
             "cat": "Data",
             "subcat": "Vector",
@@ -2286,7 +2286,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2801,
+            "line": 2817,
             "description": "Static function. Calculates the dot product of two vectors.\nIs meant to be called \"static\" i.e. Vector.dot(v1, v2);",
             "itemtype": "method",
             "name": "Vector.dot",
@@ -2313,7 +2313,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2816,
+            "line": 2832,
             "description": "Static function. Calculates the cross product of two vectors.\nIs meant to be called \"static\" i.e. Vector.cross(v1, v2);",
             "itemtype": "method",
             "name": "Vector.cross",
@@ -2340,7 +2340,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2831,
+            "line": 2847,
             "description": "Static function. Calculates the angle between two vectors.\nIs meant to be called \"static\" i.e. Vector.angleBetween(v1, v2);",
             "itemtype": "method",
             "name": "Vector.angleBetween",
@@ -2367,7 +2367,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2848,
+            "line": 2864,
             "description": "Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.",
             "itemtype": "method",
             "name": "Vector.set",
@@ -2396,7 +2396,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2865,
+            "line": 2881,
             "description": "Gets a copy of the vector, returns a Vector object.",
             "itemtype": "method",
             "name": "Vector.get",
@@ -2410,7 +2410,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2875,
+            "line": 2891,
             "description": "Calculates the magnitude (length) of the vector and returns the result as a float",
             "itemtype": "method",
             "name": "Vector.mag",
@@ -2424,7 +2424,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2888,
+            "line": 2904,
             "description": "Adds x, y, and z components to a vector, adds one vector to another.",
             "itemtype": "method",
             "name": "Vector.add",
@@ -2453,7 +2453,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2908,
+            "line": 2924,
             "description": "Substract x, y, and z components or a full vector from this vector",
             "itemtype": "method",
             "name": "Vector.sub",
@@ -2482,7 +2482,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2928,
+            "line": 2944,
             "description": "Multiplies this vector with x, y, and z components or another vector.",
             "itemtype": "method",
             "name": "Vector.mult",
@@ -2511,7 +2511,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2948,
+            "line": 2964,
             "description": "Divides this vector through x, y, and z components or another vector.",
             "itemtype": "method",
             "name": "Vector.div",
@@ -2540,7 +2540,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2968,
+            "line": 2984,
             "description": "Calculates the distance from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
             "name": "Vector.dist",
@@ -2573,7 +2573,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2984,
+            "line": 3000,
             "description": "Calculates the dot product from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
             "name": "Vector.dot",
@@ -2606,7 +2606,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2998,
+            "line": 3014,
             "description": "Calculates the cross product from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
             "name": "Vector.cross",
@@ -2639,7 +2639,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3014,
+            "line": 3030,
             "description": "Normalizes the length of this vector to 1.",
             "cat": "Data",
             "subcat": "Vector",
@@ -2649,7 +2649,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3024,
+            "line": 3040,
             "description": "Normalizes the length of this vector to the given parameter.",
             "itemtype": "method",
             "name": "Vector.limit",
@@ -2666,7 +2666,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3037,
+            "line": 3053,
             "description": "The 2D orientation (heading) of this vector in radian.",
             "itemtype": "method",
             "name": "Vector.heading2D",
@@ -2680,7 +2680,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3047,
+            "line": 3063,
             "description": "Returns data about this vector as a string.",
             "itemtype": "method",
             "name": "Vector.toString",
@@ -2694,7 +2694,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3057,
+            "line": 3073,
             "description": "Returns this vector as an array [x,y,z].",
             "itemtype": "method",
             "name": "Vector.array",
@@ -2708,7 +2708,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3083,
+            "line": 3099,
             "description": "Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2728,7 +2728,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3094,
+            "line": 3110,
             "description": "Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2748,7 +2748,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3105,
+            "line": 3121,
             "description": "Constrains a value to not exceed a maximum and minimum value.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2778,7 +2778,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3121,
+            "line": 3137,
             "description": "Calculates the distance between two points.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2814,7 +2814,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3144,
+            "line": 3160,
             "description": "Returns Euler's number e (2.71828...) raised to the power of the value parameter.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2835,7 +2835,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3155,
+            "line": 3171,
             "description": "Calculates the closest int value that is less than or equal to the value of the parameter.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2856,7 +2856,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3166,
+            "line": 3182,
             "description": "Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2887,7 +2887,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3182,
+            "line": 3198,
             "description": "Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than 0.0.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2908,7 +2908,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3193,
+            "line": 3209,
             "description": "Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no \"start\" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing \"dist(0, 0, x, y)\".",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2940,7 +2940,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3210,
+            "line": 3226,
             "description": "Re-maps a number from one range to another. In the example above, the number '25' is converted from a value in the range 0..100 into a value that ranges from the left edge (0) to the right edge (width) of the screen.\n\nNumbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2981,7 +2981,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3230,
+            "line": 3246,
             "description": "Determines the largest value in a sequence of numbers.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3012,7 +3012,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3251,
+            "line": 3267,
             "description": "Determines the smallest value in a sequence of numbers.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3043,7 +3043,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3272,
+            "line": 3288,
             "description": "Normalizes a number from another range into a value between 0 and 1. \n\nIdentical to map(value, low, high, 0, 1); \n\nNumbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3074,7 +3074,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3292,
+            "line": 3308,
             "description": "Facilitates exponential expressions. The pow() function is an efficient way of multiplying numbers by themselves (or their reciprocal) in large quantities. For example, pow(3, 5) is equivalent to the expression 3*3*3*3*3 and pow(3, -5) is equivalent to 1 / 3*3*3*3*3",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3100,7 +3100,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3304,
+            "line": 3320,
             "description": "Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3121,7 +3121,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3315,
+            "line": 3331,
             "description": "Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3142,7 +3142,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3331,
+            "line": 3347,
             "description": "Calculates the square root of a number. The square root of a number is always positive, even though there may be a valid negative root. The square root s of number a is such that s*s = a. It is the opposite of squaring.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3163,7 +3163,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3342,
+            "line": 3358,
             "description": "The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3184,7 +3184,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3353,
+            "line": 3369,
             "description": "The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3205,7 +3205,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3364,
+            "line": 3380,
             "description": "The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3226,7 +3226,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3375,
+            "line": 3391,
             "description": "Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3252,7 +3252,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3387,
+            "line": 3403,
             "description": "Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3273,7 +3273,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3398,
+            "line": 3414,
             "description": "Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3294,7 +3294,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3411,
+            "line": 3427,
             "description": "Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3315,7 +3315,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3424,
+            "line": 3440,
             "description": "Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to 6.28). Values are returned in the range -1 to 1.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3336,7 +3336,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3435,
+            "line": 3451,
             "description": "Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3357,7 +3357,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3450,
+            "line": 3466,
             "description": "Generates random numbers. Each time the random() function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call random(5) returns values between 0 and 5. If two parameters are passed, it will return a float with a value between the the parameters. The function call random(-5, 10.2) returns values between -5 and 10.2.\n\nOne parameter sets the range from 0 to the given parameter, while with two parameters present you set the range from val1 - val2.",
             "cat": "Math",
             "subcat": "Random",
@@ -3385,7 +3385,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3592,
+            "line": 3608,
             "description": "Returns the Perlin noise value at specified coordinates. Perlin noise is a random sequence generator producing a more natural ordered, harmonic succession of numbers compared to the standard random() function. It was invented by Ken Perlin in the 1980s and been used since in graphical applications to produce procedural textures, natural motion, shapes, terrains etc.\n\nThe main difference to the random() function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between 0.0 and 1.0. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.\n\nThe actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result. \n\nAnother way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn't matter as such, only the distance between successive coordinates does (eg. when using noise() within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of 0.005-0.03 work best for most applications, but this will differ depending on use.",
             "cat": "Math",
             "subcat": "Random",
@@ -3418,7 +3418,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3633,
+            "line": 3649,
             "description": "Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().\n\nBy changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.",
             "cat": "Math",
             "subcat": "Random",
@@ -3440,7 +3440,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3649,
+            "line": 3665,
             "description": "Sets the seed value for noise(). By default, noise() produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.",
             "cat": "Math",
             "subcat": "Random",
@@ -3457,7 +3457,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3666,
+            "line": 3682,
             "description": "The year() function returns the current year as an integer (2012, 2013 etc).",
             "cat": "Environment",
             "subcat": "Date",
@@ -3471,7 +3471,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3678,
+            "line": 3694,
             "description": "The month() function returns the current month as a value from 1 - 12.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3485,7 +3485,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3690,
+            "line": 3706,
             "description": "The day() function returns the current day as a value from 1 - 31.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3499,7 +3499,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3702,
+            "line": 3718,
             "description": "The hour() function returns the current hour as a value from 0 - 23.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3513,7 +3513,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3714,
+            "line": 3730,
             "description": "The minute() function returns the current minute as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3527,7 +3527,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3726,
+            "line": 3742,
             "description": "The second() function returns the current second as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3541,7 +3541,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3738,
+            "line": 3754,
             "description": "Returns the number of milliseconds (thousandths of a second) since starting an applet. This information is often used for timing animation sequences.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3555,7 +3555,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3750,
+            "line": 3766,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -3581,7 +3581,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3776,
+            "line": 3792,
             "description": "Returns the currently selected object(s)",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -3602,7 +3602,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3793,
+            "line": 3809,
             "description": "Reads the contents of a file into a String.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "cat": "Data",
             "subcat": "Input",
@@ -3623,7 +3623,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3813,
+            "line": 3829,
             "description": "Reads the contents of a file and creates a String array of its individual lines.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "cat": "Data",
             "subcat": "Input",
@@ -3644,7 +3644,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3840,
+            "line": 3856,
             "description": "Prints a message line to the console output in the ExtendScript editor.",
             "cat": "Output",
             "itemtype": "method",
@@ -3660,7 +3660,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3851,
+            "line": 3867,
             "description": "Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.",
             "cat": "Output",
             "itemtype": "method",
@@ -3676,7 +3676,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3862,
+            "line": 3878,
             "description": "Print numerous information about the current environment to the console",
             "cat": "Output",
             "itemtype": "method",
@@ -3685,7 +3685,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3880,
+            "line": 3896,
             "description": "Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.\nIf the given file exists it gets overridden.",
             "cat": "Output",
             "itemtype": "method",
@@ -3706,7 +3706,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3898,
+            "line": 3914,
             "description": "Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.",
             "todo": [
                 "data folder is not created automatically",
@@ -3731,7 +3731,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3913,
+            "line": 3929,
             "description": "Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.",
             "cat": "Output",
             "itemtype": "method",
@@ -3752,7 +3752,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3976,
+            "line": 3992,
             "description": "The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.\nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3773,7 +3773,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4047,
+            "line": 4063,
             "description": "Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3800,7 +3800,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4069,
+            "line": 4085,
             "description": "Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3827,7 +3827,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4091,
+            "line": 4107,
             "description": "Scales the given PageItem to the given width. If width is not given as argument the current width is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3854,7 +3854,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4113,
+            "line": 4129,
             "description": "Scales the given PageItem to the given height. If height is not given as argument the current height is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3881,7 +3881,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4135,
+            "line": 4151,
             "description": "Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3914,7 +3914,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4162,
+            "line": 4178,
             "description": "Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3947,7 +3947,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4406,
+            "line": 4422,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
             "cat": "Environment",
             "itemtype": "method",
@@ -3956,7 +3956,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4426,
+            "line": 4442,
             "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle.\n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!\nThe framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.",
             "cat": "Environment",
             "itemtype": "method",
@@ -3972,7 +3972,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4460,
+            "line": 4476,
             "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
             "cat": "Environment",
             "itemtype": "method",
