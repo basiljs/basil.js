@@ -2235,12 +2235,28 @@
   };
 
   /**
-   * Sets the blendmode property of an object. Available blendmodes are: BlendMode.NORMAL, BlendMode.MULTIPLY, BlendMode.SCREEN, BlendMode.OVERLAY, BlendMode.SOFT_LIGHT, BlendMode.HARD_LIGHT, BlendMode.COLOR_DODGE, BlendMode.COLOR_BURN, BlendMode.DARKEN, BlendMode.LIGHTEN, BlendMode.DIFFERENCE, BlendMode.EXCLUSION, BlendMode.HUE, BlendMode.SATURATION, BlendMode.COLOR, BlendMode.LUMINOSITY
+   * Sets the Effects blendMode property of an object.
    * 
    * @cat Color
    * @method blendMode
    * @param  {Object} obj The object to set blendMode property
-   * @param  {Number} blendMode The blendMode to set e.g. BlendMode.MULTIPLY
+   * @param  {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
+   *                           BlendMode.NORMAL
+   *                           BlendMode.MULTIPLY
+   *                           BlendMode.SCREEN
+   *                           BlendMode.OVERLAY
+   *                           BlendMode.SOFT_LIGHT
+   *                           BlendMode.HARD_LIGHT
+   *                           BlendMode.COLOR_DODGE
+   *                           BlendMode.COLOR_BURN
+   *                           BlendMode.DARKEN
+   *                           BlendMode.LIGHTEN
+   *                           BlendMode.DIFFERENCE
+   *                           BlendMode.EXCLUSION
+   *                           BlendMode.HUE
+   *                           BlendMode.SATURATION
+   *                           BlendMode.COLOR
+   *                           BlendMode.LUMINOSITY
    */
   pub.blendMode = function(obj, blendMode){
     if (obj.hasOwnProperty("transparencySettings")) {
