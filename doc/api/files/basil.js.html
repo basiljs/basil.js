@@ -457,17 +457,14 @@
     that.items = {};
     
     &#x2F;&#x2F; TODO: initial function removal in items?      
-    &#x2F;&#x2F; for (var i = 0; i &lt; arguments.length; i += 2) {
-    &#x2F;&#x2F;   if (typeof(arguments[i + 1]) != &#x27;undefined&#x27;) {
-    &#x2F;&#x2F;     that.items[arguments[i]] = arguments[i + 1];
-    &#x2F;&#x2F;     that.length++;
-    &#x2F;&#x2F;   }
-    &#x2F;&#x2F; }
+    for ( var key in that.items ) {
+      b.println(key);
+    }
     
     &#x2F;&#x2F; Please note: this is removing Object fields, but has to be done to have an empty &quot;bucket&quot;
     function checkKey(key) {
       if(that.items[key] instanceof Function) {
-          that.items[key] = &#x27;undefined&#x27;; 
+          that.items[key] = undefined; 
       };
     }
 
@@ -516,9 +513,9 @@
     that.set = function(key, value) {
 
       if( value instanceof Function ) error(&quot;HashList does not support storing Functions as values.&quot;);
-      &#x2F;&#x2F;checkKey(key);
+      checkKey(key);
       if (typeof value != &#x27;undefined&#x27;) {
-        if (typeof that.items[key] == &#x27;undefined&#x27;) {
+        if (typeof that.items[key] === &#x27;undefined&#x27;) {
           that.length++;
         }
         that.items[key] = value;
@@ -566,15 +563,15 @@
      * 
      * @cat Data
      * @subcat HashList
-     * @method HashList.getKeysSortedByValues
+     * @method HashList.getKeysByValues
      * @return {Array} An array with all the keys 
      *&#x2F;
-    that.getKeysSortedByValues = function() {
+    that.getKeysByValues = function() {
         var obj = that.items;
         var keys = [];
         for(var key in obj) 
           {
-            if( typeof obj[key] != &#x27;number&#x27; ) error(&quot;getKeysSortedByValues() only works with Numbers as values. &quot;);
+            if( typeof obj[key] != &#x27;number&#x27; ) error(&quot;getKeysByValues() only works with Numbers as values. &quot;);
             keys.push(key);
           }
         return keys.sort(function(a,b){return obj[b]-obj[a]});
