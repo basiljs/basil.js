@@ -195,11 +195,11 @@
 
   /**
    * Used with b.canvasMode() to set the canvas to use the current facing pages.
-   * @property FACING_PAGES {String}
+   * @property FACING_PAPERS {String}
    * @cat Document
    * @subcat Page
    */
-  pub.FACING_PAGES = "facing_pages";
+  pub.FACING_PAPERS = "facing_papers";
 
   /**
    * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
@@ -923,7 +923,7 @@
   };
 
   /**
-   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
+   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN, b.BLEED resp. b.FACING_PAPERS, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
    * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
    * @method canvasMode
    * @cat Document
@@ -933,6 +933,9 @@
     if(arguments.length == 0) {
       return currCanvasMode;
     } else if ( typeof m === "string" ) {
+
+      if ( (m === b.FACING_PAPERS || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages ) b.error("Cannot set a facing pages mode to a single page document");
+
       currCanvasMode = m;
       updatePublicPageSizeVars();
     } else {
@@ -4614,8 +4617,8 @@
         if(facingPages){
           widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
         }
-            heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-            b.resetMatrix();
+        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+        b.resetMatrix();
         b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
         
         if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
@@ -4624,7 +4627,7 @@
         }
         break;
 
-      case pub.FACING_PAGES:
+      case pub.FACING_PAPERS:
         widthOffset = 0;
         heightOffset = 0;
         b.resetMatrix();
@@ -4681,7 +4684,7 @@
         return; // early exit    
 
       default:
-        b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED");
+        b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED, b.FACING_PAPERS, b.FACING_MARGINS, b.FACING_BLEEDS");
         break;
     }
 
