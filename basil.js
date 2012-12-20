@@ -1889,11 +1889,10 @@
       } else if (arguments.length === 5) {
         currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
       } else {
-        error("Wrong parameters. Use: "
+        error("Too many parameters. Use: "
           + "R,G,B,name or "
           + "C,M,Y,K,name. "
-          + "Grey,name "
-          + "Name is optional");
+          + "Grey,name ");
       }
     }
   };
@@ -1940,6 +1939,22 @@
   };
 
   /**
+   * Sets the colormode for creating new colors with b.color() to RGB or CMYK.
+   * 
+   * @cat Color
+   * @method colorMode
+   * @param  {Number} colorMode Either b.RGB or b.CMYK
+   */
+  pub.colorMode = function(colorMode) {
+    if (arguments.length === 0) return currColorMode;
+    if (colorMode === pub.RGB || colorMode === pub.CMYK) {
+      currColorMode = colorMode;
+    } else {
+      error("Not supported colormode, use: b.RGB or b.CMYK");
+    }
+  };
+
+  /**
    * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document
    *
    * @cat Color
@@ -1955,61 +1970,98 @@
         c = arguments[2],
         d = arguments[3],
         e = arguments[4];
+    var colorErrorMsg = "Wrong parameters. Use: "
+        + "R,G,B,name in b.colorMode(b.RGB) or "
+        + "C,M,Y,K,name in b.colorMode(b.CMYK) or "
+        + "Grey,name. "
+        + "Name is optional. "
+        + "NB: In indesign colors don't have an alpha value.";
+
     if (arguments.length === 1) {
+      // get color by name
       if (typeof a === 'string') {
         try {
           newCol = currentDoc().swatches.item(a);
           newCol.name;
         } catch (e) {
-          error("Color doesn't exist. "+e);
+          error("Color doesn't exist.");
         }
         return newCol;
       } else if (typeof a === 'number') {
-        props.model = ColorModel.PROCESS;
-        props.space = ColorSpace.CMYK;
-        props.colorValue = [0,0,0,a];
-        props.name = "C="+0+" M="+0+" Y="+0+" K="+a;
+        // GREY
+        if (currColorMode === pub.RGB) {
+          props.model = ColorModel.PROCESS;
+          props.space = ColorSpace.RGB;
+          props.colorValue = [a,a,a];
+          props.name = "R="+a+" G="+a+" B="+a;
+        } else {
+          props.model = ColorModel.PROCESS;
+          props.space = ColorSpace.CMYK;
+          props.colorValue = [0,0,0,a];
+          props.name = "C="+0+" M="+0+" Y="+0+" K="+a;
+        }
       } else {
         error("Color doesn't exist.");
       }
 
     } else if (arguments.length === 2) {
-      props.model = ColorModel.PROCESS;
-      props.space = ColorSpace.CMYK;
-      props.colorValue = [0,0,0,a];
-      props.name = b;
-
-    } else if (arguments.length === 3) {
-      props.model = ColorModel.PROCESS;
-      props.space = ColorSpace.RGB;
-      props.colorValue = [a,b,c];
-      props.name = "R="+a+" G="+b+" B="+c;
-
-    } else if (arguments.length === 4) {
-      if (typeof d === 'string') {
+      // GREY + with custom name
+      if (currColorMode === pub.RGB) {
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
-        props.colorValue = [a,b,c];
-        props.name = d;
+        props.colorValue = [a,a,a];
+        props.name = b;
       } else {
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
-        props.colorValue = [a,b,c,d];
-        props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+        props.colorValue = [0,0,0,a];
+        props.name = b;
       }
 
-    } else if (arguments.length === 5) {
+    } else if (arguments.length === 3) {
+      // R G B
+      if (currColorMode === pub.RGB) {
+        props.model = ColorModel.PROCESS;
+        props.space = ColorSpace.RGB;
+        props.colorValue = [a,b,c];
+        props.name = "R="+a+" G="+b+" B="+c;
+      } else {
+        error(colorErrorMsg);
+      }
+      
+
+    } else if (arguments.length === 4) {
+      // R G B + name
+      if (typeof d === 'string') {
+        if (currColorMode === pub.RGB) {
+          props.model = ColorModel.PROCESS;
+          props.space = ColorSpace.RGB;
+          props.colorValue = [a,b,c];
+          props.name = d; 
+        } else {
+          error(colorErrorMsg);
+        }
+      // C M Y K
+      } else {
+        if (currColorMode === pub.CMYK) {
+          props.model = ColorModel.PROCESS;
+          props.space = ColorSpace.CMYK;
+          props.colorValue = [a,b,c,d];
+          props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+        } else {
+          error(colorErrorMsg); 
+        }
+      }
+
+    // C M Y K + name
+    } else if (arguments.length === 5 && currColorMode === pub.CMYK) {
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [a,b,c,d];
       props.name = e;
 
     } else {
-      error("Wrong parameters. Use: "
-        + "R,G,B,name or "
-        + "C,M,Y,K,name. "
-        + "Grey,name "
-        + "Name is optional");
+      error(colorErrorMsg);
     }
 
     // check whether color was already created and added to swatches,
