@@ -581,7 +581,6 @@
    * @cat Environment
    * @method delay
    * @param  {Number} milliseconds  The delay time in milliseconds
-   * @param  {Category} Test
    */
   pub.delay = function (milliseconds) {
     $.sleep(milliseconds);
@@ -595,7 +594,6 @@
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
    * @param  {Function} cb  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
-   * @param  {Category} Test
    * @return {Stories} You can use it like an array.
    */
   pub.stories = function(doc, cb) {
