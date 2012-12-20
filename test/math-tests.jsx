@@ -1,5 +1,9 @@
-﻿#include "../basil.js";
-#include "../lib/basil.test.js";
+if (typeof b === 'undefined') {
+  #include "../basil.js";
+}
+if (typeof b.test === 'undefined') {
+  #include "../lib/basil.test.js";  
+}
 
 b.test('MathTests', {
   testRandomWithNoArgs: function(b) {

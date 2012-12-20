@@ -3,4 +3,9 @@
 
 #include "typography-tests.jsx";
 #include "transform-tests.jsx";
-// TODO include all other test files after includes in header are conditional like in typography-tests.jsx...
+#include "conversion-tests.jsx";
+#include "data-tests.jsx";
+#include "environment-tests.jsx";
+#include "input-tests.jsx";
+#include "math-tests.jsx";
+#include "string-tests.jsx";
