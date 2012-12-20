@@ -1202,7 +1202,7 @@
   };
 
   /**
-   * Sets the margins of a given page. If one value is given, sets all 4 equally.
+   * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
    *
    * @cat Document
    * @subcat Page
@@ -1212,11 +1212,18 @@
    * @param {Number} [bottom] Bottom margin
    * @param {Number} [left] Left margin
    * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank
+   * @return {Object} Current page margins with these properties: top, right, bottom, left
    */
-  pub.setMargins = function(top, right, bottom, left, pageNumber) {
+  pub.margins = function(top, right, bottom, left, pageNumber) {
 
     if (arguments.length === 0){
-    error("setMargins() requires at least 1 parameter value.");
+      
+      return {'top':b.page(pageNumber).marginPreferences.top,
+              'right':b.page(pageNumber).marginPreferences.right,
+              'bottom':b.page(pageNumber).marginPreferences.bottom,
+              'left':b.page(pageNumber).marginPreferences.left
+              };
+      
     } else if (arguments.length === 1) {
       right = bottom = left = top;
       }
@@ -1235,7 +1242,7 @@
     };
 
   /**
-   * Sets the document bleeds. If one value is given, all 4 are set equally.
+   * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
    *
    * @cat Document
    * @subcat Page
@@ -1245,10 +1252,15 @@
    * @param {Number} [bottom] Bottom bleed
    * @param {Number} [left] Left bleed
    */
-  pub.setBleeds = function(top, right, bottom, left) {
+  pub.bleeds = function(top, right, bottom, left) {
 
     if (arguments.length === 0){
-    error("setBleeds() requires at least 1 parameter value.");
+      return {'top':b.doc().documentPreferences.documentBleedTopOffset,
+              'right':b.doc().documentPreferences.documentBleedOutsideOrRightOffset,
+              'bottom':b.doc().documentPreferences.documentBleedBottomOffset,
+              'left':b.doc().documentPreferences.documentBleedInsideOrLeftOffset
+              };
+              
   } else if (arguments.length === 1) {
     right = bottom = left = top;
     }else{
