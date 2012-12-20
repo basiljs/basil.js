@@ -2239,22 +2239,22 @@
    * @method blendMode
    * @param  {Object} obj The object to set blendMode property
    * @param  {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
-   *                           BlendMode.NORMAL
-   *                           BlendMode.MULTIPLY
-   *                           BlendMode.SCREEN
-   *                           BlendMode.OVERLAY
-   *                           BlendMode.SOFT_LIGHT
-   *                           BlendMode.HARD_LIGHT
-   *                           BlendMode.COLOR_DODGE
-   *                           BlendMode.COLOR_BURN
-   *                           BlendMode.DARKEN
-   *                           BlendMode.LIGHTEN
-   *                           BlendMode.DIFFERENCE
-   *                           BlendMode.EXCLUSION
-   *                           BlendMode.HUE
-   *                           BlendMode.SATURATION
-   *                           BlendMode.COLOR
-   *                           BlendMode.LUMINOSITY
+   *                           BlendMode.NORMAL <br />
+   *                           BlendMode.MULTIPLY <br />
+   *                           BlendMode.SCREEN <br />
+   *                           BlendMode.OVERLAY <br />
+   *                           BlendMode.SOFT_LIGHT <br />
+   *                           BlendMode.HARD_LIGHT <br />
+   *                           BlendMode.COLOR_DODGE <br />
+   *                           BlendMode.COLOR_BURN <br />
+   *                           BlendMode.DARKEN <br />
+   *                           BlendMode.LIGHTEN <br />
+   *                           BlendMode.DIFFERENCE <br />
+   *                           BlendMode.EXCLUSION <br />
+   *                           BlendMode.HUE <br />
+   *                           BlendMode.SATURATION <br />
+   *                           BlendMode.COLOR <br />
+   *                           BlendMode.LUMINOSITY <br />
    */
   pub.blendMode = function(obj, blendMode){
     if (obj.hasOwnProperty("transparencySettings")) {
@@ -2503,10 +2503,10 @@
    *                           Justification.RIGHT_JUSTIFIED <br />
    *                           Justification.TO_BINDING_SIDE <br />
    * @param  {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
-   *                           VerticalJustification.BOTTOM_ALIGN
-   *                           VerticalJustification.CENTER_ALIGN
-   *                           VerticalJustification.JUSTIFY_ALIGN
-   *                           VerticalJustification.TOP_ALIGN
+   *                           VerticalJustification.BOTTOM_ALIGN <br />
+   *                           VerticalJustification.CENTER_ALIGN <br />
+   *                           VerticalJustification.JUSTIFY_ALIGN <br />
+   *                           VerticalJustification.TOP_ALIGN <br />
    */
   pub.textAlign = function(align, yAlign) {
     currAlign = align;
