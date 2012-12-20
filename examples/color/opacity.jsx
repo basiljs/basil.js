@@ -8,7 +8,7 @@ function draw() {
   var black = b.color("Black");
 
   b.fill(red);
-  b.ellipse(b.width/2,b.height/2,333,333)
+  b.ellipse(b.width/2,b.height/2,333,333);
 
   b.fill(black);
   var rect = b.rect(b.width/2,0,b.width/2,b.height);

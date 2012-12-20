@@ -2197,6 +2197,22 @@
   };
 
   /**
+   * Sets the blendmode property of an object. Available blendmodes are: BlendMode.NORMAL, BlendMode.MULTIPLY, BlendMode.SCREEN, BlendMode.OVERLAY, BlendMode.SOFT_LIGHT, BlendMode.HARD_LIGHT, BlendMode.COLOR_DODGE, BlendMode.COLOR_BURN, BlendMode.DARKEN, BlendMode.LIGHTEN, BlendMode.DIFFERENCE, BlendMode.EXCLUSION, BlendMode.HUE, BlendMode.SATURATION, BlendMode.COLOR, BlendMode.LUMINOSITY
+   * 
+   * @cat Color
+   * @method blendMode
+   * @param  {Object} obj The object to set blendMode property
+   * @param  {Number} blendMode The blendMode to set e.g. BlendMode.MULTIPLY
+   */
+  pub.blendMode = function(obj, blendMode){
+    if (obj.hasOwnProperty("transparencySettings")) {
+      obj.transparencySettings.blendingSettings.blendMode = blendMode;
+    } else {
+      warning("The object "+ obj.toString() +" doesn't have a blendMode property");
+    }
+  };
+
+  /**
    * Calculates a color or colors between two color at a specific increment. 
    * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
    * N.B.: Both color must be either CMYK or RGB.
