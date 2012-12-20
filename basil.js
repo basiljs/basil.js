@@ -51,7 +51,7 @@
   pub.VERSION = "0.18";
 
   /**
-   * Points
+   * Used with b.units() to set the coordinate system to points.
    * @property PT {String}
    * @cat Data
    * @subcat Units
@@ -59,7 +59,7 @@
   pub.PT = "pt";
 
   /**
-   * Pixels
+   * Used with b.units() to set the coordinate system to pixels.
    * @property PX {String}
    * @cat Data
    * @subcat Units
@@ -67,7 +67,7 @@
   pub.PX = "px";
 
   /**
-   * Centimeter
+   * Used with b.units() to set the coordinate system to centimeters.
    * @property CM {String}
    * @cat Data
    * @subcat Units
@@ -76,7 +76,7 @@
   pub.CM = "cm";
 
   /**
-   * Millimeter
+   * Used with b.units() to set the coordinate system to millimeters.
    * @property MM {String}
    * @cat Data
    * @subcat Units
@@ -84,7 +84,7 @@
   pub.MM = "mm";
 
   /**
-   * Inch
+   * Used with b.units() to set the coordinate system to inches.
    * @property IN {String}
    * @cat Data
    * @subcat Units
@@ -92,14 +92,14 @@
   pub.IN = "inch";
 
   /**
-   * RGB
+   * Used with b.colorMode() to set the color space.
    * @property RGB {String}
    * @cat Color
    */
   pub.RGB = "rgb";
 
   /**
-   * CMYK
+   * Used with b.colorMode() to set the color space.
    * @property CMYK {String}
    * @cat Color
    */
@@ -170,6 +170,7 @@
   pub.QUARTER_PI = Math.PI/4;
 
   /**
+   * Used with b.canvasMode() to set the canvas to the full current page.
    * @property PAPER {String}
    * @cat Document
    * @subcat Page
@@ -177,6 +178,7 @@
   pub.PAPER = "paper";
 
   /**
+   * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
    * @property MARGIN {String}
    * @cat Document
    * @subcat Page
@@ -184,6 +186,7 @@
   pub.MARGIN = "margin";
 
   /**
+   * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
    * @property BLEED {String}
    * @cat Document
    * @subcat Page
@@ -191,6 +194,7 @@
   pub.BLEED = "bleed";
 
   /**
+   * Used with b.canvasMode() to set the canvas to use the current facing pages.
    * @property FACING_PAGES {String}
    * @cat Document
    * @subcat Page
@@ -198,6 +202,7 @@
   pub.FACING_PAGES = "facing_pages";
 
   /**
+   * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
    * @property FACING_BLEEDS {String}
    * @cat Document
    * @subcat Page
@@ -205,6 +210,7 @@
   pub.FACING_BLEEDS = "facing_bleeds";  
 
   /**
+   * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
    * @property FACING_MARGINS {String}
    * @cat Document
    * @subcat Page
@@ -212,6 +218,7 @@
   pub.FACING_MARGINS = "facing_margins";
 
   /**
+   * Used with b.addPage() to set the position of the new page in the book.
    * @property AT_BEGINNING {String}
    * @cat Document
    * @subcat Page
@@ -219,6 +226,7 @@
   pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
 
   /**
+   * Used with b.addPage() to set the position of the new page in the book.
    * @property AT_END {String}
    * @cat Document
    * @subcat Page
@@ -226,6 +234,7 @@
   pub.AT_END = LocationOptions.AT_END;
 
   /**
+   * Used with b.addPage() to set the position of the new page in the book.
    * @property BEFORE {String}
    * @cat Document
    * @subcat Page
@@ -233,6 +242,7 @@
   pub.BEFORE = LocationOptions.BEFORE;
 
   /**
+   * Used with b.addPage() to set the position of the new page in the book.
    * @property AFTER {String}
    * @cat Document
    * @subcat Page
