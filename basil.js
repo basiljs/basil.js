@@ -4594,6 +4594,7 @@
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
     var facingPages = app.activeDocument.documentPreferences.facingPages;
+    var singlePageMode = false;
 
     var widthOffset = heightOffset = 0;
 
@@ -4603,6 +4604,7 @@
         widthOffset = 0;
         heightOffset = 0;
         b.resetMatrix();
+        singlePageMode = true;
         break;
 
       case pub.MARGIN:
@@ -4610,6 +4612,7 @@
         heightOffset = - currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
         b.resetMatrix();
         b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+        singlePageMode = true;
         break;
 
       case pub.BLEED:
@@ -4625,6 +4628,7 @@
           b.resetMatrix();
           b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
         }
+        singlePageMode = true;
         break;
 
       case pub.FACING_PAPERS:
@@ -4688,11 +4692,13 @@
         break;
     }
 
-    var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+    if(singlePageMode){
+      var w = pageBounds[3] - pageBounds[1] + widthOffset;
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
-    pub.width = w;
-    pub.height = h;
+      pub.width = w;
+      pub.height = h;
+    }
   };
 
   var error = pub.error = function(msg) {
