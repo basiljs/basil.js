@@ -141,29 +141,7 @@
    * @cat Constants
    */
   pub.QUARTER_PI = Math.PI/4;
-  
-  var ERROR_PREFIX = "\n\n### Basil Error -> ",
-    WARNING_PREFIX = "### Basil Warning -> ";
 
-
-  // ----------------------------------------
-  // public vars
-  
-  /**
-   * System variable which stores the width of the current page.
-   * @property width {Number}
-   * @cat Environment
-   */
-  pub.width = null;
-
-  /**
-   * System variable which stores the height of the current page.
-   * @property height {Number}
-   * @cat Environment
-   */
-  pub.height = null;
-
-  
   /**
    * @property PAPER {String}
    * @cat Constants
@@ -222,29 +200,28 @@
    * @property AFTER {String}
    * @cat Constants
    */  
-  pub.AFTER = LocationOptions.AFTER;
+  pub.AFTER = LocationOptions.AFTER;  
+  
+  var ERROR_PREFIX = "\n\n### Basil Error -> ",
+    WARNING_PREFIX = "### Basil Warning -> ";
 
 
-  // init has to be above the method definition below... otherwise trouble
-  var cMode = pub.PAPER;
-
+  // ----------------------------------------
+  // public vars
+  
   /**
-   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
-   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
-   * @method canvasMode
+   * System variable which stores the width of the current page.
+   * @property width {Number}
    * @cat Environment
    */
-  pub.canvasMode = function ( m ) {
-    if(arguments.length == 0) {
-      return cMode;
-    } else if ( typeof m === "string" ) {
-      cMode = m;
-      updatePublicPageSizeVars();
-    } else {
-      error("Problem setting canvasMode. Please consult the reference.");
-    }
+  pub.width = null;
 
-  };
+  /**
+   * System variable which stores the height of the current page.
+   * @property height {Number}
+   * @cat Environment
+   */
+  pub.height = null;
 
   
   // ----------------------------------------
@@ -272,7 +249,21 @@
     currLeading = null,
     currKerning = null,
     currTracking = null,
-    currImageMode = null;
+    currImageMode = null,
+    currCanvasMode = null;
+
+  // all initialisations should go here
+  var init = function() {
+    glob.b = pub;
+
+    welcome();
+
+    // -- init internal state vars --
+    currStrokeWeight = 1;
+    currStrokeTint = 100;
+    currFillTint = 100;
+    currCanvasMode = pub.PAPER
+  };    
 
   
   // ----------------------------------------
@@ -776,6 +767,24 @@
       resetCurrDoc();
     }
   };
+
+  /**
+   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN and b.BLEED.
+   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+   * @method canvasMode
+   * @cat Environment
+   */
+  pub.canvasMode = function ( m ) {
+    if(arguments.length == 0) {
+      return currCanvasMode;
+    } else if ( typeof m === "string" ) {
+      currCanvasMode = m;
+      updatePublicPageSizeVars();
+    } else {
+      error("Problem setting canvasMode. Please consult the reference.");
+    }
+
+  };  
 
   /**
    * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
@@ -4208,17 +4217,6 @@
   // ----------------------------------------
   // all private from here
 
-  var init = function() {
-    glob.b = pub;
-
-    welcome();
-
-    // -- init internal state vars --
-    currStrokeWeight = 1;
-    currStrokeTint = 100;
-    currFillTint = 100;
-  };
-
   var runSetup = function() {
     app.doScript(function() {
       if (typeof glob.setup === 'function') {
@@ -4316,7 +4314,7 @@
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-  var facingPages = app.activeDocument.documentPreferences.facingPages;
+    var facingPages = app.activeDocument.documentPreferences.facingPages;
 
     var widthOffset = heightOffset = 0;
 
@@ -4336,18 +4334,18 @@
         break;
 
       case pub.BLEED:
-    widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-    if(facingPages){
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
-    }
-        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-        b.resetMatrix();
-    b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-    
-    if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
-      b.resetMatrix();
-      b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
-    }
+        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+        if(facingPages){
+          widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        }
+            heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+            b.resetMatrix();
+        b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+        
+        if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
+          b.resetMatrix();
+          b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
+        }
         break;
 
       case pub.FACING_PAGES:
@@ -4371,40 +4369,40 @@
         break; 
 
       case pub.FACING_BLEED:
-             widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-             heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-             b.resetMatrix();
-             b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-             
-             var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-             var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+        b.resetMatrix();
+        b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
 
-             pub.width = w * 2;
-             pub.height = h;
+        var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
+        var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w+widthOffset/2,0);
-      }
+        pub.width = w * 2;
+        pub.height = h;
 
-             break;
+        if(currentPage().side === PageSideOptions.RIGHT_HAND){
+          pub.translate(-w+widthOffset/2,0);
+        }
 
-    case pub.FACING_MARGIN:
-            widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
-            heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-            b.resetMatrix();
-            b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
+        break;
 
-            var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-            var h = pageBounds[2] - pageBounds[0] - heightOffset;    
+      case pub.FACING_MARGIN:
+        widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
+        heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
+        b.resetMatrix();
+        b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
 
-            pub.width = w * 2;
-            pub.height = h;
+        var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
+        var h = pageBounds[2] - pageBounds[0] - heightOffset;    
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w-widthOffset/2,0);
-      }
+        pub.width = w * 2;
+        pub.height = h;
 
-             return; // early exit    
+        if(currentPage().side === PageSideOptions.RIGHT_HAND){
+          pub.translate(-w-widthOffset/2,0);
+        }
+
+        return; // early exit    
 
       default:
         b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED");
