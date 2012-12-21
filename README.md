@@ -3,7 +3,7 @@ basil.js
 
 An attempt to port the spirit of the [Processing](http://processing.org/) visualization language to Adobe Indesign.
 
-For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch)
+For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch). Follow us on twitter for news and updates [@basil_js](https://twitter.com/basil_js)
 
 **Developers**
 - Benedikt Groß http://benedikt-gross.de
