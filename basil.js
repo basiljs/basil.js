@@ -1249,10 +1249,10 @@
 
     if (arguments.length === 0){
       
-      return {'top':b.page(pageNumber).marginPreferences.top,
-              'right':b.page(pageNumber).marginPreferences.right,
-              'bottom':b.page(pageNumber).marginPreferences.bottom,
-              'left':b.page(pageNumber).marginPreferences.left
+      return {'top':pub.page(pageNumber).marginPreferences.top,
+              'right':pub.page(pageNumber).marginPreferences.right,
+              'bottom':pub.page(pageNumber).marginPreferences.bottom,
+              'left':pub.page(pageNumber).marginPreferences.left
               };
       
     } else if (arguments.length === 1) {
@@ -1260,10 +1260,10 @@
       }
 
     if(pageNumber != undefined){
-      b.page(pageNumber).marginPreferences.top = top;
-      b.page(pageNumber).marginPreferences.right = right;
-      b.page(pageNumber).marginPreferences.bottom = bottom;
-      b.page(pageNumber).marginPreferences.left = left;
+      pub.page(pageNumber).marginPreferences.top = top;
+      pub.page(pageNumber).marginPreferences.right = right;
+      pub.page(pageNumber).marginPreferences.bottom = bottom;
+      pub.page(pageNumber).marginPreferences.left = left;
     }else{
       currentPage().marginPreferences.top = top;
       currentPage().marginPreferences.right = right;
@@ -1286,22 +1286,22 @@
   pub.bleeds = function(top, right, bottom, left) {
 
     if (arguments.length === 0){
-      return {'top':b.doc().documentPreferences.documentBleedTopOffset,
-              'right':b.doc().documentPreferences.documentBleedOutsideOrRightOffset,
-              'bottom':b.doc().documentPreferences.documentBleedBottomOffset,
-              'left':b.doc().documentPreferences.documentBleedInsideOrLeftOffset
+      return {'top':currentDoc().documentPreferences.documentBleedTopOffset,
+              'right':currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
+              'bottom':currentDoc().documentPreferences.documentBleedBottomOffset,
+              'left':currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
               };
               
   } else if (arguments.length === 1) {
     right = bottom = left = top;
     }else{
-    b.doc().documentPreferences.documentBleedUniformSize = false;
+    currentDoc().documentPreferences.documentBleedUniformSize = false;
   }
 
-    b.doc().documentPreferences.documentBleedTopOffset = top;
-    b.doc().documentPreferences.documentBleedOutsideOrRightOffset = right;
-    b.doc().documentPreferences.documentBleedBottomOffset = bottom;
-    b.doc().documentPreferences.documentBleedInsideOrLeftOffset = left;
+    currentDoc().documentPreferences.documentBleedTopOffset = top;
+    currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
+    currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
+    currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
   };
 
 
