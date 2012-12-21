@@ -48,7 +48,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "0.18";
+  pub.VERSION = "0.21";
 
   /**
    * Used with b.units() to set the coordinate system to points.
@@ -171,11 +171,11 @@
 
   /**
    * Used with b.canvasMode() to set the canvas to the full current page.
-   * @property PAPER {String}
+   * @property PAGE {String}
    * @cat Document
    * @subcat Page
    */
-  pub.PAPER = "paper";
+  pub.PAGE = "page";
 
   /**
    * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
@@ -195,11 +195,11 @@
 
   /**
    * Used with b.canvasMode() to set the canvas to use the current facing pages.
-   * @property FACING_PAPERS {String}
+   * @property FACING_PAGES {String}
    * @cat Document
    * @subcat Page
    */
-  pub.FACING_PAPERS = "facing_papers";
+  pub.FACING_PAGES = "facing_pages";
 
   /**
    * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
@@ -309,7 +309,7 @@
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
-    currCanvasMode = pub.PAPER;
+    currCanvasMode = pub.PAGE;
     currColorMode = pub.RGB;
   };    
 
@@ -954,7 +954,7 @@
   };
 
   /**
-   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN, b.BLEED resp. b.FACING_PAPERS, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
+   * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
    * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
    * @method canvasMode
    * @cat Document
@@ -965,7 +965,7 @@
       return currCanvasMode;
     } else if ( typeof m === "string" ) {
 
-      if ( (m === b.FACING_PAPERS || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages ) b.error("Cannot set a facing pages mode to a single page document");
+      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages ) b.error("Cannot set a facing pages mode to a single page document");
 
       currCanvasMode = m;
       updatePublicPageSizeVars();
@@ -4772,7 +4772,7 @@
 
     switch(pub.canvasMode()) {
 
-      case pub.PAPER:
+      case pub.PAGE:
         widthOffset = 0;
         heightOffset = 0;
         b.resetMatrix();
@@ -4803,7 +4803,7 @@
         singlePageMode = true;
         break;
 
-      case pub.FACING_PAPERS:
+      case pub.FACING_PAGES:
         widthOffset = 0;
         heightOffset = 0;
         b.resetMatrix();
@@ -4860,7 +4860,7 @@
         return; // early exit    
 
       default:
-        b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED, b.FACING_PAPERS, b.FACING_MARGINS, b.FACING_BLEEDS");
+        b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
         break;
     }
 
