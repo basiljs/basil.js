@@ -136,7 +136,7 @@
    * @property VERSION {String}
    * @cat Environment
    *&#x2F;
-  pub.VERSION = &quot;0.18&quot;;
+  pub.VERSION = &quot;0.21&quot;;
 
   &#x2F;**
    * Used with b.units() to set the coordinate system to points.
@@ -259,11 +259,11 @@
 
   &#x2F;**
    * Used with b.canvasMode() to set the canvas to the full current page.
-   * @property PAPER {String}
+   * @property PAGE {String}
    * @cat Document
    * @subcat Page
    *&#x2F;
-  pub.PAPER = &quot;paper&quot;;
+  pub.PAGE = &quot;page&quot;;
 
   &#x2F;**
    * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
@@ -397,7 +397,7 @@
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
-    currCanvasMode = pub.PAPER;
+    currCanvasMode = pub.PAGE;
     currColorMode = pub.RGB;
   };    
 
@@ -424,6 +424,37 @@
       }
       return res;
     };
+  }
+
+  &#x2F;* todo *&#x2F;
+  &#x2F;&#x2F; https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en-US&#x2F;docs&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array&#x2F;map
+  if (!Array.prototype.map) {
+    Array.prototype.map = function(callback, thisArg) {
+      var T, A, k;
+      if (this == null) {
+        throw new TypeError(&quot; this is null or not defined&quot;);
+      }
+      var O = Object(this);
+      var len = O.length &gt;&gt;&gt; 0;
+      if (typeof callback !== &quot;function&quot;) {
+        throw new TypeError(callback + &quot; is not a function&quot;);
+      }
+      if (thisArg) {
+        T = thisArg;
+      }
+      A = new Array(len);
+      k = 0;
+      while(k &lt; len) {
+        var kValue, mappedValue;
+        if (k in O) {
+          kValue = O[ k ];
+          mappedValue = callback.call(T, kValue, k, O);
+          A[ k ] = mappedValue;
+        }
+        k++;
+      }
+      return A;
+    };      
   }
 
   &#x2F;**
@@ -1011,7 +1042,7 @@
   };
 
   &#x2F;**
-   * Use this to set the dimensions of the canvas. Choose between b.PAPER (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
+   * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
    * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
    * @method canvasMode
    * @cat Document
@@ -1021,6 +1052,9 @@
     if(arguments.length == 0) {
       return currCanvasMode;
     } else if ( typeof m === &quot;string&quot; ) {
+
+      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) &amp;&amp; !b.doc().documentPreferences.facingPages ) b.error(&quot;Cannot set a facing pages mode to a single page document&quot;);
+
       currCanvasMode = m;
       updatePublicPageSizeVars();
     } else {
@@ -1287,7 +1321,7 @@
   };
 
   &#x2F;**
-   * Sets the margins of a given page. If one value is given, sets all 4 equally.
+   * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
    *
    * @cat Document
    * @subcat Page
@@ -1297,20 +1331,27 @@
    * @param {Number} [bottom] Bottom margin
    * @param {Number} [left] Left margin
    * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank
+   * @return {Object} Current page margins with these properties: top, right, bottom, left
    *&#x2F;
-  pub.setMargins = function(top, right, bottom, left, pageNumber) {
+  pub.margins = function(top, right, bottom, left, pageNumber) {
 
     if (arguments.length === 0){
-    error(&quot;setMargins() requires at least 1 parameter value.&quot;);
+      
+      return {&#x27;top&#x27;:pub.page(pageNumber).marginPreferences.top,
+              &#x27;right&#x27;:pub.page(pageNumber).marginPreferences.right,
+              &#x27;bottom&#x27;:pub.page(pageNumber).marginPreferences.bottom,
+              &#x27;left&#x27;:pub.page(pageNumber).marginPreferences.left
+              };
+      
     } else if (arguments.length === 1) {
       right = bottom = left = top;
       }
 
     if(pageNumber != undefined){
-      b.page(pageNumber).marginPreferences.top = top;
-      b.page(pageNumber).marginPreferences.right = right;
-      b.page(pageNumber).marginPreferences.bottom = bottom;
-      b.page(pageNumber).marginPreferences.left = left;
+      pub.page(pageNumber).marginPreferences.top = top;
+      pub.page(pageNumber).marginPreferences.right = right;
+      pub.page(pageNumber).marginPreferences.bottom = bottom;
+      pub.page(pageNumber).marginPreferences.left = left;
     }else{
       currentPage().marginPreferences.top = top;
       currentPage().marginPreferences.right = right;
@@ -1320,7 +1361,7 @@
     };
 
   &#x2F;**
-   * Sets the document bleeds. If one value is given, all 4 are set equally.
+   * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top&#x2F;right&#x2F;bottom&#x2F;left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
    *
    * @cat Document
    * @subcat Page
@@ -1330,20 +1371,25 @@
    * @param {Number} [bottom] Bottom bleed
    * @param {Number} [left] Left bleed
    *&#x2F;
-  pub.setBleeds = function(top, right, bottom, left) {
+  pub.bleeds = function(top, right, bottom, left) {
 
     if (arguments.length === 0){
-    error(&quot;setBleeds() requires at least 1 parameter value.&quot;);
+      return {&#x27;top&#x27;:currentDoc().documentPreferences.documentBleedTopOffset,
+              &#x27;right&#x27;:currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
+              &#x27;bottom&#x27;:currentDoc().documentPreferences.documentBleedBottomOffset,
+              &#x27;left&#x27;:currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
+              };
+              
   } else if (arguments.length === 1) {
     right = bottom = left = top;
     }else{
-    b.doc().documentPreferences.documentBleedUniformSize = false;
+    currentDoc().documentPreferences.documentBleedUniformSize = false;
   }
 
-    b.doc().documentPreferences.documentBleedTopOffset = top;
-    b.doc().documentPreferences.documentBleedOutsideOrRightOffset = right;
-    b.doc().documentPreferences.documentBleedBottomOffset = bottom;
-    b.doc().documentPreferences.documentBleedInsideOrLeftOffset = left;
+    currentDoc().documentPreferences.documentBleedTopOffset = top;
+    currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
+    currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
+    currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
   };
 
 
@@ -1364,7 +1410,7 @@
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
     *&#x2F;
     &#x2F;&#x2F; From: jQuery JavaScript Library v1.7.1 http:&#x2F;&#x2F;jquery.com&#x2F;
-    decode: function( data ) {
+    decode: function(data) {
       if ( typeof data !== &quot;string&quot; || !data ) {
         return null;
       }
@@ -1415,6 +1461,135 @@
         return (arr ? &quot;[&quot; : &quot;{&quot;) + String(json) + (arr ? &quot;]&quot; : &quot;}&quot;);
       }
     }
+  };
+
+  &#x2F;&#x2F; Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock don&#x27;t mind.
+  &#x2F;&#x2F; https:&#x2F;&#x2F;github.com&#x2F;mbostock&#x2F;d3&#x2F;tree&#x2F;master&#x2F;src&#x2F;dsv
+  pub.CSV = new CSV();
+  function CSV() {
+    var reParse = null, 
+        reFormat = null,
+        delimiterStr = null,
+        delimiterCode = null;
+
+    initDelimiter(&#x27;,&#x27;);
+    function initDelimiter(delimiter) {
+      reParse = new RegExp(&quot;\r\n|[&quot; + delimiter + &quot;\r\n]&quot;, &quot;g&quot;), &#x2F;&#x2F; field separator regex
+      reFormat = new RegExp(&quot;[\&quot;&quot; + delimiter + &quot;\n]&quot;),
+      delimiterCode = delimiter.charCodeAt(0);
+      delimiterStr = delimiter;
+    };
+
+    this.delimiter = function(delimiter) {
+      if (arguments.length === 0) return delimiterStr;
+      if (typeof separator === &#x27;string&#x27;) {
+        initDelimiter(delimiter);
+      } else {
+        error(&quot;Separator has to be a character or string&quot;);
+      }
+    };
+
+    this.decode = function(text) {
+      var header;
+      return parseRows(text, function(row, i) {
+        if (i) {
+          var o = {}, j = -1, m = header.length;
+          while (++j &lt; m) o[header[j]] = row[j];
+          return o;
+        } else {
+          header = row;
+          return null;
+        }
+      });
+    };
+
+    this.encode = function(rows) {
+      var csvStrings = [];
+      var header = [];
+      var firstRow = rows[0]; &#x2F;&#x2F; all rows have to have the same properties keys
+      &#x2F;&#x2F; gather infos for the header
+      for (var propname in firstRow) {
+        if (firstRow.hasOwnProperty(propname)) {
+          header.push(propname);
+        };
+      };
+      csvStrings.push( formatRow(header) );
+      for (var i = 0; i &lt; rows.length; i++) {
+        var row = rows[i];
+        var tokens = [];
+        for (var ii = 0; ii &lt; header.length; ii++) {
+          tokens.push(row[header[ii]]);
+        };
+        csvStrings.push( formatRow(tokens) );
+      };
+      return csvStrings.join(&quot;\n&quot;);
+    };
+
+    function formatRow(row) {
+      return row.map(formatValue).join(delimiterStr);
+    }
+
+    function formatValue(text) {
+      return reFormat.test(text) ? &quot;\&quot;&quot; + text.replace(&#x2F;\&quot;&#x2F;g, &quot;\&quot;\&quot;&quot;) + &quot;\&quot;&quot; : text;
+    }
+
+    function parseRows(text, f) {
+      var EOL = {}, &#x2F;&#x2F; sentinel value for end-of-line
+          EOF = {}, &#x2F;&#x2F; sentinel value for end-of-file
+          rows = [], &#x2F;&#x2F; output rows
+          n = 0, &#x2F;&#x2F; the current line number
+          t, &#x2F;&#x2F; the current token
+          eol; &#x2F;&#x2F; is the current token followed by EOL?
+
+      reParse.lastIndex = 0; &#x2F;&#x2F; work-around bug in FF 3.6
+
+      function token() {
+        if (reParse.lastIndex &gt;= text.length) return EOF; &#x2F;&#x2F; special case: end of file
+        if (eol) { eol = false; return EOL; } &#x2F;&#x2F; special case: end of line
+
+        &#x2F;&#x2F; special case: quotes
+        var j = reParse.lastIndex;
+        if (text.charCodeAt(j) === 34) {
+          var i = j;
+          while (i++ &lt; text.length) {
+            if (text.charCodeAt(i) === 34) {
+              if (text.charCodeAt(i + 1) !== 34) break;
+              i++;
+            }
+          }
+          reParse.lastIndex = i + 2;
+          var c = text.charCodeAt(i + 1);
+          if (c === 13) {
+            eol = true;
+            if (text.charCodeAt(i + 2) === 10) reParse.lastIndex++;
+          } else if (c === 10) {
+            eol = true;
+          }
+          return text.substring(j + 1, i).replace(&#x2F;&quot;&quot;&#x2F;g, &quot;\&quot;&quot;);
+        }
+
+        &#x2F;&#x2F; common case
+        var m = reParse.exec(text);
+        if (m) {
+          eol = m[0].charCodeAt(0) !== delimiterCode;
+          return text.substring(j, m.index);
+        }
+        reParse.lastIndex = text.length;
+        return text.substring(j);
+      }
+
+      while ((t = token()) !== EOF) {
+        var a = [];
+        while (t !== EOL &amp;&amp; t !== EOF) {
+          a.push(t);
+          t = token();
+        }
+        if (f &amp;&amp; !(a = f(a, n++))) continue;
+        rows.push(a);
+      }
+
+      return rows;
+    };
   };
 
   &#x2F;&#x2F; -- Conversion --
@@ -4103,7 +4278,7 @@
       h = y2-y1;
 
       if (w &lt; 0 || h &lt;0) {
-        warning(&quot;bounds(textObj), not possible to get correct bounds, possible linebreak within textObj&quot;);
+        warning(&quot;bounds(textObj), not possible to get correct bounds, possible line break within textObj&quot;);
       }
 
       &#x2F;&#x2F; TODO: not sure if this 100% correct, check
@@ -4679,15 +4854,17 @@
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; &#x2F;&#x2F; [y1, x1, y2, x2]
     var facingPages = app.activeDocument.documentPreferences.facingPages;
+    var singlePageMode = false;
 
     var widthOffset = heightOffset = 0;
 
     switch(pub.canvasMode()) {
 
-      case pub.PAPER:
+      case pub.PAGE:
         widthOffset = 0;
         heightOffset = 0;
         b.resetMatrix();
+        singlePageMode = true;
         break;
 
       case pub.MARGIN:
@@ -4695,6 +4872,7 @@
         heightOffset = - currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
         b.resetMatrix();
         b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+        singlePageMode = true;
         break;
 
       case pub.BLEED:
@@ -4702,14 +4880,15 @@
         if(facingPages){
           widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
         }
-            heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-            b.resetMatrix();
+        heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
+        b.resetMatrix();
         b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
         
         if(facingPages &amp;&amp; currentPage().side === PageSideOptions.RIGHT_HAND){
           b.resetMatrix();
           b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
         }
+        singlePageMode = true;
         break;
 
       case pub.FACING_PAGES:
@@ -4769,15 +4948,17 @@
         return; &#x2F;&#x2F; early exit    
 
       default:
-        b.error(&quot;basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAPER, b.MARGIN, b.BLEED&quot;);
+        b.error(&quot;basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS&quot;);
         break;
     }
 
-    var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+    if(singlePageMode){
+      var w = pageBounds[3] - pageBounds[1] + widthOffset;
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
-    pub.width = w;
-    pub.height = h;
+      pub.width = w;
+      pub.height = h;
+    }
   };
 
   var error = pub.error = function(msg) {
