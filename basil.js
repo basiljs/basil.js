@@ -4030,7 +4030,7 @@
       h = y2-y1;
 
       if (w < 0 || h <0) {
-        warning("bounds(textObj), not possible to get correct bounds, possible linebreak within textObj");
+        warning("bounds(textObj), not possible to get correct bounds, possible line break within textObj");
       }
 
       // TODO: not sure if this 100% correct, check
