@@ -338,6 +338,37 @@
     };
   }
 
+  /* todo */
+  // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
+  if (!Array.prototype.map) {
+    Array.prototype.map = function(callback, thisArg) {
+      var T, A, k;
+      if (this == null) {
+        throw new TypeError(" this is null or not defined");
+      }
+      var O = Object(this);
+      var len = O.length >>> 0;
+      if (typeof callback !== "function") {
+        throw new TypeError(callback + " is not a function");
+      }
+      if (thisArg) {
+        T = thisArg;
+      }
+      A = new Array(len);
+      k = 0;
+      while(k < len) {
+        var kValue, mappedValue;
+        if (k in O) {
+          kValue = O[ k ];
+          mappedValue = callback.call(T, kValue, k, O);
+          A[ k ] = mappedValue;
+        }
+        k++;
+      }
+      return A;
+    };      
+  }
+
   /**
   * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
   *
@@ -1291,7 +1322,7 @@
      * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
     */
     // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
-    decode: function( data ) {
+    decode: function(data) {
       if ( typeof data !== "string" || !data ) {
         return null;
       }
@@ -1342,6 +1373,135 @@
         return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
       }
     }
+  };
+
+  // Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock don't mind.
+  // https://github.com/mbostock/d3/tree/master/src/dsv
+  pub.CSV = new CSV();
+  function CSV() {
+    var reParse = null, 
+        reFormat = null,
+        delimiterStr = null,
+        delimiterCode = null;
+
+    initDelimiter(',');
+    function initDelimiter(delimiter) {
+      reParse = new RegExp("\r\n|[" + delimiter + "\r\n]", "g"), // field separator regex
+      reFormat = new RegExp("[\"" + delimiter + "\n]"),
+      delimiterCode = delimiter.charCodeAt(0);
+      delimiterStr = delimiter;
+    };
+
+    this.delimiter = function(delimiter) {
+      if (arguments.length === 0) return delimiterStr;
+      if (typeof separator === 'string') {
+        initDelimiter(delimiter);
+      } else {
+        error("Separator has to be a character or string");
+      }
+    };
+
+    this.decode = function(text) {
+      var header;
+      return parseRows(text, function(row, i) {
+        if (i) {
+          var o = {}, j = -1, m = header.length;
+          while (++j < m) o[header[j]] = row[j];
+          return o;
+        } else {
+          header = row;
+          return null;
+        }
+      });
+    };
+
+    this.encode = function(rows) {
+      var csvStrings = [];
+      var header = [];
+      var firstRow = rows[0]; // all rows have to have the same properties keys
+      // gather infos for the header
+      for (var propname in firstRow) {
+        if (firstRow.hasOwnProperty(propname)) {
+          header.push(propname);
+        };
+      };
+      csvStrings.push( formatRow(header) );
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var tokens = [];
+        for (var ii = 0; ii < header.length; ii++) {
+          tokens.push(row[header[ii]]);
+        };
+        csvStrings.push( formatRow(tokens) );
+      };
+      return csvStrings.join("\n");
+    };
+
+    function formatRow(row) {
+      return row.map(formatValue).join(delimiterStr);
+    }
+
+    function formatValue(text) {
+      return reFormat.test(text) ? "\"" + text.replace(/\"/g, "\"\"") + "\"" : text;
+    }
+
+    function parseRows(text, f) {
+      var EOL = {}, // sentinel value for end-of-line
+          EOF = {}, // sentinel value for end-of-file
+          rows = [], // output rows
+          n = 0, // the current line number
+          t, // the current token
+          eol; // is the current token followed by EOL?
+
+      reParse.lastIndex = 0; // work-around bug in FF 3.6
+
+      function token() {
+        if (reParse.lastIndex >= text.length) return EOF; // special case: end of file
+        if (eol) { eol = false; return EOL; } // special case: end of line
+
+        // special case: quotes
+        var j = reParse.lastIndex;
+        if (text.charCodeAt(j) === 34) {
+          var i = j;
+          while (i++ < text.length) {
+            if (text.charCodeAt(i) === 34) {
+              if (text.charCodeAt(i + 1) !== 34) break;
+              i++;
+            }
+          }
+          reParse.lastIndex = i + 2;
+          var c = text.charCodeAt(i + 1);
+          if (c === 13) {
+            eol = true;
+            if (text.charCodeAt(i + 2) === 10) reParse.lastIndex++;
+          } else if (c === 10) {
+            eol = true;
+          }
+          return text.substring(j + 1, i).replace(/""/g, "\"");
+        }
+
+        // common case
+        var m = reParse.exec(text);
+        if (m) {
+          eol = m[0].charCodeAt(0) !== delimiterCode;
+          return text.substring(j, m.index);
+        }
+        reParse.lastIndex = text.length;
+        return text.substring(j);
+      }
+
+      while ((t = token()) !== EOF) {
+        var a = [];
+        while (t !== EOL && t !== EOF) {
+          a.push(t);
+          t = token();
+        }
+        if (f && !(a = f(a, n++))) continue;
+        rows.push(a);
+      }
+
+      return rows;
+    };
   };
 
   // -- Conversion --

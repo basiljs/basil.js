@@ -1,5 +1,5 @@
 /**
- * show how to parse a raw JSON string to a javascript object.
+ * example shows how to parse a raw JSON string to a javascript object.
  * no idea what JSON is? then have a read here: http://en.wikipedia.org/wiki/JSON
  */
 
@@ -8,6 +8,7 @@
 
 // to load an external json file use 
 // var jsonString = b.loadString("path/to/file.json")
+
 var jsonString = '{\
                   "firstName": "John",\
                   "lastName": "Smith",\
@@ -41,7 +42,7 @@ function setup() {
   b.text(jsonData.address.city, 0,50, b.width, 50);
   b.text(jsonData.phoneNumber[0].number, 0,100, b.width, 50);
 
-  // convert a object to a JSON-string
+  // convert an object to a JSON-string
   b.println( b.JSON.encode(jsonData) );
 }
 
