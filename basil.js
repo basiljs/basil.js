@@ -1392,6 +1392,15 @@
       delimiterStr = delimiter;
     };
 
+    /**
+     * Sets the delimiter of the CSV decode and encode function.
+     * 
+     * @cat Data
+     * @subcat CSV
+     * @method CSV.delimiter
+     * @param  {String} Optional Sets the delimiter for CSV parsing
+     * @return {String} Returns the current delimiter if called without argument
+    */
     this.delimiter = function(delimiter) {
       if (arguments.length === 0) return delimiterStr;
       if (typeof separator === 'string') {
@@ -1401,6 +1410,17 @@
       }
     };
 
+    /**
+     * Function parses a string as CSV-object Array. Usage:
+     * var arr = b.CSV.decode(str);
+     * var str = b.CSV.encode(arr);
+     * 
+     * @cat Data
+     * @subcat CSV
+     * @method CSV.decode
+     * @param  {String} String to be parsed as CSV-object.
+     * @return {Array} Returns CSV-object Array
+    */
     this.decode = function(text) {
       var header;
       return parseRows(text, function(row, i) {
@@ -1415,6 +1435,17 @@
       });
     };
 
+    /**
+     * Function convert an javascript array of objects to a CSV-string. Usage:
+     * var str = b.CSV.encode(arr);
+     * var arr = b.CSV.decode(str);
+     *
+     * @cat Data
+     * @subcat CSV
+     * @method CSV.encode
+     * @param  {Array} Array to be converted to a CSV-string
+     * @return {String} Returns CSV-string
+     */
     this.encode = function(rows) {
       var csvStrings = [];
       var header = [];
