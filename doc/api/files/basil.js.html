@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>basil.js - basil.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0pr2&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0pr2&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -1480,6 +1480,15 @@
       delimiterStr = delimiter;
     };
 
+    &#x2F;**
+     * Sets the delimiter of the CSV decode and encode function.
+     * 
+     * @cat Data
+     * @subcat CSV
+     * @method CSV.delimiter
+     * @param  {String} Optional Sets the delimiter for CSV parsing
+     * @return {String} Returns the current delimiter if called without argument
+    *&#x2F;
     this.delimiter = function(delimiter) {
       if (arguments.length === 0) return delimiterStr;
       if (typeof separator === &#x27;string&#x27;) {
@@ -1489,6 +1498,17 @@
       }
     };
 
+    &#x2F;**
+     * Function parses a string as CSV-object Array. Usage:
+     * var arr = b.CSV.decode(str);
+     * var str = b.CSV.encode(arr);
+     * 
+     * @cat Data
+     * @subcat CSV
+     * @method CSV.decode
+     * @param  {String} String to be parsed as CSV-object.
+     * @return {Array} Returns CSV-object Array
+    *&#x2F;
     this.decode = function(text) {
       var header;
       return parseRows(text, function(row, i) {
@@ -1503,6 +1523,17 @@
       });
     };
 
+    &#x2F;**
+     * Function convert an javascript array of objects to a CSV-string. Usage:
+     * var str = b.CSV.encode(arr);
+     * var arr = b.CSV.decode(str);
+     *
+     * @cat Data
+     * @subcat CSV
+     * @method CSV.encode
+     * @param  {Array} Array to be converted to a CSV-string
+     * @return {String} Returns CSV-string
+     *&#x2F;
     this.encode = function(rows) {
       var csvStrings = [];
       var header = [];
