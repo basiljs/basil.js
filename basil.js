@@ -2398,7 +2398,7 @@
       }
 
     // C M Y K + name
-    } else if (arguments.length === 5 && currColorMode === pub.CMYK) {
+    } else if (arguments.length === 5) {
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [a,b,c,d];
