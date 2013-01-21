@@ -2470,29 +2470,20 @@
       }
       
 
-    } else if (arguments.length === 4) {
-      // R G B + name
-      if (typeof d === 'string') {
-        if (currColorMode === pub.RGB) {
+    } else if (arguments.length === 4 && typeof d === 'string') {
+    // R G B + name
           props.model = ColorModel.PROCESS;
           props.space = ColorSpace.RGB;
           props.colorValue = [a,b,c];
           props.name = d; 
-        } else {
-          error(colorErrorMsg);
-        }
-      // C M Y K
-      } else {
-        if (currColorMode === pub.CMYK) {
+
+    // C M Y K
+    } else if (arguments.length === 4 && typeof d === 'number'){
           props.model = ColorModel.PROCESS;
           props.space = ColorSpace.CMYK;
           props.colorValue = [a,b,c,d];
           props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
-        } else {
-          error(colorErrorMsg); 
-        }
-      }
-
+     
     // C M Y K + name
     } else if (arguments.length === 5) {
       props.model = ColorModel.PROCESS;
