@@ -6,9 +6,9 @@ An attempt to port the spirit of the [Processing](http://processing.org/) visual
 For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch). Follow us on twitter [@basil_js](https://twitter.com/basil_js) for news and updates
 
 **Developers**
+- Ted Davis http://teddavis.org
 - Benedikt Groß http://benedikt-gross.de
 - Ludwig Zeller http://ludwigzeller.de
-- Ted Davis http://teddavis.org
 
 **Contributers**
 - Stefan Landsbek, inital code architecture, http://47nord.de
