@@ -138,6 +138,14 @@
   pub.RADIUS = "radius";
 
   /**
+   * Close, used for endShape() modes.
+   * @property CLOSE {String}
+   * @cat Document
+   * @subcat Primitives
+   */
+  pub.CLOSE = "close";
+
+  /**
    * Two Pi
    * @property TWO_PI {Number}
    * @cat Data
@@ -288,7 +296,7 @@
     currRectMode = null,
     currEllipseMode = null,
     noneSwatchColor = null,
-    start = null,
+    start = null, // TODO (bg), still in use?
     currFont = null,
     currFontSize = null,
     currAlign = null,
@@ -297,7 +305,8 @@
     currKerning = null,
     currTracking = null,
     currImageMode = null,
-    currCanvasMode = null;
+    currCanvasMode = null,
+    currVertexPoints = null;
 
   // all initialisations should go here
   var init = function() {
@@ -2012,6 +2021,85 @@
                      AnchorPoint.TOP_LEFT_ANCHOR,
                      currMatrix.adobeMatrix() );
     return newLine;
+  };
+
+  /**
+   * Using the beginShape() and endShape() functions allow creating more complex forms. 
+   * beginShape() begins recording vertices for a shape and endShape() stops recording. 
+   * After calling the beginShape() function, a series of vertex() commands must follow. 
+   * To stop drawing the shape, call endShape().
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method beginShape
+   */
+  pub.beginShape = function() {
+    currVertexPoints = [];
+  };
+
+  /**
+   * Shapes are constructed by connecting a series of vertices. vertex() is used to 
+   * specify the vertex coordinates lines and polygons. It is used exclusively within
+   * the beginShape() and endShape() functions.
+   *
+   * Please use either vertex(x, y) or 
+   * for drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).
+   * You can also mix the two approaches.
+   * 
+   * @cat Document
+   * @subcat Primitives
+   * @method vertex
+   */
+  pub.vertex = function() {
+    if (arguments.length === 2) {
+      currVertexPoints.push([arguments[0], arguments[1]]);
+    } else if (arguments.length === 6) {
+      // [[xL1, YL1], [x1, y1], [xR1, yR1]]
+      currVertexPoints.push([ [arguments[2], arguments[3]],
+                              [arguments[0], arguments[1]],
+                              [arguments[4], arguments[5]] ]);
+    } else {
+      error("Wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!" );
+    }
+  };
+
+  /**
+   * The endShape() function is the companion to beginShape() and may only be called 
+   * after beginShape(). The value of the kind parameter tells whether the shape to 
+   * create from the provided vertices has to be closed or not (to connect the beginning and the end).
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method endShape
+   * @return {GraphicLine|Polygon} newShape
+   */
+  pub.endShape = function(shapeMode) {
+    if (isArray(currVertexPoints)) {
+      if (currVertexPoints.length > 0) {
+        var newShape = null;
+        if (shapeMode === pub.CLOSE) {
+          newShape = currentPage().polygons.add( currentLayer() );
+        } else {
+          newShape = currentPage().graphicLines.add( currentLayer() );
+        }
+        with (newShape) {
+          strokeWeight = currStrokeWeight;
+          strokeTint = currStrokeTint;
+          fillColor = currFillColor;
+          fillTint = currFillTint;
+          strokeColor = currStrokeColor;
+        }
+        newShape.paths.item(0).entirePath = currVertexPoints;
+        newShape.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.TOP_LEFT_ANCHOR,
+                         currMatrix.adobeMatrix() );
+
+        currVertexPoints = [];
+        return newShape;
+      }
+    } else {
+      error("You have to use endShape() in combination with beginShape()")
+    }
   };
 
   /**
