@@ -2051,15 +2051,19 @@
    * @method vertex
    */
   pub.vertex = function() {
-    if (arguments.length === 2) {
-      currVertexPoints.push([arguments[0], arguments[1]]);
-    } else if (arguments.length === 6) {
-      // [[xL1, YL1], [x1, y1], [xR1, yR1]]
-      currVertexPoints.push([ [arguments[2], arguments[3]],
-                              [arguments[0], arguments[1]],
-                              [arguments[4], arguments[5]] ]);
+    if (isArray(currVertexPoints)) {
+      if (arguments.length === 2) {
+        currVertexPoints.push([arguments[0], arguments[1]]);
+      } else if (arguments.length === 6) {
+        // [[xL1, YL1], [x1, y1], [xR1, yR1]]
+        currVertexPoints.push([ [arguments[2], arguments[3]],
+                                [arguments[0], arguments[1]],
+                                [arguments[4], arguments[5]] ]);
+      } else {
+        error("Wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!" );
+      }
     } else {
-      error("Wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!" );
+      notCalledBeginShapeError();
     }
   };
 
@@ -2098,9 +2102,13 @@
         return newShape;
       }
     } else {
-      error("You have to use endShape() in combination with beginShape()")
+      notCalledBeginShapeError();
     }
   };
+  
+  function notCalledBeginShapeError () {
+    error("You have to call first beginShape(), before calling vertex() and endShape()");
+  }
 
   /**
    * Draws a rectangle to the page.
