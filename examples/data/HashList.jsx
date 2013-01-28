@@ -1,6 +1,8 @@
 #includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
+// example shows how to use a HashList to count the occurrence of words in a text
+
 function draw() {
 
     b.canvasMode(b.MARGIN);
@@ -11,11 +13,11 @@ function draw() {
     var tf1 = b.text( longString, 0,0,b.width,200 );
     var tf2 = b.text( longString, 0,220,b.width,200 );
     var tf3 = b.text( "", 0,440,b.width,200 );
-    var words = b.words(tf2);
+    var words = longString.split(' ');
 
     var str;
     for( var i = 0; i < words.length; i++){
-        str = words[i].contents;
+        str = words[i];
         str = b.trimWord(str);
         if (str == "") continue; // special case: nothing left after trimWord
         // count the number of occurances
