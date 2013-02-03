@@ -1,0 +1,16 @@
++ new
+* changed
+- removed
+
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 0.22 - NN Xxx 2013
+
++ new functions for creating shapes. you can create arbitrary lines, 
+bezier curves, polygones with beginShape(), endShape() and vertex()
+
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 0.21 - 21 Dec 2020
+
+basil.js goes semi public with a private beta release
