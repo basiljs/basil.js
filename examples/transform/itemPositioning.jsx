@@ -10,8 +10,8 @@ function draw() {
   b.noStroke();
   b.fill(100); // black
   
-  b.ellipseMode(b.CORNER); // please note that currently other positioning modes are not supported with itemPosition(), etc...
-  var ell = b.ellipse( b.width / 2, b.height / 2, 30, 30 );
+  b.rectMode(b.CORNER); // Please note that only b.CORNER positioning is fully supported for moving around items
+  var ell = b.rect( b.width / 2, b.height / 2, 30, 30 );
 
   b.delay(1000);
   
