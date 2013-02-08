@@ -1,0 +1,129 @@
+﻿/*
+ * Most of these tests will fail without a working internet connection.
+ */
+ 
+describe('HTTP: url parsing', function () {	
+	var url = require("http/url");	
+
+	it('parses urls into host, pathname, port and auth parts', function () {
+        var parsed_url = url.parse("http://one:two@extendables.org:80/a/path/");
+        expect(parsed_url.auth).toEqual("one:two");
+        expect(parsed_url.href).toEqual("http://one:two@extendables.org:80/a/path/");
+        expect(parsed_url.host).toEqual("one:two@extendables.org:80");
+        expect(parsed_url.hostname).toEqual("extendables.org");
+        expect(parsed_url.port).toEqual(80);
+        expect(parsed_url.pathname).toEqual("/a/path/");
+	});
+});
+
+describe('HTTP: request and response objects', function () {	
+	var http = require("http");	
+
+	it('exports a HTTPRequest constructor', function () {
+	  expect(http.HTTPRequest).toBeDefined();
+	}); 
+
+	it('exports a bunch of shortcut functions', function () {
+	   ['get', 'head', 'post', 'put', 'del'].forEach(function (method) {
+	       expect(http[method]).toBeDefined();
+	   })
+	}); 
+
+	it('gives users control over port, method and timeout', function () {
+		var req = new http.HTTPRequest("HEAD", "http://www.w3.org/");
+		req.method("GET");
+		req.timeout(10);
+		req.port(20000);
+		expect(req.method()).toEqual("GET");
+		expect(req.timeout()).toEqual(10);
+		expect(req.port()).toEqual(20000);
+	}); 
+
+	it('has an interface to add and view http headers', function () {
+		var req = new http.HTTPRequest("HEAD", "http://www.w3.org/");
+		expect(req.header("User-Agent")).toEqual("Adobe ExtendScript");
+		req.header("User-Agent", "Something completely different.");
+		expect(req.header("User-Agent")).toEqual("Something completely different.");		
+	}); 
+
+	it('signals redirects (301, 302, 303, 307) in the response object', function () {
+		// nytimes.com redirects to www.nytimes.com using a 301 redirect
+		var req = new http.HTTPRequest("GET", "http://nytimes.com");
+		req.follow_redirects(false);
+		var res = req.do();
+		expect(res.is_redirect).toEqual(true);
+		expect(res.redirection_type).toEqual('repeat');
+	});
+});
+
+describe('HTTP: requests', function () {
+	var http = require("http");	
+	
+	beforeEach(function () {
+		// let's not spam w3.org
+		$.sleep(500);
+	});
+	
+	it('can check whether the script has internet access', function () {
+		expect(http.has_internet_access()).toEqual(true);
+	});
+
+	it('has a high-level shortcut for GET requests', function () {
+		expect(http.get("http://www.w3.org/").status).toEqual(200);
+	}); 
+
+	it('has a high-level shortcut for HEAD requests', function () {
+		expect(http.head("http://www.w3.org/").status).toEqual(200);
+	}); 
+
+	it('has a high-level shortcut for POST requests', function () {
+		expect(http.post("http://www.w3.org/").status).toEqual(200);
+	}); 
+
+	it('has a high-level shortcut for PUT requests', function () {
+		expect(http.put("http://www.w3.org/").status).toEqual(307);
+	});
+
+	it('has a high-level shortcut for DEL requests', function () {
+		expect(http.head("http://www.w3.org/").status).toEqual(200);
+	}); 
+
+	it('can follow redirects', function () {
+		// nytimes.com redirects to www.nytimes.com using a 301 redirect
+		var req = new http.HTTPRequest("GET", "http://nytimes.com");
+		var res = req.do();
+		expect(res.status).toEqual(200);		
+		expect(res.redirects).toEqual(["http://nytimes.com"]);
+		expect(res.for_request.url().href).toEqual("http://www.nytimes.com/");
+	});
+
+	it('can follow redirects manually, using the .follow() method', function () {
+		var req = new http.HTTPRequest("GET", "http://nytimes.com");
+		req.follow_redirects(false);
+		var res = req.do();
+		res = res.follow();
+		expect(res.status).toEqual(200);
+	});
+
+	it('by default, only follows redirects for GET and HEAD requests', function () {
+		var req = new http.HTTPRequest("GET", "http://www.example.com/");
+		expect(req.follow_redirects()).toEqual(true);
+		req = new http.HTTPRequest("POST", "http://www.example.com/");
+		expect(req.follow_redirects()).toEqual(false);		
+	});
+
+	it('can be configured to never redirect', function () {
+		// nytimes.com redirects to www.nytimes.com using a 301 redirect
+		var req = new http.HTTPRequest("GET", "http://nytimes.com");
+		req.follow_redirects(false);
+		var res = req.do();
+		expect(res.status).toEqual(301);		
+	});
+
+	it('is thoroughly stress-tested', function () {
+		// So far, the http library has been able to handle everything
+		// I've thrown at it, with the sole exception of example.<tld>
+		// urls. No clue why, as connecting via telnet works just fine.
+		expect(http.get("http://www.example.com/").status).toEqual(200);
+	});
+});

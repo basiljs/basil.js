@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+	<head>
+		<title>Extendables: a stalwart little framework for Adobe ExtendScript</title>
+        <link href="http://assets2.github.com/stylesheets/bundle_common.css" rel="stylesheet" type="text/css" />
+        <style>      
+        body {
+            margin: 40px;
+        }
+        
+        p:last-child {
+            margin-bottom: 60px;
+        }
+        
+        div#main {
+            background: transparent;
+            width: 600px;
+            margin: 0 auto 0 auto;
+        }
+        
+        p, ul {
+            font-family: georgia, serif;
+            font-size: 14pt;
+            line-height: 1.45;
+        }
+        
+        ul#menu a {
+            color: firebrick;
+        }
+        
+        ul#menu a:hover {
+            color: black;
+            text-decoration: none;
+        }
+        
+        a {
+            color: #1469ab;
+        }
+        
+        li {
+            margin-bottom: 20px;
+        }
+        
+        img.badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: 0;
+        }
+        
+        ul#menu {
+            font-family: arial, sans-serif;
+            padding: 20px 0 0 0;
+        }
+        
+        ul#menu li {
+            display: inline;
+            border: 1px solid #aaa;
+            background: #eee;
+            padding: 4px 8px;
+        }
+        
+        strong {
+            border-bottom: 1px solid #ccc;
+        }
+        
+        em {
+            background: #ffc;
+            font-style: normal;
+        }
+        
+        pre {
+            border: solid #aaa;
+            border-width: 1px 0;
+            background: #eeeeee;
+            padding: 20px 25px;
+            margin: 0 -50px;
+        }
+        
+        code {
+            font-size: 0.8em;
+            color: #333;
+        }
+        
+        .highlight span.err {
+            background-color: transparent;
+        }
+        </style>
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-19440923-1']);
+          _gaq.push(['_trackPageview']);
+        
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+	</head>
+	<body>
+        <div id="main">
+        <a href="http://github.com/stdbrouw/extendables"><img class="badge" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+            <img src="extendables.png" />
+            <ul id="menu">
+                <li><a href="http://extendables.org/docs/">documentation</a></li>
+                <li><a href="http://github.com/stdbrouw/Extendables/zipball/master">download</a></li>
+            </ul>
+            <p>Extendables is a developers' framework for Adobe ExtendScript. Writing heavy-duty automations for InDesign, or anything more than just a throwaway script? This is for you.</p>
+            <ul>
+                <li><strong>Javascript goodies</strong>: we've added in as much <em>features from Javascript 1.6+</em> as we could, like the <code>.forEach()</code> and <code>.filter()</code> methods on arrays.</li>
+                <li><strong>Helpful shortcuts</strong> make your code less verbose. We've monkeypatched a bunch of <em>additional methods on DOM objects</em> like <code>Document</code> and <code>XMLElement</code>.</li>
+                <li><strong>(Some) batteries included</strong>, like an HTTP library and a UI mini-framework.</li>
+                <li><strong>Keep your sanity</strong> with support for <em>logging and unit testing</em> (using the excellent <a href="http://pivotal.github.com/jasmine/">Jasmine</a> framework). And we've got <a href="http://wiki.commonjs.org/wiki/Modules/1.1.1">CommonJS-inspired</a> <em>namespaced modules</em>. Because namespaces are one honking great idea.</li>
+                <li><strong>Free as in freedom.</strong> Extendables comes with a very permissive MIT license. Feel free to use this framework in commercial closed-source projects — it's totally okay.</li>
+            </ul>
+            <p id="codesample"><a href="http://github.com/stdbrouw/Extendables/blob/master/examples/basic.jsx">&rarr; Come on now, show me a code sample!</a></p>
+            <p>Check out the <a href="/docs/">documentation</a>. Just include <code>extendables.jsx</code> at the top of your script to get started. <a href="/docs/get-started.html#porting-existing-scripts-to-extendables">Porting an existing library to an Extendables library</a> is easy too.</p>
+            <p><em>A few caveats.</em> Extendables is still pretty young. Any Creative Suite scripter will find a lot to like, but the framework was created with InDesign scripting in mind. There's a ton of potential cool stuff that's not in there right now.</p>
+            <p>But maybe, just maybe, even in its current incarnation, you'll like what you see.</p>
+        </div>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script type="text/javascript">
+        var loaded = false;
+        function loading (el) {
+            return function () {
+                if (!loaded) $(el).append(' .');
+            };
+        }
+        
+        $(document).ready(function () {
+            $("#codesample").one('click', function () {
+                $(this).find("a").removeAttr("href");
+                $.get("example.html", function (data) {
+                    var code = $(data).find("div.highlight");
+                    // GitHub doesn't recognize ExtendScript include directives, so we need to tweak its display slightly.
+                    code.find(".err").text("#");
+                    loaded = true;
+                    $("#codesample").html('Here\'s a <a href="http://github.com/stdbrouw/Extendables/tree/master/examples/">code sample</a>: ');
+                    code.insertAfter($("#codesample"));
+                });
+                setTimeout(loading(this), 0);
+                setTimeout(loading(this), 300);
+                setTimeout(loading(this), 600);
+                setTimeout(loading(this), 900);                
+                return false;
+            });
+        });
+        </script>
+	</body>
+</html>

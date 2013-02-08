@@ -1,0 +1,33 @@
+﻿describe('IO: octals', function () {
+    var ByteString = require("io/octals").ByteString;
+    var utf = "üàërhaupt";
+	var bstring = new ByteString(utf);
+    
+	it('has a ByteString implementation that can count bytes, not characters', function () {
+        expect(utf.length).toEqual(9);
+        expect(bstring.length).toEqual(12);
+	});
+
+	it('works with the funkiest of utf8 characters', function () {
+        expect(ByteString.count_bytes("ü")).toEqual(2);
+        expect(ByteString.count_bytes("₯")).toEqual(3);
+	});
+
+	it('can take an array of bytes as input, which speeds up performance', function () {
+		
+		var new_str = new ByteString(bstring.as_bytearray());
+        expect(bstring.as_bytearray()).toEqual(new_str.as_bytearray());
+	});
+
+	it('has the usual string methods on ByteString: slice', function () {
+        expect(bstring.slice(2, 6).toString()).toEqual("àë");
+	});
+
+	it('has the usual string methods on ByteString: substr', function () {
+        expect(bstring.substr(2, 4).toString()).toEqual("àë");
+	});
+
+	it('has the usual string methods on ByteString: indexOf', function () {
+        expect(bstring.indexOf("ë")).toEqual(5);
+	});
+});

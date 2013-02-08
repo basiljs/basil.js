@@ -4,10 +4,11 @@
 
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 0.22 - 03 Feb 2013
+basil.js 0.22 - 28 Feb 2013
 
++ added Stijn Debrouwere's Extendable library to packaged libraries, loadString() and loadStrings() now accept URLs
 + new functions for creating shapes. you can create arbitrary lines, 
-bezier curves, polygones with beginShape(), endShape() and vertex()
+bezier curves, polygons with beginShape(), endShape() and vertex()
 
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-

@@ -1,0 +1,5 @@
+﻿describe('Templating', function () {
+	it('has unit tests', function () {
+		expect(false).toBeTruthy();
+	});
+});
