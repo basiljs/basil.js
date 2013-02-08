@@ -296,7 +296,7 @@
     currRectMode = null,
     currEllipseMode = null,
     noneSwatchColor = null,
-    start = null, // TODO (bg), still in use?
+    start = null,
     currFont = null,
     currFontSize = null,
     currAlign = null,
@@ -315,6 +315,7 @@
     welcome();
 
     // -- init internal state vars --
+    start = Date.now();
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
