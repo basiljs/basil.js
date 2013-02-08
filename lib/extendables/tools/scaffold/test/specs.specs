@@ -1,0 +1,19 @@
+/**
+ * @desc Feel free to name this file any way you like, as long as the .specs extension
+ * remains intact. You may add as many specs files to the test folder as you wish.
+ * They will all be picked up by the Extendables test runner.
+ *
+ * A specs file is a regular Javascript file, so use any Javascript code you wish.
+ * Learn more about how to write tests at http://pivotal.github.com/jasmine/ and
+ * also peruse http://stdbrouw.github.com/Extendables/docs/packages/testing/doc/readme.html
+ * 
+ * Don't worry about importing the ``describe``, ``it``, ``expect`` et cetera: the 
+ * test runner will make these available for any specs, so you don't have to 
+ * import any of them yourself.
+ */
+
+describe('mymodule', function () {
+	it('needs proper unit tests', function () {
+        expect(false).toBeTruthy();
+	});
+});

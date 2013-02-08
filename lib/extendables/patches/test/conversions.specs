@@ -1,0 +1,28 @@
+﻿describe('Patches: object serialization', function () {
+    it('can serialize key-value pairs', function () {
+        var obj = {'key1': 'value1', 'key2': 'value2'}
+        var str = obj.serialize('key-value', {'separator': ': ', 'eol': '\n'});
+        expect(str).toEqual("key1: value1\nkey2: value2\n");
+    });
+
+    it('can deserialize key-value pairs', function () {
+        var kv = "key1: value1\nkey2: value2\n";
+        var obj = kv.deserialize('key-value', {'separator': ': ', 'eol': '\n'});
+        expect(obj.key1).toEqual('value1');
+        expect(obj.key2).toEqual('value2');        
+    });
+    
+    it('can base64-encode utf8 data', function () {
+        expect('tested').toEqual(false);
+    });
+    
+    it('can base64-encode binary data', function () {
+        expect('tested').toEqual(false);        
+    });
+});
+
+describe('Patches: object conversions', function () {
+	it('can do a number of object conversions', function () {
+		expect("§This 1 works!!!".to('alphanumeric')).toEqual("This 1 works");
+	});
+});

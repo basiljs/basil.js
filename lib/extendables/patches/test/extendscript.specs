@@ -1,0 +1,153 @@
+﻿describe('Monkeypatches on Object', function () {
+	it('gives quick access to objects\' keys and values', function () {
+		var nation = {'name': 'Belgium', 'continent': 'Europe'}
+		expect(nation.values()).toEqual(['Belgium', 'Europe']);
+		expect(nation.keys()).toEqual(['name', 'continent']);		
+	});
+
+	it('can merge an object with another', function () {
+		var nation = {'name': 'Belgium'}.merge({'continent': 'Europe'});
+		expect(nation.has('continent')).toBeTruthy();		
+	});
+
+	it('can test whether an object has a value for a property', function () {
+		var nation = {'name': 'Belgium', 'continent': ''};
+		expect(nation.has('name')).toBeTruthy();	
+		expect(nation.has('continent')).toBeFalsy();	
+	});
+});
+
+describe('Monkeypatches on Array', function () {	
+	it('has a number of already vetted methods, \
+	courtesy of underscore.js and the Mozilla Developer Network', function () {
+		/*
+			these include: indexOf, lastIndexOf, every, filter, forEach, 
+			map, some, reduce, reduceRight, select, reject and flatten
+		*/
+		expect(true).toBeTruthy();
+	});
+
+	it('has min and max methods that work on objects', function () {
+		var array = [
+			{'first': 'Abraham', 'last': 'Lincoln'},
+			{'first': 'Joe', 'last': 'Pesci'},
+			{'first': 'Zed', 'last': 'Alastair'}
+			];
+		function get_first (obj) {
+			return obj.first;
+		}
+		function get_last (obj) {
+			return obj.last;
+		}
+		expect(array.min(get_first).first).toEqual('Abraham');
+		expect(array.min('first').first).toEqual('Abraham');
+		expect(array.max(get_first).first).toEqual('Zed');
+		expect(array.max('first').first).toEqual('Zed');
+		expect(array.min(get_last).first).toEqual('Zed');
+		expect(array.min('last').first).toEqual('Zed');
+		expect(array.max(get_last).first).toEqual('Joe');
+		expect(array.max('last').first).toEqual('Joe');
+	});
+
+	it('has a pluck method', function () {
+		var people = [{'name': 'Alfred', age: 33}, {'name': 'Zed', age: 45}];
+		expect(people.pluck('age')).toEqual([33,45]);
+		expect(people.pluck('age').sum()).toEqual(78);
+		expect(people.sum('age')).toEqual(78);
+		expect(people.sum(function (person) { return person.age })).toEqual(78);
+	});
+
+	it('has a sum method that works on objects', function () {
+		var numbers = [3, 2, 5];
+		var persons = [
+			{'name': 'Abraham', 'children': 5},
+			{'name': 'Joe', 'children': 3},
+			{'name': 'Zed', 'children': 0}
+			];
+			
+		function get_children (obj) {
+			return obj.children;
+		}
+			
+		expect(numbers.sum()).toEqual(10);
+		expect(persons.sum(get_children)).toEqual(8);
+		expect(persons.sum('children')).toEqual(8);
+	});
+});
+
+describe('Monkeypatches on String', function () {
+	it('does unnamed string formatting', function () {
+		expect("hello {} {}!".format("mister", "Jones")).toEqual("hello mister Jones!");
+	});
+
+	it('does named string formatting', function () {
+		var person = {'salutation': 'mister', 'name': 'John Smith'};
+		var unnamed = "Hello there, {}, I've heard your name is {}!".format(person.salutation, person.name);
+		var named = "Hello there, {salutation}, I've heard your name is {name}!".format(person);
+		expect(named).toEqual(unnamed);
+	});
+});
+
+describe('Monkeypatches on Date', function () {
+	it('has a simple timer', function () {
+		Date.timer.set();
+		$.sleep(100);
+		var time_passed = Date.timer.get();
+		var time_passed_s = Date.timer.get('s');
+		expect(time_passed < 200).toBeTruthy();
+		expect(time_passed_s < 1).toBeTruthy();
+	});
+});
+
+describe('Monkeypatches on Number', function () {
+	it('has a range class method that works like the Python range() implementation', function () {
+        // these examples come straight out of Python docs
+        expect(Number.range(10)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        expect(Number.range(1, 11)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        expect(Number.range(0, 30, 5)).toEqual([0, 5, 10, 15, 20, 25]);
+        expect(Number.range(0, 10, 3)).toEqual([0, 3, 6, 9]);
+        expect(Number.range(0, -10, -1)).toEqual([0, -1, -2, -3, -4, -5, -6, -7, -8, -9]);
+        expect(Number.range(0)).toEqual([]);
+        expect(Number.range(1, 0)).toEqual([]);
+    });
+});
+
+describe('Monkeypatches on File and Folder', function () {
+	it('can join paths', function () {
+        var identical = [];
+        identical[0] = new File("file.ext").at("patches/test/fixtures").at(Folder.extendables);
+        identical[1] = new File($.fileName).parent;
+        identical[1].changePath("fixtures/file.ext");
+        identical[2] = new File("patches/test/fixtures/file.ext").at(Folder.extendables);
+        identical[3] = new File("fixtures/file.ext").at(new Folder("patches/test")).at(Folder.extendables);
+        identical[4] = new File("/fixtures/file.ext").at(new Folder("/patches/test")).at(Folder.extendables);
+        
+        var uris = identical.map(function (file) {
+            return file.absoluteURI;
+        });
+        var is_identical = (uris[0] == uris[1] && uris[1] == uris[2] && uris[2] == uris[3] && uris[3] == uris[4]);
+		expect(is_identical).toBeTruthy();
+		
+		var all_exist = identical.map(function (file) {
+            return file.exists;
+		}).every(function (exists) {
+            return exists == true;
+		});
+		expect(all_exist).toBeTruthy();
+    });
+
+	it('can return the directory name', function () {
+		var dirname = new File("/one/two/three.jsx").component('path');
+		expect(dirname).toEqual("/one/two");
+	});
+
+	it('can return the base name (file name)', function () {
+		var basename = new File("/one/two/three.jsx").component('basename');
+		expect(basename.toString()).toEqual("three");
+	});
+
+	it('can return the file extension', function () {
+		var ext = new File("/one/two/three.jsx").component('extension');
+		expect(ext).toEqual("jsx");
+	});
+});

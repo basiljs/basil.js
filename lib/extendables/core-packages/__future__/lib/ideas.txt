@@ -1,0 +1,3 @@
+- set implementation: http://gist.github.com/427161
+- an "errors" library that implements more verbose user-facing error messages and refers them to a webpage for additional information.
+- a config manager on top of the persistence module

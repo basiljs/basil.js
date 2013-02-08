@@ -1,0 +1,1 @@
+﻿exports.this_is = 'Package B submodule'

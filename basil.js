@@ -4111,14 +4111,35 @@
    * @return {String}  String file content.
    */
   pub.loadString = function(file) {
-    var inputFile = initDataFile(file, true),
+
+    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
+    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    if( typeof(file) === "string" && file.match(re)) { // load URL
+    
+      return getURLImpl(file);
+
+    } else {
+      var inputFile = initDataFile(file, true),
       data = null;
 
-    inputFile.open('r');
-    data = inputFile.read();
-    inputFile.close();
-    return data;
+      inputFile.open('r');
+      data = inputFile.read();
+      inputFile.close();
+      return data;
+    }
+
   };
+
+  var getURLImpl = function(url) {
+      #include "basiljs/bundle/lib/extendables/extendables.jsx";
+      var http = require("http");
+      if (!http.has_internet_access()) throw new Error("No internet connection");
+      var req = new http.HTTPRequest("GET", url);
+      req.follow_redirects(true);
+      req.header("User-Agent", "basiljs-" + b.VERSION);
+      var res = req.do();
+      return res.body;
+  }
 
   /**
    * Reads the contents of a file and creates a String array of its individual lines.
@@ -4131,16 +4152,28 @@
    * @return {String[]}  Array of the individual lines in the given file.
    */
   pub.loadStrings = function(file) {
-    var inputFile = initDataFile(file, true),
+
+    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
+    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    if( typeof(file) === "string" && file.match(re)) { // load URL
+    
+      var result = getURLImpl(file);
+      return b.split(result, "\n");
+
+    } else {
+
+      var inputFile = initDataFile(file, true),
       result = [];
 
-    inputFile.open('r');
-    while (!inputFile.eof) {
-      result.push(inputFile.readln());
-    }
-    inputFile.close();
+      inputFile.open('r');
+      while (!inputFile.eof) {
+        result.push(inputFile.readln());
+      }
+      inputFile.close();
 
-    return result;
+      return result;
+    }
+
   };
 
 

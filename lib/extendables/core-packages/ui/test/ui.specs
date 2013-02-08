@@ -1,0 +1,81 @@
+﻿var exports = {};
+#include "../lib/__core__.jsx"
+var ui = exports;
+
+describe('UI: structure', function () {
+	var dialog = new ui.Dialog("A test dialog");	
+	
+	it('has a DSL to define user interfaces', function () {
+		dialog.text('message', 'Hello!').button('control', 'Close this dialog.');
+
+		expect(dialog.message).toBeDefined();
+		expect(dialog.control).toBeDefined();
+	});
+
+	it('makes sure adding new layout elements does not accidentally overwrite method names', function () {
+		try {
+			dialog.button('button', 'Close this dialog.');
+		} catch (error) {
+			expect(error.description.contains("reserved")).toEqual(true);
+		}
+	});
+
+	it('can return the last added element', function () {
+		var last = dialog.input('field').el()
+		expect(last.type).toEqual("edittext");
+	});
+});
+
+describe('UI: mixins', function () {
+	var mixins = {
+		'hello': {
+			'helpTip': 'hello there!'
+		},
+		'big': {
+			'size': [200, 200]
+		},
+		'warm-welcome': ['big', 'hello']
+	}
+	var dialog = new ui.Dialog("A test dialog").with(mixins);
+
+	it('can create layout groups', function () {
+		dialog.row('a_row');
+		// test whether the current context is now the group
+		expect(dialog.a_row.window.constructor.name).toEqual('Group');
+		// test whether mixins get passed along
+		expect(dialog.a_row.mixins.hello).toBeDefined();
+	});
+
+	it('can apply layout properties to controls through mixins', function () {
+		dialog.row('grouping').text('welcome', 'Hello!').using('hello').button('btn', 'Close this dialog.');
+		expect(dialog.grouping.welcome.helpTip).toEqual('hello there!');
+	});
+
+	it('can have mixins that are collections of other mixins', function () {
+		dialog.button('btn2', 'Or explore further.').using('warm-welcome');
+		expect(dialog.btn2.helpTip).toEqual('hello there!');
+		expect(dialog.btn2.size.toString()).toEqual("200,200");
+	});
+});
+
+describe('UI: events', function () {
+	var dialog = new Window("dialog", "A test dialog");
+	var control = dialog.add("button", undefined, "close this");
+	var ran_callback = false;
+	
+	it('has a DSL-ish syntax for adding event listeners to controls', function () {
+		control.merge(new ControlMixins());
+		dialog.addEventListener("show", function () {
+			// fake a click
+			control.dispatchEvent(new UIEvent('click'));
+		});
+		control.on('click').do(function () {
+			this.window.close();
+			// if this function executes, we know the UI event DSL works.
+			ran_callback = true;
+		});
+
+		dialog.show();
+		expect(ran_callback).toEqual(true);
+	});
+});
