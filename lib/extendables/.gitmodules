@@ -1,0 +1,6 @@
+[submodule "doc/_themes/jsdoc-for-sphinx"]
+	path = doc/_themes/jsdoc-for-sphinx
+	url = git@github.com:stdbrouw/jsdoc-for-sphinx.git
+[submodule "doc/_themes/nature-fixedwidth"]
+	path = doc/_themes/nature-fixedwidth
+	url = git@github.com:stdbrouw/nature-fixedwidth.git

@@ -1,0 +1,36 @@
+describe('logging', function () {
+    var logging = require("logging");
+
+	it('exports a Log constructor', function () {
+        expect(logging.Log).toBeDefined();
+	});    
+    
+	it('logs to the log directory', function () {  
+        var log = new logging.Log("test.logging.log");
+        if (log.file.exists) log.file.remove();
+        expect(log.file.exists).toEqual(false);
+        log.critical("Just a drill.");
+        expect(log.file.exists).toEqual(true);
+	});
+
+	it('can truncate a log file', function () {  
+        var log = new logging.Log("test.logging.log");
+        log.truncate(true);
+        expect(log.file.length).toEqual(0);
+	});
+
+	it('only logs messages under a set log level', function () {  
+        var log = new logging.Log("test.logging.log", 3);
+        log.truncate(true);
+        log.debug("Shouldn't.");
+        log.info("Shouldn't.");
+        log.warning("Should.");
+        log.error("Should.");
+        log.critical("Should.");
+        log.file.open("r");
+        var logs = log.file.read();
+        log.file.close();
+        expect(logs.contains("Should.")).toBeTruthy();
+        expect(logs.contains("Shouldn't.")).toBeFalsy();
+	});
+});

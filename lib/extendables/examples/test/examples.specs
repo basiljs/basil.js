@@ -1,0 +1,22 @@
+﻿describe('Example code', function () {
+	var examples = new Folder("examples").at(Folder.extendables);
+	
+	it('has a working basic code sample', function () {
+		$.evalFile(new File("basic.jsx").at(examples));
+	});
+	it('has a working code sample showcasing array functionality', function () {
+		$.evalFile(new File("arrays.jsx").at(examples));
+	});
+	it('has a working code sample showcasing methods on File and Folder', function () {
+		$.evalFile(new File("files-and-folders.jsx").at(examples));
+	});
+	it('has a working code sample showing the getter/setter design pattern', function () {
+		$.evalFile(new File("getter-setters.jsx").at(examples));
+	});
+	it('has a working code sample that constructs a user interface', function () {
+		$.evalFile(new File("ui.jsx").at(examples));
+	});
+	it('has a working code sample that does XML traversal', function () {
+		$.evalFile(new File("xml-traversal.jsx").at(examples));
+	});
+});

@@ -1,0 +1,10 @@
+.DS_Store
+_experiments_
+doc/_build
+doc/jsdoc
+patches/doc/jsdoc
+core-packages/*/doc/jsdoc
+*.pyc
+*.old
+*.orig
+*(Autosaved)*

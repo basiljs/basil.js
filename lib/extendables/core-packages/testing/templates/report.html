@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+	<head>
+		<title>Extendables test report</title>
+		<style>
+            html {
+                background: #eee;
+            }
+		
+            body {
+                font-family: arial, sans-serif;
+                margin: 40px auto;
+                width: 800px;
+                border: solid #ccc;
+                border-width: 0 1px;
+                padding: 0 20px;
+            }
+            
+            h1 {
+                margin-bottom: 0;
+            }
+            
+            h3 {
+                margin-top: 0;
+            }
+            
+            ul.menu {
+                padding: 10px 0 0 0;
+            }
+            
+            ul.menu li {
+                display: inline-block;
+                padding-left: 0;
+            }
+            
+            ul.menu li a {
+                background: #222;
+                color: #eee;
+                padding: 10px;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+            
+            ul.menu li a:hover {
+                color: #ff6;
+            }
+            
+            p.date {
+                color: #444;
+                font-size: 1.2em;
+                margin-top: 0;
+            }
+            
+            form#filter {
+                display: inline-block;
+                position: absolute;
+                right: 20px;
+            }
+            
+            .overview {
+                position: relative;
+                padding: 10px;
+                border: 1px solid #ccc;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;    
+                font-size: 1.2em;   
+                margin-bottom: 20px;             
+            }
+            
+            .environment {
+            }
+            
+            .environment p {
+                border-left: 1px solid #ccc;
+                padding-left: 20px;
+                margin-left: 525px;
+                width: 225px;
+                font-size: 0.75em;
+                line-height: 1.5;
+                color: #333;
+            }
+            
+            a {
+                color: #1d53c2;  
+                text-decoration: none;  
+            }
+            
+            a:hover {
+                color: #3e79f1;
+            }
+            
+            div.suite {
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;            
+                padding: 20px 20px 10px 20px;
+                background: white;
+                margin-bottom: 20px;
+            }
+            
+            thead {
+                display: none;
+            }
+            
+            tr {
+                display: block;
+                margin-bottom: 5px;
+                border-spacing: 0;
+            }
+            
+            td.result span {
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                padding: 4px 6px;
+                display: inline-block;
+                width: 70px;
+                text-align: center;
+                background: #6c6;
+                color: white;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            
+            td {
+                vertical-align: top;
+            }
+            
+            td.name {
+                padding: 4px 0 0 20px;
+            }
+            
+            td.failed span {
+                background: #f55;
+            }
+            
+            p.problem {
+                margin: 5px 0 0 0;
+                font-size: 0.9em;
+                color: #777;
+                width: 650px;
+                overflow-x: auto;
+            }
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script type="text/javascript">
+            $(document).ready(function () {
+                $("form#filter input").click(function () {
+                    var type = $(this).attr('value');
+                    $("tr td." + type).parent().toggle();
+                });            
+            });
+
+            // we want to be able to upload these test results to 
+            // a central database, if the user agrees
+		</script>
+	</head>
+	<body>
+    <ul class="menu">
+        <li><a href="tests.patches.html">patch tests</a></li>
+        <li><a href="tests.framework.html">framework tests</a></li>
+        <li><a href="tests.packages.html">package tests</a></li>
+    </ul>
+	<h1>Extendables test report</h1>
+	<p class="date"><strong>{date}</strong> at <strong>{time}</strong></p>
+	<div class="overview">
+	   <a href="http://pivotal.github.com/jasmine/">Jasmine</a> ran <strong>{total}</strong> tests in <strong>{duration}</strong> seconds
+	   <form id="filter">
+	       <input type="checkbox" id="show-passes" value="passed" checked="checked" />
+	       <label for="show-passes">{passes} passes</label>
+	       <input type="checkbox" id="show-failures" value="failed" checked="checked" />
+	       <label for="show-failures">{fails} failures</label>
+	   </form>
+    </div>
+    {suites => partial.suite.html}
+    <div class="overview environment"><p>{environment => partial.environment.html}</p></div>
+	</body>
+</html>

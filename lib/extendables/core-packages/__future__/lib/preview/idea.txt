@@ -1,0 +1,9 @@
+It'd be cool to have some functionality that makes it easy to preview a layout change, without actually executing it -- that way, all kinds of plugins that help with layouting could show the results of what they'd do before actually doing it.
+
+* a highlighter: when e.g. selecting a layer or a PageItem in a dialog, switching the screen mode (LayoutWindow.screenMode) to 'normal' (i.e. with guides and item box contours visible) and blinking that item or each item on that layer.
+* a previewer: clones all the layers on a page (e.g. baselayer -> preview.baselayer), hides the original ones, and executes changes on those preview layers, which can be destroyed at will. Works like a wrapper on the page object, so should be transparent to whichever code should execute. Its only two (own) methods should be:
+	- a show() method which makes the preview the active page.
+	- a destroy() method that destroys the preview layers and
+	unhides the original ones.
+
+Note that, in some cases, a simple app.undo() would work better, and that the previewer class does not prevent people from doing all sorts of things that wouldn't get rolled back on destroy(), like whenever they modify something without going through the preview object.

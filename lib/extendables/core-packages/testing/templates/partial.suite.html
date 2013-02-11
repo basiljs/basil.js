@@ -1,0 +1,14 @@
+<div class="suite">
+    <h3>Suite: {name} ({total} tests, {failed} failures)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>status</th>
+                <th>test</th>
+            </tr>
+        </thead>
+        <tbody>
+            {specs => partial.test.html}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,9 @@
+Extendables is an MIT-licensed developers' framework for Adobe ExtendScript. If you're writing heavy-duty automations for a Creative Suite app like InDesign, or anything more than just a throwaway script, this is for you.
+
+Extendables comes with three big blocks of functionality.
+
+1. Additional methods on built-in objects like String and Array that give you the Javascript 1.8 features you're used to (think `forEach`), conveniences for functional programming (think `map`, `reduce`, `filter`), easy serialization to JSON or base64 and more.
+2. Additional methods on InDesign DOM objects that make coding in InDesign less verbose.
+3. Packages for logging, unit testing, http, user interface development, and a couple of other goodies.
+
+Read the documentation at http://stdbrouw.github.com/Extendables/docs/ to learn more and get started.

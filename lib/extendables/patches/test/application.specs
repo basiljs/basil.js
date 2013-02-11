@@ -1,0 +1,7 @@
+﻿describe('Patches: application', function () {
+	it('can determine which host app is running', function () {
+		expect(app.is('extendscript')).toBeTruthy();
+		expect(app.is('extendscript', 15)).toBeFalsy();
+		expect(app.is('i dunno')).toBeFalsy();
+	});
+});
