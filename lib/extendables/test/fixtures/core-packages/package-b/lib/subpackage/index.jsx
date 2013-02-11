@@ -1,1 +1,0 @@
-﻿exports.this_is = 'Package B sub-submodule';
