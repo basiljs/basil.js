@@ -250,14 +250,33 @@
   pub.BEFORE = LocationOptions.BEFORE;
 
   /**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property AFTER {String}
-   * @cat Document
-   * @subcat Page
-   */  
-  pub.AFTER = LocationOptions.AFTER;  
-  
-  var ERROR_PREFIX = "\n\n### Basil Error -> ",
+     * Used with b.addPage() to set the position of the new page in the book.
+     * @property AFTER {String}
+     * @cat Document
+     * @subcat Page
+     */
+  pub.AFTER = LocationOptions.AFTER;
+
+
+  /**
+     * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
+     * @property MODESILENT {String} : Disables ScreenRedraw during processes
+     * @property MODEHIDDEN {String} : Processes Document in background mode
+     * @property MODEVISIBLE {String} : Processes Document with SCreen redraw , Version 0.22 old default
+     * @property SILENTMODE {String}
+     */
+  pub.MODESILENT = "ModeSilent";
+  pub.MODEHIDDEN = "ModeHidden";
+  pub.MODEVISIBLE = "ModeVisible";
+    /**
+     * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
+     * @property DEFAULTMODE {String} : Set the default Mode when calling go without option
+     */
+
+  pub.DEFAULTMODE =  pub.MODESILENT
+
+
+    var ERROR_PREFIX = "\n\n### Basil Error -> ",
     WARNING_PREFIX = "### Basil Warning -> ";
 
 
@@ -296,7 +315,7 @@
     currRectMode = null,
     currEllipseMode = null,
     noneSwatchColor = null,
-    start = null, // TODO (bg), still in use?
+    start = null,
     currFont = null,
     currFontSize = null,
     currAlign = null,
@@ -315,6 +334,7 @@
     welcome();
 
     // -- init internal state vars --
+    start = Date.now();
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
@@ -1015,7 +1035,8 @@
       error("Bad type for b.page().");
     }
     updatePublicPageSizeVars();
-    app.activeWindow.activePage = currPage; // focus in GUI
+      if (currDoc.windows.length)
+        app.activeWindow.activePage = currPage; // focus in GUI  if not in MODEHIDDEN
     return currentPage();
   };
 
@@ -1088,7 +1109,7 @@
       error("Invalid call of b.removePage().");
     }
 
-  }
+  };
 
   /**
    * Returns the current page number of either the current page or the given Page object.
@@ -1102,27 +1123,27 @@
    */
   pub.pageNumber = function (pageObj) {
 
-    if(typeof pageObj === 'number') error( "b.pageNumber cannot be called with a Number argument." );
+      if (typeof pageObj === 'number') error("b.pageNumber cannot be called with a Number argument.");
 
-    if(pageObj instanceof Page) {
-      return parseInt(pageObj.name); // current number of given page
-    } else {
-      return parseInt(pub.page().name); // number of current page
-    }
-    
-  }
+      if (pageObj instanceof Page) {
+          return parseInt(pageObj.name); // current number of given page
+      } else {
+          return parseInt(pub.page().name); // number of current page
+      }
+
+  };
 
   // TODO: does not work?
   pub.nextPage = function () {
-    var p = pub.doc().pages.nextItem(currentPage());
-    return pub.page(p);
-  }
+      var p = pub.doc().pages.nextItem(currentPage());
+      return pub.page(p);
+  };
 
   // TODO: does not work?
   pub.previousPage = function () {
-    var p = pub.doc().pages.previousItem(currentPage());
-    return pub.page(p);
-  }
+      var p = pub.doc().pages.previousItem(currentPage());
+      return pub.page(p);
+  };
 
   /**
    * The number of all pages in the current document.
@@ -1673,7 +1694,7 @@
   //    s = s.replace(/[ ]{2,}/gi," "); 
       s = s.replace(/\n*/,"");     
       return s;
-  }  
+  };
 
   /**
    * Combines an array of Strings into one String, each separated by 
@@ -2734,18 +2755,18 @@
     return result;
   };
 
-  var isValid = function(item) {
-    if(typeof item != 'undefined'){
-      if(item.hasOwnProperty("isValid")) {
-        if (!item.isValid) {
-          return false;
-        } else {
-          return true;
-        }
+  var isValid = function (item) {
+      if (typeof item != 'undefined') {
+          if (item.hasOwnProperty("isValid")) {
+              if (!item.isValid) {
+                  return false;
+              } else {
+                  return true;
+              }
+          }
       }
-    } 
-    return false;
-  }
+      return false;
+  };
 
   /**
    * Returns the current font and sets it if argument fontName is given.
@@ -4110,14 +4131,35 @@
    * @return {String}  String file content.
    */
   pub.loadString = function(file) {
-    var inputFile = initDataFile(file, true),
+
+    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
+    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    if( typeof(file) === "string" && file.match(re)) { // load URL
+    
+      return getURLImpl(file);
+
+    } else {
+      var inputFile = initDataFile(file, true),
       data = null;
 
-    inputFile.open('r');
-    data = inputFile.read();
-    inputFile.close();
-    return data;
+      inputFile.open('r');
+      data = inputFile.read();
+      inputFile.close();
+      return data;
+    }
+
   };
+
+  var getURLImpl = function(url) {
+      #include "basiljs/bundle/lib/extendables/extendables.jsx";
+      var http = require("http");
+      if (!http.has_internet_access()) throw new Error("No internet connection");
+      var req = new http.HTTPRequest("GET", url);
+      req.follow_redirects(true);
+      req.header("User-Agent", "basiljs-" + b.VERSION);
+      var res = req.do();
+      return res.body;
+  }
 
   /**
    * Reads the contents of a file and creates a String array of its individual lines.
@@ -4130,16 +4172,28 @@
    * @return {String[]}  Array of the individual lines in the given file.
    */
   pub.loadStrings = function(file) {
-    var inputFile = initDataFile(file, true),
+
+    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
+    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    if( typeof(file) === "string" && file.match(re)) { // load URL
+    
+      var result = getURLImpl(file);
+      return b.split(result, "\n");
+
+    } else {
+
+      var inputFile = initDataFile(file, true),
       result = [];
 
-    inputFile.open('r');
-    while (!inputFile.eof) {
-      result.push(inputFile.readln());
-    }
-    inputFile.close();
+      inputFile.open('r');
+      while (!inputFile.eof) {
+        result.push(inputFile.readln());
+      }
+      inputFile.close();
 
-    return result;
+      return result;
+    }
+
   };
 
 
@@ -4746,25 +4800,37 @@
 
   // ----------------------------------------
   // execution
-  
+
   /**
    * Run the sketch! Has to be called in every sketch a the very end of the code.
    *
    * @cat Environment
    * @method go
    */
-    pub.go = function() {
-    currentDoc();
-    try{
-      runSetup();
-      runDrawOnce();
-      b.println("Finished.");
-      exit();
-    } catch (e) { // exception not caught individually
-//      b.println(dump(e));
-      alert(e); // make verbose
+  pub.go = function (mode) {
+      var now = new Date().getTime();
+      if (!mode)
+          mode = b.DEFAULTMODE;
+      app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
+      app.preflightOptions.preflightOff = true;
+      try {
+          currentDoc(mode);
+          runSetup();
+          runDrawOnce();
+          b.println("Executed in " + (new Date().getTime()-now) + " ms.");
+
+      } catch (e) { // exception not caught individually
+          //b.println(dump(e));
+          alert(e); // make verbose
+      }
+
+      if(currDoc && !currDoc.windows.length)
+        currDoc.windows.add();//open the hidden doc
+      closeHiddenDocs();
+      app.scriptPreferences.enableRedraw = true;
+      app.preflightOptions.preflightOff = false;
       exit(); // quit program execution
-    }
+
   };
 
   /**
@@ -4826,7 +4892,7 @@
       if (typeof glob.setup === 'function') {
         glob.setup();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
   };
 
   var runDrawOnce = function() {
@@ -4834,7 +4900,7 @@
       if (typeof glob.draw === 'function') {
         glob.draw();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
   };
 
   var runDrawLoop = function() {
@@ -4851,23 +4917,52 @@
         + pub.VERSION
         + " ...");
   };
-  
-  var currentDoc = function() {
-    if (!currDoc) {
-      var doc = null;
-      try {
-        doc = app.activeDocument;
-        //if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
-      } catch(e) {
-        doc = app.documents.add();
-        //doc.documentPreferences.facingPages = true; // turn facing pages off on new documents
-      }
-      setCurrDoc(doc);
-    }
-    return currDoc;
-  };
 
-  var setCurrDoc = function(doc) {
+    var currentDoc = function (mode) {
+        if (!currDoc) {
+            var doc = null;
+            if (app.documents.length) {
+                doc = app.activeDocument;
+                if (mode == b.MODEHIDDEN) {
+                    if (doc.modified)
+                        throw ("To run in MODEHIDDEN save your active doc before processing.");
+                    var docPath = doc.fullName;
+                    doc.close(); //Close the dog and reopen it without adding to the display list
+                    doc = app.open(File(docPath), false);
+                }
+            }
+            else {
+                doc = app.documents.add(mode != b.MODEHIDDEN);
+
+            }
+
+
+            /*
+             try {
+             doc = app.activeDocument;
+             //if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
+             } catch (e) {
+             doc = app.documents.add();
+             //doc.documentPreferences.facingPages = true; // turn facing pages off on new documents
+             }
+             */
+            setCurrDoc(doc);
+        }
+        return currDoc;
+    };
+
+    var closeHiddenDocs = function () {
+        //in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+        for (var i = app.documents.length - 1; i >= 0; i -= 1) {
+            var d = app.documents[i];
+            if (!d.windows.length) {
+                d.close(SaveOptions.NO);
+            }
+        }
+    };
+
+
+    var setCurrDoc = function(doc) {
     resetCurrDoc();
     currDoc = doc;
     // -- setup document --
@@ -4903,7 +4998,11 @@
   var currentLayer = function() {
     if (!currLayer) {
       currentDoc();
-      currLayer = app.activeDocument.activeLayer;
+      if (currDoc.windows.length)
+        currLayer = app.activeDocument.activeLayer;
+       else
+        currLayer = currDoc.layers[0];
+
     }
     return currLayer;
   };
@@ -4911,14 +5010,17 @@
   var currentPage = function() {
     if (!currPage) {
       currentDoc();
+        if (currDoc.windows.length)
       currPage = app.activeWindow.activePage;
+        else
+        currPage = currDoc.pages[0];
     }
     return currPage;
   };
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-    var facingPages = app.activeDocument.documentPreferences.facingPages;
+    var facingPages = currDoc.documentPreferences.facingPages;
     var singlePageMode = false;
 
     var widthOffset = heightOffset = 0;
