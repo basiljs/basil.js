@@ -513,7 +513,7 @@
     }
 
     /**
-     * Checks for the existance of a given key.
+     * Checks for the existence of a given key.
      * 
      * @cat Data
      * @subcat HashList
