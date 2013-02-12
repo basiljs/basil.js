@@ -262,27 +262,25 @@
      */
   pub.AFTER = LocationOptions.AFTER;
 
-
   /**
-     * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
-     * @property MODESILENT {String} : Disables ScreenRedraw during processes
-     * @property MODEHIDDEN {String} : Processes Document in background mode
-     * @property MODEVISIBLE {String} : Processes Document with SCreen redraw , Version 0.22 old default
-     * @property SILENTMODE {String}
-     */
+   * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
+   * @property MODESILENT {String} : Disables ScreenRedraw during processes
+   * @property MODEHIDDEN {String} : Processes Document in background mode
+   * @property MODEVISIBLE {String} : Processes Document with SCreen redraw , Version 0.22 old default
+   * @property SILENTMODE {String}
+   */
   pub.MODESILENT = "ModeSilent";
   pub.MODEHIDDEN = "ModeHidden";
   pub.MODEVISIBLE = "ModeVisible";
-    /**
-     * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
-     * @property DEFAULTMODE {String} : Set the default Mode when calling go without option
-     */
-
+  /**
+   * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
+   * @property DEFAULTMODE {String} : Set the default Mode when calling go without option
+   */
   pub.DEFAULTMODE =  pub.MODESILENT
 
 
-    var ERROR_PREFIX = "\n\n### Basil Error -> ",
-    WARNING_PREFIX = "### Basil Warning -> ";
+  var ERROR_PREFIX = "\n\n### Basil Error -> ",
+      WARNING_PREFIX = "### Basil Warning -> ";
 
 
   // ----------------------------------------
@@ -320,7 +318,7 @@
     currRectMode = null,
     currEllipseMode = null,
     noneSwatchColor = null,
-    start = null,
+    startTime = null,
     currFont = null,
     currFontSize = null,
     currAlign = null,
@@ -339,7 +337,7 @@
     welcome();
 
     // -- init internal state vars --
-    start = Date.now();
+    startTime = Date.now();
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
@@ -4079,7 +4077,7 @@
    * @return {Number}
    */
   pub.millis = function() {
-    return Date.now() - start;
+    return Date.now() - startTime;
   };
 
   /**
@@ -4813,29 +4811,33 @@
    * @method go
    */
   pub.go = function (mode) {
-      var now = new Date().getTime();
-      if (!mode)
-          mode = b.DEFAULTMODE;
-      app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
-      app.preflightOptions.preflightOff = true;
-      try {
-          currentDoc(mode);
-          runSetup();
-          runDrawOnce();
-          b.println("Executed in " + (new Date().getTime()-now) + " ms.");
-
-      } catch (e) { // exception not caught individually
-          //b.println(dump(e));
-          alert(e); // make verbose
+    if (!mode) {
+      mode = b.DEFAULTMODE;
+    }
+    app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
+    app.preflightOptions.preflightOff = true;
+    try {
+      currentDoc(mode);
+      runSetup();
+      runDrawOnce();
+      var executionDuration = (new Date().getTime()-startTime);
+      if (executionDuration < 1000) {
+        println("[Finished in " + executionDuration + "ms]");
+      } else {
+        println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
       }
 
-      if(currDoc && !currDoc.windows.length)
-        currDoc.windows.add();//open the hidden doc
-      closeHiddenDocs();
-      app.scriptPreferences.enableRedraw = true;
-      app.preflightOptions.preflightOff = false;
-      exit(); // quit program execution
+    } catch (e) { // exception not caught individually
+        alert(e); // make verbose
+    }
 
+    if(currDoc && !currDoc.windows.length) {
+      currDoc.windows.add(); //open the hidden doc
+    }
+    closeHiddenDocs();
+    app.scriptPreferences.enableRedraw = true;
+    app.preflightOptions.preflightOff = false;
+    exit(); // quit program execution
   };
 
   /**
@@ -4857,7 +4859,6 @@
     else sleep = Math.round(1000/framerate);
 
     if ($.engineName !== 'loop') {
-      error('Add #targetengine "loop"; at the very top of your script.');
       error('Add #targetengine "loop"; at the very top of your script.');
     }
 
@@ -4994,7 +4995,7 @@
     currRectMode = pub.CORNER;
     currEllipseMode = pub.CENTER;
     currYAlign = VerticalJustification.TOP_ALIGN;
-    start = Date.now();
+    startTime = Date.now();
     currFont = null;
     currImageMode = pub.CORNER;
     pub.resetMatrix();
