@@ -9,3 +9,4 @@
 #include "input-tests.jsx";
 #include "math-tests.jsx";
 #include "string-tests.jsx";
+#include "color-tests.jsx";

@@ -5,7 +5,7 @@ if (typeof b.test === 'undefined') {
   #include "../lib/basil.test.js";  
 }
 
-b.test('EnvironmentTests', {
+b.test('ConversionTests', {
   
   setUpTest: function(b) {
   },
