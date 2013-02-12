@@ -35,8 +35,6 @@
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
 */
 
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/lib/extendables/extendables.jsx";
 #target "InDesign";
 
 (function(glob, app, undef) {
@@ -447,7 +445,7 @@
     
     // TODO: initial function removal in items?      
     for ( var key in that.items ) {
-      delete that.items.key;
+      b.println(key);
     }
     
     // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
@@ -557,13 +555,11 @@
      */
     that.getKeysByValues = function() {
         var obj = that.items;
-        var sortedKeys = [];
-        var keys = obj.keys();
-
-        for( var i = 0; i < keys.length; i++ ) 
+        var keys = [];
+        for(var key in obj) 
           {
-            if( typeof obj[keys[i]] != 'number' ) error("getKeysByValues() only works with Numbers as values. ");
-            sortedKeys.push(key);
+            if( typeof obj[key] != 'number' ) error("getKeysByValues() only works with Numbers as values. ");
+            keys.push(key);
           }
         return keys.sort(function(a,b){return obj[b]-obj[a]});
     }
@@ -589,12 +585,6 @@
      * @return {Array} An array with all the keys 
      */
     that.getKeys = function () {
-
-        // if extendables is loaded
-        if( typeof that.items.keys !== "undefined" ) {
-          return that.items.keys();
-        }
-
         var keys = [];
 
         for(var key in that.items)
@@ -616,11 +606,6 @@
      * @return {Array} An array with all the keys 
      */
     that.getValues = function () {
-
-      // if extendables is loaded
-      if( typeof that.items.values !== "undefined" ) {
-        return that.items.values();
-      }
 
       var obj = that.items;
       var values = [];
@@ -4171,6 +4156,7 @@
   };
 
   var getURLImpl = function(url) {
+      #include "basiljs/bundle/lib/extendables/extendables.jsx";
       var http = require("http");
       if (!http.has_internet_access()) throw new Error("No internet connection");
       var req = new http.HTTPRequest("GET", url);

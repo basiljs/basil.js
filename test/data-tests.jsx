@@ -61,7 +61,7 @@ b.test('DataTests', {
     
     hash = new HashList(); // start over
 
-    assert(hash.length === 0);  
+    assert(hash.length === 0);
     
     var arr = hash.getSortedKeys();    
     assert(arr.length === 0);
