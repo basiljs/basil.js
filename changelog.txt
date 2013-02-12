@@ -2,15 +2,40 @@
 * changed
 - removed
 
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 0.23 - XX XXX 2013
 
+* loadStrings(), loadString() can now load files from an URL.
+
++ new computation modes MODESILENT, MODEHIDDEN, MODEVISIBLE. 
+  HIDDEN is very handy for working with large files, as the document is
+  processed completely in background, performance is a lot better.
+  
+* Changes for b.go().
+  You can switch between the computation modes via b.go( b.MODESILENT ),
+  b.go( b.MODEHIDDEN ) and b.go( b.MODEVISIBLE ). If b.go() is called 
+  without a paramter, then the default mode MODESILENT is used.
+
+Special thanks to be:screen GmbH for the new computation modes and 
+performance optimization!
+  
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 0.22 - 03 Feb 2013
 
 + new functions for creating shapes. you can create arbitrary lines, 
-bezier curves, polygones with beginShape(), endShape() and vertex()
+  bezier curves, polygones with beginShape(), endShape() and vertex()
 
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 0.21 - 21 Dec 2020
+basil.js 0.21 - 21 Dec 2012
 
 basil.js goes semi public with a private beta release
+
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js pre 0.21 - May to Dec 2012
+
+basil.js is developed over the Summer by Ted Davis, Benedikt Groß, 
+Stefan Landsbek and Ludwig Zeller. 
+
+Special thanks to Stefan Landsbek for the inital code architecture!
