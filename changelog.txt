@@ -3,9 +3,7 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 0.23 - XX XXX 2013
-
-* loadStrings(), loadString() can now load files from an URL.
+basil.js 0.23 - 28 Feb 2013
 
 + new computation modes MODESILENT, MODEHIDDEN, MODEVISIBLE. 
   HIDDEN is very handy for working with large files, as the document is

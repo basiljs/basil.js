@@ -4138,12 +4138,12 @@
   pub.loadString = function(file) {
 
     //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
-    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
-    if( typeof(file) === "string" && file.match(re)) { // load URL
+    // var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    // if( typeof(file) === "string" && file.match(re)) { // load URL
     
-      return getURLImpl(file);
+    //   return getURLImpl(file);
 
-    } else {
+    // } else {
       var inputFile = initDataFile(file, true),
       data = null;
 
@@ -4151,20 +4151,20 @@
       data = inputFile.read();
       inputFile.close();
       return data;
-    }
+    // }
 
   };
 
-  var getURLImpl = function(url) {
-      #include "basiljs/bundle/lib/extendables/extendables.jsx";
-      var http = require("http");
-      if (!http.has_internet_access()) throw new Error("No internet connection");
-      var req = new http.HTTPRequest("GET", url);
-      req.follow_redirects(true);
-      req.header("User-Agent", "basiljs-" + b.VERSION);
-      var res = req.do();
-      return res.body;
-  }
+  // var getURLImpl = function(url) {
+  //     #include "basiljs/bundle/lib/extendables/extendables.jsx";
+  //     var http = require("http");
+  //     if (!http.has_internet_access()) throw new Error("No internet connection");
+  //     var req = new http.HTTPRequest("GET", url);
+  //     req.follow_redirects(true);
+  //     req.header("User-Agent", "basiljs-" + b.VERSION);
+  //     var res = req.do();
+  //     return res.body;
+  // }
 
   /**
    * Reads the contents of a file and creates a String array of its individual lines.
@@ -4179,13 +4179,13 @@
   pub.loadStrings = function(file) {
 
     //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
-    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
-    if( typeof(file) === "string" && file.match(re)) { // load URL
+    // var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    // if( typeof(file) === "string" && file.match(re)) { // load URL
     
-      var result = getURLImpl(file);
-      return b.split(result, "\n");
+    //   var result = getURLImpl(file);
+    //   return b.split(result, "\n");
 
-    } else {
+    // } else {
 
       var inputFile = initDataFile(file, true),
       result = [];
@@ -4197,7 +4197,7 @@
       inputFile.close();
 
       return result;
-    }
+    // }
 
   };
 
