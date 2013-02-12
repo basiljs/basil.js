@@ -5,11 +5,16 @@
   An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
   
   License        - MIT
-  Developers     - Benedikt Groß http://benedikt-gross.de
-                 - Ludwig Zeller http://ludwigzeller.de
+
+  Developers     
                  - Ted Davis http://teddavis.org
-  Contributers   - Stefan Landsbek, inital code architecture, http://47nord.de
+                 - Benedikt Groß http://benedikt-gross.de
+                 - Ludwig Zeller http://ludwigzeller.de
+  Contributers   
                  - Philipp Adrian http://www.philippadrian.com/
+                 - be:screen GmbH http://bescreen.de
+                 - Stefan Landsbek http://47nord.de
+
   Web Site       - http://basiljs.ch
   Github Repo.   - https://github.com/basiljs/basil.js
   Processing     - http://processing.org

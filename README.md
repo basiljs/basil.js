@@ -11,8 +11,9 @@ For tutorials, examples and documentation go to the official website: [http://ba
 - Ludwig Zeller http://ludwigzeller.de
 
 **Contributers**
-- Stefan Landsbek, inital code architecture, http://47nord.de
-- Philipp Adrian http://www.philippadrian.com/
+- Philipp Adrian, http://www.philippadrian.com/
+- be:screen GmbH, http://bescreen.de
+- Stefan Landsbek, http://47nord.de
 
 basil.js was conceived and is generously supported by
 The Visual Communication Institute / The Basel School of Design
