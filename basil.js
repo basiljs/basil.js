@@ -263,28 +263,33 @@
      */
   pub.AFTER = LocationOptions.AFTER;
 
-  /**
-   * You may add performance setting options when calling b.go():
-   b.go(b.MODESILENT) alternatively: b.go()
-   b.go(b.MODEHIDDEN)
-   b.go(b.MODEVISIBLE)
-
-
-   * b.go(optional:mode). Set the mode for execution.
-   * @property MODESILENT {String} : Disables ScreenRedraw during processing, this is the default mode
-   * @property MODEHIDDEN {String} : Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling bgo(). The document will be removed from the display list and added again aftrer the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
-   * @property MODEVISIBLE {String} : Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was the default in Versions prior to 0.22
-
-   Currently there is no performance optimization in b.loop()
-
-   */
+    /**
+    * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing, this is the default mode
+    * @property MODESILENT {String}
+    * @cat Environment
+    * @subcat modes
+    */
   pub.MODESILENT = "ModeSilent";
+    /**
+     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling bgo(). The document will be removed from the display list and added again aftrer the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
+     * @property MODEHIDDEN {String}
+     * @cat Environment
+     * @subcat modes
+     */
   pub.MODEHIDDEN = "ModeHidden";
+    /**
+     * Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was the default in Versions prior to 0.22
+     * @property MODEVISIBLE {String}
+     * @cat Environment
+     * @subcat modes
+     */
   pub.MODEVISIBLE = "ModeVisible";
   /**
    * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
-   * @property DEFAULTMODE {String} : Sets the default Mode when calling go() without option
-   */
+   * @property DEFAULTMODE {MODESILENT|MODEHIDDEN|MODEVISIBLE} : Sets the default Mode when calling go() without option
+   * @cat Environment
+   * @subcat modes
+   * */
   pub.DEFAULTMODE = pub.MODESILENT;
 
 
@@ -4819,9 +4824,14 @@
 
   /**
    * Run the sketch! Has to be called in every sketch a the very end of the code.
-   *
+   * You may add performance setting options when calling b.go():
+   * b.go(b.MODESILENT) alternatively: b.go()
+   * b.go(b.MODEHIDDEN)
+   * b.go(b.MODEVISIBLE)
+   * Currently there is no performance optimization in b.loop()
    * @cat Environment
    * @method go
+   * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
    */
   pub.go = function (mode) {
     if (!mode) {
