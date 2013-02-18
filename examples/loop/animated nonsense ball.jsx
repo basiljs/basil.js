@@ -8,8 +8,8 @@ var ellipse;
 var ellipseRadius = 20;
 
 function setup() {
-  pos = new b.PVector(b.random(b.width), b.random(b.height));
-  vel = new b.PVector(b.random(3, 10), b.random(3, 10));
+  pos = new b.Vector(b.random(b.width), b.random(b.height));
+  vel = new b.Vector(b.random(3, 10), b.random(3, 10));
   ellipse = b.ellipse(pos.x, pos.y, ellipseRadius*2, ellipseRadius*2);
   b.fillTint(50);
   b.rectMode(b.CENTER);
