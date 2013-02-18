@@ -1,4 +1,4 @@
-﻿/*
+/*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
   B A S I L . J S
@@ -2675,7 +2675,7 @@
     if (arguments.length !== 5) error("Not enough parameters to draw a text! Use: txt, x, y, w, h");
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
-      contents = txt;
+      contents = txt+"";
       geometricBounds = [y, x, (y+h), (x+w)];
       textFramePreferences.verticalJustification = currYAlign;
     }
