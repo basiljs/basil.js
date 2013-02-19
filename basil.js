@@ -923,7 +923,7 @@
    * @cat Data
    * @subcat Array Functions
    * @method isArray
-   * @param  {Object|String|Number}  obj The object to check
+   * @param  {Object|String|Number|Boolean}  obj The object to check
    * @return {Boolean}     [description]
    */
   var isArray = pub.isArray = function(obj) {
@@ -935,11 +935,23 @@
    *
    * cat Data
    * method isNumber
-   * param  {Object|String|Number}  num The number to check
+   * param  {Object|String|Number|Boolean}  num The number to check
    * return {Boolean}
    */
   var isNumber = pub.isNumber = function(num) {
     return !isNaN(parseFloat(num)) && isFinite(num);
+  };
+
+  /**
+   * Checks whether a var is a string, returns true if this is the case
+   *
+   * cat Data
+   * method isString
+   * param  {Object|String|Number|Boolean} str The string to check
+   * return {Boolean}
+   */
+  var isString = pub.isString = function(str) {
+    return Object.prototype.toString.call(str) === '[object String]';
   };
 
   /**
@@ -2672,10 +2684,11 @@
    * @return {TextFrame}  The created text frame instance
    */
   pub.text = function(txt, x, y, w, h) {
-    if (arguments.length !== 5) error("Not enough parameters to draw a text! Use: txt, x, y, w, h");
+    if (arguments.length !== 5) error("Not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
+    if (!(isString(txt) || isNumber(txt))) warning("The first parameter has to be a string! But is something else: "+ typeof txt +". Use: b.text(txt, x, y, w, h)");
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
-      contents = txt+"";
+      contents = txt.toString();
       geometricBounds = [y, x, (y+h), (x+w)];
       textFramePreferences.verticalJustification = currYAlign;
     }
