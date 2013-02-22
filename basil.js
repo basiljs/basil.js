@@ -4960,7 +4960,7 @@
 
   var welcome = function() {
     clearConsole();
-    $.writeln("Using basil.js "
+    println("Using basil.js "
         + pub.VERSION
         + " ...");
   };
@@ -5205,12 +5205,12 @@
   };
 
   var error = pub.error = function(msg) {
-    $.writeln(ERROR_PREFIX + msg);
+    println(ERROR_PREFIX + msg);
     throw new Error( msg );
   };
 
   var warning = pub.warning = function(msg) {
-    $.writeln(WARNING_PREFIX + msg);
+    println(WARNING_PREFIX + msg);
   };
 
   var clearConsole = function() {
