@@ -921,7 +921,7 @@
    * Checks whether a var is an Array, returns true if this is the case
    *
    * @cat Data
-   * @subcat Array Functions
+   * @subcat Type-Check
    * @method isArray
    * @param  {Object|String|Number|Boolean}  obj The object to check
    * @return {Boolean}     [description]
@@ -933,10 +933,11 @@
   /**
    * Checks whether a var is a number, returns true if this is the case
    *
-   * cat Data
-   * method isNumber
-   * param  {Object|String|Number|Boolean}  num The number to check
-   * return {Boolean}
+   * @cat Data
+   * @subcat Type-Check
+   * @method isNumber
+   * @param  {Object|String|Number|Boolean}  num The number to check
+   * @return {Boolean}
    */
   var isNumber = pub.isNumber = function(num) {
     return !isNaN(parseFloat(num)) && isFinite(num);
@@ -945,10 +946,11 @@
   /**
    * Checks whether a var is a string, returns true if this is the case
    *
-   * cat Data
-   * method isString
-   * param  {Object|String|Number|Boolean} str The string to check
-   * return {Boolean}
+   * @cat Data
+   * @subcat Type-Check
+   * @method isString
+   * @param  {Object|String|Number|Boolean} str The string to check
+   * @return {Boolean}
    */
   var isString = pub.isString = function(str) {
     return Object.prototype.toString.call(str) === '[object String]';
@@ -958,6 +960,7 @@
    * Checks whether a var is an indesign text object, returns true if this is the case
    *
    * @cat Document
+   * @subcat Type-Check
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
    * @return {Boolean}     [description]
