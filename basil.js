@@ -4859,7 +4859,7 @@
             progressPanel = new Progress();
       runSetup();
       runDrawOnce();
-      var executionDuration = (new Date().getTime()-startTime);
+      var executionDuration = pub.millis();
       if (executionDuration < 1000) {
         println("[Finished in " + executionDuration + "ms]");
       } else {
