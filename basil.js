@@ -290,7 +290,7 @@
    * @cat Environment
    * @subcat modes
    * */
-  pub.DEFAULTMODE = pub.MODESILENT;
+  pub.DEFAULTMODE = pub.MODEVISIBLE;
 
 
   var ERROR_PREFIX = "\n\n### Basil Error -> ",
