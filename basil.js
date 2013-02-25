@@ -3449,12 +3449,12 @@
       },
       /**
        * The 2D orientation (heading) of this vector in radian.
-       * @method Vector.heading2D
+       * @method Vector.heading
        * @cat Data
        * @subcat Vector
        * @return {Number} A radian angle value
        */
-      heading2D: function() {
+      heading: function() {
         return -Math.atan2(-this.y, this.x);
       },
       /**
