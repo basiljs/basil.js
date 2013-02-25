@@ -1184,12 +1184,61 @@
    * @subcat Page
    * @method pageCount
    * @return The amount of pages.
-   * @throws {Error} e If Page not found or invalid call.
    */
   pub.pageCount = function() {
     return currentDoc().pages.count();
   };
 
+  /**
+   * The number of all stories in the current document.
+   *
+   * @cat Document
+   * @subcat Story
+   * @method storyCount
+   * @return The amount of stories.
+   */
+  pub.storyCount = function() {
+    return currentDoc().stories.count();
+  };
+
+  /**
+   * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+   *
+   * @cat Document
+   * @subcat Story
+   * @method addToStory
+   * @param {Story} [story] The story
+   * @param {PageItem|String} [itemOrString] The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+   */
+  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+    if (story instanceof Story && arguments.length > 1) {
+      // add string
+      if (isString(itemOrString)) {
+        if (insertionPointorMode instanceof InsertionPoint) {
+          insertionPointorMode.contents = itemOrString;
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          story.insertionPoints.firstItem().contents = itemOrString;
+        } else {
+          story.insertionPoints.lastItem().contents = itemOrString;
+        }
+      }
+      // add other stuff
+      else {
+        app.select(itemOrString);
+        app.cut();
+        if (insertionPointorMode instanceof InsertionPoint) {
+          app.select(insertionPointorMode);
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          app.select(story.insertionPoints.firstItem());
+        } else {
+          app.select(story.insertionPoints.lastItem());
+        }
+        app.paste();
+      }
+    } else {
+      error("Wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.")
+    }
+  };
 
   /**
    * Returns the current layer and sets it if argument layer is given.
