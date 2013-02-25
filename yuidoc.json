@@ -1,9 +1,9 @@
 {
   "name": "basil.js",
-  "description": "basil.js description...",
-  "version": "0.1",
+  "description": "basil.js API documentation",
+  "version": "see header basil.js",
   "url": "http://basiljs.ch",
-  "logo": "http://basiljs.ch/basil2.jpg",
+  "logo": "https://raw.github.com/basiljs/basil.js/master/lib/basil.png",
   "options": {
     "linkNatives": "true",
     "ignorePaths": [
