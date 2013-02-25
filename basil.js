@@ -2947,7 +2947,7 @@
   /**
    * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
    *
-   * @cat Typography
+   * @cat Story
    * @method linkTextFrames
    * @param  {TextFrame} textFrameA
    * @param  {TextFrame} textFrameB
