@@ -5,6 +5,11 @@
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 0.23 - 28 Feb 2013
 
+...
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 0.22 - 25 Feb 2013
+
 + new computation modes MODESILENT, MODEHIDDEN, MODEVISIBLE. 
   HIDDEN is very handy for working with large files, as the document is
   processed completely in background, performance is a lot better.
@@ -16,9 +21,6 @@ basil.js 0.23 - 28 Feb 2013
 
 Special thanks to be:screen GmbH for the new computation modes and 
 performance optimization!
-  
-..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 0.22 - 03 Feb 2013
 
 + new functions for creating shapes. you can create arbitrary lines, 
   bezier curves, polygones with beginShape(), endShape() and vertex()
