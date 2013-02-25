@@ -1209,9 +1209,10 @@
    * @method addToStory
    * @param {Story} [story] The story
    * @param {PageItem|String} [itemOrString] The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+   * @throws {Error} e For wrong arguments.
    */
   pub.addToStory = function(story, itemOrString, insertionPointorMode) {
-    if (story instanceof Story && arguments.length > 1) {
+    if (story instanceof Story && arguments.length >= 2) {
       // add string
       if (isString(itemOrString)) {
         if (insertionPointorMode instanceof InsertionPoint) {
