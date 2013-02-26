@@ -1,12 +1,26 @@
 {
     "project": {
         "name": "basil.js",
-        "description": "basil.js description...",
-        "version": "0.1",
+        "description": "basil.js API documentation",
+        "version": "see header basil.js",
         "url": "http://basiljs.ch",
-        "logo": "http://basiljs.ch/basil2.jpg"
+        "logo": "https://raw.github.com/basiljs/basil.js/master/lib/basil.png"
     },
     "files": {
+        "lib/extendables/dependencies/jasmine.js": {
+            "name": "lib/extendables/dependencies/jasmine.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/extendables/doc/_themes/jsdoc-as-json/publish.js": {
+            "name": "lib/extendables/doc/_themes/jsdoc-as-json/publish.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "basil.js": {
             "name": "basil.js",
             "modules": {},
@@ -27,15 +41,1174 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "namespace": "",
             "file": "basil.js",
-            "line": 36,
+            "line": 41,
             "static": 1
         }
     },
     "classitems": [
         {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1,
+            "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 8,
+            "access": "private",
+            "tagname": "",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 15,
+            "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
+            "access": "private",
+            "tagname": "",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 23,
+            "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 29,
+            "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 42,
+            "description": "Allows for bound functions to be compared.  Internal use only.",
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "base",
+                    "description": "bound 'this' for the function",
+                    "type": "Object"
+                },
+                {
+                    "name": "name",
+                    "description": "function to find",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 115,
+            "description": "Getter for the Jasmine environment. Ensures one gets created",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 122,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 132,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 142,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 152,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "typeName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 163,
+            "description": "Pretty printer for expecations.  Takes any object and turns it into a human-readable string.",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "an object to be outputted",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 175,
+            "description": "Returns true if the object is a DOM Node.",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "object to check",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 185,
+            "description": "Returns a matchable 'generic' object of the class type.  For use in expecations of type when values don't matter.",
+            "example": [
+                "\n// don't care about which function is passed in, as long as it's a function\nexpect(mySpy).toHaveBeenCalledWith(jasmine.any(Function));"
+            ],
+            "params": [
+                {
+                    "name": "clazz",
+                    "description": "",
+                    "type": "Class"
+                }
+            ],
+            "return": {
+                "description": "matchable object of the type clazz"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 199,
+            "description": "Jasmine Spies are test doubles that can act as stubs, spies, fakes or when used in an expecation, mocks.\n\nSpies should be created in test setup, before expectations.  They can then be checked, using the standard Jasmine\nexpectation syntax. Spies can be checked if they were called or not and what the calling params were.\n\nA Spy has the following fields: wasCalled, callCount, mostRecentCall, and argsForCall (see docs).\n\nSpies are torn down at the end of every spec.\n\nNote: Do <b>not</b> call new jasmine.Spy() directly - a spy must be created using spyOn, jasmine.createSpy or jasmine.createSpyObj.",
+            "example": [
+                "\n// a stub\nvar myStub = jasmine.createSpy('myStub');  // can be used anywhere\n\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// actual foo.not will not be called, execution stops\nspyOn(foo, 'not');\n\n// foo.not spied upon, execution will continue to implementation\nspyOn(foo, 'not').andCallThrough();\n\n// fake example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// foo.not(val) will return val\nspyOn(foo, 'not').andCallFake(function(value) {return value;});\n\n// mock example\nfoo.not(7 == 7);\nexpect(foo.not).toHaveBeenCalled();\nexpect(foo.not).toHaveBeenCalledWith(true);"
+            ],
+            "is_constructor": 1,
+            "see": [
+                "spyOn",
+                "jasmine.createSpy",
+                "jasmine.createSpyObj"
+            ],
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 244,
+            "description": "The name of the spy, if provided.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 248,
+            "description": "Is this Object a spy?",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 252,
+            "description": "The actual function this spy stubs.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 257,
+            "description": "Tracking of the most recent call to the spy.",
+            "example": [
+                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 266,
+            "description": "Holds arguments for each call to the spy, indexed by call count",
+            "example": [
+                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 280,
+            "description": "Tells a spy to call through to the actual implemenatation.",
+            "example": [
+                "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 296,
+            "description": "For setting the return value of a spy.",
+            "example": [
+                "\n// defining a spy from scratch: foo() returns 'baz'\nvar foo = jasmine.createSpy('spy on foo').andReturn('baz');\n\n// defining a spy on an existing property: foo.bar() returns 'baz'\nspyOn(foo, 'bar').andReturn('baz');"
+            ],
+            "params": [
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 315,
+            "description": "For throwing an exception when a spy is called.",
+            "example": [
+                "\n// defining a spy from scratch: foo() throws an exception w/ message 'ouch'\nvar foo = jasmine.createSpy('spy on foo').andThrow('baz');\n\n// defining a spy on an existing property: foo.bar() throws an exception w/ message 'ouch'\nspyOn(foo, 'bar').andThrow('baz');"
+            ],
+            "params": [
+                {
+                    "name": "exceptionMsg",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 334,
+            "description": "Calls an alternate implementation when a spy is called.",
+            "example": [
+                "\nvar baz = function() {\n  // do some stuff, return something\n}\n// defining a spy from scratch: foo() calls the function baz\nvar foo = jasmine.createSpy('spy on foo').andCall(baz);\n\n// defining a spy on an existing property: foo.bar() calls an anonymnous function\nspyOn(foo, 'bar').andCall(function() { return 'baz';} );"
+            ],
+            "params": [
+                {
+                    "name": "fakeFunc",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 354,
+            "description": "Resets all of a spy's the tracking variables so that it can be used again.",
+            "example": [
+                "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 400,
+            "description": "Determines whether an object is a spy.",
+            "params": [
+                {
+                    "name": "putativeSpy",
+                    "description": "",
+                    "type": "jasmine.Spy|Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 410,
+            "description": "Creates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something\nlarge in one call.",
+            "params": [
+                {
+                    "name": "baseName",
+                    "description": "name of spy class",
+                    "type": "String"
+                },
+                {
+                    "name": "methodNames",
+                    "description": "array of names of methods to make spies",
+                    "type": "Array"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 428,
+            "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 438,
+            "description": "Function that installs a spy on an existing object's method name.  Used within a Spec to create a spy.",
+            "example": [
+                "\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\nspyOn(foo, 'not'); // actual foo.not will not be called, execution stops"
+            ],
+            "see": [
+                "jasmine.createSpy"
+            ],
+            "params": [
+                {
+                    "name": "obj",
+                    "description": ""
+                },
+                {
+                    "name": "methodName",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "a Jasmine spy that can be chained with all spy methods"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 457,
+            "description": "Creates a Jasmine spec that will be added to the current suite.\n\n// TODO: pending tests",
+            "example": [
+                "\nit('should be true', function() {\n  expect(true).toEqual(true);\n});"
+            ],
+            "params": [
+                {
+                    "name": "desc",
+                    "description": "description of this specification",
+                    "type": "String"
+                },
+                {
+                    "name": "func",
+                    "description": "defines the preconditions and expectations of the spec",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 474,
+            "description": "Creates a <em>disabled</em> Jasmine spec.\n\nA convenience method that allows existing specs to be disabled temporarily during development.",
+            "params": [
+                {
+                    "name": "desc",
+                    "description": "description of this specification",
+                    "type": "String"
+                },
+                {
+                    "name": "func",
+                    "description": "defines the preconditions and expectations of the spec",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 486,
+            "description": "Starts a chain for a Jasmine expectation.\n\nIt is passed an Object that is the actual value and should chain to one of the many\njasmine.Matchers functions.",
+            "params": [
+                {
+                    "name": "actual",
+                    "description": "Actual value to test against and expected value",
+                    "type": "Object"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 498,
+            "description": "Defines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "Function that defines part of a jasmine spec.",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 507,
+            "description": "Waits a fixed time period before moving to the next block.",
+            "deprecated": true,
+            "deprecationMessage": "Use waitsFor() instead",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "milliseconds to wait",
+                    "type": "Number"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 517,
+            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
+            "params": [
+                {
+                    "name": "latchFunction",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "optional_timeoutMessage",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "optional_timeout",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 528,
+            "description": "A function that is called before each spec in a suite.\n\nUsed for spec setup, including validating assumptions.",
+            "params": [
+                {
+                    "name": "beforeEachFunction",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 539,
+            "description": "A function that is called after each spec in a suite.\n\nUsed for restoring any state that is hijacked during spec execution.",
+            "params": [
+                {
+                    "name": "afterEachFunction",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 550,
+            "description": "Defines a suite of specifications.\n\nStores the description and all defined specs in the Jasmine environment as one suite of specs. Variables declared\nare accessible by calls to beforeEach, it, and afterEach. Describe blocks can be nested, allowing for specialization\nof setup in some tests.",
+            "example": [
+                "\n// TODO: a simple suite\n\n// TODO: a simple suite with a nested describe block"
+            ],
+            "params": [
+                {
+                    "name": "description",
+                    "description": "A string, usually the class under test.",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "function that defines several specs.",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 569,
+            "description": "Disables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.",
+            "params": [
+                {
+                    "name": "description",
+                    "description": "A string, usually the class under test.",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "function that defines several specs.",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 600,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 605,
+            "description": "Declare that a child class inherit it's prototype from the parent class.",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "childClass",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "parentClass",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 613,
+            "access": "private",
+            "tagname": "",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 667,
+            "description": "Environment for Jasmine",
+            "is_constructor": 1,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 705,
+            "return": {
+                "description": "an object containing jasmine version build info, if set."
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 716,
+            "return": {
+                "description": "string containing jasmine version build info, if set."
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 728,
+            "return": {
+                "description": "a sequential integer starting at 0"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 735,
+            "return": {
+                "description": "a sequential integer starting at 0"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 742,
+            "description": "Register a reporter to receive status updates from Jasmine.",
+            "params": [
+                {
+                    "name": "reporter",
+                    "description": "An object which will receive status updates.",
+                    "type": "jasmine.Reporter"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 931,
+            "is_constructor": 1,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 962,
+            "description": "Blocks are functions with executable code that make up a spec.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "spec",
+                    "description": "",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 984,
+            "is_constructor": 1,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1086,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "actual",
+                    "description": ""
+                },
+                {
+                    "name": "spec",
+                    "description": "",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1163,
+            "description": "toBe: compares the actual to the expected using ===",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1171,
+            "description": "toNotBe: compares the actual to the expected using !==",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1180,
+            "description": "toEqual: compares the actual to the expected using common sense equality. Handles Objects, Arrays, etc.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1189,
+            "description": "toNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toNotEqual() instead.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1198,
+            "description": "Matcher that compares the actual to the expected using a regular expression.  Constructs a RegExp, so takes\na pattern or a String.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1208,
+            "description": "Matcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1217,
+            "description": "Matcher that compares the actual to jasmine.undefined.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1224,
+            "description": "Matcher that compares the actual to jasmine.undefined.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1231,
+            "description": "Matcher that compares the actual to null.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1238,
+            "description": "Matcher that boolean not-nots the actual.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1246,
+            "description": "Matcher that boolean nots the actual.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1254,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1276,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1279,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
+            "deprecated": true,
+            "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1303,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called with a set of parameters.",
+            "example": [
+                "\n"
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1332,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1335,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1352,
+            "description": "Matcher that checks that the expected item is an element in the actual Array.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1361,
+            "description": "Matcher that checks that the expected item is NOT an element in the actual Array.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toNotContain() instead.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1379,
+            "description": "Matcher that checks that the expected exception was thrown by the actual.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1440,
+            "is_constructor": 1,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1475,
+            "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
+            "is_constructor": 1,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1481,
+            "description": "The total count of results",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1485,
+            "description": "Number of passed results",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1489,
+            "description": "Number of failed results",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1493,
+            "description": "Was this suite/spec skipped?",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1497,
+            "ignore": "",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1503,
+            "description": "Roll up the result counts.",
+            "params": [
+                {
+                    "name": "result",
+                    "description": ""
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1514,
+            "description": "Adds a log message.",
+            "params": [
+                {
+                    "name": "values",
+                    "description": "Array of message parts which will be concatenated later."
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1522,
+            "description": "Getter for the results: message & results.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1529,
+            "description": "Adds a result, tracking counts (total, passed, & failed)",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "",
+                    "type": "jasmine.ExpectationResult|jasmine.NestedResults"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1549,
+            "return": {
+                "description": "True if <b>everything</b> below passed",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1555,
+            "description": "Base class for pretty printing for expectation results.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1562,
+            "description": "Formats a value in a nice, human-readable string.",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1776,
+            "description": "Runner",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1853,
+            "description": "Internal representation of a Jasmine specification, or test.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "suite",
+                    "description": "",
+                    "type": "jasmine.Suite"
+                },
+                {
+                    "name": "description",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1892,
+            "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1915,
+            "params": [
+                {
+                    "name": "result",
+                    "description": "",
+                    "type": "jasmine.ExpectationResult"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1928,
+            "description": "Waits a fixed time period before moving to the next block.",
+            "deprecated": true,
+            "deprecationMessage": "Use waitsFor() instead",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "milliseconds to wait",
+                    "type": "Number"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 1940,
+            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
+            "params": [
+                {
+                    "name": "latchFunction",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "optional_timeoutMessage",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "optional_timeout",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 2095,
+            "description": "Internal representation of a Jasmine suite.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "description",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "parentSuite",
+                    "description": "",
+                    "type": "jasmine.Suite"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 2190,
+            "description": "A block which waits for some condition to become true, with timeout.",
+            "is_constructor": 1,
+            "extends": "jasmine.Block",
+            "params": [
+                {
+                    "name": "env",
+                    "description": "The Jasmine environment.",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "timeout",
+                    "description": "The maximum time in milliseconds to wait for the condition to become true.",
+                    "type": "Number"
+                },
+                {
+                    "name": "latchFunction",
+                    "description": "A function which returns true when the desired condition has been met.",
+                    "type": "Function"
+                },
+                {
+                    "name": "message",
+                    "description": "The message to display if the desired condition hasn't been met within the given time period.",
+                    "type": "String"
+                },
+                {
+                    "name": "spec",
+                    "description": "The Jasmine spec.",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/dependencies/jasmine.js",
+            "line": 2329,
+            "class": "b"
+        },
+        {
+            "file": "lib/extendables/doc/_themes/jsdoc-as-json/publish.js",
+            "line": 1,
+            "class": "b"
+        },
+        {
             "file": "basil.js",
-            "line": 46,
+            "line": 52,
             "description": "The basil version",
             "itemtype": "property",
             "name": "VERSION",
@@ -45,7 +1218,7 @@
         },
         {
             "file": "basil.js",
-            "line": 53,
+            "line": 59,
             "description": "Used with b.units() to set the coordinate system to points.",
             "itemtype": "property",
             "name": "PT",
@@ -56,7 +1229,7 @@
         },
         {
             "file": "basil.js",
-            "line": 61,
+            "line": 67,
             "description": "Used with b.units() to set the coordinate system to pixels.",
             "itemtype": "property",
             "name": "PX",
@@ -67,7 +1240,7 @@
         },
         {
             "file": "basil.js",
-            "line": 69,
+            "line": 75,
             "description": "Used with b.units() to set the coordinate system to centimeters.",
             "itemtype": "property",
             "name": "CM",
@@ -78,7 +1251,7 @@
         },
         {
             "file": "basil.js",
-            "line": 78,
+            "line": 84,
             "description": "Used with b.units() to set the coordinate system to millimeters.",
             "itemtype": "property",
             "name": "MM",
@@ -89,7 +1262,7 @@
         },
         {
             "file": "basil.js",
-            "line": 86,
+            "line": 92,
             "description": "Used with b.units() to set the coordinate system to inches.",
             "itemtype": "property",
             "name": "IN",
@@ -100,7 +1273,7 @@
         },
         {
             "file": "basil.js",
-            "line": 94,
+            "line": 100,
             "description": "Used with b.colorMode() to set the color space.",
             "itemtype": "property",
             "name": "RGB",
@@ -110,7 +1283,7 @@
         },
         {
             "file": "basil.js",
-            "line": 101,
+            "line": 107,
             "description": "Used with b.colorMode() to set the color space.",
             "itemtype": "property",
             "name": "CMYK",
@@ -120,7 +1293,7 @@
         },
         {
             "file": "basil.js",
-            "line": 108,
+            "line": 114,
             "description": "Corner, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNER",
@@ -131,7 +1304,7 @@
         },
         {
             "file": "basil.js",
-            "line": 116,
+            "line": 122,
             "description": "Corners, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNERS",
@@ -142,7 +1315,7 @@
         },
         {
             "file": "basil.js",
-            "line": 124,
+            "line": 130,
             "description": "Center, used for drawing modes.",
             "itemtype": "property",
             "name": "CENTER",
@@ -153,7 +1326,7 @@
         },
         {
             "file": "basil.js",
-            "line": 132,
+            "line": 138,
             "description": "Radius, used for drawing modes.",
             "itemtype": "property",
             "name": "RADIUS",
@@ -164,7 +1337,18 @@
         },
         {
             "file": "basil.js",
-            "line": 140,
+            "line": 146,
+            "description": "Close, used for endShape() modes.",
+            "itemtype": "property",
+            "name": "CLOSE",
+            "type": "String",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 154,
             "description": "Two Pi",
             "itemtype": "property",
             "name": "TWO_PI",
@@ -175,7 +1359,7 @@
         },
         {
             "file": "basil.js",
-            "line": 148,
+            "line": 162,
             "description": "Pi",
             "itemtype": "property",
             "name": "PI",
@@ -186,7 +1370,7 @@
         },
         {
             "file": "basil.js",
-            "line": 156,
+            "line": 170,
             "description": "Half Pi",
             "itemtype": "property",
             "name": "HALF_PI",
@@ -197,7 +1381,7 @@
         },
         {
             "file": "basil.js",
-            "line": 164,
+            "line": 178,
             "description": "Quarter Pi",
             "itemtype": "property",
             "name": "QUARTER_PI",
@@ -208,7 +1392,7 @@
         },
         {
             "file": "basil.js",
-            "line": 172,
+            "line": 186,
             "description": "Used with b.canvasMode() to set the canvas to the full current page.",
             "itemtype": "property",
             "name": "PAGE",
@@ -219,7 +1403,7 @@
         },
         {
             "file": "basil.js",
-            "line": 180,
+            "line": 194,
             "description": "Used with b.canvasMode() to set the canvas to the full current page minus the margins.",
             "itemtype": "property",
             "name": "MARGIN",
@@ -230,7 +1414,7 @@
         },
         {
             "file": "basil.js",
-            "line": 188,
+            "line": 202,
             "description": "Used with b.canvasMode() to set the canvas to the full current page plus the bleed.",
             "itemtype": "property",
             "name": "BLEED",
@@ -241,7 +1425,7 @@
         },
         {
             "file": "basil.js",
-            "line": 196,
+            "line": 210,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages.",
             "itemtype": "property",
             "name": "FACING_PAGES",
@@ -252,7 +1436,7 @@
         },
         {
             "file": "basil.js",
-            "line": 204,
+            "line": 218,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.",
             "itemtype": "property",
             "name": "FACING_BLEEDS",
@@ -263,7 +1447,7 @@
         },
         {
             "file": "basil.js",
-            "line": 212,
+            "line": 226,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.",
             "itemtype": "property",
             "name": "FACING_MARGINS",
@@ -274,7 +1458,7 @@
         },
         {
             "file": "basil.js",
-            "line": 220,
+            "line": 234,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AT_BEGINNING",
@@ -285,7 +1469,7 @@
         },
         {
             "file": "basil.js",
-            "line": 228,
+            "line": 242,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AT_END",
@@ -296,7 +1480,7 @@
         },
         {
             "file": "basil.js",
-            "line": 236,
+            "line": 250,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "BEFORE",
@@ -307,7 +1491,7 @@
         },
         {
             "file": "basil.js",
-            "line": 244,
+            "line": 258,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AFTER",
@@ -318,7 +1502,51 @@
         },
         {
             "file": "basil.js",
-            "line": 259,
+            "line": 266,
+            "description": "Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing, this is the default mode",
+            "itemtype": "property",
+            "name": "MODESILENT",
+            "type": "String",
+            "cat": "Environment",
+            "subcat": "modes",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 273,
+            "description": "Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling bgo(). The document will be removed from the display list and added again aftrer the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(\"yourMessage\") in your script and look at the Console in estk to get information about the process.",
+            "itemtype": "property",
+            "name": "MODEHIDDEN",
+            "type": "String",
+            "cat": "Environment",
+            "subcat": "modes",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 280,
+            "description": "Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was the default in Versions prior to 0.22",
+            "itemtype": "property",
+            "name": "MODEVISIBLE",
+            "type": "String",
+            "cat": "Environment",
+            "subcat": "modes",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 287,
+            "description": "Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode",
+            "itemtype": "property",
+            "name": "DEFAULTMODE  : Sets the default Mode when calling go() without option",
+            "type": "MODESILENT|MODEHIDDEN|MODEVISIBLE",
+            "cat": "Environment",
+            "subcat": "modes",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 303,
             "description": "System variable which stores the width of the current page.",
             "itemtype": "property",
             "name": "width",
@@ -328,7 +1556,7 @@
         },
         {
             "file": "basil.js",
-            "line": 266,
+            "line": 310,
             "description": "System variable which stores the height of the current page.",
             "itemtype": "property",
             "name": "height",
@@ -338,7 +1566,7 @@
         },
         {
             "file": "basil.js",
-            "line": 372,
+            "line": 418,
             "description": "Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.",
             "cat": "Data",
             "subcat": "Array Functions",
@@ -360,7 +1588,7 @@
         },
         {
             "file": "basil.js",
-            "line": 398,
+            "line": 444,
             "description": "HashList is a data container that allows you to store information as key -> value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.",
             "is_constructor": 1,
             "cat": "Data",
@@ -371,7 +1599,7 @@
         },
         {
             "file": "basil.js",
-            "line": 424,
+            "line": 470,
             "description": "This removes a key -> value pair by its key.",
             "cat": "Data",
             "subcat": "HashList",
@@ -392,7 +1620,7 @@
         },
         {
             "file": "basil.js",
-            "line": 444,
+            "line": 490,
             "description": "This gets a value by its key.",
             "cat": "Data",
             "subcat": "HashList",
@@ -413,7 +1641,7 @@
         },
         {
             "file": "basil.js",
-            "line": 457,
+            "line": 503,
             "description": "This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.",
             "cat": "Data",
             "subcat": "HashList",
@@ -434,8 +1662,8 @@
         },
         {
             "file": "basil.js",
-            "line": 479,
-            "description": "Checks for the existance of a given key.",
+            "line": 525,
+            "description": "Checks for the existence of a given key.",
             "cat": "Data",
             "subcat": "HashList",
             "itemtype": "method",
@@ -455,7 +1683,7 @@
         },
         {
             "file": "basil.js",
-            "line": 493,
+            "line": 539,
             "description": "Checks if a certain value exists at least once in all of the key -> value pairs.",
             "cat": "Data",
             "subcat": "HashList",
@@ -476,7 +1704,7 @@
         },
         {
             "file": "basil.js",
-            "line": 514,
+            "line": 560,
             "description": "Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.",
             "cat": "Data",
             "subcat": "HashList",
@@ -490,7 +1718,7 @@
         },
         {
             "file": "basil.js",
-            "line": 533,
+            "line": 579,
             "description": "Returns an array with all keys in a sorted order from higher to lower magnitude.",
             "cat": "Data",
             "subcat": "HashList",
@@ -504,7 +1732,7 @@
         },
         {
             "file": "basil.js",
-            "line": 545,
+            "line": 591,
             "description": "Returns an array with all keys.",
             "cat": "Data",
             "subcat": "HashList",
@@ -518,7 +1746,7 @@
         },
         {
             "file": "basil.js",
-            "line": 566,
+            "line": 612,
             "description": "Returns an array with all keys.",
             "cat": "Data",
             "subcat": "HashList",
@@ -532,7 +1760,7 @@
         },
         {
             "file": "basil.js",
-            "line": 586,
+            "line": 632,
             "description": "Deletes all the key -> value pairs in this HashList.",
             "cat": "Data",
             "subcat": "HashList",
@@ -546,7 +1774,7 @@
         },
         {
             "file": "basil.js",
-            "line": 608,
+            "line": 654,
             "description": "Suspends the calling thread for a number of milliseconds.\nDuring a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.",
             "cat": "Environment",
             "itemtype": "method",
@@ -562,7 +1790,7 @@
         },
         {
             "file": "basil.js",
-            "line": 620,
+            "line": 666,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -588,7 +1816,7 @@
         },
         {
             "file": "basil.js",
-            "line": 640,
+            "line": 686,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each paragraph of the given document, story or text frame.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -614,13 +1842,13 @@
         },
         {
             "file": "basil.js",
-            "line": 670,
+            "line": 716,
             "description": "If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.\n\ncat Document\nsubcat Multi-Getters\nmethod sentences\nparam  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in\nparam  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount\nreturn {Array} An array of strings",
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 712,
+            "line": 758,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -646,7 +1874,7 @@
         },
         {
             "file": "basil.js",
-            "line": 743,
+            "line": 789,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each word of the given document, story, text frame, paragraph or line.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -672,7 +1900,7 @@
         },
         {
             "file": "basil.js",
-            "line": 774,
+            "line": 820,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -698,7 +1926,7 @@
         },
         {
             "file": "basil.js",
-            "line": 818,
+            "line": 864,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -724,7 +1952,7 @@
         },
         {
             "file": "basil.js",
-            "line": 846,
+            "line": 892,
             "description": "Removes all PageItems in the given Document, Page, Layer or Group.",
             "cat": "Document",
             "itemtype": "method",
@@ -740,17 +1968,17 @@
         },
         {
             "file": "basil.js",
-            "line": 874,
+            "line": 920,
             "description": "Checks whether a var is an Array, returns true if this is the case",
             "cat": "Data",
-            "subcat": "Array Functions",
+            "subcat": "Type-Check",
             "itemtype": "method",
             "name": "isArray",
             "params": [
                 {
                     "name": "obj",
                     "description": "The object to check",
-                    "type": "Object|String|Number"
+                    "type": "Object|String|Number|Boolean"
                 }
             ],
             "return": {
@@ -761,15 +1989,52 @@
         },
         {
             "file": "basil.js",
-            "line": 887,
-            "description": "Checks whether a var is a number, returns true if this is the case\n\ncat Data\nmethod isNumber\nparam  {Object|String|Number}  num The number to check\nreturn {Boolean}",
+            "line": 933,
+            "description": "Checks whether a var is a number, returns true if this is the case",
+            "cat": "Data",
+            "subcat": "Type-Check",
+            "itemtype": "method",
+            "name": "isNumber",
+            "params": [
+                {
+                    "name": "num",
+                    "description": "The number to check",
+                    "type": "Object|String|Number|Boolean"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 899,
+            "line": 946,
+            "description": "Checks whether a var is a string, returns true if this is the case",
+            "cat": "Data",
+            "subcat": "Type-Check",
+            "itemtype": "method",
+            "name": "isString",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "The string to check",
+                    "type": "Object|String|Number|Boolean"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 959,
             "description": "Checks whether a var is an indesign text object, returns true if this is the case",
             "cat": "Document",
+            "subcat": "Type-Check",
             "itemtype": "method",
             "name": "isText",
             "params": [
@@ -787,7 +2052,7 @@
         },
         {
             "file": "basil.js",
-            "line": 921,
+            "line": 982,
             "description": "Sets or possibly creates the current document and returns it.\nIf the param doc is not given the current document gets set to the active document\nin the application. If no document at all is open, a new document gets created.",
             "cat": "Document",
             "itemtype": "method",
@@ -808,7 +2073,7 @@
         },
         {
             "file": "basil.js",
-            "line": 938,
+            "line": 999,
             "description": "Closes the current document.",
             "cat": "Document",
             "itemtype": "method",
@@ -831,7 +2096,7 @@
         },
         {
             "file": "basil.js",
-            "line": 956,
+            "line": 1017,
             "description": "Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.\nPlease note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();",
             "itemtype": "method",
             "name": "canvasMode",
@@ -841,7 +2106,7 @@
         },
         {
             "file": "basil.js",
-            "line": 978,
+            "line": 1039,
             "description": "Returns the current page and sets it if argument page is given. Numbering starts with 1.",
             "cat": "Document",
             "subcat": "Page",
@@ -863,7 +2128,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1013,
+            "line": 1075,
             "description": "Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.",
             "cat": "Document",
             "subcat": "Page",
@@ -885,7 +2150,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1062,
+            "line": 1124,
             "description": "Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.",
             "cat": "Document",
             "subcat": "Page",
@@ -906,7 +2171,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1084,
+            "line": 1146,
             "description": "Returns the current page number of either the current page or the given Page object.",
             "cat": "Document",
             "subcat": "Page",
@@ -931,7 +2196,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1118,
+            "line": 1180,
             "description": "The number of all pages in the current document.",
             "cat": "Document",
             "subcat": "Page",
@@ -940,14 +2205,48 @@
             "return": {
                 "description": "The amount of pages."
             },
-            "throws": [
-                "{Error} e If Page not found or invalid call."
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1192,
+            "description": "The number of all stories in the current document.",
+            "cat": "Document",
+            "subcat": "Story",
+            "itemtype": "method",
+            "name": "storyCount",
+            "return": {
+                "description": "The amount of stories."
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 1204,
+            "description": "Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.",
+            "cat": "Document",
+            "subcat": "Story",
+            "itemtype": "method",
+            "name": "addToStory",
+            "params": [
+                {
+                    "name": "story",
+                    "description": "The story",
+                    "type": "Story",
+                    "optional": true
+                },
+                {
+                    "name": "itemOrString",
+                    "description": "The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.",
+                    "type": "PageItem|String",
+                    "optional": true
+                }
             ],
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 1132,
+            "line": 1243,
             "description": "Returns the current layer and sets it if argument layer is given.",
             "cat": "Document",
             "subcat": "Page",
@@ -969,7 +2268,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1154,
+            "line": 1265,
             "description": "Sets the units of the document (like right clicking the rulers).",
             "cat": "Document",
             "itemtype": "method",
@@ -990,7 +2289,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1197,
+            "line": 1308,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1010,7 +2309,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1216,
+            "line": 1327,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1030,7 +2329,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1235,
+            "line": 1346,
             "description": "Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.",
             "cat": "Document",
             "subcat": "Page",
@@ -1076,7 +2375,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1275,
+            "line": 1386,
             "description": "Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.",
             "cat": "Document",
             "subcat": "Page",
@@ -1112,7 +2411,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1313,
+            "line": 1424,
             "description": "Function parses and validates a string as JSON-object. Usage:\nvar obj = b.JSON.decode(str);\nvar str = b.JSON.encode(obj);",
             "cat": "Data",
             "subcat": "JSON",
@@ -1133,7 +2432,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1343,
+            "line": 1454,
             "description": "Function convert an javascript object to a JSON-string. Usage:\nvar str = b.JSON.encode(obj);\nvar obj = b.JSON.decode(str);",
             "cat": "Data",
             "subcat": "JSON",
@@ -1154,7 +2453,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1395,
+            "line": 1506,
             "description": "Sets the delimiter of the CSV decode and encode function.",
             "cat": "Data",
             "subcat": "CSV",
@@ -1175,7 +2474,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1413,
+            "line": 1524,
             "description": "Function parses a string as CSV-object Array. Usage:\nvar arr = b.CSV.decode(str);\nvar str = b.CSV.encode(arr);",
             "cat": "Data",
             "subcat": "CSV",
@@ -1196,7 +2495,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1438,
+            "line": 1549,
             "description": "Function convert an javascript array of objects to a CSV-string. Usage:\nvar str = b.CSV.encode(arr);\nvar arr = b.CSV.decode(str);",
             "cat": "Data",
             "subcat": "CSV",
@@ -1217,12 +2516,12 @@
         },
         {
             "file": "basil.js",
-            "line": 1540,
+            "line": 1651,
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 1542,
+            "line": 1653,
             "description": "Converts a byte, char, int, or color to a String containing the\nequivalent binary notation. For example color(0, 102, 153, 255) \nwill convert to the String \"11111111000000000110011010011001\". This \nfunction can help make your geeky debugging sessions much happier.",
             "cat": "Data",
             "subcat": "Conversion",
@@ -1249,7 +2548,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1572,
+            "line": 1683,
             "description": "Converts a String representation of a binary number to its \nequivalent integer value. For example, unbinary(\"00001000\") will \nreturn 8.",
             "cat": "Data",
             "subcat": "Conversion",
@@ -1270,7 +2569,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1607,
+            "line": 1718,
             "description": "Convert a number to a hex representation.",
             "cat": "Data",
             "subcat": "Conversion",
@@ -1297,7 +2596,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1628,
+            "line": 1739,
             "description": "Convert a hex representation to a number.",
             "cat": "Data",
             "subcat": "Conversion",
@@ -1318,7 +2617,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1651,
+            "line": 1762,
             "description": "Removes multiple, leading or trailing spaces and punctuation from \"words\". E.g. converts \"word!\" to \"word\". Especially useful together with b.words();",
             "itemtype": "method",
             "name": "trimWord",
@@ -1335,7 +2634,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1669,
+            "line": 1780,
             "description": "Combines an array of Strings into one String, each separated by \nthe character(s) used for the separator parameter. To join arrays \nof ints or floats, it's necessary to first convert them to strings \nusing nf() or nfs().",
             "itemtype": "method",
             "name": "join",
@@ -1361,7 +2660,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1687,
+            "line": 1798,
             "description": "The split() function breaks a string into pieces using a\ncharacter or string as the divider. The delim parameter specifies the\ncharacter or characters that mark the boundaries between each piece. A\nString[] array is returned that contains each of the pieces.\n\nIf the result is a set of numbers, you can convert the String[] array\nto to a float[] or int[] array using the datatype conversion functions\nint() and float() (see example above).\n\nThe splitTokens() function works in a similar fashion, except that it\nsplits using a range of characters instead of a specific character or\nsequence.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -1388,7 +2687,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1713,
+            "line": 1824,
             "description": "The splitTokens() function splits a String at one or many character \n\"tokens.\" The tokens parameter specifies the character or characters \nto be used as a boundary.\n\nIf no tokens character is specified, any whitespace character is used \nto split. Whitespace characters include tab (\\t), line feed (\\n), \ncarriage return (\\r), form feed (\\f), and space. To convert a String \nto an array of integers or floats, use the datatype conversion functions \nint() and float() to convert the array of Strings.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -1415,7 +2714,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1814,
+            "line": 1925,
             "description": "Utility function for formatting numbers into strings. There\nare two versions, one for formatting floats and one for formatting\nints. The values for the digits, left, and right parameters should\nalways be positive integers.\n\nAs shown in the above example, nf() is used to add zeros to the\nleft and/or right of a number. This is typically for aligning a list\nof numbers. To remove digits from a floating-point number, use the\nint(), ceil(), floor(), or round() functions.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -1446,7 +2745,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1838,
+            "line": 1949,
             "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut leaves a blank space in front of positive numbers so they align \nwith negative numbers in spite of the minus symbol. There are two \nversions, one for formatting floats and one for formatting ints. The \nvalues for the digits, left, and right parameters should always be \npositive integers.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -1477,7 +2776,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1859,
+            "line": 1970,
             "description": "Utility function for formatting numbers into strings. Similar to nf() \nbut puts a \"+\" in front of positive numbers and a \"-\" in front of \nnegative numbers. There are two versions, one for formatting floats \nand one for formatting ints. The values for the digits, left, and right \nparameters should always be positive integers.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -1508,7 +2807,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1879,
+            "line": 1990,
             "description": "Utility function for formatting numbers into strings and placing \nappropriate commas to mark units of 1000. There are two versions, one \nfor formatting ints and one for formatting an array of ints. The value \nfor the digits parameter should always be a positive integer.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -1539,7 +2838,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1899,
+            "line": 2010,
             "description": "Removes whitespace characters from the beginning and end of a String. \nIn addition to standard whitespace characters such as space, carriage \nreturn, and tab, this function also removes the Unicode \"nbsp\" character.",
             "cat": "Data",
             "subcat": "String Functions",
@@ -1560,7 +2859,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1923,
+            "line": 2034,
             "description": "Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.\nThe first two parameters set the location, the third sets the width, and the fourth sets the height.",
             "cat": "Document",
             "subcat": "Primitives",
@@ -1596,7 +2895,7 @@
         },
         {
             "file": "basil.js",
-            "line": 1987,
+            "line": 2098,
             "description": "Draws a line (a direct path between two points) to the page.",
             "cat": "Document",
             "subcat": "Primitives",
@@ -1632,7 +2931,41 @@
         },
         {
             "file": "basil.js",
-            "line": 2017,
+            "line": 2128,
+            "description": "Using the beginShape() and endShape() functions allow creating more complex forms. \nbeginShape() begins recording vertices for a shape and endShape() stops recording. \nAfter calling the beginShape() function, a series of vertex() commands must follow. \nTo stop drawing the shape, call endShape().",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "itemtype": "method",
+            "name": "beginShape",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2142,
+            "description": "Shapes are constructed by connecting a series of vertices. vertex() is used to \nspecify the vertex coordinates lines and polygons. It is used exclusively within\nthe beginShape() and endShape() functions.\n\nPlease use either vertex(x, y) or \nfor drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).\nYou can also mix the two approaches.",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "itemtype": "method",
+            "name": "vertex",
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2172,
+            "description": "The endShape() function is the companion to beginShape() and may only be called \nafter beginShape(). The value of the kind parameter tells whether the shape to \ncreate from the provided vertices has to be closed or not (to connect the beginning and the end).",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "itemtype": "method",
+            "name": "endShape",
+            "return": {
+                "description": "newShape",
+                "type": "GraphicLine|Polygon"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 2215,
             "description": "Draws a rectangle to the page.",
             "cat": "Document",
             "subcat": "Primitives",
@@ -1668,7 +3001,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2077,
+            "line": 2275,
             "description": "Modifies the location from which rectangles draw. The default mode is \nrectMode(CORNER), which specifies the location to be the upper left \ncorner of the shape and uses the third and fourth parameters of rect() \nto specify the width and height. The syntax rectMode(CORNERS) uses the \nfirst and second parameters of rect() to set the location of one corner \nand uses the third and fourth parameters to set the opposite corner. \nThe syntax rectMode(CENTER) draws the image from its center point and \nuses the third and forth parameters of rect() to specify the image's \nwidth and height. The syntax rectMode(RADIUS) draws the image from its \ncenter point and uses the third and forth parameters of rect() to specify \nhalf of the image's width and height. The parameter must be written in \n\"ALL CAPS\".",
             "cat": "Document",
             "subcat": "Attributes",
@@ -1685,7 +3018,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2107,
+            "line": 2305,
             "description": "The origin of the ellipse is modified by the ellipseMode() function. \nThe default configuration is ellipseMode(CENTER), which specifies the \nlocation of the ellipse as the center of the shape. The RADIUS mode is \nthe same, but the width and height parameters to ellipse() specify the \nradius of the ellipse, rather than the diameter. The CORNER mode draws \nthe shape from the upper-left corner of its bounding box. The CORNERS \nmode uses the four parameters to ellipse() to set two opposing corners \nof the ellipse's bounding box. The parameter must be written in \"ALL CAPS\".",
             "cat": "Document",
             "subcat": "Attributes",
@@ -1702,7 +3035,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2133,
+            "line": 2331,
             "description": "Sets the width of the stroke used for lines and the border \naround shapes.",
             "cat": "Document",
             "subcat": "Attributes",
@@ -1719,7 +3052,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2150,
+            "line": 2348,
             "description": "Returns the object style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1739,7 +3072,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2174,
+            "line": 2372,
             "description": "Sets the color used to fill shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1755,7 +3088,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2204,
+            "line": 2402,
             "description": "Disables filling geometry. If both noStroke() and noFill() are called, \nnewly drawn shapes will be invisible.",
             "cat": "Color",
             "itemtype": "method",
@@ -1764,7 +3097,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2215,
+            "line": 2413,
             "description": "Sets the color used to draw lines and borders around shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1780,7 +3113,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2244,
+            "line": 2442,
             "description": "Disables drawing the stroke (outline). If both noStroke() and noFill() \nare called, nothing will be drawn to the screen.",
             "cat": "Color",
             "itemtype": "method",
@@ -1789,7 +3122,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2255,
+            "line": 2453,
             "description": "Sets the tint of the color used to fill shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1805,7 +3138,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2270,
+            "line": 2468,
             "description": "Sets the tint of the color used to draw lines and borders around shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -1821,7 +3154,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2285,
+            "line": 2483,
             "description": "Sets the colormode for creating new colors with b.color() to RGB or CMYK.",
             "cat": "Color",
             "itemtype": "method",
@@ -1837,7 +3170,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2301,
+            "line": 2499,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document",
             "cat": "Color",
             "itemtype": "method",
@@ -1857,7 +3190,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2425,
+            "line": 2614,
             "description": "Sets the opacity property of an object.",
             "cat": "Color",
             "itemtype": "method",
@@ -1878,7 +3211,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2441,
+            "line": 2630,
             "description": "Sets the Effects blendMode property of an object.",
             "cat": "Color",
             "itemtype": "method",
@@ -1899,7 +3232,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2473,
+            "line": 2662,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "cat": "Color",
             "itemtype": "method",
@@ -1929,7 +3262,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2531,
+            "line": 2720,
             "description": "Creates a text frame on the current layer on the current page in the current document. \nThe text frame gets created in the position specified by the x and y parameters.\nThe default document font will be used unless a font is set with the textFont() function. \nThe default document font size will be used unless a font size is set with the textSize() function. \nChange the color of the text with the fill() function.\nThe text displays in relation to the textAlign() and textYAlign() functions. \nThe width and height parameters define a rectangular area.",
             "cat": "Typography",
             "itemtype": "method",
@@ -1969,7 +3302,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2581,
+            "line": 2771,
             "description": "Sets text properties to the given item. If the item is not an instance the text property can be set to,\nthe property gets set to the direct descendants of the given item, e.g. all stories of a given document.\n\nIf no value is given and the given property is a string, the function acts as a getter and returns the\ncorresponding value(s) in an array. This can either be an array containing the value of the concrete item\n(e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).",
             "cat": "Typography",
             "itemtype": "method",
@@ -2000,7 +3333,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2663,
+            "line": 2853,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2027,7 +3360,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2682,
+            "line": 2872,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2048,7 +3381,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2697,
+            "line": 2887,
             "description": "Sets the current horizontal and vertical text alignment.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2070,7 +3403,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2722,
+            "line": 2912,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2091,7 +3424,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2738,
+            "line": 2928,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2112,7 +3445,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2753,
+            "line": 2943,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2133,7 +3466,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2768,
+            "line": 2958,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2153,7 +3486,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2787,
+            "line": 2977,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -2173,9 +3506,9 @@
         },
         {
             "file": "basil.js",
-            "line": 2806,
+            "line": 2996,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
-            "cat": "Typography",
+            "cat": "Story",
             "itemtype": "method",
             "name": "linkTextFrames",
             "params": [
@@ -2194,7 +3527,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2826,
+            "line": 3016,
             "description": "Adds an image to the document. If the image argument is given as a string the image file  must be in the document's\ndata directory which is in the same directory where the document is saved in. The image argument can also be a File\ninstance which can be placed even before the document was saved.\nThe second argument can either be the x position of the frame to create or an instance of a rectangle,\noval or polygon to place the image in.\nIf x and y positions are given and width and height are not given, the frame's size gets set to the original image size.",
             "cat": "Document",
             "subcat": "Image",
@@ -2238,7 +3571,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2898,
+            "line": 3088,
             "description": "Transforms position and size of an image.\nThe image fit options are always \"contentToFrame\".",
             "cat": "Document",
             "subcat": "Image",
@@ -2275,7 +3608,7 @@
         },
         {
             "file": "basil.js",
-            "line": 2925,
+            "line": 3115,
             "description": "Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.\nIf no parameter is passed the currently set mode is returned as String.",
             "cat": "Document",
             "subcat": "Image",
@@ -2297,8 +3630,8 @@
         },
         {
             "file": "basil.js",
-            "line": 2990,
-            "description": "A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some \"vector\" math, which is made easy by the methods inside the PVector class.\n\nConstructor of Vector, can be two- or three-dimensional.",
+            "line": 3180,
+            "description": "A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some \"vector\" math, which is made easy by the methods inside the Vector class.\n\nConstructor of Vector, can be two- or three-dimensional.",
             "is_constructor": 1,
             "cat": "Data",
             "subcat": "Vector",
@@ -2326,7 +3659,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3008,
+            "line": 3198,
             "description": "Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).\nIs meant to be called \"static\" i.e. Vector.dist(v1, v2);",
             "cat": "Data",
             "subcat": "Vector",
@@ -2353,7 +3686,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3023,
+            "line": 3213,
             "description": "Static function. Calculates the dot product of two vectors.\nIs meant to be called \"static\" i.e. Vector.dot(v1, v2);",
             "itemtype": "method",
             "name": "Vector.dot",
@@ -2380,7 +3713,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3038,
+            "line": 3228,
             "description": "Static function. Calculates the cross product of two vectors.\nIs meant to be called \"static\" i.e. Vector.cross(v1, v2);",
             "itemtype": "method",
             "name": "Vector.cross",
@@ -2407,7 +3740,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3053,
+            "line": 3243,
             "description": "Static function. Calculates the angle between two vectors.\nIs meant to be called \"static\" i.e. Vector.angleBetween(v1, v2);",
             "itemtype": "method",
             "name": "Vector.angleBetween",
@@ -2434,8 +3767,8 @@
         },
         {
             "file": "basil.js",
-            "line": 3070,
-            "description": "Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.",
+            "line": 3260,
+            "description": "Sets the x, y, and z component of the vector using three separate variables, the data from a Vector, or the values from a float array.",
             "itemtype": "method",
             "name": "Vector.set",
             "cat": "Data",
@@ -2463,7 +3796,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3087,
+            "line": 3277,
             "description": "Gets a copy of the vector, returns a Vector object.",
             "itemtype": "method",
             "name": "Vector.get",
@@ -2477,7 +3810,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3097,
+            "line": 3287,
             "description": "Calculates the magnitude (length) of the vector and returns the result as a float",
             "itemtype": "method",
             "name": "Vector.mag",
@@ -2491,7 +3824,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3110,
+            "line": 3300,
             "description": "Adds x, y, and z components to a vector, adds one vector to another.",
             "itemtype": "method",
             "name": "Vector.add",
@@ -2520,7 +3853,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3130,
+            "line": 3320,
             "description": "Substract x, y, and z components or a full vector from this vector",
             "itemtype": "method",
             "name": "Vector.sub",
@@ -2549,7 +3882,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3150,
+            "line": 3340,
             "description": "Multiplies this vector with x, y, and z components or another vector.",
             "itemtype": "method",
             "name": "Vector.mult",
@@ -2578,7 +3911,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3170,
+            "line": 3360,
             "description": "Divides this vector through x, y, and z components or another vector.",
             "itemtype": "method",
             "name": "Vector.div",
@@ -2607,7 +3940,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3190,
+            "line": 3380,
             "description": "Calculates the distance from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
             "name": "Vector.dist",
@@ -2640,7 +3973,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3206,
+            "line": 3396,
             "description": "Calculates the dot product from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
             "name": "Vector.dot",
@@ -2673,7 +4006,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3220,
+            "line": 3410,
             "description": "Calculates the cross product from this vector to another as x, y, and z components or full vector.",
             "itemtype": "method",
             "name": "Vector.cross",
@@ -2706,7 +4039,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3236,
+            "line": 3426,
             "description": "Normalizes the length of this vector to 1.",
             "cat": "Data",
             "subcat": "Vector",
@@ -2716,7 +4049,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3246,
+            "line": 3436,
             "description": "Normalizes the length of this vector to the given parameter.",
             "itemtype": "method",
             "name": "Vector.limit",
@@ -2733,7 +4066,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3259,
+            "line": 3449,
             "description": "The 2D orientation (heading) of this vector in radian.",
             "itemtype": "method",
             "name": "Vector.heading2D",
@@ -2747,7 +4080,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3269,
+            "line": 3459,
             "description": "Returns data about this vector as a string.",
             "itemtype": "method",
             "name": "Vector.toString",
@@ -2761,7 +4094,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3279,
+            "line": 3469,
             "description": "Returns this vector as an array [x,y,z].",
             "itemtype": "method",
             "name": "Vector.array",
@@ -2775,7 +4108,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3305,
+            "line": 3495,
             "description": "Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2795,7 +4128,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3316,
+            "line": 3506,
             "description": "Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2815,7 +4148,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3327,
+            "line": 3517,
             "description": "Constrains a value to not exceed a maximum and minimum value.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2845,7 +4178,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3343,
+            "line": 3533,
             "description": "Calculates the distance between two points.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2881,7 +4214,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3366,
+            "line": 3556,
             "description": "Returns Euler's number e (2.71828...) raised to the power of the value parameter.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2902,7 +4235,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3377,
+            "line": 3567,
             "description": "Calculates the closest int value that is less than or equal to the value of the parameter.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2923,7 +4256,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3388,
+            "line": 3578,
             "description": "Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2954,7 +4287,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3404,
+            "line": 3594,
             "description": "Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than 0.0.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -2975,7 +4308,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3415,
+            "line": 3605,
             "description": "Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no \"start\" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing \"dist(0, 0, x, y)\".",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3007,7 +4340,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3432,
+            "line": 3622,
             "description": "Re-maps a number from one range to another. In the example above, the number '25' is converted from a value in the range 0..100 into a value that ranges from the left edge (0) to the right edge (width) of the screen.\n\nNumbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3048,7 +4381,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3452,
+            "line": 3642,
             "description": "Determines the largest value in a sequence of numbers.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3079,7 +4412,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3473,
+            "line": 3663,
             "description": "Determines the smallest value in a sequence of numbers.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3110,7 +4443,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3494,
+            "line": 3684,
             "description": "Normalizes a number from another range into a value between 0 and 1. \n\nIdentical to map(value, low, high, 0, 1); \n\nNumbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3141,7 +4474,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3514,
+            "line": 3704,
             "description": "Facilitates exponential expressions. The pow() function is an efficient way of multiplying numbers by themselves (or their reciprocal) in large quantities. For example, pow(3, 5) is equivalent to the expression 3*3*3*3*3 and pow(3, -5) is equivalent to 1 / 3*3*3*3*3",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3167,7 +4500,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3526,
+            "line": 3716,
             "description": "Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3188,7 +4521,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3537,
+            "line": 3727,
             "description": "Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.",
             "cat": "Math",
             "subcat": "Calculation",
@@ -3209,7 +4542,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3553,
+            "line": 3743,
             "description": "Calculates the square root of a number. The square root of a number is always positive, even though there may be a valid negative root. The square root s of number a is such that s*s = a. It is the opposite of squaring.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3230,7 +4563,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3564,
+            "line": 3754,
             "description": "The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3251,7 +4584,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3575,
+            "line": 3765,
             "description": "The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3272,7 +4605,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3586,
+            "line": 3776,
             "description": "The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3293,7 +4626,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3597,
+            "line": 3787,
             "description": "Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3319,7 +4652,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3609,
+            "line": 3799,
             "description": "Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3340,7 +4673,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3620,
+            "line": 3810,
             "description": "Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3361,7 +4694,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3633,
+            "line": 3823,
             "description": "Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3382,7 +4715,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3646,
+            "line": 3836,
             "description": "Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to 6.28). Values are returned in the range -1 to 1.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3403,7 +4736,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3657,
+            "line": 3847,
             "description": "Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.",
             "cat": "Math",
             "subcat": "Trigonometry",
@@ -3424,7 +4757,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3672,
+            "line": 3862,
             "description": "Generates random numbers. Each time the random() function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call random(5) returns values between 0 and 5. If two parameters are passed, it will return a float with a value between the the parameters. The function call random(-5, 10.2) returns values between -5 and 10.2.\n\nOne parameter sets the range from 0 to the given parameter, while with two parameters present you set the range from val1 - val2.",
             "cat": "Math",
             "subcat": "Random",
@@ -3452,7 +4785,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3814,
+            "line": 4004,
             "description": "Returns the Perlin noise value at specified coordinates. Perlin noise is a random sequence generator producing a more natural ordered, harmonic succession of numbers compared to the standard random() function. It was invented by Ken Perlin in the 1980s and been used since in graphical applications to produce procedural textures, natural motion, shapes, terrains etc.\n\nThe main difference to the random() function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between 0.0 and 1.0. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.\n\nThe actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result. \n\nAnother way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn't matter as such, only the distance between successive coordinates does (eg. when using noise() within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of 0.005-0.03 work best for most applications, but this will differ depending on use.",
             "cat": "Math",
             "subcat": "Random",
@@ -3485,7 +4818,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3855,
+            "line": 4045,
             "description": "Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().\n\nBy changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.",
             "cat": "Math",
             "subcat": "Random",
@@ -3507,7 +4840,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3871,
+            "line": 4061,
             "description": "Sets the seed value for noise(). By default, noise() produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.",
             "cat": "Math",
             "subcat": "Random",
@@ -3524,7 +4857,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3888,
+            "line": 4078,
             "description": "The year() function returns the current year as an integer (2012, 2013 etc).",
             "cat": "Environment",
             "subcat": "Date",
@@ -3538,7 +4871,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3900,
+            "line": 4090,
             "description": "The month() function returns the current month as a value from 1 - 12.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3552,7 +4885,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3912,
+            "line": 4102,
             "description": "The day() function returns the current day as a value from 1 - 31.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3566,7 +4899,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3924,
+            "line": 4114,
             "description": "The hour() function returns the current hour as a value from 0 - 23.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3580,7 +4913,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3936,
+            "line": 4126,
             "description": "The minute() function returns the current minute as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3594,7 +4927,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3948,
+            "line": 4138,
             "description": "The second() function returns the current second as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3608,7 +4941,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3960,
+            "line": 4150,
             "description": "Returns the number of milliseconds (thousandths of a second) since starting an applet. This information is often used for timing animation sequences.",
             "cat": "Environment",
             "subcat": "Date",
@@ -3622,7 +4955,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3972,
+            "line": 4162,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -3648,7 +4981,7 @@
         },
         {
             "file": "basil.js",
-            "line": 3998,
+            "line": 4188,
             "description": "Returns the currently selected object(s)",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -3669,7 +5002,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4015,
+            "line": 4205,
             "description": "Reads the contents of a file into a String.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "cat": "Data",
             "subcat": "Input",
@@ -3690,7 +5023,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4035,
+            "line": 4246,
             "description": "Reads the contents of a file and creates a String array of its individual lines.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "cat": "Data",
             "subcat": "Input",
@@ -3711,7 +5044,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4062,
+            "line": 4285,
             "description": "Prints a message line to the console output in the ExtendScript editor.",
             "cat": "Output",
             "itemtype": "method",
@@ -3727,7 +5060,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4073,
+            "line": 4298,
             "description": "Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.",
             "cat": "Output",
             "itemtype": "method",
@@ -3743,7 +5076,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4084,
+            "line": 4311,
             "description": "Print numerous information about the current environment to the console",
             "cat": "Output",
             "itemtype": "method",
@@ -3752,7 +5085,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4102,
+            "line": 4329,
             "description": "Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.\nIf the given file exists it gets overridden.",
             "cat": "Output",
             "itemtype": "method",
@@ -3773,7 +5106,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4120,
+            "line": 4347,
             "description": "Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.",
             "todo": [
                 "data folder is not created automatically",
@@ -3798,7 +5131,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4135,
+            "line": 4362,
             "description": "Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.",
             "cat": "Output",
             "itemtype": "method",
@@ -3819,7 +5152,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4198,
+            "line": 4425,
             "description": "The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.\nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3840,7 +5173,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4269,
+            "line": 4496,
             "description": "Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3867,7 +5200,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4291,
+            "line": 4524,
             "description": "Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3894,7 +5227,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4313,
+            "line": 4553,
             "description": "Scales the given PageItem to the given width. If width is not given as argument the current width is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3921,7 +5254,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4335,
+            "line": 4576,
             "description": "Scales the given PageItem to the given height. If height is not given as argument the current height is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3948,7 +5281,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4357,
+            "line": 4599,
             "description": "Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3981,7 +5314,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4384,
+            "line": 4636,
             "description": "Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4014,16 +5347,24 @@
         },
         {
             "file": "basil.js",
-            "line": 4628,
-            "description": "Run the sketch! Has to be called in every sketch a the very end of the code.",
+            "line": 4890,
+            "description": "Run the sketch! Has to be called in every sketch a the very end of the code.\nYou may add performance setting options when calling b.go():\nb.go(b.MODESILENT) alternatively: b.go()\nb.go(b.MODEHIDDEN)\nb.go(b.MODEVISIBLE)\nCurrently there is no performance optimization in b.loop()",
             "cat": "Environment",
             "itemtype": "method",
             "name": "go",
+            "params": [
+                {
+                    "name": "modes",
+                    "description": "Optional: Switch performanceMode",
+                    "type": "MODESILENT|MODEHIDDEN|MODEVISIBLE",
+                    "optional": true
+                }
+            ],
             "class": "b"
         },
         {
             "file": "basil.js",
-            "line": 4648,
+            "line": 4936,
             "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle.\n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!\nThe framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.",
             "cat": "Environment",
             "itemtype": "method",
@@ -4039,1402 +5380,12 @@
         },
         {
             "file": "basil.js",
-            "line": 4682,
+            "line": 4969,
             "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
             "cat": "Environment",
             "itemtype": "method",
             "name": "noLoop",
             "class": "b"
-        }
-    ],
-    "warnings": [
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:46"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:53"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:53"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:61"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:61"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:69"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:69"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:78"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:78"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:86"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:86"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:94"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:101"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:108"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:108"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:116"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:116"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:124"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:124"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:132"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:132"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:140"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:140"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:148"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:148"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:156"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:156"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:164"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:164"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:172"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:172"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:180"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:180"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:188"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:188"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:196"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:196"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:204"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:204"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:212"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:212"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:220"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:220"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:228"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:228"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:236"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:236"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:244"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:244"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:259"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:266"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:372"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:372"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:398"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:398"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:424"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:424"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:444"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:444"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:457"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:457"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:479"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:479"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:493"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:493"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:514"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:514"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:533"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:533"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:545"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:545"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:566"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:566"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:586"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:586"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:608"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:620"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:620"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:640"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:640"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:712"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:712"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:743"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:743"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:774"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:774"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:818"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:818"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:846"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:874"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:874"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:899"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:921"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:938"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:956"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:956"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:978"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:978"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1013"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1013"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1062"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1062"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1084"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1084"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1118"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1118"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1132"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1132"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1154"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1197"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1216"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1235"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1235"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1275"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1275"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1313"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1313"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1343"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1343"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1395"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1395"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1413"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1413"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1438"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1438"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1542"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1542"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1572"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1572"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1607"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1607"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1628"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1628"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1651"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1651"
-        },
-        {
-            "message": "param name/type/descript missing",
-            "line": " basil.js:1651"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1669"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1669"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1687"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1687"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1713"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1713"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1814"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1814"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1838"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1838"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1859"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1859"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1879"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1879"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1899"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1899"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1923"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1923"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:1987"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:1987"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2017"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2017"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2077"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2077"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2107"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2107"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2133"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2133"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2150"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2174"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2204"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2215"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2244"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2255"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2270"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2285"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2301"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2425"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2441"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2473"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2531"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2581"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2663"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2682"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2697"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2722"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2738"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2753"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2768"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2787"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2806"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2826"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2826"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2898"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2898"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2925"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2925"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:2990"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:2990"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3008"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3008"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3023"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3023"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3038"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3038"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3053"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3053"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3070"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3070"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3087"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3087"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3097"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3097"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3110"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3110"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3130"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3130"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3150"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3150"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3170"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3170"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3190"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3190"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3206"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3206"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3220"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3220"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3236"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3236"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3246"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3246"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3259"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3259"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3269"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3269"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3279"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3279"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3305"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3305"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3316"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3316"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3327"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3327"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3343"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3343"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3366"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3366"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3377"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3377"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3388"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3388"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3404"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3404"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3415"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3415"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3432"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3432"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3452"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3452"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3473"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3473"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3494"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3494"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3514"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3514"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3526"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3526"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3537"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3537"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3553"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3553"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3564"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3564"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3575"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3575"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3586"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3586"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3597"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3597"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3609"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3609"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3620"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3620"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3633"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3633"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3646"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3646"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3657"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3657"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3672"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3672"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3814"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3814"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3855"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3855"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3871"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3871"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3888"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3888"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3900"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3900"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3912"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3912"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3924"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3924"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3936"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3936"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3948"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3948"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3960"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3960"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3972"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3972"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:3998"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:3998"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4015"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4015"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4035"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4035"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4062"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4073"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4084"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4102"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4120"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4135"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4198"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4198"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4269"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4269"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " basil.js:4269"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4291"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4291"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " basil.js:4291"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4313"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4313"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " basil.js:4313"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4335"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4335"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " basil.js:4335"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4357"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4357"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " basil.js:4357"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4384"
-        },
-        {
-            "message": "unknown tag: subcat",
-            "line": " basil.js:4384"
-        },
-        {
-            "message": "replacing incorrect tag: returns with return",
-            "line": " basil.js:4384"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4628"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4648"
-        },
-        {
-            "message": "unknown tag: cat",
-            "line": " basil.js:4682"
-        },
-        {
-            "message": "Missing item type\nIf no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.\n\ncat Document\nsubcat Multi-Getters\nmethod sentences\nparam  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in\nparam  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount\nreturn {Array} An array of strings",
-            "line": " basil.js:670"
-        },
-        {
-            "message": "Missing item type\nChecks whether a var is a number, returns true if this is the case\n\ncat Data\nmethod isNumber\nparam  {Object|String|Number}  num The number to check\nreturn {Boolean}",
-            "line": " basil.js:887"
-        },
-        {
-            "message": "Missing item type",
-            "line": " basil.js:1540"
         }
     ]
 }

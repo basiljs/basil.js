@@ -278,8 +278,7 @@ pjax.updateVisibility = function () {
 pjax.handleClasses = function (req, res, next) {
     var status = res.ioResponse.status;
 
-    // Handles success and local filesystem XHRs.
-    if (!status || (status >= 200 && status < 300)) {
+    if (status >= 200 && status < 300) {
         pjax.initClassTabView();
     }
 
@@ -289,8 +288,7 @@ pjax.handleClasses = function (req, res, next) {
 pjax.handleFiles = function (req, res, next) {
     var status = res.ioResponse.status;
 
-    // Handles success and local filesystem XHRs.
-    if (!status || (status >= 200 && status < 300)) {
+    if (status >= 200 && status < 300) {
         pjax.initLineNumbers();
     }
 

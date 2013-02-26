@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>basil.js - basil.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0pr2&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
     <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0pr2&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,11 +15,11 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="http:&#x2F;&#x2F;basiljs.ch&#x2F;basil2.jpg" title="basil.js"></h1>
+                <h1><img src="https:&#x2F;&#x2F;raw.github.com&#x2F;basiljs&#x2F;basil.js&#x2F;master&#x2F;lib&#x2F;basil.png" title="basil.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1</em>
+            <em>API Docs for: see header basil.js</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,18 +86,23 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;*
+﻿&#x2F;*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
   B A S I L . J S
   An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
   
   License        - MIT
-  Developers     - Benedikt Groß http:&#x2F;&#x2F;benedikt-gross.de
-                 - Ludwig Zeller http:&#x2F;&#x2F;ludwigzeller.de
+
+  Developers     
                  - Ted Davis http:&#x2F;&#x2F;teddavis.org
-  Contributers   - Stefan Landsbek, inital code architecture, http:&#x2F;&#x2F;47nord.de
+                 - Benedikt Groß http:&#x2F;&#x2F;benedikt-gross.de
+                 - Ludwig Zeller http:&#x2F;&#x2F;ludwigzeller.de
+  Contributers   
                  - Philipp Adrian http:&#x2F;&#x2F;www.philippadrian.com&#x2F;
+                 - be:screen GmbH http:&#x2F;&#x2F;bescreen.de
+                 - Stefan Landsbek http:&#x2F;&#x2F;47nord.de
+
   Web Site       - http:&#x2F;&#x2F;basiljs.ch
   Github Repo.   - https:&#x2F;&#x2F;github.com&#x2F;basiljs&#x2F;basil.js
   Processing     - http:&#x2F;&#x2F;processing.org
@@ -128,6 +133,7 @@
   var pub = {};
 
 
+
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; constants
   
@@ -136,7 +142,7 @@
    * @property VERSION {String}
    * @cat Environment
    *&#x2F;
-  pub.VERSION = &quot;0.21&quot;;
+  pub.VERSION = &quot;0.23&quot;;
 
   &#x2F;**
    * Used with b.units() to set the coordinate system to points.
@@ -224,6 +230,14 @@
    * @subcat Primitives
    *&#x2F;
   pub.RADIUS = &quot;radius&quot;;
+
+  &#x2F;**
+   * Close, used for endShape() modes.
+   * @property CLOSE {String}
+   * @cat Document
+   * @subcat Primitives
+   *&#x2F;
+  pub.CLOSE = &quot;close&quot;;
 
   &#x2F;**
    * Two Pi
@@ -330,15 +344,45 @@
   pub.BEFORE = LocationOptions.BEFORE;
 
   &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property AFTER {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;  
-  pub.AFTER = LocationOptions.AFTER;  
-  
+     * Used with b.addPage() to set the position of the new page in the book.
+     * @property AFTER {String}
+     * @cat Document
+     * @subcat Page
+     *&#x2F;
+  pub.AFTER = LocationOptions.AFTER;
+
+    &#x2F;**
+    * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing, this is the default mode
+    * @property MODESILENT {String}
+    * @cat Environment
+    * @subcat modes
+    *&#x2F;
+  pub.MODESILENT = &quot;ModeSilent&quot;;
+    &#x2F;**
+     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling bgo(). The document will be removed from the display list and added again aftrer the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
+     * @property MODEHIDDEN {String}
+     * @cat Environment
+     * @subcat modes
+     *&#x2F;
+  pub.MODEHIDDEN = &quot;ModeHidden&quot;;
+    &#x2F;**
+     * Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was the default in Versions prior to 0.22
+     * @property MODEVISIBLE {String}
+     * @cat Environment
+     * @subcat modes
+     *&#x2F;
+  pub.MODEVISIBLE = &quot;ModeVisible&quot;;
+  &#x2F;**
+   * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
+   * @property DEFAULTMODE {MODESILENT|MODEHIDDEN|MODEVISIBLE} : Sets the default Mode when calling go() without option
+   * @cat Environment
+   * @subcat modes
+   * *&#x2F;
+  pub.DEFAULTMODE = pub.MODEVISIBLE;
+
+
   var ERROR_PREFIX = &quot;\n\n### Basil Error -&gt; &quot;,
-    WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
+      WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
 
 
   &#x2F;&#x2F; ----------------------------------------
@@ -376,7 +420,7 @@
     currRectMode = null,
     currEllipseMode = null,
     noneSwatchColor = null,
-    start = null,
+    startTime = null,
     currFont = null,
     currFontSize = null,
     currAlign = null,
@@ -385,7 +429,8 @@
     currKerning = null,
     currTracking = null,
     currImageMode = null,
-    currCanvasMode = null;
+    currCanvasMode = null,
+    currVertexPoints = null;
 
   &#x2F;&#x2F; all initialisations should go here
   var init = function() {
@@ -394,6 +439,7 @@
     welcome();
 
     &#x2F;&#x2F; -- init internal state vars --
+    startTime = Date.now();
     currStrokeWeight = 1;
     currStrokeTint = 100;
     currFillTint = 100;
@@ -565,7 +611,7 @@
     }
 
     &#x2F;**
-     * Checks for the existance of a given key.
+     * Checks for the existence of a given key.
      * 
      * @cat Data
      * @subcat HashList
@@ -963,9 +1009,9 @@
    * Checks whether a var is an Array, returns true if this is the case
    *
    * @cat Data
-   * @subcat Array Functions
+   * @subcat Type-Check
    * @method isArray
-   * @param  {Object|String|Number}  obj The object to check
+   * @param  {Object|String|Number|Boolean}  obj The object to check
    * @return {Boolean}     [description]
    *&#x2F;
   var isArray = pub.isArray = function(obj) {
@@ -975,19 +1021,34 @@
   &#x2F;**
    * Checks whether a var is a number, returns true if this is the case
    *
-   * cat Data
-   * method isNumber
-   * param  {Object|String|Number}  num The number to check
-   * return {Boolean}
+   * @cat Data
+   * @subcat Type-Check
+   * @method isNumber
+   * @param  {Object|String|Number|Boolean}  num The number to check
+   * @return {Boolean}
    *&#x2F;
   var isNumber = pub.isNumber = function(num) {
     return !isNaN(parseFloat(num)) &amp;&amp; isFinite(num);
   };
 
   &#x2F;**
+   * Checks whether a var is a string, returns true if this is the case
+   *
+   * @cat Data
+   * @subcat Type-Check
+   * @method isString
+   * @param  {Object|String|Number|Boolean} str The string to check
+   * @return {Boolean}
+   *&#x2F;
+  var isString = pub.isString = function(str) {
+    return Object.prototype.toString.call(str) === &#x27;[object String]&#x27;;
+  };
+
+  &#x2F;**
    * Checks whether a var is an indesign text object, returns true if this is the case
    *
    * @cat Document
+   * @subcat Type-Check
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
    * @return {Boolean}     [description]
@@ -1094,7 +1155,8 @@
       error(&quot;Bad type for b.page().&quot;);
     }
     updatePublicPageSizeVars();
-    app.activeWindow.activePage = currPage; &#x2F;&#x2F; focus in GUI
+      if (currDoc.windows.length)
+        app.activeWindow.activePage = currPage; &#x2F;&#x2F; focus in GUI  if not in MODEHIDDEN
     return currentPage();
   };
 
@@ -1167,7 +1229,7 @@
       error(&quot;Invalid call of b.removePage().&quot;);
     }
 
-  }
+  };
 
   &#x2F;**
    * Returns the current page number of either the current page or the given Page object.
@@ -1181,27 +1243,27 @@
    *&#x2F;
   pub.pageNumber = function (pageObj) {
 
-    if(typeof pageObj === &#x27;number&#x27;) error( &quot;b.pageNumber cannot be called with a Number argument.&quot; );
+      if (typeof pageObj === &#x27;number&#x27;) error(&quot;b.pageNumber cannot be called with a Number argument.&quot;);
 
-    if(pageObj instanceof Page) {
-      return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
-    } else {
-      return parseInt(pub.page().name); &#x2F;&#x2F; number of current page
-    }
-    
-  }
+      if (pageObj instanceof Page) {
+          return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
+      } else {
+          return parseInt(pub.page().name); &#x2F;&#x2F; number of current page
+      }
+
+  };
 
   &#x2F;&#x2F; TODO: does not work?
   pub.nextPage = function () {
-    var p = pub.doc().pages.nextItem(currentPage());
-    return pub.page(p);
-  }
+      var p = pub.doc().pages.nextItem(currentPage());
+      return pub.page(p);
+  };
 
   &#x2F;&#x2F; TODO: does not work?
   pub.previousPage = function () {
-    var p = pub.doc().pages.previousItem(currentPage());
-    return pub.page(p);
-  }
+      var p = pub.doc().pages.previousItem(currentPage());
+      return pub.page(p);
+  };
 
   &#x2F;**
    * The number of all pages in the current document.
@@ -1210,12 +1272,61 @@
    * @subcat Page
    * @method pageCount
    * @return The amount of pages.
-   * @throws {Error} e If Page not found or invalid call.
    *&#x2F;
   pub.pageCount = function() {
     return currentDoc().pages.count();
   };
 
+  &#x2F;**
+   * The number of all stories in the current document.
+   *
+   * @cat Document
+   * @subcat Story
+   * @method storyCount
+   * @return The amount of stories.
+   *&#x2F;
+  pub.storyCount = function() {
+    return currentDoc().stories.count();
+  };
+
+  &#x2F;**
+   * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+   *
+   * @cat Document
+   * @subcat Story
+   * @method addToStory
+   * @param {Story} [story] The story
+   * @param {PageItem|String} [itemOrString] The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+   *&#x2F;
+  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+    if (story instanceof Story &amp;&amp; arguments.length &gt; 1) {
+      &#x2F;&#x2F; add string
+      if (isString(itemOrString)) {
+        if (insertionPointorMode instanceof InsertionPoint) {
+          insertionPointorMode.contents = itemOrString;
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          story.insertionPoints.firstItem().contents = itemOrString;
+        } else {
+          story.insertionPoints.lastItem().contents = itemOrString;
+        }
+      }
+      &#x2F;&#x2F; add other stuff
+      else {
+        app.select(itemOrString);
+        app.cut();
+        if (insertionPointorMode instanceof InsertionPoint) {
+          app.select(insertionPointorMode);
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          app.select(story.insertionPoints.firstItem());
+        } else {
+          app.select(story.insertionPoints.lastItem());
+        }
+        app.paste();
+      }
+    } else {
+      error(&quot;Wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
+    }
+  };
 
   &#x2F;**
    * Returns the current layer and sets it if argument layer is given.
@@ -1752,7 +1863,7 @@
   &#x2F;&#x2F;    s = s.replace(&#x2F;[ ]{2,}&#x2F;gi,&quot; &quot;); 
       s = s.replace(&#x2F;\n*&#x2F;,&quot;&quot;);     
       return s;
-  }  
+  };
 
   &#x2F;**
    * Combines an array of Strings into one String, each separated by 
@@ -2022,7 +2133,7 @@
    * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    *&#x2F;
   pub.ellipse = function(x, y, w, h){
-    if (arguments.length !== 4) error(&quot;Not enough parameters to draw a ellipse! Use: x, y, w, h&quot;);
+    if (arguments.length !== 4) error(&quot;Not enough parameters to draw an ellipse! Use: x, y, w, h&quot;);
     var ellipseBounds = [];
     if (currEllipseMode === pub.CORNER) {
       ellipseBounds[0] = y;
@@ -2101,6 +2212,93 @@
                      currMatrix.adobeMatrix() );
     return newLine;
   };
+
+  &#x2F;**
+   * Using the beginShape() and endShape() functions allow creating more complex forms. 
+   * beginShape() begins recording vertices for a shape and endShape() stops recording. 
+   * After calling the beginShape() function, a series of vertex() commands must follow. 
+   * To stop drawing the shape, call endShape().
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method beginShape
+   *&#x2F;
+  pub.beginShape = function() {
+    currVertexPoints = [];
+  };
+
+  &#x2F;**
+   * Shapes are constructed by connecting a series of vertices. vertex() is used to 
+   * specify the vertex coordinates lines and polygons. It is used exclusively within
+   * the beginShape() and endShape() functions.
+   *
+   * Please use either vertex(x, y) or 
+   * for drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).
+   * You can also mix the two approaches.
+   * 
+   * @cat Document
+   * @subcat Primitives
+   * @method vertex
+   *&#x2F;
+  pub.vertex = function() {
+    if (isArray(currVertexPoints)) {
+      if (arguments.length === 2) {
+        currVertexPoints.push([arguments[0], arguments[1]]);
+      } else if (arguments.length === 6) {
+        &#x2F;&#x2F; [[xL1, YL1], [x1, y1], [xR1, yR1]]
+        currVertexPoints.push([ [arguments[2], arguments[3]],
+                                [arguments[0], arguments[1]],
+                                [arguments[4], arguments[5]] ]);
+      } else {
+        error(&quot;Wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!&quot; );
+      }
+    } else {
+      notCalledBeginShapeError();
+    }
+  };
+
+  &#x2F;**
+   * The endShape() function is the companion to beginShape() and may only be called 
+   * after beginShape(). The value of the kind parameter tells whether the shape to 
+   * create from the provided vertices has to be closed or not (to connect the beginning and the end).
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method endShape
+   * @return {GraphicLine|Polygon} newShape
+   *&#x2F;
+  pub.endShape = function(shapeMode) {
+    if (isArray(currVertexPoints)) {
+      if (currVertexPoints.length &gt; 0) {
+        var newShape = null;
+        if (shapeMode === pub.CLOSE) {
+          newShape = currentPage().polygons.add( currentLayer() );
+        } else {
+          newShape = currentPage().graphicLines.add( currentLayer() );
+        }
+        with (newShape) {
+          strokeWeight = currStrokeWeight;
+          strokeTint = currStrokeTint;
+          fillColor = currFillColor;
+          fillTint = currFillTint;
+          strokeColor = currStrokeColor;
+        }
+        newShape.paths.item(0).entirePath = currVertexPoints;
+        newShape.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.TOP_LEFT_ANCHOR,
+                         currMatrix.adobeMatrix() );
+
+        currVertexPoints = [];
+        return newShape;
+      }
+    } else {
+      notCalledBeginShapeError();
+    }
+  };
+  
+  function notCalledBeginShapeError () {
+    error(&quot;You have to call first beginShape(), before calling vertex() and endShape()&quot;);
+  }
 
   &#x2F;**
    * Draws a rectangle to the page.
@@ -2462,31 +2660,22 @@
       }
       
 
-    } else if (arguments.length === 4) {
-      &#x2F;&#x2F; R G B + name
-      if (typeof d === &#x27;string&#x27;) {
-        if (currColorMode === pub.RGB) {
+    } else if (arguments.length === 4 &amp;&amp; typeof d === &#x27;string&#x27;) {
+    &#x2F;&#x2F; R G B + name
           props.model = ColorModel.PROCESS;
           props.space = ColorSpace.RGB;
           props.colorValue = [a,b,c];
           props.name = d; 
-        } else {
-          error(colorErrorMsg);
-        }
-      &#x2F;&#x2F; C M Y K
-      } else {
-        if (currColorMode === pub.CMYK) {
+
+    &#x2F;&#x2F; C M Y K
+    } else if (arguments.length === 4 &amp;&amp; typeof d === &#x27;number&#x27;){
           props.model = ColorModel.PROCESS;
           props.space = ColorSpace.CMYK;
           props.colorValue = [a,b,c,d];
           props.name = &quot;C=&quot;+a+&quot; M=&quot;+b+&quot; Y=&quot;+c+&quot; K=&quot;+d;
-        } else {
-          error(colorErrorMsg); 
-        }
-      }
-
+     
     &#x2F;&#x2F; C M Y K + name
-    } else if (arguments.length === 5 &amp;&amp; currColorMode === pub.CMYK) {
+    } else if (arguments.length === 5) {
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [a,b,c,d];
@@ -2635,10 +2824,11 @@
    * @return {TextFrame}  The created text frame instance
    *&#x2F;
   pub.text = function(txt, x, y, w, h) {
-    if (arguments.length !== 5) error(&quot;Not enough parameters to draw a text! Use: txt, x, y, w, h&quot;);
+    if (arguments.length !== 5) error(&quot;Not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)&quot;);
+    if (!(isString(txt) || isNumber(txt))) warning(&quot;The first parameter has to be a string! But is something else: &quot;+ typeof txt +&quot;. Use: b.text(txt, x, y, w, h)&quot;);
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
-      contents = txt;
+      contents = txt.toString();
       geometricBounds = [y, x, (y+h), (x+w)];
       textFramePreferences.verticalJustification = currYAlign;
     }
@@ -2735,18 +2925,18 @@
     return result;
   };
 
-  var isValid = function(item) {
-    if(typeof item != &#x27;undefined&#x27;){
-      if(item.hasOwnProperty(&quot;isValid&quot;)) {
-        if (!item.isValid) {
-          return false;
-        } else {
-          return true;
-        }
+  var isValid = function (item) {
+      if (typeof item != &#x27;undefined&#x27;) {
+          if (item.hasOwnProperty(&quot;isValid&quot;)) {
+              if (!item.isValid) {
+                  return false;
+              } else {
+                  return true;
+              }
+          }
       }
-    } 
-    return false;
-  }
+      return false;
+  };
 
   &#x2F;**
    * Returns the current font and sets it if argument fontName is given.
@@ -2894,7 +3084,7 @@
   &#x2F;**
    * Links the stories of two textframes to one story. Text of first textframe overflows to second one.
    *
-   * @cat Typography
+   * @cat Story
    * @method linkTextFrames
    * @param  {TextFrame} textFrameA
    * @param  {TextFrame} textFrameB
@@ -3076,7 +3266,7 @@
   var Vector = pub.Vector = function() {
 
     &#x2F;**
-     * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and&#x2F;or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object&#x27;s location, expressed as a point.), a velocity (the rate at which the object&#x27;s position changes per time unit, expressed as a vector), and acceleration (the rate at which the object&#x27;s velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition&#x2F;multiplication&#x2F;etc. Instead, we&#x27;ll need to do some &quot;vector&quot; math, which is made easy by the methods inside the PVector class.
+     * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and&#x2F;or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object&#x27;s location, expressed as a point.), a velocity (the rate at which the object&#x27;s position changes per time unit, expressed as a vector), and acceleration (the rate at which the object&#x27;s velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition&#x2F;multiplication&#x2F;etc. Instead, we&#x27;ll need to do some &quot;vector&quot; math, which is made easy by the methods inside the Vector class.
      *
      * Constructor of Vector, can be two- or three-dimensional.
      * 
@@ -3156,7 +3346,7 @@
     Vector.prototype = {
 
       &#x2F;**
-       * Sets the x, y, and z component of the vector using three separate variables, the data from a PVector, or the values from a float array.
+       * Sets the x, y, and z component of the vector using three separate variables, the data from a Vector, or the values from a float array.
        * @method Vector.set
        * @cat Data
        * @subcat Vector
@@ -4054,7 +4244,7 @@
    * @return {Number}
    *&#x2F;
   pub.millis = function() {
-    return Date.now() - start;
+    return Date.now() - startTime;
   };
 
   &#x2F;**
@@ -4111,14 +4301,35 @@
    * @return {String}  String file content.
    *&#x2F;
   pub.loadString = function(file) {
-    var inputFile = initDataFile(file, true),
+
+    &#x2F;&#x2F;http:&#x2F;&#x2F;codegolf.stackexchange.com&#x2F;questions&#x2F;464&#x2F;shortest-url-regex-match-in-javascript
+    &#x2F;&#x2F; var re = &#x2F;(^|\s)((https?:\&#x2F;\&#x2F;)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\&#x2F;\S*)?)&#x2F;gi;  
+    &#x2F;&#x2F; if( typeof(file) === &quot;string&quot; &amp;&amp; file.match(re)) { &#x2F;&#x2F; load URL
+    
+    &#x2F;&#x2F;   return getURLImpl(file);
+
+    &#x2F;&#x2F; } else {
+      var inputFile = initDataFile(file, true),
       data = null;
 
-    inputFile.open(&#x27;r&#x27;);
-    data = inputFile.read();
-    inputFile.close();
-    return data;
+      inputFile.open(&#x27;r&#x27;);
+      data = inputFile.read();
+      inputFile.close();
+      return data;
+    &#x2F;&#x2F; }
+
   };
+
+  &#x2F;&#x2F; var getURLImpl = function(url) {
+  &#x2F;&#x2F;     #include &quot;basiljs&#x2F;bundle&#x2F;lib&#x2F;extendables&#x2F;extendables.jsx&quot;;
+  &#x2F;&#x2F;     var http = require(&quot;http&quot;);
+  &#x2F;&#x2F;     if (!http.has_internet_access()) throw new Error(&quot;No internet connection&quot;);
+  &#x2F;&#x2F;     var req = new http.HTTPRequest(&quot;GET&quot;, url);
+  &#x2F;&#x2F;     req.follow_redirects(true);
+  &#x2F;&#x2F;     req.header(&quot;User-Agent&quot;, &quot;basiljs-&quot; + b.VERSION);
+  &#x2F;&#x2F;     var res = req.do();
+  &#x2F;&#x2F;     return res.body;
+  &#x2F;&#x2F; }
 
   &#x2F;**
    * Reads the contents of a file and creates a String array of its individual lines.
@@ -4131,16 +4342,28 @@
    * @return {String[]}  Array of the individual lines in the given file.
    *&#x2F;
   pub.loadStrings = function(file) {
-    var inputFile = initDataFile(file, true),
+
+    &#x2F;&#x2F;http:&#x2F;&#x2F;codegolf.stackexchange.com&#x2F;questions&#x2F;464&#x2F;shortest-url-regex-match-in-javascript
+    &#x2F;&#x2F; var re = &#x2F;(^|\s)((https?:\&#x2F;\&#x2F;)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\&#x2F;\S*)?)&#x2F;gi;  
+    &#x2F;&#x2F; if( typeof(file) === &quot;string&quot; &amp;&amp; file.match(re)) { &#x2F;&#x2F; load URL
+    
+    &#x2F;&#x2F;   var result = getURLImpl(file);
+    &#x2F;&#x2F;   return b.split(result, &quot;\n&quot;);
+
+    &#x2F;&#x2F; } else {
+
+      var inputFile = initDataFile(file, true),
       result = [];
 
-    inputFile.open(&#x27;r&#x27;);
-    while (!inputFile.eof) {
-      result.push(inputFile.readln());
-    }
-    inputFile.close();
+      inputFile.open(&#x27;r&#x27;);
+      while (!inputFile.eof) {
+        result.push(inputFile.readln());
+      }
+      inputFile.close();
 
-    return result;
+      return result;
+    &#x2F;&#x2F; }
+
   };
 
 
@@ -4156,6 +4379,8 @@
    *&#x2F;
   var println = pub.println = function(msg) {
     $.writeln(msg);
+    if (progressPanel)
+      progressPanel.writeMessage(msg + &quot;\n&quot;);
   };
 
   &#x2F;**
@@ -4167,6 +4392,8 @@
    *&#x2F;
   pub.print = function(msg) {
     $.write(msg);
+    if (progressPanel)
+      progressPanel.writeMessage(msg);
   };
 
   &#x2F;**
@@ -4365,11 +4592,17 @@
    * @returns {Number} The current x position
    *&#x2F;
   pub.itemX = function(pItem, x) {
+    var off = 0;
+    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof x === &#x27;number&#x27; ){
-        b.itemPosition(pItem, x, pItem.geometricBounds[0]);
+        var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
+        var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
+&#x2F;&#x2F;        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) &#x2F; 2;
+        pItem.geometricBounds = [ pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width ];
       } else {
-        return precision(pItem.geometricBounds[1], 5); &#x2F;&#x2F; CS6 sets geometricBounds to initially slightly off values... terrible workaround
+&#x2F;&#x2F;        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) &#x2F; 2;
+        return precision(pItem.geometricBounds[1], 5) + off; &#x2F;&#x2F; CS6 sets geometricBounds to initially slightly off values... terrible workaround
       }
     } else {
       error(&quot;pItem has to be a valid PageItem&quot;);
@@ -4387,11 +4620,18 @@
    * @returns {Number} The current y position
    *&#x2F;
   pub.itemY = function(pItem, y) {
+    var off = 0;
+    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof y === &#x27;number&#x27; ) {
-        b.itemPosition(pItem, pItem.geometricBounds[1], y);
+        var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
+        var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
+&#x2F;&#x2F;        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) &#x2F; 2;
+        b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
+        pItem.geometricBounds = [ y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off ];
       } else {
-        return precision(pItem.geometricBounds[0], 5);
+&#x2F;&#x2F;        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) &#x2F; 2;
+        return precision(pItem.geometricBounds[0], 5) + off;
       }
     } else {
       error(&quot;pItem has to be a valid PageItem&quot;);
@@ -4409,6 +4649,7 @@
    * @returns {Number} The current width
    *&#x2F;
   pub.itemWidth = function(pItem, width) {
+    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof width === &#x27;number&#x27; ){
         b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
@@ -4431,6 +4672,7 @@
    * @returns {Number} The current height
    *&#x2F;
   pub.itemHeight = function(pItem, height) {
+    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof height === &#x27;number&#x27; ){
         b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
@@ -4454,12 +4696,22 @@
    * @returns {Object} Returns an object with the fields x and y
    *&#x2F;
   pub.itemPosition = function(pItem, x, y) {
+
+    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
+
     if ( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
     
       if( typeof x === &#x27;number&#x27; &amp;&amp; typeof y === &#x27;number&#x27;) {
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
         var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-        pItem.geometricBounds = [ y, x, y + height, x + width ];
+        var offX = 0;
+        var offY = 0;
+        &#x2F;&#x2F; if(currRectMode === b.CENTER) {
+        &#x2F;&#x2F;   offX = width &#x2F; 2;
+        &#x2F;&#x2F;   offY = height &#x2F; 2;
+        &#x2F;&#x2F; }
+        pItem.geometricBounds = [ y + offY, x + offX, y + height + offY, x + width + offX];
+        
       } else {
         return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
       }
@@ -4481,12 +4733,22 @@
    * @returns {Object} Returns an object with the fields width and height
    *&#x2F;
   pub.itemSize = function(pItem, width, height) {
+    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if (pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
     
+      var x = pItem.geometricBounds[1];
+      var y = pItem.geometricBounds[0];
+
       if( typeof width === &#x27;number&#x27;  &amp;&amp; typeof height === &#x27;number&#x27; ) {
-        var x = pItem.geometricBounds[1];
-        var y = pItem.geometricBounds[0];
-        pItem.geometricBounds = [ y, x, y + height, x + width ];
+        &#x2F;&#x2F; if(currRectMode === b.CENTER) {
+        &#x2F;&#x2F;   &#x2F;&#x2F; current center, calc old width and height
+        &#x2F;&#x2F;   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) &#x2F; 2;
+        &#x2F;&#x2F;   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) &#x2F; 2;
+        &#x2F;&#x2F;   pItem.geometricBounds = [ y - height &#x2F; 2, x - width &#x2F; 2, y + height &#x2F; 2, x + width &#x2F; 2];
+        &#x2F;&#x2F; } else {
+          pItem.geometricBounds = [ y, x, y + height, x + width];
+        &#x2F;&#x2F; }
+        
       } else {
         return { width: pItem.geometricBounds[3] - pItem.geometricBounds[1] , height: pItem.geometricBounds[2] - pItem.geometricBounds[0] };
       }
@@ -4712,25 +4974,51 @@
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; execution
-  
+
   &#x2F;**
    * Run the sketch! Has to be called in every sketch a the very end of the code.
-   *
+   * You may add performance setting options when calling b.go():
+   * b.go(b.MODESILENT) alternatively: b.go()
+   * b.go(b.MODEHIDDEN)
+   * b.go(b.MODEVISIBLE)
+   * Currently there is no performance optimization in b.loop()
    * @cat Environment
    * @method go
+   * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
    *&#x2F;
-    pub.go = function() {
-    currentDoc();
-    try{
+  pub.go = function (mode) {
+    if (!mode) {
+      mode = b.DEFAULTMODE;
+    }
+    app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
+    app.preflightOptions.preflightOff = true;
+
+    try {
+      currentDoc(mode);
+        if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
+            progressPanel = new Progress();
       runSetup();
       runDrawOnce();
-      b.println(&quot;Finished.&quot;);
-      exit();
+      var executionDuration = pub.millis();
+      if (executionDuration &lt; 1000) {
+        println(&quot;[Finished in &quot; + executionDuration + &quot;ms]&quot;);
+      } else {
+        println(&quot;[Finished in &quot; + (executionDuration&#x2F;1000).toPrecision(3) + &quot;s]&quot;);
+      }
+
     } catch (e) { &#x2F;&#x2F; exception not caught individually
-&#x2F;&#x2F;      b.println(dump(e));
-      alert(e); &#x2F;&#x2F; make verbose
-      exit(); &#x2F;&#x2F; quit program execution
+        alert(e); &#x2F;&#x2F; make verbose
     }
+
+    if(currDoc &amp;&amp; !currDoc.windows.length) {
+      currDoc.windows.add(); &#x2F;&#x2F;open the hidden doc
+    }
+    closeHiddenDocs();
+    if (progressPanel)
+        progressPanel.closePanel();
+    app.scriptPreferences.enableRedraw = true;
+    app.preflightOptions.preflightOff = false;
+    exit(); &#x2F;&#x2F; quit program execution
   };
 
   &#x2F;**
@@ -4752,7 +5040,6 @@
     else sleep = Math.round(1000&#x2F;framerate);
 
     if ($.engineName !== &#x27;loop&#x27;) {
-      error(&#x27;Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
       error(&#x27;Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
     }
 
@@ -4792,7 +5079,7 @@
       if (typeof glob.setup === &#x27;function&#x27;) {
         glob.setup();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
   };
 
   var runDrawOnce = function() {
@@ -4800,7 +5087,7 @@
       if (typeof glob.draw === &#x27;function&#x27;) {
         glob.draw();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.entireScript);
+    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
   };
 
   var runDrawLoop = function() {
@@ -4813,27 +5100,56 @@
 
   var welcome = function() {
     clearConsole();
-    $.writeln(&quot;Using basil.js &quot;
+    println(&quot;Using basil.js &quot;
         + pub.VERSION
         + &quot; ...&quot;);
   };
-  
-  var currentDoc = function() {
-    if (!currDoc) {
-      var doc = null;
-      try {
-        doc = app.activeDocument;
-        &#x2F;&#x2F;if( doc.documentPreferences.facingPages ) warning(&quot;Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.&quot;);
-      } catch(e) {
-        doc = app.documents.add();
-        &#x2F;&#x2F;doc.documentPreferences.facingPages = true; &#x2F;&#x2F; turn facing pages off on new documents
-      }
-      setCurrDoc(doc);
-    }
-    return currDoc;
-  };
 
-  var setCurrDoc = function(doc) {
+    var currentDoc = function (mode) {
+        if (!currDoc) {
+            var doc = null;
+            if (app.documents.length) {
+                doc = app.activeDocument;
+                if (mode == b.MODEHIDDEN) {
+                    if (doc.modified)
+                        throw (&quot;To run in MODEHIDDEN save your active doc before processing.&quot;);
+                    var docPath = doc.fullName;
+                    doc.close(); &#x2F;&#x2F;Close the dog and reopen it without adding to the display list
+                    doc = app.open(File(docPath), false);
+                }
+            }
+            else {
+                doc = app.documents.add(mode != b.MODEHIDDEN);
+
+            }
+
+
+            &#x2F;*
+             try {
+             doc = app.activeDocument;
+             &#x2F;&#x2F;if( doc.documentPreferences.facingPages ) warning(&quot;Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.&quot;);
+             } catch (e) {
+             doc = app.documents.add();
+             &#x2F;&#x2F;doc.documentPreferences.facingPages = true; &#x2F;&#x2F; turn facing pages off on new documents
+             }
+             *&#x2F;
+            setCurrDoc(doc);
+        }
+        return currDoc;
+    };
+
+    var closeHiddenDocs = function () {
+        &#x2F;&#x2F;in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+        for (var i = app.documents.length - 1; i &gt;= 0; i -= 1) {
+            var d = app.documents[i];
+            if (!d.windows.length) {
+                d.close(SaveOptions.NO);
+            }
+        }
+    };
+
+
+    var setCurrDoc = function(doc) {
     resetCurrDoc();
     currDoc = doc;
     &#x2F;&#x2F; -- setup document --
@@ -4849,6 +5165,48 @@
     updatePublicPageSizeVars();
   };
 
+
+  var progressPanel;
+
+  var Progress = function () {
+    this.init = function () {
+      this.panel = Window.find(&quot;window&quot;, &quot;processing...&quot;);
+      if (this.panel === null) {
+        this.panel = new Window(&#x27;window&#x27;, &quot;processing...&quot;);
+        var logo = (Folder.fs == &quot;Macintosh&quot; ) ? new File(&quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;) : new File(&quot;%USERPROFILE%Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;); &#x2F;&#x2F;todo Windows File Path for logo  , in the meantime embed as binary String
+        if (logo.exists) {
+          this.panel.add(&quot;image&quot;, undefined, logo);
+        }
+        this.panel.statusbar = this.panel.add(&quot;edittext&quot;, [0, 0, 400, 300], &quot;&quot;, {multiline: true, scrolling: false, readonly: true});
+      }
+      this.panel.statusbar.text = &quot;Using basil.js &quot; + pub.VERSION + &quot; ...&quot;;
+      this.panel.show();
+    };
+    this.closePanel = function () {
+      if (this.panel) {
+        this.panel.hide();
+        this.panel.close();
+      }
+    };
+    this.writeMessage = function (msg) {
+      if (Folder.fs == &quot;Macintosh&quot;) { &#x2F;&#x2F;Indesign Bug on Mac: Need to set app.scriptPreferences.enableRedraw = true to redraw window....
+        var rd = app.scriptPreferences.enableRedraw;
+        app.scriptPreferences.enableRedraw = true;
+      }
+      var lines = this.panel.statusbar.text.split(&#x2F;\n&#x2F;);
+      if (lines.length &gt; 17)
+        lines.shift();
+      lines.push(msg);
+      this.panel.statusbar.text = lines.join(&quot;\n&quot;);
+      this.panel.layout.layout();
+      if (Folder.fs == &quot;Macintosh&quot;) {
+        app.scriptPreferences.enableRedraw = rd;
+      }
+    };
+    this.init();
+  };
+
+
   var resetCurrDoc = function() {
     &#x2F;&#x2F; resets doc and doc specific vars
     currDoc = null;
@@ -4860,7 +5218,7 @@
     currRectMode = pub.CORNER;
     currEllipseMode = pub.CENTER;
     currYAlign = VerticalJustification.TOP_ALIGN;
-    start = Date.now();
+    startTime = Date.now();
     currFont = null;
     currImageMode = pub.CORNER;
     pub.resetMatrix();
@@ -4869,7 +5227,11 @@
   var currentLayer = function() {
     if (!currLayer) {
       currentDoc();
-      currLayer = app.activeDocument.activeLayer;
+      if (currDoc.windows.length)
+        currLayer = app.activeDocument.activeLayer;
+       else
+        currLayer = currDoc.layers[0];
+
     }
     return currLayer;
   };
@@ -4877,14 +5239,17 @@
   var currentPage = function() {
     if (!currPage) {
       currentDoc();
+        if (currDoc.windows.length)
       currPage = app.activeWindow.activePage;
+        else
+        currPage = currDoc.pages[0];
     }
     return currPage;
   };
 
   var updatePublicPageSizeVars = function () {
     var pageBounds = currentPage().bounds; &#x2F;&#x2F; [y1, x1, y2, x2]
-    var facingPages = app.activeDocument.documentPreferences.facingPages;
+    var facingPages = currDoc.documentPreferences.facingPages;
     var singlePageMode = false;
 
     var widthOffset = heightOffset = 0;
@@ -4993,12 +5358,12 @@
   };
 
   var error = pub.error = function(msg) {
-    $.writeln(ERROR_PREFIX + msg);
+    println(ERROR_PREFIX + msg);
     throw new Error( msg );
   };
 
   var warning = pub.warning = function(msg) {
-    $.writeln(WARNING_PREFIX + msg);
+    println(WARNING_PREFIX + msg);
   };
 
   var clearConsole = function() {
