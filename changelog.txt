@@ -5,7 +5,9 @@
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 0.23 - 28 Feb 2013
 
-...
++ new functions to work convenient with stories (indesign model of linked 
+  content or many textframes), e.g. b.addToStory(), b.storyCount() ...
+  see: examples/document/story.jsx
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 0.22 - 25 Feb 2013
