@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="https:&#x2F;&#x2F;raw.github.com&#x2F;basiljs&#x2F;basil.js&#x2F;master&#x2F;lib&#x2F;basil.png" title="basil.js"></h1>
+                <h1><img src="..&#x2F;assets/css/logo.png" title="basil.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -1293,9 +1293,10 @@
    * @method addToStory
    * @param {Story} [story] The story
    * @param {PageItem|String} [itemOrString] The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+   * @throws {Error} e For wrong arguments.
    *&#x2F;
   pub.addToStory = function(story, itemOrString, insertionPointorMode) {
-    if (story instanceof Story &amp;&amp; arguments.length &gt; 1) {
+    if (story instanceof Story &amp;&amp; arguments.length &gt;= 2) {
       &#x2F;&#x2F; add string
       if (isString(itemOrString)) {
         if (insertionPointorMode instanceof InsertionPoint) {
@@ -3532,12 +3533,12 @@
       },
       &#x2F;**
        * The 2D orientation (heading) of this vector in radian.
-       * @method Vector.heading2D
+       * @method Vector.heading
        * @cat Data
        * @subcat Vector
        * @return {Number} A radian angle value
        *&#x2F;
-      heading2D: function() {
+      heading: function() {
         return -Math.atan2(-this.y, this.x);
       },
       &#x2F;**

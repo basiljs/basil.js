@@ -3,7 +3,6 @@
   "description": "basil.js API documentation",
   "version": "see header basil.js",
   "url": "http://basiljs.ch",
-  "logo": "https://raw.github.com/basiljs/basil.js/master/lib/basil.png",
   "options": {
     "linkNatives": "true",
     "ignorePaths": [
