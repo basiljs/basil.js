@@ -874,7 +874,7 @@
       || container instanceof Layer 
       || container instanceof Group) {
 
-      if(arguments.length === 1){
+      if(arguments.length === 1 || cb === false){
         return container.allPageItems;
       } else if(cb instanceof Function ) {
         return forEach(container.allPageItems, cb);
