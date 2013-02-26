@@ -54,7 +54,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "0.23";
+  pub.VERSION = "1.00";
 
   /**
    * Used with b.units() to set the coordinate system to points.
@@ -264,7 +264,7 @@
   pub.AFTER = LocationOptions.AFTER;
 
     /**
-    * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing, this is the default mode
+    * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
     * @property MODESILENT {String}
     * @cat Environment
     * @subcat modes
@@ -278,18 +278,14 @@
      */
   pub.MODEHIDDEN = "ModeHidden";
     /**
-     * Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was the default in Versions prior to 0.22
+     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was also the default in Versions prior to 0.22
      * @property MODEVISIBLE {String}
      * @cat Environment
      * @subcat modes
      */
   pub.MODEVISIBLE = "ModeVisible";
-  /**
-   * Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
-   * @property DEFAULTMODE {MODESILENT|MODEHIDDEN|MODEVISIBLE} : Sets the default Mode when calling go() without option
-   * @cat Environment
-   * @subcat modes
-   * */
+  
+  //Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
   pub.DEFAULTMODE = pub.MODEVISIBLE;
 
 
@@ -4890,11 +4886,13 @@
 
   /**
    * Run the sketch! Has to be called in every sketch a the very end of the code.
-   * You may add performance setting options when calling b.go():
-   * b.go(b.MODESILENT) alternatively: b.go()
-   * b.go(b.MODEHIDDEN)
-   * b.go(b.MODEVISIBLE)
-   * Currently there is no performance optimization in b.loop()
+   * You may add performance setting options when calling b.go():<br /><br />
+   *
+   * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />   
+   * b.go(b.MODESILENT) <br />
+   * b.go(b.MODEHIDDEN)<br /><br />
+   *
+   * Currently there is no performance optimization in b.loop()<br />
    * @cat Environment
    * @method go
    * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
