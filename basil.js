@@ -54,7 +54,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "0.22";
+  pub.VERSION = "0.23";
 
   /**
    * Used with b.units() to set the coordinate system to points.
