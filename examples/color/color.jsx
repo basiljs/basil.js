@@ -2,9 +2,11 @@
 #include "basiljs/bundle/basil.js";
 
 function draw() {
-  b.clear(b.doc());
+  // get the number of swatches, to see later how many new ones have been created
+  var swatchCount = b.doc().swatches.length;
+  b.println("Document has "+swatchCount+" swatches");
 
-  b.println("The default colormode is: "+ b.colorMode() );
+  b.println("Default colormode is: "+ b.colorMode() );
 
   // create RGB colors
   b.colorMode(b.RGB);
@@ -35,6 +37,8 @@ function draw() {
   var black = b.color("Black");
   b.fill( black );
   b.rect(0,500,b.width,50); 
+
+  b.println(b.doc().swatches.length - swatchCount +" colors added to the swatches of the document");
 }
 
 b.go();
