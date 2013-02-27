@@ -4998,7 +4998,7 @@
       if (typeof glob.draw === 'function') {
         glob.draw();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
   };
 
   var runDrawLoop = function() {
