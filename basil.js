@@ -4906,8 +4906,8 @@
 
     try {
       currentDoc(mode);
-        if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
-            progressPanel = new Progress();
+      if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
+        progressPanel = new Progress();
       runSetup();
       runDrawOnce();
       var executionDuration = pub.millis();
@@ -4926,7 +4926,7 @@
     }
     closeHiddenDocs();
     if (progressPanel)
-        progressPanel.closePanel();
+      progressPanel.closePanel();
     app.scriptPreferences.enableRedraw = true;
     app.preflightOptions.preflightOff = false;
     exit(); // quit program execution
@@ -5016,51 +5016,52 @@
         + " ...");
   };
 
-    var currentDoc = function (mode) {
-        if (!currDoc) {
-            var doc = null;
-            if (app.documents.length) {
-                doc = app.activeDocument;
-                if (mode == b.MODEHIDDEN) {
-                    if (doc.modified)
-                        throw ("To run in MODEHIDDEN save your active doc before processing.");
-                    var docPath = doc.fullName;
-                    doc.close(); //Close the dog and reopen it without adding to the display list
-                    doc = app.open(File(docPath), false);
-                }
-            }
-            else {
-                doc = app.documents.add(mode != b.MODEHIDDEN);
-
-            }
-
-
-            /*
-             try {
-             doc = app.activeDocument;
-             //if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
-             } catch (e) {
-             doc = app.documents.add();
-             //doc.documentPreferences.facingPages = true; // turn facing pages off on new documents
-             }
-             */
-            setCurrDoc(doc);
+  var currentDoc = function (mode) {
+    if (!currDoc) {
+      var doc = null;
+      if (app.documents.length) {
+        doc = app.activeDocument;
+        if (mode == b.MODEHIDDEN) {
+          if (doc.modified) {
+            throw ("To run in MODEHIDDEN save your active doc before processing.");
+          }
+          var docPath = doc.fullName;
+          doc.close(); // Close the doc and reopen it without adding to the display list
+          doc = app.open(File(docPath), false);
         }
-        return currDoc;
-    };
+      }
+      else {
+        println("new doc");
+        // doc = app.documents.add(mode != b.MODEHIDDEN);
+        doc = app.documents.add();
+      }
 
-    var closeHiddenDocs = function () {
-        //in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
-        for (var i = app.documents.length - 1; i >= 0; i -= 1) {
-            var d = app.documents[i];
-            if (!d.windows.length) {
-                d.close(SaveOptions.NO);
-            }
-        }
-    };
+      /*
+       try {
+       doc = app.activeDocument;
+       //if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
+       } catch (e) {
+       doc = app.documents.add();
+       //doc.documentPreferences.facingPages = true; // turn facing pages off on new documents
+       }
+       */
+      setCurrDoc(doc);
+    }
+    return currDoc;
+  };
+
+  var closeHiddenDocs = function () {
+      //in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+      for (var i = app.documents.length - 1; i >= 0; i -= 1) {
+          var d = app.documents[i];
+          if (!d.windows.length) {
+              d.close(SaveOptions.NO);
+          }
+      }
+  };
 
 
-    var setCurrDoc = function(doc) {
+  var setCurrDoc = function(doc) {
     resetCurrDoc();
     currDoc = doc;
     // -- setup document --
@@ -5077,7 +5078,7 @@
   };
 
 
-  var progressPanel;
+  var progressPanel = null;
 
   var Progress = function () {
     this.init = function () {
