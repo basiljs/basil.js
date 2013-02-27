@@ -1,20 +1,21 @@
 #includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
-// to run this example image file ~/temp/data/image-example.jpg must exist
+
 function draw() {
-  var img = new File('~/temp/data/image-example.jpg');
+
+  b.println("Please note: In order to run this example you have to save your InDesign document first and put a picture file named 'image-example.jpg' next to it in a folder called 'data'.");
 
   // default is CORNER, image should be placed at top left corner
-  b.image(img, 0, 0, 200, 200);
+  b.image("image-example.jpg", 0, 0, 200, 200);
 
   // set to CENTER, image should be just below 1st image
   b.imageMode(b.CENTER);
-  b.image(img, 100, 300, 200, 200);
+  b.image("image-example.jpg", 100, 300, 200, 200);
 
   // set to CORNERS, image should be just below 2nd image and bigger
   b.imageMode(b.CORNERS);
-  b.image(img, 0, 400, 300, 700);
+  b.image("image-example.jpg", 0, 400, 300, 700);
 }
 
 b.go();
