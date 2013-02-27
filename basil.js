@@ -2851,6 +2851,7 @@
                   return true;
               }
           }
+          return true; // if does not have isValid field -> normal array element and not collection
       }
       return false;
   };
