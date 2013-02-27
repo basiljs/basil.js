@@ -5031,7 +5031,6 @@
       if (!stack.match(/go\(.*\)/)) {
         warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
       }
-
       var doc = null;
       if (app.documents.length) {
         doc = app.activeDocument;
