@@ -1,14 +1,18 @@
 ﻿#includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
-var numPages = 10;
-var textSize = 20;
-var pageTime = 0;
-var textLayer = b.layer("text");
-var lineLayer = b.layer("lines");
+var numPages = 2;
+var textSize = 30;
+var textLayer = null;
+var lineLayer = null;
+
+function setup() {
+  textLayer = b.layer("text");
+  lineLayer = b.layer("lines");
+}
 
 function draw() {
-  
+  var pageTime = 0;
   for(var i = 0; i < numPages; i++){
     textLines();
     if(i < numPages-1){
@@ -18,7 +22,6 @@ function draw() {
     pageTime = b.millis();
   }
   textLayer.visible = false;
-  b.println("total script took " + (pageTime/1000) + " seconds to process");
 }
 
 function textLines(){
@@ -54,4 +57,6 @@ function textLines(){
   });
 }
 
+//b.go(b.MODEHIDDEN);
+//b.go(b.MODESILENT);
 b.go();
