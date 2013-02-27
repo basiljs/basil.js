@@ -74,6 +74,35 @@ b.test('ColorTests', {
     assert(magenta.colorValue[1] === 100);
     assert(magenta.colorValue[2] === 3);
     assert(magenta.colorValue[3] === 4);
+  },
+
+  testIsColorAddedToSwatches: function(b) {
+    var doc = b.doc();
+    b.colorMode(b.RGB);
+    var swatchCountStart = doc.swatches.length;
+    var red = b.color(56,2,3);
+    var green = b.color(0,255,0,"a color with a name");
+    var rgbGrey = b.color(50);
+    var swatchCountEnd = doc.swatches.length;
+
+    assert((swatchCountStart+3) === swatchCountEnd);
+  },
+
+  testAddColorToSwatchesAndGetIt: function(b) {
+    var doc = b.doc();
+    b.colorMode(b.RGB);
+    var red = b.color(56,2,3,"red");
+    var green = b.color(1,255,3,"green");
+    var grey = b.color(50,"grey");
+    var greenSwatch = doc.swatches.item("green");
+
+    assert(b.color("green") === green);
+    assert(b.color("green") === greenSwatch);
+    assert(greenSwatch === green);
+    assert(greenSwatch.colorValue.length === 3);
+    assert(greenSwatch.colorValue[0] === 1);
+    assert(greenSwatch.colorValue[1] === 255);
+    assert(greenSwatch.colorValue[2] === 3);
   }
 });
 

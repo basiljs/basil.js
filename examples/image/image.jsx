@@ -1,13 +1,10 @@
 #includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
-// to run this example image file ~/temp/data/image-example.jpg must exist
+// to run this example 
 function draw() {
-  // place image by file before doc was saved
-  b.image(new File('~/temp/data/image-example.jpg'), 200, 300, 200, 200)
-
-  // save doc to ~/temp/ when indesign prompts
-  b.doc().save();
+  
+  b.println("Please note: In order to run this example you have to save your InDesign document first and put a picture file named 'image-example.jpg' next to it in a folder called 'data'.");
 
   // when doc is saved images can be added by name from data directory in same folder as document
   // add image and fit image size to width and height
