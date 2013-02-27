@@ -4990,7 +4990,7 @@
       if (typeof glob.setup === 'function') {
         glob.setup();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
   };
 
   var runDrawOnce = function() {
