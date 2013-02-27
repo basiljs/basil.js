@@ -2676,7 +2676,9 @@
    * @return {Color} Interpolated color
    */
   pub.lerpColor = function (c1, c2, amt) {
-    if (c1 instanceof Color && c2 instanceof Color && typeof amt === 'number') {
+    if ( (c1 instanceof Color || c1 instanceof Swatch) && 
+          (c2 instanceof Color || c2 instanceof Swatch) && 
+          typeof amt === 'number') {
       if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
         var C1 = c1.colorValue[0];
         var M1 = c1.colorValue[1];
