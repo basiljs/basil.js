@@ -4,8 +4,7 @@
 function draw() {
   var words = b.split('apple bear cat dog', ' ');
 
-  // saveStrings before doc was saved with file instance
-  b.saveStrings(new File('~/temp/data/saveStrings-example-1.txt'), words);
+  b.println("Please note: You have to have your InDesign document saved already, so that basil.js can create a data folder for you next to it.");
 
   b.doc().save();
 
