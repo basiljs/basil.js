@@ -289,7 +289,7 @@
   pub.DEFAULTMODE = pub.MODEVISIBLE;
 
 
-  var ERROR_PREFIX = "\n\n### Basil Error -> ",
+  var ERROR_PREFIX = "\nBasil.js Error -> ",
       WARNING_PREFIX = "### Basil Warning -> ";
 
 
@@ -425,7 +425,7 @@
       for (var i = 0, len = collection.length; i < len; i++) {
         
         if(!isValid(collection[i])) {
-            warning("Invalid object processed in forEach.");
+            warning("forEach(), invalid object processed.");
             continue;          
         }
 
@@ -567,7 +567,7 @@
         var keys = [];
         for(var key in obj) 
           {
-            if( typeof obj[key] != 'number' ) error("getKeysByValues() only works with Numbers as values. ");
+            if( typeof obj[key] != 'number' ) error("HashList.getKeysByValues(), only works with Numbers as values. ");
             keys.push(key);
           }
         return keys.sort(function(a,b){return obj[b]-obj[a]});
@@ -675,7 +675,7 @@
     } else if (cb instanceof Function) {
       return forEach(doc.stories, cb);
     } else {
-      error("Incorrect call of b.stories().");
+      error("b.stories(), incorrect call. Wrong parameters!");
     }
   };
 
@@ -696,7 +696,7 @@
       item[0]; // check if list
       err = true; // access ok -> error
     } catch (expected) {};
-    if(err) error("Array/Collection has been passed to b.paragraphs(). Single object expected.");
+    if(err) error("b.paragraphs(), Array/Collection has been passed to b.paragraphs(). Single object expected.");
 
     if(arguments.length === 1) {
       return item.paragraphs;
@@ -728,7 +728,7 @@
       item[0]; // check if list
       err = true; // access ok -> error
     } catch (expected) {};
-    if(err) error("Array/Collection has been passed to b.sentences(). Single object expected.");
+    if(err) error("b.sentences(), Array/Collection has been passed to b.sentences(). Single object expected.");
 
     if(arguments.length >= 1 ) {
       var arr;
@@ -736,7 +736,7 @@
         str = item.contents;  
         arr = str.match( /[^\.!\?]+[\.!\?]+/g );
       } catch (e){
-        error("Object passed to b.sentences() does not have text or is incompatible.");
+        error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
       }
 
       if(arguments.length === 1) {
@@ -744,7 +744,7 @@
       } else if (cb instanceof Function) {
         forEach(arr,cb);
       } else {
-        error("callback is not a Function.");
+        error("b.sentences(), the callback parameter is not a Function.");
       }
 
     }
@@ -769,7 +769,7 @@
       item[0]; // check if list
       err = true; // access ok -> error
     } catch (expected) {};
-    if(err) error("Array/Collection has been passed to b.lines(). Single object expected.");
+    if(err) error("b.lines(), Array/Collection has been passed to b.lines(). Single object expected.");
 
     if(arguments.length === 1) {
       return item.lines;
@@ -800,7 +800,7 @@
       item[0]; // check if list
       err = true; // access ok -> error
     } catch (expected) {};
-    if(err) error("Array/Collection has been passed to b.words(). Single object expected.");
+    if(err) error("b.words(), Array/Collection has been passed to b.words(). Single object expected.");
     
     if(arguments.length === 1){
       return item.words;
@@ -831,7 +831,7 @@
       item[0]; // check if list
       err = true; // access ok -> error
     } catch (expected) {};
-    if(err) error("Array/Collection has been passed to b.characters(). Single object expected.");
+    if(err) error("characters(), Array/Collection has been passed to b.characters(). Single object expected.");
 
     if(arguments.length === 1) {
       return item.characters;
@@ -880,7 +880,7 @@
         return forEach(container.allPageItems, cb);
       }
     } else {
-      error("Not a valid PageItem container, should be Document, Page, Layer or Group");
+      error("b.items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
     }
   };
   
@@ -903,7 +903,7 @@
           // Groups have to be avoided for deletion
           // otherwise deletion process is confused
           if(item !== null && ! (item instanceof Group) ) {
-            if(item.locked) error("Some items are locked. Please unlock them first.");
+            if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
             item.remove();
           }
         });
@@ -1022,12 +1022,12 @@
       return currCanvasMode;
     } else if ( typeof m === "string" ) {
 
-      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages ) b.error("Cannot set a facing pages mode to a single page document");
+      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages ) b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
 
       currCanvasMode = m;
       updatePublicPageSizeVars();
     } else {
-      error("Problem setting canvasMode. Please consult the reference.");
+      error("b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
     }
 
   };  
@@ -1056,11 +1056,11 @@
       try {
         tempPage.id;
       } catch (e) {
-        error('Page ' + page + ' does not exist.');
+        error('b.page(), ' + page + ' does not exist.');
       }
       currPage = tempPage;
     } else if (typeof page !== 'undefined') {
-      error("Bad type for b.page().");
+      error("b.page(), bad type for b.page().");
     }
     updatePublicPageSizeVars();
       if (currDoc.windows.length)
@@ -1112,7 +1112,7 @@
       return nP;
 
     } catch (e) {
-      error("Invalid location argument passed to addPage()");
+      error("b.addPage(), invalid location argument passed to addPage()");
     }
 
   };
@@ -1134,7 +1134,7 @@
       currPage = null; // reset!
       currentPage();
     } else {
-      error("Invalid call of b.removePage().");
+      error("b.removePage(), invalid call. Wrong parameter!");
     }
 
   };
@@ -1151,7 +1151,7 @@
    */
   pub.pageNumber = function (pageObj) {
 
-      if (typeof pageObj === 'number') error("b.pageNumber cannot be called with a Number argument.");
+      if (typeof pageObj === 'number') error("b.pageNumber(), cannot be called with a Number argument.");
 
       if (pageObj instanceof Page) {
           return parseInt(pageObj.name); // current number of given page
@@ -1234,7 +1234,7 @@
         app.paste();
       }
     } else {
-      error("Wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.")
+      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.")
     }
   };
 
@@ -1298,7 +1298,7 @@
       currUnits = units;
       updatePublicPageSizeVars();
     } else {
-      error("Not supported unit");
+      error("b.unit(), not supported unit");
     }
     return currUnits;
   };
@@ -1447,7 +1447,7 @@
         .replace( rvalidbraces, "")) ) {
         return ( new Function( "return " + data ) )();
       }
-      error( "Invalid JSON: " + data );
+      error( "b.JSON.decode(), invalid JSON: " + data );
     },
     /**
      * Function convert an javascript object to a JSON-string. Usage:
@@ -1515,7 +1515,7 @@
       if (typeof separator === 'string') {
         initDelimiter(delimiter);
       } else {
-        error("Separator has to be a character or string");
+        error("b.CSV.delimiter, separator has to be a character or string");
       }
     };
 
@@ -2043,7 +2043,7 @@
    * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    */
   pub.ellipse = function(x, y, w, h){
-    if (arguments.length !== 4) error("Not enough parameters to draw an ellipse! Use: x, y, w, h");
+    if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
     var ellipseBounds = [];
     if (currEllipseMode === pub.CORNER) {
       ellipseBounds[0] = y;
@@ -2106,7 +2106,7 @@
    * @return {GraphicLine} New GraphicLine
    */
   pub.line = function(x1, y1, x2, y2) {
-    if (arguments.length !== 4) error("Not enough parameters to draw a line! Use: x1, y1, x2, y2");
+    if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
     var lines = currentPage().graphicLines;
     var newLine = lines.add( currentLayer() );
     with (newLine) {
@@ -2166,7 +2166,7 @@
                                 [arguments[0], arguments[1]],
                                 [arguments[4], arguments[5]] ]);
       } else {
-        error("Wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!" );
+        error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!" );
       }
     } else {
       notCalledBeginShapeError();
@@ -2213,7 +2213,7 @@
   };
   
   function notCalledBeginShapeError () {
-    error("You have to call first beginShape(), before calling vertex() and endShape()");
+    error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
   }
 
   /**
@@ -2229,7 +2229,7 @@
    * @return {Rectangle} New rectangle
    */
   pub.rect = function(x, y, w, h){
-    if (arguments.length !== 4) error("Not enough parameters to draw a rect! Use: x, y, w, h");
+    if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
     var rectBounds = [];
     if (currRectMode === pub.CORNER) {
       rectBounds[0] = y;
@@ -2302,7 +2302,7 @@
       currRectMode = mode;
       return currRectMode;
     } else {
-      error("Unsupported rectMode. Use: CORNER, CORNERS, CENTER.");
+      error("b.rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER.");
     }
   };
 
@@ -2327,7 +2327,7 @@
       currEllipseMode = mode;
       return currEllipseMode;
     } else {
-      error("Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
+      error("b.ellipseMode(), Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
     }
   };
 
@@ -2345,7 +2345,7 @@
     if (typeof weight === 'string' || typeof weight === 'number') {
       currStrokeWeight = weight;
     } else {
-      error("Not supported type. Please make sure the strokeweight is a number or string");
+      error("b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string");
     }
   };
 
@@ -2394,7 +2394,7 @@
       } else if (arguments.length === 5) {
         currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
       } else {
-        error("Wrong parameters. Use: "
+        error("b.fill(), wrong parameters. Use: "
           + "R,G,B,name or "
           + "C,M,Y,K,name. "
           + "Grey,name "
@@ -2435,7 +2435,7 @@
       } else if (arguments.length === 5) {
         currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
       } else {
-        error("Too many parameters. Use: "
+        error("b.stroke(), too many parameters. Use: "
           + "R,G,B,name or "
           + "C,M,Y,K,name. "
           + "Grey,name ");
@@ -2465,7 +2465,7 @@
     if (typeof tint === 'string' || typeof tint === 'number') {
       currFillTint = tint;
     } else {
-      error("Not supported type. Please make sure the strokeweight is a number or string");
+      error("b.fillTint, not supported type. Please make sure the strokeweight is a number or string");
     }
   };
 
@@ -2480,7 +2480,7 @@
     if (typeof tint === 'string' || typeof tint === 'number') {
       currStrokeTint = tint;
     } else {
-      error("Not supported type. Please make sure the strokeweight is a number or string");
+      error("strokeTint(), not supported type. Please make sure the tint parameter is a number or string");
     }
   };
 
@@ -2496,7 +2496,7 @@
     if (colorMode === pub.RGB || colorMode === pub.CMYK) {
       currColorMode = colorMode;
     } else {
-      error("Not supported colormode, use: b.RGB or b.CMYK");
+      error("b.colorMode(), not supported colormode, use: b.RGB or b.CMYK");
     }
   };
 
@@ -2516,7 +2516,7 @@
         c = arguments[2],
         d = arguments[3],
         e = arguments[4];
-    var colorErrorMsg = "Wrong parameters. Use: "
+    var colorErrorMsg = "b.color(), wrong parameters. Use: "
         + "R,G,B,name in b.colorMode(b.RGB) or "
         + "C,M,Y,K,name in b.colorMode(b.CMYK) or "
         + "GREY,name. "
@@ -2530,7 +2530,7 @@
           newCol = currentDoc().swatches.item(a);
           newCol.name;
         } catch (e) {
-          error("Color doesn't exist.");
+          error("b.color(), a swatch with the provided name doesn't exist.");
         }
         return newCol;
       } else if (typeof a === 'number') {
@@ -2547,7 +2547,7 @@
           props.name = "C="+0+" M="+0+" Y="+0+" K="+a;
         }
       } else {
-        error("Color doesn't exist.");
+        error("b.color(), wrong type of first paramter.");
       }
 
     } else if (arguments.length === 2) {
@@ -2627,7 +2627,7 @@
     if (obj.hasOwnProperty("transparencySettings")) {
       obj.transparencySettings.blendingSettings.opacity = opacity;
     } else {
-      warning("The object "+ obj.toString() +" doesn't have an opacity property");
+      warning("b.opacity(), the object "+ obj.toString() +" doesn't have an opacity property");
     }
   };
 
@@ -2659,7 +2659,7 @@
     if (obj.hasOwnProperty("transparencySettings")) {
       obj.transparencySettings.blendingSettings.blendMode = blendMode;
     } else {
-      warning("The object "+ obj.toString() +" doesn't have a blendMode property");
+      warning("b.blendMode(), the object "+ obj.toString() +" doesn't have a blendMode property");
     }
   };
 
@@ -2706,14 +2706,13 @@
         var ROut = Math.round( pub.lerp(R1,R2,amt) );
         var GOut = Math.round( pub.lerp(G1,G2,amt) );
         var BOut = Math.round( pub.lerp(B1,B2,amt) );
-        warning([ROut,GOut,BOut]);
         return pub.color(ROut,GOut,BOut);
 
       } else {
-        error("Both color must be either CMYK or RGB.");
+        error("b.lerpColor(), both color must be either CMYK or RGB.");
       }
     } else {
-      error("Wrong parameters. Use: two colors (of the same type) and a number.");
+      error("b.lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
     }
   };
 
@@ -2740,8 +2739,8 @@
    * @return {TextFrame}  The created text frame instance
    */
   pub.text = function(txt, x, y, w, h) {
-    if (arguments.length !== 5) error("Not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
-    if (!(isString(txt) || isNumber(txt))) warning("The first parameter has to be a string! But is something else: "+ typeof txt +". Use: b.text(txt, x, y, w, h)");
+    if (arguments.length !== 5) error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
+    if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: "+ typeof txt +". Use: b.text(txt, x, y, w, h)");
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
       contents = txt.toString();
@@ -2815,7 +2814,7 @@
       };
 
     if(!isValid(item)){
-      warning("Invalid object passed to typo()");
+      warning("b.typo(), invalid object passed");
       return;
     }
 
@@ -3009,7 +3008,7 @@
     if (textFrameA instanceof TextFrame && textFrameB instanceof TextFrame) {
       textFrameA.nextTextFrame = textFrameB;
     } else {
-      error("Wrong type! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB");
+      error("linkTextFrames(), wrong type of parameter! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB");
     }
   };
 
@@ -3112,7 +3111,7 @@
       img.fit( FitOptions.CENTER_CONTENT );
       img.fit( FitOptions.contentToFrame );
     } else {
-      error("transformImage(). Wrong type! Use: img, x, y, width, height");
+      error("b.transformImage(), wrong type! Use: img, x, y, width, height");
     }
   };
 
@@ -3132,7 +3131,7 @@
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
       currImageMode = mode;
     } else {
-      error("Unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
+      error("b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
     }
     return currImageMode;
   };
@@ -3530,7 +3529,7 @@
    * @return The constrained value
    */
   pub.constrain = function(aNumber, aMin, aMax) {
-    if(arguments.length !== 3 ) error("Wrong argument count for b.constrain().");
+    if(arguments.length !== 3 ) error("b.constrain(), wrong argument count.");
     return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
   };
 
@@ -3553,7 +3552,7 @@
       dy = arguments[1] - arguments[3];
       return Math.sqrt(dx * dx + dy * dy);
     } else {
-      error("Wrong argument count for b.dist().");
+      error("b.dist(), wrong argument count.");
     }
   };
 
@@ -3591,7 +3590,7 @@
    * @return {Number} The mapped value
    */
   pub.lerp = function(value1, value2, amt) {
-    if(arguments.length !== 3 ) error("Wrong argument count for b.lerp().");
+    if(arguments.length !== 3 ) error("b.lerp(), wrong argument count.");
     return (value2 - value1) * amt + value1;
   };
 
@@ -3618,7 +3617,7 @@
    * @return {Number} the magnitude
    */
   pub.mag = function(a, b, c) {
-    if( ! (arguments.length === 2 || arguments.length === 3 ) )  error("Wrong argument count for b.mag().");
+    if( ! (arguments.length === 2 || arguments.length === 3 ) )  error("b.mag(), wrong argument count.");
     if (c) return Math.sqrt(a * a + b * b + c * c);
     return Math.sqrt(a * a + b * b);
   };
@@ -3639,7 +3638,7 @@
    * @return {Number} the mapped value
    */
   pub.map = function(value, istart, istop, ostart, ostop) {
-    if(arguments.length !== 5 ) error("Wrong argument count for b.map().");
+    if(arguments.length !== 5 ) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
     return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
   };
 
@@ -3657,7 +3656,7 @@
   pub.max = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
-    if (! ("length" in numbers && numbers.length > 0)) error("Non-empty array is expected");
+    if (! ("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
     var max = numbers[0],
       count = numbers.length;
     for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
@@ -3678,7 +3677,7 @@
   pub.min = function() {
     if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
-    if (! ("length" in numbers && numbers.length > 0)) error("Non-empty array is expected");
+    if (! ("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
     var min = numbers[0],
       count = numbers.length;
     for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
@@ -3701,7 +3700,7 @@
    * @return {Number} The normalized value
    */
   pub.norm = function(aNumber, low, high) {
-    if(arguments.length !== 3 ) error("Wrong argument count for b.norm().");
+    if(arguments.length !== 3 ) error("b.norm, wrong argument count.");
     return (aNumber - low) / (high - low);
   };
 
@@ -3738,7 +3737,7 @@
    * @return {Number} 
    */
   pub.sq = function(aNumber) {
-    if(arguments.length !== 1 ) error("Wrong argument count for b.sq().");
+    if(arguments.length !== 1 ) error("b.sq(), wrong argument count.");
     return aNumber * aNumber;
   };
 
@@ -4199,7 +4198,7 @@
    * @return {Object[]} Array of selected object(s).
    */
   pub.selections = function(cb) {
-    if(app.selection.length === 0) error("Selection is empty. Please select something :)");
+    if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something :)");
     if (arguments.length === 1 && cb instanceof Function) {
       return forEach(app.selection, cb);
     } 
@@ -4452,7 +4451,7 @@
       h = y2-y1;
 
       if (w < 0 || h <0) {
-        warning("bounds(textObj), not possible to get correct bounds, possible line break within textObj");
+        warning("b.bounds(), not possible to get correct bounds, possible line break within textObj");
       }
 
       // TODO: not sure if this 100% correct, check
@@ -4492,7 +4491,7 @@
       }
       // no idea what that might be, give up
       else {
-        error("bounds(obj), invalide type! Can't get bounds for this object.");
+        error("b.bounds(), invalide type of parameter! Can't get bounds for this object.");
       }
     }
   };  
@@ -4509,7 +4508,7 @@
    */
   pub.itemX = function(pItem, x) {
     var off = 0;
-    if(currRectMode !== b.CORNER) pub.warning("Please note that only b.CORNER positioning is fully supported. Use with care.");
+    if(currRectMode !== b.CORNER) pub.warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
     if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
       if( typeof x === 'number' ){
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
@@ -4521,7 +4520,7 @@
         return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
       }
     } else {
-      error("pItem has to be a valid PageItem");
+      error("b.itemX(), pItem has to be a valid PageItem");
     }
   };
 
@@ -4537,7 +4536,7 @@
    */
   pub.itemY = function(pItem, y) {
     var off = 0;
-    if(currRectMode !== b.CORNER) pub.warning("Please note that only b.CORNER positioning is fully supported. Use with care.");
+    if(currRectMode !== b.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
     if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
       if( typeof y === 'number' ) {
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
@@ -4550,7 +4549,7 @@
         return precision(pItem.geometricBounds[0], 5) + off;
       }
     } else {
-      error("pItem has to be a valid PageItem");
+      error("b.itemY(), pItem has to be a valid PageItem");
     }
   };
   
@@ -4565,7 +4564,7 @@
    * @returns {Number} The current width
    */
   pub.itemWidth = function(pItem, width) {
-    if(currRectMode !== b.CORNER) pub.warning("Please note that only b.CORNER positioning is fully supported. Use with care.");
+    if(currRectMode !== b.CORNER) pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
     if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
       if( typeof width === 'number' ){
         b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
@@ -4573,7 +4572,7 @@
         return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
       }
     } else {
-      error("pItem has to be a valid PageItem");
+      error("b.itemWidth(), pItem has to be a valid PageItem");
     }
   };
 
@@ -4588,7 +4587,7 @@
    * @returns {Number} The current height
    */
   pub.itemHeight = function(pItem, height) {
-    if(currRectMode !== b.CORNER) pub.warning("Please note that only b.CORNER positioning is fully supported. Use with care.");
+    if(currRectMode !== b.CORNER) pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
     if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
       if( typeof height === 'number' ){
         b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
@@ -4596,7 +4595,7 @@
         return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
       }
     } else {
-      error("pItem has to be a valid PageItem");
+      error("b.itemHeight(), pItem has to be a valid PageItem");
     }
   };
 
@@ -4613,7 +4612,7 @@
    */
   pub.itemPosition = function(pItem, x, y) {
 
-    if(currRectMode !== b.CORNER) pub.warning("Please note that only b.CORNER positioning is fully supported. Use with care.");
+    if(currRectMode !== b.CORNER) pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
 
     if ( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
     
@@ -4633,7 +4632,7 @@
       }
       
     } else {
-      error("itemPosition() only works with child classes of PageItem.");
+      error("b.itemPosition(), works only with child classes of PageItem.");
     }
   };
 
@@ -4649,7 +4648,7 @@
    * @returns {Object} Returns an object with the fields width and height
    */
   pub.itemSize = function(pItem, width, height) {
-    if(currRectMode !== b.CORNER) pub.warning("Please note that only b.CORNER positioning is fully supported. Use with care.");
+    if(currRectMode !== b.CORNER) pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
     if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
     
       var x = pItem.geometricBounds[1];
@@ -4670,7 +4669,7 @@
       }
       
     } else {
-      error("itemSize() only works with child classes of PageItem.");
+      error("b.itemSize(), works only with child classes of PageItem.");
     }
   };
   
@@ -4857,7 +4856,7 @@
     if (matrixStack.length > 0) {
       currMatrix.set( matrixStack.pop() );
     } else {
-      error("Missing a pushMatrix() to go with that popMatrix()");
+      error("b.popMatrix(), missing a pushMatrix() to go with that popMatrix()");
     }
   };
 
@@ -4958,7 +4957,7 @@
     else sleep = Math.round(1000/framerate);
 
     if ($.engineName !== 'loop') {
-      error('Add #targetengine "loop"; at the very top of your script.');
+      error('b.loop(), Add #targetengine "loop"; at the very top of your script.');
     }
 
     currentDoc();
@@ -5041,16 +5040,6 @@
         // println("new doc");
         doc = app.documents.add(mode != b.MODEHIDDEN);
       }
-
-      /*
-       try {
-       doc = app.activeDocument;
-       //if( doc.documentPreferences.facingPages ) warning("Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.");
-       } catch (e) {
-       doc = app.documents.add();
-       //doc.documentPreferences.facingPages = true; // turn facing pages off on new documents
-       }
-       */
       setCurrDoc(doc);
     }
     return currDoc;
@@ -5262,7 +5251,7 @@
         return; // early exit    
 
       default:
-        b.error("basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+        b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
         break;
     }
 
@@ -5277,7 +5266,7 @@
 
   var error = pub.error = function(msg) {
     println(ERROR_PREFIX + msg);
-    throw new Error( msg );
+    throw new Error( ERROR_PREFIX + msg );
   };
 
   var warning = pub.warning = function(msg) {
