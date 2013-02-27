@@ -5032,8 +5032,7 @@
       }
       else {
         // println("new doc");
-        // doc = app.documents.add(mode != b.MODEHIDDEN);
-        doc = app.documents.add();
+        doc = app.documents.add(mode != b.MODEHIDDEN);
       }
 
       /*
