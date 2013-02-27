@@ -503,6 +503,7 @@
      * @subcat HashList
      * @method HashList.set
      * @param {any} key The key to use
+     * @param {any} value The value to set
      * @return {any} The value after setting
      */
     that.set = function(key, value) {
@@ -631,7 +632,6 @@
      * @cat Data
      * @subcat HashList
      * @method HashList.clear
-     * @return {Array} An array with all the keys 
      */
     that.clear = function() {
       for (var i in that.items) {
@@ -666,8 +666,8 @@
    * @subcat Multi-Getters
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
-   * @param  {Function} cb  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
-   * @return {Stories} You can use it like an array.
+   * @param  {Function} [cb]  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
+   * @return {Stories[]} Array of Stories.
    */
   pub.stories = function(doc, cb) {
     if(arguments.length === 1 && doc instanceof Document) {
@@ -686,8 +686,8 @@
    * @subcat Multi-Getters
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
-   * @param  {Function} cb  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
-   * @return {Paragraphs} You can use it like an array.   
+   * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
+   * @return {Paragraphs[]} Array of Paragraphs.   
    */
   pub.paragraphs = function(item, cb) {
 
@@ -759,8 +759,8 @@
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
-   * @param  {Function} cb Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
-   * @return {Lines} You can use it like an array.
+   * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
+   * @return {Lines[]} Array of lines.
    */
   pub.lines = function(item, cb) {
 
@@ -790,8 +790,8 @@
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
-   * @param  {Function} cb Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
-   * @return {Words} You can use it like an array.
+   * @param  {Function} [cb] Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
+   * @return {Words[]} Array of Words.
    */
   pub.words = function(item, cb) {
 
@@ -821,7 +821,7 @@
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
-   * @param  {Function} cb Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
+   * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
    * @return {Characters} You can use it like an array.
    */
   pub.characters = function(item, cb) {
@@ -864,8 +864,8 @@
    * @subcat Multi-Getters
    * @method items
    * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
-   * @param  {Function|Boolean} cb Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
-   * @return {PageItems} You can use it like an array.
+   * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   * @return {PageItems[]} array or PageItems.
    */
   pub.items = function(container, cb) {
 
@@ -919,8 +919,8 @@
    * @cat Data
    * @subcat Type-Check
    * @method isArray
-   * @param  {Object|String|Number|Boolean}  obj The object to check
-   * @return {Boolean}     [description]
+   * @param  {Object|String|Number|Boolean} obj The object to check
+   * @return {Boolean} returns true if this is the case
    */
   var isArray = pub.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
@@ -933,7 +933,7 @@
    * @subcat Type-Check
    * @method isNumber
    * @param  {Object|String|Number|Boolean}  num The number to check
-   * @return {Boolean}
+   * @return {Boolean} returns true if this is the case
    */
   var isNumber = pub.isNumber = function(num) {
     return !isNaN(parseFloat(num)) && isFinite(num);
@@ -946,7 +946,7 @@
    * @subcat Type-Check
    * @method isString
    * @param  {Object|String|Number|Boolean} str The string to check
-   * @return {Boolean}
+   * @return {Boolean} returns true if this is the case
    */
   var isString = pub.isString = function(str) {
     return Object.prototype.toString.call(str) === '[object String]';
@@ -959,7 +959,7 @@
    * @subcat Type-Check
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
-   * @return {Boolean}     [description]
+   * @return {Boolean} returns true if this is the case
    */
   var isText = pub.isText = function(obj) {
     return obj instanceof Character ||
@@ -1191,7 +1191,7 @@
    * @cat Document
    * @subcat Story
    * @method storyCount
-   * @return The amount of stories.
+   * @return {Number} count The amount of stories.
    */
   pub.storyCount = function() {
     return currentDoc().stories.count();
@@ -1203,8 +1203,9 @@
    * @cat Document
    * @subcat Story
    * @method addToStory
-   * @param {Story} [story] The story
-   * @param {PageItem|String} [itemOrString] The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+   * @param {Story} story The story
+   * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+   * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
    * @throws {Error} e For wrong arguments.
    */
   pub.addToStory = function(story, itemOrString, insertionPointorMode) {
@@ -1506,7 +1507,7 @@
      * @cat Data
      * @subcat CSV
      * @method CSV.delimiter
-     * @param  {String} Optional Sets the delimiter for CSV parsing
+     * @param  {String} [delimiter] Optional Sets the delimiter for CSV parsing
      * @return {String} Returns the current delimiter if called without argument
     */
     this.delimiter = function(delimiter) {
@@ -2148,6 +2149,12 @@
    * @cat Document
    * @subcat Primitives
    * @method vertex
+   * @param  {Number} x position x-value
+   * @param  {Number} y position y-value
+   * @param  {Number} [xAnchorLeft] position xAnchorLeft-value
+   * @param  {Number} [yAnchorLeft] position yAnchorLeft-value
+   * @param  {Number} [xAnchorRight] position xAnchorRight-value
+   * @param  {Number} [yAnchorRight] position yAnchorRight-value
    */
   pub.vertex = function() {
     if (isArray(currVertexPoints)) {
@@ -2852,9 +2859,9 @@
    *
    * @cat Typography
    * @method textFont
-   * @param  {String} [fontName] The name of the font to set e.g. Helvetica
+   * @param  {String} fontName The name of the font to set e.g. Helvetica
    * @param  {String} [fontStyle] The Font style e.g. Bold
-   * @return {String}            The name of the current font
+   * @return {String} currFont The name of the current font
    */
   pub.textFont = function(fontName, fontStyle) {
     if (arguments.length === 1) {
@@ -4163,7 +4170,7 @@
    * @subcat Multi-Getters
    * @method labels
    * @param  {String} label The label identifier
-   * @param  {Function} cb Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
    */
   pub.labels = function(label, cb) {
@@ -4188,7 +4195,7 @@
    * @cat Document
    * @subcat Multi-Getters
    * @method selections
-   * @param  {Function} cb Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {Object[]} Array of selected object(s).
    */
   pub.selections = function(cb) {
@@ -4284,7 +4291,7 @@
    * 
    * @cat Output
    * @method println
-   * @param {String} The message to print
+   * @param {String} msg The message to print
    */
   var println = pub.println = function(msg) {
     $.writeln(msg);
@@ -4297,7 +4304,7 @@
    * 
    * @cat Output
    * @method print
-   * @param {String} The message to print
+   * @param {String} msg The message to print
    */
   pub.print = function(msg) {
     $.write(msg);
@@ -4348,7 +4355,7 @@
    * @cat Output
    * @method savePDF
    * @param {String|File} file The file name or a File instance
-   * @param {Boolean} showOptions Whether to show the export dialog
+   * @param {Boolean} [showOptions] Whether to show the export dialog
    */
   pub.savePDF = function(file, showOptions){
     var outputFile = initExportFile(file);
