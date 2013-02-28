@@ -5084,7 +5084,7 @@
         }
         this.panel.statusbar = this.panel.add("edittext", [0, 0, 400, 300], "", {multiline: true, scrolling: false, readonly: true});
       }
-      this.panel.statusbar.text = "Using basil.js " + pub.VERSION + " ...";
+      this.panel.statusbar.text = "Using basil.js " + pub.VERSION + " ... \nEntering background render mode ...";
       this.panel.show();
     };
     this.closePanel = function () {
