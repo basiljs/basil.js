@@ -1122,7 +1122,6 @@
    * @subcat Page
    * @method removePage
    * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
-   * @throws {Error} e If Page not found or invalid call.
    */
   pub.removePage = function (page) {
 
@@ -1145,7 +1144,6 @@
    * @method pageNumber
    * @param  {Page} [pageObj] Optional: The page you want to know the number of.
    * @return {Number} The page number within the document.
-   * @throws {Error} e If Page not found or invalid call.
    */
   pub.pageNumber = function (pageObj) {
 
@@ -1204,7 +1202,6 @@
    * @param {Story} story The story
    * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
    * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
-   * @throws {Error} e For wrong arguments.
    */
   pub.addToStory = function(story, itemOrString, insertionPointorMode) {
     if (story instanceof Story && arguments.length >= 2) {
