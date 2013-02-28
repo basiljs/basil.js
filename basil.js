@@ -2521,7 +2521,7 @@
     if (arguments.length === 1) {
       // get color by name
       if (typeof a === 'string') {
-        newCol = findInCollectionByName(currentDoc().colors, a);
+        newCol = findInCollectionByName(currentDoc().swatches, a);
         if (newCol) {
           return newCol;
         } else {
@@ -2595,9 +2595,9 @@
       error(colorErrorMsg);
     }
 
-    // check whether color was already created and added to colors,
+    // check whether color was already created and added to swatches,
     // keeps the document clean ...
-    newCol = findInCollectionByName(currentDoc().colors, props.name);
+    newCol = findInCollectionByName(currentDoc().swatches, props.name);
     if (newCol) {
       newCol.properties = props;
       return newCol;
