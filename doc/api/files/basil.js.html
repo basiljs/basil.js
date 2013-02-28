@@ -359,25 +359,23 @@
     *&#x2F;
   pub.MODESILENT = &quot;ModeSilent&quot;;
     &#x2F;**
-     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling bgo(). The document will be removed from the display list and added again aftrer the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
+     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
      * @property MODEHIDDEN {String}
      * @cat Environment
      * @subcat modes
      *&#x2F;
   pub.MODEHIDDEN = &quot;ModeHidden&quot;;
     &#x2F;**
-     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was also the default in Versions prior to 0.22
+     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
      * @property MODEVISIBLE {String}
      * @cat Environment
      * @subcat modes
      *&#x2F;
   pub.MODEVISIBLE = &quot;ModeVisible&quot;;
-  
-  &#x2F;&#x2F;Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
   pub.DEFAULTMODE = pub.MODEVISIBLE;
 
 
-  var ERROR_PREFIX = &quot;\n\n### Basil Error -&gt; &quot;,
+  var ERROR_PREFIX = &quot;\nBasil.js Error -&gt; &quot;,
       WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
 
 
@@ -513,7 +511,7 @@
       for (var i = 0, len = collection.length; i &lt; len; i++) {
         
         if(!isValid(collection[i])) {
-            warning(&quot;Invalid object processed in forEach.&quot;);
+            warning(&quot;forEach(), invalid object processed.&quot;);
             continue;          
         }
 
@@ -591,6 +589,7 @@
      * @subcat HashList
      * @method HashList.set
      * @param {any} key The key to use
+     * @param {any} value The value to set
      * @return {any} The value after setting
      *&#x2F;
     that.set = function(key, value) {
@@ -654,7 +653,7 @@
         var keys = [];
         for(var key in obj) 
           {
-            if( typeof obj[key] != &#x27;number&#x27; ) error(&quot;getKeysByValues() only works with Numbers as values. &quot;);
+            if( typeof obj[key] != &#x27;number&#x27; ) error(&quot;HashList.getKeysByValues(), only works with Numbers as values. &quot;);
             keys.push(key);
           }
         return keys.sort(function(a,b){return obj[b]-obj[a]});
@@ -719,7 +718,6 @@
      * @cat Data
      * @subcat HashList
      * @method HashList.clear
-     * @return {Array} An array with all the keys 
      *&#x2F;
     that.clear = function() {
       for (var i in that.items) {
@@ -754,8 +752,8 @@
    * @subcat Multi-Getters
    * @method stories
    * @param  {Document} doc The document instance to iterate the stories in
-   * @param  {Function} cb  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
-   * @return {Stories} You can use it like an array.
+   * @param  {Function} [cb]  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
+   * @return {Stories[]} Array of Stories.
    *&#x2F;
   pub.stories = function(doc, cb) {
     if(arguments.length === 1 &amp;&amp; doc instanceof Document) {
@@ -763,7 +761,7 @@
     } else if (cb instanceof Function) {
       return forEach(doc.stories, cb);
     } else {
-      error(&quot;Incorrect call of b.stories().&quot;);
+      error(&quot;b.stories(), incorrect call. Wrong parameters!&quot;);
     }
   };
 
@@ -774,8 +772,8 @@
    * @subcat Multi-Getters
    * @method paragraphs
    * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
-   * @param  {Function} cb  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
-   * @return {Paragraphs} You can use it like an array.   
+   * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
+   * @return {Paragraphs[]} Array of Paragraphs.   
    *&#x2F;
   pub.paragraphs = function(item, cb) {
 
@@ -784,7 +782,7 @@
       item[0]; &#x2F;&#x2F; check if list
       err = true; &#x2F;&#x2F; access ok -&gt; error
     } catch (expected) {};
-    if(err) error(&quot;Array&#x2F;Collection has been passed to b.paragraphs(). Single object expected.&quot;);
+    if(err) error(&quot;b.paragraphs(), Array&#x2F;Collection has been passed to b.paragraphs(). Single object expected.&quot;);
 
     if(arguments.length === 1) {
       return item.paragraphs;
@@ -816,7 +814,7 @@
       item[0]; &#x2F;&#x2F; check if list
       err = true; &#x2F;&#x2F; access ok -&gt; error
     } catch (expected) {};
-    if(err) error(&quot;Array&#x2F;Collection has been passed to b.sentences(). Single object expected.&quot;);
+    if(err) error(&quot;b.sentences(), Array&#x2F;Collection has been passed to b.sentences(). Single object expected.&quot;);
 
     if(arguments.length &gt;= 1 ) {
       var arr;
@@ -824,7 +822,7 @@
         str = item.contents;  
         arr = str.match( &#x2F;[^\.!\?]+[\.!\?]+&#x2F;g );
       } catch (e){
-        error(&quot;Object passed to b.sentences() does not have text or is incompatible.&quot;);
+        error(&quot;b.sentences(), Object passed to b.sentences() does not have text or is incompatible.&quot;);
       }
 
       if(arguments.length === 1) {
@@ -832,7 +830,7 @@
       } else if (cb instanceof Function) {
         forEach(arr,cb);
       } else {
-        error(&quot;callback is not a Function.&quot;);
+        error(&quot;b.sentences(), the callback parameter is not a Function.&quot;);
       }
 
     }
@@ -847,8 +845,8 @@
    * @method lines
    * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
    *                                                   iterate the lines in
-   * @param  {Function} cb Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
-   * @return {Lines} You can use it like an array.
+   * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
+   * @return {Lines[]} Array of lines.
    *&#x2F;
   pub.lines = function(item, cb) {
 
@@ -857,7 +855,7 @@
       item[0]; &#x2F;&#x2F; check if list
       err = true; &#x2F;&#x2F; access ok -&gt; error
     } catch (expected) {};
-    if(err) error(&quot;Array&#x2F;Collection has been passed to b.lines(). Single object expected.&quot;);
+    if(err) error(&quot;b.lines(), Array&#x2F;Collection has been passed to b.lines(). Single object expected.&quot;);
 
     if(arguments.length === 1) {
       return item.lines;
@@ -878,8 +876,8 @@
    * @method words
    * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
    *                                                        to iterate the words in
-   * @param  {Function} cb Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
-   * @return {Words} You can use it like an array.
+   * @param  {Function} [cb] Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
+   * @return {Words[]} Array of Words.
    *&#x2F;
   pub.words = function(item, cb) {
 
@@ -888,7 +886,7 @@
       item[0]; &#x2F;&#x2F; check if list
       err = true; &#x2F;&#x2F; access ok -&gt; error
     } catch (expected) {};
-    if(err) error(&quot;Array&#x2F;Collection has been passed to b.words(). Single object expected.&quot;);
+    if(err) error(&quot;b.words(), Array&#x2F;Collection has been passed to b.words(). Single object expected.&quot;);
     
     if(arguments.length === 1){
       return item.words;
@@ -909,7 +907,7 @@
    * @method characters
    * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
    *                                                    iterate the characters in
-   * @param  {Function} cb Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
+   * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
    * @return {Characters} You can use it like an array.
    *&#x2F;
   pub.characters = function(item, cb) {
@@ -919,7 +917,7 @@
       item[0]; &#x2F;&#x2F; check if list
       err = true; &#x2F;&#x2F; access ok -&gt; error
     } catch (expected) {};
-    if(err) error(&quot;Array&#x2F;Collection has been passed to b.characters(). Single object expected.&quot;);
+    if(err) error(&quot;characters(), Array&#x2F;Collection has been passed to b.characters(). Single object expected.&quot;);
 
     if(arguments.length === 1) {
       return item.characters;
@@ -952,8 +950,8 @@
    * @subcat Multi-Getters
    * @method items
    * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
-   * @param  {Function|Boolean} cb Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
-   * @return {PageItems} You can use it like an array.
+   * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+   * @return {PageItems[]} array or PageItems.
    *&#x2F;
   pub.items = function(container, cb) {
 
@@ -962,13 +960,13 @@
       || container instanceof Layer 
       || container instanceof Group) {
 
-      if(arguments.length === 1){
+      if(arguments.length === 1 || cb === false){
         return container.allPageItems;
       } else if(cb instanceof Function ) {
         return forEach(container.allPageItems, cb);
       }
     } else {
-      error(&quot;Not a valid PageItem container, should be Document, Page, Layer or Group&quot;);
+      error(&quot;b.items(), Not a valid PageItem container, should be Document, Page, Layer or Group&quot;);
     }
   };
   
@@ -991,7 +989,7 @@
           &#x2F;&#x2F; Groups have to be avoided for deletion
           &#x2F;&#x2F; otherwise deletion process is confused
           if(item !== null &amp;&amp; ! (item instanceof Group) ) {
-            if(item.locked) error(&quot;Some items are locked. Please unlock them first.&quot;);
+            if(item.locked) error(&quot;b.clear(), some items are locked. Please unlock them first and sue then b.clear().&quot;);
             item.remove();
           }
         });
@@ -1007,8 +1005,8 @@
    * @cat Data
    * @subcat Type-Check
    * @method isArray
-   * @param  {Object|String|Number|Boolean}  obj The object to check
-   * @return {Boolean}     [description]
+   * @param  {Object|String|Number|Boolean} obj The object to check
+   * @return {Boolean} returns true if this is the case
    *&#x2F;
   var isArray = pub.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === &#x27;[object Array]&#x27;;
@@ -1021,7 +1019,7 @@
    * @subcat Type-Check
    * @method isNumber
    * @param  {Object|String|Number|Boolean}  num The number to check
-   * @return {Boolean}
+   * @return {Boolean} returns true if this is the case
    *&#x2F;
   var isNumber = pub.isNumber = function(num) {
     return !isNaN(parseFloat(num)) &amp;&amp; isFinite(num);
@@ -1034,7 +1032,7 @@
    * @subcat Type-Check
    * @method isString
    * @param  {Object|String|Number|Boolean} str The string to check
-   * @return {Boolean}
+   * @return {Boolean} returns true if this is the case
    *&#x2F;
   var isString = pub.isString = function(str) {
     return Object.prototype.toString.call(str) === &#x27;[object String]&#x27;;
@@ -1047,7 +1045,7 @@
    * @subcat Type-Check
    * @method isText
    * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
-   * @return {Boolean}     [description]
+   * @return {Boolean} returns true if this is the case
    *&#x2F;
   var isText = pub.isText = function(obj) {
     return obj instanceof Character ||
@@ -1110,12 +1108,12 @@
       return currCanvasMode;
     } else if ( typeof m === &quot;string&quot; ) {
 
-      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) &amp;&amp; !b.doc().documentPreferences.facingPages ) b.error(&quot;Cannot set a facing pages mode to a single page document&quot;);
+      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) &amp;&amp; !b.doc().documentPreferences.facingPages ) b.error(&quot;b.canvasMode(), cannot set a facing pages mode to a single page document&quot;);
 
       currCanvasMode = m;
       updatePublicPageSizeVars();
     } else {
-      error(&quot;Problem setting canvasMode. Please consult the reference.&quot;);
+      error(&quot;b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.&quot;);
     }
 
   };  
@@ -1144,11 +1142,11 @@
       try {
         tempPage.id;
       } catch (e) {
-        error(&#x27;Page &#x27; + page + &#x27; does not exist.&#x27;);
+        error(&#x27;b.page(), &#x27; + page + &#x27; does not exist.&#x27;);
       }
       currPage = tempPage;
     } else if (typeof page !== &#x27;undefined&#x27;) {
-      error(&quot;Bad type for b.page().&quot;);
+      error(&quot;b.page(), bad type for b.page().&quot;);
     }
     updatePublicPageSizeVars();
       if (currDoc.windows.length)
@@ -1200,7 +1198,7 @@
       return nP;
 
     } catch (e) {
-      error(&quot;Invalid location argument passed to addPage()&quot;);
+      error(&quot;b.addPage(), invalid location argument passed to addPage()&quot;);
     }
 
   };
@@ -1212,7 +1210,6 @@
    * @subcat Page
    * @method removePage
    * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
-   * @throws {Error} e If Page not found or invalid call.
    *&#x2F;
   pub.removePage = function (page) {
 
@@ -1222,7 +1219,7 @@
       currPage = null; &#x2F;&#x2F; reset!
       currentPage();
     } else {
-      error(&quot;Invalid call of b.removePage().&quot;);
+      error(&quot;b.removePage(), invalid call. Wrong parameter!&quot;);
     }
 
   };
@@ -1235,11 +1232,10 @@
    * @method pageNumber
    * @param  {Page} [pageObj] Optional: The page you want to know the number of.
    * @return {Number} The page number within the document.
-   * @throws {Error} e If Page not found or invalid call.
    *&#x2F;
   pub.pageNumber = function (pageObj) {
 
-      if (typeof pageObj === &#x27;number&#x27;) error(&quot;b.pageNumber cannot be called with a Number argument.&quot;);
+      if (typeof pageObj === &#x27;number&#x27;) error(&quot;b.pageNumber(), cannot be called with a Number argument.&quot;);
 
       if (pageObj instanceof Page) {
           return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
@@ -1279,7 +1275,7 @@
    * @cat Document
    * @subcat Story
    * @method storyCount
-   * @return The amount of stories.
+   * @return {Number} count The amount of stories.
    *&#x2F;
   pub.storyCount = function() {
     return currentDoc().stories.count();
@@ -1291,9 +1287,9 @@
    * @cat Document
    * @subcat Story
    * @method addToStory
-   * @param {Story} [story] The story
-   * @param {PageItem|String} [itemOrString] The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
-   * @throws {Error} e For wrong arguments.
+   * @param {Story} story The story
+   * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+   * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
    *&#x2F;
   pub.addToStory = function(story, itemOrString, insertionPointorMode) {
     if (story instanceof Story &amp;&amp; arguments.length &gt;= 2) {
@@ -1321,7 +1317,7 @@
         app.paste();
       }
     } else {
-      error(&quot;Wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
+      error(&quot;b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
     }
   };
 
@@ -1385,7 +1381,7 @@
       currUnits = units;
       updatePublicPageSizeVars();
     } else {
-      error(&quot;Not supported unit&quot;);
+      error(&quot;b.unit(), not supported unit&quot;);
     }
     return currUnits;
   };
@@ -1534,7 +1530,7 @@
         .replace( rvalidbraces, &quot;&quot;)) ) {
         return ( new Function( &quot;return &quot; + data ) )();
       }
-      error( &quot;Invalid JSON: &quot; + data );
+      error( &quot;b.JSON.decode(), invalid JSON: &quot; + data );
     },
     &#x2F;**
      * Function convert an javascript object to a JSON-string. Usage:
@@ -1594,7 +1590,7 @@
      * @cat Data
      * @subcat CSV
      * @method CSV.delimiter
-     * @param  {String} Optional Sets the delimiter for CSV parsing
+     * @param  {String} [delimiter] Optional Sets the delimiter for CSV parsing
      * @return {String} Returns the current delimiter if called without argument
     *&#x2F;
     this.delimiter = function(delimiter) {
@@ -1602,7 +1598,7 @@
       if (typeof separator === &#x27;string&#x27;) {
         initDelimiter(delimiter);
       } else {
-        error(&quot;Separator has to be a character or string&quot;);
+        error(&quot;b.CSV.delimiter, separator has to be a character or string&quot;);
       }
     };
 
@@ -2130,7 +2126,7 @@
    * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
    *&#x2F;
   pub.ellipse = function(x, y, w, h){
-    if (arguments.length !== 4) error(&quot;Not enough parameters to draw an ellipse! Use: x, y, w, h&quot;);
+    if (arguments.length !== 4) error(&quot;b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h&quot;);
     var ellipseBounds = [];
     if (currEllipseMode === pub.CORNER) {
       ellipseBounds[0] = y;
@@ -2193,7 +2189,7 @@
    * @return {GraphicLine} New GraphicLine
    *&#x2F;
   pub.line = function(x1, y1, x2, y2) {
-    if (arguments.length !== 4) error(&quot;Not enough parameters to draw a line! Use: x1, y1, x2, y2&quot;);
+    if (arguments.length !== 4) error(&quot;b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2&quot;);
     var lines = currentPage().graphicLines;
     var newLine = lines.add( currentLayer() );
     with (newLine) {
@@ -2236,6 +2232,12 @@
    * @cat Document
    * @subcat Primitives
    * @method vertex
+   * @param  {Number} x position x-value
+   * @param  {Number} y position y-value
+   * @param  {Number} [xAnchorLeft] position xAnchorLeft-value
+   * @param  {Number} [yAnchorLeft] position yAnchorLeft-value
+   * @param  {Number} [xAnchorRight] position xAnchorRight-value
+   * @param  {Number} [yAnchorRight] position yAnchorRight-value
    *&#x2F;
   pub.vertex = function() {
     if (isArray(currVertexPoints)) {
@@ -2247,7 +2249,7 @@
                                 [arguments[0], arguments[1]],
                                 [arguments[4], arguments[5]] ]);
       } else {
-        error(&quot;Wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!&quot; );
+        error(&quot;b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!&quot; );
       }
     } else {
       notCalledBeginShapeError();
@@ -2294,7 +2296,7 @@
   };
   
   function notCalledBeginShapeError () {
-    error(&quot;You have to call first beginShape(), before calling vertex() and endShape()&quot;);
+    error(&quot;b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()&quot;);
   }
 
   &#x2F;**
@@ -2310,7 +2312,7 @@
    * @return {Rectangle} New rectangle
    *&#x2F;
   pub.rect = function(x, y, w, h){
-    if (arguments.length !== 4) error(&quot;Not enough parameters to draw a rect! Use: x, y, w, h&quot;);
+    if (arguments.length !== 4) error(&quot;b.rect(), not enough parameters to draw a rect! Use: x, y, w, h&quot;);
     var rectBounds = [];
     if (currRectMode === pub.CORNER) {
       rectBounds[0] = y;
@@ -2383,7 +2385,7 @@
       currRectMode = mode;
       return currRectMode;
     } else {
-      error(&quot;Unsupported rectMode. Use: CORNER, CORNERS, CENTER.&quot;);
+      error(&quot;b.rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER.&quot;);
     }
   };
 
@@ -2408,7 +2410,7 @@
       currEllipseMode = mode;
       return currEllipseMode;
     } else {
-      error(&quot;Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.&quot;);
+      error(&quot;b.ellipseMode(), Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.&quot;);
     }
   };
 
@@ -2426,7 +2428,7 @@
     if (typeof weight === &#x27;string&#x27; || typeof weight === &#x27;number&#x27;) {
       currStrokeWeight = weight;
     } else {
-      error(&quot;Not supported type. Please make sure the strokeweight is a number or string&quot;);
+      error(&quot;b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string&quot;);
     }
   };
 
@@ -2475,7 +2477,7 @@
       } else if (arguments.length === 5) {
         currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
       } else {
-        error(&quot;Wrong parameters. Use: &quot;
+        error(&quot;b.fill(), wrong parameters. Use: &quot;
           + &quot;R,G,B,name or &quot;
           + &quot;C,M,Y,K,name. &quot;
           + &quot;Grey,name &quot;
@@ -2516,7 +2518,7 @@
       } else if (arguments.length === 5) {
         currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
       } else {
-        error(&quot;Too many parameters. Use: &quot;
+        error(&quot;b.stroke(), too many parameters. Use: &quot;
           + &quot;R,G,B,name or &quot;
           + &quot;C,M,Y,K,name. &quot;
           + &quot;Grey,name &quot;);
@@ -2546,7 +2548,7 @@
     if (typeof tint === &#x27;string&#x27; || typeof tint === &#x27;number&#x27;) {
       currFillTint = tint;
     } else {
-      error(&quot;Not supported type. Please make sure the strokeweight is a number or string&quot;);
+      error(&quot;b.fillTint, not supported type. Please make sure the strokeweight is a number or string&quot;);
     }
   };
 
@@ -2561,7 +2563,7 @@
     if (typeof tint === &#x27;string&#x27; || typeof tint === &#x27;number&#x27;) {
       currStrokeTint = tint;
     } else {
-      error(&quot;Not supported type. Please make sure the strokeweight is a number or string&quot;);
+      error(&quot;strokeTint(), not supported type. Please make sure the tint parameter is a number or string&quot;);
     }
   };
 
@@ -2577,7 +2579,7 @@
     if (colorMode === pub.RGB || colorMode === pub.CMYK) {
       currColorMode = colorMode;
     } else {
-      error(&quot;Not supported colormode, use: b.RGB or b.CMYK&quot;);
+      error(&quot;b.colorMode(), not supported colormode, use: b.RGB or b.CMYK&quot;);
     }
   };
 
@@ -2590,14 +2592,14 @@
    * @return {Color} found or new color
    *&#x2F;
   pub.color = function() {
-    var newCol = null;
+    var newCol;
     var props = {};
     var a = arguments[0],
         b = arguments[1],
         c = arguments[2],
         d = arguments[3],
         e = arguments[4];
-    var colorErrorMsg = &quot;Wrong parameters. Use: &quot;
+    var colorErrorMsg = &quot;b.color(), wrong parameters. Use: &quot;
         + &quot;R,G,B,name in b.colorMode(b.RGB) or &quot;
         + &quot;C,M,Y,K,name in b.colorMode(b.CMYK) or &quot;
         + &quot;GREY,name. &quot;
@@ -2607,13 +2609,12 @@
     if (arguments.length === 1) {
       &#x2F;&#x2F; get color by name
       if (typeof a === &#x27;string&#x27;) {
-        try {
-          newCol = currentDoc().swatches.item(a);
-          newCol.name;
-        } catch (e) {
-          error(&quot;Color doesn&#x27;t exist.&quot;);
+        newCol = findInCollectionByName(currentDoc().swatches, a);
+        if (newCol) {
+          return newCol;
+        } else {
+          error(&quot;b.color(), a swatch with the provided name doesn&#x27;t exist.&quot;);
         }
-        return newCol;
       } else if (typeof a === &#x27;number&#x27;) {
         &#x2F;&#x2F; GREY
         if (currColorMode === pub.RGB) {
@@ -2628,7 +2629,7 @@
           props.name = &quot;C=&quot;+0+&quot; M=&quot;+0+&quot; Y=&quot;+0+&quot; K=&quot;+a;
         }
       } else {
-        error(&quot;Color doesn&#x27;t exist.&quot;);
+        error(&quot;b.color(), wrong type of first paramter.&quot;);
       }
 
     } else if (arguments.length === 2) {
@@ -2684,16 +2685,15 @@
 
     &#x2F;&#x2F; check whether color was already created and added to swatches,
     &#x2F;&#x2F; keeps the document clean ...
-    try {
-      var col = currentDoc().swatches.item(props.name);
-      col.name;
-      col.properties = props;
-      return col;
-    } catch (e) {
+    newCol = findInCollectionByName(currentDoc().swatches, props.name);
+    if (newCol) {
+      newCol.properties = props;
+      return newCol;
+    } else {
       newCol = currentDoc().colors.add();
       newCol.properties = props;
       return newCol;
-    }
+    };
   };
 
   &#x2F;**
@@ -2708,7 +2708,7 @@
     if (obj.hasOwnProperty(&quot;transparencySettings&quot;)) {
       obj.transparencySettings.blendingSettings.opacity = opacity;
     } else {
-      warning(&quot;The object &quot;+ obj.toString() +&quot; doesn&#x27;t have an opacity property&quot;);
+      warning(&quot;b.opacity(), the object &quot;+ obj.toString() +&quot; doesn&#x27;t have an opacity property&quot;);
     }
   };
 
@@ -2740,7 +2740,7 @@
     if (obj.hasOwnProperty(&quot;transparencySettings&quot;)) {
       obj.transparencySettings.blendingSettings.blendMode = blendMode;
     } else {
-      warning(&quot;The object &quot;+ obj.toString() +&quot; doesn&#x27;t have a blendMode property&quot;);
+      warning(&quot;b.blendMode(), the object &quot;+ obj.toString() +&quot; doesn&#x27;t have a blendMode property&quot;);
     }
   };
 
@@ -2757,7 +2757,9 @@
    * @return {Color} Interpolated color
    *&#x2F;
   pub.lerpColor = function (c1, c2, amt) {
-    if (c1 instanceof Color &amp;&amp; c2 instanceof Color &amp;&amp; typeof amt === &#x27;number&#x27;) {
+    if ( (c1 instanceof Color || c1 instanceof Swatch) &amp;&amp; 
+          (c2 instanceof Color || c2 instanceof Swatch) &amp;&amp; 
+          typeof amt === &#x27;number&#x27;) {
       if (c1.space === ColorSpace.CMYK &amp;&amp; c2.space === ColorSpace.CMYK) {
         var C1 = c1.colorValue[0];
         var M1 = c1.colorValue[1];
@@ -2787,14 +2789,13 @@
         var ROut = Math.round( pub.lerp(R1,R2,amt) );
         var GOut = Math.round( pub.lerp(G1,G2,amt) );
         var BOut = Math.round( pub.lerp(B1,B2,amt) );
-        warning([ROut,GOut,BOut]);
         return pub.color(ROut,GOut,BOut);
 
       } else {
-        error(&quot;Both color must be either CMYK or RGB.&quot;);
+        error(&quot;b.lerpColor(), both color must be either CMYK or RGB.&quot;);
       }
     } else {
-      error(&quot;Wrong parameters. Use: two colors (of the same type) and a number.&quot;);
+      error(&quot;b.lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.&quot;);
     }
   };
 
@@ -2821,8 +2822,8 @@
    * @return {TextFrame}  The created text frame instance
    *&#x2F;
   pub.text = function(txt, x, y, w, h) {
-    if (arguments.length !== 5) error(&quot;Not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)&quot;);
-    if (!(isString(txt) || isNumber(txt))) warning(&quot;The first parameter has to be a string! But is something else: &quot;+ typeof txt +&quot;. Use: b.text(txt, x, y, w, h)&quot;);
+    if (arguments.length !== 5) error(&quot;b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)&quot;);
+    if (!(isString(txt) || isNumber(txt))) warning(&quot;b.text(), the first parameter has to be a string! But is something else: &quot;+ typeof txt +&quot;. Use: b.text(txt, x, y, w, h)&quot;);
     var textFrame = currentPage().textFrames.add( currentLayer() );
     with (textFrame) {
       contents = txt.toString();
@@ -2896,7 +2897,7 @@
       };
 
     if(!isValid(item)){
-      warning(&quot;Invalid object passed to typo()&quot;);
+      warning(&quot;b.typo(), invalid object passed&quot;);
       return;
     }
 
@@ -2931,6 +2932,7 @@
                   return true;
               }
           }
+          return true; &#x2F;&#x2F; if does not have isValid field -&gt; normal array element and not collection
       }
       return false;
   };
@@ -2940,9 +2942,9 @@
    *
    * @cat Typography
    * @method textFont
-   * @param  {String} [fontName] The name of the font to set e.g. Helvetica
+   * @param  {String} fontName The name of the font to set e.g. Helvetica
    * @param  {String} [fontStyle] The Font style e.g. Bold
-   * @return {String}            The name of the current font
+   * @return {String} currFont The name of the current font
    *&#x2F;
   pub.textFont = function(fontName, fontStyle) {
     if (arguments.length === 1) {
@@ -3090,7 +3092,7 @@
     if (textFrameA instanceof TextFrame &amp;&amp; textFrameB instanceof TextFrame) {
       textFrameA.nextTextFrame = textFrameB;
     } else {
-      error(&quot;Wrong type! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB&quot;);
+      error(&quot;linkTextFrames(), wrong type of parameter! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB&quot;);
     }
   };
 
@@ -3193,7 +3195,7 @@
       img.fit( FitOptions.CENTER_CONTENT );
       img.fit( FitOptions.contentToFrame );
     } else {
-      error(&quot;transformImage(). Wrong type! Use: img, x, y, width, height&quot;);
+      error(&quot;b.transformImage(), wrong type! Use: img, x, y, width, height&quot;);
     }
   };
 
@@ -3213,7 +3215,7 @@
     if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
       currImageMode = mode;
     } else {
-      error(&quot;Unsupported imageMode. Use: CORNER, CORNERS, CENTER.&quot;);
+      error(&quot;b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.&quot;);
     }
     return currImageMode;
   };
@@ -3611,7 +3613,7 @@
    * @return The constrained value
    *&#x2F;
   pub.constrain = function(aNumber, aMin, aMax) {
-    if(arguments.length !== 3 ) error(&quot;Wrong argument count for b.constrain().&quot;);
+    if(arguments.length !== 3 ) error(&quot;b.constrain(), wrong argument count.&quot;);
     return aNumber &gt; aMax ? aMax : aNumber &lt; aMin ? aMin : aNumber;
   };
 
@@ -3634,7 +3636,7 @@
       dy = arguments[1] - arguments[3];
       return Math.sqrt(dx * dx + dy * dy);
     } else {
-      error(&quot;Wrong argument count for b.dist().&quot;);
+      error(&quot;b.dist(), wrong argument count.&quot;);
     }
   };
 
@@ -3672,7 +3674,7 @@
    * @return {Number} The mapped value
    *&#x2F;
   pub.lerp = function(value1, value2, amt) {
-    if(arguments.length !== 3 ) error(&quot;Wrong argument count for b.lerp().&quot;);
+    if(arguments.length !== 3 ) error(&quot;b.lerp(), wrong argument count.&quot;);
     return (value2 - value1) * amt + value1;
   };
 
@@ -3699,7 +3701,7 @@
    * @return {Number} the magnitude
    *&#x2F;
   pub.mag = function(a, b, c) {
-    if( ! (arguments.length === 2 || arguments.length === 3 ) )  error(&quot;Wrong argument count for b.mag().&quot;);
+    if( ! (arguments.length === 2 || arguments.length === 3 ) )  error(&quot;b.mag(), wrong argument count.&quot;);
     if (c) return Math.sqrt(a * a + b * b + c * c);
     return Math.sqrt(a * a + b * b);
   };
@@ -3720,7 +3722,7 @@
    * @return {Number} the mapped value
    *&#x2F;
   pub.map = function(value, istart, istop, ostart, ostop) {
-    if(arguments.length !== 5 ) error(&quot;Wrong argument count for b.map().&quot;);
+    if(arguments.length !== 5 ) error(&quot;b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)&quot;);
     return ostart + (ostop - ostart) * ((value - istart) &#x2F; (istop - istart));
   };
 
@@ -3738,7 +3740,7 @@
   pub.max = function() {
     if (arguments.length === 2) return arguments[0] &lt; arguments[1] ? arguments[1] : arguments[0];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
-    if (! (&quot;length&quot; in numbers &amp;&amp; numbers.length &gt; 0)) error(&quot;Non-empty array is expected&quot;);
+    if (! (&quot;length&quot; in numbers &amp;&amp; numbers.length &gt; 0)) error(&quot;b.max(), non-empty array is expected&quot;);
     var max = numbers[0],
       count = numbers.length;
     for (var i = 1; i &lt; count; ++i) if (max &lt; numbers[i]) max = numbers[i];
@@ -3759,7 +3761,7 @@
   pub.min = function() {
     if (arguments.length === 2) return arguments[0] &lt; arguments[1] ? arguments[0] : arguments[1];
     var numbers = arguments.length === 1 ? arguments[0] : arguments;
-    if (! (&quot;length&quot; in numbers &amp;&amp; numbers.length &gt; 0)) error(&quot;Non-empty array is expected&quot;);
+    if (! (&quot;length&quot; in numbers &amp;&amp; numbers.length &gt; 0)) error(&quot;b.min(), non-empty array is expected&quot;);
     var min = numbers[0],
       count = numbers.length;
     for (var i = 1; i &lt; count; ++i) if (min &gt; numbers[i]) min = numbers[i];
@@ -3782,7 +3784,7 @@
    * @return {Number} The normalized value
    *&#x2F;
   pub.norm = function(aNumber, low, high) {
-    if(arguments.length !== 3 ) error(&quot;Wrong argument count for b.norm().&quot;);
+    if(arguments.length !== 3 ) error(&quot;b.norm, wrong argument count.&quot;);
     return (aNumber - low) &#x2F; (high - low);
   };
 
@@ -3819,7 +3821,7 @@
    * @return {Number} 
    *&#x2F;
   pub.sq = function(aNumber) {
-    if(arguments.length !== 1 ) error(&quot;Wrong argument count for b.sq().&quot;);
+    if(arguments.length !== 1 ) error(&quot;b.sq(), wrong argument count.&quot;);
     return aNumber * aNumber;
   };
 
@@ -4251,7 +4253,7 @@
    * @subcat Multi-Getters
    * @method labels
    * @param  {String} label The label identifier
-   * @param  {Function} cb Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
    *&#x2F;
   pub.labels = function(label, cb) {
@@ -4276,11 +4278,11 @@
    * @cat Document
    * @subcat Multi-Getters
    * @method selections
-   * @param  {Function} cb Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
    * @return {Object[]} Array of selected object(s).
    *&#x2F;
   pub.selections = function(cb) {
-    if(app.selection.length === 0) error(&quot;Selection is empty. Please select something :)&quot;);
+    if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something :)&quot;);
     if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
       return forEach(app.selection, cb);
     } 
@@ -4372,7 +4374,7 @@
    * 
    * @cat Output
    * @method println
-   * @param {String} The message to print
+   * @param {String} msg The message to print
    *&#x2F;
   var println = pub.println = function(msg) {
     $.writeln(msg);
@@ -4385,7 +4387,7 @@
    * 
    * @cat Output
    * @method print
-   * @param {String} The message to print
+   * @param {String} msg The message to print
    *&#x2F;
   pub.print = function(msg) {
     $.write(msg);
@@ -4436,7 +4438,7 @@
    * @cat Output
    * @method savePDF
    * @param {String|File} file The file name or a File instance
-   * @param {Boolean} showOptions Whether to show the export dialog
+   * @param {Boolean} [showOptions] Whether to show the export dialog
    *&#x2F;
   pub.savePDF = function(file, showOptions){
     var outputFile = initExportFile(file);
@@ -4533,7 +4535,7 @@
       h = y2-y1;
 
       if (w &lt; 0 || h &lt;0) {
-        warning(&quot;bounds(textObj), not possible to get correct bounds, possible line break within textObj&quot;);
+        warning(&quot;b.bounds(), not possible to get correct bounds, possible line break within textObj&quot;);
       }
 
       &#x2F;&#x2F; TODO: not sure if this 100% correct, check
@@ -4573,7 +4575,7 @@
       }
       &#x2F;&#x2F; no idea what that might be, give up
       else {
-        error(&quot;bounds(obj), invalide type! Can&#x27;t get bounds for this object.&quot;);
+        error(&quot;b.bounds(), invalide type of parameter! Can&#x27;t get bounds for this object.&quot;);
       }
     }
   };  
@@ -4590,7 +4592,7 @@
    *&#x2F;
   pub.itemX = function(pItem, x) {
     var off = 0;
-    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
+    if(currRectMode !== b.CORNER) pub.warning(&quot;b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof x === &#x27;number&#x27; ){
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
@@ -4602,7 +4604,7 @@
         return precision(pItem.geometricBounds[1], 5) + off; &#x2F;&#x2F; CS6 sets geometricBounds to initially slightly off values... terrible workaround
       }
     } else {
-      error(&quot;pItem has to be a valid PageItem&quot;);
+      error(&quot;b.itemX(), pItem has to be a valid PageItem&quot;);
     }
   };
 
@@ -4618,7 +4620,7 @@
    *&#x2F;
   pub.itemY = function(pItem, y) {
     var off = 0;
-    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
+    if(currRectMode !== b.CORNER) pub.warning(&quot;b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof y === &#x27;number&#x27; ) {
         var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
@@ -4631,7 +4633,7 @@
         return precision(pItem.geometricBounds[0], 5) + off;
       }
     } else {
-      error(&quot;pItem has to be a valid PageItem&quot;);
+      error(&quot;b.itemY(), pItem has to be a valid PageItem&quot;);
     }
   };
   
@@ -4646,7 +4648,7 @@
    * @returns {Number} The current width
    *&#x2F;
   pub.itemWidth = function(pItem, width) {
-    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
+    if(currRectMode !== b.CORNER) pub.warning(&quot;b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof width === &#x27;number&#x27; ){
         b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
@@ -4654,7 +4656,7 @@
         return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
       }
     } else {
-      error(&quot;pItem has to be a valid PageItem&quot;);
+      error(&quot;b.itemWidth(), pItem has to be a valid PageItem&quot;);
     }
   };
 
@@ -4669,7 +4671,7 @@
    * @returns {Number} The current height
    *&#x2F;
   pub.itemHeight = function(pItem, height) {
-    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
+    if(currRectMode !== b.CORNER) pub.warning(&quot;b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
       if( typeof height === &#x27;number&#x27; ){
         b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
@@ -4677,7 +4679,7 @@
         return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
       }
     } else {
-      error(&quot;pItem has to be a valid PageItem&quot;);
+      error(&quot;b.itemHeight(), pItem has to be a valid PageItem&quot;);
     }
   };
 
@@ -4694,7 +4696,7 @@
    *&#x2F;
   pub.itemPosition = function(pItem, x, y) {
 
-    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
+    if(currRectMode !== b.CORNER) pub.warning(&quot;b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
 
     if ( typeof pItem !== &#x27;undef&#x27; &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
     
@@ -4714,7 +4716,7 @@
       }
       
     } else {
-      error(&quot;itemPosition() only works with child classes of PageItem.&quot;);
+      error(&quot;b.itemPosition(), works only with child classes of PageItem.&quot;);
     }
   };
 
@@ -4730,7 +4732,7 @@
    * @returns {Object} Returns an object with the fields width and height
    *&#x2F;
   pub.itemSize = function(pItem, width, height) {
-    if(currRectMode !== b.CORNER) pub.warning(&quot;Please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
+    if(currRectMode !== b.CORNER) pub.warning(&quot;b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.&quot;);
     if (pItem !== null &amp;&amp; pItem.hasOwnProperty(&quot;geometricBounds&quot;)) {
     
       var x = pItem.geometricBounds[1];
@@ -4751,7 +4753,7 @@
       }
       
     } else {
-      error(&quot;itemSize() only works with child classes of PageItem.&quot;);
+      error(&quot;b.itemSize(), works only with child classes of PageItem.&quot;);
     }
   };
   
@@ -4938,7 +4940,7 @@
     if (matrixStack.length &gt; 0) {
       currMatrix.set( matrixStack.pop() );
     } else {
-      error(&quot;Missing a pushMatrix() to go with that popMatrix()&quot;);
+      error(&quot;b.popMatrix(), missing a pushMatrix() to go with that popMatrix()&quot;);
     }
   };
 
@@ -4994,8 +4996,8 @@
 
     try {
       currentDoc(mode);
-        if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
-            progressPanel = new Progress();
+      if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
+        progressPanel = new Progress();
       runSetup();
       runDrawOnce();
       var executionDuration = pub.millis();
@@ -5014,7 +5016,7 @@
     }
     closeHiddenDocs();
     if (progressPanel)
-        progressPanel.closePanel();
+      progressPanel.closePanel();
     app.scriptPreferences.enableRedraw = true;
     app.preflightOptions.preflightOff = false;
     exit(); &#x2F;&#x2F; quit program execution
@@ -5039,7 +5041,7 @@
     else sleep = Math.round(1000&#x2F;framerate);
 
     if ($.engineName !== &#x27;loop&#x27;) {
-      error(&#x27;Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
+      error(&#x27;b.loop(), Add #targetengine &quot;loop&quot;; at the very top of your script.&#x27;);
     }
 
     currentDoc();
@@ -5078,7 +5080,7 @@
       if (typeof glob.setup === &#x27;function&#x27;) {
         glob.setup();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
   };
 
   var runDrawOnce = function() {
@@ -5086,7 +5088,7 @@
       if (typeof glob.draw === &#x27;function&#x27;) {
         glob.draw();
       }
-    }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
   };
 
   var runDrawLoop = function() {
@@ -5104,51 +5106,44 @@
         + &quot; ...&quot;);
   };
 
-    var currentDoc = function (mode) {
-        if (!currDoc) {
-            var doc = null;
-            if (app.documents.length) {
-                doc = app.activeDocument;
-                if (mode == b.MODEHIDDEN) {
-                    if (doc.modified)
-                        throw (&quot;To run in MODEHIDDEN save your active doc before processing.&quot;);
-                    var docPath = doc.fullName;
-                    doc.close(); &#x2F;&#x2F;Close the dog and reopen it without adding to the display list
-                    doc = app.open(File(docPath), false);
-                }
-            }
-            else {
-                doc = app.documents.add(mode != b.MODEHIDDEN);
-
-            }
-
-
-            &#x2F;*
-             try {
-             doc = app.activeDocument;
-             &#x2F;&#x2F;if( doc.documentPreferences.facingPages ) warning(&quot;Your document is set up to use facing pages. You can still use basil.js, but please be aware that his mode causes some problems in the methods that deal with pages e.g. addPage() and removePage(). Turn it off for full compatibility.&quot;);
-             } catch (e) {
-             doc = app.documents.add();
-             &#x2F;&#x2F;doc.documentPreferences.facingPages = true; &#x2F;&#x2F; turn facing pages off on new documents
-             }
-             *&#x2F;
-            setCurrDoc(doc);
+  var currentDoc = function (mode) {
+    if (!currDoc) {
+      var stack = $.stack;
+      if (!(stack.match(&#x2F;go\(.*\)&#x2F;)||stack.match(&#x2F;loop\(.*\)&#x2F;))) {
+        warning(&quot;Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is &quot; + stack);
+      }
+      var doc = null;
+      if (app.documents.length) {
+        doc = app.activeDocument;
+        if (mode == b.MODEHIDDEN) {
+          if (doc.modified) {
+            throw (&quot;To run in MODEHIDDEN save your active doc before processing.&quot;);
+          }
+          var docPath = doc.fullName;
+          doc.close(); &#x2F;&#x2F; Close the doc and reopen it without adding to the display list
+          doc = app.open(File(docPath), false);
         }
-        return currDoc;
-    };
+      }
+      else {
+        &#x2F;&#x2F; println(&quot;new doc&quot;);
+        doc = app.documents.add(mode != b.MODEHIDDEN);
+      }
+      setCurrDoc(doc);
+    }
+    return currDoc;
+  };
 
-    var closeHiddenDocs = function () {
-        &#x2F;&#x2F;in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
-        for (var i = app.documents.length - 1; i &gt;= 0; i -= 1) {
-            var d = app.documents[i];
-            if (!d.windows.length) {
-                d.close(SaveOptions.NO);
-            }
-        }
-    };
+  var closeHiddenDocs = function () {
+      &#x2F;&#x2F;in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+      for (var i = app.documents.length - 1; i &gt;= 0; i -= 1) {
+          var d = app.documents[i];
+          if (!d.windows.length) {
+              d.close(SaveOptions.NO);
+          }
+      }
+  };
 
-
-    var setCurrDoc = function(doc) {
+  var setCurrDoc = function(doc) {
     resetCurrDoc();
     currDoc = doc;
     &#x2F;&#x2F; -- setup document --
@@ -5164,8 +5159,7 @@
     updatePublicPageSizeVars();
   };
 
-
-  var progressPanel;
+  var progressPanel = null;
 
   var Progress = function () {
     this.init = function () {
@@ -5178,7 +5172,7 @@
         }
         this.panel.statusbar = this.panel.add(&quot;edittext&quot;, [0, 0, 400, 300], &quot;&quot;, {multiline: true, scrolling: false, readonly: true});
       }
-      this.panel.statusbar.text = &quot;Using basil.js &quot; + pub.VERSION + &quot; ...&quot;;
+      this.panel.statusbar.text = &quot;Using basil.js &quot; + pub.VERSION + &quot; ... \nEntering background render mode ...&quot;;
       this.panel.show();
     };
     this.closePanel = function () {
@@ -5204,7 +5198,6 @@
     };
     this.init();
   };
-
 
   var resetCurrDoc = function() {
     &#x2F;&#x2F; resets doc and doc specific vars
@@ -5343,7 +5336,7 @@
         return; &#x2F;&#x2F; early exit    
 
       default:
-        b.error(&quot;basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS&quot;);
+        b.error(&quot;b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS&quot;);
         break;
     }
 
@@ -5356,9 +5349,18 @@
     }
   };
 
+  &#x2F;&#x2F; internal helper to get around try&#x2F;catch for finding eg. a color in the swatches
+  var findInCollectionByName = function(collection, name) {
+    var found = null;
+    for (var i = 0; i &lt; collection.length; i++) {
+      if (collection[i].name === name) return collection[i];
+    };
+    return found;
+  };
+
   var error = pub.error = function(msg) {
     println(ERROR_PREFIX + msg);
-    throw new Error( msg );
+    throw new Error( ERROR_PREFIX + msg );
   };
 
   var warning = pub.warning = function(msg) {
