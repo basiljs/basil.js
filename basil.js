@@ -5269,6 +5269,15 @@
     }
   };
 
+  // internal helper to get around try/catch for finding eg. a color in the swatches
+  var findInCollectionByName = function(collection, name) {
+    var found = null;
+    for (var i = 0; i < collection.length; i++) {
+      if (collection[i].name === name) return collection[i];
+    };
+    return found;
+  };
+
   var error = pub.error = function(msg) {
     println(ERROR_PREFIX + msg);
     throw new Error( ERROR_PREFIX + msg );
