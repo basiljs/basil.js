@@ -13,9 +13,9 @@ function draw() {
   // add image in original image size
   b.image('image-example.jpg', 0, 350);
 
-  // place image inside an oval
-  var oval = b.page().ovals.add({geometricBounds:[0, 350, 100, 200]});
-  b.image('image-example.jpg', oval);
+  // place image inside an circle
+  var circle = b.ellipse(50,50,150,150);
+  b.image('image-example.jpg', circle);
 }
 
 b.go();
