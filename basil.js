@@ -2507,7 +2507,7 @@
    * @return {Color} found or new color
    */
   pub.color = function() {
-    var newCol = null;
+    var newCol;
     var props = {};
     var a = arguments[0],
         b = arguments[1],
@@ -2524,13 +2524,12 @@
     if (arguments.length === 1) {
       // get color by name
       if (typeof a === 'string') {
-        try {
-          newCol = currentDoc().swatches.item(a);
-          newCol.name;
-        } catch (e) {
+        newCol = findInCollectionByName(currentDoc().swatches, a);
+        if (newCol) {
+          return newCol;
+        } else {
           error("b.color(), a swatch with the provided name doesn't exist.");
         }
-        return newCol;
       } else if (typeof a === 'number') {
         // GREY
         if (currColorMode === pub.RGB) {
@@ -2601,16 +2600,15 @@
 
     // check whether color was already created and added to swatches,
     // keeps the document clean ...
-    try {
-      var col = currentDoc().swatches.item(props.name);
-      col.name;
-      col.properties = props;
-      return col;
-    } catch (e) {
+    newCol = findInCollectionByName(currentDoc().swatches, props.name);
+    if (newCol) {
+      newCol.properties = props;
+      return newCol;
+    } else {
       newCol = currentDoc().colors.add();
       newCol.properties = props;
       return newCol;
-    }
+    };
   };
 
   /**
