@@ -1,14 +1,27 @@
 #includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
-
-function draw() {
-
-  b.println("Please note: You have to put a text file 'loadStrings-example.txt' with some plain content in a folder 'data' next to your saved InDesign document.");
+function draw() {   
+  /*
+  Please note: 
+  You have to put a text file 'some_test_file.txt' 
+  with some plain content in a folder 'data' next to
+  your saved InDesign document.
+  */
+  b.println("put some text file in the data folder!");
   
-  var lines = b.loadStrings("loadStrings-example.txt");
-  addTextForEachLine(lines);
+  // load lines of the file in array
+  var linesArray = b.loadStrings("some_test_file.txt");
+  addTextForEachLine(linesArray);
+
+  // load file content
+  var textString = b.loadString("some_test_file.txt");
+  // if you prefer not to use the data folder mechanism 
+  // then use this code snippet:
+  // var txtFile = new File("/Users/bene/Desktop/some_test_file.txt");
+  // var text = b.loadString(txtFile);
   
+  b.println(textString);
 }
 
 function addTextForEachLine(lines) {
