@@ -27,4 +27,4 @@ to figure all of that out on our own!
 
 Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
 
-If you want use Sublime Text instead of Adobe's Extendscript Toolkit, use the buildscript here: [extras/Sublime Text/README.md](extras/Sublime Text/)
+If you want use Sublime Text instead of Adobe's Extendscript Toolkit, use the buildscript here: [extras/Sublime Text/](extras/Sublime Text/)

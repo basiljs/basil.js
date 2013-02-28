@@ -271,21 +271,19 @@
     */
   pub.MODESILENT = "ModeSilent";
     /**
-     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling bgo(). The document will be removed from the display list and added again aftrer the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
+     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
      * @property MODEHIDDEN {String}
      * @cat Environment
      * @subcat modes
      */
   pub.MODEHIDDEN = "ModeHidden";
     /**
-     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process. This mode was also the default in Versions prior to 0.22
+     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
      * @property MODEVISIBLE {String}
      * @cat Environment
      * @subcat modes
      */
   pub.MODEVISIBLE = "ModeVisible";
-  
-  //Used in b.go(Optional: mode). Disables ScreenRedraw, this is the default mode
   pub.DEFAULTMODE = pub.MODEVISIBLE;
 
 
