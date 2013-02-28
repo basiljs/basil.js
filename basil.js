@@ -5060,7 +5060,6 @@
       }
   };
 
-
   var setCurrDoc = function(doc) {
     resetCurrDoc();
     currDoc = doc;
@@ -5076,7 +5075,6 @@
     pub.units(pub.PT);
     updatePublicPageSizeVars();
   };
-
 
   var progressPanel = null;
 
@@ -5117,7 +5115,6 @@
     };
     this.init();
   };
-
 
   var resetCurrDoc = function() {
     // resets doc and doc specific vars
