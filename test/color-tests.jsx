@@ -24,7 +24,7 @@ b.test('ColorTests', {
     var rect = b.rect(0,0,100,100);
     var black = b.color('Black');
 
-    assert(black instanceof Swatch);
+    assert(black instanceof Color);
     assert(rect.fillColor.colorValue.toString() === black.colorValue.toString());
     assert(rect.strokeColor.colorValue.toString() === black.colorValue.toString());
   },
