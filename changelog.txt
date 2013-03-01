@@ -3,7 +3,9 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 0.23 - 28 Feb 2013
+basil.js 1.00 - 28 Feb 2013
+
+First puplic release!
 
 + new functions to work convenient with stories (indesign model of linked 
   content or many textframes), e.g. b.addToStory(), b.storyCount() ...
