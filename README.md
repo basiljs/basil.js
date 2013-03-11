@@ -22,8 +22,7 @@ Department of the Academy of Art and Design Basel (HGK FHNW)
 http://thebaselschoolofdesign.ch
 
 Please note: Big general parts e.g. random() of the basil.js source code are copy & paste
-of the fantasic [processing.js](http://processingjs.org) project created by John Resig. We would have had a hard time
-to figure all of that out on our own!
+of the fantasic [processing.js](http://processingjs.org) by the Processing.js team. We would have had a hard time to figure all of that out on our own!
 
 Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
 
