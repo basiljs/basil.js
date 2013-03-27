@@ -3046,12 +3046,12 @@
       if (currImageMode === pub.CORNERS) {
         width = w - x;
         height = h - y;
-        fitOptions = FitOptions.contentToFrame;
+        fitOptions = FitOptions.FILL_PROPORTIONALLY;
       } else {
         if (w && h) {
           width = w;
           height = h;
-          fitOptions = FitOptions.contentToFrame;
+          fitOptions = FitOptions.FILL_PROPORTIONALLY;
         } else {
           fitOptions = FitOptions.frameToContent;
         }
