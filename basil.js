@@ -433,6 +433,7 @@
       }
       return true;
     };
+    var forEach = pub.forEach = glob.forEach;
   }
 
   /**
