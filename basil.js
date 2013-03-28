@@ -5144,9 +5144,9 @@
     if (!currPage) {
       currentDoc();
         if (currDoc.windows.length)
-      currPage = app.activeWindow.activePage;
+          currPage = app.activeWindow.activePage;
         else
-        currPage = currDoc.pages[0];
+          currPage = currDoc.pages[0];
     }
     return currPage;
   };
