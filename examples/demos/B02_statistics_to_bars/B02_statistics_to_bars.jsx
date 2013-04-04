@@ -54,7 +54,7 @@ function draw() {
        var bars = b.map(hash.get( keys[i] ),1,hash.get( maxValue ), 10, b.width-30);
 
        b.rect(20, b.height/keys.length*i, bars, b.width/35);
-}
+   }
 
 }
 
