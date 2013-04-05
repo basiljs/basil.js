@@ -1,4 +1,4 @@
-﻿/*
+/*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
   B A S I L . J S
@@ -29,7 +29,7 @@
   Please note: Big general parts e.g. random() of the basil.js source code are copied
   from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
-
+  
   Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
   
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
@@ -4195,7 +4195,7 @@
    * @return {Object[]} Array of selected object(s).
    */
   pub.selections = function(cb) {
-    if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something :)");
+    if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
     if (arguments.length === 1 && cb instanceof Function) {
       return forEach(app.selection, cb);
     } 

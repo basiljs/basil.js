@@ -3,7 +3,7 @@
 #include "basiljs/bundle/basil.js";
 
 
-var maxCount = 5000; //max count of the cirlces
+var maxCount = 5000; // max count of the cirlces
 var timeOut = 5000; // 5000ms
 
 var currentCount = 1;

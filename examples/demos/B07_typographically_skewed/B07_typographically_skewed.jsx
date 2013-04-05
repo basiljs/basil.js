@@ -1,4 +1,4 @@
-﻿#includepath "~/Documents/;%USERPROFILE%Documents";
+#includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
 function draw() {
@@ -14,14 +14,15 @@ function draw() {
       var skew = b.map(n, 0, wordCount, -55,55); // -85, 85 is max deg°
 
       //  have fun using ONE of the following lines below:
+      
 //~         if(n < wordCount/2){
 //~         if(n%2==0){
-        if(n<skew){    
-          
+
+        if(n<skew){              
             b.typo(w, "skew", skew);
-          }else{
-            b.typo(w, "skew", -skew);
-          }
+        }else{
+          b.typo(w, "skew", -skew);
+        }
         
 //~         b.typo(w, "skew", b.random(-75,75)); // all skewed up
           
