@@ -433,8 +433,8 @@
       }
       return true;
     };
-    var forEach = pub.forEach = glob.forEach;
   }
+  pub.forEach = glob.forEach;
 
   /**
    * HashList is a data container that allows you to store information as key -> value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
