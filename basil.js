@@ -4184,6 +4184,7 @@
     if (arguments.length === 2 && cb instanceof Function) {
       return forEach(result, cb);
     }
+    if(result.length === 0) b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
     return result;
   };
   
@@ -4204,6 +4205,7 @@
         return pageItem;  
       }
     }
+    b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
 
   /**
