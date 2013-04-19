@@ -4186,6 +4186,25 @@
     }
     return result;
   };
+  
+  /**
+   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method label
+   * @param  {String} label The label identifier
+   * @return {PageItem} The first PageItem of all the hits
+   */  
+  pub.label = function(label) {
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i < len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === label) {
+        return pageItem;  
+      }
+    }
+  }
 
   /**
    * Returns the currently selected object(s)
@@ -4203,6 +4222,19 @@
     } 
     return app.selection;
   };
+  
+  /**
+   * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method selection
+   * @return {Object} The first selected object
+   */
+  pub.selection = function(cb) {
+    if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
+    return app.selection[0];
+  };  
 
   /**
    * Reads the contents of a file into a String.
