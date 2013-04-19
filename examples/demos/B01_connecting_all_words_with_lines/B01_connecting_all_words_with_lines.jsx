@@ -8,8 +8,8 @@ function draw() {
     var textFrame1 = selItems[0]; // the first textframe
     var textFrame2 = selItems[1]; // the second textframe
     
-    var words1 = textFrame1.words;
-    var words2 = textFrame2.words;        
+    var words1 = b.words(textFrame1);
+    var words2 = b.words(textFrame2);        
     
     b.layer("generatedLines"); // get or create this layer and set it as the active one
     b.strokeWeight(0.3); // we like hairs
@@ -29,7 +29,6 @@ function draw() {
             b.bounds(w1).top + b.bounds(w1).height / 2, 
             b.bounds(w2).left + b.bounds(w2).width / 2, 
             b.bounds(w2).top + b.bounds(w2).height / 2
-        
         );
           
       }
