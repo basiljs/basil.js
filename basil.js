@@ -284,7 +284,7 @@
      * @subcat modes
      */
   pub.MODEVISIBLE = "ModeVisible";
-  pub.DEFAULTMODE = pub.MODEVISIBLE;
+  pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
 
 
   var ERROR_PREFIX = "\nBasil.js Error -> ",
