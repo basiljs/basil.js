@@ -2483,7 +2483,7 @@
   };
 
   /**
-   * Sets the colormode for creating new colors with b.color() to RGB or CMYK.
+   * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RBG.
    * 
    * @cat Color
    * @method colorMode
@@ -2499,7 +2499,7 @@
   };
 
   /**
-   * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document
+   * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document. The default color mode is RBG.
    *
    * @cat Color
    * @method color
