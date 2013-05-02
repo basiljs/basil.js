@@ -4705,6 +4705,39 @@
       error("b.itemSize(), works only with child classes of PageItem.");
     }
   };
+
+
+  /**
+   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method duplicate
+   * @param {PageItem|Page} item The item to duplicate
+   * @returns {Object} Returns the new item
+   */
+  pub.duplicate = function(item){
+
+    if( item instanceof PageItem ) {
+
+      var newItem = item.duplicate(pub.page());
+      newItem.move(pub.layer());
+      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );      
+
+      return newItem;
+
+    } else if(item instanceof Page) {
+
+      var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
+      return newPage;
+
+    } else {
+      error("Please provide a valid Page or PageItem as parameter for duplicate().");
+    }
+
+  }
   
 
   

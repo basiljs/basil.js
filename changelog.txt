@@ -5,6 +5,7 @@
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.01 - 
 
++ added b.duplicate() for duplicating page items and pages
 + added b.label() and b.selection() as single item alternatives
 + added demos to examples folder
 * changed default image fit behaviour to FitOptions.FILL_PROPORTIONALLY
