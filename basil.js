@@ -4718,7 +4718,7 @@
    */
   pub.duplicate = function(item){
 
-    if( item instanceof PageItem ) {
+    if( typeof(item) !== "undefined" && item.hasOwnProperty("duplicate") ) {
 
       var newItem = item.duplicate(pub.page());
       newItem.move(pub.layer());
