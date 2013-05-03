@@ -4751,13 +4751,13 @@
     return digits;
   };
   
-  /* todo */
+  /* TODO jsdoc */
   var Matrix2D = pub.Matrix2D = function() {
     if (arguments.length === 0) this.reset();
     else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) this.set(arguments[0].array());
     else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   };
-  /* todo */
+  /* TODO jsdoc */
   Matrix2D.prototype = {
     set: function() {
       if (arguments.length === 6) {
@@ -4912,12 +4912,12 @@
     }
   };
   
-  /* todo */
+  /* TODO jsdoc */
   pub.applyMatrix = function (matrix) {
     currMatrix.apply(matrix);
   };
 
-  /* todo */
+  /* TODO jsdoc */
   pub.popMatrix = function (argument) {
     if (matrixStack.length > 0) {
       currMatrix.set( matrixStack.pop() );
@@ -4926,28 +4926,28 @@
     }
   };
 
-  /* todo */
+  /* TODO jsdoc */
   pub.printMatrix = function (argument) {
     currMatrix.print();
   };
-  /* todo */
+  /* TODO jsdoc */
   pub.pushMatrix = function (argument) {
     matrixStack.push( currMatrix.array() );
   };
-/* todo */
+  /* TODO jsdoc */
   pub.resetMatrix = function (argument) {
     matrixStack = [];
     currMatrix = new Matrix2D();
   };
-/* todo */
+  /* TODO jsdoc */
   pub.rotate = function (angle) {
     currMatrix.rotate(angle);
   };
-/* todo */
+  /* TODO jsdoc */
   pub.scale = function (scaleX,scaleY) {
     currMatrix.scale(scaleX,scaleY);
   };
-/* todo */
+  /* TODO jsdoc */
   pub.translate = function (tx,ty) {
     currMatrix.translate(tx,ty);
   };
