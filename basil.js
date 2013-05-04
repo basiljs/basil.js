@@ -4706,6 +4706,9 @@
     }
   };
 
+  pub.getMatrix = function() {
+    return currMatrix;
+  }
 
   /**
    * Duplicates the given page after the current page or the given pageitem to the current page and layer.
@@ -4720,8 +4723,8 @@
 
     if( typeof(item) !== "undefined" && item.hasOwnProperty("duplicate") ) {
 
-      var newItem = item.duplicate(pub.page());
-      newItem.move(pub.layer());
+      var newItem = item.duplicate(currentPage());
+      newItem.move(currentLayer());
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                      AnchorPoint.TOP_LEFT_ANCHOR,
                      currMatrix.adobeMatrix() );      
