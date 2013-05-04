@@ -2524,7 +2524,7 @@
     if (arguments.length === 1) {
       // get color by name
       if (typeof a === 'string') {
-        newCol = findInCollectionByName(currentDoc().colors, a);
+        newCol = findInCollectionByName(currentDoc().swatches, a);
         if (newCol) {
           return newCol;
         } else {
