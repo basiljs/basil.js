@@ -4918,7 +4918,7 @@
   };
 
   /* TODO jsdoc */
-  pub.popMatrix = function (argument) {
+  pub.popMatrix = function () {
     if (matrixStack.length > 0) {
       currMatrix.set( matrixStack.pop() );
     } else {
@@ -4927,15 +4927,15 @@
   };
 
   /* TODO jsdoc */
-  pub.printMatrix = function (argument) {
+  pub.printMatrix = function () {
     currMatrix.print();
   };
   /* TODO jsdoc */
-  pub.pushMatrix = function (argument) {
+  pub.pushMatrix = function () {
     matrixStack.push( currMatrix.array() );
   };
   /* TODO jsdoc */
-  pub.resetMatrix = function (argument) {
+  pub.resetMatrix = function () {
     matrixStack = [];
     currMatrix = new Matrix2D();
   };
