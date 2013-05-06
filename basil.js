@@ -2227,7 +2227,12 @@
    * @return {Rectangle} New rectangle
    */
   pub.rect = function(x, y, w, h){
+    if (w === 0 || h === 0) {
+      // indesign doesn't draw a rectangle if width or height is set to 0
+      return false;
+    }
     if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+    
     var rectBounds = [];
     if (currRectMode === pub.CORNER) {
       rectBounds[0] = y;
@@ -2246,9 +2251,6 @@
       rectBounds[3] = (x+w)-(w/2);
     }
 
-  if(w === 0 || h === 0)
-    return false;
-    
     var newRect = currentPage().rectangles.add( currentLayer() );
     with (newRect) {
       geometricBounds = rectBounds;
