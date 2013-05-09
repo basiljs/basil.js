@@ -154,32 +154,32 @@
   /**
    * Two Pi
    * @property TWO_PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    */
   pub.TWO_PI = Math.PI*2;
 
   /**
    * Pi
    * @property PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    */
   pub.PI = Math.PI;
 
   /**
    * Half Pi
    * @property HALF_PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    */
   pub.HALF_PI = Math.PI/2;
 
   /**
    * Quarter Pi
    * @property QUARTER_PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    */
   pub.QUARTER_PI = Math.PI/4;
 
@@ -4450,15 +4450,15 @@
         println(indent+"--> "+propname+" "+e);
       }
     }
-  }  
+  }; 
 
   // ----------------------------------------
   // Transform
   // geometricBounds hint: [y1, x1, y2, x2]
 
   var precision = function(num, dec) {
-      return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
-  }  
+    return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
+  };
 
 /**
    * The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.
@@ -5358,8 +5358,8 @@
     var bt = new BridgeTalk();
     bt.target = "estoolkit";
     bt.body = "app.clc()"; // works just with cs6
-    bt.onError = function(errObj) {}
-    bt.onResult = function(resObj) {}
+    bt.onError = function(errObj) {};
+    bt.onResult = function(resObj) {};
     bt.send();
   };
 
