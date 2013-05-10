@@ -998,7 +998,7 @@
    *
    * @cat Document
    * @method close
-   * @param  {SaveOptions|Booleand} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+   * @param  {SaveOptions|Boolean} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
    * @param  {File} [file] Optional: The indesign file instance to save the document to
    */
   pub.close = function(saveOptions, file) {
@@ -5197,7 +5197,6 @@
     currRectMode = pub.CORNER;
     currEllipseMode = pub.CENTER;
     currYAlign = VerticalJustification.TOP_ALIGN;
-    startTime = Date.now();
     currFont = null;
     currImageMode = pub.CORNER;
     pub.resetMatrix();
