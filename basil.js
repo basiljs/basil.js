@@ -4712,6 +4712,15 @@
     return currMatrix;
   }
 
+  pub.transform = function(obj, matrix) {
+    
+    obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     matrix.adobeMatrix() 
+    );  
+
+  }
+
   /**
    * Duplicates the given page after the current page or the given pageitem to the current page and layer.
    *
