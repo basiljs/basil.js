@@ -910,7 +910,23 @@
       } else {
         return false;
       }
-  };  
+  };
+
+  /**
+   * Removes the provided Page, Layer, PageItem, Swatch, etc.
+   *
+   * @cat Document
+   * @method remove
+   * @param  {PageItem} obj The object to be removed
+   */
+  pub.remove = function(obj) {
+
+    if(obj.hasOwnProperty("remove")) {
+      obj.remove();
+    } else {
+      throw new Error("Provided object cannot be removed in b.remove().");
+    }
+  }
 
   /**
    * Checks whether a var is an Array, returns true if this is the case
