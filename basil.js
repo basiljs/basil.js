@@ -708,47 +708,47 @@
     }
   };
 
-  /**
-   * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
-   *
-   * cat Document
-   * subcat Multi-Getters
-   * method sentences
-   * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
-   * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
-   * return {Array} An array of strings
-   * 
-   */
-   // FIXME
-  pub.sentences = function(item, cb) {
+  // /**
+  //  * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
+  //  *
+  //  * cat Document
+  //  * subcat Multi-Getters
+  //  * method sentences
+  //  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
+  //  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
+  //  * return {Array} An array of strings
+  //  * 
+  //  */
+  //  // FIXME
+  // pub.sentences = function(item, cb) {
 
-    var err = false;
-    try{
-      item[0]; // check if list
-      err = true; // access ok -> error
-    } catch (expected) {};
-    if(err) error("b.sentences(), Array/Collection has been passed to b.sentences(). Single object expected.");
+  //   var err = false;
+  //   try{
+  //     item[0]; // check if list
+  //     err = true; // access ok -> error
+  //   } catch (expected) {};
+  //   if(err) error("b.sentences(), Array/Collection has been passed to b.sentences(). Single object expected.");
 
-    if(arguments.length >= 1 ) {
-      var arr;
-      try{
-        str = item.contents;  
-        arr = str.match( /[^\.!\?]+[\.!\?]+/g );
-      } catch (e){
-        error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
-      }
+  //   if(arguments.length >= 1 ) {
+  //     var arr;
+  //     try{
+  //       str = item.contents;  
+  //       arr = str.match( /[^\.!\?]+[\.!\?]+/g );
+  //     } catch (e){
+  //       error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
+  //     }
 
-      if(arguments.length === 1) {
-        return arr;
-      } else if (cb instanceof Function) {
-        forEach(arr,cb);
-      } else {
-        error("b.sentences(), the callback parameter is not a Function.");
-      }
+  //     if(arguments.length === 1) {
+  //       return arr;
+  //     } else if (cb instanceof Function) {
+  //       forEach(arr,cb);
+  //     } else {
+  //       error("b.sentences(), the callback parameter is not a Function.");
+  //     }
 
-    }
+  //   }
 
-  };
+  // };
 
   /**
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.
@@ -5018,6 +5018,7 @@
    *
    * @cat Document
    * @subcat Transformation
+   * @method scale
    * @param {Number} scaleX The amount to scale the X axis.
    * @param {Number} scaleY The amount to scale the Y axis.
    */
@@ -5030,6 +5031,7 @@
    *
    * @cat Document
    * @subcat Transformation
+   * @method translate
    * @param {Number} tx The amount of offset on the X axis. 
    * @param {Number} ty The amount of offset on the Y axis.
    */

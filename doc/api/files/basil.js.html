@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-﻿&#x2F;*
+&#x2F;*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
   B A S I L . J S
@@ -114,10 +114,10 @@
   
   http:&#x2F;&#x2F;thebaselschoolofdesign.ch
 
-  Please note: Big general parts e.g. random() of the basil.js source code are copy &amp; paste
-  of the fantasic processing.js project created by John Resig. We would have had a hard time
+  Please note: Big general parts e.g. random() of the basil.js source code are copied
+  from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
-
+  
   Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
   
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
@@ -142,12 +142,12 @@
    * @property VERSION {String}
    * @cat Environment
    *&#x2F;
-  pub.VERSION = &quot;1.00&quot;;
+  pub.VERSION = &quot;1.01&quot;;
 
   &#x2F;**
    * Used with b.units() to set the coordinate system to points.
    * @property PT {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    *&#x2F;
   pub.PT = &quot;pt&quot;;
@@ -155,7 +155,7 @@
   &#x2F;**
    * Used with b.units() to set the coordinate system to pixels.
    * @property PX {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    *&#x2F;
   pub.PX = &quot;px&quot;;
@@ -163,7 +163,7 @@
   &#x2F;**
    * Used with b.units() to set the coordinate system to centimeters.
    * @property CM {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    *&#x2F;
 
@@ -172,7 +172,7 @@
   &#x2F;**
    * Used with b.units() to set the coordinate system to millimeters.
    * @property MM {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    *&#x2F;
   pub.MM = &quot;mm&quot;;
@@ -180,7 +180,7 @@
   &#x2F;**
    * Used with b.units() to set the coordinate system to inches.
    * @property IN {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    *&#x2F;
   pub.IN = &quot;inch&quot;;
@@ -242,32 +242,32 @@
   &#x2F;**
    * Two Pi
    * @property TWO_PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    *&#x2F;
   pub.TWO_PI = Math.PI*2;
 
   &#x2F;**
    * Pi
    * @property PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    *&#x2F;
   pub.PI = Math.PI;
 
   &#x2F;**
    * Half Pi
    * @property HALF_PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    *&#x2F;
   pub.HALF_PI = Math.PI&#x2F;2;
 
   &#x2F;**
    * Quarter Pi
    * @property QUARTER_PI {Number}
-   * @cat Data
-   * @subcat Math Constants
+   * @cat Math
+   * @subcat Constants
    *&#x2F;
   pub.QUARTER_PI = Math.PI&#x2F;4;
 
@@ -372,7 +372,7 @@
      * @subcat modes
      *&#x2F;
   pub.MODEVISIBLE = &quot;ModeVisible&quot;;
-  pub.DEFAULTMODE = pub.MODEVISIBLE;
+  pub.DEFAULTMODE = pub.MODEVISIBLE; &#x2F;&#x2F; FIXME, DEFAULTMODE shouldn&#x27;t be public, move init to init()
 
 
   var ERROR_PREFIX = &quot;\nBasil.js Error -&gt; &quot;,
@@ -522,6 +522,7 @@
       return true;
     };
   }
+  pub.forEach = glob.forEach;
 
   &#x2F;**
    * HashList is a data container that allows you to store information as key -&gt; value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
@@ -997,7 +998,23 @@
       } else {
         return false;
       }
-  };  
+  };
+
+  &#x2F;**
+   * Removes the provided Page, Layer, PageItem, Swatch, etc.
+   *
+   * @cat Document
+   * @method remove
+   * @param  {PageItem} obj The object to be removed
+   *&#x2F;
+  pub.remove = function(obj) {
+
+    if(obj.hasOwnProperty(&quot;remove&quot;)) {
+      obj.remove();
+    } else {
+      throw new Error(&quot;Provided object cannot be removed in b.remove().&quot;);
+    }
+  }
 
   &#x2F;**
    * Checks whether a var is an Array, returns true if this is the case
@@ -1040,6 +1057,8 @@
 
   &#x2F;**
    * Checks whether a var is an indesign text object, returns true if this is the case
+   * NB: a indesign TextFrame will return false as it is just a container holding text. 
+   * So you could say that isText() refers to all the things inside a TextFrame.
    *
    * @cat Document
    * @subcat Type-Check
@@ -1083,7 +1102,7 @@
    *
    * @cat Document
    * @method close
-   * @param  {SaveOptions|Booleand} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+   * @param  {SaveOptions|Boolean} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
    * @param  {File} [file] Optional: The indesign file instance to save the document to
    *&#x2F;
   pub.close = function(saveOptions, file) {
@@ -1272,8 +1291,7 @@
   &#x2F;**
    * The number of all stories in the current document.
    *
-   * @cat Document
-   * @subcat Story
+   * @cat Story
    * @method storyCount
    * @return {Number} count The amount of stories.
    *&#x2F;
@@ -1284,8 +1302,7 @@
   &#x2F;**
    * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
    *
-   * @cat Document
-   * @subcat Story
+   * @cat Story
    * @method addToStory
    * @param {Story} story The story
    * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
@@ -1344,7 +1361,7 @@
   };
 
   &#x2F;**
-   * Sets the units of the document (like right clicking the rulers).
+   * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
    *
    * @cat Document
    * @method units
@@ -2312,7 +2329,12 @@
    * @return {Rectangle} New rectangle
    *&#x2F;
   pub.rect = function(x, y, w, h){
+    if (w === 0 || h === 0) {
+      &#x2F;&#x2F; indesign doesn&#x27;t draw a rectangle if width or height is set to 0
+      return false;
+    }
     if (arguments.length !== 4) error(&quot;b.rect(), not enough parameters to draw a rect! Use: x, y, w, h&quot;);
+    
     var rectBounds = [];
     if (currRectMode === pub.CORNER) {
       rectBounds[0] = y;
@@ -2331,9 +2353,6 @@
       rectBounds[3] = (x+w)-(w&#x2F;2);
     }
 
-  if(w === 0 || h === 0)
-    return false;
-    
     var newRect = currentPage().rectangles.add( currentLayer() );
     with (newRect) {
       geometricBounds = rectBounds;
@@ -2568,7 +2587,7 @@
   };
 
   &#x2F;**
-   * Sets the colormode for creating new colors with b.color() to RGB or CMYK.
+   * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RBG.
    * 
    * @cat Color
    * @method colorMode
@@ -2584,7 +2603,7 @@
   };
 
   &#x2F;**
-   * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document
+   * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document. The default color mode is RBG.
    *
    * @cat Color
    * @method color
@@ -2683,9 +2702,9 @@
       error(colorErrorMsg);
     }
 
-    &#x2F;&#x2F; check whether color was already created and added to swatches,
+    &#x2F;&#x2F; check whether color was already created and added to colors,
     &#x2F;&#x2F; keeps the document clean ...
-    newCol = findInCollectionByName(currentDoc().swatches, props.name);
+    newCol = findInCollectionByName(currentDoc().colors, props.name);
     if (newCol) {
       newCol.properties = props;
       return newCol;
@@ -3134,12 +3153,12 @@
       if (currImageMode === pub.CORNERS) {
         width = w - x;
         height = h - y;
-        fitOptions = FitOptions.contentToFrame;
+        fitOptions = FitOptions.FILL_PROPORTIONALLY;
       } else {
         if (w &amp;&amp; h) {
           width = w;
           height = h;
-          fitOptions = FitOptions.contentToFrame;
+          fitOptions = FitOptions.FILL_PROPORTIONALLY;
         } else {
           fitOptions = FitOptions.frameToContent;
         }
@@ -4269,8 +4288,29 @@
     if (arguments.length === 2 &amp;&amp; cb instanceof Function) {
       return forEach(result, cb);
     }
+    if(result.length === 0) b.error(&quot;b.labels(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
     return result;
   };
+  
+  &#x2F;**
+   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don&#x27;t want to deal with a single-element array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method label
+   * @param  {String} label The label identifier
+   * @return {PageItem} The first PageItem of all the hits
+   *&#x2F;  
+  pub.label = function(label) {
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === label) {
+        return pageItem;  
+      }
+    }
+    b.error(&quot;b.label(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
+  }
 
   &#x2F;**
    * Returns the currently selected object(s)
@@ -4282,12 +4322,25 @@
    * @return {Object[]} Array of selected object(s).
    *&#x2F;
   pub.selections = function(cb) {
-    if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something :)&quot;);
+    if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something.&quot;);
     if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
       return forEach(app.selection, cb);
     } 
     return app.selection;
   };
+  
+  &#x2F;**
+   * Returns the first currently selected object. Use this if you know you only have one selected item and don&#x27;t want to deal with an array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method selection
+   * @return {Object} The first selected object
+   *&#x2F;
+  pub.selection = function(cb) {
+    if(app.selection.length === 0) error(&quot;b.selection(), selection is empty. Please select something.&quot;);
+    return app.selection[0];
+  };  
 
   &#x2F;**
    * Reads the contents of a file into a String.
@@ -4434,7 +4487,6 @@
   &#x2F;**
    * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
    *
-   * @todo data folder is not created automatically,
    * @cat Output
    * @method savePDF
    * @param {String|File} file The file name or a File instance
@@ -4499,15 +4551,15 @@
         println(indent+&quot;--&gt; &quot;+propname+&quot; &quot;+e);
       }
     }
-  }  
+  }; 
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Transform
   &#x2F;&#x2F; geometricBounds hint: [y1, x1, y2, x2]
 
   var precision = function(num, dec) {
-      return Math.round(num * Math.pow(10, dec)) &#x2F; Math.pow(10, dec);
-  }  
+    return Math.round(num * Math.pow(10, dec)) &#x2F; Math.pow(10, dec);
+  };
 
 &#x2F;**
    * The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.
@@ -4756,6 +4808,51 @@
       error(&quot;b.itemSize(), works only with child classes of PageItem.&quot;);
     }
   };
+
+  pub.getMatrix = function() {
+    return currMatrix;
+  }
+
+  pub.transform = function(obj, matrix) {
+    
+    obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     matrix.adobeMatrix() 
+    );  
+
+  }
+
+  &#x2F;**
+   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method duplicate
+   * @param {PageItem|Page} item The item to duplicate
+   * @returns {Object} Returns the new item
+   *&#x2F;
+  pub.duplicate = function(item){
+
+    if( typeof(item) !== &quot;undefined&quot; &amp;&amp; item.hasOwnProperty(&quot;duplicate&quot;) ) {
+
+      var newItem = item.duplicate(currentPage());
+      newItem.move(currentLayer());
+      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );      
+
+      return newItem;
+
+    } else if(item instanceof Page) {
+
+      var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
+      return newPage;
+
+    } else {
+      error(&quot;Please provide a valid Page or PageItem as parameter for duplicate().&quot;);
+    }
+
+  }
   
 
   
@@ -4769,13 +4866,13 @@
     return digits;
   };
   
-  &#x2F;* todo *&#x2F;
+  &#x2F;* TODO jsdoc *&#x2F;
   var Matrix2D = pub.Matrix2D = function() {
     if (arguments.length === 0) this.reset();
     else if (arguments.length === 1 &amp;&amp; arguments[0] instanceof Matrix2D) this.set(arguments[0].array());
     else if (arguments.length === 6) this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   };
-  &#x2F;* todo *&#x2F;
+  &#x2F;* TODO jsdoc *&#x2F;
   Matrix2D.prototype = {
     set: function() {
       if (arguments.length === 6) {
@@ -4930,13 +5027,26 @@
     }
   };
   
-  &#x2F;* todo *&#x2F;
+  &#x2F;**
+   * Multiplies the current matrix by the one specified through the parameters. 
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method applyMatrix
+   * @param {Matrix2D} matrix The matrix to be applied
+   *&#x2F;
   pub.applyMatrix = function (matrix) {
     currMatrix.apply(matrix);
   };
 
-  &#x2F;* todo *&#x2F;
-  pub.popMatrix = function (argument) {
+  &#x2F;**
+   * Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method popMatrix
+   *&#x2F;
+  pub.popMatrix = function () {
     if (matrixStack.length &gt; 0) {
       currMatrix.set( matrixStack.pop() );
     } else {
@@ -4944,28 +5054,75 @@
     }
   };
 
-  &#x2F;* todo *&#x2F;
-  pub.printMatrix = function (argument) {
+  &#x2F;**
+   * Prints the current matrix to the console window.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method printMatrix
+   *&#x2F;
+  pub.printMatrix = function () {
     currMatrix.print();
   };
-  &#x2F;* todo *&#x2F;
-  pub.pushMatrix = function (argument) {
+  
+  &#x2F;**
+   * Pushes the current transformation matrix onto the matrix stack. Understanding pushMatrix() and popMatrix() requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method pushMatrix
+   *&#x2F;
+  pub.pushMatrix = function () {
     matrixStack.push( currMatrix.array() );
   };
-&#x2F;* todo *&#x2F;
-  pub.resetMatrix = function (argument) {
+
+  &#x2F;**
+   * Replaces the current matrix with the identity matrix.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method resetMatrix
+   *&#x2F;
+  pub.resetMatrix = function () {
     matrixStack = [];
     currMatrix = new Matrix2D();
   };
-&#x2F;* todo *&#x2F;
+
+  &#x2F;**
+   * Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to PI*2) or converted to radians with the radians() function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and HALF_PI being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling rotate(PI&#x2F;2) and then rotate(PI&#x2F;2) is the same as rotate(PI). If rotate() is called within the draw(), the transformation is reset when the loop begins again. Technically, rotate() multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the pushMatrix() and popMatrix().
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method rotate
+   * @param {Number} angle The angle specified in radians
+   *&#x2F;
   pub.rotate = function (angle) {
     currMatrix.rotate(angle);
   };
-&#x2F;* todo *&#x2F;
+
+  &#x2F;**
+   * Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().
+   * If only one parameter is given, it is applied on X and Y axis. 
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method scale
+   * @param {Number} scaleX The amount to scale the X axis.
+   * @param {Number} scaleY The amount to scale the Y axis.
+   *&#x2F;
   pub.scale = function (scaleX,scaleY) {
     currMatrix.scale(scaleX,scaleY);
   };
-&#x2F;* todo *&#x2F;
+
+  &#x2F;**
+   * Specifies an amount to displace objects within the page. The x parameter specifies left&#x2F;right translation, the y parameter specifies up&#x2F;down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling translate(50, 0) and then translate(20, 0) is the same as translate(70, 0). This function can be further controlled by the pushMatrix() and popMatrix().
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method translate
+   * @param {Number} tx The amount of offset on the X axis. 
+   * @param {Number} ty The amount of offset on the Y axis.
+   *&#x2F;
   pub.translate = function (tx,ty) {
     currMatrix.translate(tx,ty);
   };
@@ -5210,7 +5367,6 @@
     currRectMode = pub.CORNER;
     currEllipseMode = pub.CENTER;
     currYAlign = VerticalJustification.TOP_ALIGN;
-    startTime = Date.now();
     currFont = null;
     currImageMode = pub.CORNER;
     pub.resetMatrix();
@@ -5232,9 +5388,9 @@
     if (!currPage) {
       currentDoc();
         if (currDoc.windows.length)
-      currPage = app.activeWindow.activePage;
+          currPage = app.activeWindow.activePage;
         else
-        currPage = currDoc.pages[0];
+          currPage = currDoc.pages[0];
     }
     return currPage;
   };
@@ -5371,8 +5527,8 @@
     var bt = new BridgeTalk();
     bt.target = &quot;estoolkit&quot;;
     bt.body = &quot;app.clc()&quot;; &#x2F;&#x2F; works just with cs6
-    bt.onError = function(errObj) {}
-    bt.onResult = function(resObj) {}
+    bt.onError = function(errObj) {};
+    bt.onResult = function(resObj) {};
     bt.send();
   };
 
