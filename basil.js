@@ -4399,7 +4399,6 @@
   /**
    * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
    *
-   * @todo data folder is not created automatically,
    * @cat Output
    * @method savePDF
    * @param {String|File} file The file name or a File instance
@@ -4940,12 +4939,25 @@
     }
   };
   
-  /* TODO jsdoc */
+  /**
+   * Multiplies the current matrix by the one specified through the parameters. 
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method applyMatrix
+   * @param {Matrix2D} matrix The matrix to be applied
+   */
   pub.applyMatrix = function (matrix) {
     currMatrix.apply(matrix);
   };
 
-  /* TODO jsdoc */
+  /**
+   * Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method popMatrix
+   */
   pub.popMatrix = function () {
     if (matrixStack.length > 0) {
       currMatrix.set( matrixStack.pop() );
@@ -4954,28 +4966,73 @@
     }
   };
 
-  /* TODO jsdoc */
+  /**
+   * Prints the current matrix to the console window.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method printMatrix
+   */
   pub.printMatrix = function () {
     currMatrix.print();
   };
-  /* TODO jsdoc */
+  
+  /**
+   * Pushes the current transformation matrix onto the matrix stack. Understanding pushMatrix() and popMatrix() requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method pushMatrix
+   */
   pub.pushMatrix = function () {
     matrixStack.push( currMatrix.array() );
   };
-  /* TODO jsdoc */
+
+  /**
+   * Replaces the current matrix with the identity matrix.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method resetMatrix
+   */
   pub.resetMatrix = function () {
     matrixStack = [];
     currMatrix = new Matrix2D();
   };
-  /* TODO jsdoc */
+
+  /**
+   * Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to PI*2) or converted to radians with the radians() function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and HALF_PI being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling rotate(PI/2) and then rotate(PI/2) is the same as rotate(PI). If rotate() is called within the draw(), the transformation is reset when the loop begins again. Technically, rotate() multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the pushMatrix() and popMatrix().
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method rotate
+   * @param {Number} angle The angle specified in radians
+   */
   pub.rotate = function (angle) {
     currMatrix.rotate(angle);
   };
-  /* TODO jsdoc */
+
+  /**
+   * Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().
+   * If only one parameter is given, it is applied on X and Y axis. 
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @param {Number} scaleX The amount to scale the X axis.
+   * @param {Number} scaleY The amount to scale the Y axis.
+   */
   pub.scale = function (scaleX,scaleY) {
     currMatrix.scale(scaleX,scaleY);
   };
-  /* TODO jsdoc */
+
+  /**
+   * Specifies an amount to displace objects within the page. The x parameter specifies left/right translation, the y parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling translate(50, 0) and then translate(20, 0) is the same as translate(70, 0). This function can be further controlled by the pushMatrix() and popMatrix().
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @param {Number} tx The amount of offset on the X axis. 
+   * @param {Number} ty The amount of offset on the Y axis.
+   */
   pub.translate = function (tx,ty) {
     currMatrix.translate(tx,ty);
   };
