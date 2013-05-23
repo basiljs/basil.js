@@ -3,14 +3,16 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 1.01 - 
+basil.js 1.01 - 23 May 2013
 
++ added b.transform() and b.matrix()
++ added b.remove() for the removal of objects
 + added b.duplicate() for duplicating page items and pages
 + added b.label() and b.selection() as single item alternatives
 + added demos to examples folder
 * changed default image fit behaviour to FitOptions.FILL_PROPORTIONALLY
 * corrected credits for the processing.js team
- 
+* Several JSDOC updates and updated reference on website
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.00 - 28 Feb 2013
