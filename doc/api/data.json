@@ -660,12 +660,6 @@
         },
         {
             "file": "basil.js",
-            "line": 711,
-            "description": "If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.\n\ncat Document\nsubcat Multi-Getters\nmethod sentences\nparam  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in\nparam  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount\nreturn {Array} An array of strings",
-            "class": "b"
-        },
-        {
-            "file": "basil.js",
             "line": 753,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "cat": "Document",
@@ -4251,7 +4245,51 @@
         },
         {
             "file": "basil.js",
-            "line": 4737,
+            "line": 4724,
+            "description": "Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If Matrix2D object is provided to the function it will overwrite the current matrix.",
+            "cat": "Document",
+            "subcat": "Transformation",
+            "itemtype": "method",
+            "name": "matrix",
+            "params": [
+                {
+                    "name": "matrix",
+                    "description": "The matrix to be set as new current matrix",
+                    "type": "Matrix2D",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Returns the current matrix",
+                "type": "Matrix2D"
+            },
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 4741,
+            "description": "Duplicates the given page after the current page or the given pageitem to the current page and layer.",
+            "cat": "Document",
+            "subcat": "Transformation",
+            "itemtype": "method",
+            "name": "transform",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The item to be transformed",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "matrix",
+                    "description": "The matrix to be applied",
+                    "type": "Matrix2D"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 4759,
             "description": "Duplicates the given page after the current page or the given pageitem to the current page and layer.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4272,7 +4310,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4942,
+            "line": 4964,
             "description": "Multiplies the current matrix by the one specified through the parameters.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4289,7 +4327,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4954,
+            "line": 4976,
             "description": "Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4299,7 +4337,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4969,
+            "line": 4991,
             "description": "Prints the current matrix to the console window.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4309,7 +4347,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4980,
+            "line": 5002,
             "description": "Pushes the current transformation matrix onto the matrix stack. Understanding pushMatrix() and popMatrix() requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4319,7 +4357,7 @@
         },
         {
             "file": "basil.js",
-            "line": 4991,
+            "line": 5013,
             "description": "Replaces the current matrix with the identity matrix.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4329,7 +4367,7 @@
         },
         {
             "file": "basil.js",
-            "line": 5003,
+            "line": 5025,
             "description": "Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to PI*2) or converted to radians with the radians() function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and HALF_PI being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling rotate(PI/2) and then rotate(PI/2) is the same as rotate(PI). If rotate() is called within the draw(), the transformation is reset when the loop begins again. Technically, rotate() multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the pushMatrix() and popMatrix().",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4346,7 +4384,7 @@
         },
         {
             "file": "basil.js",
-            "line": 5015,
+            "line": 5037,
             "description": "Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().\nIf only one parameter is given, it is applied on X and Y axis.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4368,7 +4406,7 @@
         },
         {
             "file": "basil.js",
-            "line": 5029,
+            "line": 5051,
             "description": "Specifies an amount to displace objects within the page. The x parameter specifies left/right translation, the y parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling translate(50, 0) and then translate(20, 0) is the same as translate(70, 0). This function can be further controlled by the pushMatrix() and popMatrix().",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4390,7 +4428,7 @@
         },
         {
             "file": "basil.js",
-            "line": 5046,
+            "line": 5068,
             "description": "Run the sketch! Has to be called in every sketch a the very end of the code.\nYou may add performance setting options when calling b.go():<br /><br />\n\nb.go(b.MODEVISIBLE) or alternatively: b.go()<br />   \nb.go(b.MODESILENT) <br />\nb.go(b.MODEHIDDEN)<br /><br />\n\nCurrently there is no performance optimization in b.loop()<br />",
             "cat": "Environment",
             "itemtype": "method",
@@ -4407,7 +4445,7 @@
         },
         {
             "file": "basil.js",
-            "line": 5094,
+            "line": 5116,
             "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle.\n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!\nThe framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.",
             "cat": "Environment",
             "itemtype": "method",
@@ -4423,7 +4461,7 @@
         },
         {
             "file": "basil.js",
-            "line": 5127,
+            "line": 5149,
             "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
             "cat": "Environment",
             "itemtype": "method",

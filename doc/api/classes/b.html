@@ -748,6 +748,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_matrix">matrix</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_max">max</a>
 
                                 
@@ -1189,6 +1196,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_transform">transform</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_transformImage">transformImage</a>
 
                                 
@@ -1278,8 +1292,6 @@
                                 <a href="#method_Vector.cross">Vector.cross</a>
 
                                 
-                                    <span class="flag static">static</span>
-                                
                                 
                             </li>
                         
@@ -1287,13 +1299,6 @@
                                 <a href="#method_Vector.cross">Vector.cross</a>
 
                                 
-                                
-                            </li>
-                        
-                            <li class="index-item method">
-                                <a href="#method_Vector.dist">Vector.dist</a>
-
-                                
                                     <span class="flag static">static</span>
                                 
                                 
@@ -1302,6 +1307,15 @@
                             <li class="index-item method">
                                 <a href="#method_Vector.dist">Vector.dist</a>
 
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_Vector.dist">Vector.dist</a>
+
+                                
+                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
@@ -1317,14 +1331,14 @@
                                 <a href="#method_Vector.dot">Vector.dot</a>
 
                                 
-                                    <span class="flag static">static</span>
-                                
                                 
                             </li>
                         
                             <li class="index-item method">
                                 <a href="#method_Vector.dot">Vector.dot</a>
 
+                                
+                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
@@ -2142,7 +2156,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l4942"><code>basil.js:4942</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l4964"><code>basil.js:4964</code></a>
         
         </p>
 
@@ -5008,7 +5022,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l4737"><code>basil.js:4737</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l4759"><code>basil.js:4759</code></a>
         
         </p>
 
@@ -5931,7 +5945,7 @@ create from the provided vertices has to be closed or not (to connect the beginn
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l5046"><code>basil.js:5046</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5068"><code>basil.js:5068</code></a>
         
         </p>
 
@@ -10799,7 +10813,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l5094"><code>basil.js:5094</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5116"><code>basil.js:5116</code></a>
         
         </p>
 
@@ -11373,6 +11387,111 @@ The framerate property determines how often draw() is called per second, e.g. a 
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
                     
                     Current page margins with these properties: top, right, bottom, left
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_matrix" class="method item">
+    <h3 class="name"><code>matrix</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[matrix]</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Matrix2D</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l4724"><code>basil.js:4724</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If Matrix2D object is provided to the function it will overwrite the current matrix.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[matrix]</code>
+                        <span class="type">Matrix2D</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The matrix to be set as new current matrix</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Matrix2D</span>:
+                    
+                    Returns the current matrix
                 
             </div>
         </div>
@@ -12926,7 +13045,7 @@ newly drawn shapes will be invisible.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l5127"><code>basil.js:5127</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5149"><code>basil.js:5149</code></a>
         
         </p>
 
@@ -13908,7 +14027,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l4954"><code>basil.js:4954</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l4976"><code>basil.js:4976</code></a>
         
         </p>
 
@@ -14315,7 +14434,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l4969"><code>basil.js:4969</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l4991"><code>basil.js:4991</code></a>
         
         </p>
 
@@ -14369,7 +14488,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l4980"><code>basil.js:4980</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5002"><code>basil.js:5002</code></a>
         
         </p>
 
@@ -15096,7 +15215,7 @@ half of the image's width and height. The parameter must be written in
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l4991"><code>basil.js:4991</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5013"><code>basil.js:5013</code></a>
         
         </p>
 
@@ -15160,7 +15279,7 @@ half of the image's width and height. The parameter must be written in
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l5003"><code>basil.js:5003</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5025"><code>basil.js:5025</code></a>
         
         </p>
 
@@ -15575,7 +15694,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l5015"><code>basil.js:5015</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5037"><code>basil.js:5037</code></a>
         
         </p>
 
@@ -17886,6 +18005,114 @@ The width and height parameters define a rectangular area.</p>
 </div>
 
                 
+                    <div id="method_transform" class="method item">
+    <h3 class="name"><code>transform</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>obj</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>matrix</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l4741"><code>basil.js:4741</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Duplicates the given page after the current page or the given pageitem to the current page and layer.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">obj</code>
+                        <span class="type">PageItem</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The item to be transformed</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">matrix</code>
+                        <span class="type">Matrix2D</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The matrix to be applied</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_transformImage" class="method item">
     <h3 class="name"><code>transformImage</code></h3>
 
@@ -18106,7 +18333,7 @@ The image fit options are always "contentToFrame".</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l5029"><code>basil.js:5029</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l5051"><code>basil.js:5051</code></a>
         
         </p>
 
@@ -19299,134 +19526,6 @@ Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);</p>
             
                 <li class="arg">
                     
-                        <code>v1</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>v2</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;basil.js.html#l3246"><code>basil.js:3246</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Static function. Calculates the cross product of two vectors.
-Is meant to be called "static" i.e. Vector.cross(v1, v2);</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">v1</code>
-                        <span class="type">Vector</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The first vector</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">v2</code>
-                        <span class="type">Vector</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The second vector</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
-                    
-                    The cross product
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_Vector.cross" class="method item">
-    <h3 class="name"><code>Vector.cross</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
                         <code>v</code>
                     
                 </li>
@@ -19566,8 +19665,8 @@ Is meant to be called "static" i.e. Vector.cross(v1, v2);</p>
 </div>
 
                 
-                    <div id="method_Vector.dist" class="method item">
-    <h3 class="name"><code>Vector.dist</code></h3>
+                    <div id="method_Vector.cross" class="method item">
+    <h3 class="name"><code>Vector.cross</code></h3>
 
     
         <div class="args">
@@ -19620,7 +19719,7 @@ Is meant to be called "static" i.e. Vector.cross(v1, v2);</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;basil.js.html#l3216"><code>basil.js:3216</code></a>
+        <a href="..&#x2F;files&#x2F;basil.js.html#l3246"><code>basil.js:3246</code></a>
         
         </p>
 
@@ -19631,8 +19730,8 @@ Is meant to be called "static" i.e. Vector.cross(v1, v2);</p>
     </div>
 
     <div class="description">
-        <p>Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
-Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
+        <p>Static function. Calculates the cross product of two vectors.
+Is meant to be called "static" i.e. Vector.cross(v1, v2);</p>
     </div>
 
     
@@ -19684,7 +19783,7 @@ Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
                     
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
                     
-                    The distance
+                    The cross product
                 
             </div>
         </div>
@@ -19814,6 +19913,134 @@ Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
 
                     <div class="param-description">
                         <p>The z component</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    
+                    The distance
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_Vector.dist" class="method item">
+    <h3 class="name"><code>Vector.dist</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>v1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>v2</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l3216"><code>basil.js:3216</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
+Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">v1</code>
+                        <span class="type">Vector</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The first vector</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">v2</code>
+                        <span class="type">Vector</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The second vector</p>
                     </div>
 
                     
@@ -19982,134 +20209,6 @@ Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
             
                 <li class="arg">
                     
-                        <code>v1</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>v2</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;basil.js.html#l3231"><code>basil.js:3231</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Static function. Calculates the dot product of two vectors.
-Is meant to be called "static" i.e. Vector.dot(v1, v2);</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">v1</code>
-                        <span class="type">Vector</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The first vector</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">v2</code>
-                        <span class="type">Vector</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The second vector</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
-                    
-                    The dot product
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_Vector.dot" class="method item">
-    <h3 class="name"><code>Vector.dot</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
                         <code>v</code>
                     
                 </li>
@@ -20221,6 +20320,134 @@ Is meant to be called "static" i.e. Vector.dot(v1, v2);</p>
 
                     <div class="param-description">
                         <p>The z component</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    
+                    The dot product
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_Vector.dot" class="method item">
+    <h3 class="name"><code>Vector.dot</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>v1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>v2</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;basil.js.html#l3231"><code>basil.js:3231</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Static function. Calculates the dot product of two vectors.
+Is meant to be called "static" i.e. Vector.dot(v1, v2);</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">v1</code>
+                        <span class="type">Vector</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The first vector</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">v2</code>
+                        <span class="type">Vector</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The second vector</p>
                     </div>
 
                     

@@ -796,47 +796,47 @@
     }
   };
 
-  &#x2F;**
-   * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
-   *
-   * cat Document
-   * subcat Multi-Getters
-   * method sentences
-   * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
-   * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
-   * return {Array} An array of strings
-   * 
-   *&#x2F;
-   &#x2F;&#x2F; FIXME
-  pub.sentences = function(item, cb) {
+  &#x2F;&#x2F; &#x2F;**
+  &#x2F;&#x2F;  * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
+  &#x2F;&#x2F;  *
+  &#x2F;&#x2F;  * cat Document
+  &#x2F;&#x2F;  * subcat Multi-Getters
+  &#x2F;&#x2F;  * method sentences
+  &#x2F;&#x2F;  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
+  &#x2F;&#x2F;  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
+  &#x2F;&#x2F;  * return {Array} An array of strings
+  &#x2F;&#x2F;  * 
+  &#x2F;&#x2F;  *&#x2F;
+  &#x2F;&#x2F;  &#x2F;&#x2F; FIXME
+  &#x2F;&#x2F; pub.sentences = function(item, cb) {
 
-    var err = false;
-    try{
-      item[0]; &#x2F;&#x2F; check if list
-      err = true; &#x2F;&#x2F; access ok -&gt; error
-    } catch (expected) {};
-    if(err) error(&quot;b.sentences(), Array&#x2F;Collection has been passed to b.sentences(). Single object expected.&quot;);
+  &#x2F;&#x2F;   var err = false;
+  &#x2F;&#x2F;   try{
+  &#x2F;&#x2F;     item[0]; &#x2F;&#x2F; check if list
+  &#x2F;&#x2F;     err = true; &#x2F;&#x2F; access ok -&gt; error
+  &#x2F;&#x2F;   } catch (expected) {};
+  &#x2F;&#x2F;   if(err) error(&quot;b.sentences(), Array&#x2F;Collection has been passed to b.sentences(). Single object expected.&quot;);
 
-    if(arguments.length &gt;= 1 ) {
-      var arr;
-      try{
-        str = item.contents;  
-        arr = str.match( &#x2F;[^\.!\?]+[\.!\?]+&#x2F;g );
-      } catch (e){
-        error(&quot;b.sentences(), Object passed to b.sentences() does not have text or is incompatible.&quot;);
-      }
+  &#x2F;&#x2F;   if(arguments.length &gt;= 1 ) {
+  &#x2F;&#x2F;     var arr;
+  &#x2F;&#x2F;     try{
+  &#x2F;&#x2F;       str = item.contents;  
+  &#x2F;&#x2F;       arr = str.match( &#x2F;[^\.!\?]+[\.!\?]+&#x2F;g );
+  &#x2F;&#x2F;     } catch (e){
+  &#x2F;&#x2F;       error(&quot;b.sentences(), Object passed to b.sentences() does not have text or is incompatible.&quot;);
+  &#x2F;&#x2F;     }
 
-      if(arguments.length === 1) {
-        return arr;
-      } else if (cb instanceof Function) {
-        forEach(arr,cb);
-      } else {
-        error(&quot;b.sentences(), the callback parameter is not a Function.&quot;);
-      }
+  &#x2F;&#x2F;     if(arguments.length === 1) {
+  &#x2F;&#x2F;       return arr;
+  &#x2F;&#x2F;     } else if (cb instanceof Function) {
+  &#x2F;&#x2F;       forEach(arr,cb);
+  &#x2F;&#x2F;     } else {
+  &#x2F;&#x2F;       error(&quot;b.sentences(), the callback parameter is not a Function.&quot;);
+  &#x2F;&#x2F;     }
 
-    }
+  &#x2F;&#x2F;   }
 
-  };
+  &#x2F;&#x2F; };
 
   &#x2F;**
    * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.
@@ -4809,10 +4809,32 @@
     }
   };
 
-  pub.getMatrix = function() {
+  &#x2F;**
+   * Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If Matrix2D object is provided to the function it will overwrite the current matrix.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method matrix
+   * @param {Matrix2D} [matrix] The matrix to be set as new current matrix
+   * @returns {Matrix2D} Returns the current matrix
+   *&#x2F;
+  pub.matrix = function(matrix) {
+
+    if(matrix instanceof Matrix2D) {
+      currMatrix = matrix;
+    }
     return currMatrix;
   }
 
+  &#x2F;**
+   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method transform
+   * @param {PageItem} obj The item to be transformed
+   * @param {Matrix2D} matrix The matrix to be applied
+   *&#x2F;
   pub.transform = function(obj, matrix) {
     
     obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,

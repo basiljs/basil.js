@@ -4721,18 +4721,6 @@
     }
   };
 
-  pub.getMatrix = function() {
-    return currMatrix;
-  }
-
-  pub.transform = function(obj, matrix) {
-    
-    obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
-                     matrix.adobeMatrix() 
-    );  
-
-  }
 
   /**
    * Duplicates the given page after the current page or the given pageitem to the current page and layer.
@@ -4938,6 +4926,41 @@
       pub.println(output);
     }
   };
+
+  /**
+   * Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method matrix
+   * @param {Matrix2D} [matrix] The matrix to be set as new current matrix
+   * @returns {Matrix2D} Returns the current matrix
+   */
+  pub.matrix = function(matrix) {
+
+    if(matrix instanceof Matrix2D) {
+      currMatrix = matrix;
+    }
+    return currMatrix;
+  }
+
+  /**
+   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method transform
+   * @param {PageItem} obj The item to be transformed
+   * @param {Matrix2D} matrix The matrix to be applied
+   */
+  pub.transform = function(obj, matrix) {
+    
+    obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     matrix.adobeMatrix() 
+    );  
+
+  }  
   
   /**
    * Multiplies the current matrix by the one specified through the parameters. 
