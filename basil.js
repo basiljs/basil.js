@@ -59,7 +59,7 @@
   /**
    * Used with b.units() to set the coordinate system to points.
    * @property PT {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    */
   pub.PT = "pt";
@@ -67,7 +67,7 @@
   /**
    * Used with b.units() to set the coordinate system to pixels.
    * @property PX {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    */
   pub.PX = "px";
@@ -75,7 +75,7 @@
   /**
    * Used with b.units() to set the coordinate system to centimeters.
    * @property CM {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    */
 
@@ -84,7 +84,7 @@
   /**
    * Used with b.units() to set the coordinate system to millimeters.
    * @property MM {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    */
   pub.MM = "mm";
@@ -92,7 +92,7 @@
   /**
    * Used with b.units() to set the coordinate system to inches.
    * @property IN {String}
-   * @cat Data
+   * @cat Document
    * @subcat Units
    */
   pub.IN = "inch";
@@ -1187,8 +1187,7 @@
   /**
    * The number of all stories in the current document.
    *
-   * @cat Document
-   * @subcat Story
+   * @cat Story
    * @method storyCount
    * @return {Number} count The amount of stories.
    */
@@ -1199,8 +1198,7 @@
   /**
    * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
    *
-   * @cat Document
-   * @subcat Story
+   * @cat Story
    * @method addToStory
    * @param {Story} story The story
    * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
@@ -1259,7 +1257,7 @@
   };
 
   /**
-   * Sets the units of the document (like right clicking the rulers).
+   * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
    *
    * @cat Document
    * @method units
