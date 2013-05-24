@@ -3,6 +3,13 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.02 - 
+
+* added constraints for b.color() and b.fill(), where illegal channel 
+  values would previously produce strange results
+
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.01 - 23 May 2013
 
 + added b.transform() and b.matrix()
@@ -17,7 +24,7 @@ basil.js 1.01 - 23 May 2013
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.00 - 28 Feb 2013
 
-First puplic release!
+First public release!
 
 + new functions to work conveniently with stories (indesign model of linked 
   content or many textframes), e.g. b.addToStory(), b.storyCount() ...
@@ -55,3 +62,5 @@ basil.js is developed over the Summer by Ted Davis, Benedikt Groß,
 Stefan Landsbek and Ludwig Zeller. 
 
 Special thanks to Stefan Landsbek for the inital code architecture!
+
+
