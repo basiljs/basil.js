@@ -4739,7 +4739,7 @@
 
 
   /**
-   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
+   * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
    *
    * @cat Document
    * @subcat Transformation
@@ -4753,9 +4753,16 @@
 
       var newItem = item.duplicate(currentPage());
       newItem.move(currentLayer());
-      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix() );      
+      
+      if (currRectMode === pub.CENTER) {
+        newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+      } else {
+        newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                       AnchorPoint.TOP_LEFT_ANCHOR,
+                       currMatrix.adobeMatrix() );
+      }
 
       return newItem;
 
