@@ -4968,7 +4968,7 @@
   }
 
   /**
-   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
+   * Transforms the given PageItem with the given Matrix2D object.
    *
    * @cat Document
    * @subcat Transformation
