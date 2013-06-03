@@ -2654,11 +2654,13 @@
     } else if (arguments.length === 2) {
       &#x2F;&#x2F; GREY + with custom name
       if (currColorMode === pub.RGB) {
+        a = pub.constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
         props.colorValue = [a,a,a];
         props.name = b;
       } else {
+        a = pub.constrain(a, 0, 100);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
         props.colorValue = [0,0,0,a];
@@ -2668,6 +2670,9 @@
     } else if (arguments.length === 3) {
       &#x2F;&#x2F; R G B
       if (currColorMode === pub.RGB) {
+        a = pub.constrain(a, 0, 255);
+        b = pub.constrain(b, 0, 255);
+        c = pub.constrain(c, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
         props.colorValue = [a,b,c];
@@ -2679,20 +2684,31 @@
 
     } else if (arguments.length === 4 &amp;&amp; typeof d === &#x27;string&#x27;) {
     &#x2F;&#x2F; R G B + name
-          props.model = ColorModel.PROCESS;
-          props.space = ColorSpace.RGB;
-          props.colorValue = [a,b,c];
-          props.name = d; 
+      a = pub.constrain(a, 0, 255);
+      b = pub.constrain(b, 0, 255);
+      c = pub.constrain(c, 0, 255);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.RGB;
+      props.colorValue = [a,b,c];
+      props.name = d; 
 
     &#x2F;&#x2F; C M Y K
     } else if (arguments.length === 4 &amp;&amp; typeof d === &#x27;number&#x27;){
-          props.model = ColorModel.PROCESS;
-          props.space = ColorSpace.CMYK;
-          props.colorValue = [a,b,c,d];
-          props.name = &quot;C=&quot;+a+&quot; M=&quot;+b+&quot; Y=&quot;+c+&quot; K=&quot;+d;
+      a = pub.constrain(a, 0, 100);
+      b = pub.constrain(b, 0, 100);
+      c = pub.constrain(c, 0, 100);      
+      d = pub.constrain(d, 0, 100);      
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.CMYK;
+      props.colorValue = [a,b,c,d];
+      props.name = &quot;C=&quot;+a+&quot; M=&quot;+b+&quot; Y=&quot;+c+&quot; K=&quot;+d;
      
     &#x2F;&#x2F; C M Y K + name
     } else if (arguments.length === 5) {
+      a = pub.constrain(a, 0, 100);
+      b = pub.constrain(b, 0, 100);
+      c = pub.constrain(c, 0, 100);      
+      d = pub.constrain(d, 0, 100);       
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [a,b,c,d];
@@ -3633,7 +3649,9 @@
    *&#x2F;
   pub.constrain = function(aNumber, aMin, aMax) {
     if(arguments.length !== 3 ) error(&quot;b.constrain(), wrong argument count.&quot;);
-    return aNumber &gt; aMax ? aMax : aNumber &lt; aMin ? aMin : aNumber;
+    if(aNumber &lt;= aMin) return aMin;
+    if(aNumber &gt;= aMax) return aMax;
+    return aNumber;
   };
 
   &#x2F;**
@@ -4809,43 +4827,9 @@
     }
   };
 
-  &#x2F;**
-   * Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If Matrix2D object is provided to the function it will overwrite the current matrix.
-   *
-   * @cat Document
-   * @subcat Transformation
-   * @method matrix
-   * @param {Matrix2D} [matrix] The matrix to be set as new current matrix
-   * @returns {Matrix2D} Returns the current matrix
-   *&#x2F;
-  pub.matrix = function(matrix) {
-
-    if(matrix instanceof Matrix2D) {
-      currMatrix = matrix;
-    }
-    return currMatrix;
-  }
 
   &#x2F;**
-   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
-   *
-   * @cat Document
-   * @subcat Transformation
-   * @method transform
-   * @param {PageItem} obj The item to be transformed
-   * @param {Matrix2D} matrix The matrix to be applied
-   *&#x2F;
-  pub.transform = function(obj, matrix) {
-    
-    obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
-                     matrix.adobeMatrix() 
-    );  
-
-  }
-
-  &#x2F;**
-   * Duplicates the given page after the current page or the given pageitem to the current page and layer.
+   * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
    *
    * @cat Document
    * @subcat Transformation
@@ -4855,13 +4839,20 @@
    *&#x2F;
   pub.duplicate = function(item){
 
-    if( typeof(item) !== &quot;undefined&quot; &amp;&amp; item.hasOwnProperty(&quot;duplicate&quot;) ) {
+    if( !(item instanceof Page) &amp;&amp; typeof(item) !== &quot;undefined&quot; &amp;&amp; item.hasOwnProperty(&quot;duplicate&quot;) ) {
 
       var newItem = item.duplicate(currentPage());
       newItem.move(currentLayer());
-      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix() );      
+      
+      if (currRectMode === pub.CENTER) {
+        newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+      } else {
+        newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                       AnchorPoint.TOP_LEFT_ANCHOR,
+                       currMatrix.adobeMatrix() );
+      }
 
       return newItem;
 
@@ -5048,6 +5039,41 @@
       pub.println(output);
     }
   };
+
+  &#x2F;**
+   * Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method matrix
+   * @param {Matrix2D} [matrix] The matrix to be set as new current matrix
+   * @returns {Matrix2D} Returns the current matrix
+   *&#x2F;
+  pub.matrix = function(matrix) {
+
+    if(matrix instanceof Matrix2D) {
+      currMatrix = matrix;
+    }
+    return currMatrix;
+  }
+
+  &#x2F;**
+   * Transforms the given PageItem with the given Matrix2D object.
+   *
+   * @cat Document
+   * @subcat Transformation
+   * @method transform
+   * @param {PageItem} obj The item to be transformed
+   * @param {Matrix2D} matrix The matrix to be applied
+   *&#x2F;
+  pub.transform = function(obj, matrix) {
+    
+    obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     matrix.adobeMatrix() 
+    );  
+
+  }  
   
   &#x2F;**
    * Multiplies the current matrix by the one specified through the parameters. 
