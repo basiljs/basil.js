@@ -3561,7 +3561,9 @@
    */
   pub.constrain = function(aNumber, aMin, aMax) {
     if(arguments.length !== 3 ) error("b.constrain(), wrong argument count.");
-    return aNumber > aMax ? aMax : aNumber < aMin ? aMin : aNumber;
+    if(aNumber <= aMin) return aMin;
+    if(aNumber >= aMax) return aMax;
+    return aNumber;
   };
 
   /**
@@ -4749,7 +4751,7 @@
    */
   pub.duplicate = function(item){
 
-    if( typeof(item) !== "undefined" && item.hasOwnProperty("duplicate") ) {
+    if( !(item instanceof Page) && typeof(item) !== "undefined" && item.hasOwnProperty("duplicate") ) {
 
       var newItem = item.duplicate(currentPage());
       newItem.move(currentLayer());
