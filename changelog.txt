@@ -3,8 +3,9 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 1.02 - 
+basil.js 1.02 - 3 June 2013
 
+* fixed a bug with b.constrain()
 * added constraints for b.color() and b.fill(), where illegal channel 
   values would previously produce strange results
 
