@@ -4414,8 +4414,9 @@
     outputFile.close();
   };
 
+  // TODO: make savePDF and savePNG D.R.Y.
   /**
-   * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
+   * Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.
    *
    * @cat Output
    * @method savePDF
@@ -4426,6 +4427,20 @@
     var outputFile = initExportFile(file);
     if (typeof showOptions !== "boolean") showOptions = false;
     b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  };
+
+  /**
+   * Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.
+   *
+   * @cat Output
+   * @method savePNG
+   * @param {String|File} file The file name or a File instance
+   * @param {Boolean} [showOptions] Whether to show the export dialog
+   */
+  pub.savePNG = function(file, showOptions){
+    var outputFile = initExportFile(file);
+    if (typeof showOptions !== "boolean") showOptions = false;
+    b.doc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
   };
   
   /**
