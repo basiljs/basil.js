@@ -4426,7 +4426,7 @@
   pub.savePDF = function(file, showOptions){
     var outputFile = initExportFile(file);
     if (typeof showOptions !== "boolean") showOptions = false;
-    b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+    currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
   };
 
   /**
@@ -4440,7 +4440,7 @@
   pub.savePNG = function(file, showOptions){
     var outputFile = initExportFile(file);
     if (typeof showOptions !== "boolean") showOptions = false;
-    b.doc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+    currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
   };
   
   /**
