@@ -3116,6 +3116,13 @@
                      AnchorPoint.TOP_LEFT_ANCHOR,
                      currMatrix.adobeMatrix() );
     }
+
+    with (frame) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint;
+      strokeColor = currStrokeColor;
+    }
+
     return frame;
   };
 
