@@ -3092,9 +3092,9 @@
         }
       }
       
-      frame = currentPage().rectangles.add({
-        geometricBounds:[y, x, y + height, x + width]
-      });
+      frame = currentPage().rectangles.add(currentLayer(), 
+        { geometricBounds:[y, x, y + height, x + width] }
+      );
     }
     
     frame.place(file);
