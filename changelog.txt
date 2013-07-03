@@ -3,6 +3,8 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.03 - 3 July 2013
+* added missing support for layer and stroke settings to b.image()
 + added b.savePNG()
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
