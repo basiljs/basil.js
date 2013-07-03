@@ -142,7 +142,7 @@
    * @property VERSION {String}
    * @cat Environment
    *&#x2F;
-  pub.VERSION = &quot;1.01&quot;;
+  pub.VERSION = &quot;1.03&quot;;
 
   &#x2F;**
    * Used with b.units() to set the coordinate system to points.
@@ -3180,9 +3180,9 @@
         }
       }
       
-      frame = currentPage().rectangles.add({
-        geometricBounds:[y, x, y + height, x + width]
-      });
+      frame = currentPage().rectangles.add(currentLayer(), 
+        { geometricBounds:[y, x, y + height, x + width] }
+      );
     }
     
     frame.place(file);
@@ -3204,6 +3204,13 @@
                      AnchorPoint.TOP_LEFT_ANCHOR,
                      currMatrix.adobeMatrix() );
     }
+
+    with (frame) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint;
+      strokeColor = currStrokeColor;
+    }
+
     return frame;
   };
 
@@ -4502,8 +4509,9 @@
     outputFile.close();
   };
 
+  &#x2F;&#x2F; TODO: make savePDF and savePNG D.R.Y.
   &#x2F;**
-   * Exports the current document as PDF to the documents data folder. Please note, that export options default to the last used export settings.
+   * Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.
    *
    * @cat Output
    * @method savePDF
@@ -4513,7 +4521,21 @@
   pub.savePDF = function(file, showOptions){
     var outputFile = initExportFile(file);
     if (typeof showOptions !== &quot;boolean&quot;) showOptions = false;
-    b.doc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+    currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  };
+
+  &#x2F;**
+   * Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.
+   *
+   * @cat Output
+   * @method savePNG
+   * @param {String|File} file The file name or a File instance
+   * @param {Boolean} [showOptions] Whether to show the export dialog
+   *&#x2F;
+  pub.savePNG = function(file, showOptions){
+    var outputFile = initExportFile(file);
+    if (typeof showOptions !== &quot;boolean&quot;) showOptions = false;
+    currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
   };
   
   &#x2F;**
