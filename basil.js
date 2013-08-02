@@ -1524,7 +1524,7 @@
     */
     this.delimiter = function(delimiter) {
       if (arguments.length === 0) return delimiterStr;
-      if (typeof separator === 'string') {
+      if (typeof delimiter === 'string') {
         initDelimiter(delimiter);
       } else {
         error("b.CSV.delimiter, separator has to be a character or string");
