@@ -14,6 +14,7 @@ For tutorials, examples and documentation go to the official website: [http://ba
 - Philipp Adrian, http://www.philippadrian.com/
 - be:screen GmbH, http://bescreen.de
 - Stefan Landsbek, http://47nord.de
+- Ken Frederick, http://kennethfrederick.de/
 
 basil.js was conceived and is generously supported by
 The Visual Communication Institute / The Basel School of Design

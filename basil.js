@@ -14,6 +14,7 @@
                  - Philipp Adrian http://www.philippadrian.com/
                  - be:screen GmbH http://bescreen.de
                  - Stefan Landsbek http://47nord.de
+                 - Ken Frederick http://kennethfrederick.de/
 
   Web Site       - http://basiljs.ch
   Github Repo.   - https://github.com/basiljs/basil.js
@@ -33,6 +34,8 @@
   Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
   
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
+
+  .. - ... . . -- ... - .... . .- -... --- ...- . .. ... -. .----. - -- --- .-. ... . -.-. --- -.. .
 */
 
 #target "InDesign";
@@ -423,8 +426,8 @@
       for (var i = 0, len = collection.length; i < len; i++) {
         
         if(!isValid(collection[i])) {
-            warning("forEach(), invalid object processed.");
-            continue;          
+          warning("forEach(), invalid object processed.");
+          continue;          
         }
 
         if(cb(collection[i],i) === false) {
@@ -1273,6 +1276,84 @@
   };
 
   /**
+   *  Returns the Group instance and sets it if argument Group is given.
+   *
+   *  @cat Document
+   *  @subCat Page
+   *  @method Group
+   *  @param {Object|String} [pItem] The Page Items (must be at least 2) or name of Group name instance
+   *  @param {String} name (optional) The name of the Group, only when creating a Group from Page Item(s)
+   *  @return {Group} the current Group instance
+   */
+  pub.group = function (pItem, name) {
+    var group = null;
+    if( pItem instanceof Array) {
+      // creates a group from Page Items
+      group = currentDoc().groups.add(pItem);
+      group.name = name;
+    }
+    else if( typeof pItem === 'string' ) {
+      // get the Group of the given name
+      group = currentDoc().groups.item(pItem);
+    }
+    else {
+      error("b.group(), not a valid argument.")
+    }
+
+    return group;
+  };
+
+  /**
+   *  Returns an array of the items that were within the Group before b.ungroup() was called
+   *
+   *  @cat Document
+   *  @subCat Page
+   *  @method Group
+   *  @param {Object|String} [pItem] The Group or name of Group name instance
+   *  @param {String} name The name of the Group, only when creating a Group from Page Item(s)
+   *  @return {Group} the Page Item(s) that were grouped
+   */
+  pub.ungroup = function(pItem) {
+    var ungroupedItems = null;
+    if( pItem instanceof Group) {
+      ungroupedItems = b.items( pItem );
+      pItem.ungroup();
+    }
+    else if( typeof pItem === 'string' ) {
+      // get the Group of the given name
+      var group = currentDoc().groups.item(pItem);
+      ungroupedItems = b.items( group );
+      group.ungroup();
+    }
+    else {
+      error("b.ungroup(), not a valid Group. Please select a valid Group.");
+    }
+
+    return ungroupedItems;
+  };
+
+
+
+  /**
+   * Returns the currently selected object(s)
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method selections
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @return {Object[]} Array of selected object(s).
+   */
+  pub.selections = function(cb) {
+    if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
+    if (arguments.length === 1 && cb instanceof Function) {
+      return forEach(app.selection, cb);
+    } 
+    return app.selection;
+  };
+  
+
+
+  /**
    * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
    *
    * @cat Document
@@ -1496,7 +1577,7 @@
     }
   };
 
-  // Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock don't mind.
+  // Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock won't mind.
   // https://github.com/mbostock/d3/tree/master/src/dsv
   pub.CSV = new CSV();
   function CSV() {
@@ -2117,6 +2198,13 @@
    * @param  {Number} y2 Point B y-value
    * @return {GraphicLine} New GraphicLine
    */
+  /* 
+   *  TODO: Vectors as arguments
+   *  @example 
+   *    var vec1 = new b.Vector( x1, y1 );
+   *    var vec2 = new b.Vector( x2, y2 );
+   *    b.line( vec1, vec2 );
+   */
   pub.line = function(x1, y1, x2, y2) {
     if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
     var lines = currentPage().graphicLines;
@@ -2229,7 +2317,7 @@
   }
 
   /**
-   * Draws a rectangle to the page.
+   * Draws a rectangle on the page.
    *
    * @cat Document
    * @subcat Primitives
@@ -2242,7 +2330,7 @@
    */
   pub.rect = function(x, y, w, h){
     if (w === 0 || h === 0) {
-      // indesign doesn't draw a rectangle if width or height is set to 0
+      // indesign doesn't draw a rectangle if width or height are set to 0
       return false;
     }
     if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
@@ -2705,8 +2793,8 @@
    */
   pub.lerpColor = function (c1, c2, amt) {
     if ( (c1 instanceof Color || c1 instanceof Swatch) && 
-          (c2 instanceof Color || c2 instanceof Swatch) && 
-          typeof amt === 'number') {
+       (c2 instanceof Color || c2 instanceof Swatch) && 
+        typeof amt === 'number') {
       if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
         var C1 = c1.colorValue[0];
         var M1 = c1.colorValue[1];
@@ -2871,17 +2959,17 @@
   };
 
   var isValid = function (item) {
-      if (typeof item != 'undefined') {
-          if (item.hasOwnProperty("isValid")) {
-              if (!item.isValid) {
-                  return false;
-              } else {
-                  return true;
-              }
-          }
-          return true; // if does not have isValid field -> normal array element and not collection
+    if (typeof item != 'undefined') {
+      if (item.hasOwnProperty("isValid")) {
+        if (!item.isValid) {
+          return false;
+        } else {
+          return true;
+        }
       }
-      return false;
+      return true; // if does not have isValid field -> normal array element and not collection
+    }
+    return false;
   };
 
   /**
@@ -3203,13 +3291,13 @@
   };
   
   var projectPath = function() {
-      var docPath = null;
-      try {
-        docPath = currentDoc().filePath;
-      } catch (e) {
-        error("The current document must be saved before its project directory can be accessed.");
-      }
-      return docPath;
+    var docPath = null;
+    try {
+      docPath = currentDoc().filePath;
+    } catch (e) {
+      error("The current document must be saved before its project directory can be accessed.");
+    }
+    return docPath;
   };
   
 
