@@ -10,3 +10,4 @@
 #include "math-tests.jsx";
 #include "string-tests.jsx";
 #include "color-tests.jsx";
+#include "group-tests.jsx";
