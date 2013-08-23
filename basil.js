@@ -4336,23 +4336,6 @@
     }
     b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
-
-  /**
-   * Returns the currently selected object(s)
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selections
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {Object[]} Array of selected object(s).
-   */
-  pub.selections = function(cb) {
-    if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
-    if (arguments.length === 1 && cb instanceof Function) {
-      return forEach(app.selection, cb);
-    } 
-    return app.selection;
-  };
   
   /**
    * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
