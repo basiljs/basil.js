@@ -1358,7 +1358,65 @@
     return ungroupedItems;
   };
 
-
+  /**
+   * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method labels
+   * @param  {String} label The label identifier
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+   */
+  pub.labels = function(label, cb) {
+    var result = [];
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i < len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === label) {
+        // push pageItem's 1st element to get the concrete PageItem instance, e.g. a TextFrame
+        result.push(pageItem.getElements()[0]);
+      }
+    }
+    if (arguments.length === 2 && cb instanceof Function) {
+      return forEach(result, cb);
+    }
+    if(result.length === 0) b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    return result;
+  };
+  
+  /**
+   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method label
+   * @param  {String} label The label identifier
+   * @return {PageItem} The first PageItem of all the hits
+   */  
+  pub.label = function(label) {
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i < len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === label) {
+        return pageItem;  
+      }
+    }
+    b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  }
+  
+  /**
+   * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method selection
+   * @return {Object} The first selected object
+   */
+  pub.selection = function(cb) {
+    if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
+    return app.selection[0];
+  }; 
 
   /**
    * Returns the currently selected object(s)
@@ -1376,8 +1434,6 @@
     } 
     return app.selection;
   };
-  
-
 
   /**
    * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
@@ -4442,83 +4498,6 @@
   pub.millis = function() {
     return Date.now() - startTime;
   };
-
-  /**
-   * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method labels
-   * @param  {String} label The label identifier
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
-   */
-  pub.labels = function(label, cb) {
-    var result = [];
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i < len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        // push pageItem's 1st element to get the concrete PageItem instance, e.g. a TextFrame
-        result.push(pageItem.getElements()[0]);
-      }
-    }
-    if (arguments.length === 2 && cb instanceof Function) {
-      return forEach(result, cb);
-    }
-    if(result.length === 0) b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
-    return result;
-  };
-  
-  /**
-   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method label
-   * @param  {String} label The label identifier
-   * @return {PageItem} The first PageItem of all the hits
-   */  
-  pub.label = function(label) {
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i < len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        return pageItem;  
-      }
-    }
-    b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
-  }
-
-  /**
-   * Returns the currently selected object(s)
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selections
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {Object[]} Array of selected object(s).
-   */
-  pub.selections = function(cb) {
-    if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
-    if (arguments.length === 1 && cb instanceof Function) {
-      return forEach(app.selection, cb);
-    } 
-    return app.selection;
-  };
-  
-  /**
-   * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selection
-   * @return {Object} The first selected object
-   */
-  pub.selection = function(cb) {
-    if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
-    return app.selection[0];
-  };  
 
   /**
    * Reads the contents of a file into a String.

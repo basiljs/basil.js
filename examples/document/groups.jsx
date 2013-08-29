@@ -16,7 +16,7 @@ function draw() {
 	b.println( b.bounds(circles).width );
 
 
-	// create a Group from selection
+	// create a Group from a selection (make sure to have min two items selected)
 	// be sure to have some objects selected
 	var sel = b.selections();
 	var newGroup = b.group( sel, 'Selected' );
