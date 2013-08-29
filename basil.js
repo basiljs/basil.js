@@ -2331,58 +2331,16 @@
       ? 1
       : -1;
 
-    // is arc being call singularly?
-    // if (!isArray(currVertexPoints)) {
-    //   if(currVertexPoints == null) {
-        b.beginShape();
-        b.vertex( cx, cy );
-    //   }
-    // }
     // draw arc
+    b.beginShape();
+    b.vertex( cx, cy );
     var thetaStart = startAngle;
     for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
       // calculations
       var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
-
-      // var thetaDelta = (thetaEnd - thetaStart)/2.0;
-      // var thetaTotal = thetaDelta + thetaStart;
-
-      // var cos_delta = Math.cos(thetaTotal);
-      // var sin_delta = Math.sin(thetaTotal);
-
-      // // calculate points
-      // var startX = width * Math.cos(thetaDelta);
-      // var startY = height * Math.sin(thetaDelta);
-
-      // var q1 = startX*startX + -startY*-startY;
-      // var q2 = q1 + startX*startX + -startY*startY;
-      // var k = 4/3 * (Math.sqrt(2 * q1 * q2) - q2) / (startX * startY - -startY * startX);
-
-      // var handle1X = startX - k * -startY;
-      // var handle1Y = -startY + k * startX;
-      // var handle2X = handle1X; 
-      // var handle2Y = -handle1Y;
-      
-      // // draw arc
-      // b.vertex(
-      //   cx + width * Math.cos(thetaStart),
-      //   cy + height * Math.sin(thetaStart), 
-      //   cx + 0,
-      //   cy + 0,
-      //   cx + handle1X * cos_delta - handle1Y * sin_delta, 
-      //   cy + handle1X * sin_delta + handle1Y * cos_delta
-      // );
-      // b.vertex(
-      //   cx + width * Math.cos(thetaEnd),
-      //   cy + height * Math.sin(thetaEnd),
-      //   cx + handle2X * cos_delta - handle2Y * sin_delta,
-      //   cy + handle2X * sin_delta + handle2Y * cos_delta,
-      //   cx + 0,
-      //   cy + 0
-      // );
+      var pt = calculateArc(width, height, thetaStart, thetaEnd);
 
       // draw arc
-      var pt = calculateArc(width, height, thetaStart, thetaEnd);
       b.vertex(
         cx + pt.startx,
         cy + pt.starty,
@@ -2400,17 +2358,12 @@
         cy + 0
       );
 
-
       // prepare for next rotation
       theta -= b.abs(thetaEnd - thetaStart);
       thetaStart = thetaEnd;
     }
 
-    // if (!isArray(currVertexPoints)) {
-    //   if(currVertexPoints.length == 0) {
-        return b.endShape(b.CLOSE);
-    //   }
-    // }
+    return b.endShape(b.CLOSE);
 
   };
 

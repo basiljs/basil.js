@@ -11,3 +11,4 @@
 #include "string-tests.jsx";
 #include "color-tests.jsx";
 #include "group-tests.jsx";
+#include "arc-tests.jsx";
