@@ -187,6 +187,31 @@
   pub.QUARTER_PI = Math.PI/4;
 
   /**
+   * Sin Cos Length
+   * @property SINCOS_LENGTH {Number}
+   * @cat Math
+   * @subcat Constants
+   */
+  pub.SINCOS_LENGTH = 720;
+
+  /**
+   * Epsilon
+   * @property EPSILON {Number}
+   * @cat Math
+   * @subcat Constants
+   */
+  pub.EPSILON = 10e-12;
+
+  /**
+   * Kappa
+   * @property KAPPA {Number}
+   * @cat Math
+   * @subcat Constants
+   */
+  // Kappa, see: http://www.whizkidtech.redprince.net/bezier/circle/kappa/
+  pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
+
+  /**
    * Used with b.canvasMode() to set the canvas to the full current page.
    * @property PAGE {String}
    * @cat Document
@@ -340,6 +365,7 @@
     currImageMode = null,
     currCanvasMode = null,
     currVertexPoints = null;
+
 
   // all initialisations should go here
   var init = function() {
@@ -2272,6 +2298,180 @@
       notCalledBeginShapeError();
     }
   };
+
+
+  /**
+   * The arc() function draws an arc in the display window.
+   * Arcs are drawn along the outer edge of an ellipse defined by the
+   * <b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.
+   * The origin or the arc's ellipse may be changed with the
+   * <b>ellipseMode()</b> function.
+   * The <b>start</b> and <b>stop</b> parameters specify the angles
+   * at which to draw the arc.
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method vertex
+   * @param {Number} cx         x-coordinate of the arc's center
+   * @param {Number} cy         y-coordinate of the arc's center
+   * @param {Number} width      width of the arc's ellipse
+   * @param {Number} height     height of the arc's ellipse
+   * @param {Number} startAngle starting angle of the arc (radians)
+   * @param {Number} endAngle   ending angle of the arc (radians)
+   */
+  pub.arc = function(cx, cy, width, height, startAngle, endAngle) {
+    // slight hack to ensure angles of
+    // 360 degrees are drawn
+    var o = b.radians(1);
+    startAngle %= b.TWO_PI+o;
+    endAngle %= b.TWO_PI+o;
+
+    var delta = Math.abs(endAngle - startAngle);
+    var direction = (startAngle < endAngle)
+      ? 1
+      : -1;
+
+    // is arc being call singularly?
+    // if (!isArray(currVertexPoints)) {
+    //   if(currVertexPoints == null) {
+        b.beginShape();
+        b.vertex( cx, cy );
+    //   }
+    // }
+    // draw arc
+    var thetaStart = startAngle;
+    for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
+      // calculations
+      var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
+
+      // var thetaDelta = (thetaEnd - thetaStart)/2.0;
+      // var thetaTotal = thetaDelta + thetaStart;
+
+      // var cos_delta = Math.cos(thetaTotal);
+      // var sin_delta = Math.sin(thetaTotal);
+
+      // // calculate points
+      // var startX = width * Math.cos(thetaDelta);
+      // var startY = height * Math.sin(thetaDelta);
+
+      // var q1 = startX*startX + -startY*-startY;
+      // var q2 = q1 + startX*startX + -startY*startY;
+      // var k = 4/3 * (Math.sqrt(2 * q1 * q2) - q2) / (startX * startY - -startY * startX);
+
+      // var handle1X = startX - k * -startY;
+      // var handle1Y = -startY + k * startX;
+      // var handle2X = handle1X; 
+      // var handle2Y = -handle1Y;
+      
+      // // draw arc
+      // b.vertex(
+      //   cx + width * Math.cos(thetaStart),
+      //   cy + height * Math.sin(thetaStart), 
+      //   cx + 0,
+      //   cy + 0,
+      //   cx + handle1X * cos_delta - handle1Y * sin_delta, 
+      //   cy + handle1X * sin_delta + handle1Y * cos_delta
+      // );
+      // b.vertex(
+      //   cx + width * Math.cos(thetaEnd),
+      //   cy + height * Math.sin(thetaEnd),
+      //   cx + handle2X * cos_delta - handle2Y * sin_delta,
+      //   cy + handle2X * sin_delta + handle2Y * cos_delta,
+      //   cx + 0,
+      //   cy + 0
+      // );
+
+      // draw arc
+      var pt = calculateArc(width, height, thetaStart, thetaEnd);
+      b.vertex(
+        cx + pt.startx,
+        cy + pt.starty,
+        cx + 0,
+        cy + 0,
+        cx + pt.handle1x,
+        cy + pt.handle1y,
+      );
+      b.vertex(
+        cx + pt.endx,
+        cy + pt.endy,
+        cx + pt.handle2x,
+        cy + pt.handle2y,
+        cx + 0,
+        cy + 0
+      );
+
+
+      // prepare for next rotation
+      theta -= b.abs(thetaEnd - thetaStart);
+      thetaStart = thetaEnd;
+    }
+
+    // if (!isArray(currVertexPoints)) {
+    //   if(currVertexPoints.length == 0) {
+        return b.endShape(b.CLOSE);
+    //   }
+    // }
+
+  };
+
+
+  /**
+   * Private
+   * 
+   * Cubic bezier approximation of a circular arc 
+   * initial code:
+   * Hans Muller
+   * hmuller@adobe.com
+   * http://hansmuller-flex.blogspot.de/2011/04/approximating-circular-arc-with-cubic.html
+   * http://hansmuller-flex.blogspot.de/2011/10/more-about-approximating-circular-arcs.html
+   *
+   * This work is licensed under the Creative Commons Attribution 3.0
+   * Unported License. To view a copy of this license, visit
+   * http://creativecommons.org/licenses/by/3.0/ or send a letter to
+   * Creative Commons, 444 Castro Street, Suite 900, Mountain View,
+   * California, 94041, USA.
+   *
+   * This algorithm is based on the approach described in:
+   * A. Riškus, "Approximation of a Cubic Bezier Curve by Circular Arcs and Vice Versa," 
+   * Information Technology and Control, 35(4), 2006 pp. 371-378.
+   */
+  function calculateArc(width, height, startAngle, endAngle) {
+    var delta = (endAngle - startAngle)/2.0;
+    var total = delta + startAngle;
+
+    var cos_delta = Math.cos(total);
+    var sin_delta = Math.sin(total);
+    
+    // calculate points
+    var x0 = width * Math.cos(delta);
+    var y0 = height * Math.sin(delta);
+    var x1 = x0;
+    var y1 = -y0
+
+    var q1 = x1*x1 + y1*y1;
+    var q2 = q1 + x1*x0 + y1*y0;
+    // calculate kappa
+    var k = 4/3 * (Math.sqrt(2 * q1 * q2) - q2) / (x1 * y0 - y1 * x0);
+
+    var x2 = x1 - k * y1;
+    var y2 = y1 + k * x1;
+    var x3 = x2; 
+    var y3 = -y2;
+    
+    // return points that make sense
+    return {
+      startx: width * Math.cos(startAngle), 
+      starty: height * Math.sin(startAngle), 
+      handle1x: x2 * cos_delta - y2 * sin_delta, 
+      handle1y: x2 * sin_delta + y2 * cos_delta, 
+
+      endx: width * Math.cos(endAngle), 
+      endy: height * Math.sin(endAngle),
+      handle2x: x3 * cos_delta - y3 * sin_delta, 
+      handle2y: x3 * sin_delta + y3 * cos_delta, 
+    };
+  };
+
 
   /**
    * The endShape() function is the companion to beginShape() and may only be called 
