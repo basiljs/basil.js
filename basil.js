@@ -2374,6 +2374,8 @@
    * @param {Number} height     height of the arc's ellipse
    * @param {Number} startAngle starting angle of the arc (radians)
    * @param {Number} endAngle   ending angle of the arc (radians)
+   *
+   * TODO: check for beginShape() call
    */
   pub.arc = function(cx, cy, width, height, startAngle, endAngle) {
     // slight hack to ensure angles of
@@ -2386,11 +2388,11 @@
     var direction = (startAngle < endAngle)
       ? 1
       : -1;
+    var thetaStart = startAngle;
 
     // draw arc
     b.beginShape();
     b.vertex( cx, cy );
-    var thetaStart = startAngle;
     for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
       // calculations
       var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
@@ -2400,8 +2402,8 @@
       b.vertex(
         cx + pt.startx,
         cy + pt.starty,
-        cx + 0,
-        cy + 0,
+        cx + pt.startx,
+        cy + pt.starty,
         cx + pt.handle1x,
         cy + pt.handle1y,
       );
@@ -2410,8 +2412,8 @@
         cy + pt.endy,
         cx + pt.handle2x,
         cy + pt.handle2y,
-        cx + 0,
-        cy + 0
+        cx + pt.endx,
+        cy + pt.endy
       );
 
       // prepare for next rotation
@@ -2425,9 +2427,8 @@
 
 
   /**
-   * Private
-   * 
    * Cubic bezier approximation of a circular arc 
+   * 
    * initial code:
    * Hans Muller
    * hmuller@adobe.com
