@@ -2378,8 +2378,7 @@
    * TODO: check for beginShape() call
    */
   pub.arc = function(cx, cy, width, height, startAngle, endAngle) {
-    // slight hack to ensure angles of
-    // 360 degrees are drawn
+    // hack to ensure angles of 360 degrees are drawn
     var o = b.radians(1);
     startAngle %= b.TWO_PI+o;
     endAngle %= b.TWO_PI+o;
@@ -2404,7 +2403,7 @@
         cx + pt.startx,
         cy + pt.starty,
         cx + pt.handle1x,
-        cy + pt.handle1y,
+        cy + pt.handle1y
       );
       b.vertex(
         cx + pt.endx,
@@ -2412,11 +2411,7 @@
         cx + pt.handle2x,
         cy + pt.handle2y,
         cx + pt.endx,
-<<<<<<< HEAD
         cy + pt.endy
-=======
-        cy + pt.endy,
->>>>>>> b18c9a7110b24f68e98a814b63ebead551cc8d46
       );
 
       // prepare for next rotation
