@@ -2396,9 +2396,8 @@
     for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
       // calculations
       var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
-      var pt = calculateArc(width, height, thetaStart, thetaEnd);
+      pt = calculateArc(width, height, thetaStart, thetaEnd);
 
-      // draw arc
       b.vertex(
         cx + pt.startx,
         cy + pt.starty,
@@ -2413,7 +2412,11 @@
         cx + pt.handle2x,
         cy + pt.handle2y,
         cx + pt.endx,
+<<<<<<< HEAD
         cy + pt.endy
+=======
+        cy + pt.endy,
+>>>>>>> b18c9a7110b24f68e98a814b63ebead551cc8d46
       );
 
       // prepare for next rotation
@@ -2424,7 +2427,6 @@
     return b.endShape(b.CLOSE);
 
   };
-
 
   /**
    * Cubic bezier approximation of a circular arc 
