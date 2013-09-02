@@ -63,7 +63,7 @@ function cleanUp(){};
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.03";
+  pub.VERSION = "1.1";
 
   /**
    * Used with b.units() to set the coordinate system to points.
