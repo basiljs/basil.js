@@ -2175,6 +2175,21 @@
     return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, "");
   };
 
+  /**    
+   * Checks whether an URL string is valid.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method isURL
+   * @param {String} url An url string to be checked
+   * @return {Boolean} Returns either true or false
+   */
+  pub.isURL = function(url) {
+    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
+    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    return typeof(url) === "string" && re.test(url);
+  };
+
   // ----------------------------------------
   // Shape
   
@@ -4357,23 +4372,13 @@
    * @return {String}  String file content.
    */
   pub.loadString = function(file) {
+    var inputFile = initDataFile(file, true),
+    data = null;
 
-    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
-    // var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
-    // if( typeof(file) === "string" && file.match(re)) { // load URL
-    
-    //   return getURLImpl(file);
-
-    // } else {
-      var inputFile = initDataFile(file, true),
-      data = null;
-
-      inputFile.open('r');
-      data = inputFile.read();
-      inputFile.close();
-      return data;
-    // }
-
+    inputFile.open('r');
+    data = inputFile.read();
+    inputFile.close();
+    return data;
   };
 
   // var getURLImpl = function(url) {
