@@ -4383,8 +4383,7 @@
   var getURL = function(url) {
     if (isURL(url)) {
       if (Folder.fs === "Macintosh") {
-        var appleScriptFile = new File("~/Documents/basiljs/bundle/lib/getURL.scpt");
-        return app.doScript(appleScriptFile, ScriptLanguage.applescriptLanguage, [url]);
+        return app.doScript("return do shell script \"curl -L \" & item 1 of arguments", ScriptLanguage.applescriptLanguage, [url]);
       } else {
         error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
       }
