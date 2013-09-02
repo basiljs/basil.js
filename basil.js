@@ -34,8 +34,6 @@
   Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
   
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
-
-  .. - ... . . -- ... - .... . .- -... --- ...- . .. ... -. .----. - -- --- .-. ... . -.-. --- -.. .
 */
 
 #target "InDesign";
@@ -46,7 +44,6 @@
    * @static
    */
   var pub = {};
-
 
 
   // ----------------------------------------
@@ -1565,7 +1562,6 @@
 
   // ----------------------------------------
   // Data
-  
 
   pub.JSON = {
     /**
@@ -2184,7 +2180,7 @@
    * @param {String} url An url string to be checked
    * @return {Boolean} Returns either true or false
    */
-  pub.isURL = function(url) {
+  var isURL = pub.isURL = function(url) {
     //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
     var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
     return typeof(url) === "string" && re.test(url);
@@ -4362,69 +4358,65 @@
   };
 
   /**
-   * Reads the contents of a file into a String.
+   * Reads the contents of a file or loads an URL into a String.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadString
-   * @param  {String|File} file The text file name in the document's data directory or a File instance
-   * @return {String}  String file content.
+   * @param  {String|File} fileOrString The text file name in the document's data directory or a File instance or an URL
+   * @return {String}  String file or URL content.
    */
-  pub.loadString = function(file) {
-    var inputFile = initDataFile(file, true),
-    data = null;
-
-    inputFile.open('r');
-    data = inputFile.read();
-    inputFile.close();
-    return data;
+  pub.loadString = function(fileOrString) {
+    if (isURL(fileOrString)) {
+      return getURL(fileOrString);
+    } else {
+      var inputFile = initDataFile(fileOrString, true),
+      data = null;
+      inputFile.open('r');
+      data = inputFile.read();
+      inputFile.close();
+      return data;
+    }
   };
 
-  // var getURLImpl = function(url) {
-  //     #include "basiljs/bundle/lib/extendables/extendables.jsx";
-  //     var http = require("http");
-  //     if (!http.has_internet_access()) throw new Error("No internet connection");
-  //     var req = new http.HTTPRequest("GET", url);
-  //     req.follow_redirects(true);
-  //     req.header("User-Agent", "basiljs-" + b.VERSION);
-  //     var res = req.do();
-  //     return res.body;
-  // }
+  var getURL = function(url) {
+    if (isURL(url)) {
+      if (Folder.fs === "Macintosh") {
+        var appleScriptFile = new File("~/Documents/basiljs/bundle/lib/getURL.scpt");
+        return app.doScript(appleScriptFile, ScriptLanguage.applescriptLanguage, [url]);
+      } else {
+        error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
+      }
+    } else {
+      error("The "+url+" is not a valid one. Please double check!")
+    }
+  };
 
   /**
-   * Reads the contents of a file and creates a String array of its individual lines.
+   * Reads the contents of a file or loads an URL and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadStrings
-   * @param  {String|File} file The text file name in the document's data directory or a File instance
-   * @return {String[]}  Array of the individual lines in the given file.
+   * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
+   * @return {String[]}  Array of the individual lines in the given File or URL
    */
   pub.loadStrings = function(file) {
-
-    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
-    // var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
-    // if( typeof(file) === "string" && file.match(re)) { // load URL
-    
-    //   var result = getURLImpl(file);
-    //   return b.split(result, "\n");
-
-    // } else {
-
+    if (isURL(file)) {
+      var result = getURL(file);
+      return result.match(/[^\r\n]+/g);
+    } else {
       var inputFile = initDataFile(file, true),
       result = [];
-
       inputFile.open('r');
       while (!inputFile.eof) {
         result.push(inputFile.readln());
       }
       inputFile.close();
-
       return result;
-    // }
-
+    }
   };
 
 
@@ -5377,7 +5369,7 @@
       this.panel = Window.find("window", "processing...");
       if (this.panel === null) {
         this.panel = new Window('window', "processing...");
-        var logo = (Folder.fs == "Macintosh" ) ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png"); //todo Windows File Path for logo  , in the meantime embed as binary String
+        var logo = (Folder.fs == "Macintosh" ) ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png");
         if (logo.exists) {
           this.panel.add("image", undefined, logo);
         }
