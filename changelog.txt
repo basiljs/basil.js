@@ -4,7 +4,11 @@
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js X.XX - ?
-+ added b.group() and b.ungroup() 
++ added b.group() and b.ungroup()
++ added b.isURL() validator checker function
+
+* Extended loadString() and loadStrings() to handle URLs. Happy GET URL!
+  See examples/input/loadStringURL.jsx
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.03 - 3 July 2013
