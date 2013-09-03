@@ -20,10 +20,12 @@ function draw() {
 
 
 /**
- * @param {Number} cx     y-coordinate of the pie chart's center
- * @param {Number} cy     y-coordinate of the pie chart's center
- * @param {Number} radius radius of pie chart
- * @param {Array} data    array of data, values total must not exceed 100
+ *  Draw a Pie Chart
+ * 
+ *  @param {Number} cx     y-coordinate of the pie chart's center
+ *  @param {Number} cy     y-coordinate of the pie chart's center
+ *  @param {Number} radius radius of pie chart
+ *  @param {Array} data    array of data, values total must not exceed 100
  */
 var PieChart = function(cx, cy, radius, data) {
   var start = 0,
@@ -48,6 +50,7 @@ var PieChart = function(cx, cy, radius, data) {
 
 
 function randomArray(total) {
+  total = (total == undefined) ? 100 : total;
   var data = [],
       i = b.random(total);
   do {
