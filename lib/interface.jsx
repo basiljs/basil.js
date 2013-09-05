@@ -66,6 +66,8 @@ Interface.Controllers = function(container) {
   // ------------------------------------------------------------------------
   /**
    * Text - An editable text field that the user can change
+   *
+   * TODO: make output String and Number specific (ala Scriptographer)?
    * 
    * @param {String} name         the name of the Palette window
    * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in

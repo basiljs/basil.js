@@ -2425,8 +2425,8 @@
 
       // circular arc
       var radius = (w + h)/2; //(Math.sqrt(w * w + h * h) / 2);
-      // pt = calculateCircularArc(radius, thetaStart, thetaEnd);
-      pt = calculateEllipticalArc(w, h, startAngle, endAngle);
+      pt = calculateCircularArc(radius, thetaStart, thetaEnd);
+      // pt = calculateEllipticalArc(w, h, startAngle, endAngle);
 
       // TODO: eliptical arc
 
