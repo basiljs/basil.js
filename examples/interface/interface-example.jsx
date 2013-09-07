@@ -21,8 +21,11 @@ var values = {
   myMultiText: 'multiline text',
 
   myCheckbox: false,
-  myRadio: 'Option 1',
+  myRadio: 'Option 2',
   mySlider: 25,
+  myColor1: [0,255,170],
+  myColor2: [0,100,100,0],
+  myColor3: 'c71585',
 
   myDropdown: 'two',
   myButton: 'Go! Go! Go!',
@@ -78,8 +81,28 @@ var controllers = {
   mySlider: {
     label: 'Slider',
     type: 'slider',
-    range: [25,250],
-    value: 25
+    range: [25,300]
+  },
+  myColor1: {
+    label: 'myColor1',
+    type: 'color',
+    size: 'large',
+    colormode: 'rgb', // or b.colorMode()
+    onClick: function() {
+      $.writeln('myColor.onClick');
+    }
+  },
+  myColor2: {
+    label: 'myColor2',
+    type: 'color',
+    size: 'small',
+    colormode: b.colorMode(),
+  },
+  myColor3: {
+    label: 'myColor3',
+    type: 'color',
+    size: 'medium',
+    colormode: 'hex'
   },
 
   myDropdown: {
@@ -104,6 +127,7 @@ var controllers = {
   },
 
   mySeparator: {
+    label: 'Seperator Label',
     type: 'separator'
   }
 
@@ -146,6 +170,8 @@ function draw() {
     b.itemWidth(mySelection[i], dialog.mySlider.value);
     b.itemHeight(mySelection[i], dialog.mySlider.value);
   };
+
+  dialog.myProgress.value = dialog.mySlider.value/300*100;
 
 };
 

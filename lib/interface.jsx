@@ -9,7 +9,7 @@
 
 // some type of #targetengine is required for keeping
 // the Window.Palette alive
-// #targetengine 'session';
+// #targetengine 'interface';
 
 
 // namespace holder
@@ -33,6 +33,10 @@ Interface.Controllers = function(container) {
   //
   // Properties
   // 
+  // default type
+  var typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, 10);
+
+
   // create component holder group
   componentGroup = container.add('group');
   componentGroup.orientation = 'column';
@@ -60,6 +64,7 @@ Interface.Controllers = function(container) {
     label.alignment = (attributes.alignment != undefined)
       ? attributes.alignment
       : 'center';
+    label.graphics.font = typeface;
     return label;
   };
 
@@ -84,6 +89,7 @@ Interface.Controllers = function(container) {
       alignment: 'center',
       label: attributes.label
     });
+    label.graphics.font = typeface;
     var text = group.add('edittext', undefined, attributes.value, {name: name, multiline: attributes.multiline});
     text.characters = (attributes.length != undefined)
       ? attributes.length
@@ -94,6 +100,7 @@ Interface.Controllers = function(container) {
       // default typesize is 13 graphics.font.size
       ? (13+2)*(attributes.rows+1)
       : (13+2)*1;
+    text.graphics.font = typeface;
     text.onChange = function() {
       attributes.onChange(text.value);
     };
@@ -121,9 +128,10 @@ Interface.Controllers = function(container) {
     group.orientation = 'row';
 
     var label = new Label(attributes.label, group, {
-      alignment: 'top',
+      alignment: 'center',
       label: attributes.label
     });
+    label.graphics.font = typeface;
     var check = group.add('checkbox', undefined, '', {
       name: name
     });
@@ -143,8 +151,6 @@ Interface.Controllers = function(container) {
    * Radio - A dual-state control, grouped with other radiobuttons, of which only one can be in the selected state
    * Shows the selected state when value is true, empty when value is false
    *
-   * TODO: have this work as it's supposed to
-   * 
    * @param {String} name         the name of the Palette window
    * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in
    * @param {Array} attributes    Basil.js Controller attributes (i.e type, label, range, etc.)
@@ -160,14 +166,20 @@ Interface.Controllers = function(container) {
       alignment: 'center',
       label: attributes.label
     });
-    var radio = group.add('radiobutton', undefined, attributes.values, {name: name});
-    radio.selection = 0; // select first element
-    radio.onClick = function() {
-      attributes.onClick(radio.selection);
-    };
-    radio.onChange = function() {
-      attributes.onChange(radio.selection);
-    };
+    label.graphics.font = typeface;
+    for( var i=0; i<attributes.values.length; i++) {
+      var radio = group.add('radiobutton', undefined, attributes.values[i], {name: attributes.values[i]});
+      if( attributes.values[i] == values ) {
+        radio.value = true;
+      }
+      radio.graphics.font = typeface;
+      radio.onClick = function() {
+        attributes.onClick(radio.selection);
+      };
+      radio.onChange = function() {
+        attributes.onChange(radio.selection);
+      };
+    }
 
     return radio;
     // return radio.selection.text;
@@ -190,10 +202,17 @@ Interface.Controllers = function(container) {
     group.orientation = 'row';
 
     var label = new Label(attributes.label, group, {
-      alignment: 'top',
+      alignment: 'center',
       label: attributes.label
     });
-    var slider = group.add('slider', undefined, attributes.value,
+    label.graphics.font = typeface;
+    var slider = group.add('slider', undefined,
+      100,
+      // (values != undefined)
+      //   ? values
+      //   : (attributes.value != undefined
+      //     ? attributes.value
+      //     : 0),
       (attributes.min != undefined) 
         ? attributes.min
         : (attributes.range != undefined)
@@ -222,7 +241,176 @@ Interface.Controllers = function(container) {
 
   // ------------------------------------------------------------------------
   /**
-   * Slider - A drop-down list with zero or more items
+   * Color - a color picker
+   * 
+   * @param {String} name         the name of the Palette window
+   * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in
+   * @param {Array} attributes    Basil.js Controller attributes (i.e type, label, range, etc.)
+   * @param {Array} values        incoming values Array 
+   *
+   * @return {DropDownListSUI}    the ScriptUI Component
+   */
+  function Color(name, container, attributes, values) {
+    var group = container.add('group');
+    group.orientation = 'row';
+
+    var label = new Label(attributes.label, group, {
+      alignment: 'center',
+      label: attributes.label
+    });
+    label.graphics.font = typeface;
+
+    var swatchSize = (attributes.size == 'small')
+      ? 12
+      : (attributes.size == 'large'
+        ? 28
+        : 18); // 'medium'
+
+    var colorPicker;
+    var test = group.add('panel', [0,0, swatchSize,swatchSize]);
+    test.graphics.backgroundColor = test.graphics.newBrush(
+      test.graphics.BrushType.SOLID_COLOR,
+      [0.0, 1.0, 0.7, 1.0]
+    );
+
+    var colorWell = test.add('iconbutton', [swatchSize/2,0, swatchSize,swatchSize], attributes.value, {name: name});
+    // colorWell.fillBrush = colorWell.graphics.newBrush( 
+    //   colorWell.graphics.BrushType.SOLID_COLOR,
+    //   [Math.random(), Math.random(), Math.random(), 0.1]
+    // );
+    colorWell.graphics.font = typeface;
+    // colorWell.onDraw = function() {
+    //   this.graphics.drawOSControl();
+    //   this.graphics.rectPath(0,0,this.size[0],this.size[1]);
+    //   this.graphics.fillPath(this.fillBrush);
+    // };
+    colorWell.onClick = function() {
+      colorPicker = new ColorPicker(
+        test,
+        (attributes.colormode != undefined)
+          ? attributes.colormode
+          : 'cmyk' // TODO: default b.colorMode()
+      );
+      attributes.onClick();
+    };
+
+    /**
+     * Open an OS color picker dialog
+     * @param {IconButtonSUI} colorwell   the colorwell element, whose color to update
+     * @param {String} colormode          the color mode of the output color
+     * 
+     * @return the output color
+     */
+    var ColorPicker = function(colorwell, colormode) {
+
+      var integer = ( colormode == 'rgb')
+        ? RGBToInt( values )
+        : (colormode == 'hex' || values instanceof String
+          ? RGBToInt( HexToRGB(values) )
+          : RGBToInt( CMYKToRGB(values) ));
+
+      var color;
+      var cp = $.colorPicker(integer);
+      if (cp) {
+        if( colormode == 'rgb' || colormode == 'hex') {
+          var rgb = IntToRGBA(cp);
+          color = app.activeDocument.colors.add({
+            model: ColorModel.process,
+            space: ColorSpace.RGB,
+            colorValue: rgb,
+            name: (colormode == 'rgb') 
+              ? 'r'+rgb[0] + ' g'+rgb[1] + ' b'+rgb[2]
+              : '#' + cp.toString(16)
+          });
+        }
+        else if( colormode == 'cmyk') {
+          var cmyk = IntToCMYK(cp);
+          color = app.activeDocument.colors.add({
+            model: ColorModel.process,
+            space: ColorSpace.CMYK,
+            colorValue: cmyk,
+            name: 'c'+cmyk[0] + ' m'+cmyk[1] + ' y'+cmyk[2] + ' k'+cmyk[3]
+          });
+        }
+
+      // update color well
+      // var rgba = IntToRGBA(cp);
+      // $.writeln( 'IntToRGBA(cp)' + rgba );
+      colorwell.graphics.backgroundColor = colorwell.graphics.newBrush(
+        colorwell.graphics.BrushType.SOLID_COLOR,
+        rgba
+        // [Math.random(), Math.random(), Math.random(), 1.0]
+      );
+
+        $.writeln('closing Picker');
+      }
+
+      return color;
+    };
+
+
+    // TODO: make these private functions outside of Interface?
+    /**
+     * @param {Number} integer  RGB integer value
+     */
+    function IntToRGBA(integer) {
+      return [
+        (integer >> 16) & 0xFF,
+        (integer >> 8) & 0xFF,
+        integer & 0xFF,
+        1.0, //(integer >> 24) & 0xFF
+      ];
+    };
+    /**
+     * @param {Number} integer  RGB integer value
+     */
+    function IntToCMYK(integer) {
+      var rgb = IntToRGBA(integer);
+      var c = 1 - rgb[0],
+          m = 1 - rgb[1],
+          y = 1 - rgb[2],
+          k = Math.min(c,m,y);
+      // TODO: replace clip() with b.constrain()
+      function clip(val,min,max) { return val<min?min:(val>max?max:val); };
+      return [
+        clip(c - k, 0, 1)*100,
+        clip(m - k, 0, 1)*100,
+        clip(y - k, 0, 1)*100,
+        clip(k, 0, 1)*100
+      ];
+    };
+    /**
+     * @param {String} hex  16-bit hex value as string
+     */
+    function HexToRGB(hex) {
+      hex = (hex.length == 7) ? hex.substring(1) : hex;
+      return [
+        parseInt(hex.substr(0, 2), 16),
+        parseInt(hex.substr(2, 2), 16),
+        parseInt(hex.substr(4, 2), 16)
+      ];
+    };
+    /**
+     * @param {Array} arr normalized CMYK values
+     */
+    function CMYKToRGB(arr) {
+      return [
+        1.0 - Math.min(1.0, arr[0] + arr[3]),
+        1.0 - Math.min(1.0, arr[1] + arr[3]),
+        1.0 - Math.min(1.0, arr[2] + arr[3])
+      ];
+    };
+
+    function RGBToInt(arr) {
+      return ((arr[0] & 0x0ff) << 16) | ((arr[1] & 0x0ff) << 8) | (arr[2] & 0x0ff);
+    };
+
+    // return colorWell;
+  };
+
+  // ------------------------------------------------------------------------
+  /**
+   * Dropdown - A drop-down list with zero or more items
    * 
    * @param {String} name         the name of the Palette window
    * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in
@@ -239,6 +427,7 @@ Interface.Controllers = function(container) {
       alignment: 'center',
       label: attributes.label
     });
+    label.graphics.font = typeface;
     var dropdown = group.add('dropdownlist', undefined, attributes.values, {name: name});
     // dropdown.title = attributes.label;
     // dropdown.titleLayout = { 
@@ -248,6 +437,8 @@ Interface.Controllers = function(container) {
     //   justify: 'right'
     // };
     dropdown.selection = 0; // select first element
+    dropdown.graphics.font = typeface;
+    dropdown.alignment = 'center';
     dropdown.onClick = function() {
       attributes.onClick(dropdown.selection);
     };
@@ -281,7 +472,9 @@ Interface.Controllers = function(container) {
       alignment: 'center',
       label: attributes.label
     });
+    label.graphics.font = typeface;
     var button = group.add('button', undefined, attributes.value, {name: name});
+    button.graphics.font = typeface;
     button.onClick = function() {
       attributes.onClick();
     };
@@ -310,17 +503,23 @@ Interface.Controllers = function(container) {
       alignment: 'center',
       label: attributes.label
     });
-    var progress = group.add('progressbar', undefined, attributes.value,
-      (attributes.min != undefined) 
-        ? attributes.min
-        : (attributes.range != undefined)
-          ? attributes.range[0]
-          : 0.0,
+    label.graphics.font = typeface;
+    var progress = group.add('progressbar', undefined, 
+      (values != undefined)
+        ? values
+        : (attributes.value != undefined
+          ? attributes.value
+          : 0),
       (attributes.max != undefined)
         ? attributes.max
         : (attributes.range != undefined)
           ? attributes.range[1]
           : 1.0,
+      (attributes.min != undefined) 
+        ? attributes.min
+        : (attributes.range != undefined)
+          ? attributes.range[0]
+          : 0.0,
       {name: name}
     );
 
@@ -347,12 +546,12 @@ Interface.Controllers = function(container) {
       alignment: 'center',
       label: attributes.label
     });
+    label.graphics.font = typeface;
 
-    // printProperties( container );
     // TODO: automatically get the size of the panel
     // seems to be only available with onShow()...
-    var separator = group.add ('panel', [0,0,1,1]);
-    separator.preferredSize = [-1,-1];
+    var separator = group.add('panel', [0,0,200,200]);
+    // separator.preferredSize = [-1,-1];
     separator.minimumSize.height = separator.maximumSize.height = 1;
 
     return separator;
@@ -382,6 +581,9 @@ Interface.Controllers = function(container) {
       }
       else if( controllers[name].type == 'slider') {
         window[name] = new this.Slider(name, componentGroup, controllers[name], values[name]);
+      }
+      else if( controllers[name].type == 'color') {
+        window[name] = new this.Color(name, componentGroup, controllers[name], values[name]);
       }
       else if( controllers[name].type == 'dropdown' ) {
         window[name] = new this.Dropdown(name, componentGroup, controllers[name], values[name]);
@@ -414,6 +616,7 @@ Interface.Controllers = function(container) {
     Checkbox: Checkbox,
     Radio: Radio,
     Slider: Slider,
+    Color: Color,
     Dropdown: Dropdown,
     Button: Button,
     Progress: Progress,
@@ -510,11 +713,13 @@ Interface.Palette = function(name, controllers, values) {
   // 
   var win = new Window('palette', name, undefined);
   win.orientation = 'row';
-  win.alignChildren = 'left';
+  win.alignChildren = 'right';
+  // win.layout.layout(true);
 
   // create main holder
   var mainGroup = win.add('group');
   mainGroup.orientation = 'column';
+  mainGroup.alignChildren = 'right';
 
   // create individual controllers
   var controls = new Interface.Controllers(mainGroup);
@@ -557,6 +762,7 @@ Interface.Palette = function(name, controllers, values) {
 function printProperties(obj) {
   $.writeln('------------------');
   $.writeln(obj.reflect.name);
+  $.writeln('\rProperties');
   $.writeln('------------------');
   var props = obj.reflect.properties;
   var array = [];
@@ -573,9 +779,9 @@ function printProperties(obj) {
 function printMethods(obj) {
   $.writeln('------------------');
   $.writeln(obj.reflect.name);
+  $.writeln('\rMethods');
   $.writeln('------------------');
   var props = obj.reflect.methods.sort();
-  $.writeln ('\rMethods');
   for( var i = 0; i < props.length; i++ ) {
     $.writeln(props[i].name);
   }
