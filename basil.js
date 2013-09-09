@@ -5012,23 +5012,25 @@
    */
   pub.itemPosition = function(pItem, x, y) {
 
-    if(currRectMode !== b.CORNER) pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    // if(currRectMode !== b.CORNER) pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
 
     if ( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    
+      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
+      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
+      var offX = 0;
+      var offY = 0;
       if( typeof x === 'number' && typeof y === 'number') {
-        var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-        var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-        var offX = 0;
-        var offY = 0;
-        // if(currRectMode === b.CENTER) {
-        //   offX = width / 2;
-        //   offY = height / 2;
-        // }
+        if(currRectMode === b.CENTER) {
+          offX = -width / 2;
+          offY = -height / 2;
+        }
         pItem.geometricBounds = [ y + offY, x + offX, y + height + offY, x + width + offX];
-        
       } else {
-        return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
+        if(currRectMode === b.CENTER) {
+          offX = width / 2;
+          offY = height / 2;
+        }
+        return { x: precision(pItem.geometricBounds[1] + offX, 5), y: precision(pItem.geometricBounds[0] + offY, 5) };
       }
       
     } else {
