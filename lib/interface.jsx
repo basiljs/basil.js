@@ -34,14 +34,16 @@ Interface.Controllers = function(container) {
   // Properties
   // 
   // default type
-  var typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, 10);
-
+  var typesize = 10;
+  var typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, typesize);
 
   // create component holder group
   componentGroup = container.add('group');
   componentGroup.orientation = 'column';
   componentGroup.alignChildren = 'left';
   componentGroup.preferredSize = [-1,-1];
+
+
 
   //
   // Methods
@@ -97,9 +99,8 @@ Interface.Controllers = function(container) {
         ? 20
         : attributes.columns;
     text.minimumSize.height = (attributes.multiline && attributes.rows != undefined) 
-      // default typesize is 13 graphics.font.size
-      ? (13+2)*(attributes.rows+1)
-      : (13+2)*1;
+      ? (typesize+2)*(attributes.rows+1)
+      : (typesize+2)*1;
     text.graphics.font = typeface;
     text.onChange = function() {
       attributes.onChange(text.value);
@@ -232,7 +233,11 @@ Interface.Controllers = function(container) {
       attributes.onChange(slider.value);
     };
     slider.onChanging = function() {
-      attributes.onChanging(slider.value);
+      try {
+        attributes.onChanging(slider.value);
+      }
+      catch(err) {}
+      return slider.value;
     };
 
     values = slider.value;
@@ -548,11 +553,14 @@ Interface.Controllers = function(container) {
     });
     label.graphics.font = typeface;
 
-    // TODO: automatically get the size of the panel
-    // seems to be only available with onShow()...
-    var separator = group.add('panel', [0,0,200,200]);
-    // separator.preferredSize = [-1,-1];
-    separator.minimumSize.height = separator.maximumSize.height = 1;
+    // default: full width of palette window
+    var w = (attributes.width != undefined)
+      ? attributes.width
+      : -1;
+
+    var separator = group.add('panel', [0,0,w,1]);
+    // separator.minimumSize.height = separator.maximumSize.height = 1;
+    separator.preferredSize.height = separator.preferredSize.height = 1;
 
     return separator;
   };
@@ -681,8 +689,9 @@ Interface.Prompt = function(name, controllers, values) {
 
   // draw to screen
   win.onShow = function() {
-    // printProperties(win);
-    $.writeln('shown');
+    // TODO: write size for automatic sizing of
+    // elements
+    $.writeln( win.size );
   };
   win.show();
 
@@ -727,8 +736,22 @@ Interface.Palette = function(name, controllers, values) {
 
   // draw to screen
   win.onShow = function() {
-    // printProperties(win);
-    $.writeln('shown');
+    // TODO: write size for automatic sizing of elements
+    for( var name in controllers ) {
+      try {
+        $.writeln( name + ': ' + this[name].size.width );
+        this[name].size.width = (this[name].size.width <= 0)
+          ? mainGroup.size.width
+          : this[name].size.width;
+        mainGroup.onDraw();
+        $.writeln( name + ': ' + this[name].size.width );
+        $.writeln( '---------' );
+      }
+      catch(err) {}
+    }
+
+    $.writeln( this.size );
+    $.writeln( this[mainGroup].size );
   };
   win.onClose = function() {
     $.writeln('closing palette and cleaning up');
@@ -743,10 +766,11 @@ Interface.Palette = function(name, controllers, values) {
     cleanUp = null;
   };
   win.show();
+  win.center();
 
-  // in order for the palette to stay 
-  // visible, it's instance has to be 
-  // returned
+  printMethods( mainGroup );
+  printMethods( win );
+
   return win;
 };
 
@@ -772,7 +796,10 @@ function printProperties(obj) {
     }
     catch(err) {}
     array.sort();
-    $.writeln( array.join ('\r') );
+    // $.writeln( array.join ('\r') );
+  }
+  for( var i=0; i<array.length; i++ ) {
+    $.writeln( array[i] );
   }
 };
 

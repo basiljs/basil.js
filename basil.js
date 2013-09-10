@@ -1205,16 +1205,44 @@
 
   };
 
-  // TODO: does not work?
+  /**
+   * Returns and sets view to the next page relevant to the current page
+   *
+   * @cat Document
+   * @subcat Page
+   * @method nextPage
+   * @return {Number} The page number within the document.
+   */
   pub.nextPage = function () {
-      var p = pub.doc().pages.nextItem(currentPage());
+    var index = currentPage().documentOffset;
+    try {
+      var p = currentDoc().pages.item( index+1 );
       return pub.page(p);
+    }
+    catch(e) {
+      error("b.nextPage(), at the end of document try b.page(0) or b.previousPage() instead" );
+      return currentPage();
+    }
   };
 
-  // TODO: does not work?
+  /**
+   * Returns and sets view to the previous page relevant to the current page
+   *
+   * @cat Document
+   * @subcat Page
+   * @method previousPage
+   * @return {Number} The page number within the document.
+   */
   pub.previousPage = function () {
-      var p = pub.doc().pages.previousItem(currentPage());
+    var index = currentPage().documentOffset;
+    try {
+      var p = currentDoc().pages.item( index-1 );
       return pub.page(p);
+    }
+    catch(e) {
+      error("b.previousPage(), at the beginning of document try b.page(b.pageCount()) or b.nextPage() instead" );
+      return currentPage();
+    }
   };
 
   /**
@@ -1227,6 +1255,42 @@
    */
   pub.pageCount = function() {
     return currentDoc().pages.count();
+  };
+
+  // TODO: add Spread support
+  pub.spread = function(page) {
+  };
+
+  // TODO: add Spread support
+  pub.addSpread = function(location) {
+  };
+
+  // TODO: add Spread support
+  pub.removeSpread = function (page) {
+  };
+
+  // TODO: add Spread support
+  pub.spreadNumber = function (pageObj) {
+  };
+
+  // TODO: add Spread support
+  pub.nextSpread = function () {
+  };
+
+  // TODO: add Spread support
+  pub.previousSpread = function () {
+  };
+
+  /**
+   * The number of all spreads in the current document.
+   *
+   * @cat Document
+   * @subcat Page
+   * @method spreadCount
+   * @return The amount of spreads.
+   */
+  pub.spreadCount = function() {
+    return currentDoc().spreads.count();
   };
 
   /**

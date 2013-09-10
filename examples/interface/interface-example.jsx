@@ -128,7 +128,8 @@ var controllers = {
 
   mySeparator: {
     label: 'Seperator Label',
-    type: 'separator'
+    type: 'separator',
+    // width: 100
   }
 
 };
@@ -167,19 +168,22 @@ function draw() {
   // for now I've only hooked up the Slider control
   var mySelection = b.selections();
   for (var i = 0; i < mySelection.length; i++) {
-    b.itemWidth(mySelection[i], dialog.mySlider.value);
-    b.itemHeight(mySelection[i], dialog.mySlider.value);
+    b.itemWidth(mySelection[i], dialog.mySlider.onChanging());
+    b.itemHeight(mySelection[i], dialog.mySlider.onChanging());
   };
 
-  dialog.myProgress.value = dialog.mySlider.value/300*100;
+
+  dialog.myProgress.value = dialog.mySlider.onChanging()/300*100;
+// 
+  // b.inspect( dialog.mySlider );
 
 };
 
 
-// b.go();
+b.go();
 
 // right now in order to get real-time values
 // from a Palette, we have to run in loop() mode
 // ideally it would be nice to not have to rely
 // on this for real-time updating
-b.loop();
+// b.loop();
