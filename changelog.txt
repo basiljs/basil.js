@@ -6,6 +6,8 @@
 basil.js 1.1 - ?
 + added b.group() and b.ungroup()
 + added b.isURL() validator checker function
++ added b.shellExecute(), currently Mac only.
+  See examples/input/shellExecute.jsx
 
 * Extended loadString() and loadStrings() to handle URLs. Happy GET URL!
   See examples/input/loadStringURL.jsx

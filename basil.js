@@ -4390,6 +4390,29 @@ function cleanUp(){};
   };
 
   /**
+   * Executes a shell command and returns the result, currently Mac only.
+   * 
+   * BE CAREFUL!
+   * 
+   * @cat Data
+   * @subcat Input
+   * @method shellExecute
+   * @param  {String} cmd The shell command to execute
+   * @return {String}
+   */
+  pub.shellExecute = function(cmd) {
+    if (Folder.fs === "Macintosh") {
+      try {
+        return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
+      } catch (e) {
+        error("b.shellExecute(): "+e);
+      }
+    } else {
+      error("b.shellExecute() is a Mac only feature at the moment. Sorry!")
+    }
+  };
+
+  /**
    * Reads the contents of a file or loads an URL into a String.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
@@ -4415,7 +4438,7 @@ function cleanUp(){};
   var getURL = function(url) {
     if (isURL(url)) {
       if (Folder.fs === "Macintosh") {
-        return app.doScript("return do shell script \"curl -L \" & item 1 of arguments", ScriptLanguage.applescriptLanguage, [url]);
+        return pub.shellExecute("curl -L "+url);
       } else {
         error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
       }
