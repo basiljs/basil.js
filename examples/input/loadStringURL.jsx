@@ -14,7 +14,7 @@ function draw() {
   b.println( loadedArray[1] );
 
   b.println("-- load JSON data --");
-  var urlWeatherBasel = "http://api.openweathermap.org/data/2.5/weather?q=Basel,CH";
+  var urlWeatherBasel = "http://api.openweathermap.org/data/2.5/weather?q=Basel,CH&units=metric";
   var weatherData = b.JSON.decode( b.loadString(urlWeatherBasel) );
   b.println("wind speed: "+weatherData.wind.speed);
   b.inspect(weatherData);
