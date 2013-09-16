@@ -42,9 +42,9 @@
 // necessary if e.g. setup() has been set in a previous session
 // and is not re-set in the current one
 // in this case this will make sure that it is really empty
-function setup(){};
-function draw(){};
-function cleanUp(){};
+var setup = null;
+var draw = null;
+var cleanUp = null;
 
 
 (function(glob, app, undef) {
