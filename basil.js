@@ -38,6 +38,15 @@
 
 #target "InDesign";
 
+// this overwrites leftovers from previous sessions
+// necessary if e.g. setup() has been set in a previous session
+// and is not re-set in the current one
+// in this case this will make sure that it is really empty
+function setup(){};
+function draw(){};
+function cleanUp(){};
+
+
 (function(glob, app, undef) {
   /**
    * @class b
@@ -54,7 +63,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.03";
+  pub.VERSION = "1.1";
 
   /**
    * Used with b.units() to set the coordinate system to points.

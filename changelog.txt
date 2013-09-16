@@ -3,7 +3,7 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js X.XX - ?
+basil.js 1.1 - ?
 + added b.group() and b.ungroup()
 + added b.isURL() validator checker function
 
