@@ -10,6 +10,9 @@ basil.js 1.1 - ?
 * Extended loadString() and loadStrings() to handle URLs. Happy GET URL!
   See examples/input/loadStringURL.jsx
 
+* all export functions can handle now sub-folders 
+  e.g. exportPNG("swiss/basel/snap.png") 
+
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.03 - 3 July 2013
 * added missing support for layer and stroke settings to b.image()

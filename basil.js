@@ -3358,7 +3358,30 @@ function cleanUp(){};
     if (file instanceof File) {
       result = file;
     } else {
-      result = new File(projectPath().absoluteURI + '/' + file);
+
+      // get rid of some special cases the user might specify
+      var pathNormalized = file.split("/");
+      for (var i = 0; i < pathNormalized.length; i++) {
+        if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
+          pathNormalized.splice(i,1);
+        };
+      };
+
+      var tmpPath = projectPath().absoluteURI;
+      var fileName = pathNormalized[pathNormalized.length-1];
+      
+      // contains the path folders? if so create them ...
+      if (pathNormalized.length > 1) {
+        var folders = pathNormalized.slice(0,-1);
+        for (var i = 0; i < folders.length; i++) {
+          tmpPath += "/"+folders[i] 
+          var f = new Folder(tmpPath);
+          if (!f.exists) f.create();
+        };
+      } 
+
+      // result = new File(projectPath().absoluteURI + '/' + file);
+      result = new File(tmpPath + '/' + fileName);
     }
     if (mustExist && !result.exists) {
       error('The file "' + result + '" does not exist.');
