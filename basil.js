@@ -38,13 +38,10 @@
 
 #target "InDesign";
 
-// this overwrites leftovers from previous sessions
-// necessary if e.g. setup() has been set in a previous session
-// and is not re-set in the current one
-// in this case this will make sure that it is really empty
-var setup = null;
-var draw = null;
-var cleanUp = null;
+// this overwrites leftovers in the current targetengine
+//var setup = null;
+//var draw = null;
+//var cleanUp = null;
 
 
 (function(glob, app, undef) {
@@ -346,6 +343,9 @@ var cleanUp = null;
     currImageMode = null,
     currCanvasMode = null,
     currVertexPoints = null;
+    currPathPointer = null;  
+    currPolygon = null;    
+    currShapeMode = null;
 
   // all initialisations should go here
   var init = function() {
@@ -2303,14 +2303,23 @@ var cleanUp = null;
    * Using the beginShape() and endShape() functions allow creating more complex forms. 
    * beginShape() begins recording vertices for a shape and endShape() stops recording. 
    * After calling the beginShape() function, a series of vertex() commands must follow. 
-   * To stop drawing the shape, call endShape().
+   * To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to 
+   * create from the provided vertices have to be closed or not (to connect the beginning and the end).
    *
    * @cat Document
    * @subcat Primitives
    * @method beginShape
+   * @param shapeMode Set b.CLOSE if the new Path should be auto-closed.
    */
-  pub.beginShape = function() {
+  pub.beginShape = function(shapeMode) {
     currVertexPoints = [];
+    currPathPointer = 0;
+    currPolygon = null;
+    if( typeof shapeMode != null) {
+      currShapeMode = shapeMode;
+    } else {
+      currShapeMode = null;
+    }
   };
 
   /**
@@ -2349,44 +2358,69 @@ var cleanUp = null;
     }
   };
 
+
+  /**
+   * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. 
+   * New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for 
+   * the setting (see b.CLOSE) given in beginShape(shapeMode).
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method addPath
+   */
+  pub.addPath = function() {
+    doAddPath();
+    currPathPointer++;
+  }
+
   /**
    * The endShape() function is the companion to beginShape() and may only be called 
-   * after beginShape(). The value of the kind parameter tells whether the shape to 
-   * create from the provided vertices has to be closed or not (to connect the beginning and the end).
+   * after beginShape(). 
    *
    * @cat Document
    * @subcat Primitives
    * @method endShape
    * @return {GraphicLine|Polygon} newShape
    */
-  pub.endShape = function(shapeMode) {
+  pub.endShape = function() {
+    doAddPath();
+    currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );    
+    return currPolygon;
+  };
+
+  function doAddPath() {
     if (isArray(currVertexPoints)) {
       if (currVertexPoints.length > 0) {
-        var newShape = null;
-        if (shapeMode === pub.CLOSE) {
-          newShape = currentPage().polygons.add( currentLayer() );
-        } else {
-          newShape = currentPage().graphicLines.add( currentLayer() );
+        
+        if(currPolygon === null) {
+          addPolygon();
         }
-        with (newShape) {
-          strokeWeight = currStrokeWeight;
-          strokeTint = currStrokeTint;
-          fillColor = currFillColor;
-          fillTint = currFillTint;
-          strokeColor = currStrokeColor;
-        }
-        newShape.paths.item(0).entirePath = currVertexPoints;
-        newShape.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                         AnchorPoint.TOP_LEFT_ANCHOR,
-                         currMatrix.adobeMatrix() );
-
+        currPolygon.paths.add();
+        currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
         currVertexPoints = [];
-        return newShape;
       }
     } else {
       notCalledBeginShapeError();
     }
-  };
+  }
+
+  function addPolygon() {
+    if (currShapeMode === pub.CLOSE) {
+      currPolygon = currentPage().polygons.add( currentLayer() );
+    } else {
+      currPolygon = currentPage().graphicLines.add( currentLayer() );
+    }
+    with (currPolygon) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint;
+      fillColor = currFillColor;
+      fillTint = currFillTint;
+      strokeColor = currStrokeColor;
+    }       
+  }
+
   
   function notCalledBeginShapeError () {
     error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
