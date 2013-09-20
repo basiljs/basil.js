@@ -34,11 +34,15 @@
   Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
   
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
-
-  .. - ... . . -- ... - .... . .- -... --- ...- . .. ... -. .----. - -- --- .-. ... . -.-. --- -.. .
 */
 
 #target "InDesign";
+
+// this overwrites leftovers in the current targetengine
+//var setup = null;
+//var draw = null;
+//var cleanUp = null;
+
 
 (function(glob, app, undef) {
   /**
@@ -46,7 +50,6 @@
    * @static
    */
   var pub = {};
-
 
 
   // ----------------------------------------
@@ -57,7 +60,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.03";
+  pub.VERSION = "1.1";
 
   /**
    * Used with b.units() to set the coordinate system to points.
@@ -365,6 +368,9 @@
     currImageMode = null,
     currCanvasMode = null,
     currVertexPoints = null;
+    currPathPointer = null;  
+    currPolygon = null;    
+    currShapeMode = null;
 
 
   // all initialisations should go here
@@ -1655,7 +1661,6 @@
 
   // ----------------------------------------
   // Data
-  
 
   pub.JSON = {
     /**
@@ -2265,6 +2270,21 @@
     return str.replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, "");
   };
 
+  /**    
+   * Checks whether an URL string is valid.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method isURL
+   * @param {String} url An url string to be checked
+   * @return {Boolean} Returns either true or false
+   */
+  var isURL = pub.isURL = function(url) {
+    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
+    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
+    return typeof(url) === "string" && re.test(url);
+  };
+
   // ----------------------------------------
   // Shape
   
@@ -2373,14 +2393,23 @@
    * Using the beginShape() and endShape() functions allow creating more complex forms. 
    * beginShape() begins recording vertices for a shape and endShape() stops recording. 
    * After calling the beginShape() function, a series of vertex() commands must follow. 
-   * To stop drawing the shape, call endShape().
+   * To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to 
+   * create from the provided vertices have to be closed or not (to connect the beginning and the end).
    *
    * @cat Document
    * @subcat Primitives
    * @method beginShape
+   * @param shapeMode Set b.CLOSE if the new Path should be auto-closed.
    */
-  pub.beginShape = function() {
+  pub.beginShape = function(shapeMode) {
     currVertexPoints = [];
+    currPathPointer = 0;
+    currPolygon = null;
+    if( typeof shapeMode != null) {
+      currShapeMode = shapeMode;
+    } else {
+      currShapeMode = null;
+    }
   };
 
   /**
@@ -2418,7 +2447,6 @@
       notCalledBeginShapeError();
     }
   };
-
 
   /**
    * The arc() function draws an arc in the display window.
@@ -2639,43 +2667,67 @@
   };
 
   /**
+   * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. 
+   * New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for 
+   * the setting (see b.CLOSE) given in beginShape(shapeMode).
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method addPath
+   */
+  pub.addPath = function() {
+    doAddPath();
+    currPathPointer++;
+  };
+
+  /**
    * The endShape() function is the companion to beginShape() and may only be called 
-   * after beginShape(). The value of the kind parameter tells whether the shape to 
-   * create from the provided vertices has to be closed or not (to connect the beginning and the end).
+   * after beginShape(). 
    *
    * @cat Document
    * @subcat Primitives
    * @method endShape
    * @return {GraphicLine|Polygon} newShape
    */
-  pub.endShape = function(shapeMode) {
+  pub.endShape = function() {
+    doAddPath();
+    currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );    
+    return currPolygon;
+  };
+
+  function doAddPath() {
     if (isArray(currVertexPoints)) {
       if (currVertexPoints.length > 0) {
-        var newShape = null;
-        if (shapeMode === pub.CLOSE) {
-          newShape = currentPage().polygons.add( currentLayer() );
-        } else {
-          newShape = currentPage().graphicLines.add( currentLayer() );
+        
+        if(currPolygon === null) {
+          addPolygon();
         }
-        with (newShape) {
-          strokeWeight = currStrokeWeight;
-          strokeTint = currStrokeTint;
-          fillColor = currFillColor;
-          fillTint = currFillTint;
-          strokeColor = currStrokeColor;
-        }
-        newShape.paths.item(0).entirePath = currVertexPoints;
-        newShape.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                         AnchorPoint.TOP_LEFT_ANCHOR,
-                         currMatrix.adobeMatrix() );
-
+        currPolygon.paths.add();
+        currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
         currVertexPoints = [];
-        return newShape;
       }
     } else {
       notCalledBeginShapeError();
     }
-  };
+  }
+
+  function addPolygon() {
+    if (currShapeMode === pub.CLOSE) {
+      currPolygon = currentPage().polygons.add( currentLayer() );
+    } else {
+      currPolygon = currentPage().graphicLines.add( currentLayer() );
+    }
+    with (currPolygon) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint;
+      fillColor = currFillColor;
+      fillTint = currFillTint;
+      strokeColor = currStrokeColor;
+    }       
+  }
+
   
   function notCalledBeginShapeError () {
     error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
@@ -3647,7 +3699,30 @@
     if (file instanceof File) {
       result = file;
     } else {
-      result = new File(projectPath().absoluteURI + '/' + file);
+
+      // get rid of some special cases the user might specify
+      var pathNormalized = file.split("/");
+      for (var i = 0; i < pathNormalized.length; i++) {
+        if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
+          pathNormalized.splice(i,1);
+        };
+      };
+
+      var tmpPath = projectPath().absoluteURI;
+      var fileName = pathNormalized[pathNormalized.length-1];
+      
+      // contains the path folders? if so create them ...
+      if (pathNormalized.length > 1) {
+        var folders = pathNormalized.slice(0,-1);
+        for (var i = 0; i < folders.length; i++) {
+          tmpPath += "/"+folders[i] 
+          var f = new Folder(tmpPath);
+          if (!f.exists) f.create();
+        };
+      } 
+
+      // result = new File(projectPath().absoluteURI + '/' + file);
+      result = new File(tmpPath + '/' + fileName);
     }
     if (mustExist && !result.exists) {
       error('The file "' + result + '" does not exist.');
@@ -4656,79 +4731,87 @@
   };
 
   /**
-   * Reads the contents of a file into a String.
+   * Executes a shell command and returns the result, currently Mac only.
+   * 
+   * BE CAREFUL!
+   * 
+   * @cat Data
+   * @subcat Input
+   * @method shellExecute
+   * @param  {String} cmd The shell command to execute
+   * @return {String}
+   */
+  pub.shellExecute = function(cmd) {
+    if (Folder.fs === "Macintosh") {
+      try {
+        return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
+      } catch (e) {
+        error("b.shellExecute(): "+e);
+      }
+    } else {
+      error("b.shellExecute() is a Mac only feature at the moment. Sorry!")
+    }
+  };
+
+  /**
+   * Reads the contents of a file or loads an URL into a String.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadString
-   * @param  {String|File} file The text file name in the document's data directory or a File instance
-   * @return {String}  String file content.
+   * @param  {String|File} fileOrString The text file name in the document's data directory or a File instance or an URL
+   * @return {String}  String file or URL content.
    */
-  pub.loadString = function(file) {
-
-    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
-    // var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
-    // if( typeof(file) === "string" && file.match(re)) { // load URL
-    
-    //   return getURLImpl(file);
-
-    // } else {
-      var inputFile = initDataFile(file, true),
+  pub.loadString = function(fileOrString) {
+    if (isURL(fileOrString)) {
+      return getURL(fileOrString);
+    } else {
+      var inputFile = initDataFile(fileOrString, true),
       data = null;
-
       inputFile.open('r');
       data = inputFile.read();
       inputFile.close();
       return data;
-    // }
-
+    }
   };
 
-  // var getURLImpl = function(url) {
-  //     #include "basiljs/bundle/lib/extendables/extendables.jsx";
-  //     var http = require("http");
-  //     if (!http.has_internet_access()) throw new Error("No internet connection");
-  //     var req = new http.HTTPRequest("GET", url);
-  //     req.follow_redirects(true);
-  //     req.header("User-Agent", "basiljs-" + b.VERSION);
-  //     var res = req.do();
-  //     return res.body;
-  // }
+  var getURL = function(url) {
+    if (isURL(url)) {
+      if (Folder.fs === "Macintosh") {
+        return pub.shellExecute("curl -L "+url);
+      } else {
+        error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
+      }
+    } else {
+      error("The "+url+" is not a valid one. Please double check!")
+    }
+  };
 
   /**
-   * Reads the contents of a file and creates a String array of its individual lines.
+   * Reads the contents of a file or loads an URL and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document's data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadStrings
-   * @param  {String|File} file The text file name in the document's data directory or a File instance
-   * @return {String[]}  Array of the individual lines in the given file.
+   * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
+   * @return {String[]}  Array of the individual lines in the given File or URL
    */
   pub.loadStrings = function(file) {
-
-    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
-    // var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
-    // if( typeof(file) === "string" && file.match(re)) { // load URL
-    
-    //   var result = getURLImpl(file);
-    //   return b.split(result, "\n");
-
-    // } else {
-
+    if (isURL(file)) {
+      var result = getURL(file);
+      return result.match(/[^\r\n]+/g);
+    } else {
       var inputFile = initDataFile(file, true),
       result = [];
-
       inputFile.open('r');
       while (!inputFile.eof) {
         result.push(inputFile.readln());
       }
       inputFile.close();
-
       return result;
-    // }
-
+    }
   };
 
 
@@ -5688,7 +5771,7 @@
       this.panel = Window.find("window", "processing...");
       if (this.panel === null) {
         this.panel = new Window('window', "processing...");
-        var logo = (Folder.fs == "Macintosh" ) ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png"); //todo Windows File Path for logo  , in the meantime embed as binary String
+        var logo = (Folder.fs == "Macintosh" ) ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png");
         if (logo.exists) {
           this.panel.add("image", undefined, logo);
         }

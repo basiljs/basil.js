@@ -3,8 +3,17 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js X.XX - ?
-+ added b.group() and b.ungroup() 
+basil.js 1.1 - ?
++ added b.group() and b.ungroup()
++ added b.isURL() validator checker function
++ added b.shellExecute(), currently Mac only.
+  See examples/input/shellExecute.jsx
+
+* Extended loadString() and loadStrings() to handle URLs. Happy GET URL!
+  See examples/input/loadStringURL.jsx
+
+* all export functions can handle now sub-folders 
+  e.g. exportPNG("swiss/basel/snap.png") 
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.03 - 3 July 2013

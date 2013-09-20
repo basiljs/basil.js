@@ -353,7 +353,7 @@ control.palette = function(name, controllerList) {
   // create component holder group
   winControllersGroup = control.winControllersGroup = mainGroup.add('group');
   winControllersGroup.orientation = 'column';
-  winControllersGroup.alignChildren = 'left';
+  winControllersGroup.alignChildren = 'right';
   winControllersGroup.preferredSize = [-1,-1];
 
   // create individual controls
