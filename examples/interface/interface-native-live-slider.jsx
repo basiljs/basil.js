@@ -26,8 +26,9 @@ var slider = mainGroup.add(
 	200 	// max
 );
 slider.onChanging = function() {
-	// sel.move( [0,this.value] );
-	sel.geometricBounds[0] = this.value;
+	sel.move( [0,this.value] );
+	// $.writeln( sel.geometricBounds[0] );
+	// $.writeln( this.value );
 };
 
 win.show();

@@ -897,9 +897,9 @@
    */
   pub.items = function(container, cb) {
 
-    if (container instanceof Document 
-      || container instanceof Page 
-      || container instanceof Layer 
+    if (container instanceof Document
+      || container instanceof Page
+      || container instanceof Layer
       || container instanceof Group) {
 
       if(arguments.length === 1 || cb === false){
@@ -923,8 +923,8 @@
   pub.clear = function(container) {
 
     if (container instanceof Document 
-      || container instanceof Page 
-      || container instanceof Layer 
+      || container instanceof Page
+      || container instanceof Layer
       || container instanceof Group) {
 
         return forEach(container.allPageItems, function(item,n){
@@ -5486,6 +5486,11 @@
   pub.translate = function (tx,ty) {
     currMatrix.translate(tx,ty);
   };
+
+
+  // ----------------------------------------
+  // interface
+  pub.control = {};
 
 
   // ----------------------------------------

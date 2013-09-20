@@ -16,7 +16,7 @@
 // TODO: determine namespace b.interface? b.ui? nothing?
 // I prefer a namespace to keep things tidy, but would
 // also like to avoid namespace.method.method1.method2 etc...
-var Interface = {};
+var control = {};
 
 
 
@@ -24,12 +24,12 @@ var Interface = {};
 /**
  * The individual UI Controller elements
  * these are private methods which are only used
- * by Interface.Prompt and Interface.Palette via
+ * by control.Prompt and control.Palette via
  * the components array
  * 
- * @param {GroupSUI} Container   the name of the Group (ScriptUI) all the Controllers are drawn in
+ * @param {GroupSUI} Container   the name of the Group (ScriptUI) all the controllers are drawn in
  */
-Interface.Controllers = function(container) {
+control.controllers = function(container) {
   //
   // Properties
   // 
@@ -189,7 +189,7 @@ Interface.Controllers = function(container) {
   // ------------------------------------------------------------------------
   /**
    * Slider - A slider with a moveable position indicator.
-   * All slider controls have a horizontal orientation.
+   * All slider controllers have a horizontal orientation.
    * 
    * @param {String} name         the name of the Palette window
    * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in
@@ -227,17 +227,21 @@ Interface.Controllers = function(container) {
       {name: name}
     );
     slider.onClick = function() {
-      attributes.onClick(slider.value);
+      attributes.onClick(this.value);
     };
     slider.onChange = function() {
-      attributes.onChange(slider.value);
+      attributes.onChange(this.value);
     };
     slider.onChanging = function() {
       try {
-        attributes.onChanging(slider.value);
+        // attributes.onChanging(this.value);
+        $.writeln( this.value );
+        if (typeof b.draw === 'function') {
+          b.draw();
+        }
       }
       catch(err) {}
-      return slider.value;
+      return this.value;
     };
 
     values = slider.value;
@@ -354,7 +358,7 @@ Interface.Controllers = function(container) {
     };
 
 
-    // TODO: make these private functions outside of Interface?
+    // TODO: make these private functions outside of control?
     /**
      * @param {Number} integer  RGB integer value
      */
@@ -375,13 +379,11 @@ Interface.Controllers = function(container) {
           m = 1 - rgb[1],
           y = 1 - rgb[2],
           k = Math.min(c,m,y);
-      // TODO: replace clip() with b.constrain()
-      function clip(val,min,max) { return val<min?min:(val>max?max:val); };
       return [
-        clip(c - k, 0, 1)*100,
-        clip(m - k, 0, 1)*100,
-        clip(y - k, 0, 1)*100,
-        clip(k, 0, 1)*100
+        b.constrain(c - k, 0, 1)*100,
+        b.constrain(m - k, 0, 1)*100,
+        b.constrain(y - k, 0, 1)*100,
+        b.constrain(k, 0, 1)*100
       ];
     };
     /**
@@ -405,7 +407,9 @@ Interface.Controllers = function(container) {
         1.0 - Math.min(1.0, arr[2] + arr[3])
       ];
     };
-
+    /**
+     * @param {Array} arr RGB values
+     */
     function RGBToInt(arr) {
       return ((arr[0] & 0x0ff) << 16) | ((arr[1] & 0x0ff) << 8) | (arr[2] & 0x0ff);
     };
@@ -491,7 +495,7 @@ Interface.Controllers = function(container) {
   // ------------------------------------------------------------------------
   /**
    * Progress - A horizontal rectangle that shows progress of an operation.
-   * All progressbar controls have a horizontal orientation. 
+   * All progressbar controllers have a horizontal orientation. 
    * 
    * @param {String} name         the name of the Palette window
    * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in
@@ -567,7 +571,7 @@ Interface.Controllers = function(container) {
 
   // ------------------------------------------------------------------------
   /**
-   * method which is called by Interface.Prompt or Interface.Palette
+   * method which is called by control.Prompt or control.Palette
    * to add the components from the controllers array to the 
    * given window
    * 
@@ -640,13 +644,13 @@ Interface.Controllers = function(container) {
 /**
  * Displays a modal dialog
  * 
- * @param {String} name        the name of the Interface window
+ * @param {String} name        the name of the control window
  * @param {Array} controllers  array of interface controllers
  * @param {Array} values       (optional) the values array is a collection of each controllers output
  *
  * @return {WindowSUI}         the Window instance
  */
-Interface.Prompt = function(name, controllers, values) {
+control.prompt = function(name, controllers, values) {
   //
   // Properties
   // 
@@ -669,7 +673,7 @@ Interface.Prompt = function(name, controllers, values) {
   mainGroup.orientation = 'column';
 
   // create individual controllers
-  var controls = new Interface.Controllers(mainGroup);
+  var controls = new control.controllers(mainGroup);
   controls.add( win, controllers, values );
 
   // always add an OK and Cancel button
@@ -704,13 +708,13 @@ Interface.Prompt = function(name, controllers, values) {
 /**
  * Creates a modeless dialog, also called a floating palette.
  * 
- * @param {String} name        the name of the Interface window
+ * @param {String} name        the name of the control window
  * @param {Array} controllers  array of interface controllers
  * @param {Array} values       (optional) the values array is a collection of each controllers output
  *
  * @return {WindowSUI}         the Window instance
  */
-Interface.Palette = function(name, controllers, values) {
+control.palette = function(name, controllers, values) {
   //
   // Properties
   // 
@@ -730,14 +734,14 @@ Interface.Palette = function(name, controllers, values) {
   mainGroup.orientation = 'column';
   mainGroup.alignChildren = 'right';
 
-  // create individual controllers
-  var controls = new Interface.Controllers(mainGroup);
+  // create individual controls
+  var controls = new control.controllers(mainGroup);
   controls.add( win, controllers, values );
 
   // draw to screen
   win.onShow = function() {
     // TODO: write size for automatic sizing of elements
-    for( var name in controllers ) {
+    for( var name in controls ) {
       try {
         $.writeln( name + ': ' + this[name].size.width );
         this[name].size.width = (this[name].size.width <= 0)
@@ -768,8 +772,8 @@ Interface.Palette = function(name, controllers, values) {
   win.show();
   win.center();
 
-  printMethods( mainGroup );
-  printMethods( win );
+  // printMethods( mainGroup );
+  // printMethods( win );
 
   return win;
 };
