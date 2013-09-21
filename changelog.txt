@@ -4,10 +4,16 @@
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.1 - ?
-+ added b.group() and b.ungroup()
-+ added b.isURL() validator checker function
++ added b.download(). Downloads an URL to a file, currently Mac only.
+  See examples/output/shellExecute.jsx
+
 + added b.shellExecute(), currently Mac only.
   See examples/input/shellExecute.jsx
+
++ added b.group() and b.ungroup()
++ added b.isURL() validator checker function
++ added string helpers b.endsWith() and b.startsWith()
++ added b.projectPath() to get the folder of the active document
 
 * Extended loadString() and loadStrings() to handle URLs. Happy GET URL!
   See examples/input/loadStringURL.jsx
@@ -15,10 +21,12 @@ basil.js 1.1 - ?
 * all export functions can handle now sub-folders 
   e.g. exportPNG("swiss/basel/snap.png") 
 
+
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.03 - 3 July 2013
 * added missing support for layer and stroke settings to b.image()
 + added b.savePNG()
+
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.02 - 3 June 2013
@@ -40,6 +48,7 @@ basil.js 1.01 - 23 May 2013
 * corrected credits for the processing.js team
 * Several JSDOC updates and updated reference on website
 
+
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.00 - 28 Feb 2013
 
@@ -48,6 +57,7 @@ First public release!
 + new functions to work conveniently with stories (indesign model of linked 
   content or many textframes), e.g. b.addToStory(), b.storyCount() ...
   see: examples/document/story.jsx
+
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 0.22 - 25 Feb 2013
