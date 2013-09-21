@@ -2212,13 +2212,8 @@
    * @return {Boolean} Returns either true or false
    */
   var isURL = pub.isURL = function(url) {
-    var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
-        '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+ // domain name
-        '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
-        '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
-        '(\?[;&a-z\d%_.~+=-]*)?'+ // query string
-        '(\#[-a-z\d_]*)?$','i'); // fragment locater
-    return typeof(url) === "string" && !pattern.test(url);
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return pattern.test(url);
   };
 
   /**    
@@ -4538,7 +4533,7 @@
         error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
       }
     } else {
-      error("The "+url+" is not a valid one. Please double check!")
+      error("The url "+url+" is not a valid one. Please double check!")
     }
   };
 
@@ -4710,7 +4705,7 @@
       pub.shellExecute(cmd);
 
     } else {
-      error("The "+url+" is not a valid one. Please double check!")
+      error("The url "+url+" is not a valid one. Please double check!")
     }
   };
   
