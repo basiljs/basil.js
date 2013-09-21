@@ -4,11 +4,14 @@
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.1 - ?
++ added b.nameOnPage(), get a pageitem on the active page by name.
+  see examples/document/nameOnPage.jsx
+
 + added b.download(). Downloads an URL to a file, currently Mac only.
-  See examples/output/shellExecute.jsx
+  see examples/output/shellExecute.jsx
 
 + added b.shellExecute(), currently Mac only.
-  See examples/input/shellExecute.jsx
+  see examples/input/shellExecute.jsx
 
 + added b.group() and b.ungroup()
 + added b.isURL() validator checker function
@@ -16,7 +19,7 @@ basil.js 1.1 - ?
 + added b.projectPath() to get the folder of the active document
 
 * Extended loadString() and loadStrings() to handle URLs. Happy GET URL!
-  See examples/input/loadStringURL.jsx
+  see examples/input/loadStringURL.jsx
 
 * all export functions can handle now sub-folders 
   e.g. exportPNG("swiss/basel/snap.png") 

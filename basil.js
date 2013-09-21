@@ -1393,7 +1393,7 @@
    * @method selection
    * @return {Object} The first selected object
    */
-  pub.selection = function(cb) {
+  pub.selection = function() {
     if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
     return app.selection[0];
   }; 
@@ -1413,6 +1413,28 @@
       return forEach(app.selection, cb);
     } 
     return app.selection;
+  };
+
+  /**
+   * Returns the first item on the active page that is named by the given name in the Layers pane (Window -> Layer).
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method nameOnPage
+   * @return {Object} The first object on the active page with the given name
+   */
+  pub.nameOnPage = function(name) {
+    var result = null;
+    var page = currentPage();
+    for (var i = 0, len = page.allPageItems.length; i < len; i++) {
+      var pageItem = page.allPageItems[i];
+      if (pageItem.name === name) {
+        result = pageItem.getElements()[0];
+        break;
+      }
+    }
+    if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page "+pub.pageNumber());
+    return result;
   };
 
   /**
