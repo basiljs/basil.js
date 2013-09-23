@@ -38,12 +38,6 @@
 
 #target "InDesign";
 
-// this overwrites leftovers in the current targetengine
-//var setup = null;
-//var draw = null;
-//var cleanUp = null;
-
-
 (function(glob, app, undef) {
   /**
    * @class b
