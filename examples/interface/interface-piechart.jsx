@@ -6,24 +6,7 @@
  */
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
-#include 'basiljs/bundle/lib/interface.jsx';
-
-
-// values
-var values = {
-  myLabel: 'Vestibulum id ligula porta felis euismod semper.',
-  myText: 'text',
-  myMultiText: 'multiline text',
-
-  myCheckbox: false,
-  myRadio: 'Option 1',
-  mySlider: 25,
-
-  myDropdown: 'two',
-  myButton: 'Go! Go! Go!',
-
-  myProgress: 75
-};
+#include 'basiljs/bundle/lib/interface-simple.jsx';
 
 
 // controllers
@@ -40,6 +23,11 @@ var controllers = {
     type: 'text',
     value: '2.77, 8.33, 9.72, 10.55, 12.5, 16.66, 20.83, 18.61',
     length: 10
+  },
+
+  test: {
+    label: 'test',
+    type: 'slider'
   }
 
 };
@@ -53,31 +41,31 @@ var dialog;
 
 // ------------------------------------------------------------------------
 function setup() {
-  dialog = new Interface.Prompt('Pie Charts', controllers, values);
+  dialog = new control.palette('Pie Charts', controllers);
 };
 
 
 
 // ------------------------------------------------------------------------
 function draw() {
-  // also see examples/arc.jsx
+  // // also see examples/arc.jsx
 
-  // b.println( dialog.radius.text );
-  var radius = parseInt( dialog.radius.text );
+  // // b.println( dialog.radius.text );
+  // var radius = parseInt( dialog.radius.text );
 
-  // b.println( dialog.chartData.text );
-  // parse the interface output into an array
-  // that the our PieChart method can use
-  var data = [];
-  var chartDataArr = dialog.chartData.text.split(',');
-  for( var n=0; n<chartDataArr.length; n++ ) {
-    data.push( parseFloat( chartDataArr[n] ) );
-  }
-  // b.println( data );
+  // // b.println( dialog.chartData.text );
+  // // parse the interface output into an array
+  // // that the our PieChart method can use
+  // var data = [];
+  // var chartDataArr = dialog.chartData.text.split(',');
+  // for( var n=0; n<chartDataArr.length; n++ ) {
+  //   data.push( parseFloat( chartDataArr[n] ) );
+  // }
+  // // b.println( data );
 
-  // draw some pie!
-  b.noStroke();
-  var pie = PieChart( b.width/2, b.height/2, radius, data );
+  // // draw some pie!
+  // b.noStroke();
+  // var pie = PieChart( b.width/2, b.height/2, radius, data );
 };
 
 
