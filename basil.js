@@ -1281,16 +1281,17 @@
    *  @cat Document
    *  @subCat Page
    *  @method Group
-   *  @param {Object|String} [pItem] The Page Items (must be at least 2) or name of Group name instance
+   *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance
    *  @param {String} name (optional) The name of the Group, only when creating a Group from Page Item(s)
    *  @return {Group} the current Group instance
    */
   pub.group = function (pItem, name) {
     var group = null;
     if( pItem instanceof Array) {
+      if(pItem.length < 2) error("There must be at least two PageItems passed to b.group().");
       // creates a group from Page Items
       group = currentDoc().groups.add(pItem);
-      group.name = name;
+      if(typeof name != 'undefined') group.name = name;
     }
     else if( typeof pItem === 'string' ) {
       // get the Group of the given name
