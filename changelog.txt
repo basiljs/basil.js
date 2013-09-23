@@ -10,7 +10,7 @@ basil.js 1.04 - 23 September 2013
   see examples/document/nameOnPage.jsx
 
 + added b.download(). Downloads an URL to a file, currently Mac only.
-  see examples/output/shellExecute.jsx
+  see examples/output/download.jsx
 
 + added b.shellExecute(), currently Mac only.
   see examples/input/shellExecute.jsx
