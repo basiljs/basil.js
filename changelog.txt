@@ -3,7 +3,9 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 1.1 - ?
+basil.js 1.04 - 23 September 2013
++ added b.addShape() in order to create multi-component shapes with b.vertex();
+
 + added b.nameOnPage(), get a pageitem on the active page by name.
   see examples/document/nameOnPage.jsx
 
