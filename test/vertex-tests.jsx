@@ -57,7 +57,7 @@ b.test('VertexTests', {
     b.vertex(-10,10);
 
     var shape = b.endShape(b.CLOSE);
-    assert(shape instanceof Polygon);    
+    assert(shape instanceof GraphicLine);    
     
     assert(shape.paths.length === 2);
     assert(shape.paths.item(0).entirePath.length === 3);    
