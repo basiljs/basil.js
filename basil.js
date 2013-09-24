@@ -4692,7 +4692,7 @@
         }
 
       } else {
-        var downloadFolder = projPath + "/download";
+        var downloadFolder = projPath + "/data/download";
         var cmd = ["sh",scriptPath,downloadFolder,url].join(" ");
       }
 

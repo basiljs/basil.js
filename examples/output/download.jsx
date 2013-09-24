@@ -10,7 +10,7 @@ function draw() {
   var url = "https://raw.github.com/basiljs/basil.js/master/changelog.txt";
 
   // download the url to a default location, filename according to url:
-  // -> "the project folder" + download/changelog.txt
+  // -> "the project folder" + data/download/changelog.txt
   b.download(url);
 
   // download url to a specific location in the project folder:
