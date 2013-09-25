@@ -3084,6 +3084,8 @@
         textItem[prop] = val;
       };
 
+    if(typeof item === 'string') error( "b.typo() cannot work on strings. Please pass a Text object to modify." );
+
     if(!isValid(item)){
       warning("b.typo(), invalid object passed");
       return;
