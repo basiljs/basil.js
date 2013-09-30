@@ -4607,7 +4607,7 @@
   };
 
   /**
-   * Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.
+   * Writes an array of strings to a file, one line per string.
    * If the given file exists it gets overridden.
    *
    * @cat Output
@@ -4621,6 +4621,22 @@
     forEach(strings, function(s) {
       outputFile.writeln(s);
     });
+    outputFile.close();
+  };
+
+  /**
+   * Writes a string to a file.
+   * If the given file exists it gets overridden.
+   *
+   * @cat Output
+   * @method saveString
+   * @param  {String|File} file The file name or a File instance
+   * @param  {String} string The string to be written
+   */
+  pub.saveString = function(file, string) {
+    var outputFile = initExportFile(file);
+    outputFile.open('w');
+    outputFile.write(string);
     outputFile.close();
   };
 
