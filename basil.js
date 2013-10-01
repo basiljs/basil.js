@@ -38,12 +38,6 @@
 
 #target "InDesign";
 
-// this overwrites leftovers in the current targetengine
-//var setup = null;
-//var draw = null;
-//var cleanUp = null;
-
-
 (function(glob, app, undef) {
   /**
    * @class b
@@ -60,7 +54,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.1";
+  pub.VERSION = "1.04";
 
   /**
    * Used with b.units() to set the coordinate system to points.
@@ -1377,16 +1371,17 @@
    *  @cat Document
    *  @subCat Page
    *  @method Group
-   *  @param {Object|String} [pItem] The Page Items (must be at least 2) or name of Group name instance
+   *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance
    *  @param {String} name (optional) The name of the Group, only when creating a Group from Page Item(s)
    *  @return {Group} the current Group instance
    */
   pub.group = function (pItem, name) {
     var group = null;
     if( pItem instanceof Array) {
+      if(pItem.length < 2) error("There must be at least two PageItems passed to b.group().");
       // creates a group from Page Items
       group = currentDoc().groups.add(pItem);
-      group.name = name;
+      if(typeof name != 'undefined') group.name = name;
     }
     else if( typeof pItem === 'string' ) {
       // get the Group of the given name
@@ -1483,7 +1478,7 @@
    * @method selection
    * @return {Object} The first selected object
    */
-  pub.selection = function(cb) {
+  pub.selection = function() {
     if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
     return app.selection[0];
   }; 
@@ -1503,6 +1498,28 @@
       return forEach(app.selection, cb);
     } 
     return app.selection;
+  };
+
+  /**
+   * Returns the first item on the active page that is named by the given name in the Layers pane (Window -> Layer).
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method nameOnPage
+   * @return {Object} The first object on the active page with the given name
+   */
+  pub.nameOnPage = function(name) {
+    var result = null;
+    var page = currentPage();
+    for (var i = 0, len = page.allPageItems.length; i < len; i++) {
+      var pageItem = page.allPageItems[i];
+      if (pageItem.name === name) {
+        result = pageItem.getElements()[0];
+        break;
+      }
+    }
+    if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page "+pub.pageNumber());
+    return result;
   };
 
   /**
@@ -2280,10 +2297,36 @@
    * @return {Boolean} Returns either true or false
    */
   var isURL = pub.isURL = function(url) {
-    //http://codegolf.stackexchange.com/questions/464/shortest-url-regex-match-in-javascript
-    var re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;  
-    return typeof(url) === "string" && re.test(url);
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return pattern.test(url);
   };
+
+  /**    
+   * Checks whether a string ends with a specific character or string.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method endsWith
+   * @param {String} str A string to be checked
+   * @return {Boolean} Returns either true or false
+   */
+  var endsWith = pub.endsWith = function(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+  };
+
+  /**    
+   * Checks whether a string starts with a specific character or string.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method startsWith
+   * @param {String} str A string to be checked
+   * @return {Boolean} Returns either true or false
+   */
+  var startsWith = pub.startsWith = function(str, prefix) {
+    return str.indexOf(prefix) === 0;
+  };
+
 
   // ----------------------------------------
   // Shape
@@ -3730,7 +3773,15 @@
     return result;
   };
   
-  var projectPath = function() {
+  /**
+   * Get the full path to the folder of the active document.
+   *
+   * @cat Document
+   * @subcat Misc
+   * @method projectPath
+   * @return {File} The folder of the the active document
+   */
+  var projectPath = pub.projectPath = function() {
     var docPath = null;
     try {
       docPath = currentDoc().filePath;
@@ -4784,7 +4835,7 @@
         error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
       }
     } else {
-      error("The "+url+" is not a valid one. Please double check!")
+      error("The url "+url+" is not a valid one. Please double check!")
     }
   };
 
@@ -4863,7 +4914,7 @@
   };
 
   /**
-   * Writes an array of strings to a file, one line per string. This file is saved to the document's data directory.
+   * Writes an array of strings to a file, one line per string.
    * If the given file exists it gets overridden.
    *
    * @cat Output
@@ -4877,6 +4928,22 @@
     forEach(strings, function(s) {
       outputFile.writeln(s);
     });
+    outputFile.close();
+  };
+
+  /**
+   * Writes a string to a file.
+   * If the given file exists it gets overridden.
+   *
+   * @cat Output
+   * @method saveString
+   * @param  {String|File} file The file name or a File instance
+   * @param  {String} string The string to be written
+   */
+  pub.saveString = function(file, string) {
+    var outputFile = initExportFile(file);
+    outputFile.open('w');
+    outputFile.write(string);
     outputFile.close();
   };
 
@@ -4907,6 +4974,57 @@
     var outputFile = initExportFile(file);
     if (typeof showOptions !== "boolean") showOptions = false;
     currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  };
+
+  /**
+   * Downloads an URL to a file, currently Mac only.
+   *
+   * @cat Output
+   * @method download
+   * @param {String} url The download url
+   * @param {String|File} [file] A relative file path in the project folder or a File instance
+   */
+  pub.download = function(url, file){
+    var projPath = projectPath().fsName.replace(" ","\\ ");
+    var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
+
+    if (isURL(url)) {
+      var cmd = null;
+
+      if (file) {
+        if (file instanceof File) {
+          var downloadFolder = file.parent.fsName;
+          var fileName = file.displayName;
+          downloadFolder = downloadFolder.replace(" ","\\ ");
+          fileName = fileName.replace(" ","\\ ");
+          cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+
+        } else { 
+          var downloadFolder = file.substr(0,file.lastIndexOf("/"));
+          var fileName = file.substr(file.lastIndexOf("/")+1);
+
+          // get rif of some special cases
+          if(startsWith(downloadFolder,"./")) downloadFolder.substr(2);
+          if(startsWith(downloadFolder,"/")) downloadFolder.substr(1);
+
+          downloadFolder = downloadFolder.replace(" ","\\ ");
+          fileName = fileName.replace(" ","\\ ");
+          downloadFolder = projPath + "/"+ downloadFolder;  
+          cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+          
+        }
+
+      } else {
+        var downloadFolder = projPath + "/data/download";
+        var cmd = ["sh",scriptPath,downloadFolder,url].join(" ");
+      }
+
+      println(cmd);
+      pub.shellExecute(cmd);
+
+    } else {
+      error("The url "+url+" is not a valid one. Please double check!")
+    }
   };
   
   /**
