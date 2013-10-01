@@ -2469,6 +2469,7 @@
    *
    * @return {GraphicLine|Polygon} newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
    *
+   * TODO: fix bug when making arcs close to 360, current hack is unreliable
    * TODO: make work for elliptical arcs
    * http://www.spaceroots.org/documents/ellipse/
    * http://www.spaceroots.org/documents/ellipse/elliptical-arc.pdf
@@ -2481,7 +2482,7 @@
     }
     if (arguments.length !== 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
     
-    var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+    var o = b.radians(0); // add 1 degree to ensure angles of 360 degrees are drawn
     startAngle %= b.TWO_PI+o; 
     endAngle %= b.TWO_PI+o;
     w /= 2;
@@ -2518,9 +2519,8 @@
       // circular arc
       var radius = (w + h)/2; //(Math.sqrt(w * w + h * h) / 2);
       pt = calculateCircularArc(radius, thetaStart, thetaEnd);
-      // pt = calculateEllipticalArc(w, h, startAngle, endAngle);
-
       // TODO: eliptical arc
+      // pt = calculateEllipticalArc(w, h, startAngle, endAngle);
 
       b.vertex(
         cx + pt.startx,
@@ -5617,10 +5617,10 @@
     }
 
     if(currDoc && !currDoc.windows.length) {
-      currDoc.windows.add(); //open the hidden doc
+      currDoc.windows.add(); // open the hidden doc
     }
     closeHiddenDocs();
-    if (progressPanel)
+    if (progressPanel) 
       progressPanel.closePanel();
     app.scriptPreferences.enableRedraw = true;
     app.preflightOptions.preflightOff = false;

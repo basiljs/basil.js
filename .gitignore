@@ -1,4 +1,6 @@
 .DS_Store
 basil.sublime-workspace
 examples/image/*.indd
+examples/interface/debug/
 lib/extendables/log/extendables.log
+lib/control/debug/
