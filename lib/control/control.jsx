@@ -36,12 +36,12 @@
  */
 
 /*
- *  TODO:
- *  - improve standard layout appearance
+ *  TODO(S):
+ *  - fully clear variables within #targetengine, this is a major bug!
+ *  - improve standard layout appearance, i.e. ensure labels are aligned on right side
  *  - add layout customizeability
  *  - create base() class for window invocation
  *  - implement missing/additional controllers
- *  - improve clearing of variables within targetengine
  *  - debug! debug! debug!
  */
 
@@ -59,7 +59,7 @@ var control = {
 
   // Global type style and size
   typesize: 10,
-  // the root of my 'fiesen bug'!
+  // the root of one of my nasty bugs!
   // it seems typeface must be defined when creating
   // the interface window
   typeface: null,
@@ -74,8 +74,8 @@ var control = {
   /**
    * Class of individual UI controller elements
    * these are private methods which are only used
-   * by control.Prompt and control.Palette via
-   * the components array
+   * by control.prompt and control.palette via
+   * the components array and add() method
    * 
    * @param {GroupSUI} Container   the name of the Group (ScriptUI) all the controllers are drawn in
    */
@@ -144,7 +144,7 @@ var control = {
         });
       }
 
-      var clickCount = -1;
+      var clickCount = 0;
       var button = group.add('button', undefined, properties.value, {name: name});
       button.graphics.font = control.typeface;
       button.preferredSize.height = properties.height;
@@ -267,14 +267,17 @@ var control = {
       // ensure appropriate properties exist
       properties = initText(properties);
       properties.valueType = 'string';
+      var labelText = (properties.value != null)
+        ? properties.label + '\u00A0' + properties.value
+        : properties.label;
 
       var label = container.add('statictext', undefined, 'X', {
         name: name,
         multiline: true
       });
       var xwidth = label.preferredSize[0];
-      control.longestLabel = (properties.label.length*xwidth > control.longestLabel) 
-        ? properties.label.length*xwidth
+      control.longestLabel = (labelText.length*xwidth > control.longestLabel) 
+        ? labelText.length*xwidth
         : control.longestLabel;
       label.justify = 'right';
       label.graphics.font = control.typeface;
@@ -286,7 +289,7 @@ var control = {
         label.characters = ~~(width/xwidth);
         label.preferredSize[1] = -1;
       }
-      label.text = properties.label;
+      label.text = labelText;
       label.alignment = properties.alignment;
 
       return label;
@@ -321,7 +324,7 @@ var control = {
       }
 
       var text = group.add('edittext', undefined, properties.value, {name: name, multiline: properties.multiline});
-      // TODO: define this more clearly
+      // TODO: define rows and columns more clearly
       text.characters = (properties.length != undefined)
         ? properties.length
         : (properties.columns == undefined)
