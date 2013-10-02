@@ -2439,8 +2439,10 @@
         
         if(currPolygon === null) {
           addPolygon();
+        } else {
+          currPolygon.paths.add();
         }
-        currPolygon.paths.add();
+        
         currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
         currVertexPoints = [];
       }
