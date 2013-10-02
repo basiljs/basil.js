@@ -2337,7 +2337,7 @@
     }
     newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
     newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     AnchorPoint.CENTER_ANCHOR,
                      currMatrix.adobeMatrix() );
     return newLine;
   };
