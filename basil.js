@@ -5353,6 +5353,7 @@
    * @param {Number} angle The angle specified in radians
    */
   pub.rotate = function (angle) {
+    if(typeof arguments[0] === 'undefined') error("Please provide an angle for rotation.");
     currMatrix.rotate(angle);
   };
 
@@ -5367,6 +5368,7 @@
    * @param {Number} scaleY The amount to scale the Y axis.
    */
   pub.scale = function (scaleX,scaleY) {
+    if(typeof arguments[0] === 'undefined' || typeof arguments[1] === 'undefined') error("Please provide x and y factors for scaling.");
     currMatrix.scale(scaleX,scaleY);
   };
 
@@ -5380,6 +5382,7 @@
    * @param {Number} ty The amount of offset on the Y axis.
    */
   pub.translate = function (tx,ty) {
+    if(typeof arguments[0] === 'undefined' || typeof arguments[1] === 'undefined') error("Please provide x and y coordinates for translation.");
     currMatrix.translate(tx,ty);
   };
 
