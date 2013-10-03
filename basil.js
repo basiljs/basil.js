@@ -1391,6 +1391,18 @@
       error("b.group(), not a valid argument.")
     }
 
+    if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS ||
+        currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+      group.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix() );
+    }
+    else {
+      group.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
+    }
+
     return group;
   };
 

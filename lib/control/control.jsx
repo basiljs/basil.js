@@ -1,7 +1,7 @@
 // check if a targetengine has been initiated
-// if ($.engineName !== 'basiljs') {
-//   #targetengine 'basiljs';
-// }
+if ($.engineName !== 'basiljs') {
+  #targetengine 'basiljs';
+}
 
 
 /*
@@ -37,33 +37,56 @@
 
 /*
  *  TODO(S):
- *  - fully clear variables within #targetengine, this is a major bug!
- *  - improve standard layout appearance, i.e. ensure labels are aligned on right side
- *  - add layout customizeability
- *  - create base() class for window invocation
+ *  / fully clear variables within #targetengine, this is a major bug! (partially fixed)
+ *  / improve standard layout appearance, i.e. ensure labels are aligned on right side (partially fixed)
+ *  - fix independent label bug
  *  - implement missing/additional controllers
- *  - debug! debug! debug!
+ *  - Separator full width bug, appears as 1px
+ *  / when using add() value property is not applied (fixed?)
+ *  
+ *  ROADMAP:
+ *  - add layout customizeability
  */
 
-// namespace
-// interface cannot be used, as it's a reserved keyword
-var control = {
+
+// static dialog types
+// DISCUSS: push these into the main basil.js structure? do we even want these?
+// I prefer the above method of new control.TYPE
+// but this seems 'more' basil.js like
+b.PALETTE = 'palette';
+b.PROMPT = 'prompt';
+
+
+// 'interface' cannot be used, as it's a reserved keyword
+// therefore control will be used
+
+// attempt to clear control of all previous instances
+// first delete control
+delete control;
+// then redefine control as null
+var control = null;
+// then clearly define control with default values
+control = {
   //
   // Private
   // Global Properties
   // 
-  win: null,
-  winControllersGroup: null,
-  winControllerList: {},
-  winValue: {},
+  __win: null,
+  __winControllersGroup: null,
+  __winControllerList: {},
+  __winValue: {},
 
+  // 
+  // Private
   // Global type style and size
-  typesize: 10,
+  // 
+  __typesize: 10,
   // the root of one of my nasty bugs!
   // it seems typeface must be defined when creating
   // the interface window
-  typeface: null,
-  longestLabel: 0,
+  __typeface: null,
+  __longestLabel: 0,
+
 
 
   // ------------------------------------------------------------------------
@@ -73,9 +96,9 @@ var control = {
 
   /**
    * Class of individual UI controller elements
-   * these are private methods which are only used
+   * these are Private methods which are only used
    * by control.prompt and control.palette via
-   * the components array and add() method
+   * the controllers array and add() method
    * 
    * @param {GroupSUI} Container   the name of the Group (ScriptUI) all the controllers are drawn in
    */
@@ -88,7 +111,7 @@ var control = {
      *
      * @return {Array} properties
      */
-    function init(properties) {
+    function __init(properties) {
       var propertiesBase = {
         type:       null,
         name:       null,
@@ -128,17 +151,17 @@ var control = {
      */
     function Button(name, container, properties) {
       // ensure appropriate properties exist
-      properties = init(properties);
+      properties = __init(properties);
 
       properties.width = (properties.width == 'full')
-        ? control.win.preferredSize.width
+        ? control.__win.preferredSize.width
         : properties.width;
 
       var group = container.add('group');
       group.orientation = 'row';
 
       if( properties.label != '\u00A0' ) {
-        var label = new Label(properties.label, group, {
+        var label = new Label('label', group, {
           alignment: 'center',
           label: properties.label
         });
@@ -146,28 +169,38 @@ var control = {
 
       var clickCount = 0;
       var button = group.add('button', undefined, properties.value, {name: name});
-      button.graphics.font = control.typeface;
+      button.graphics.font = control.__typeface;
       button.preferredSize.height = properties.height;
       button.preferredSize.width = properties.width;
 
       button.onClick = function() {
         clickCount++;
+        // when the onClick event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
         try {
+          // the callback connected to the controller
           properties.onClick(clickCount);
         }
         catch(err) {}
+        
+        // in the interest of consistency, I have included the ability
+        // to have onChange() and onChanging() callbacks for buttons
+        // althogh, they are the same as onClick()
         try {
+          // the callback connected to the controller
           properties.onChange(clickCount);
         }
         catch(err) {}
         try {
+          // the callback connected to the controller
           properties.onChanging(clickCount);
         }
         catch(err) {}
         return clickCount;
       };
 
-      // update value
+      // update value for return
       properties['value'] = properties.value;
 
       return properties;
@@ -184,14 +217,14 @@ var control = {
      */
     function Checkbox(name, container, properties) {
       // ensure appropriate properties exist
-      properties = init(properties);
+      properties = __init(properties);
       // printProperties( properties );
 
       var group = container.add('group');
       group.orientation = 'row';
       group.alignment = ['left','center'];
 
-      var label = new Label(properties.label, group, {
+      var label = new Label('label', group, {
         alignment: 'center',
         label: properties.label
       });
@@ -199,28 +232,33 @@ var control = {
       var check = group.add('checkbox', undefined, '', {
         name: name
       });
+      check.value = properties.value;
+
+      // events
       check.onClick = function() {
         var value = (properties.valueType == 'int')
           ? ((this.value) ? 1 : 0)
           : this.value;
-        // control.__update();
+
+        // update the properties value
+        properties['value'] = value;
+        // push updated value to the window's returned value array
+        control.__updateWinValues();
+
+        // when the onChange event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
         try {
-          properties.onClick(value);
-        }
-        catch(err) {}
-        try {
+          // the callback connected to the controller
           properties.onChange(value);
         }
         catch(err) {}
-        try {
-          properties.onChanging(value);
-        }
-        catch(err) {}
-        properties['value'] = value;
-        return this.value;
-      };
+        return value;
 
-      // update value
+      };
+      // not all interface controllers have all callbacks
+
+      // update value for return
       properties['value'] = (properties.valueType == 'int')
         ? ((check.value) ? 1 : 0)
         : check.value;
@@ -242,7 +280,7 @@ var control = {
      * @param {Array} properties
      * @return {Array} properties
      */
-    function initText(properties) {
+    function __initText(properties) {
       return control.__mergeArray({
           length:     null,
           maxLength:  22,       /* default: 22 (== width: 200px) */
@@ -251,7 +289,7 @@ var control = {
           rows:       null,
           alignment:  'center'  /* default: 'center' */
         },
-        init(properties));
+        __init(properties));
     };
 
     /**
@@ -265,7 +303,7 @@ var control = {
      */
     function Label(name, container, properties) {
       // ensure appropriate properties exist
-      properties = initText(properties);
+      properties = __initText(properties);
       properties.valueType = 'string';
       var labelText = (properties.value != null)
         ? properties.label + '\u00A0' + properties.value
@@ -276,15 +314,15 @@ var control = {
         multiline: true
       });
       var xwidth = label.preferredSize[0];
-      control.longestLabel = (labelText.length*xwidth > control.longestLabel) 
+      control.__longestLabel = (labelText.length*xwidth > control.__longestLabel) 
         ? labelText.length*xwidth
-        : control.longestLabel;
+        : control.__longestLabel;
       label.justify = 'right';
-      label.graphics.font = control.typeface;
+      label.graphics.font = control.__typeface;
 
       if( label.characters == null ) {
         // TODO: define and allow maximum width override
-        var width = (control.longestLabel < 200) ? control.longestLabel : 200;
+        var width = (control.__longestLabel < 200) ? control.__longestLabel : 200;
         label.preferredSize = [-1,-1];
         label.characters = ~~(width/xwidth);
         label.preferredSize[1] = -1;
@@ -308,7 +346,7 @@ var control = {
      */
     function Text(name, container, properties) {
       // ensure appropriate properties exist
-      properties = initText(properties);
+      properties = __initText(properties);
       properties.valueType = (properties.valueType != null)
         ? properties.valueType
         : 'string';
@@ -317,7 +355,7 @@ var control = {
       group.orientation = 'row';
 
       if( properties.label != '\u00A0' ) {
-        var label = new Label(properties.label, group, {
+        var label = new Label('label', group, {
           alignment: 'center',
           label: properties.label
         });
@@ -331,39 +369,67 @@ var control = {
           ? properties.maxLength
           : properties.columns;
       text.minimumSize.height = (properties.multiline && properties.rows != undefined) 
-        ? (control.typesize+2)*(properties.rows+1)
-        : (control.typesize+2)*1;
-      text.graphics.font = control.typeface;
+        ? (control.__typesize+2)*(properties.rows+1)
+        : (control.__typesize+2)*1;
+      text.graphics.font = control.__typeface;
 
+      // events
+      // not all interface controllers have a native onClick event
+      // therefore for some, other native events must be utilized
+      // and then linked to our own onClick event
       text.onActivate = function() {
         var value = __updateValue(properties,this.text);
+
+        // update the properties value
+        properties['value'] = value;
+        // push updated value to the window's returned value array
+        control.__updateWinValues();
+
         try {
+          // the callback connected to the controller
           properties.onClick(value);
         }
         catch(err) {}
-        properties['value'] = value;
         return value;
       }
-      text.onChange = function() {
+      text.addEventListener('change', function() {
         var value = __updateValue(properties,this.text);
+
+        // update the properties value
+        properties['value'] = value;
+        // push updated value to the window's returned value array
+        control.__updateWinValues();
+
+        // when the onChange event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
         try {
+          // the callback connected to the controller
           properties.onChange(value);
         }
         catch(err) {}
-        properties['value'] = value;
         return value;
-      };
+      });
       text.onChanging = function() {
         var value = __updateValue(properties,this.text);
+
+        // update the properties value
+        properties['value'] = value;
+        // push updated value to the window's returned value array
+        control.__updateWinValues();
+
+        // when the onChanging event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
         try {
+          // the callback connected to the controller
           properties.onChanging(value);
         }
         catch(err) {}
-        properties['value'] = value;
         return value;
       };
 
-      // update value
+      // update value for return
       properties['value'] = __updateValue(properties,text.text);
 
       return properties;
@@ -383,7 +449,7 @@ var control = {
      * @param {Array} properties
      * @return {Array} properties
      */
-    function initRange(properties) {
+    function __initRange(properties) {
       return control.__mergeArray({
         range:  (properties.range != undefined) ? properties.range : [0.0, 1.0], /* default: [0.0,1.0] */
         min:    (properties.min != undefined) 
@@ -397,7 +463,7 @@ var control = {
                     ? properties.range[1]
                     : 1.0  /* default: 1.0 */
         },
-        init(properties));
+        __init(properties));
     };
 
     /**
@@ -426,13 +492,13 @@ var control = {
      */
     function Slider(name, container, properties) {
       // ensure appropriate properties exist
-      properties = initRange(properties);
+      properties = __initRange(properties);
 
       var group = container.add('group');
       group.orientation = 'row';
 
       // create label
-      var label = new Label(properties.label, group, {
+      var label = new Label('label', group, {
         alignment: 'center',
         label: properties.label
       });
@@ -461,30 +527,57 @@ var control = {
         valueLabel.justify = 'left';
       }
 
-      // callbacks
+      // events
+      // not all interface controllers have a native onClick event
+      // therefore for some, a corresponding event listener must be utilized
       slider.addEventListener('mousedown', function() {
         var value = __updateValue(properties,this.value);
+
+        // update the properties value
+        properties['value'] = value;
+        // push updated value to the window's returned value array
+        control.__updateWinValues();
+
         try {
+          // the callback connected to the controller
           properties.onClick(value);
         }
         catch(err) {}
-        properties['value'] = value;
         return value;
       });
       slider.onChange = function() {
         var value = __updateValue(properties,this.value);
+
+        // update the properties value
+        properties['value'] = value;
+        // push updated value to the window's returned value array
+        control.__updateWinValues();
+
+        // when the onChange event is fired, an attempt is
+        // made to call the update() function
         control.__update();
+
         try {
+          // the callback connected to the controller
           properties.onChange(value);
         }
         catch(err) {}
-        properties['value'] = value;
         return value;
       };
       slider.onChanging = function() {
         var value = __updateValue(properties,this.value);
+
+        // update the properties value
+        properties['value'] = value;
+        // push updated value to the window's returned value array
+        control.__updateWinValues();
+
+        // when the onChanging event is fired, an attempt is
+        // made to call the update() function
         control.__update();
+
         try {
+          // the callback connected to the controller
           properties.onChanging(value);
         }
         catch(err) {}
@@ -492,12 +585,11 @@ var control = {
           valueLabel.text = value;
         }
         catch(err) {}
-        properties['value'] = value;
         return value;
       };
 
-      // update value
-      properties['value'] = __updateValue(properties,this.value);
+      // update value for return
+      properties['value'] = __updateValue(properties,slider.value);
 
       return properties;
     };
@@ -520,17 +612,17 @@ var control = {
      */
     function Separator(name, container, properties) {
       // ensure appropriate properties exist
-      properties = init(properties);
+      properties = __init(properties);
 
-      // var label = new Label(properties.label, group, {
+      // var label = new Label('label', group, {
       //   alignment: 'center',
       //   label: properties.label
       // });
-      // label.graphics.font = control.typeface;
+      // label.graphics.font = control.__typeface;
 
       properties.width = (properties.width != -1)
         ? properties.width
-        : control.win.preferredSize.width;
+        : control.__win.preferredSize.width;
 
       var separator = container.add('panel', undefined);
       separator.preferredSize.height = separator.maximumSize.height = 1;
@@ -540,8 +632,9 @@ var control = {
       return properties;
     };
 
-
-    // private
+    //
+    // Private
+    // 
     var __updateValue = function(properties, value) {
       return (properties.valueType == 'int')
         ? parseInt(value)
@@ -563,7 +656,7 @@ var control = {
       Text: Text,
 
       // range
-      Progress: Progress,
+      // Progress: Progress,
       Slider: Slider,
 
       // list
@@ -577,8 +670,153 @@ var control = {
 
 
 
+  // ------------------------------------------------------------------------
+  //
+  // Dialogs
+  //
+
   /**
-   * Displays a modal dialog
+   * Creates an interface window
+   * 
+   * @param {String} type           the type of controller window
+   * @param {String} name           the name of the controller window
+   * @param {Array} controllerList  array of controllers
+   *
+   * @return {Array} controller properties
+   */
+  dialog: function(type, name, controllerList) {
+    //
+    // Properties
+    // 
+    type = (type != undefined) ? type : 'palette';
+    name = (name != undefined) ? name : 'Basil.js';
+    // attempt to clear controllers from all previous instances
+    delete controllers;
+    var controllers = (controllerList != undefined) ? controllerList : {};
+
+    var base = function() {
+      // create window
+      win = control.__win = new Window('palette', name, undefined);
+      win.orientation = 'row';
+      // win.alignChildren = 'fill';
+
+      control.__typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, control.__typesize);
+
+      if( type == 'dialog' || type == 'prompt' ) {
+        // always include a basil.js logo with prompts
+        var __logoGroup = win.add('group');
+        __logoGroup.add('image', undefined, File('~/Documents/basiljs/bundle/lib/basil_simple.png'));
+      }
+
+      // create main holder
+      var __mainGroup = win.add('group');
+      __mainGroup.orientation = 'column';
+      __mainGroup.alignChildren = 'right';
+
+      // create controller holder group
+      var __winControllersGroup = control.__winControllersGroup = __mainGroup.add('group');
+      __winControllersGroup.orientation = 'column';
+      __winControllersGroup.alignChildren = 'left';
+
+      // create core return values
+      control.__winValue = {
+        // this initiated window (palette)
+        window: control.__win,
+        // this window's update function
+        update:  control.__win.update,
+        // the add function to on-the-fly add controllers
+        add: control.add,
+        // the remove function to on-the-fly remove controllers
+        remove: control.remove,
+        // callback for window onClose
+        onClose: function() {}
+      };
+
+      // callbacks
+      win.onShow = function() {
+        // create individual controls
+        control.__addList( controllers );
+        // adjust layout of controls
+        __adjustLayout( __winControllersGroup );
+        // calls the update function (if it exists) on load
+        // the only problem is it seems this is being called
+        // before draw()
+        control.__update();
+      };
+      win.onClose = function() {
+        try {
+          control.__winValue.onClose();
+        }
+        catch(err) {}
+        // garbage clean-up attempt
+        // http://forums.adobe.com/thread/478449
+        control.__destroy();
+      };
+
+      // this event is fired as the palette window itself
+      // is changed/updated (i.e. adding/removing controllers)
+      win.addEventListener('changing', function() {
+        // as controllers are added/removed on-the-fly
+        // the value array must be updated before returning it
+        control.__updateWinValues();
+        // adjust layout of controls
+        __adjustLayout( __winControllersGroup );
+      });
+
+      if( type == 'dialog' || type == 'prompt' ) {
+        // always add an OK and Cancel button to prompts
+        var buttongroup = __mainGroup.add('group');
+        buttongroup.alignment = 'right';
+
+        var cancel = buttongroup.add('button', undefined, 'Cancel', {name: 'cancel'});
+        cancel.onClick = function() {
+          win.close(2);
+        };
+        var ok = buttongroup.add('button', undefined, 'OK', {name: 'ok'});
+        ok.onClick = function() {
+          win.close(1);
+        };
+      }
+
+      // show the interface window
+      win.show();
+      // center the interface window to the screen
+      win.center();
+
+      // return the value array
+      return control.__winValue;
+    };
+
+    /*
+     *  Private
+     *  TODO: define a Custom layout-manager
+     */
+    function __adjustLayout(container) {
+      for ( var i=0; i<container.children.length; i++) {
+        var child = container.children[i];
+        if( child.type == 'statictext' && child.properties.name == 'label' ) {
+          child.size[0] = control.__longestLabel;
+        }
+        if( typeof child.layout != 'undefined' ) child.layout.layout();
+        for ( var j=0; j<child.children.length; j++ ) {
+          var grandChild = child.children[j];
+          if( grandChild.type == 'statictext' && grandChild.properties.name == 'label' ) {
+            grandChild.size[0] = control.__longestLabel;
+          }
+        }
+      }
+      container.parent.layout.layout( true );
+
+      control.__win.size[0] += control.__longestLabel;
+      control.__win.layout.layout( true );
+    };
+
+    return base();
+  },
+
+  /**
+   * Preffered Method
+   * Displays a modal interface window
    * 
    * @param {String} name           the name of the control window
    * @param {Array} controllerList  array of controllers
@@ -586,99 +824,12 @@ var control = {
    * @return {Array} controller properties
    */
   prompt: function(name, controllerList) {
-    // Properties
-    name = (name != undefined) ? name : 'Basil.js';
-    controllerList = (controllerList != undefined) ? controllerList : {};
-
-    // create window
-    win = control.win = new Window('dialog', name, undefined);
-    win.orientation = 'row';
-    win.alignChildren = 'fill';
-
-    control.typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, control.typesize);
-
-    // let's always include a basil.js logo
-    var logoGroup = win.add('group');
-    var logo = logoGroup.add('image', undefined, File('~/Documents/basiljs/bundle/lib/basil_simple.png'));
-
-    // create main holder
-    var mainGroup = win.add('group');
-    mainGroup.orientation = 'column';
-    mainGroup.alignChildren = 'right';
-    // mainGroup.alignChildren = 'fill';
-
-    // create component holder group
-    winControllersGroup = control.winControllersGroup = mainGroup.add('group');
-    winControllersGroup.orientation = 'column';
-    winControllersGroup.alignChildren = 'left';
-    // winControllersGroup.alignChildren = 'fill';
-    // winControllersGroup.preferredSize = [-1,-1];
-
-    // create core return values
-    control.winValue = {
-      // this initiated window (palette)
-      window: control.win,
-      // this window's update function
-      update:  control.win.update,
-      // the add function to on-the-fly add controllers
-      add: control.__add,
-      // the remove function to on-the-fly remove controllers
-      remove: control.__remove,
-      // callback for window onClose
-      onClose: function() {}
-    };
-
-    // callbacks
-    win.onShow = function() {
-      // create individual controls
-      control.__addList( controllerList );
-    };
-    win.onClose = function() {
-      try {
-        control.winValue.onClose();
-      }
-      catch(err) {}
-      // garbage clean-up attempt
-      // http://forums.adobe.com/thread/478449
-      control.__destroy();
-    };
-
-    // this event is fired as the palette window itself
-    // is changed/updated (i.e. adding/removing controllers)
-    win.addEventListener('changing', function() {
-      // as components are added/removed on-the-fly
-      // the value array must be updated before returning it
-      control.__updateWinValues();
-    });
-
-
-    // always add an OK and Cancel button to prompts
-    var buttongroup = mainGroup.add('group');
-    buttongroup.alignment = 'right';
-
-    var cancel = buttongroup.add('button', undefined, 'Cancel', {name: 'cancel'});
-    cancel.onClick = function() {
-      win.close(2);
-    };
-    var ok = buttongroup.add('button', undefined, 'OK', {name: 'ok'});
-    ok.onClick = function() {
-      win.close(1);
-    };
-
-
-    // show the interface window
-    win.show();
-    // center the interface windwo to the screen
-    win.center();
-
-    // return the value array
-    return control.winValue;
+    return control.dialog('dialog', name, controllerList);
   },
 
-
-
   /**
-   * Creates a modeless dialog, also called a floating palette.
+   * Preffered Method
+   * Creates a modeless interface window, also called a floating palette.
    * 
    * @param {String} name           the name of the controller window
    * @param {Array} controllerList  array of controllers
@@ -686,75 +837,10 @@ var control = {
    * @return {Array} controller properties
    */
   palette: function(name, controllerList) {
-    // Properties
-    name = (name != undefined) ? name : 'Basil.js';
-    controllerList = (controllerList != undefined) ? controllerList : {};
+    return control.dialog('palette', name, controllerList);
+  },
 
-    // create window
-    win = control.win = new Window('palette', name, undefined);
-    win.orientation = 'row';
-    win.alignChildren = 'fill';
-
-    control.typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, control.typesize);
-
-    // create main holder
-    var mainGroup = win.add('group');
-    mainGroup.orientation = 'column';
-    mainGroup.alignChildren = 'right';
-    // mainGroup.alignChildren = 'fill';
-
-    // create component holder group
-    winControllersGroup = control.winControllersGroup = mainGroup.add('group');
-    winControllersGroup.orientation = 'column';
-    winControllersGroup.alignChildren = 'left';
-    // winControllersGroup.alignChildren = 'fill';
-    // winControllersGroup.preferredSize = [-1,-1];
-
-    // create core return values
-    control.winValue = {
-      // this initiated window (palette)
-      window: control.win,
-      // this window's update function
-      update:  control.win.update,
-      // the add function to on-the-fly add controllers
-      add: control.__add,
-      // the remove function to on-the-fly remove controllers
-      remove: control.__remove,
-      // callback for window onClose
-      onClose: function() {}
-    };
-
-    // callbacks
-    win.onShow = function() {
-      // create individual controls
-      control.__addList( controllerList );
-    };
-    win.onClose = function() {
-      try {
-        control.winValue.onClose();
-      }
-      catch(err) {}
-      // garbage clean-up attempt
-      // http://forums.adobe.com/thread/478449
-      control.__destroy();
-    };
-
-    // this event is fired as the palette window itself
-    // is changed/updated (i.e. adding/removing controllers)
-    win.addEventListener('changing', function() {
-      // as components are added/removed on-the-fly
-      // the value array must be updated before returning it
-      control.__updateWinValues();
-    });
-
-    // show the interface window
-    win.show();
-    // center the interface windwo to the screen
-    win.center();
-
-    // return the value array
-    return control.winValue;
-  }, /* end dialogs */
+  /* end dialog */
 
 
 
@@ -781,92 +867,104 @@ var control = {
    * ensures values output by interface window are up-to-date
    */
   __updateWinValues: function() {
-    for( var name in control.winControllerList ) {
+    for( var name in control.__winControllerList ) {
       // this connects the name of the controller to it's
       // corresponding value, thus making it easier for
       // the user to link interface controller names
       // directly to their value
-      control.winValue[name] = control.winControllerList[name].value;
+      control.__winValue[name] = control.__winControllerList[name].value;
     }
   },
 
   /**
-   * add component to the current control window
+   * add controller to the current control window
    *
    * @param {String} type       the controller type 
    * @param {String} name       the name of the controller (also it's variable name)
    * @param {Number} value      the controller's initial value
-   * @param {Array} properties  controller properties (i.e type, label, range, etc.)
+   * @param {Array} properties  controller properties (i.e type, label, range, etc.), optional
    *
-   * @return {Array}             control component
+   * @return {Array}             controller
    *
    * @example
    * var slider = dialog.add('slider', 'mySlider', 100, {range: [10,200]});
+   *
+   * @example
+   * var slider = dialog.add('slider', 'mySlider', {range: [10,200], value: 100});
    * 
    */
-  __add: function(type, name, value, properties) {
-    // ensure properites contains name, value, and type
-    properties['name'] = name;
-    properties['value'] = value;
-    properties['type'] = type = (type != undefined) ? type : 'undefined';
+  add: function(type, name, value, properties) {
+   // ensure properites contains name, value, and type
+    properties['type'] = arguments[0] = (arguments[0] != undefined) ? type : 'undefined';
+    properties['name'] = arguments[1];
+
+    // if properties.value != undefined use that 
+    // if value == number use that
+    // if there are only 3 arguments use properties.value
+    // else use null
+    properties['value'] = ( arguments[3].value != undefined )
+      ? arguments[3].value
+      : (typeof arguments[2] == 'number'
+        ? arguments[2]
+        : (arguments.length == 3
+          ? arguments[2].value
+          : null));
 
     var controller = null;
-    if( control.winControllersGroup != null) {
+    if( control.__winControllersGroup != null) {
       // // buttons
       if( type.toLowerCase() === 'button') {
-        control.winControllerList[name] = controller = new control.controllers().Button(name, control.winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new control.controllers().Button(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'checkbox') {
-        control.winControllerList[name] = controller = new control.controllers().Checkbox(name, control.winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new control.controllers().Checkbox(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'color') {
-      //   control.winControllerList[name] = controller = new control.controllers().Color(name, control.winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new control.controllers().Color(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'radio') {
-      //   control.winControllerList[name] = controller = new control.controllers().Radio(name, control.winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new control.controllers().Radio(name, control.__winControllersGroup, properties);
       }
 
       // text
       else if( type.toLowerCase() === 'label') {
-        control.winControllerList[name] = controller = new control.controllers().Label(name, control.winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new control.controllers().Label(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'text') {
-        control.winControllerList[name] = controller = new control.controllers().Text(name, control.winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new control.controllers().Text(name, control.__winControllersGroup, properties);
       }
 
       // range
       else if( type.toLowerCase() === 'progress') {
-      //   control.winControllerList[name] = controller = new control.controllers().Progress(name, control.winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new control.controllers().Progress(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'slider') {
-        control.winControllerList[name] = controller = new control.controllers().Slider(name, control.winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new control.controllers().Slider(name, control.__winControllersGroup, properties);
       }
 
       // list
       else if( type.toLowerCase() === 'dropdown') {
-      //   control.winControllerList[name] = controller = new control.controllers().Dropdown(name, control.winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new control.controllers().Dropdown(name, control.__winControllersGroup, properties);
       }
 
       // organization
       else if( type.toLowerCase() === 'separator') {
-        control.winControllerList[name] = controller = new control.controllers().Separator(name, control.winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new control.controllers().Separator(name, control.__winControllersGroup, properties);
       }
 
       else {
-      //   b.println("control.add(), no valid controller type specified!");
+      //   b.println('control.add(), no valid controller type specified!');
       }
     }
     else {
-      b.println("control.add(), no valid control dialog or controller type specified!");
+      b.println('control.add(), no valid control dialog or controller type specified!');
     }
 
     if( controller != null ) {
-      control.win[name] = controller;
-      control.win.layout.layout( true );
+      control.__win[name] = controller;
+      control.__win.layout.layout( true );
       // update the values
       control.__updateWinValues();
-      // call the update function 
-      control.__update();
     }
 
     return controller;
@@ -878,17 +976,17 @@ var control = {
    * 
    * @param {Array} controllerList  array of control controllers
    *
-   * @return {Array}  array of control controllers
+   * @return {Array}  array of controllers
    */
   __addList: function(controllerList) {
     for( var name in controllerList ) {
-      control.__add( controllerList[name].type, name, controllerList[name].value, controllerList[name] )
+      control.add( controllerList[name].type, name, controllerList[name].value, controllerList[name] )
     }
     return controllerList;
   },
 
   /**
-   * remove component from current control window
+   * remove controller from current control window
    *
    * @param {String} name       the name of the controller to remove
    *
@@ -898,13 +996,13 @@ var control = {
    * dialog.remove('mySlider');
    * 
    */
-  __remove: function(name) {
+  remove: function(name) {
     var success = false;
-    if( control.win != null ) {
-      var controller = control.win.findElement(name);
+    if( control.__win != null ) {
+      var controller = control.__win.findElement(name);
       if( controller != null ) {
         control.parent.remove(controller);
-        control.win.layout.layout( true );
+        control.__win.layout.layout( true );
         success = true;
       }
     }
@@ -923,10 +1021,13 @@ var control = {
     cleanUp = null;
 
     // clear control;
+    // this doesn't work, in palette mode because control
+    // is cleared before the results are returned
+    // so i've moved this to the top... mal sehen
     // control = {};
 
     // http://forums.adobe.com/message/4068855
-    // "...call $.gc() twice in some circumstances"
+    // '...call $.gc() twice in some circumstances'
     $.gc();
     $.gc();
   },
