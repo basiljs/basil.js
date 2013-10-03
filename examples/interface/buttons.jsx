@@ -23,6 +23,9 @@
 // Properties
 //
 
+var circle;
+var gray = 0;
+
 // create a variable for the interface control palette window
 var palette;
 
@@ -40,9 +43,9 @@ var controllers = {
     type: 'button',
     // this is the label that appears to the left
     // of the button controller - can be any string
-    label: 'My Button',
+    label: 'Reset',
     // for buttons the value is the string on the button
-    value: 'Go! Go! Go!',
+    value: 'Click Me!',
 
     // callbacks
     // not only can specific properties of controller, but
@@ -51,15 +54,16 @@ var controllers = {
       // if the button controller is clicked this is called
       // this is only available within the buttons onClick callback
       b.println( 'My Button was Clicked ' + value + ' time(s)' );
+      gray = 0;
     }
   },
 
-  myButton2: {
+myButton2: {
     // properties
     // declare the controller type
     type: 'button',
     // for buttons the value is the string on the button
-    value: 'Click Me!',
+    value: 'Brighten!',
     // certain controllers such as buttons can take
     // the full width of the interface window
     width: 'full',
@@ -71,6 +75,28 @@ var controllers = {
       // if the button controller is clicked this is called
       // this is only available within the buttons onClick callback
       b.println( 'My second Button was Clicked ' + value + ' time(s)' );
+      gray += 10;
+    }
+  },
+
+  myButton3: {
+    // properties
+    // declare the controller type
+    type: 'button',
+    // for buttons the value is the string on the button
+    value: 'Darken!',
+    // certain controllers such as buttons can take
+    // the full width of the interface window
+    width: 'full',
+
+    // callbacks
+    // not only can specific properties of controller, but
+    // certain callbacks can be defined as well
+    onClick: function(value) {
+      // if the button controller is clicked this is called
+      // this is only available within the buttons onClick callback
+      b.println( 'My third Button was Clicked ' + value + ' time(s)' );
+      gray -= 10;
     }
   },
 };
@@ -99,6 +125,11 @@ function setup() {
 // ------------------------------------------------------------------------
 function draw() {
 
+  b.ellipseMode(b.CENTER);
+  b.translate( b.width/2, b.height/2 );
+
+  b.fill(0);
+  circle = b.ellipse( 0,0, b.width*0.8,b.width*0.8 )
 };
 
 
@@ -111,6 +142,8 @@ function draw() {
  *  this is optional, and not required for using interface components
  */
 function update() {
+
+  circle.fillColor = b.color( gray );
 
 };
 

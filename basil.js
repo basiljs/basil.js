@@ -1391,16 +1391,18 @@
       error("b.group(), not a valid argument.")
     }
 
-    if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS ||
-        currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
-      group.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                         AnchorPoint.CENTER_ANCHOR,
-                         currMatrix.adobeMatrix() );
+    // feels bootleg... but works
+    if (currEllipseMode === pub.CENTER || currRectMode === pub.CENTER) {
+      b.itemPosition( group,
+        currMatrix.adobeMatrix()[4] - b.itemWidth(group)/2,
+        currMatrix.adobeMatrix()[5] - b.itemHeight(group)/2
+      );
     }
     else {
-      group.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix() );
+      b.itemPosition( group,
+        currMatrix.adobeMatrix()[4],
+        currMatrix.adobeMatrix()[5]
+      );
     }
 
     return group;

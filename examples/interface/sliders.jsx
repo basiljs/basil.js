@@ -110,7 +110,7 @@ function draw() {
   b.noStroke();
 
   // create a simple grid of circles
-  var n = 3;
+  var n = 2;
   for( var y=0; y<n; y++ ) {
     for( var x=0; x<n; x++ ) {
       // fill with a random RGB color
@@ -123,8 +123,8 @@ function draw() {
     }
   }
 
-  b.translate(b.width / 2, b.height / 2);
   b.ellipseMode(b.CENTER);
+  b.translate(b.width/2, b.height/2);
 
   b.group(circles, 'circles');
 

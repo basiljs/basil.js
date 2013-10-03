@@ -173,11 +173,12 @@ control = {
       button.preferredSize.height = properties.height;
       button.preferredSize.width = properties.width;
 
+      // push specific properties to the controller's
+      // own internal properties property
+      button.properties['width'] = properties.width;
+
       button.onClick = function() {
         clickCount++;
-        // when the onClick event is fired, an attempt is
-        // made to call the update() function
-        control.__update();
         try {
           // the callback connected to the controller
           properties.onClick(clickCount);
@@ -197,6 +198,11 @@ control = {
           properties.onChanging(clickCount);
         }
         catch(err) {}
+
+        // when the onClick event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
+
         return clickCount;
       };
 
@@ -245,16 +251,17 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        // when the onChange event is fired, an attempt is
-        // made to call the update() function
-        control.__update();
         try {
           // the callback connected to the controller
           properties.onChange(value);
         }
         catch(err) {}
-        return value;
 
+        // when the onChange event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
+
+        return value;
       };
       // not all interface controllers have all callbacks
 
@@ -400,14 +407,16 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        // when the onChange event is fired, an attempt is
-        // made to call the update() function
-        control.__update();
         try {
           // the callback connected to the controller
           properties.onChange(value);
         }
         catch(err) {}
+
+        // when the onChange event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
+
         return value;
       });
       text.onChanging = function() {
@@ -418,14 +427,16 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        // when the onChanging event is fired, an attempt is
-        // made to call the update() function
-        control.__update();
         try {
           // the callback connected to the controller
           properties.onChanging(value);
         }
         catch(err) {}
+
+        // when the onChanging event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
+
         return value;
       };
 
@@ -553,15 +564,16 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        // when the onChange event is fired, an attempt is
-        // made to call the update() function
-        control.__update();
-
         try {
           // the callback connected to the controller
           properties.onChange(value);
         }
         catch(err) {}
+
+        // when the onChange event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
+
         return value;
       };
       slider.onChanging = function() {
@@ -572,10 +584,6 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        // when the onChanging event is fired, an attempt is
-        // made to call the update() function
-        control.__update();
-
         try {
           // the callback connected to the controller
           properties.onChanging(value);
@@ -585,6 +593,11 @@ control = {
           valueLabel.text = value;
         }
         catch(err) {}
+
+        // when the onChanging event is fired, an attempt is
+        // made to call the update() function
+        control.__update();
+
         return value;
       };
 
@@ -792,21 +805,34 @@ control = {
      *  TODO: define a Custom layout-manager
      */
     function __adjustLayout(container) {
+
       for ( var i=0; i<container.children.length; i++) {
         var child = container.children[i];
+
+        // adjust fullsize elements
+        printProperties( child );
+
+        // adjust label sizes
         if( child.type == 'statictext' && child.properties.name == 'label' ) {
           child.size[0] = control.__longestLabel;
         }
         if( typeof child.layout != 'undefined' ) child.layout.layout();
         for ( var j=0; j<child.children.length; j++ ) {
           var grandChild = child.children[j];
+
+          // adjust fullsize elements
+          printProperties( grandChild.properties );
+
+          // adjust label sizes
           if( grandChild.type == 'statictext' && grandChild.properties.name == 'label' ) {
             grandChild.size[0] = control.__longestLabel;
           }
         }
       }
-      container.parent.layout.layout( true );
 
+      // update parent
+      container.parent.layout.layout( true );
+      // update main window
       control.__win.size[0] += control.__longestLabel;
       control.__win.layout.layout( true );
     };
