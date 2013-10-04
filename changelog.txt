@@ -3,6 +3,11 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.xx
+
+* Bugfix to b.endShape()
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.04 - 23 September 2013
 + added b.addShape() in order to create multi-component shapes with b.vertex();
 

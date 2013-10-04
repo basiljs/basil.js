@@ -2442,7 +2442,7 @@
     }
     newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
     newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     AnchorPoint.CENTER_ANCHOR,
                      currMatrix.adobeMatrix() );
     return newLine;
   };
@@ -2763,8 +2763,10 @@
         
         if(currPolygon === null) {
           addPolygon();
+        } else {
+          currPolygon.paths.add();
         }
-        currPolygon.paths.add();
+        
         currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
         currVertexPoints = [];
       }
@@ -3407,6 +3409,8 @@
       setProperty = function(textItem, prop, val) {
         textItem[prop] = val;
       };
+
+    if(typeof item === 'string') error( "b.typo() cannot work on strings. Please pass a Text object to modify." );
 
     if(!isValid(item)){
       warning("b.typo(), invalid object passed");
@@ -5675,6 +5679,7 @@
    * @param {Number} angle The angle specified in radians
    */
   pub.rotate = function (angle) {
+    if(typeof arguments[0] === 'undefined') error("Please provide an angle for rotation.");
     currMatrix.rotate(angle);
   };
 
@@ -5689,6 +5694,7 @@
    * @param {Number} scaleY The amount to scale the Y axis.
    */
   pub.scale = function (scaleX,scaleY) {
+    if(typeof arguments[0] === 'undefined' || typeof arguments[1] === 'undefined') error("Please provide x and y factors for scaling.");
     currMatrix.scale(scaleX,scaleY);
   };
 
@@ -5702,6 +5708,7 @@
    * @param {Number} ty The amount of offset on the Y axis.
    */
   pub.translate = function (tx,ty) {
+    if(typeof arguments[0] === 'undefined' || typeof arguments[1] === 'undefined') error("Please provide x and y coordinates for translation.");
     currMatrix.translate(tx,ty);
   };
 
