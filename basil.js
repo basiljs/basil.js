@@ -1391,19 +1391,20 @@
       error("b.group(), not a valid argument.")
     }
 
-    // feels bootleg... but works
-    if (currEllipseMode === pub.CENTER || currRectMode === pub.CENTER) {
-      b.itemPosition( group,
-        currMatrix.adobeMatrix()[4] - b.itemWidth(group)/2,
-        currMatrix.adobeMatrix()[5] - b.itemHeight(group)/2
-      );
-    }
-    else {
-      b.itemPosition( group,
-        currMatrix.adobeMatrix()[4],
-        currMatrix.adobeMatrix()[5]
-      );
-    }
+    // TODO: make groups respect b.ellipseMode and b.rectMode
+    // this is kinda sorta, not really working
+    // if (currEllipseMode === pub.CENTER || currRectMode === pub.CENTER) {
+    //   b.itemPosition( group,
+    //     currMatrix.adobeMatrix()[4] - b.itemWidth(group)/2,
+    //     currMatrix.adobeMatrix()[5] - b.itemHeight(group)/2
+    //   );
+    // }
+    // else {
+    //   b.itemPosition( group,
+    //     currMatrix.adobeMatrix()[4],
+    //     currMatrix.adobeMatrix()[5]
+    //   );
+    // }
 
     return group;
   };
@@ -2526,83 +2527,85 @@
    *
    * @return {GraphicLine|Polygon} newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
    *
-   * TODO: fix bug when making arcs close to 360, current hack is unreliable
-   * TODO: make work for elliptical arcs
+   * TODO(S)
+   * - fix bug when making arcs close to 360, current hack is unreliable
+   * - make work for elliptical arcs
    * http://www.spaceroots.org/documents/ellipse/
    * http://www.spaceroots.org/documents/ellipse/elliptical-arc.pdf
    * http://digerati-illuminatus.blogspot.de/2008/05/approximating-semicircle-with-cubic.html
-   * TODO: check for beginShape() call - necessary?
+   * - check for beginShape() call - necessary?
+   * - not robust enough for primetime
    */
-  pub.arc = function(cx, cy, w, h, startAngle, endAngle) {
-    if (w <= 0 || endAngle < startAngle) {
-      return false;
-    }
-    if (arguments.length !== 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
+  // pub.arc = function(cx, cy, w, h, startAngle, endAngle) {
+  //   if (w <= 0 || endAngle < startAngle) {
+  //     return false;
+  //   }
+  //   if (arguments.length !== 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
     
-    var o = b.radians(0); // add 1 degree to ensure angles of 360 degrees are drawn
-    startAngle %= b.TWO_PI+o; 
-    endAngle %= b.TWO_PI+o;
-    w /= 2;
-    h /= 2;
+  //   var o = b.radians(0); // add 1 degree to ensure angles of 360 degrees are drawn
+  //   startAngle %= b.TWO_PI+o; 
+  //   endAngle %= b.TWO_PI+o;
+  //   w /= 2;
+  //   h /= 2;
 
-    if (currEllipseMode === pub.CORNER) {
-      cx = (cx-w);
-      cy = (cy+h);
-    }
-    else if (currEllipseMode === pub.CORNERS) {
-      // cx = (cx-w);
-      // cy = (cy-h);
-      // w -= cx;
-      // h -= cy;
-    }
-    else if (currEllipseMode === pub.RADIUS) {
-      w *= 2;
-      h *= 2;
-    }
+  //   if (currEllipseMode === pub.CORNER) {
+  //     cx = (cx-w);
+  //     cy = (cy+h);
+  //   }
+  //   else if (currEllipseMode === pub.CORNERS) {
+  //     // cx = (cx-w);
+  //     // cy = (cy-h);
+  //     // w -= cx;
+  //     // h -= cy;
+  //   }
+  //   else if (currEllipseMode === pub.RADIUS) {
+  //     w *= 2;
+  //     h *= 2;
+  //   }
 
-    var delta = Math.abs(endAngle - startAngle);
-    var direction = (startAngle < endAngle)
-      ? 1
-      : -1;
-    var thetaStart = startAngle;
+  //   var delta = Math.abs(endAngle - startAngle);
+  //   var direction = (startAngle < endAngle)
+  //     ? 1
+  //     : -1;
+  //   var thetaStart = startAngle;
 
-    // draw arc
-    b.beginShape();
-    b.vertex( cx, cy );
-    for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
-      // calculations
-      var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
+  //   // draw arc
+  //   b.beginShape();
+  //   b.vertex( cx, cy );
+  //   for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
+  //     // calculations
+  //     var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
 
-      // circular arc
-      var radius = (w + h)/2; //(Math.sqrt(w * w + h * h) / 2);
-      pt = calculateCircularArc(radius, thetaStart, thetaEnd);
-      // TODO: eliptical arc
-      // pt = calculateEllipticalArc(w, h, startAngle, endAngle);
+  //     // circular arc
+  //     var radius = (w + h)/2; //(Math.sqrt(w * w + h * h) / 2);
+  //     pt = calculateCircularArc(radius, thetaStart, thetaEnd);
+  //     // TODO: eliptical arc
+  //     // pt = calculateEllipticalArc(w, h, startAngle, endAngle);
 
-      b.vertex(
-        cx + pt.startx,
-        cy + pt.starty,
-        cx + pt.startx,
-        cy + pt.starty,
-        cx + pt.handle1x,
-        cy + pt.handle1y
-      );
-      b.vertex(
-        cx + pt.endx,
-        cy + pt.endy,
-        cx + pt.handle2x,
-        cy + pt.handle2y,
-        cx + pt.endx,
-        cy + pt.endy
-      );
+  //     b.vertex(
+  //       cx + pt.startx,
+  //       cy + pt.starty,
+  //       cx + pt.startx,
+  //       cy + pt.starty,
+  //       cx + pt.handle1x,
+  //       cy + pt.handle1y
+  //     );
+  //     b.vertex(
+  //       cx + pt.endx,
+  //       cy + pt.endy,
+  //       cx + pt.handle2x,
+  //       cy + pt.handle2y,
+  //       cx + pt.endx,
+  //       cy + pt.endy
+  //     );
 
-      // prepare for next rotation
-      theta -= b.abs(thetaEnd - thetaStart);
-      thetaStart = thetaEnd;
-    }
-    return b.endShape();
+  //     // prepare for next rotation
+  //     theta -= b.abs(thetaEnd - thetaStart);
+  //     thetaStart = thetaEnd;
+  //   }
+  //   return b.endShape();
 
-  };
+  // };
 
   /**
    * Cubic bezier approximation of a circular arc 

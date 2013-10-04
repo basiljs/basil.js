@@ -149,7 +149,6 @@ function Clock(centerX, centerY, diameter, time) {
   var seconds = new b.line( centerX,centerY, scenterX,scenterY );
   clock.push( seconds );
 
-  return b.group( clock, 'clock' );
 };
 
 

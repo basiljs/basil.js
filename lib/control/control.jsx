@@ -39,9 +39,9 @@ if ($.engineName !== 'basiljs') {
  *  TODO(S):
  *  / fully clear variables within #targetengine, this is a major bug! (partially fixed)
  *  / improve standard layout appearance, i.e. ensure labels are aligned on right side (partially fixed)
+ *  - components are not respecting width: 'full'
  *  - fix independent label bug
  *  - implement missing/additional controllers
- *  - Separator full width bug, appears as 1px
  *  / when using add() value property is not applied (fixed?)
  *  
  *  ROADMAP:
@@ -85,7 +85,10 @@ control = {
   // it seems typeface must be defined when creating
   // the interface window
   __typeface: null,
-  __longestLabel: 0,
+
+  // maximum widths for layouts
+  __maximumLabelWidth: 1,
+  __maximumWidth: 1,
 
 
 
@@ -153,10 +156,6 @@ control = {
       // ensure appropriate properties exist
       properties = __init(properties);
 
-      properties.width = (properties.width == 'full')
-        ? control.__win.preferredSize.width
-        : properties.width;
-
       var group = container.add('group');
       group.orientation = 'row';
 
@@ -168,14 +167,17 @@ control = {
       }
 
       var clickCount = 0;
-      var button = group.add('button', undefined, properties.value, {name: name});
+      var button = group.add('button', undefined, properties.value, {
+        name: name,
+        width: properties.width
+      });
       button.graphics.font = control.__typeface;
       button.preferredSize.height = properties.height;
-      button.preferredSize.width = properties.width;
+      button.preferredSize.width = (properties.width == 'full')
+        ? control.__win.preferredSize.width
+        : properties.width;
 
-      // push specific properties to the controller's
-      // own internal properties property
-      button.properties['width'] = properties.width;
+      // printProperties( button.properties );
 
       button.onClick = function() {
         clickCount++;
@@ -316,26 +318,32 @@ control = {
         ? properties.label + '\u00A0' + properties.value
         : properties.label;
 
-      var label = container.add('statictext', undefined, 'X', {
+      var label = container.add('statictext', undefined, 'x', {
         name: name,
         multiline: true
       });
-      var xwidth = label.preferredSize[0];
-      control.__longestLabel = (labelText.length*xwidth > control.__longestLabel) 
-        ? labelText.length*xwidth
-        : control.__longestLabel;
+      // var xwidth = label.preferredSize[0];
+      // control.__maximumLabelWidth = (labelText.length*xwidth > control.__maximumLabelWidth) 
+      //   ? labelText.length*xwidth
+      //   : control.__maximumLabelWidth;
       label.justify = 'right';
       label.graphics.font = control.__typeface;
 
-      if( label.characters == null ) {
-        // TODO: define and allow maximum width override
-        var width = (control.__longestLabel < 200) ? control.__longestLabel : 200;
-        label.preferredSize = [-1,-1];
-        label.characters = ~~(width/xwidth);
-        label.preferredSize[1] = -1;
-      }
+      // if( label.characters == null ) {
+      //   // TODO: define and allow maximum width override
+      //   var width = (control.__maximumLabelWidth < 200) ? control.__maximumLabelWidth : 200;
+      //   label.preferredSize = [,-1];
+      //   label.characters = ~~(width/xwidth);
+      //   label.preferredSize[1] = -1;
+      // }
+
       label.text = labelText;
       label.alignment = properties.alignment;
+
+      // set longest label for layout adjustment
+      control.__maximumLabelWidth = (label.preferredSize[0] > control.__maximumLabelWidth) 
+        ? label.preferredSize[0]
+        : control.__maximumLabelWidth;
 
       return label;
     };
@@ -368,7 +376,11 @@ control = {
         });
       }
 
-      var text = group.add('edittext', undefined, properties.value, {name: name, multiline: properties.multiline});
+      var text = group.add('edittext', undefined, properties.value, {
+        name: name,
+        multiline: properties.multiline,
+        width: properties.width
+      });
       // TODO: define rows and columns more clearly
       text.characters = (properties.length != undefined)
         ? properties.length
@@ -518,9 +530,10 @@ control = {
       var slider = group.add('slider', undefined,
         properties.value,
         properties.min,
-        properties.max,
-        {name: name}
-      );
+        properties.max, {
+          name: name,
+          width: properties.width
+      });
       slider.preferredSize = [properties.width, properties.height];
 
       // create value label
@@ -627,19 +640,22 @@ control = {
       // ensure appropriate properties exist
       properties = __init(properties);
 
-      // var label = new Label('label', group, {
-      //   alignment: 'center',
-      //   label: properties.label
-      // });
-      // label.graphics.font = control.__typeface;
+      var group = container.add('group');
+      group.orientation = 'row';
 
+      // for separators replace a -1 value with full
       properties.width = (properties.width != -1)
         ? properties.width
-        : control.__win.preferredSize.width;
+        : 'full';
 
-      var separator = container.add('panel', undefined);
+      var separator = group.add('panel', undefined, undefined, {
+        name: name,
+        width: properties.width
+      });
       separator.preferredSize.height = separator.maximumSize.height = 1;
-      separator.preferredSize.width = separator.maximumSize.width = properties.width;
+      separator.preferredSize.width = separator.maximumSize.width = (properties.width != 'full')
+        ? properties.width
+        : container.preferredSize.width;
       separator.alignment = ['center','center'];
 
       return properties;
@@ -754,7 +770,7 @@ control = {
         // calls the update function (if it exists) on load
         // the only problem is it seems this is being called
         // before draw()
-        control.__update();
+        // control.__update();
       };
       win.onClose = function() {
         try {
@@ -773,7 +789,8 @@ control = {
         // the value array must be updated before returning it
         control.__updateWinValues();
         // adjust layout of controls
-        __adjustLayout( __winControllersGroup );
+        // causing flickering
+        // __adjustLayout( __winControllersGroup );
       });
 
       if( type == 'dialog' || type == 'prompt' ) {
@@ -782,12 +799,18 @@ control = {
         buttongroup.alignment = 'right';
 
         var cancel = buttongroup.add('button', undefined, 'Cancel', {name: 'cancel'});
+        cancel.graphics.font = control.__typeface;
         cancel.onClick = function() {
+          // all canceled... clear values
+          control.__winValue = {};
           win.close(2);
         };
         var ok = buttongroup.add('button', undefined, 'OK', {name: 'ok'});
+        ok.graphics.font = control.__typeface;
         ok.onClick = function() {
           win.close(1);
+          // calls the update function (if it exists) on close
+          control.__update();
         };
       }
 
@@ -808,34 +831,56 @@ control = {
 
       for ( var i=0; i<container.children.length; i++) {
         var child = container.children[i];
-
-        // adjust fullsize elements
-        printProperties( child );
-
+        // adjust full width elements
+        __adjustFullWidth( child );
         // adjust label sizes
-        if( child.type == 'statictext' && child.properties.name == 'label' ) {
-          child.size[0] = control.__longestLabel;
-        }
-        if( typeof child.layout != 'undefined' ) child.layout.layout();
+        __adjustLabelWidth( child );
+        // update layout
+        if( typeof child.layout != 'undefined' ) child.layout.layout( true );
+
         for ( var j=0; j<child.children.length; j++ ) {
           var grandChild = child.children[j];
-
-          // adjust fullsize elements
-          printProperties( grandChild.properties );
-
+          // adjust full width elements
+          __adjustFullWidth( grandChild );
           // adjust label sizes
-          if( grandChild.type == 'statictext' && grandChild.properties.name == 'label' ) {
-            grandChild.size[0] = control.__longestLabel;
-          }
+          __adjustLabelWidth( grandChild );
+          // update layout
+          if( typeof grandChild.layout != 'undefined' ) grandChild.layout.layout( true );
         }
-      }
+
+      } // end child loop
 
       // update parent
       container.parent.layout.layout( true );
       // update main window
-      control.__win.size[0] += control.__longestLabel;
+      control.__win.size.width += control.__maximumLabelWidth;
       control.__win.layout.layout( true );
     };
+
+    // adjust full width elements
+    function __adjustFullWidth(child) {
+      try {
+        // printProperties( child.properties );
+        if( child.properties.width == 'full' ) {
+          // child.size.width = child.preferredSize.width = child.maximumSize.width = control.__win.size.width;
+          child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
+          child.alignment = ['center','center'];
+        }
+      }
+      catch(err) {}
+    };
+
+    function __adjustLabelWidth(child) {
+      try {
+        // printProperties( child.properties );
+        if( child.type == 'statictext' && child.properties.name == 'label' ) {
+          child.size.width = control.__maximumLabelWidth;
+        }
+      }
+      catch(err) {}
+    };
+
+
 
     return base();
   },
@@ -920,7 +965,7 @@ control = {
    * 
    */
   add: function(type, name, value, properties) {
-   // ensure properites contains name, value, and type
+   // ensure properties contains name, value, and type
     properties['type'] = arguments[0] = (arguments[0] != undefined) ? type : 'undefined';
     properties['name'] = arguments[1];
 

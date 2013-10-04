@@ -62,7 +62,7 @@ var controllers = {
 
   strokeRule: { 
     type: 'separator',
-    // width: 'full'
+    width: 'full'
   },
 
 
@@ -147,7 +147,7 @@ var controllers = {
 
   colorRule: { 
     type: 'separator',
-    // width: 'full'
+    width: 'full'
   },
 
 
@@ -177,7 +177,7 @@ var controllers = {
 
   transparencyRule: { 
     type: 'separator',
-    // width: 'full'
+    width: 'full'
   },
 
 

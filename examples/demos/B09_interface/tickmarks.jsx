@@ -56,7 +56,9 @@ function draw() {
 
   b.noStroke();
   b.fill(0);   
-  
+
+  redraw();  
+
 };
 
 function update() {
