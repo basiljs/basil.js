@@ -5368,7 +5368,7 @@
    * @param {Number} scaleY The amount to scale the Y axis.
    */
   pub.scale = function (scaleX,scaleY) {
-    if(typeof arguments[0] === 'undefined' || typeof arguments[1] === 'undefined') error("Please provide x and y factors for scaling.");
+    if(typeof arguments[0] != 'number' || (arguments.length === 2 && typeof arguments[1] != 'number') ) error("Please provide valid x and/or y factors for scaling.");
     currMatrix.scale(scaleX,scaleY);
   };
 
