@@ -102,6 +102,7 @@
                  - Philipp Adrian http:&#x2F;&#x2F;www.philippadrian.com&#x2F;
                  - be:screen GmbH http:&#x2F;&#x2F;bescreen.de
                  - Stefan Landsbek http:&#x2F;&#x2F;47nord.de
+                 - Ken Frederick http:&#x2F;&#x2F;kennethfrederick.de&#x2F;
 
   Web Site       - http:&#x2F;&#x2F;basiljs.ch
   Github Repo.   - https:&#x2F;&#x2F;github.com&#x2F;basiljs&#x2F;basil.js
@@ -133,7 +134,6 @@
   var pub = {};
 
 
-
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; constants
   
@@ -142,7 +142,7 @@
    * @property VERSION {String}
    * @cat Environment
    *&#x2F;
-  pub.VERSION = &quot;1.03&quot;;
+  pub.VERSION = &quot;1.04&quot;;
 
   &#x2F;**
    * Used with b.units() to set the coordinate system to points.
@@ -425,6 +425,9 @@
     currImageMode = null,
     currCanvasMode = null,
     currVertexPoints = null;
+    currPathPointer = null;  
+    currPolygon = null;    
+    currShapeMode = null;
 
   &#x2F;&#x2F; all initialisations should go here
   var init = function() {
@@ -511,8 +514,8 @@
       for (var i = 0, len = collection.length; i &lt; len; i++) {
         
         if(!isValid(collection[i])) {
-            warning(&quot;forEach(), invalid object processed.&quot;);
-            continue;          
+          warning(&quot;forEach(), invalid object processed.&quot;);
+          continue;          
         }
 
         if(cb(collection[i],i) === false) {
@@ -1361,6 +1364,163 @@
   };
 
   &#x2F;**
+   *  Returns the Group instance and sets it if argument Group is given.
+   *
+   *  @cat Document
+   *  @subCat Page
+   *  @method Group
+   *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance
+   *  @param {String} name (optional) The name of the Group, only when creating a Group from Page Item(s)
+   *  @return {Group} the current Group instance
+   *&#x2F;
+  pub.group = function (pItem, name) {
+    var group = null;
+    if( pItem instanceof Array) {
+      if(pItem.length &lt; 2) error(&quot;There must be at least two PageItems passed to b.group().&quot;);
+      &#x2F;&#x2F; creates a group from Page Items
+      group = currentDoc().groups.add(pItem);
+      if(typeof name != &#x27;undefined&#x27;) group.name = name;
+    }
+    else if( typeof pItem === &#x27;string&#x27; ) {
+      &#x2F;&#x2F; get the Group of the given name
+      group = currentDoc().groups.item(pItem);
+    }
+    else {
+      error(&quot;b.group(), not a valid argument.&quot;)
+    }
+
+    return group;
+  };
+
+  &#x2F;**
+   *  Returns an array of the items that were within the Group before b.ungroup() was called
+   *
+   *  @cat Document
+   *  @subCat Page
+   *  @method Group
+   *  @param {Object|String} [pItem] The Group or name of Group name instance
+   *  @param {String} name The name of the Group, only when creating a Group from Page Item(s)
+   *  @return {Group} the Page Item(s) that were grouped
+   *&#x2F;
+  pub.ungroup = function(pItem) {
+    var ungroupedItems = null;
+    if( pItem instanceof Group) {
+      ungroupedItems = b.items( pItem );
+      pItem.ungroup();
+    }
+    else if( typeof pItem === &#x27;string&#x27; ) {
+      &#x2F;&#x2F; get the Group of the given name
+      var group = currentDoc().groups.item(pItem);
+      ungroupedItems = b.items( group );
+      group.ungroup();
+    }
+    else {
+      error(&quot;b.ungroup(), not a valid Group. Please select a valid Group.&quot;);
+    }
+
+    return ungroupedItems;
+  };
+
+  &#x2F;**
+   * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method labels
+   * @param  {String} label The label identifier
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+   *&#x2F;
+  pub.labels = function(label, cb) {
+    var result = [];
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === label) {
+        &#x2F;&#x2F; push pageItem&#x27;s 1st element to get the concrete PageItem instance, e.g. a TextFrame
+        result.push(pageItem.getElements()[0]);
+      }
+    }
+    if (arguments.length === 2 &amp;&amp; cb instanceof Function) {
+      return forEach(result, cb);
+    }
+    if(result.length === 0) b.error(&quot;b.labels(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
+    return result;
+  };
+  
+  &#x2F;**
+   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don&#x27;t want to deal with a single-element array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method label
+   * @param  {String} label The label identifier
+   * @return {PageItem} The first PageItem of all the hits
+   *&#x2F;  
+  pub.label = function(label) {
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === label) {
+        return pageItem;  
+      }
+    }
+    b.error(&quot;b.label(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
+  }
+  
+  &#x2F;**
+   * Returns the first currently selected object. Use this if you know you only have one selected item and don&#x27;t want to deal with an array.
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method selection
+   * @return {Object} The first selected object
+   *&#x2F;
+  pub.selection = function() {
+    if(app.selection.length === 0) error(&quot;b.selection(), selection is empty. Please select something.&quot;);
+    return app.selection[0];
+  }; 
+
+  &#x2F;**
+   * Returns the currently selected object(s)
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method selections
+   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
+   * @return {Object[]} Array of selected object(s).
+   *&#x2F;
+  pub.selections = function(cb) {
+    if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something.&quot;);
+    if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
+      return forEach(app.selection, cb);
+    } 
+    return app.selection;
+  };
+
+  &#x2F;**
+   * Returns the first item on the active page that is named by the given name in the Layers pane (Window -&gt; Layer).
+   *
+   * @cat Document
+   * @subcat Multi-Getters
+   * @method nameOnPage
+   * @return {Object} The first object on the active page with the given name
+   *&#x2F;
+  pub.nameOnPage = function(name) {
+    var result = null;
+    var page = currentPage();
+    for (var i = 0, len = page.allPageItems.length; i &lt; len; i++) {
+      var pageItem = page.allPageItems[i];
+      if (pageItem.name === name) {
+        result = pageItem.getElements()[0];
+        break;
+      }
+    }
+    if(result === null) b.error(&quot;b.nameOnPage(), no item found with the name &#x27;&quot; + name + &quot;&#x27; on page &quot;+pub.pageNumber());
+    return result;
+  };
+
+  &#x2F;**
    * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
    *
    * @cat Document
@@ -1516,7 +1676,6 @@
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Data
-  
 
   pub.JSON = {
     &#x2F;**
@@ -1584,7 +1743,7 @@
     }
   };
 
-  &#x2F;&#x2F; Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock don&#x27;t mind.
+  &#x2F;&#x2F; Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock won&#x27;t mind.
   &#x2F;&#x2F; https:&#x2F;&#x2F;github.com&#x2F;mbostock&#x2F;d3&#x2F;tree&#x2F;master&#x2F;src&#x2F;dsv
   pub.CSV = new CSV();
   function CSV() {
@@ -1612,7 +1771,7 @@
     *&#x2F;
     this.delimiter = function(delimiter) {
       if (arguments.length === 0) return delimiterStr;
-      if (typeof separator === &#x27;string&#x27;) {
+      if (typeof delimiter === &#x27;string&#x27;) {
         initDelimiter(delimiter);
       } else {
         error(&quot;b.CSV.delimiter, separator has to be a character or string&quot;);
@@ -2126,6 +2285,47 @@
     return str.replace(&#x2F;^\s*&#x2F;, &quot;&quot;).replace(&#x2F;\s*$&#x2F;, &quot;&quot;).replace(&#x2F;\r*$&#x2F;, &quot;&quot;);
   };
 
+  &#x2F;**    
+   * Checks whether an URL string is valid.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method isURL
+   * @param {String} url An url string to be checked
+   * @return {Boolean} Returns either true or false
+   *&#x2F;
+  var isURL = pub.isURL = function(url) {
+    var pattern = &#x2F;(ftp|http|https):\&#x2F;\&#x2F;(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\&#x2F;|\&#x2F;([\w#!:.?+=&amp;%@!\-\&#x2F;]))?&#x2F;;
+    return pattern.test(url);
+  };
+
+  &#x2F;**    
+   * Checks whether a string ends with a specific character or string.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method endsWith
+   * @param {String} str A string to be checked
+   * @return {Boolean} Returns either true or false
+   *&#x2F;
+  var endsWith = pub.endsWith = function(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+  };
+
+  &#x2F;**    
+   * Checks whether a string starts with a specific character or string.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method startsWith
+   * @param {String} str A string to be checked
+   * @return {Boolean} Returns either true or false
+   *&#x2F;
+  var startsWith = pub.startsWith = function(str, prefix) {
+    return str.indexOf(prefix) === 0;
+  };
+
+
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Shape
   
@@ -2205,6 +2405,13 @@
    * @param  {Number} y2 Point B y-value
    * @return {GraphicLine} New GraphicLine
    *&#x2F;
+  &#x2F;* 
+   *  TODO: Vectors as arguments
+   *  @example 
+   *    var vec1 = new b.Vector( x1, y1 );
+   *    var vec2 = new b.Vector( x2, y2 );
+   *    b.line( vec1, vec2 );
+   *&#x2F;
   pub.line = function(x1, y1, x2, y2) {
     if (arguments.length !== 4) error(&quot;b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2&quot;);
     var lines = currentPage().graphicLines;
@@ -2218,7 +2425,7 @@
     }
     newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
     newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     AnchorPoint.CENTER_ANCHOR,
                      currMatrix.adobeMatrix() );
     return newLine;
   };
@@ -2227,14 +2434,23 @@
    * Using the beginShape() and endShape() functions allow creating more complex forms. 
    * beginShape() begins recording vertices for a shape and endShape() stops recording. 
    * After calling the beginShape() function, a series of vertex() commands must follow. 
-   * To stop drawing the shape, call endShape().
+   * To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to 
+   * create from the provided vertices have to be closed or not (to connect the beginning and the end).
    *
    * @cat Document
    * @subcat Primitives
    * @method beginShape
+   * @param shapeMode Set b.CLOSE if the new Path should be auto-closed.
    *&#x2F;
-  pub.beginShape = function() {
+  pub.beginShape = function(shapeMode) {
     currVertexPoints = [];
+    currPathPointer = 0;
+    currPolygon = null;
+    if( typeof shapeMode != null) {
+      currShapeMode = shapeMode;
+    } else {
+      currShapeMode = null;
+    }
   };
 
   &#x2F;**
@@ -2273,51 +2489,78 @@
     }
   };
 
+
+  &#x2F;**
+   * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. 
+   * New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for 
+   * the setting (see b.CLOSE) given in beginShape(shapeMode).
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method addPath
+   *&#x2F;
+  pub.addPath = function() {
+    doAddPath();
+    currPathPointer++;
+  }
+
   &#x2F;**
    * The endShape() function is the companion to beginShape() and may only be called 
-   * after beginShape(). The value of the kind parameter tells whether the shape to 
-   * create from the provided vertices has to be closed or not (to connect the beginning and the end).
+   * after beginShape(). 
    *
    * @cat Document
    * @subcat Primitives
    * @method endShape
    * @return {GraphicLine|Polygon} newShape
    *&#x2F;
-  pub.endShape = function(shapeMode) {
+  pub.endShape = function() {
+    doAddPath();
+    currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );    
+    return currPolygon;
+  };
+
+  function doAddPath() {
     if (isArray(currVertexPoints)) {
       if (currVertexPoints.length &gt; 0) {
-        var newShape = null;
-        if (shapeMode === pub.CLOSE) {
-          newShape = currentPage().polygons.add( currentLayer() );
+        
+        if(currPolygon === null) {
+          addPolygon();
         } else {
-          newShape = currentPage().graphicLines.add( currentLayer() );
+          currPolygon.paths.add();
         }
-        with (newShape) {
-          strokeWeight = currStrokeWeight;
-          strokeTint = currStrokeTint;
-          fillColor = currFillColor;
-          fillTint = currFillTint;
-          strokeColor = currStrokeColor;
-        }
-        newShape.paths.item(0).entirePath = currVertexPoints;
-        newShape.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                         AnchorPoint.TOP_LEFT_ANCHOR,
-                         currMatrix.adobeMatrix() );
-
+        
+        currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
         currVertexPoints = [];
-        return newShape;
       }
     } else {
       notCalledBeginShapeError();
     }
-  };
+  }
+
+  function addPolygon() {
+    if (currShapeMode === pub.CLOSE) {
+      currPolygon = currentPage().polygons.add( currentLayer() );
+    } else {
+      currPolygon = currentPage().graphicLines.add( currentLayer() );
+    }
+    with (currPolygon) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint;
+      fillColor = currFillColor;
+      fillTint = currFillTint;
+      strokeColor = currStrokeColor;
+    }       
+  }
+
   
   function notCalledBeginShapeError () {
     error(&quot;b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()&quot;);
   }
 
   &#x2F;**
-   * Draws a rectangle to the page.
+   * Draws a rectangle on the page.
    *
    * @cat Document
    * @subcat Primitives
@@ -2330,7 +2573,7 @@
    *&#x2F;
   pub.rect = function(x, y, w, h){
     if (w === 0 || h === 0) {
-      &#x2F;&#x2F; indesign doesn&#x27;t draw a rectangle if width or height is set to 0
+      &#x2F;&#x2F; indesign doesn&#x27;t draw a rectangle if width or height are set to 0
       return false;
     }
     if (arguments.length !== 4) error(&quot;b.rect(), not enough parameters to draw a rect! Use: x, y, w, h&quot;);
@@ -2793,8 +3036,8 @@
    *&#x2F;
   pub.lerpColor = function (c1, c2, amt) {
     if ( (c1 instanceof Color || c1 instanceof Swatch) &amp;&amp; 
-          (c2 instanceof Color || c2 instanceof Swatch) &amp;&amp; 
-          typeof amt === &#x27;number&#x27;) {
+       (c2 instanceof Color || c2 instanceof Swatch) &amp;&amp; 
+        typeof amt === &#x27;number&#x27;) {
       if (c1.space === ColorSpace.CMYK &amp;&amp; c2.space === ColorSpace.CMYK) {
         var C1 = c1.colorValue[0];
         var M1 = c1.colorValue[1];
@@ -2931,6 +3174,8 @@
         textItem[prop] = val;
       };
 
+    if(typeof item === &#x27;string&#x27;) error( &quot;b.typo() cannot work on strings. Please pass a Text object to modify.&quot; );
+
     if(!isValid(item)){
       warning(&quot;b.typo(), invalid object passed&quot;);
       return;
@@ -2959,17 +3204,17 @@
   };
 
   var isValid = function (item) {
-      if (typeof item != &#x27;undefined&#x27;) {
-          if (item.hasOwnProperty(&quot;isValid&quot;)) {
-              if (!item.isValid) {
-                  return false;
-              } else {
-                  return true;
-              }
-          }
-          return true; &#x2F;&#x2F; if does not have isValid field -&gt; normal array element and not collection
+    if (typeof item != &#x27;undefined&#x27;) {
+      if (item.hasOwnProperty(&quot;isValid&quot;)) {
+        if (!item.isValid) {
+          return false;
+        } else {
+          return true;
+        }
       }
-      return false;
+      return true; &#x2F;&#x2F; if does not have isValid field -&gt; normal array element and not collection
+    }
+    return false;
   };
 
   &#x2F;**
@@ -3282,7 +3527,30 @@
     if (file instanceof File) {
       result = file;
     } else {
-      result = new File(projectPath().absoluteURI + &#x27;&#x2F;&#x27; + file);
+
+      &#x2F;&#x2F; get rid of some special cases the user might specify
+      var pathNormalized = file.split(&quot;&#x2F;&quot;);
+      for (var i = 0; i &lt; pathNormalized.length; i++) {
+        if (pathNormalized[i] === &quot;&quot; || pathNormalized[i] === &quot;.&quot;) {
+          pathNormalized.splice(i,1);
+        };
+      };
+
+      var tmpPath = projectPath().absoluteURI;
+      var fileName = pathNormalized[pathNormalized.length-1];
+      
+      &#x2F;&#x2F; contains the path folders? if so create them ...
+      if (pathNormalized.length &gt; 1) {
+        var folders = pathNormalized.slice(0,-1);
+        for (var i = 0; i &lt; folders.length; i++) {
+          tmpPath += &quot;&#x2F;&quot;+folders[i] 
+          var f = new Folder(tmpPath);
+          if (!f.exists) f.create();
+        };
+      } 
+
+      &#x2F;&#x2F; result = new File(projectPath().absoluteURI + &#x27;&#x2F;&#x27; + file);
+      result = new File(tmpPath + &#x27;&#x2F;&#x27; + fileName);
     }
     if (mustExist &amp;&amp; !result.exists) {
       error(&#x27;The file &quot;&#x27; + result + &#x27;&quot; does not exist.&#x27;);
@@ -3290,14 +3558,22 @@
     return result;
   };
   
-  var projectPath = function() {
-      var docPath = null;
-      try {
-        docPath = currentDoc().filePath;
-      } catch (e) {
-        error(&quot;The current document must be saved before its project directory can be accessed.&quot;);
-      }
-      return docPath;
+  &#x2F;**
+   * Get the full path to the folder of the active document.
+   *
+   * @cat Document
+   * @subcat Misc
+   * @method projectPath
+   * @return {File} The folder of the the active document
+   *&#x2F;
+  var projectPath = pub.projectPath = function() {
+    var docPath = null;
+    try {
+      docPath = currentDoc().filePath;
+    } catch (e) {
+      error(&quot;The current document must be saved before its project directory can be accessed.&quot;);
+    }
+    return docPath;
   };
   
 
@@ -4291,156 +4567,87 @@
   };
 
   &#x2F;**
-   * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method labels
-   * @param  {String} label The label identifier
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+   * Executes a shell command and returns the result, currently Mac only.
+   * 
+   * BE CAREFUL!
+   * 
+   * @cat Data
+   * @subcat Input
+   * @method shellExecute
+   * @param  {String} cmd The shell command to execute
+   * @return {String}
    *&#x2F;
-  pub.labels = function(label, cb) {
-    var result = [];
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        &#x2F;&#x2F; push pageItem&#x27;s 1st element to get the concrete PageItem instance, e.g. a TextFrame
-        result.push(pageItem.getElements()[0]);
+  pub.shellExecute = function(cmd) {
+    if (Folder.fs === &quot;Macintosh&quot;) {
+      try {
+        return app.doScript(&quot;return do shell script item 1 of arguments&quot;, ScriptLanguage.applescriptLanguage, [cmd]);
+      } catch (e) {
+        error(&quot;b.shellExecute(): &quot;+e);
       }
+    } else {
+      error(&quot;b.shellExecute() is a Mac only feature at the moment. Sorry!&quot;)
     }
-    if (arguments.length === 2 &amp;&amp; cb instanceof Function) {
-      return forEach(result, cb);
-    }
-    if(result.length === 0) b.error(&quot;b.labels(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
-    return result;
   };
-  
-  &#x2F;**
-   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don&#x27;t want to deal with a single-element array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method label
-   * @param  {String} label The label identifier
-   * @return {PageItem} The first PageItem of all the hits
-   *&#x2F;  
-  pub.label = function(label) {
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        return pageItem;  
-      }
-    }
-    b.error(&quot;b.label(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
-  }
 
   &#x2F;**
-   * Returns the currently selected object(s)
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selections
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {Object[]} Array of selected object(s).
-   *&#x2F;
-  pub.selections = function(cb) {
-    if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something.&quot;);
-    if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
-      return forEach(app.selection, cb);
-    } 
-    return app.selection;
-  };
-  
-  &#x2F;**
-   * Returns the first currently selected object. Use this if you know you only have one selected item and don&#x27;t want to deal with an array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selection
-   * @return {Object} The first selected object
-   *&#x2F;
-  pub.selection = function(cb) {
-    if(app.selection.length === 0) error(&quot;b.selection(), selection is empty. Please select something.&quot;);
-    return app.selection[0];
-  };  
-
-  &#x2F;**
-   * Reads the contents of a file into a String.
+   * Reads the contents of a file or loads an URL into a String.
    * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadString
-   * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
-   * @return {String}  String file content.
+   * @param  {String|File} fileOrString The text file name in the document&#x27;s data directory or a File instance or an URL
+   * @return {String}  String file or URL content.
    *&#x2F;
-  pub.loadString = function(file) {
-
-    &#x2F;&#x2F;http:&#x2F;&#x2F;codegolf.stackexchange.com&#x2F;questions&#x2F;464&#x2F;shortest-url-regex-match-in-javascript
-    &#x2F;&#x2F; var re = &#x2F;(^|\s)((https?:\&#x2F;\&#x2F;)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\&#x2F;\S*)?)&#x2F;gi;  
-    &#x2F;&#x2F; if( typeof(file) === &quot;string&quot; &amp;&amp; file.match(re)) { &#x2F;&#x2F; load URL
-    
-    &#x2F;&#x2F;   return getURLImpl(file);
-
-    &#x2F;&#x2F; } else {
-      var inputFile = initDataFile(file, true),
+  pub.loadString = function(fileOrString) {
+    if (isURL(fileOrString)) {
+      return getURL(fileOrString);
+    } else {
+      var inputFile = initDataFile(fileOrString, true),
       data = null;
-
       inputFile.open(&#x27;r&#x27;);
       data = inputFile.read();
       inputFile.close();
       return data;
-    &#x2F;&#x2F; }
-
+    }
   };
 
-  &#x2F;&#x2F; var getURLImpl = function(url) {
-  &#x2F;&#x2F;     #include &quot;basiljs&#x2F;bundle&#x2F;lib&#x2F;extendables&#x2F;extendables.jsx&quot;;
-  &#x2F;&#x2F;     var http = require(&quot;http&quot;);
-  &#x2F;&#x2F;     if (!http.has_internet_access()) throw new Error(&quot;No internet connection&quot;);
-  &#x2F;&#x2F;     var req = new http.HTTPRequest(&quot;GET&quot;, url);
-  &#x2F;&#x2F;     req.follow_redirects(true);
-  &#x2F;&#x2F;     req.header(&quot;User-Agent&quot;, &quot;basiljs-&quot; + b.VERSION);
-  &#x2F;&#x2F;     var res = req.do();
-  &#x2F;&#x2F;     return res.body;
-  &#x2F;&#x2F; }
+  var getURL = function(url) {
+    if (isURL(url)) {
+      if (Folder.fs === &quot;Macintosh&quot;) {
+        return pub.shellExecute(&quot;curl -L &quot;+url);
+      } else {
+        error(&quot;Loading of strings via an URL is a Mac only feature at the moment. Sorry!&quot;)
+      }
+    } else {
+      error(&quot;The url &quot;+url+&quot; is not a valid one. Please double check!&quot;)
+    }
+  };
 
   &#x2F;**
-   * Reads the contents of a file and creates a String array of its individual lines.
+   * Reads the contents of a file or loads an URL and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadStrings
-   * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
-   * @return {String[]}  Array of the individual lines in the given file.
+   * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance or an URL
+   * @return {String[]}  Array of the individual lines in the given File or URL
    *&#x2F;
   pub.loadStrings = function(file) {
-
-    &#x2F;&#x2F;http:&#x2F;&#x2F;codegolf.stackexchange.com&#x2F;questions&#x2F;464&#x2F;shortest-url-regex-match-in-javascript
-    &#x2F;&#x2F; var re = &#x2F;(^|\s)((https?:\&#x2F;\&#x2F;)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\&#x2F;\S*)?)&#x2F;gi;  
-    &#x2F;&#x2F; if( typeof(file) === &quot;string&quot; &amp;&amp; file.match(re)) { &#x2F;&#x2F; load URL
-    
-    &#x2F;&#x2F;   var result = getURLImpl(file);
-    &#x2F;&#x2F;   return b.split(result, &quot;\n&quot;);
-
-    &#x2F;&#x2F; } else {
-
+    if (isURL(file)) {
+      var result = getURL(file);
+      return result.match(&#x2F;[^\r\n]+&#x2F;g);
+    } else {
       var inputFile = initDataFile(file, true),
       result = [];
-
       inputFile.open(&#x27;r&#x27;);
       while (!inputFile.eof) {
         result.push(inputFile.readln());
       }
       inputFile.close();
-
       return result;
-    &#x2F;&#x2F; }
-
+    }
   };
 
 
@@ -4492,7 +4699,7 @@
   };
 
   &#x2F;**
-   * Writes an array of strings to a file, one line per string. This file is saved to the document&#x27;s data directory.
+   * Writes an array of strings to a file, one line per string.
    * If the given file exists it gets overridden.
    *
    * @cat Output
@@ -4506,6 +4713,22 @@
     forEach(strings, function(s) {
       outputFile.writeln(s);
     });
+    outputFile.close();
+  };
+
+  &#x2F;**
+   * Writes a string to a file.
+   * If the given file exists it gets overridden.
+   *
+   * @cat Output
+   * @method saveString
+   * @param  {String|File} file The file name or a File instance
+   * @param  {String} string The string to be written
+   *&#x2F;
+  pub.saveString = function(file, string) {
+    var outputFile = initExportFile(file);
+    outputFile.open(&#x27;w&#x27;);
+    outputFile.write(string);
     outputFile.close();
   };
 
@@ -4536,6 +4759,57 @@
     var outputFile = initExportFile(file);
     if (typeof showOptions !== &quot;boolean&quot;) showOptions = false;
     currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  };
+
+  &#x2F;**
+   * Downloads an URL to a file, currently Mac only.
+   *
+   * @cat Output
+   * @method download
+   * @param {String} url The download url
+   * @param {String|File} [file] A relative file path in the project folder or a File instance
+   *&#x2F;
+  pub.download = function(url, file){
+    var projPath = projectPath().fsName.replace(&quot; &quot;,&quot;\\ &quot;);
+    var scriptPath = &quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;download.sh&quot;;
+
+    if (isURL(url)) {
+      var cmd = null;
+
+      if (file) {
+        if (file instanceof File) {
+          var downloadFolder = file.parent.fsName;
+          var fileName = file.displayName;
+          downloadFolder = downloadFolder.replace(&quot; &quot;,&quot;\\ &quot;);
+          fileName = fileName.replace(&quot; &quot;,&quot;\\ &quot;);
+          cmd = [&quot;sh&quot;,scriptPath,downloadFolder,url,fileName].join(&quot; &quot;);
+
+        } else { 
+          var downloadFolder = file.substr(0,file.lastIndexOf(&quot;&#x2F;&quot;));
+          var fileName = file.substr(file.lastIndexOf(&quot;&#x2F;&quot;)+1);
+
+          &#x2F;&#x2F; get rif of some special cases
+          if(startsWith(downloadFolder,&quot;.&#x2F;&quot;)) downloadFolder.substr(2);
+          if(startsWith(downloadFolder,&quot;&#x2F;&quot;)) downloadFolder.substr(1);
+
+          downloadFolder = downloadFolder.replace(&quot; &quot;,&quot;\\ &quot;);
+          fileName = fileName.replace(&quot; &quot;,&quot;\\ &quot;);
+          downloadFolder = projPath + &quot;&#x2F;&quot;+ downloadFolder;  
+          cmd = [&quot;sh&quot;,scriptPath,downloadFolder,url,fileName].join(&quot; &quot;);
+          
+        }
+
+      } else {
+        var downloadFolder = projPath + &quot;&#x2F;data&#x2F;download&quot;;
+        var cmd = [&quot;sh&quot;,scriptPath,downloadFolder,url].join(&quot; &quot;);
+      }
+
+      println(cmd);
+      pub.shellExecute(cmd);
+
+    } else {
+      error(&quot;The url &quot;+url+&quot; is not a valid one. Please double check!&quot;)
+    }
   };
   
   &#x2F;**
@@ -5167,6 +5441,7 @@
    * @param {Number} angle The angle specified in radians
    *&#x2F;
   pub.rotate = function (angle) {
+    if(typeof arguments[0] === &#x27;undefined&#x27;) error(&quot;Please provide an angle for rotation.&quot;);
     currMatrix.rotate(angle);
   };
 
@@ -5181,6 +5456,7 @@
    * @param {Number} scaleY The amount to scale the Y axis.
    *&#x2F;
   pub.scale = function (scaleX,scaleY) {
+    if(typeof arguments[0] != &#x27;number&#x27; || (arguments.length === 2 &amp;&amp; typeof arguments[1] != &#x27;number&#x27;) ) error(&quot;Please provide valid x and&#x2F;or y factors for scaling.&quot;);
     currMatrix.scale(scaleX,scaleY);
   };
 
@@ -5194,6 +5470,7 @@
    * @param {Number} ty The amount of offset on the Y axis.
    *&#x2F;
   pub.translate = function (tx,ty) {
+    if(typeof arguments[0] === &#x27;undefined&#x27; || typeof arguments[1] === &#x27;undefined&#x27;) error(&quot;Please provide x and y coordinates for translation.&quot;);
     currMatrix.translate(tx,ty);
   };
 
@@ -5393,7 +5670,7 @@
       this.panel = Window.find(&quot;window&quot;, &quot;processing...&quot;);
       if (this.panel === null) {
         this.panel = new Window(&#x27;window&#x27;, &quot;processing...&quot;);
-        var logo = (Folder.fs == &quot;Macintosh&quot; ) ? new File(&quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;) : new File(&quot;%USERPROFILE%Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;); &#x2F;&#x2F;todo Windows File Path for logo  , in the meantime embed as binary String
+        var logo = (Folder.fs == &quot;Macintosh&quot; ) ? new File(&quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;) : new File(&quot;%USERPROFILE%Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;);
         if (logo.exists) {
           this.panel.add(&quot;image&quot;, undefined, logo);
         }
