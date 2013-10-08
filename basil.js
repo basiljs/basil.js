@@ -4527,7 +4527,7 @@
   var getURL = function(url) {
     if (isURL(url)) {
       if (Folder.fs === "Macintosh") {
-        return pub.shellExecute("curl -L "+url);
+        return pub.shellExecute("curl -L '"+url+"'");
       } else {
         error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
       }
