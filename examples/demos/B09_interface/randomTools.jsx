@@ -7,7 +7,7 @@
 
 // Basil.js target engine is initiate this keeps global variables
 // active as long as the InDesign is running
-#targetengine 'basiljs';
+#targetengine basiljs
 
 
 

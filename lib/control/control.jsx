@@ -1,6 +1,6 @@
 // check if a targetengine has been initiated
 if ($.engineName !== 'basiljs') {
-  #targetengine 'basiljs';
+  #targetengine basiljs
 }
 
 
@@ -42,7 +42,6 @@ if ($.engineName !== 'basiljs') {
  *  - components are not respecting width: 'full'
  *  - fix independent label bug
  *  - implement missing/additional controllers
- *  / when using add() value property is not applied (fixed?)
  *  
  *  ROADMAP:
  *  - add layout customizeability
@@ -80,7 +79,7 @@ control = {
   // Private
   // Global type style and size
   // 
-  __typesize: 10,
+  __typesize: 9.5,
   // the root of one of my nasty bugs!
   // it seems typeface must be defined when creating
   // the interface window
@@ -167,10 +166,10 @@ control = {
       }
 
       var clickCount = 0;
-      var button = group.add('button', undefined, properties.value, {
+      var button = group.add('button', undefined, properties.value, properties ); /*{
         name: name,
         width: properties.width
-      });
+      });*/
       button.graphics.font = control.__typeface;
       button.preferredSize.height = properties.height;
       button.preferredSize.width = (properties.width == 'full')
@@ -237,9 +236,10 @@ control = {
         label: properties.label
       });
 
-      var check = group.add('checkbox', undefined, '', {
-        name: name
-      });
+      var check = group.add('checkbox', undefined, '', properties ); /*{
+        name: name,
+        width: properties.width
+      });*/
       check.value = properties.value;
 
       // events
@@ -318,10 +318,10 @@ control = {
         ? properties.label + '\u00A0' + properties.value
         : properties.label;
 
-      var label = container.add('statictext', undefined, 'x', {
+      var label = container.add('statictext', undefined, 'x', properties ); /*{
         name: name,
-        multiline: true
-      });
+        width: properties.width
+      });*/
       // var xwidth = label.preferredSize[0];
       // control.__maximumLabelWidth = (labelText.length*xwidth > control.__maximumLabelWidth) 
       //   ? labelText.length*xwidth
@@ -376,11 +376,11 @@ control = {
         });
       }
 
-      var text = group.add('edittext', undefined, properties.value, {
+      var text = group.add('edittext', undefined, properties.value, properties ); /*{
         name: name,
         multiline: properties.multiline,
         width: properties.width
-      });
+      }); */
       // TODO: define rows and columns more clearly
       text.characters = (properties.length != undefined)
         ? properties.length
@@ -530,10 +530,10 @@ control = {
       var slider = group.add('slider', undefined,
         properties.value,
         properties.min,
-        properties.max, {
+        properties.max, properties ); /*{
           name: name,
           width: properties.width
-      });
+      }); */
       slider.preferredSize = [properties.width, properties.height];
 
       // create value label
@@ -648,15 +648,18 @@ control = {
         ? properties.width
         : 'full';
 
-      var separator = group.add('panel', undefined, undefined, {
+      var separator = group.add('panel', undefined, undefined, properties ); /*{
         name: name,
         width: properties.width
-      });
+      });*/
       separator.preferredSize.height = separator.maximumSize.height = 1;
       separator.preferredSize.width = separator.maximumSize.width = (properties.width != 'full')
         ? properties.width
         : container.preferredSize.width;
       separator.alignment = ['center','center'];
+
+      // update value for return
+      properties['value'] = name;
 
       return properties;
     };
@@ -767,10 +770,6 @@ control = {
         control.__addList( controllers );
         // adjust layout of controls
         __adjustLayout( __winControllersGroup );
-        // calls the update function (if it exists) on load
-        // the only problem is it seems this is being called
-        // before draw()
-        // control.__update();
       };
       win.onClose = function() {
         try {
@@ -788,9 +787,6 @@ control = {
         // as controllers are added/removed on-the-fly
         // the value array must be updated before returning it
         control.__updateWinValues();
-        // adjust layout of controls
-        // causing flickering
-        // __adjustLayout( __winControllersGroup );
       });
 
       if( type == 'dialog' || type == 'prompt' ) {
@@ -825,7 +821,6 @@ control = {
 
     /*
      *  Private
-     *  TODO: define a Custom layout-manager
      */
     function __adjustLayout(container) {
 
@@ -835,6 +830,8 @@ control = {
         __adjustFullWidth( child );
         // adjust label sizes
         __adjustLabelWidth( child );
+        // adjust spacing
+        __adjustSpacing( child );
         // update layout
         if( typeof child.layout != 'undefined' ) child.layout.layout( true );
 
@@ -848,12 +845,12 @@ control = {
           if( typeof grandChild.layout != 'undefined' ) grandChild.layout.layout( true );
         }
 
-      } // end child loop
+      }
 
       // update parent
       container.parent.layout.layout( true );
       // update main window
-      control.__win.size.width += control.__maximumLabelWidth;
+      control.__win.preferredSize.width += control.__maximumLabelWidth;
       control.__win.layout.layout( true );
     };
 
@@ -863,7 +860,7 @@ control = {
         // printProperties( child.properties );
         if( child.properties.width == 'full' ) {
           // child.size.width = child.preferredSize.width = child.maximumSize.width = control.__win.size.width;
-          child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
+          // child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
           child.alignment = ['center','center'];
         }
       }
@@ -880,7 +877,13 @@ control = {
       catch(err) {}
     };
 
-
+    function __adjustSpacing(child) {
+      try {
+        // printProperties( child );
+        // child.margins = child.spacing = -1;
+      }
+      catch(err) {}
+    };
 
     return base();
   },
@@ -1090,12 +1093,6 @@ control = {
     // taken from stop.jsx
     if (typeof cleanUp === 'function') cleanUp();
     cleanUp = null;
-
-    // clear control;
-    // this doesn't work, in palette mode because control
-    // is cleared before the results are returned
-    // so i've moved this to the top... mal sehen
-    // control = {};
 
     // http://forums.adobe.com/message/4068855
     // '...call $.gc() twice in some circumstances'

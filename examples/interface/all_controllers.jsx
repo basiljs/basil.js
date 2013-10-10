@@ -7,7 +7,7 @@
 
 // Basil.js target engine is initiate this keeps global variables
 // active as long as the InDesign is running
-#targetengine 'basiljs';
+#targetengine basiljs
 
 
 
@@ -26,6 +26,8 @@
 
 // create a variable for the interface control palette window
 var dialog;
+
+var output = [];
 
 // This Array is fed into the Interface constructor
 // and determines what controllers are shown, using a
@@ -166,18 +168,6 @@ var controllers = {
 
 
   // range
-  
-  // in order to update progress bar the window
-  // update function must be called:
-  // var myDialog = control.palette('My Dialog');
-  // myDialog.update();
-  myProgress: {
-    label: 'My Progress',
-    type: 'progress',
-    range: [0, 100],
-    value: 75
-  },
-
   mySlider: {
     // properties
     // declare the controller type
@@ -238,6 +228,18 @@ function setup() {
     controllers
   );
 
+
+  b.textAlign(Justification.CENTER_ALIGN, VerticalJustification.CENTER_ALIGN);
+
+  // create text boxes
+  output[0] = b.text( dialog.myButton,    b.width/2-150, 100, 300, 80);
+  output[1] = b.text( dialog.myButton2,   b.width/2-150, 180, 300, 80);
+  output[2] = b.text( dialog.myCheckbox.toString(),  b.width/2-150, 260, 300, 80);
+  output[3] = b.text( dialog.myText.toString(),      b.width/2-150, 340, 300, 80);
+  output[4] = b.text( dialog.myMultiText,  b.width/2-150, 420, 300, 80);
+  output[5] = b.text( dialog.mySlider.toString(),    b.width/2-150, 500, 300, 80);
+  output[6] = b.text( dialog.mySeparator,    b.width/2-150, 580, 300, 80);
+
 };
 
 
@@ -255,6 +257,15 @@ function draw() {
 // Update
 // ------------------------------------------------------------------------
 function update() {
+
+  // live update from our palette
+  output[0].contents = dialog.myButton;
+  output[1].contents = dialog.myButton2;
+  output[2].contents = dialog.myCheckbox.toString();
+  output[3].contents = dialog.myText.toString();
+  output[4].contents = dialog.myMultiText;
+  output[5].contents = dialog.mySlider.toString();
+  output[6].contents = dialog.mySeparator;
 
 };
 
