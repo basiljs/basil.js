@@ -42,6 +42,7 @@ if ($.engineName !== 'basiljs') {
  *  - components are not respecting width: 'full'
  *  - fix independent label bug
  *  - implement missing/additional controllers
+ *  - remove try/catch
  *  
  *  ROADMAP:
  *  - add layout customizeability
@@ -126,9 +127,9 @@ control = {
         width:      -1,      /* default: -1 (automatic width) */
         height:     -1,      /* default: -1 (automatic height) */
 
-        onClick:    function(){},
-        onChange:   function(){},
-        onChanging: function(){}
+        onClick:    function(value){},
+        onChange:   function(value){},
+        onChanging: function(value){}
       };
       // ensures that each controller has the core
       // set of properties
@@ -180,25 +181,18 @@ control = {
 
       button.onClick = function() {
         clickCount++;
-        try {
-          // the callback connected to the controller
-          properties.onClick(clickCount);
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onClick(clickCount);
         
         // in the interest of consistency, I have included the ability
         // to have onChange() and onChanging() callbacks for buttons
         // althogh, they are the same as onClick()
-        try {
-          // the callback connected to the controller
-          properties.onChange(clickCount);
-        }
-        catch(err) {}
-        try {
-          // the callback connected to the controller
-          properties.onChanging(clickCount);
-        }
-        catch(err) {}
+
+        // the callback connected to the controller
+        properties.onChange(clickCount);
+
+        // the callback connected to the controller
+        properties.onChanging(clickCount);
 
         // when the onClick event is fired, an attempt is
         // made to call the update() function
@@ -253,11 +247,8 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        try {
-          // the callback connected to the controller
-          properties.onChange(value);
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onChange(value);
 
         // when the onChange event is fired, an attempt is
         // made to call the update() function
@@ -404,11 +395,8 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        try {
-          // the callback connected to the controller
-          properties.onClick(value);
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onClick(value);
         return value;
       }
       text.addEventListener('change', function() {
@@ -419,11 +407,8 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        try {
-          // the callback connected to the controller
-          properties.onChange(value);
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onChange(value);
 
         // when the onChange event is fired, an attempt is
         // made to call the update() function
@@ -439,11 +424,8 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        try {
-          // the callback connected to the controller
-          properties.onChanging(value);
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onChanging(value);
 
         // when the onChanging event is fired, an attempt is
         // made to call the update() function
@@ -562,11 +544,8 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        try {
-          // the callback connected to the controller
-          properties.onClick(value);
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onClick(value);
         return value;
       });
       slider.onChange = function() {
@@ -577,11 +556,8 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        try {
-          // the callback connected to the controller
-          properties.onChange(value);
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onChange(value);
 
         // when the onChange event is fired, an attempt is
         // made to call the update() function
@@ -597,15 +573,10 @@ control = {
         // push updated value to the window's returned value array
         control.__updateWinValues();
 
-        try {
-          // the callback connected to the controller
-          properties.onChanging(value);
-        }
-        catch(err) {}
-        try {
-          valueLabel.text = value;
-        }
-        catch(err) {}
+        // the callback connected to the controller
+        properties.onChanging(value);
+
+        valueLabel.text = value;
 
         // when the onChanging event is fired, an attempt is
         // made to call the update() function
@@ -772,10 +743,8 @@ control = {
         __adjustLayout( __winControllersGroup );
       };
       win.onClose = function() {
-        try {
-          control.__winValue.onClose();
-        }
-        catch(err) {}
+        control.__winValue.onClose();
+
         // garbage clean-up attempt
         // http://forums.adobe.com/thread/478449
         control.__destroy();
@@ -928,12 +897,9 @@ control = {
    * calls a global update() function, if it exists
    */
   __update: function() {
-    try {
-      if (typeof update === 'function') {
-        update();
-      }
+    if (typeof update === 'function') {
+      update();
     }
-    catch(err) {}
   },
 
   /**
