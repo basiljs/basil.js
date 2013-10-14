@@ -46,23 +46,23 @@
    */
   var pub = {};
 
-  #include "lib/core.jsx";
+  #include "includes/core.jsx";
 
-  #include "lib/constants.jsx";
-  #include "lib/public-vars.jsx";
-  #include "lib/private-vars.jsx";
-  #include "lib/global-functions.jsx";
+  #include "includes/constants.jsx";
+  #include "includes/public-vars.jsx";
+  #include "includes/private-vars.jsx";
+  #include "includes/global-functions.jsx";
   
-  #include "lib/structure.jsx";
-  #include "lib/environment.jsx";
-  #include "lib/data.jsx";
-  #include "lib/shape.jsx";
-  #include "lib/color.jsx";
-  #include "lib/typography.jsx";
-  #include "lib/image.jsx";
-  #include "lib/math.jsx";
-  #include "lib/transformation.jsx";
-  #include "lib/ui.jsx";
+  #include "includes/structure.jsx";
+  #include "includes/environment.jsx";
+  #include "includes/data.jsx";
+  #include "includes/shape.jsx";
+  #include "includes/color.jsx";
+  #include "includes/typography.jsx";
+  #include "includes/image.jsx";
+  #include "includes/math.jsx";
+  #include "includes/transformation.jsx";
+  #include "includes/ui.jsx";
 
   init();
   
