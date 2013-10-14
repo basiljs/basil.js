@@ -49,9 +49,9 @@
   #include "lib/core.jsx";
 
   #include "lib/constants.jsx";
-  #include "lib/publicVars.jsx";
-  #include "lib/privateVars.jsx";
-  #include "lib/globalFunctions.jsx";
+  #include "lib/public-vars.jsx";
+  #include "lib/private-vars.jsx";
+  #include "lib/global-functions.jsx";
   
   #include "lib/structure.jsx";
   #include "lib/environment.jsx";
