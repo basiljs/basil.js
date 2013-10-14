@@ -1,10 +1,4 @@
-// check if a targetengine has been initiated
-if ($.engineName !== 'basiljs') {
-  #targetengine basiljs
-}
-
-
-/*
+/**
  * Class for creating a user control within Adobe InDesign for manipulating Basil.js variables.
  * 
  * @cat Interface
@@ -42,7 +36,6 @@ if ($.engineName !== 'basiljs') {
  *  - components are not respecting width: 'full'
  *  - fix independent label bug
  *  - implement missing/additional controllers
- *  - remove try/catch
  *  
  *  ROADMAP:
  *  - add layout customizeability
@@ -825,33 +818,24 @@ control = {
 
     // adjust full width elements
     function __adjustFullWidth(child) {
-      try {
-        // printProperties( child.properties );
-        if( child.properties.width == 'full' ) {
-          // child.size.width = child.preferredSize.width = child.maximumSize.width = control.__win.size.width;
-          // child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
-          child.alignment = ['center','center'];
-        }
+      // printProperties( child.properties );
+      if( child.properties.width == 'full' ) {
+        // child.size.width = child.preferredSize.width = child.maximumSize.width = control.__win.size.width;
+        // child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
+        child.alignment = ['center','center'];
       }
-      catch(err) {}
     };
 
     function __adjustLabelWidth(child) {
-      try {
-        // printProperties( child.properties );
-        if( child.type == 'statictext' && child.properties.name == 'label' ) {
-          child.size.width = control.__maximumLabelWidth;
-        }
+      // printProperties( child.properties );
+      if( child.type == 'statictext' && child.properties.name == 'label' ) {
+        child.size.width = control.__maximumLabelWidth;
       }
-      catch(err) {}
     };
 
     function __adjustSpacing(child) {
-      try {
-        // printProperties( child );
-        // child.margins = child.spacing = -1;
-      }
-      catch(err) {}
+      // printProperties( child );
+      // child.margins = child.spacing = -1;
     };
 
     return base();

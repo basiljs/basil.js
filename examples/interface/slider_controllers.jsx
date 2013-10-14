@@ -30,7 +30,7 @@ var palette;
 
 // create an associative array to define the individual
 // controllers to created within the palette window
-var controllers = {
+var controllersConfig = {
 
   // mySlider is the name of the slider variable
   mySlider: {
