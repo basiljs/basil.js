@@ -59,7 +59,7 @@ b.test('VertexTests', {
     var shape = b.endShape(b.CLOSE);
     assert(shape instanceof GraphicLine);    
     
-    assert(shape.paths.length === 2);
+    assert(shape.paths.length === 1);
     assert(shape.paths.item(0).entirePath.length === 3);    
     
   }
