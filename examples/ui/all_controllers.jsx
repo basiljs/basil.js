@@ -16,7 +16,6 @@
 //
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
-#include 'basiljs/bundle/lib/control/control.jsx';
 
 
 
@@ -221,7 +220,7 @@ var controllersConfig = {
 function setup() {
 
   // define the interface palette window
-  dialog = new control.palette(
+  dialog = new b.ui.palette(
     // title of the dialog
     'The Whole Ball of Wax',
     // the array of defined controllers

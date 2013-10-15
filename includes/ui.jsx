@@ -7,9 +7,9 @@
  *  / improve standard layout appearance, i.e. ensure labels are aligned on right side (partially fixed)
  *  - components are not respecting width: 'full'
  *  - fix independent label bug
- *  - implement missing/additional controllers
  *  
  *  ROADMAP:
+ *  - implement missing/additional controllers
  *  - add layout customizeability
  */
 
@@ -56,17 +56,14 @@ pub.ui = {
   dialog: function(type, name, controllerList) {
     type = (type != undefined) ? type : 'palette';
     name = (name != undefined) ? name : 'Basil.js';
-
-    delete controllers;
-    var controllers = (controllerList != undefined) ? controllerList : {};
-
+    controllerList = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
       win = uiWin = new Window('palette', name, undefined);
       win.orientation = 'row';
       // win.alignChildren = 'fill';
 
-      uiTypeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, ui.uiTypesize);
+      uiTypeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, uiTypesize);
 
       if( type == 'dialog' || type == 'prompt' ) {
         // always include a basil.js logo with prompts
@@ -92,7 +89,7 @@ pub.ui = {
       };
 
       win.onShow = function() {
-        addControllerList( controllers );
+        addControllerList( controllerList );
         adjustLayout( uiWinControllersGroup );
       };
       win.onClose = function() {
@@ -165,52 +162,53 @@ pub.ui = {
      * @return {Array}             controller
      */
     function addController(type, name, value, properties) {
-      properties['type'] = arguments[0] = (arguments[0] != undefined) ? type : 'undefined';
+      properties = (arguments[3] != undefined) ? arguments[3] : {};
+      properties['type'] = (arguments[0] != undefined) ? arguments[0].toLowerCase() : 'undefined';
       properties['name'] = arguments[1];
 
       // if properties.value != undefined use that 
-      // if value == number use that
+      // if value == number || value == string use that
       // if there are only 3 arguments use properties.value
       // else use null
-      properties['value'] = ( arguments[3].value != undefined )
-        ? arguments[3].value
-        : (typeof arguments[2] == 'number'
+      properties['value'] = ( properties['value'] != undefined )
+        ? properties['value']
+        : (typeof arguments[2] == 'number' || typeof arguments[2] == 'string'
           ? arguments[2]
           : (arguments.length == 3
             ? arguments[2].value
             : null));
 
       var controller = null;
-      if( control.__winControllersGroup != null) {
-        if( type.toLowerCase() === 'button') {
-          control.__winControllerList[name] = controller = new control.controllers().Button(name, control.__winControllersGroup, properties);
+      if( uiWinControllersGroup != null) {
+        if( properties['type'] === 'button') {
+          uiWinControllerList[name] = controller = new pub.controllers().Button(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'checkbox') {
-          control.__winControllerList[name] = controller = new control.controllers().Checkbox(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'checkbox') {
+          uiWinControllerList[name] = controller = new pub.controllers().Checkbox(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'color') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Color(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'color') {
+        //   uiWinControllerList[name] = controller = new pub.controllers().Color(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'radio') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Radio(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'radio') {
+        //   uiWinControllerList[name] = controller = new pub.controllers().Radio(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'label') {
-          control.__winControllerList[name] = controller = new control.controllers().Label(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'label') {
+          uiWinControllerList[name] = controller = new pub.controllers().Label(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'text') {
-          control.__winControllerList[name] = controller = new control.controllers().Text(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'text') {
+          uiWinControllerList[name] = controller = new pub.controllers().Text(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'progress') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Progress(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'progress') {
+        //   uiWinControllerList[name] = controller = new pub.controllers().Progress(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'slider') {
-          control.__winControllerList[name] = controller = new control.controllers().Slider(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'slider') {
+          uiWinControllerList[name] = controller = new pub.controllers().Slider(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'dropdown') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Dropdown(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'dropdown') {
+        //   uiWinControllerList[name] = controller = new pub.controllers().Dropdown(name, uiWinControllersGroup, properties);
         }
-        else if( type.toLowerCase() === 'separator') {
-          control.__winControllerList[name] = controller = new control.controllers().Separator(name, control.__winControllersGroup, properties);
+        else if( properties['type'] === 'separator') {
+          uiWinControllerList[name] = controller = new pub.controllers().Separator(name, uiWinControllersGroup, properties);
         }
         else {
         //   b.println('control.add(), no valid controller type specified!');
@@ -300,7 +298,7 @@ pub.ui = {
    * @return {Array} ui properties and methods
    */
   prompt: function(name, controllerList) {
-    return new ui.dialog('dialog', name, controllerList);
+    return new pub.ui.dialog('dialog', name, controllerList);
   },
 
   /**
@@ -314,7 +312,7 @@ pub.ui = {
    * @return {Array} ui properties and methods
    */
   palette: function(name, controllerList) {
-    return new ui.dialog('palette', name, controllerList);
+    return new pub.ui.dialog('palette', name, controllerList);
   }
 
 
@@ -322,7 +320,7 @@ pub.ui = {
 
 
 /**
- * the individual UI controllers elements
+ * the individual UI controllers
  * @cat UI
  * @subcat controllers
  * @method controllers
@@ -631,8 +629,8 @@ pub.controllers = function() {
         ? properties.maxLength
         : properties.columns;
     text.minimumSize.height = (properties.multiline && properties.rows != undefined) 
-      ? (ui.uiTypesize+2)*(properties.rows+1)
-      : (ui.uiTypesize+2)*1;
+      ? (uiTypesize+2)*(properties.rows+1)
+      : (uiTypesize+2)*1;
     text.graphics.font = uiTypeface;
 
     // not all interface controllers have a native onClick event
@@ -819,12 +817,12 @@ pub.controllers = function() {
     Button: Button,
     Checkbox: Checkbox,
     // Color: Color,
-    Radio: Radio,
+    // Radio: Radio,
     Label: Label,
     Text: Text,
-    Progress: Progress,
+    // Progress: Progress,
     Slider: Slider,
-    Dropdown: Dropdown,
+    // Dropdown: Dropdown,
     Separator: Separator
   };
 
