@@ -1,8 +1,7 @@
-// Hey Ken, this is your new home...
 /**
- * Class for creating a user control within Adobe InDesign for manipulating Basil.js variables.
+ * Class for creating simple user interfaces within Adobe InDesign for manipulating Basil.js variables.
  * 
- * @cat Interface
+ * @cat UI
  *
  * @example create array of controllers
  * var controllersConfig = {

@@ -142,6 +142,22 @@
     }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
   };
 
+  var runUpdateOnce = function() {
+    app.doScript(function() {
+      if (typeof glob.update === 'function') {
+        glob.update();
+      }
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  };
+
+  var runUpdateLoop = function() {
+    app.doScript(function() {
+      if (typeof glob.update === 'function') {
+        glob.update();
+      }
+    }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
+  };
+
   var welcome = function() {
     clearConsole();
     println("Using basil.js "
