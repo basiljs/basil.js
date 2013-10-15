@@ -385,3 +385,42 @@ pub.objectStyle = function(name) {
   return style;
 };
 
+
+/**
+ * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
+ *
+ * @cat Document
+ * @subcat Transformation
+ * @method duplicate
+ * @param {PageItem|Page} item The item to duplicate
+ * @returns {Object} Returns the new item
+ */
+pub.duplicate = function(item){
+
+  if( !(item instanceof Page) && typeof(item) !== "undefined" && item.hasOwnProperty("duplicate") ) {
+
+    var newItem = item.duplicate(currentPage());
+    newItem.move(currentLayer());
+    
+    if (currRectMode === pub.CENTER) {
+      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                       AnchorPoint.CENTER_ANCHOR,
+                       currMatrix.adobeMatrix() );
+    } else {
+      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );
+    }
+
+    return newItem;
+
+  } else if(item instanceof Page) {
+
+    var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
+    return newPage;
+
+  } else {
+    error("Please provide a valid Page or PageItem as parameter for duplicate().");
+  }
+
+}
