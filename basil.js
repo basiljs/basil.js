@@ -40,11 +40,19 @@
 #target "InDesign";
 
 (function(glob, app, undef) {
+  
   /**
    * @class b
    * @static
    */
   var pub = {};
+
+  /**
+   * The basil version
+   * @property VERSION {String}
+   * @cat Environment
+   */
+  pub.VERSION = "1.06";  
 
   #include "includes/core.jsx";
 

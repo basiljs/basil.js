@@ -1,6 +1,6 @@
-  // ----------------------------------------
-  // private vars
-  var currDoc = null,
+// ----------------------------------------
+// private vars
+var currDoc = null,
     currPage = null,
     currLayer = null,
     currUnits = null,

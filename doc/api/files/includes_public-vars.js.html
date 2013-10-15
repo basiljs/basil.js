@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>basil.js - basil.js</title>
+    <title>includes&#x2F;public-vars.js - basil.js</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -82,81 +82,26 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: basil.js</h1>
+                        <h1 class="file-heading">File: includes&#x2F;public-vars.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-
-&#x2F;*
-  ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
-
-  B A S I L . J S
-  Bringing the spirit of the Processing visualization language to Adobe Indesign.
+&#x2F;&#x2F; ----------------------------------------
+&#x2F;&#x2F; public vars
   
-  License        - MIT
-
-  Developers     
-                 - Ted Davis http:&#x2F;&#x2F;teddavis.org
-                 - Benedikt Groß http:&#x2F;&#x2F;benedikt-gross.de
-                 - Ludwig Zeller http:&#x2F;&#x2F;ludwigzeller.de
-  Contributers   
-                 - Philipp Adrian http:&#x2F;&#x2F;www.philippadrian.com&#x2F;
-                 - be:screen GmbH http:&#x2F;&#x2F;bescreen.de
-                 - Stefan Landsbek http:&#x2F;&#x2F;47nord.de
-                 - Ken Frederick http:&#x2F;&#x2F;kennethfrederick.de&#x2F;
-
-  Web Site       - http:&#x2F;&#x2F;basiljs.ch
-  Github Repo.   - https:&#x2F;&#x2F;github.com&#x2F;basiljs&#x2F;basil.js
-  Processing     - http:&#x2F;&#x2F;processing.org
-  Processing.js  - http:&#x2F;&#x2F;processingjs.org
-
-  basil.js was conceived and is generously supported by
-  The Visual Communication Institute &#x2F; The Basel School of Design
-  Department of the Academy of Art and Design Basel (HGK FHNW)
-  
-  http:&#x2F;&#x2F;thebaselschoolofdesign.ch
-
-  Please note: Big general parts e.g. random() of the basil.js source code are copied
-  from processing.js by the Processing.js team. We would have had a hard time
-  to figure all of that out on our own!
-  
-  Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
-  
-  .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
-*&#x2F;
-
-#target &quot;InDesign&quot;;
-
-(function(glob, app, undef) {
   &#x2F;**
-   * @class b
-   * @static
+   * System variable which stores the width of the current page.
+   * @property width {Number}
+   * @cat Environment
    *&#x2F;
-  var pub = {};
+  pub.width = null;
 
-  #include &quot;includes&#x2F;core.jsx&quot;;
-
-  #include &quot;includes&#x2F;constants.jsx&quot;;
-  #include &quot;includes&#x2F;public-vars.jsx&quot;;
-  #include &quot;includes&#x2F;private-vars.jsx&quot;;
-  #include &quot;includes&#x2F;global-functions.jsx&quot;;
-  
-  #include &quot;includes&#x2F;structure.jsx&quot;;
-  #include &quot;includes&#x2F;environment.jsx&quot;;
-  #include &quot;includes&#x2F;data.jsx&quot;;
-  #include &quot;includes&#x2F;shape.jsx&quot;;
-  #include &quot;includes&#x2F;color.jsx&quot;;
-  #include &quot;includes&#x2F;typography.jsx&quot;;
-  #include &quot;includes&#x2F;image.jsx&quot;;
-  #include &quot;includes&#x2F;math.jsx&quot;;
-  #include &quot;includes&#x2F;transformation.jsx&quot;;
-  #include &quot;includes&#x2F;ui.jsx&quot;;
-
-  init();
-  
-})(this, app);
-
-
+  &#x2F;**
+   * System variable which stores the height of the current page.
+   * @property height {Number}
+   * @cat Environment
+   *&#x2F;
+  pub.height = null;
     </pre>
 </div>
 

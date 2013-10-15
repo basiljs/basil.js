@@ -3,6 +3,12 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.06 - 
+
+* Internal refactorings (split basil.js into many includes)
+
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.05 - 9 October 2013
 
 * Bugfix to b.endShape()
