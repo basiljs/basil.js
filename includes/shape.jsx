@@ -161,6 +161,225 @@
     }
   };
 
+  /**
+   * The arc() function draws an arc in the display window.
+   * Arcs are drawn along the outer edge of an ellipse defined by the
+   * <b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.
+   * The origin or the arc's ellipse may be changed with the
+   * <b>ellipseMode()</b> function.
+   * The <b>start</b> and <b>stop</b> parameters specify the angles
+   * at which to draw the arc.
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method arc
+   * @param {Number} cx         x-coordinate of the arc's center
+   * @param {Number} cy         y-coordinate of the arc's center
+   * @param {Number} w          width of the arc's ellipse
+   * @param {Number} h     height of the arc's ellipse
+   * @param {Number} startAngle starting angle of the arc (radians)
+   * @param {Number} endAngle   ending angle of the arc (radians)
+   *
+   * @return {GraphicLine|Polygon} newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
+   *
+   * TODO(S)
+   * - fix bug when making arcs close to 360, current hack is unreliable
+   * - make work for elliptical arcs
+   * http://www.spaceroots.org/documents/ellipse/
+   * http://www.spaceroots.org/documents/ellipse/elliptical-arc.pdf
+   * http://digerati-illuminatus.blogspot.de/2008/05/approximating-semicircle-with-cubic.html
+   * - check for beginShape() call - necessary?
+   * - not robust enough for primetime
+   */
+  // pub.arc = function(cx, cy, w, h, startAngle, endAngle) {
+  //   if (w <= 0 || endAngle < startAngle) {
+  //     return false;
+  //   }
+  //   if (arguments.length !== 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
+    
+  //   var o = b.radians(0); // add 1 degree to ensure angles of 360 degrees are drawn
+  //   startAngle %= b.TWO_PI+o; 
+  //   endAngle %= b.TWO_PI+o;
+  //   w /= 2;
+  //   h /= 2;
+
+  //   if (currEllipseMode === pub.CORNER) {
+  //     cx = (cx-w);
+  //     cy = (cy+h);
+  //   }
+  //   else if (currEllipseMode === pub.CORNERS) {
+  //     // cx = (cx-w);
+  //     // cy = (cy-h);
+  //     // w -= cx;
+  //     // h -= cy;
+  //   }
+  //   else if (currEllipseMode === pub.RADIUS) {
+  //     w *= 2;
+  //     h *= 2;
+  //   }
+
+  //   var delta = Math.abs(endAngle - startAngle);
+  //   var direction = (startAngle < endAngle)
+  //     ? 1
+  //     : -1;
+  //   var thetaStart = startAngle;
+
+  //   // draw arc
+  //   b.beginShape();
+  //   b.vertex( cx, cy );
+  //   for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
+  //     // calculations
+  //     var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
+
+  //     // circular arc
+  //     var radius = (w + h)/2; //(Math.sqrt(w * w + h * h) / 2);
+  //     pt = calculateCircularArc(radius, thetaStart, thetaEnd);
+  //     // TODO: eliptical arc
+  //     // pt = calculateEllipticalArc(w, h, startAngle, endAngle);
+
+  //     b.vertex(
+  //       cx + pt.startx,
+  //       cy + pt.starty,
+  //       cx + pt.startx,
+  //       cy + pt.starty,
+  //       cx + pt.handle1x,
+  //       cy + pt.handle1y
+  //     );
+  //     b.vertex(
+  //       cx + pt.endx,
+  //       cy + pt.endy,
+  //       cx + pt.handle2x,
+  //       cy + pt.handle2y,
+  //       cx + pt.endx,
+  //       cy + pt.endy
+  //     );
+
+  //     // prepare for next rotation
+  //     theta -= b.abs(thetaEnd - thetaStart);
+  //     thetaStart = thetaEnd;
+  //   }
+  //   return b.endShape();
+
+  // };
+
+  /**
+   * Cubic bezier approximation of a circular arc 
+   * 
+   * initial code:
+   * Hans Muller
+   * hmuller@adobe.com
+   * http://hansmuller-flex.blogspot.de/2011/04/approximating-circular-arc-with-cubic.html
+   * http://hansmuller-flex.blogspot.de/2011/10/more-about-approximating-circular-arcs.html
+   *
+   * This work is licensed under the Creative Commons Attribution 3.0
+   * Unported License. To view a copy of this license, visit
+   * http://creativecommons.org/licenses/by/3.0/ or send a letter to
+   * Creative Commons, 444 Castro Street, Suite 900, Mountain View,
+   * California, 94041, USA.
+   *
+   * This algorithm is based on the approach described in:
+   * A. Riškus, "Approximation of a Cubic Bezier Curve by Circular Arcs and Vice Versa," 
+   * Information Technology and Control, 35(4), 2006 pp. 371-378.
+   *
+   * NOTE: only works for circular arcs 
+   * 
+   */
+  function calculateCircularArc(radius, startAngle, endAngle) {
+    var delta = (endAngle - startAngle)/2.0;
+    var total = delta + startAngle;
+
+    var cos_delta = Math.cos(total);
+    var sin_delta = Math.sin(total);
+    
+    // calculate points
+    var x0 = radius * Math.cos(delta);
+    var y0 = radius * Math.sin(delta);
+    var x1 = x0;
+    var y1 = -y0
+
+    var q1 = x1*x1 + y1*y1;
+    var q2 = q1 + x1*x0 + y1*y0;
+    // calculate kappa
+    var k = 4/3 * (Math.sqrt(2 * q1 * q2) - q2) / (x1 * y0 - y1 * x0);
+
+    var x2 = x1 - k * y1;
+    var y2 = y1 + k * x1;
+    var x3 = x2; 
+    var y3 = -y2;
+    
+    // return points that make sense
+    return {
+      startx: radius * Math.cos(startAngle), 
+      starty: radius * Math.sin(startAngle), 
+      handle1x: x2 * cos_delta - y2 * sin_delta, 
+      handle1y: x2 * sin_delta + y2 * cos_delta, 
+
+      endx: radius * Math.cos(endAngle), 
+      endy: radius * Math.sin(endAngle),
+      handle2x: x3 * cos_delta - y3 * sin_delta, 
+      handle2y: x3 * sin_delta + y3 * cos_delta, 
+    };
+  };
+
+
+  /**
+   * Cubic bezier approximation of a circular arc 
+   *
+   * intial code:
+   * Golan Levin
+   * golan@flong.com
+   * http://www.flong.com/blog/2009/bezier-approximation-of-a-circular-arc-in-processing/
+   *
+   * The solution is taken from this PDF by Richard DeVeneza:
+   * http://www.tinaja.com/glib/bezcirc2.pdf
+   * linked from this excellent site by Don Lancaster:
+   * http://www.tinaja.com/cubic01.asp
+   */
+  function calculateEllipticalArc(w, h, startAngle, endAngle) {
+    // Establish arc parameters.
+    // (Note: assert delta != TWO_PI)
+    var delta = (endAngle - startAngle)/2.0; // spread of the arc.
+   
+    // Compute raw Bezier coordinates.
+    var x0 = Math.cos(delta);
+    var y0 = Math.sin(delta);
+    var x3 = x0;
+    var y3 = 0-y0;
+    var x1 = (4.0-x0)/3.0;
+    var y1 = ((1.0-x0)*(3.0-x0))/(3.0*y0); // y0 != 0...
+    var x2 = x1;
+    var y2 = 0-y1;
+   
+    // Compute rotationally-offset Bezier coordinates, using:
+    // x' = cos(angle) * x - sin(angle) * y;
+    // y' = sin(angle) * x + cos(angle) * y;
+    var bezAng = startAngle + delta;
+    var cBezAng = Math.cos(bezAng);
+    var sBezAng = Math.sin(bezAng);
+    var rx0 = cBezAng * x0 - sBezAng * y0;
+    var ry0 = sBezAng * x0 + cBezAng * y0;
+    var rx1 = cBezAng * x1 - sBezAng * y1;
+    var ry1 = sBezAng * x1 + cBezAng * y1;
+    var rx2 = cBezAng * x2 - sBezAng * y2;
+    var ry2 = sBezAng * x2 + cBezAng * y2;
+    var rx3 = cBezAng * x3 - sBezAng * y3;
+    var ry3 = sBezAng * x3 + cBezAng * y3;
+   
+    // Compute scaled and translated Bezier coordinates.
+    return {
+      startx: 1-(w*rx0),
+      starty: h*ry0,
+      handle1x: 1-(w*rx1),
+      handle1y: h*ry1,
+
+      endx: 1-(w*rx3),
+      endy: h*ry3,
+      handle2x: 1-(w*rx2),
+      handle2y: h*ry2
+    };
+
+    // bezier(startx,starty, handle1x,handle1y, handle2x,handle2y, endx,endy);
+  };
 
   /**
    * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. 

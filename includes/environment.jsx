@@ -371,6 +371,21 @@
       error("b.group(), not a valid argument.")
     }
 
+    // TODO: make groups respect b.ellipseMode and b.rectMode
+    // this is kinda sorta, not really working
+    // if (currEllipseMode === pub.CENTER || currRectMode === pub.CENTER) {
+    //   b.itemPosition( group,
+    //     currMatrix.adobeMatrix()[4] - b.itemWidth(group)/2,
+    //     currMatrix.adobeMatrix()[5] - b.itemHeight(group)/2
+    //   );
+    // }
+    // else {
+    //   b.itemPosition( group,
+    //     currMatrix.adobeMatrix()[4],
+    //     currMatrix.adobeMatrix()[5]
+    //   );
+    // }
+
     return group;
   };
 
