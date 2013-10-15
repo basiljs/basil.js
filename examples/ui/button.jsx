@@ -1,9 +1,3 @@
-/**
- * 
- * Button
- * 
- */
-
 #targetengine basiljs
 
 #includepath '~/Documents/;%USERPROFILE%Documents';
@@ -12,7 +6,7 @@
 
 var dialog;
 
-// var controllersConfig = {
+// var uiConfig = {
 //   theButton: {
 //     type: 'button',
 //     label: 'Button',
@@ -29,7 +23,7 @@ function setup() {
 
   // dialog = new b.ui.palette(
   //   'Button Example',
-  //   controllersConfig
+  //   uiConfig
   // );
 
   dialog = new b.ui.dialog( b.PALETTE, 'Button Example' );

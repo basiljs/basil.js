@@ -1,9 +1,3 @@
-/**
- * 
- * Slider
- * 
- */
-
 #targetengine basiljs
 
 #includepath '~/Documents/;%USERPROFILE%Documents';
@@ -12,7 +6,7 @@
 
 var dialog;
 
-// var controllersConfig = {
+// var uiConfig = {
 //   theSlider: {
 //     type: 'slider',
 //     label: 'Slider',
@@ -29,7 +23,7 @@ function setup() {
 
   // dialog = new b.ui.palette(
   //   'Slider Example',
-  //   controllersConfig
+  //   uiConfig
   // );
 
   dialog = new b.ui.dialog( b.PALETTE, 'Slider Example' );

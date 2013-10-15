@@ -10,7 +10,7 @@ if ($.engineName !== 'basiljs') {
  * @cat Interface
  *
  * @example create array of controllers
- * var controllersConfig = {
+ * var uiConfig = {
  *   mySlider1: {
  *     label: 'Slider1',
  *     type: 'slider',
@@ -695,7 +695,7 @@ control = {
     name = (name != undefined) ? name : 'Basil.js';
     // attempt to clear controllers from all previous instances
     delete controllers;
-    var controllersConfig = (controllerList != undefined) ? controllerList : {};
+    var uiConfig = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
       // create window

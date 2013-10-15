@@ -252,7 +252,7 @@
   * @cat UI
   * @subcat dialogs
   */
-  pub.PROMPT = "prompt";
+  pub.PROMPT = "dialog";
 
   /**
   * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.

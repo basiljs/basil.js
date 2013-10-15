@@ -13,18 +13,28 @@
  *  - add layout customizeability
  */
 
-// var uiConfig = {
-  var uiWin = null;
-  var uiWinControllersGroup = null;
-  var uiWinControllerList = {};
-  var uiWinValue = {};
+// ensure ui global properties/methods
+// stay private and separate
+var uiProperties = {
+  win: null,
+  winControllersGroup: null,
+  winControllerList: {},
+  winValue: {},
 
-  var uiTypesize = 9.5;
-  var uiTypeface = null;
+  typesize: 9.5,
+  typeface: null,
 
-  var uiMaximumLabelWidth = 1;
-  var uiMaximumWidth = 1;
-// };
+  maximumLabelWidth: 1,
+  maximumWidth: 1,
+
+  // ensures values output by interface window are up-to-date
+  update: function() {
+    for( var name in uiProperties.winControllerList ) {
+      uiProperties.winValue[name] = uiProperties.winControllerList[name].value;
+    }
+  }
+
+};
 
 
 /**
@@ -35,14 +45,14 @@ pub.ui = null;
 pub.ui = {
   /**
    * Creates a dialog window
-   * var controllersConfig = {
+   * var uiConfig = {
    *   mySlider1: {
    *     label: 'Slider1',
    *     type: 'slider',
    *     value: 0.5
    *   }
    * };
-   * var dialog = new ui.dialog(b.PALETTE, 'Interface Example', controllersConfig);
+   * var dialog = new ui.dialog(b.PALETTE, 'Interface Example', uiConfig);
    * 
    * @cat UI
    * @subcat dialog
@@ -59,11 +69,11 @@ pub.ui = {
     controllerList = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
-      win = uiWin = new Window('palette', name, undefined);
+      win = uiProperties.win = new Window(type, name, undefined);
       win.orientation = 'row';
       // win.alignChildren = 'fill';
 
-      uiTypeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, uiTypesize);
+      uiProperties.typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, uiProperties.typesize);
 
       if( type == 'dialog' || type == 'prompt' ) {
         // always include a basil.js logo with prompts
@@ -75,14 +85,14 @@ pub.ui = {
       mainGroup.orientation = 'column';
       mainGroup.alignChildren = 'right';
 
-      uiWinControllersGroup = mainGroup.add('group');
-      uiWinControllersGroup.orientation = 'column';
-      uiWinControllersGroup.alignChildren = 'left';
+      uiProperties.winControllersGroup = mainGroup.add('group');
+      uiProperties.winControllersGroup.orientation = 'column';
+      uiProperties.winControllersGroup.alignChildren = 'left';
 
       // create core return values
-      uiWinValue = {
-        window:  uiWin,             // this initiated window (palette)
-        update:  uiWin.update,      // this window's update function
+      uiProperties.winValue = {
+        window:  uiProperties.win,             // this initiated window (palette)
+        update:  uiProperties.win.update,      // this window's update function
         add:     addController,     // add controllers on-the-fly
         remove:  removeController,  // remove controllers on-the-fly 
         onClose: function() {}      // callback for window onClose
@@ -90,14 +100,14 @@ pub.ui = {
 
       win.onShow = function() {
         addControllerList( controllerList );
-        adjustLayout( uiWinControllersGroup );
+        adjustLayout( uiProperties.winControllersGroup );
       };
       win.onClose = function() {
-        uiWinValue.onClose();
+        uiProperties.winValue.onClose();
         deconstructor();
       };
       win.addEventListener('changing', function() {
-        updateUiWinValues();
+        uiProperties.update();
       });
 
       if( type == 'dialog' || type == 'prompt' ) {
@@ -105,13 +115,13 @@ pub.ui = {
         buttongroup.alignment = 'right';
 
         var cancel = buttongroup.add('button', undefined, 'Cancel', {name: 'cancel'});
-        cancel.graphics.font = uiTypeface;
+        cancel.graphics.font = uiProperties.typeface;
         cancel.onClick = function() {
-          uiWinValue = {};  // all canceled... clear values
+          uiProperties.winValue = {};  // all canceled... clear values
           win.close(2);
         };
         var ok = buttongroup.add('button', undefined, 'OK', {name: 'ok'});
-        ok.graphics.font = uiTypeface;
+        ok.graphics.font = uiProperties.typeface;
         ok.onClick = function() {
           win.close(1);
           runUpdateOnce();
@@ -121,7 +131,7 @@ pub.ui = {
       win.show();
       win.center();
 
-      return uiWinValue;
+      return uiProperties.winValue;
     };
 
     // destroy the control variable, garbage clean-up attempt
@@ -179,36 +189,36 @@ pub.ui = {
             : null));
 
       var controller = null;
-      if( uiWinControllersGroup != null) {
+      if( uiProperties.winControllersGroup != null) {
         if( properties['type'] === 'button') {
-          uiWinControllerList[name] = controller = new pub.controllers().Button(name, uiWinControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Button(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'checkbox') {
-          uiWinControllerList[name] = controller = new pub.controllers().Checkbox(name, uiWinControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Checkbox(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'color') {
-        //   uiWinControllerList[name] = controller = new pub.controllers().Color(name, uiWinControllersGroup, properties);
+        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Color(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'radio') {
-        //   uiWinControllerList[name] = controller = new pub.controllers().Radio(name, uiWinControllersGroup, properties);
+        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Radio(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'label') {
-          uiWinControllerList[name] = controller = new pub.controllers().Label(name, uiWinControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Label(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'textfield') {
-          uiWinControllerList[name] = controller = new pub.controllers().Textfield(name, uiWinControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Textfield(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'progress') {
-        //   uiWinControllerList[name] = controller = new pub.controllers().Progress(name, uiWinControllersGroup, properties);
+        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Progress(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'slider') {
-          uiWinControllerList[name] = controller = new pub.controllers().Slider(name, uiWinControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Slider(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'dropdown') {
-        //   uiWinControllerList[name] = controller = new pub.controllers().Dropdown(name, uiWinControllersGroup, properties);
+        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Dropdown(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties['type'] === 'separator') {
-          uiWinControllerList[name] = controller = new pub.controllers().Separator(name, uiWinControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Separator(name, uiProperties.winControllersGroup, properties);
         }
         else {
         //   b.println('control.add(), no valid controller type specified!');
@@ -219,9 +229,9 @@ pub.ui = {
       }
 
       if( controller != null ) {
-        uiWin[name] = controller;
-        uiWin.layout.layout( true );
-        updateUiWinValues();
+        uiProperties.win[name] = controller;
+        uiProperties.win.layout.layout( true );
+        uiProperties.update();
       }
 
       return controller;
@@ -235,11 +245,11 @@ pub.ui = {
      */
     function removeController(name) {
       var success = false;
-      if( uiWin != null ) {
-        var controller = uiWin.findElement(name);
+      if( uiProperties.win != null ) {
+        var controller = uiProperties.win.findElement(name);
         if( controller != null ) {
           ui.parent.remove(controller);
-          uiWin.layout.layout( true );
+          uiProperties.win.layout.layout( true );
           success = true;
         }
       }
@@ -264,19 +274,19 @@ pub.ui = {
       }
 
       container.parent.layout.layout( true );
-      uiWin.preferredSize.width += uiMaximumLabelWidth;
-      uiWin.layout.layout( true );
+      uiProperties.win.preferredSize.width += uiProperties.maximumLabelWidth;
+      uiProperties.win.layout.layout( true );
     };
     function adjustFullWidth(child) {
       if( child.properties.width == 'full' ) {
-        // child.size.width = child.preferredSize.width = child.maximumSize.width = uiWin.size.width;
+        // child.size.width = child.preferredSize.width = child.maximumSize.width = uiProperties.win.size.width;
         // child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
         child.alignment = ['center','center'];
       }
     };
     function adjustLabelWidth(child) {
       if( child.type == 'statictext' && child.properties.name == 'label' ) {
-        child.size.width = uiMaximumLabelWidth;
+        child.size.width = uiProperties.maximumLabelWidth;
       }
     };
     function adjustSpacing(child) {
@@ -462,10 +472,10 @@ pub.controllers = function() {
       name: name,
       width: properties.width
     });*/
-    button.graphics.font = uiTypeface;
+    button.graphics.font = uiProperties.typeface;
     button.preferredSize.height = properties.height;
     button.preferredSize.width = (properties.width == 'full')
-      ? uiWin.preferredSize.width
+      ? uiProperties.win.preferredSize.width
       : properties.width;
 
     button.onClick = function() {
@@ -517,7 +527,7 @@ pub.controllers = function() {
         ? ((this.value) ? 1 : 0)
         : this.value;
       properties['value'] = value;
-      updateUiWinValues();
+      uiProperties.update();
 
       properties.onChange(value);
       runUpdateOnce();
@@ -582,15 +592,15 @@ pub.controllers = function() {
       width: properties.width
     });*/
     // var xwidth = label.preferredSize[0];
-    // uiMaximumLabelWidth = (labelText.length*xwidth > uiMaximumLabelWidth) 
+    // uiProperties.maximumLabelWidth = (labelText.length*xwidth > uiProperties.maximumLabelWidth) 
     //   ? labelText.length*xwidth
-    //   : uiMaximumLabelWidth;
+    //   : uiProperties.maximumLabelWidth;
     label.justify = 'right';
-    label.graphics.font = uiTypeface;
+    label.graphics.font = uiProperties.typeface;
 
     // if( label.characters == null ) {
     //   // TODO: define and allow maximum width override
-    //   var width = (uiMaximumLabelWidth < 200) ? uiMaximumLabelWidth : 200;
+    //   var width = (uiProperties.maximumLabelWidth < 200) ? uiProperties.maximumLabelWidth : 200;
     //   label.preferredSize = [,-1];
     //   label.characters = ~~(width/xwidth);
     //   label.preferredSize[1] = -1;
@@ -600,9 +610,9 @@ pub.controllers = function() {
     label.alignment = properties.alignment;
 
     // set longest label for layout adjustment
-    uiMaximumLabelWidth = (label.preferredSize[0] > uiMaximumLabelWidth) 
+    uiProperties.maximumLabelWidth = (label.preferredSize[0] > uiProperties.maximumLabelWidth) 
       ? label.preferredSize[0]
-      : uiMaximumLabelWidth;
+      : uiProperties.maximumLabelWidth;
 
     return label;
   };
@@ -649,9 +659,9 @@ pub.controllers = function() {
             ? properties.maxLength-2 // -2 accounts for width for scrollbar
             :  properties.maxLength;
     text.minimumSize.height = (properties.multiline && properties.rows != undefined) 
-      ? (uiTypesize+2)*(properties.rows+1)
-      : (uiTypesize+2)*1;
-    text.graphics.font = uiTypeface;
+      ? (uiProperties.typesize+2)*(properties.rows+1)
+      : (uiProperties.typesize+2)*1;
+    text.graphics.font = uiProperties.typeface;
 
     // not all interface controllers have a native onClick event
     // therefore for some, other native events must be utilized
@@ -659,7 +669,7 @@ pub.controllers = function() {
     text.onActivate = function() {
       var value = updateValue(properties,this.text);
       properties['value'] = value;
-      updateUiWinValues();
+      uiProperties.update();
 
       properties.onClick(value);
       return value;
@@ -667,7 +677,7 @@ pub.controllers = function() {
     text.addEventListener('change', function() {
       var value = updateValue(properties,this.text);
       properties['value'] = value;
-      updateUiWinValues();
+      uiProperties.update();
 
       properties.onChange(value);
       runUpdateOnce();
@@ -677,7 +687,7 @@ pub.controllers = function() {
     text.onChanging = function() {
       var value = updateValue(properties,this.text);
       properties['value'] = value;
-      updateUiWinValues();
+      uiProperties.update();
 
       properties.onChanging(value);
       runUpdateOnce();
@@ -751,7 +761,7 @@ pub.controllers = function() {
     slider.addEventListener('mousedown', function() {
       var value = updateValue(properties,this.value);
       properties['value'] = value;
-      updateUiWinValues();
+      uiProperties.update();
 
       properties.onClick(value);
 
@@ -760,7 +770,7 @@ pub.controllers = function() {
     slider.onChange = function() {
       var value = updateValue(properties,this.value);
       properties['value'] = value;
-      updateUiWinValues();
+      uiProperties.update();
 
       properties.onChange(value);
       runUpdateOnce();
@@ -770,7 +780,7 @@ pub.controllers = function() {
     slider.onChanging = function() {
       var value = updateValue(properties,this.value);
       properties['value'] = value;
-      updateUiWinValues();
+      uiProperties.update();
 
       properties.onChanging(value);
       valueLabel.text = value;
@@ -849,18 +859,6 @@ pub.controllers = function() {
 };
 /* end controllers */
 
-
-
-/*
- * ensures values output by interface window are up-to-date
- */
-function updateUiWinValues() {
-  for( var name in uiWinControllerList ) {
-    // this connects the name of the controller to it's corresponding value, thus making it easier for
-    // the user to link interface controller names directly to their value
-    uiWinValue[name] = uiWinControllerList[name].value;
-  }
-};
 
 /*
  * merge two arrays together

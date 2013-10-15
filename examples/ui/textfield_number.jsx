@@ -1,9 +1,3 @@
-/**
- * 
- * Textfield Number
- * 
- */
-
 #targetengine basiljs
 
 #includepath '~/Documents/;%USERPROFILE%Documents';
@@ -12,7 +6,7 @@
 
 var dialog;
 
-// var controllersConfig = {
+// var uiConfig = {
 //   theTextfield: {
 //     type: 'textfield',
 //     label: 'Textfield',
@@ -41,7 +35,7 @@ function setup() {
 
   // dialog = new b.ui.palette(
   //   'Textfield Number Example',
-  //   controllersConfig
+  //   uiConfig
   // );
 
   dialog = new b.ui.dialog( b.PALETTE, 'Textfield Number Example' );

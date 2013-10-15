@@ -1,9 +1,3 @@
-/**
- * 
- * Checkbox
- * 
- */
-
 #targetengine basiljs
 
 #includepath '~/Documents/;%USERPROFILE%Documents';
@@ -12,7 +6,7 @@
 
 var dialog;
 
-// var controllersConfig = {
+// var uiConfig = {
 //   theCheckbox: {
 //     type: 'checkbox',
 //     label: 'Checkbox',
@@ -29,7 +23,7 @@ function setup() {
 
   // dialog = new b.ui.palette(
   //   'Checkbox Example',
-  //   controllersConfig
+  //   uiConfig
   // );
 
   dialog = new b.ui.dialog( b.PALETTE, 'Checkbox Example' );
