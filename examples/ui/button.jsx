@@ -1,6 +1,6 @@
 /**
  * 
- * Buttons
+ * Button
  * 
  */
 
@@ -15,10 +15,10 @@ var dialog;
 // var controllersConfig = {
 //   theButton: {
 //     type: 'button',
-//     label: 'The Label',
+//     label: 'Button',
 //     value: 'Click Me!',
 //     onClick: function(value) {
-//       b.println( 'My Button was Clicked ' + value + ' time(s)' );
+//       b.println( 'My Button was clicked ' + value + ' time(s)' );
 //     }
 //   }
 // };
@@ -34,6 +34,7 @@ function setup() {
 
   dialog = new b.ui.dialog( b.PALETTE, 'Button Example' );
   dialog.add('button', 'theButton', 'ClickMe!', {
+    label: 'Button',
     onClick: function(value) {
       b.println( 'Button was Clicked ' + value + ' time(s)' );
     }

@@ -195,8 +195,8 @@ pub.ui = {
         else if( properties['type'] === 'label') {
           uiWinControllerList[name] = controller = new pub.controllers().Label(name, uiWinControllersGroup, properties);
         }
-        else if( properties['type'] === 'text') {
-          uiWinControllerList[name] = controller = new pub.controllers().Text(name, uiWinControllersGroup, properties);
+        else if( properties['type'] === 'textfield') {
+          uiWinControllerList[name] = controller = new pub.controllers().Textfield(name, uiWinControllersGroup, properties);
         }
         else if( properties['type'] === 'progress') {
         //   uiWinControllerList[name] = controller = new pub.controllers().Progress(name, uiWinControllersGroup, properties);
@@ -366,11 +366,16 @@ pub.controllers = function() {
   var initText = function(properties) {
     return mergeArray({
         length:     null,
-        maxLength:  22,       /* default: 22 (== width: 200px) */
-        multiline:  false,    /* default: false */
+        maxLength:  22,        /* default: 22 (== width: 200px) */
+        multiline:  false,     /* default: false */
         columns:    null,
         rows:       null,
-        alignment:  'center'  /* default: 'center' */
+        alignment:  'center',  /* default: 'center' */
+        valueType:  (properties.valueType != undefined)
+                      ? properties.valueType
+                      : (typeof properties.value == 'number')
+                        ? 'float'
+                        : 'string'  /* default: 'string' */ 
       },
       init(properties));
   };
@@ -384,17 +389,29 @@ pub.controllers = function() {
    */
   var initRange = function(properties) {
     return mergeArray({
-      range:  (properties.range != undefined) ? properties.range : [0.0, 1.0], /* default: [0.0,1.0] */
+      // wrap your head around this!
+      range: (properties.range != undefined)
+                ? properties.range
+                : [ ((properties.min != undefined)
+                  ? properties.min
+                  : 0.0),
+                    ((properties.max != undefined)
+                      ? properties.max
+                      : (properties.value != undefined)
+                        ? properties.value
+                        : 1.0) ], /* default: [0.0,1.0] */
       min:    (properties.min != undefined) 
                 ? properties.min
                 : (properties.range != undefined)
-                  ? properties.range[0]
+                  ? this.range[0]
                   : 0.0, /* default: 0.0 */
       max:    (properties.max != undefined)
                 ? properties.max
                 : (properties.range != undefined)
                   ? properties.range[1]
-                  : 1.0  /* default: 1.0 */
+                  : (properties.value != undefined)
+                    ? properties.value
+                    : 1.0  /* default: 1.0 */
       },
       init(properties));
   };
@@ -412,7 +429,7 @@ pub.controllers = function() {
       ? parseInt(value)
       : (properties.valueType == 'string'
         ? value.toString()
-        : b.precision(value,2)); // default float
+        : precision(value,2)); // default float
   };
 
 
@@ -601,7 +618,7 @@ pub.controllers = function() {
    *
    * @return {Array} properties
    */
-  function Text(name, container, properties) {
+  function Textfield(name, container, properties) {
     properties = initText(properties);
     properties.valueType = (properties.valueType != null)
       ? properties.valueType
@@ -622,12 +639,15 @@ pub.controllers = function() {
       multiline: properties.multiline,
       width: properties.width
     }); */
-    // TODO: define rows and columns more clearly
     text.characters = (properties.length != undefined)
       ? properties.length
-      : (properties.columns == undefined)
-        ? properties.maxLength
-        : properties.columns;
+      : (properties.multiline && properties.length != undefined)
+        ? properties.length-2 // -2 accounts for width for scrollbar
+        : (properties.columns != undefined)
+          ? properties.columns-2 // -2 accounts for width for scrollbar
+          : (properties.multiline && properties.length == undefined)
+            ? properties.maxLength-2 // -2 accounts for width for scrollbar
+            :  properties.maxLength;
     text.minimumSize.height = (properties.multiline && properties.rows != undefined) 
       ? (uiTypesize+2)*(properties.rows+1)
       : (uiTypesize+2)*1;
@@ -819,7 +839,7 @@ pub.controllers = function() {
     // Color: Color,
     // Radio: Radio,
     Label: Label,
-    Text: Text,
+    Textfield: Textfield,
     // Progress: Progress,
     Slider: Slider,
     // Dropdown: Dropdown,
