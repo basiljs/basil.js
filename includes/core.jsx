@@ -43,6 +43,7 @@
         progressPanel = new Progress();
       runSetup();
       runDrawOnce();
+      runUpdateOnce();
       var executionDuration = pub.millis();
       if (executionDuration < 1000) {
         println("[Finished in " + executionDuration + "ms]");
@@ -93,6 +94,7 @@
     var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
     idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
       runDrawLoop();
+      runUpdateLoop();
     }, false);
     println("Run the script lib/stop.jsx to end the draw loop and clean up!");
 //    println("loop()");
