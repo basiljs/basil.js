@@ -134,6 +134,31 @@
   pub.QUARTER_PI = Math.PI/4;
 
   /**
+   * Sin Cos Length
+   * @property SINCOS_LENGTH {Number}
+   * @cat Math
+   * @subcat Constants
+   */
+  pub.SINCOS_LENGTH = 720;
+
+  /**
+   * Epsilon
+   * @property EPSILON {Number}
+   * @cat Math
+   * @subcat Constants
+   */
+  pub.EPSILON = 10e-12;
+
+  /**
+   * Kappa
+   * @property KAPPA {Number}
+   * @cat Math
+   * @subcat Constants
+   */
+  // Kappa, see: http://www.whizkidtech.redprince.net/bezier/circle/kappa/
+  pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
+
+  /**
    * Used with b.canvasMode() to set the canvas to the full current page.
    * @property PAGE {String}
    * @cat Document
