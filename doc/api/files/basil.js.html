@@ -102,6 +102,7 @@
                  - Philipp Adrian http:&#x2F;&#x2F;www.philippadrian.com&#x2F;
                  - be:screen GmbH http:&#x2F;&#x2F;bescreen.de
                  - Stefan Landsbek http:&#x2F;&#x2F;47nord.de
+                 - Ken Frederick http:&#x2F;&#x2F;kennethfrederick.de&#x2F;
 
   Web Site       - http:&#x2F;&#x2F;basiljs.ch
   Github Repo.   - https:&#x2F;&#x2F;github.com&#x2F;basiljs&#x2F;basil.js
@@ -133,299 +134,10 @@
   var pub = {};
 
 
-
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; constants
+  include &quot;lib&#x2F;constants.jsx&quot;;
+  include &quot;lib&#x2F;publicVars.jsx&quot;;
+  include &quot;lib&#x2F;privateVars.jsx&quot;;
   
-  &#x2F;**
-   * The basil version
-   * @property VERSION {String}
-   * @cat Environment
-   *&#x2F;
-  pub.VERSION = &quot;1.03&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to points.
-   * @property PT {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-  pub.PT = &quot;pt&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to pixels.
-   * @property PX {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-  pub.PX = &quot;px&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to centimeters.
-   * @property CM {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-
-  pub.CM = &quot;cm&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to millimeters.
-   * @property MM {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-  pub.MM = &quot;mm&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to inches.
-   * @property IN {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-  pub.IN = &quot;inch&quot;;
-
-  &#x2F;**
-   * Used with b.colorMode() to set the color space.
-   * @property RGB {String}
-   * @cat Color
-   *&#x2F;
-  pub.RGB = &quot;rgb&quot;;
-
-  &#x2F;**
-   * Used with b.colorMode() to set the color space.
-   * @property CMYK {String}
-   * @cat Color
-   *&#x2F;
-  pub.CMYK = &quot;cmyk&quot;;
-
-  &#x2F;**
-   * Corner, used for drawing modes.
-   * @property CORNER {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CORNER = &quot;corner&quot;;
-
-  &#x2F;**
-   * Corners, used for drawing modes.
-   * @property CORNERS {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CORNERS = &quot;corners&quot;;
-
-  &#x2F;**
-   * Center, used for drawing modes.
-   * @property CENTER {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CENTER = &quot;center&quot;;
-
-  &#x2F;**
-   * Radius, used for drawing modes.
-   * @property RADIUS {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.RADIUS = &quot;radius&quot;;
-
-  &#x2F;**
-   * Close, used for endShape() modes.
-   * @property CLOSE {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CLOSE = &quot;close&quot;;
-
-  &#x2F;**
-   * Two Pi
-   * @property TWO_PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.TWO_PI = Math.PI*2;
-
-  &#x2F;**
-   * Pi
-   * @property PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.PI = Math.PI;
-
-  &#x2F;**
-   * Half Pi
-   * @property HALF_PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.HALF_PI = Math.PI&#x2F;2;
-
-  &#x2F;**
-   * Quarter Pi
-   * @property QUARTER_PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.QUARTER_PI = Math.PI&#x2F;4;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to the full current page.
-   * @property PAGE {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.PAGE = &quot;page&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
-   * @property MARGIN {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.MARGIN = &quot;margin&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
-   * @property BLEED {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.BLEED = &quot;bleed&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to use the current facing pages.
-   * @property FACING_PAGES {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.FACING_PAGES = &quot;facing_pages&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
-   * @property FACING_BLEEDS {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.FACING_BLEEDS = &quot;facing_bleeds&quot;;  
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
-   * @property FACING_MARGINS {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.FACING_MARGINS = &quot;facing_margins&quot;;
-
-  &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property AT_BEGINNING {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
-
-  &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property AT_END {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;  
-  pub.AT_END = LocationOptions.AT_END;
-
-  &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property BEFORE {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.BEFORE = LocationOptions.BEFORE;
-
-  &#x2F;**
-     * Used with b.addPage() to set the position of the new page in the book.
-     * @property AFTER {String}
-     * @cat Document
-     * @subcat Page
-     *&#x2F;
-  pub.AFTER = LocationOptions.AFTER;
-
-    &#x2F;**
-    * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
-    * @property MODESILENT {String}
-    * @cat Environment
-    * @subcat modes
-    *&#x2F;
-  pub.MODESILENT = &quot;ModeSilent&quot;;
-    &#x2F;**
-     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
-     * @property MODEHIDDEN {String}
-     * @cat Environment
-     * @subcat modes
-     *&#x2F;
-  pub.MODEHIDDEN = &quot;ModeHidden&quot;;
-    &#x2F;**
-     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
-     * @property MODEVISIBLE {String}
-     * @cat Environment
-     * @subcat modes
-     *&#x2F;
-  pub.MODEVISIBLE = &quot;ModeVisible&quot;;
-  pub.DEFAULTMODE = pub.MODEVISIBLE; &#x2F;&#x2F; FIXME, DEFAULTMODE shouldn&#x27;t be public, move init to init()
-
-
-  var ERROR_PREFIX = &quot;\nBasil.js Error -&gt; &quot;,
-      WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
-
-
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; public vars
-  
-  &#x2F;**
-   * System variable which stores the width of the current page.
-   * @property width {Number}
-   * @cat Environment
-   *&#x2F;
-  pub.width = null;
-
-  &#x2F;**
-   * System variable which stores the height of the current page.
-   * @property height {Number}
-   * @cat Environment
-   *&#x2F;
-  pub.height = null;
-
-  
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; private vars
-  var currDoc = null,
-    currPage = null,
-    currLayer = null,
-    currUnits = null,
-    currMatrix = null,
-    matrixStack = null,
-    currColorMode = null,
-    currFillColor = null,
-    currStrokeColor = null,
-    currStrokeTint = null,
-    currFillTint = null,
-    currStrokeWeight = null,
-    currRectMode = null,
-    currEllipseMode = null,
-    noneSwatchColor = null,
-    startTime = null,
-    currFont = null,
-    currFontSize = null,
-    currAlign = null,
-    currYAlign = null,
-    currLeading = null,
-    currKerning = null,
-    currTracking = null,
-    currImageMode = null,
-    currCanvasMode = null,
-    currVertexPoints = null;
-
   &#x2F;&#x2F; all initialisations should go here
   var init = function() {
     glob.b = pub;
@@ -441,580 +153,10 @@
     currColorMode = pub.RGB;
   };    
 
-  
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; global functions
-
-
-  &#x2F;* todo *&#x2F;
-  &#x2F;&#x2F; https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array&#x2F;filter
-  if (!Array.prototype.filter) {
-    Array.prototype.filter = function(fun) {
-      if (this === null) throw new TypeError();
-      var t = Object(this);
-      var len = t.length &gt;&gt;&gt; 0;
-      if (typeof fun != &quot;function&quot;) throw new TypeError();
-      var res = [];
-      var thisp = arguments[1];
-      for (var i = 0; i &lt; len; i++) {
-        if (i in t) {
-          var val = t[i]; &#x2F;&#x2F; in case fun mutates this
-          if (fun.call(thisp, val, i, t)) res.push(val);
-        }
-      }
-      return res;
-    };
-  }
-
-  &#x2F;* todo *&#x2F;
-  &#x2F;&#x2F; https:&#x2F;&#x2F;developer.mozilla.org&#x2F;en-US&#x2F;docs&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array&#x2F;map
-  if (!Array.prototype.map) {
-    Array.prototype.map = function(callback, thisArg) {
-      var T, A, k;
-      if (this == null) {
-        throw new TypeError(&quot; this is null or not defined&quot;);
-      }
-      var O = Object(this);
-      var len = O.length &gt;&gt;&gt; 0;
-      if (typeof callback !== &quot;function&quot;) {
-        throw new TypeError(callback + &quot; is not a function&quot;);
-      }
-      if (thisArg) {
-        T = thisArg;
-      }
-      A = new Array(len);
-      k = 0;
-      while(k &lt; len) {
-        var kValue, mappedValue;
-        if (k in O) {
-          kValue = O[ k ];
-          mappedValue = callback.call(T, kValue, k, O);
-          A[ k ] = mappedValue;
-        }
-        k++;
-      }
-      return A;
-    };      
-  }
-
-  &#x2F;**
-  * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
-  *
-  * @cat Data
-  * @subcat Array Functions
-  * @method forEach
-  * @param {Array} collection The array to be processed.
-  * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
-  *&#x2F;
-  if (!glob.forEach) {
-    glob.forEach = function(collection, cb) {
-      for (var i = 0, len = collection.length; i &lt; len; i++) {
-        
-        if(!isValid(collection[i])) {
-            warning(&quot;forEach(), invalid object processed.&quot;);
-            continue;          
-        }
-
-        if(cb(collection[i],i) === false) {
-          return false;
-        }
-      }
-      return true;
-    };
-  }
-  pub.forEach = glob.forEach;
-
-  &#x2F;**
-   * HashList is a data container that allows you to store information as key -&gt; value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
-   * 
-   * @constructor
-   * @cat Data
-   * @subcat HashList
-   * @method HashList
-   *&#x2F;
-  &#x2F;&#x2F; taken from http:&#x2F;&#x2F;pbrajkumar.wordpress.com&#x2F;2011&#x2F;01&#x2F;17&#x2F;hashmap-in-javascript&#x2F;
-  glob.HashList = function () {
-    var that = {};
-    that.length = 0;
-    that.items = {};
-    
-    &#x2F;&#x2F; TODO: initial function removal in items?      
-    for ( var key in that.items ) {
-      b.println(key);
-    }
-    
-    &#x2F;&#x2F; Please note: this is removing Object fields, but has to be done to have an empty &quot;bucket&quot;
-    function checkKey(key) {
-      if(that.items[key] instanceof Function) {
-          that.items[key] = undefined; 
-      };
-    }
-
-    &#x2F;**
-     * 
-     * This removes a key -&gt; value pair by its key.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.remove
-     * @param {any} key The key to delete
-     * @return {any} The value before deletion
-     *&#x2F;
-    that.remove = function(key) {
-      var tmp_previous;
-      if (typeof that.items[key] != &#x27;undefined&#x27;) {
-        var tmp_previous = that.items[key];
-        delete that.items[key];
-        that.length--;
-      }
-      return tmp_previous;
-    }
-
-    &#x2F;**
-     * This gets a value by its key.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.get
-     * @param {any} key The key to look for
-     * @return {any} The value
-     *&#x2F;
-    that.get = function(key) {    
-      return that.items[key];
-    }
-
-    &#x2F;**
-     * This sets a key -&gt; value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.set
-     * @param {any} key The key to use
-     * @param {any} value The value to set
-     * @return {any} The value after setting
-     *&#x2F;
-    that.set = function(key, value) {
-
-      if( value instanceof Function ) error(&quot;HashList does not support storing Functions as values.&quot;);
-      checkKey(key);
-      if (typeof value != &#x27;undefined&#x27;) {
-        if (typeof that.items[key] === &#x27;undefined&#x27;) {
-          that.length++;
-        }
-        that.items[key] = value;
-      }
-      return that.items[key];
-    }
-
-    &#x2F;**
-     * Checks for the existence of a given key.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.hasKey
-     * @param {any} key The key to check
-     * @return {boolean} 
-     *&#x2F;
-    that.hasKey = function(key) {
-      checkKey(key);
-      return typeof that.items[key] != &#x27;undefined&#x27;;
-    }
-
-    &#x2F;**
-     * Checks if a certain value exists at least once in all of the key -&gt; value pairs.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.hasValue
-     * @param {any} value 
-     * @return {boolean} 
-     *&#x2F;
-    that.hasValue = function(value) {
-      var obj = that.items;
-      var found = false;
-      for(var key in obj) {
-        if (obj[key] === value) {
-          found = true;
-          break;
-        };
-      }
-      return found;
-    }
-    
-    &#x2F;**
-     * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.getKeysByValues
-     * @return {Array} An array with all the keys 
-     *&#x2F;
-    that.getKeysByValues = function() {
-        var obj = that.items;
-        var keys = [];
-        for(var key in obj) 
-          {
-            if( typeof obj[key] != &#x27;number&#x27; ) error(&quot;HashList.getKeysByValues(), only works with Numbers as values. &quot;);
-            keys.push(key);
-          }
-        return keys.sort(function(a,b){return obj[b]-obj[a]});
-    }
-
-    &#x2F;**
-     * Returns an array with all keys in a sorted order from higher to lower magnitude. 
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.getSortedKeys
-     * @return {Array} An array with all the keys 
-     *&#x2F;
-    that.getSortedKeys = function () {
-        return that.getKeys().sort(); &#x2F;&#x2F; [&quot;a&quot;, &quot;b&quot;, &quot;z&quot;]
-    }    
-
-    &#x2F;**
-     * Returns an array with all keys.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.getKeys
-     * @return {Array} An array with all the keys 
-     *&#x2F;
-    that.getKeys = function () {
-        var keys = [];
-
-        for(var key in that.items)
-        {
-            if(that.items.hasOwnProperty(key))
-            {
-                keys.push(key);
-            }
-        }
-        return keys;
-    }
-
-    &#x2F;**
-     * Returns an array with all keys.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.getKeys
-     * @return {Array} An array with all the keys 
-     *&#x2F;
-    that.getValues = function () {
-
-      var obj = that.items;
-      var values = [];
-
-      for(var key in obj) {
-          values.push(obj[key]);
-      }
-      return values;
-      
-    }
-
-    &#x2F;**
-     * Deletes all the key -&gt; value pairs in this HashList.
-     * 
-     * @cat Data
-     * @subcat HashList
-     * @method HashList.clear
-     *&#x2F;
-    that.clear = function() {
-      for (var i in that.items) {
-        delete that.items[i];
-      }
-      that.length = 0;
-    }
-
-    return that;
-  }  
-  
-  
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; Structure
-  
-  &#x2F;**
-   * Suspends the calling thread for a number of milliseconds.
-   * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
-   *
-   * @cat Environment
-   * @method delay
-   * @param  {Number} milliseconds  The delay time in milliseconds
-   *&#x2F;
-  pub.delay = function (milliseconds) {
-    $.sleep(milliseconds);
-  };
-
-  &#x2F;**
-   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method stories
-   * @param  {Document} doc The document instance to iterate the stories in
-   * @param  {Function} [cb]  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
-   * @return {Stories[]} Array of Stories.
-   *&#x2F;
-  pub.stories = function(doc, cb) {
-    if(arguments.length === 1 &amp;&amp; doc instanceof Document) {
-      return doc.stories;
-    } else if (cb instanceof Function) {
-      return forEach(doc.stories, cb);
-    } else {
-      error(&quot;b.stories(), incorrect call. Wrong parameters!&quot;);
-    }
-  };
-
-  &#x2F;**
-   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each paragraph of the given document, story or text frame.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method paragraphs
-   * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
-   * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
-   * @return {Paragraphs[]} Array of Paragraphs.   
-   *&#x2F;
-  pub.paragraphs = function(item, cb) {
-
-    var err = false;
-    try{
-      item[0]; &#x2F;&#x2F; check if list
-      err = true; &#x2F;&#x2F; access ok -&gt; error
-    } catch (expected) {};
-    if(err) error(&quot;b.paragraphs(), Array&#x2F;Collection has been passed to b.paragraphs(). Single object expected.&quot;);
-
-    if(arguments.length === 1) {
-      return item.paragraphs;
-    } else if (cb instanceof Function) {
-      if (item instanceof Document) {
-        return forEachStoryProperty(item, &#x27;paragraphs&#x27;, cb);
-      } else {
-        return forEach(item.paragraphs, cb);
-      }
-    }
-  };
-
-  &#x2F;&#x2F; &#x2F;**
-  &#x2F;&#x2F;  * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
-  &#x2F;&#x2F;  *
-  &#x2F;&#x2F;  * cat Document
-  &#x2F;&#x2F;  * subcat Multi-Getters
-  &#x2F;&#x2F;  * method sentences
-  &#x2F;&#x2F;  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
-  &#x2F;&#x2F;  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
-  &#x2F;&#x2F;  * return {Array} An array of strings
-  &#x2F;&#x2F;  * 
-  &#x2F;&#x2F;  *&#x2F;
-  &#x2F;&#x2F;  &#x2F;&#x2F; FIXME
-  &#x2F;&#x2F; pub.sentences = function(item, cb) {
-
-  &#x2F;&#x2F;   var err = false;
-  &#x2F;&#x2F;   try{
-  &#x2F;&#x2F;     item[0]; &#x2F;&#x2F; check if list
-  &#x2F;&#x2F;     err = true; &#x2F;&#x2F; access ok -&gt; error
-  &#x2F;&#x2F;   } catch (expected) {};
-  &#x2F;&#x2F;   if(err) error(&quot;b.sentences(), Array&#x2F;Collection has been passed to b.sentences(). Single object expected.&quot;);
-
-  &#x2F;&#x2F;   if(arguments.length &gt;= 1 ) {
-  &#x2F;&#x2F;     var arr;
-  &#x2F;&#x2F;     try{
-  &#x2F;&#x2F;       str = item.contents;  
-  &#x2F;&#x2F;       arr = str.match( &#x2F;[^\.!\?]+[\.!\?]+&#x2F;g );
-  &#x2F;&#x2F;     } catch (e){
-  &#x2F;&#x2F;       error(&quot;b.sentences(), Object passed to b.sentences() does not have text or is incompatible.&quot;);
-  &#x2F;&#x2F;     }
-
-  &#x2F;&#x2F;     if(arguments.length === 1) {
-  &#x2F;&#x2F;       return arr;
-  &#x2F;&#x2F;     } else if (cb instanceof Function) {
-  &#x2F;&#x2F;       forEach(arr,cb);
-  &#x2F;&#x2F;     } else {
-  &#x2F;&#x2F;       error(&quot;b.sentences(), the callback parameter is not a Function.&quot;);
-  &#x2F;&#x2F;     }
-
-  &#x2F;&#x2F;   }
-
-  &#x2F;&#x2F; };
-
-  &#x2F;**
-   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method lines
-   * @param  {Document|Story|TextFrame|Paragraph} item The document, story, text frame or paragraph instance to
-   *                                                   iterate the lines in
-   * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
-   * @return {Lines[]} Array of lines.
-   *&#x2F;
-  pub.lines = function(item, cb) {
-
-    var err = false;
-    try{
-      item[0]; &#x2F;&#x2F; check if list
-      err = true; &#x2F;&#x2F; access ok -&gt; error
-    } catch (expected) {};
-    if(err) error(&quot;b.lines(), Array&#x2F;Collection has been passed to b.lines(). Single object expected.&quot;);
-
-    if(arguments.length === 1) {
-      return item.lines;
-    } else if (cb instanceof Function) {
-      if (item instanceof Document) {
-        return forEachStoryProperty(item, &#x27;lines&#x27;, cb);
-      } else {
-        return forEach(item.lines, cb);
-      }
-    }
-  };
-
-  &#x2F;**
-   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each word of the given document, story, text frame, paragraph or line.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method words
-   * @param  {Document|Story|TextFrame|Paragraph|Line} item The document, story, text frame, paragraph or line instance
-   *                                                        to iterate the words in
-   * @param  {Function} [cb] Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
-   * @return {Words[]} Array of Words.
-   *&#x2F;
-  pub.words = function(item, cb) {
-
-    var err = false;
-    try{
-      item[0]; &#x2F;&#x2F; check if list
-      err = true; &#x2F;&#x2F; access ok -&gt; error
-    } catch (expected) {};
-    if(err) error(&quot;b.words(), Array&#x2F;Collection has been passed to b.words(). Single object expected.&quot;);
-    
-    if(arguments.length === 1){
-      return item.words;
-    } else if (cb instanceof Function) {
-      if (item instanceof Document) {
-        return forEachStoryProperty(item, &#x27;words&#x27;, cb);
-      } else {
-        return forEach(item.words, cb);
-      }
-    }
-  };
-
-  &#x2F;**
-   * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method characters
-   * @param  {Document|Story|TextFrame|Paragraph|Line|Word} item The document, story, text frame, paragraph, line or word instance to
-   *                                                    iterate the characters in
-   * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
-   * @return {Characters} You can use it like an array.
-   *&#x2F;
-  pub.characters = function(item, cb) {
-
-    var err = false;
-    try{
-      item[0]; &#x2F;&#x2F; check if list
-      err = true; &#x2F;&#x2F; access ok -&gt; error
-    } catch (expected) {};
-    if(err) error(&quot;characters(), Array&#x2F;Collection has been passed to b.characters(). Single object expected.&quot;);
-
-    if(arguments.length === 1) {
-      return item.characters;
-    } else if ( cb instanceof Function) {
-      if (item instanceof Document) {
-        return forEachStoryProperty(item, &#x27;characters&#x27;, cb);
-      } else {
-        return forEach(item.characters, cb);
-      }
-    }
-  };
-
-  var forEachStoryProperty = function(doc, property, cb) {
-    var loopCount = 0;
-    pub.stories(doc, function(story) {
-      var properties = story[property];
-      for (var i = 0, len = properties.length; i &lt; len; i++) {
-        if(cb(properties[i], loopCount++) === false) {
-          return false;
-        }
-      }
-      return true;
-    });
-  };
-
-  &#x2F;**
-   * If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method items
-   * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
-   * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
-   * @return {PageItems[]} array or PageItems.
-   *&#x2F;
-  pub.items = function(container, cb) {
-
-    if (container instanceof Document 
-      || container instanceof Page 
-      || container instanceof Layer 
-      || container instanceof Group) {
-
-      if(arguments.length === 1 || cb === false){
-        return container.allPageItems;
-      } else if(cb instanceof Function ) {
-        return forEach(container.allPageItems, cb);
-      }
-    } else {
-      error(&quot;b.items(), Not a valid PageItem container, should be Document, Page, Layer or Group&quot;);
-    }
-  };
+  include &quot;lib&#x2F;globalFunctions.jsx&quot;;
+  include &quot;lib&#x2F;structure.jsx&quot;
   
 
-  &#x2F;**
-   * Removes all PageItems in the given Document, Page, Layer or Group.
-   *
-   * @cat Document
-   * @method clear
-   * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
-   *&#x2F;
-  pub.clear = function(container) {
-
-    if (container instanceof Document 
-      || container instanceof Page 
-      || container instanceof Layer 
-      || container instanceof Group) {
-
-        return forEach(container.allPageItems, function(item,n){
-          &#x2F;&#x2F; Groups have to be avoided for deletion
-          &#x2F;&#x2F; otherwise deletion process is confused
-          if(item !== null &amp;&amp; ! (item instanceof Group) ) {
-            if(item.locked) error(&quot;b.clear(), some items are locked. Please unlock them first and sue then b.clear().&quot;);
-            item.remove();
-          }
-        });
-
-      } else {
-        return false;
-      }
-  };
-
-  &#x2F;**
-   * Removes the provided Page, Layer, PageItem, Swatch, etc.
-   *
-   * @cat Document
-   * @method remove
-   * @param  {PageItem} obj The object to be removed
-   *&#x2F;
-  pub.remove = function(obj) {
-
-    if(obj.hasOwnProperty(&quot;remove&quot;)) {
-      obj.remove();
-    } else {
-      throw new Error(&quot;Provided object cannot be removed in b.remove().&quot;);
-    }
-  }
 
   &#x2F;**
    * Checks whether a var is an Array, returns true if this is the case
@@ -1077,446 +219,10 @@
   };
 
 
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; Environment
-  
-  &#x2F;**
-   * Sets or possibly creates the current document and returns it.
-   * If the param doc is not given the current document gets set to the active document
-   * in the application. If no document at all is open, a new document gets created.
-   *
-   * @cat Document
-   * @method doc
-   * @param  {Document} [doc] The document to set the current document to
-   * @return {Document} The current document instance
-   *&#x2F;
-  pub.doc = function(doc) {
-    if (doc instanceof Document) {
-      setCurrDoc(doc);
-    }
-    return currentDoc();
-  };
-
-  &#x2F;**
-   * Closes the current document.
-   *
-   * @cat Document
-   * @method close
-   * @param  {SaveOptions|Boolean} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
-   * @param  {File} [file] Optional: The indesign file instance to save the document to
-   *&#x2F;
-  pub.close = function(saveOptions, file) {
-    var doc = currentDoc();
-    if (doc) {
-      if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === false ) saveOptions = SaveOptions.no;
-      if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === true ) saveOptions = SaveOptions.yes;
-      doc.close(saveOptions, file);
-      resetCurrDoc();
-    }
-  };
-
-  &#x2F;**
-   * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
-   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
-   * @method canvasMode
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.canvasMode = function ( m ) {
-    if(arguments.length == 0) {
-      return currCanvasMode;
-    } else if ( typeof m === &quot;string&quot; ) {
-
-      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) &amp;&amp; !b.doc().documentPreferences.facingPages ) b.error(&quot;b.canvasMode(), cannot set a facing pages mode to a single page document&quot;);
-
-      currCanvasMode = m;
-      updatePublicPageSizeVars();
-    } else {
-      error(&quot;b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.&quot;);
-    }
-
-  };  
-
-  &#x2F;**
-   * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
-   *
-   * @cat Document
-   * @subcat Page
-   * @method page
-   * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it&#x27;s containing page.
-   * @return {Page} The current page instance
-   *&#x2F;
-  pub.page = function(page) {
-    if (page instanceof Page) {
-      currPage = page;
-    } else if ( typeof page !== &#x27;undefined&#x27; &amp;&amp; page.hasOwnProperty(&quot;parentPage&quot;) ) {
-      currPage = page.parentPage; &#x2F;&#x2F; page is actually a PageItem
-    } else if (typeof page === &#x27;number&#x27;) {
-      if( page &lt; 1 ) {
-        p = 0;
-      } else {
-        p = page - 1;
-      }
-      var tempPage = currentDoc().pages[p];
-      try {
-        tempPage.id;
-      } catch (e) {
-        error(&#x27;b.page(), &#x27; + page + &#x27; does not exist.&#x27;);
-      }
-      currPage = tempPage;
-    } else if (typeof page !== &#x27;undefined&#x27;) {
-      error(&quot;b.page(), bad type for b.page().&quot;);
-    }
-    updatePublicPageSizeVars();
-      if (currDoc.windows.length)
-        app.activeWindow.activePage = currPage; &#x2F;&#x2F; focus in GUI  if not in MODEHIDDEN
-    return currentPage();
-  };
-
-  &#x2F;**
-   * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method addPage
-   * @param  {String} [location] The location placement mode
-   * @return {Page} The new page
-   *&#x2F;
-  pub.addPage = function(location) {
-
-    if(arguments.length === 0) location = b.AT_END; &#x2F;&#x2F; default
-    
-    var nP;
-    try {
-      
-      switch ( location ) {
-        
-        case b.AT_END:
-          nP = currentDoc().pages.add(location);
-          break;
-
-        case b.AT_BEGINNING:
-          nP = currentDoc().pages.add(location);     
-          break;
-
-        case b.AFTER:
-          nP = currentDoc().pages.add(location, pub.page() ); 
-          break;
-
-        case b.BEFORE:
-          nP = currentDoc().pages.add(location, pub.page() );
-          break;
-
-        default:
-          throw new Error(); 
-          break;
-
-      };
-
-      pub.page( nP ); 
-      return nP;
-
-    } catch (e) {
-      error(&quot;b.addPage(), invalid location argument passed to addPage()&quot;);
-    }
-
-  };
-
-  &#x2F;**
-   * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method removePage
-   * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
-   *&#x2F;
-  pub.removePage = function (page) {
-
-    if( typeof page === &#x27;number&#x27; || arguments.length === 0 || page instanceof Page ){
-      var p = pub.page(page); &#x2F;&#x2F; get the page object, todo: add an internal method of page retrieval without setting it to current
-      p.remove();
-      currPage = null; &#x2F;&#x2F; reset!
-      currentPage();
-    } else {
-      error(&quot;b.removePage(), invalid call. Wrong parameter!&quot;);
-    }
-
-  };
-
-  &#x2F;**
-   * Returns the current page number of either the current page or the given Page object.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method pageNumber
-   * @param  {Page} [pageObj] Optional: The page you want to know the number of.
-   * @return {Number} The page number within the document.
-   *&#x2F;
-  pub.pageNumber = function (pageObj) {
-
-      if (typeof pageObj === &#x27;number&#x27;) error(&quot;b.pageNumber(), cannot be called with a Number argument.&quot;);
-
-      if (pageObj instanceof Page) {
-          return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
-      } else {
-          return parseInt(pub.page().name); &#x2F;&#x2F; number of current page
-      }
-
-  };
-
-  &#x2F;&#x2F; TODO: does not work?
-  pub.nextPage = function () {
-      var p = pub.doc().pages.nextItem(currentPage());
-      return pub.page(p);
-  };
-
-  &#x2F;&#x2F; TODO: does not work?
-  pub.previousPage = function () {
-      var p = pub.doc().pages.previousItem(currentPage());
-      return pub.page(p);
-  };
-
-  &#x2F;**
-   * The number of all pages in the current document.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method pageCount
-   * @return The amount of pages.
-   *&#x2F;
-  pub.pageCount = function() {
-    return currentDoc().pages.count();
-  };
-
-  &#x2F;**
-   * The number of all stories in the current document.
-   *
-   * @cat Story
-   * @method storyCount
-   * @return {Number} count The amount of stories.
-   *&#x2F;
-  pub.storyCount = function() {
-    return currentDoc().stories.count();
-  };
-
-  &#x2F;**
-   * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
-   *
-   * @cat Story
-   * @method addToStory
-   * @param {Story} story The story
-   * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
-   * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
-   *&#x2F;
-  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
-    if (story instanceof Story &amp;&amp; arguments.length &gt;= 2) {
-      &#x2F;&#x2F; add string
-      if (isString(itemOrString)) {
-        if (insertionPointorMode instanceof InsertionPoint) {
-          insertionPointorMode.contents = itemOrString;
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
-          story.insertionPoints.firstItem().contents = itemOrString;
-        } else {
-          story.insertionPoints.lastItem().contents = itemOrString;
-        }
-      }
-      &#x2F;&#x2F; add other stuff
-      else {
-        app.select(itemOrString);
-        app.cut();
-        if (insertionPointorMode instanceof InsertionPoint) {
-          app.select(insertionPointorMode);
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
-          app.select(story.insertionPoints.firstItem());
-        } else {
-          app.select(story.insertionPoints.lastItem());
-        }
-        app.paste();
-      }
-    } else {
-      error(&quot;b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
-    }
-  };
-
-  &#x2F;**
-   * Returns the current layer and sets it if argument layer is given.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method layer
-   * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
-   * @return {Layer} The current layer instance
-   *&#x2F;
-  pub.layer = function(layer) {
-    if (layer instanceof Layer) {
-      currLayer = layer;
-    } else if (typeof layer === &#x27;string&#x27;) {
-      var layers = currentDoc().layers;
-      currLayer = layers.item(layer);
-      if (!currLayer.isValid) {
-        currLayer = layers.add({name: layer});
-      }
-    }
-    return currentLayer();
-  };
-
-  &#x2F;**
-   * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
-   *
-   * @cat Document
-   * @method units
-   * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
-   * @return {Constant} Current unit setting
-   *&#x2F;
-  pub.units = function (units) {
-    if (arguments.length === 0) return currUnits;
-
-    if (units === pub.CM ||
-        units === pub.MM ||
-        units === pub.PT ||
-        units === pub.PX ||
-        units === pub.IN) {
-      var unitType = null;
-      if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
-      else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
-      else if (units === pub.PT) unitType = MeasurementUnits.points;
-      else if (units === pub.PX) unitType = MeasurementUnits.pixels;
-      else if (units === pub.IN) unitType = MeasurementUnits.inches;
-      var doc = currentDoc();
-      with (doc.viewPreferences){
-        &#x2F;&#x2F;* MeasurementUnits.agates
-        &#x2F;&#x2F;* MeasurementUnits.picas
-        &#x2F;&#x2F;* MeasurementUnits.points
-        &#x2F;&#x2F;* MeasurementUnits.inches
-        &#x2F;&#x2F;* MeasurementUnits.inchesDecimal
-        &#x2F;&#x2F;* MeasurementUnits.millimeters
-        &#x2F;&#x2F;* MeasurementUnits.centimeters
-        &#x2F;&#x2F;* MeasurementUnits.ciceros
-        horizontalMeasurementUnits = unitType;
-        verticalMeasurementUnits = unitType;
-      }
-      currUnits = units;
-      updatePublicPageSizeVars();
-    } else {
-      error(&quot;b.unit(), not supported unit&quot;);
-    }
-    return currUnits;
-  };
-
-  &#x2F;**
-   * Creates a vertical guide line at the current spread and current layer.
-   *
-   * @cat Document
-   * @method guideX
-   * @param  {Number} x Position of the new guide
-   * @return {Guide} New guide
-   *&#x2F;
-  pub.guideX = function (x) {
-    var guides = currentPage().guides;
-    var guide = guides.add( currentLayer() );
-    with (guide) {
-      fitToPage = true;
-      orientation = HorizontalOrVertical.VERTICAL;
-      location = x;
-    }
-    return guide;
-  };
-
-  &#x2F;**
-   * Creates a horizontal guide line at the current spread and current layer.
-   *
-   * @cat Document
-   * @method guideY
-   * @param  {Number} y Position of the new guide
-   * @return {Guide} New guide
-   *&#x2F;
-  pub.guideY = function (y) {
-    var guides = currentPage().guides;
-    var guide = guides.add( currentLayer() );
-    with (guide) {
-      fitToPage = true;
-      orientation = HorizontalOrVertical.HORIZONTAL;
-      location = y;
-    }
-    return guide;
-  };
-
-  &#x2F;**
-   * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
-   *
-   * @cat Document
-   * @subcat Page
-   * @method margins
-   * @param {Number} [top] Top margin or all if only one
-   * @param {Number} [right] Right margin
-   * @param {Number} [bottom] Bottom margin
-   * @param {Number} [left] Left margin
-   * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank
-   * @return {Object} Current page margins with these properties: top, right, bottom, left
-   *&#x2F;
-  pub.margins = function(top, right, bottom, left, pageNumber) {
-
-    if (arguments.length === 0){
-      
-      return {&#x27;top&#x27;:pub.page(pageNumber).marginPreferences.top,
-              &#x27;right&#x27;:pub.page(pageNumber).marginPreferences.right,
-              &#x27;bottom&#x27;:pub.page(pageNumber).marginPreferences.bottom,
-              &#x27;left&#x27;:pub.page(pageNumber).marginPreferences.left
-              };
-      
-    } else if (arguments.length === 1) {
-      right = bottom = left = top;
-      }
-
-    if(pageNumber != undefined){
-      pub.page(pageNumber).marginPreferences.top = top;
-      pub.page(pageNumber).marginPreferences.right = right;
-      pub.page(pageNumber).marginPreferences.bottom = bottom;
-      pub.page(pageNumber).marginPreferences.left = left;
-    }else{
-      currentPage().marginPreferences.top = top;
-      currentPage().marginPreferences.right = right;
-      currentPage().marginPreferences.bottom = bottom;
-      currentPage().marginPreferences.left = left;
-    }
-    };
-
-  &#x2F;**
-   * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top&#x2F;right&#x2F;bottom&#x2F;left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
-   *
-   * @cat Document
-   * @subcat Page
-   * @method bleeds
-   * @param {Number} [top] Top bleed or all if only one
-   * @param {Number} [right] Right bleed
-   * @param {Number} [bottom] Bottom bleed
-   * @param {Number} [left] Left bleed
-   *&#x2F;
-  pub.bleeds = function(top, right, bottom, left) {
-
-    if (arguments.length === 0){
-      return {&#x27;top&#x27;:currentDoc().documentPreferences.documentBleedTopOffset,
-              &#x27;right&#x27;:currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
-              &#x27;bottom&#x27;:currentDoc().documentPreferences.documentBleedBottomOffset,
-              &#x27;left&#x27;:currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
-              };
-              
-  } else if (arguments.length === 1) {
-    right = bottom = left = top;
-    }else{
-    currentDoc().documentPreferences.documentBleedUniformSize = false;
-  }
-
-    currentDoc().documentPreferences.documentBleedTopOffset = top;
-    currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
-    currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
-    currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
-  };
-
+  include &quot;lib&#x2F;environment.jsx&quot;;
 
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Data
-  
 
   pub.JSON = {
     &#x2F;**
@@ -1584,7 +290,7 @@
     }
   };
 
-  &#x2F;&#x2F; Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock don&#x27;t mind.
+  &#x2F;&#x2F; Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock won&#x27;t mind.
   &#x2F;&#x2F; https:&#x2F;&#x2F;github.com&#x2F;mbostock&#x2F;d3&#x2F;tree&#x2F;master&#x2F;src&#x2F;dsv
   pub.CSV = new CSV();
   function CSV() {
@@ -1612,7 +318,7 @@
     *&#x2F;
     this.delimiter = function(delimiter) {
       if (arguments.length === 0) return delimiterStr;
-      if (typeof separator === &#x27;string&#x27;) {
+      if (typeof delimiter === &#x27;string&#x27;) {
         initDelimiter(delimiter);
       } else {
         error(&quot;b.CSV.delimiter, separator has to be a character or string&quot;);
@@ -2126,6 +832,47 @@
     return str.replace(&#x2F;^\s*&#x2F;, &quot;&quot;).replace(&#x2F;\s*$&#x2F;, &quot;&quot;).replace(&#x2F;\r*$&#x2F;, &quot;&quot;);
   };
 
+  &#x2F;**    
+   * Checks whether an URL string is valid.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method isURL
+   * @param {String} url An url string to be checked
+   * @return {Boolean} Returns either true or false
+   *&#x2F;
+  var isURL = pub.isURL = function(url) {
+    var pattern = &#x2F;(ftp|http|https):\&#x2F;\&#x2F;(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\&#x2F;|\&#x2F;([\w#!:.?+=&amp;%@!\-\&#x2F;]))?&#x2F;;
+    return pattern.test(url);
+  };
+
+  &#x2F;**    
+   * Checks whether a string ends with a specific character or string.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method endsWith
+   * @param {String} str A string to be checked
+   * @return {Boolean} Returns either true or false
+   *&#x2F;
+  var endsWith = pub.endsWith = function(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+  };
+
+  &#x2F;**    
+   * Checks whether a string starts with a specific character or string.    
+   * 
+   * @cat Data
+   * @subcat String Functions
+   * @method startsWith
+   * @param {String} str A string to be checked
+   * @return {Boolean} Returns either true or false
+   *&#x2F;
+  var startsWith = pub.startsWith = function(str, prefix) {
+    return str.indexOf(prefix) === 0;
+  };
+
+
   &#x2F;&#x2F; ----------------------------------------
   &#x2F;&#x2F; Shape
   
@@ -2205,6 +952,13 @@
    * @param  {Number} y2 Point B y-value
    * @return {GraphicLine} New GraphicLine
    *&#x2F;
+  &#x2F;* 
+   *  TODO: Vectors as arguments
+   *  @example 
+   *    var vec1 = new b.Vector( x1, y1 );
+   *    var vec2 = new b.Vector( x2, y2 );
+   *    b.line( vec1, vec2 );
+   *&#x2F;
   pub.line = function(x1, y1, x2, y2) {
     if (arguments.length !== 4) error(&quot;b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2&quot;);
     var lines = currentPage().graphicLines;
@@ -2218,7 +972,7 @@
     }
     newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
     newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     AnchorPoint.CENTER_ANCHOR,
                      currMatrix.adobeMatrix() );
     return newLine;
   };
@@ -2227,14 +981,23 @@
    * Using the beginShape() and endShape() functions allow creating more complex forms. 
    * beginShape() begins recording vertices for a shape and endShape() stops recording. 
    * After calling the beginShape() function, a series of vertex() commands must follow. 
-   * To stop drawing the shape, call endShape().
+   * To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to 
+   * create from the provided vertices have to be closed or not (to connect the beginning and the end).
    *
    * @cat Document
    * @subcat Primitives
    * @method beginShape
+   * @param shapeMode Set b.CLOSE if the new Path should be auto-closed.
    *&#x2F;
-  pub.beginShape = function() {
+  pub.beginShape = function(shapeMode) {
     currVertexPoints = [];
+    currPathPointer = 0;
+    currPolygon = null;
+    if( typeof shapeMode != null) {
+      currShapeMode = shapeMode;
+    } else {
+      currShapeMode = null;
+    }
   };
 
   &#x2F;**
@@ -2273,51 +1036,78 @@
     }
   };
 
+
+  &#x2F;**
+   * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. 
+   * New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for 
+   * the setting (see b.CLOSE) given in beginShape(shapeMode).
+   *
+   * @cat Document
+   * @subcat Primitives
+   * @method addPath
+   *&#x2F;
+  pub.addPath = function() {
+    doAddPath();
+    currPathPointer++;
+  }
+
   &#x2F;**
    * The endShape() function is the companion to beginShape() and may only be called 
-   * after beginShape(). The value of the kind parameter tells whether the shape to 
-   * create from the provided vertices has to be closed or not (to connect the beginning and the end).
+   * after beginShape(). 
    *
    * @cat Document
    * @subcat Primitives
    * @method endShape
    * @return {GraphicLine|Polygon} newShape
    *&#x2F;
-  pub.endShape = function(shapeMode) {
+  pub.endShape = function() {
+    doAddPath();
+    currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix() );    
+    return currPolygon;
+  };
+
+  function doAddPath() {
     if (isArray(currVertexPoints)) {
       if (currVertexPoints.length &gt; 0) {
-        var newShape = null;
-        if (shapeMode === pub.CLOSE) {
-          newShape = currentPage().polygons.add( currentLayer() );
+        
+        if(currPolygon === null) {
+          addPolygon();
         } else {
-          newShape = currentPage().graphicLines.add( currentLayer() );
+          currPolygon.paths.add();
         }
-        with (newShape) {
-          strokeWeight = currStrokeWeight;
-          strokeTint = currStrokeTint;
-          fillColor = currFillColor;
-          fillTint = currFillTint;
-          strokeColor = currStrokeColor;
-        }
-        newShape.paths.item(0).entirePath = currVertexPoints;
-        newShape.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                         AnchorPoint.TOP_LEFT_ANCHOR,
-                         currMatrix.adobeMatrix() );
-
+        
+        currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
         currVertexPoints = [];
-        return newShape;
       }
     } else {
       notCalledBeginShapeError();
     }
-  };
+  }
+
+  function addPolygon() {
+    if (currShapeMode === pub.CLOSE) {
+      currPolygon = currentPage().polygons.add( currentLayer() );
+    } else {
+      currPolygon = currentPage().graphicLines.add( currentLayer() );
+    }
+    with (currPolygon) {
+      strokeWeight = currStrokeWeight;
+      strokeTint = currStrokeTint;
+      fillColor = currFillColor;
+      fillTint = currFillTint;
+      strokeColor = currStrokeColor;
+    }       
+  }
+
   
   function notCalledBeginShapeError () {
     error(&quot;b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()&quot;);
   }
 
   &#x2F;**
-   * Draws a rectangle to the page.
+   * Draws a rectangle on the page.
    *
    * @cat Document
    * @subcat Primitives
@@ -2330,7 +1120,7 @@
    *&#x2F;
   pub.rect = function(x, y, w, h){
     if (w === 0 || h === 0) {
-      &#x2F;&#x2F; indesign doesn&#x27;t draw a rectangle if width or height is set to 0
+      &#x2F;&#x2F; indesign doesn&#x27;t draw a rectangle if width or height are set to 0
       return false;
     }
     if (arguments.length !== 4) error(&quot;b.rect(), not enough parameters to draw a rect! Use: x, y, w, h&quot;);
@@ -2793,8 +1583,8 @@
    *&#x2F;
   pub.lerpColor = function (c1, c2, amt) {
     if ( (c1 instanceof Color || c1 instanceof Swatch) &amp;&amp; 
-          (c2 instanceof Color || c2 instanceof Swatch) &amp;&amp; 
-          typeof amt === &#x27;number&#x27;) {
+       (c2 instanceof Color || c2 instanceof Swatch) &amp;&amp; 
+        typeof amt === &#x27;number&#x27;) {
       if (c1.space === ColorSpace.CMYK &amp;&amp; c2.space === ColorSpace.CMYK) {
         var C1 = c1.colorValue[0];
         var M1 = c1.colorValue[1];
@@ -2931,6 +1721,8 @@
         textItem[prop] = val;
       };
 
+    if(typeof item === &#x27;string&#x27;) error( &quot;b.typo() cannot work on strings. Please pass a Text object to modify.&quot; );
+
     if(!isValid(item)){
       warning(&quot;b.typo(), invalid object passed&quot;);
       return;
@@ -2959,17 +1751,17 @@
   };
 
   var isValid = function (item) {
-      if (typeof item != &#x27;undefined&#x27;) {
-          if (item.hasOwnProperty(&quot;isValid&quot;)) {
-              if (!item.isValid) {
-                  return false;
-              } else {
-                  return true;
-              }
-          }
-          return true; &#x2F;&#x2F; if does not have isValid field -&gt; normal array element and not collection
+    if (typeof item != &#x27;undefined&#x27;) {
+      if (item.hasOwnProperty(&quot;isValid&quot;)) {
+        if (!item.isValid) {
+          return false;
+        } else {
+          return true;
+        }
       }
-      return false;
+      return true; &#x2F;&#x2F; if does not have isValid field -&gt; normal array element and not collection
+    }
+    return false;
   };
 
   &#x2F;**
@@ -3282,7 +2074,30 @@
     if (file instanceof File) {
       result = file;
     } else {
-      result = new File(projectPath().absoluteURI + &#x27;&#x2F;&#x27; + file);
+
+      &#x2F;&#x2F; get rid of some special cases the user might specify
+      var pathNormalized = file.split(&quot;&#x2F;&quot;);
+      for (var i = 0; i &lt; pathNormalized.length; i++) {
+        if (pathNormalized[i] === &quot;&quot; || pathNormalized[i] === &quot;.&quot;) {
+          pathNormalized.splice(i,1);
+        };
+      };
+
+      var tmpPath = projectPath().absoluteURI;
+      var fileName = pathNormalized[pathNormalized.length-1];
+      
+      &#x2F;&#x2F; contains the path folders? if so create them ...
+      if (pathNormalized.length &gt; 1) {
+        var folders = pathNormalized.slice(0,-1);
+        for (var i = 0; i &lt; folders.length; i++) {
+          tmpPath += &quot;&#x2F;&quot;+folders[i] 
+          var f = new Folder(tmpPath);
+          if (!f.exists) f.create();
+        };
+      } 
+
+      &#x2F;&#x2F; result = new File(projectPath().absoluteURI + &#x27;&#x2F;&#x27; + file);
+      result = new File(tmpPath + &#x27;&#x2F;&#x27; + fileName);
     }
     if (mustExist &amp;&amp; !result.exists) {
       error(&#x27;The file &quot;&#x27; + result + &#x27;&quot; does not exist.&#x27;);
@@ -3290,14 +2105,22 @@
     return result;
   };
   
-  var projectPath = function() {
-      var docPath = null;
-      try {
-        docPath = currentDoc().filePath;
-      } catch (e) {
-        error(&quot;The current document must be saved before its project directory can be accessed.&quot;);
-      }
-      return docPath;
+  &#x2F;**
+   * Get the full path to the folder of the active document.
+   *
+   * @cat Document
+   * @subcat Misc
+   * @method projectPath
+   * @return {File} The folder of the the active document
+   *&#x2F;
+  var projectPath = pub.projectPath = function() {
+    var docPath = null;
+    try {
+      docPath = currentDoc().filePath;
+    } catch (e) {
+      error(&quot;The current document must be saved before its project directory can be accessed.&quot;);
+    }
+    return docPath;
   };
   
 
@@ -4291,156 +3114,87 @@
   };
 
   &#x2F;**
-   * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method labels
-   * @param  {String} label The label identifier
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+   * Executes a shell command and returns the result, currently Mac only.
+   * 
+   * BE CAREFUL!
+   * 
+   * @cat Data
+   * @subcat Input
+   * @method shellExecute
+   * @param  {String} cmd The shell command to execute
+   * @return {String}
    *&#x2F;
-  pub.labels = function(label, cb) {
-    var result = [];
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        &#x2F;&#x2F; push pageItem&#x27;s 1st element to get the concrete PageItem instance, e.g. a TextFrame
-        result.push(pageItem.getElements()[0]);
+  pub.shellExecute = function(cmd) {
+    if (Folder.fs === &quot;Macintosh&quot;) {
+      try {
+        return app.doScript(&quot;return do shell script item 1 of arguments&quot;, ScriptLanguage.applescriptLanguage, [cmd]);
+      } catch (e) {
+        error(&quot;b.shellExecute(): &quot;+e);
       }
+    } else {
+      error(&quot;b.shellExecute() is a Mac only feature at the moment. Sorry!&quot;)
     }
-    if (arguments.length === 2 &amp;&amp; cb instanceof Function) {
-      return forEach(result, cb);
-    }
-    if(result.length === 0) b.error(&quot;b.labels(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
-    return result;
   };
-  
-  &#x2F;**
-   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don&#x27;t want to deal with a single-element array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method label
-   * @param  {String} label The label identifier
-   * @return {PageItem} The first PageItem of all the hits
-   *&#x2F;  
-  pub.label = function(label) {
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        return pageItem;  
-      }
-    }
-    b.error(&quot;b.label(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
-  }
 
   &#x2F;**
-   * Returns the currently selected object(s)
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selections
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {Object[]} Array of selected object(s).
-   *&#x2F;
-  pub.selections = function(cb) {
-    if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something.&quot;);
-    if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
-      return forEach(app.selection, cb);
-    } 
-    return app.selection;
-  };
-  
-  &#x2F;**
-   * Returns the first currently selected object. Use this if you know you only have one selected item and don&#x27;t want to deal with an array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selection
-   * @return {Object} The first selected object
-   *&#x2F;
-  pub.selection = function(cb) {
-    if(app.selection.length === 0) error(&quot;b.selection(), selection is empty. Please select something.&quot;);
-    return app.selection[0];
-  };  
-
-  &#x2F;**
-   * Reads the contents of a file into a String.
+   * Reads the contents of a file or loads an URL into a String.
    * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadString
-   * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
-   * @return {String}  String file content.
+   * @param  {String|File} fileOrString The text file name in the document&#x27;s data directory or a File instance or an URL
+   * @return {String}  String file or URL content.
    *&#x2F;
-  pub.loadString = function(file) {
-
-    &#x2F;&#x2F;http:&#x2F;&#x2F;codegolf.stackexchange.com&#x2F;questions&#x2F;464&#x2F;shortest-url-regex-match-in-javascript
-    &#x2F;&#x2F; var re = &#x2F;(^|\s)((https?:\&#x2F;\&#x2F;)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\&#x2F;\S*)?)&#x2F;gi;  
-    &#x2F;&#x2F; if( typeof(file) === &quot;string&quot; &amp;&amp; file.match(re)) { &#x2F;&#x2F; load URL
-    
-    &#x2F;&#x2F;   return getURLImpl(file);
-
-    &#x2F;&#x2F; } else {
-      var inputFile = initDataFile(file, true),
+  pub.loadString = function(fileOrString) {
+    if (isURL(fileOrString)) {
+      return getURL(fileOrString);
+    } else {
+      var inputFile = initDataFile(fileOrString, true),
       data = null;
-
       inputFile.open(&#x27;r&#x27;);
       data = inputFile.read();
       inputFile.close();
       return data;
-    &#x2F;&#x2F; }
-
+    }
   };
 
-  &#x2F;&#x2F; var getURLImpl = function(url) {
-  &#x2F;&#x2F;     #include &quot;basiljs&#x2F;bundle&#x2F;lib&#x2F;extendables&#x2F;extendables.jsx&quot;;
-  &#x2F;&#x2F;     var http = require(&quot;http&quot;);
-  &#x2F;&#x2F;     if (!http.has_internet_access()) throw new Error(&quot;No internet connection&quot;);
-  &#x2F;&#x2F;     var req = new http.HTTPRequest(&quot;GET&quot;, url);
-  &#x2F;&#x2F;     req.follow_redirects(true);
-  &#x2F;&#x2F;     req.header(&quot;User-Agent&quot;, &quot;basiljs-&quot; + b.VERSION);
-  &#x2F;&#x2F;     var res = req.do();
-  &#x2F;&#x2F;     return res.body;
-  &#x2F;&#x2F; }
+  var getURL = function(url) {
+    if (isURL(url)) {
+      if (Folder.fs === &quot;Macintosh&quot;) {
+        return pub.shellExecute(&quot;curl -L &#x27;&quot;+url+&quot;&#x27;&quot;);
+      } else {
+        error(&quot;Loading of strings via an URL is a Mac only feature at the moment. Sorry!&quot;)
+      }
+    } else {
+      error(&quot;The url &quot;+url+&quot; is not a valid one. Please double check!&quot;)
+    }
+  };
 
   &#x2F;**
-   * Reads the contents of a file and creates a String array of its individual lines.
+   * Reads the contents of a file or loads an URL and creates a String array of its individual lines.
    * If the file is specified by name as String, it must be located in the document&#x27;s data directory.
    *
    * @cat Data
    * @subcat Input
    * @method loadStrings
-   * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance
-   * @return {String[]}  Array of the individual lines in the given file.
+   * @param  {String|File} file The text file name in the document&#x27;s data directory or a File instance or an URL
+   * @return {String[]}  Array of the individual lines in the given File or URL
    *&#x2F;
   pub.loadStrings = function(file) {
-
-    &#x2F;&#x2F;http:&#x2F;&#x2F;codegolf.stackexchange.com&#x2F;questions&#x2F;464&#x2F;shortest-url-regex-match-in-javascript
-    &#x2F;&#x2F; var re = &#x2F;(^|\s)((https?:\&#x2F;\&#x2F;)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\&#x2F;\S*)?)&#x2F;gi;  
-    &#x2F;&#x2F; if( typeof(file) === &quot;string&quot; &amp;&amp; file.match(re)) { &#x2F;&#x2F; load URL
-    
-    &#x2F;&#x2F;   var result = getURLImpl(file);
-    &#x2F;&#x2F;   return b.split(result, &quot;\n&quot;);
-
-    &#x2F;&#x2F; } else {
-
+    if (isURL(file)) {
+      var result = getURL(file);
+      return result.match(&#x2F;[^\r\n]+&#x2F;g);
+    } else {
       var inputFile = initDataFile(file, true),
       result = [];
-
       inputFile.open(&#x27;r&#x27;);
       while (!inputFile.eof) {
         result.push(inputFile.readln());
       }
       inputFile.close();
-
       return result;
-    &#x2F;&#x2F; }
-
+    }
   };
 
 
@@ -4492,7 +3246,7 @@
   };
 
   &#x2F;**
-   * Writes an array of strings to a file, one line per string. This file is saved to the document&#x27;s data directory.
+   * Writes an array of strings to a file, one line per string.
    * If the given file exists it gets overridden.
    *
    * @cat Output
@@ -4506,6 +3260,22 @@
     forEach(strings, function(s) {
       outputFile.writeln(s);
     });
+    outputFile.close();
+  };
+
+  &#x2F;**
+   * Writes a string to a file.
+   * If the given file exists it gets overridden.
+   *
+   * @cat Output
+   * @method saveString
+   * @param  {String|File} file The file name or a File instance
+   * @param  {String} string The string to be written
+   *&#x2F;
+  pub.saveString = function(file, string) {
+    var outputFile = initExportFile(file);
+    outputFile.open(&#x27;w&#x27;);
+    outputFile.write(string);
     outputFile.close();
   };
 
@@ -4536,6 +3306,57 @@
     var outputFile = initExportFile(file);
     if (typeof showOptions !== &quot;boolean&quot;) showOptions = false;
     currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  };
+
+  &#x2F;**
+   * Downloads an URL to a file, currently Mac only.
+   *
+   * @cat Output
+   * @method download
+   * @param {String} url The download url
+   * @param {String|File} [file] A relative file path in the project folder or a File instance
+   *&#x2F;
+  pub.download = function(url, file){
+    var projPath = projectPath().fsName.replace(&quot; &quot;,&quot;\\ &quot;);
+    var scriptPath = &quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;download.sh&quot;;
+
+    if (isURL(url)) {
+      var cmd = null;
+
+      if (file) {
+        if (file instanceof File) {
+          var downloadFolder = file.parent.fsName;
+          var fileName = file.displayName;
+          downloadFolder = downloadFolder.replace(&quot; &quot;,&quot;\\ &quot;);
+          fileName = fileName.replace(&quot; &quot;,&quot;\\ &quot;);
+          cmd = [&quot;sh&quot;,scriptPath,downloadFolder,url,fileName].join(&quot; &quot;);
+
+        } else { 
+          var downloadFolder = file.substr(0,file.lastIndexOf(&quot;&#x2F;&quot;));
+          var fileName = file.substr(file.lastIndexOf(&quot;&#x2F;&quot;)+1);
+
+          &#x2F;&#x2F; get rif of some special cases
+          if(startsWith(downloadFolder,&quot;.&#x2F;&quot;)) downloadFolder.substr(2);
+          if(startsWith(downloadFolder,&quot;&#x2F;&quot;)) downloadFolder.substr(1);
+
+          downloadFolder = downloadFolder.replace(&quot; &quot;,&quot;\\ &quot;);
+          fileName = fileName.replace(&quot; &quot;,&quot;\\ &quot;);
+          downloadFolder = projPath + &quot;&#x2F;&quot;+ downloadFolder;  
+          cmd = [&quot;sh&quot;,scriptPath,downloadFolder,url,fileName].join(&quot; &quot;);
+          
+        }
+
+      } else {
+        var downloadFolder = projPath + &quot;&#x2F;data&#x2F;download&quot;;
+        var cmd = [&quot;sh&quot;,scriptPath,downloadFolder,url].join(&quot; &quot;);
+      }
+
+      println(cmd);
+      pub.shellExecute(cmd);
+
+    } else {
+      error(&quot;The url &quot;+url+&quot; is not a valid one. Please double check!&quot;)
+    }
   };
   
   &#x2F;**
@@ -5167,6 +3988,7 @@
    * @param {Number} angle The angle specified in radians
    *&#x2F;
   pub.rotate = function (angle) {
+    if(typeof arguments[0] === &#x27;undefined&#x27;) error(&quot;Please provide an angle for rotation.&quot;);
     currMatrix.rotate(angle);
   };
 
@@ -5181,6 +4003,7 @@
    * @param {Number} scaleY The amount to scale the Y axis.
    *&#x2F;
   pub.scale = function (scaleX,scaleY) {
+    if(typeof arguments[0] != &#x27;number&#x27; || (arguments.length === 2 &amp;&amp; typeof arguments[1] != &#x27;number&#x27;) ) error(&quot;Please provide valid x and&#x2F;or y factors for scaling.&quot;);
     currMatrix.scale(scaleX,scaleY);
   };
 
@@ -5194,6 +4017,7 @@
    * @param {Number} ty The amount of offset on the Y axis.
    *&#x2F;
   pub.translate = function (tx,ty) {
+    if(typeof arguments[0] === &#x27;undefined&#x27; || typeof arguments[1] === &#x27;undefined&#x27;) error(&quot;Please provide x and y coordinates for translation.&quot;);
     currMatrix.translate(tx,ty);
   };
 
@@ -5393,7 +4217,7 @@
       this.panel = Window.find(&quot;window&quot;, &quot;processing...&quot;);
       if (this.panel === null) {
         this.panel = new Window(&#x27;window&#x27;, &quot;processing...&quot;);
-        var logo = (Folder.fs == &quot;Macintosh&quot; ) ? new File(&quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;) : new File(&quot;%USERPROFILE%Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;); &#x2F;&#x2F;todo Windows File Path for logo  , in the meantime embed as binary String
+        var logo = (Folder.fs == &quot;Macintosh&quot; ) ? new File(&quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;) : new File(&quot;%USERPROFILE%Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;basil.png&quot;);
         if (logo.exists) {
           this.panel.add(&quot;image&quot;, undefined, logo);
         }

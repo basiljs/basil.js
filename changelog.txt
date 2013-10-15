@@ -3,9 +3,13 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 1.xx
+basil.js 1.05 - 9 October 2013
 
 * Bugfix to b.endShape()
+* Bugfix to b.loadString() and b.download(), 
+  now supports more than one GET parameter
+* changed default anchor to center for transforms with line()
+* internal safety improvements
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.04 - 23 September 2013
