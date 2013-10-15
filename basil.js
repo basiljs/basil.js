@@ -3,7 +3,7 @@
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
   B A S I L . J S
-  An attempt to port the spirit of the Processing visualization language to Adobe Indesign.
+  Bringing the spirit of the Processing visualization language to Adobe Indesign.
   
   License        - MIT
 
