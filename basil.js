@@ -54,23 +54,23 @@
    */
   pub.VERSION = "1.06";  
 
-  #include "includes/core.jsx";
+  #include "includes/core.js";
 
-  #include "includes/constants.jsx";
-  #include "includes/public-vars.jsx";
-  #include "includes/private-vars.jsx";
-  #include "includes/global-functions.jsx";
+  #include "includes/constants.js";
+  #include "includes/public-vars.js";
+  #include "includes/private-vars.js";
+  #include "includes/global-functions.js";
   
-  #include "includes/structure.jsx";
-  #include "includes/environment.jsx";
-  #include "includes/data.jsx";
-  #include "includes/shape.jsx";
-  #include "includes/color.jsx";
-  #include "includes/typography.jsx";
-  #include "includes/image.jsx";
-  #include "includes/math.jsx";
-  #include "includes/transformation.jsx";
-  #include "includes/ui.jsx";
+  #include "includes/structure.js";
+  #include "includes/environment.js";
+  #include "includes/data.js";
+  #include "includes/shape.js";
+  #include "includes/color.js";
+  #include "includes/typography.js";
+  #include "includes/image.js";
+  #include "includes/math.js";
+  #include "includes/transformation.js";
+  #include "includes/ui.js";
 
   init();
   
