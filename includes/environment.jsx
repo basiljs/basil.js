@@ -185,10 +185,24 @@
 
   };
 
-  // TODO: does not work?
+  /**
+   * Returns and sets view to the next page relevant to the current page
+   *
+   * @cat Document
+   * @subcat Page
+   * @method nextPage
+   * @return {Number} The page number within the document.
+   */
   pub.nextPage = function () {
-      var p = pub.doc().pages.nextItem(currentPage());
+    var index = currentPage().documentOffset;
+    try {
+      var p = currentDoc().pages.item( index+1 );
       return pub.page(p);
+    }
+    catch(e) {
+      error("b.nextPage(), at the end of document try b.page(0) or b.previousPage() instead" );
+      return currentPage();
+    }
   };
 
   // TODO: does not work?
