@@ -231,33 +231,51 @@
   pub.BEFORE = LocationOptions.BEFORE;
 
   /**
-     * Used with b.addPage() to set the position of the new page in the book.
-     * @property AFTER {String}
-     * @cat Document
-     * @subcat Page
-     */
+   * Used with b.addPage() to set the position of the new page in the book.
+   * @property AFTER {String}
+   * @cat Document
+   * @subcat Page
+   */
   pub.AFTER = LocationOptions.AFTER;
 
-    /**
-    * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
-    * @property MODESILENT {String}
-    * @cat Environment
-    * @subcat modes
-    */
+  /**
+  * Used with b.ui() to set dialog type
+  * @property PALETTE {String}
+  * @cat UI
+  * @subcat dialogs
+  */
+  pub.PALETTE = "palette";
+
+  /**
+  * Used with b.ui() to set dialog type
+  * @property PROMPT {String}
+  * @cat UI
+  * @subcat dialogs
+  */
+  pub.PROMPT = "prompt";
+
+  /**
+  * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
+  * @property MODESILENT {String}
+  * @cat Environment
+  * @subcat modes
+  */
   pub.MODESILENT = "ModeSilent";
-    /**
-     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
-     * @property MODEHIDDEN {String}
-     * @cat Environment
-     * @subcat modes
-     */
+
+  /**
+   * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
+   * @property MODEHIDDEN {String}
+   * @cat Environment
+   * @subcat modes
+   */
   pub.MODEHIDDEN = "ModeHidden";
-    /**
-     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
-     * @property MODEVISIBLE {String}
-     * @cat Environment
-     * @subcat modes
-     */
+
+  /**
+   * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
+   * @property MODEVISIBLE {String}
+   * @cat Environment
+   * @subcat modes
+   */
   pub.MODEVISIBLE = "ModeVisible";
   pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
 
