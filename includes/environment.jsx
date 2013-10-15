@@ -237,6 +237,42 @@
     return currentDoc().pages.count();
   };
 
+  // TODO: add Spread support
+  pub.spread = function(page) {
+  };
+
+  // TODO: add Spread support
+  pub.addSpread = function(location) {
+  };
+
+  // TODO: add Spread support
+  pub.removeSpread = function (page) {
+  };
+
+  // TODO: add Spread support
+  pub.spreadNumber = function (pageObj) {
+  };
+
+  // TODO: add Spread support
+  pub.nextSpread = function () {
+  };
+
+  // TODO: add Spread support
+  pub.previousSpread = function () {
+  };
+
+  /**
+   * The number of all spreads in the current document.
+   *
+   * @cat Document
+   * @subcat Page
+   * @method spreadCount
+   * @return The amount of spreads.
+   */
+  pub.spreadCount = function() {
+    return currentDoc().spreads.count();
+  };
+
   /**
    * The number of all stories in the current document.
    *
