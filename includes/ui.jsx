@@ -16,7 +16,7 @@
  *     }
  *   }
  * };
- * var dialog = new control.palette('Interface Example', controllers);
+ * var dialog = new ui.palette('Interface Example', controllers);
  *
  * function myFunction() {
  *   // do something when the slider is moved
@@ -24,7 +24,7 @@
  *
  * 
  * @example create dialog and add controllers
- * var dialog = new control.palette('Interface Example');
+ * var dialog = new ui.palette('Interface Example');
  * dialog.add('slider', 'mySlider1', 25, {label: 'Doc Width',range: [0,b.width]});
  * dialog.add('slider', 'mySlider2', 25, {label: 'Doc Height', range: [0,b.height]});
  * 
@@ -42,25 +42,11 @@
  *  - add layout customizeability
  */
 
-
-// static dialog types
-// DISCUSS: push these into the main basil.js structure? do we even want these?
-// I prefer the above method of new control.TYPE
-// but this seems 'more' basil.js like
-b.PALETTE = 'palette';
-b.PROMPT = 'prompt';
-
-
-// 'interface' cannot be used, as it's a reserved keyword
-// therefore control will be used
-
-// attempt to clear control of all previous instances
-// first delete control
-delete control;
+delete ui;
 // then redefine control as null
-var control = null;
+var ui = null;
 // then clearly define control with default values
-  control = {
+pub.ui = {
     //
     // Private
     // Global Properties
@@ -94,7 +80,7 @@ var control = null;
     /**
      * Class of individual UI controller elements
      * these are Private methods which are only used
-     * by control.prompt and control.palette via
+     * by ui.prompt and ui.palette via
      * the controllers array and add() method
      * 
      * @param {GroupSUI} Container   the name of the Group (ScriptUI) all the controllers are drawn in
@@ -127,7 +113,7 @@ var control = null;
         };
         // ensures that each controller has the core
         // set of properties
-        return control.__mergeArray(propertiesBase, properties);
+        return ui.__mergeArray(propertiesBase, properties);
       };
 
 
@@ -165,10 +151,10 @@ var control = null;
           name: name,
           width: properties.width
         });*/
-        button.graphics.font = control.__typeface;
+        button.graphics.font = ui.__typeface;
         button.preferredSize.height = properties.height;
         button.preferredSize.width = (properties.width == 'full')
-          ? control.__win.preferredSize.width
+          ? ui.__win.preferredSize.width
           : properties.width;
 
         // printProperties( button.properties );
@@ -190,7 +176,7 @@ var control = null;
 
           // when the onClick event is fired, an attempt is
           // made to call the update() function
-          control.__update();
+          ui.__update();
 
           return clickCount;
         };
@@ -239,14 +225,14 @@ var control = null;
           // update the properties value
           properties['value'] = value;
           // push updated value to the window's returned value array
-          control.__updateWinValues();
+          ui.__updateWinValues();
 
           // the callback connected to the controller
           properties.onChange(value);
 
           // when the onChange event is fired, an attempt is
           // made to call the update() function
-          control.__update();
+          ui.__update();
 
           return value;
         };
@@ -275,7 +261,7 @@ var control = null;
        * @return {Array} properties
        */
       function __initText(properties) {
-        return control.__mergeArray({
+        return ui.__mergeArray({
             length:     null,
             maxLength:  22,       /* default: 22 (== width: 200px) */
             multiline:  false,    /* default: false */
@@ -308,15 +294,15 @@ var control = null;
           width: properties.width
         });*/
         // var xwidth = label.preferredSize[0];
-        // control.__maximumLabelWidth = (labelText.length*xwidth > control.__maximumLabelWidth) 
+        // ui.__maximumLabelWidth = (labelText.length*xwidth > ui.__maximumLabelWidth) 
         //   ? labelText.length*xwidth
-        //   : control.__maximumLabelWidth;
+        //   : ui.__maximumLabelWidth;
         label.justify = 'right';
-        label.graphics.font = control.__typeface;
+        label.graphics.font = ui.__typeface;
 
         // if( label.characters == null ) {
         //   // TODO: define and allow maximum width override
-        //   var width = (control.__maximumLabelWidth < 200) ? control.__maximumLabelWidth : 200;
+        //   var width = (ui.__maximumLabelWidth < 200) ? ui.__maximumLabelWidth : 200;
         //   label.preferredSize = [,-1];
         //   label.characters = ~~(width/xwidth);
         //   label.preferredSize[1] = -1;
@@ -326,9 +312,9 @@ var control = null;
         label.alignment = properties.alignment;
 
         // set longest label for layout adjustment
-        control.__maximumLabelWidth = (label.preferredSize[0] > control.__maximumLabelWidth) 
+        ui.__maximumLabelWidth = (label.preferredSize[0] > ui.__maximumLabelWidth) 
           ? label.preferredSize[0]
-          : control.__maximumLabelWidth;
+          : ui.__maximumLabelWidth;
 
         return label;
       };
@@ -373,9 +359,9 @@ var control = null;
             ? properties.maxLength
             : properties.columns;
         text.minimumSize.height = (properties.multiline && properties.rows != undefined) 
-          ? (control.__typesize+2)*(properties.rows+1)
-          : (control.__typesize+2)*1;
-        text.graphics.font = control.__typeface;
+          ? (ui.__typesize+2)*(properties.rows+1)
+          : (ui.__typesize+2)*1;
+        text.graphics.font = ui.__typeface;
 
         // events
         // not all interface controllers have a native onClick event
@@ -387,7 +373,7 @@ var control = null;
           // update the properties value
           properties['value'] = value;
           // push updated value to the window's returned value array
-          control.__updateWinValues();
+          ui.__updateWinValues();
 
           // the callback connected to the controller
           properties.onClick(value);
@@ -399,14 +385,14 @@ var control = null;
           // update the properties value
           properties['value'] = value;
           // push updated value to the window's returned value array
-          control.__updateWinValues();
+          ui.__updateWinValues();
 
           // the callback connected to the controller
           properties.onChange(value);
 
           // when the onChange event is fired, an attempt is
           // made to call the update() function
-          control.__update();
+          ui.__update();
 
           return value;
         });
@@ -416,14 +402,14 @@ var control = null;
           // update the properties value
           properties['value'] = value;
           // push updated value to the window's returned value array
-          control.__updateWinValues();
+          ui.__updateWinValues();
 
           // the callback connected to the controller
           properties.onChanging(value);
 
           // when the onChanging event is fired, an attempt is
           // made to call the update() function
-          control.__update();
+          ui.__update();
 
           return value;
         };
@@ -449,7 +435,7 @@ var control = null;
        * @return {Array} properties
        */
       function __initRange(properties) {
-        return control.__mergeArray({
+        return ui.__mergeArray({
           range:  (properties.range != undefined) ? properties.range : [0.0, 1.0], /* default: [0.0,1.0] */
           min:    (properties.min != undefined) 
                     ? properties.min
@@ -536,7 +522,7 @@ var control = null;
           // update the properties value
           properties['value'] = value;
           // push updated value to the window's returned value array
-          control.__updateWinValues();
+          ui.__updateWinValues();
 
           // the callback connected to the controller
           properties.onClick(value);
@@ -548,14 +534,14 @@ var control = null;
           // update the properties value
           properties['value'] = value;
           // push updated value to the window's returned value array
-          control.__updateWinValues();
+          ui.__updateWinValues();
 
           // the callback connected to the controller
           properties.onChange(value);
 
           // when the onChange event is fired, an attempt is
           // made to call the update() function
-          control.__update();
+          ui.__update();
 
           return value;
         };
@@ -565,7 +551,7 @@ var control = null;
           // update the properties value
           properties['value'] = value;
           // push updated value to the window's returned value array
-          control.__updateWinValues();
+          ui.__updateWinValues();
 
           // the callback connected to the controller
           properties.onChanging(value);
@@ -574,7 +560,7 @@ var control = null;
 
           // when the onChanging event is fired, an attempt is
           // made to call the update() function
-          control.__update();
+          ui.__update();
 
           return value;
         };
@@ -637,7 +623,7 @@ var control = null;
           ? parseInt(value)
           : (properties.valueType == 'string'
             ? value.toString()
-            : control.__round(value,2)); // default float
+            : ui.__round(value,2)); // default float
       };
 
 
@@ -693,11 +679,11 @@ var control = null;
 
       var base = function() {
         // create window
-        win = control.__win = new Window('palette', name, undefined);
+        win = ui.__win = new Window('palette', name, undefined);
         win.orientation = 'row';
         // win.alignChildren = 'fill';
 
-        control.__typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, control.__typesize);
+        ui.__typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, ui.__typesize);
 
         if( type == 'dialog' || type == 'prompt' ) {
           // always include a basil.js logo with prompts
@@ -711,20 +697,20 @@ var control = null;
         __mainGroup.alignChildren = 'right';
 
         // create controller holder group
-        var __winControllersGroup = control.__winControllersGroup = __mainGroup.add('group');
+        var __winControllersGroup = ui.__winControllersGroup = __mainGroup.add('group');
         __winControllersGroup.orientation = 'column';
         __winControllersGroup.alignChildren = 'left';
 
         // create core return values
-        control.__winValue = {
+        ui.__winValue = {
           // this initiated window (palette)
-          window: control.__win,
+          window: ui.__win,
           // this window's update function
-          update:  control.__win.update,
+          update:  ui.__win.update,
           // the add function to on-the-fly add controllers
-          add: control.add,
+          add: ui.add,
           // the remove function to on-the-fly remove controllers
-          remove: control.remove,
+          remove: ui.remove,
           // callback for window onClose
           onClose: function() {}
         };
@@ -732,16 +718,16 @@ var control = null;
         // callbacks
         win.onShow = function() {
           // create individual controls
-          control.__addList( controllers );
+          ui.__addList( controllers );
           // adjust layout of controls
           __adjustLayout( __winControllersGroup );
         };
         win.onClose = function() {
-          control.__winValue.onClose();
+          ui.__winValue.onClose();
 
           // garbage clean-up attempt
           // http://forums.adobe.com/thread/478449
-          control.__destroy();
+          ui.__destroy();
         };
 
         // this event is fired as the palette window itself
@@ -749,7 +735,7 @@ var control = null;
         win.addEventListener('changing', function() {
           // as controllers are added/removed on-the-fly
           // the value array must be updated before returning it
-          control.__updateWinValues();
+          ui.__updateWinValues();
         });
 
         if( type == 'dialog' || type == 'prompt' ) {
@@ -758,18 +744,18 @@ var control = null;
           buttongroup.alignment = 'right';
 
           var cancel = buttongroup.add('button', undefined, 'Cancel', {name: 'cancel'});
-          cancel.graphics.font = control.__typeface;
+          cancel.graphics.font = ui.__typeface;
           cancel.onClick = function() {
             // all canceled... clear values
-            control.__winValue = {};
+            ui.__winValue = {};
             win.close(2);
           };
           var ok = buttongroup.add('button', undefined, 'OK', {name: 'ok'});
-          ok.graphics.font = control.__typeface;
+          ok.graphics.font = ui.__typeface;
           ok.onClick = function() {
             win.close(1);
             // calls the update function (if it exists) on close
-            control.__update();
+            ui.__update();
           };
         }
 
@@ -779,7 +765,7 @@ var control = null;
         win.center();
 
         // return the value array
-        return control.__winValue;
+        return ui.__winValue;
       };
 
       /*
@@ -813,15 +799,15 @@ var control = null;
         // update parent
         container.parent.layout.layout( true );
         // update main window
-        control.__win.preferredSize.width += control.__maximumLabelWidth;
-        control.__win.layout.layout( true );
+        ui.__win.preferredSize.width += ui.__maximumLabelWidth;
+        ui.__win.layout.layout( true );
       };
 
       // adjust full width elements
       function __adjustFullWidth(child) {
         // printProperties( child.properties );
         if( child.properties.width == 'full' ) {
-          // child.size.width = child.preferredSize.width = child.maximumSize.width = control.__win.size.width;
+          // child.size.width = child.preferredSize.width = child.maximumSize.width = ui.__win.size.width;
           // child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
           child.alignment = ['center','center'];
         }
@@ -830,7 +816,7 @@ var control = null;
       function __adjustLabelWidth(child) {
         // printProperties( child.properties );
         if( child.type == 'statictext' && child.properties.name == 'label' ) {
-          child.size.width = control.__maximumLabelWidth;
+          child.size.width = ui.__maximumLabelWidth;
         }
       };
 
@@ -852,7 +838,7 @@ var control = null;
      * @return {Array} controller properties
      */
     prompt: function(name, controllerList) {
-      return control.dialog('dialog', name, controllerList);
+      return ui.dialog('dialog', name, controllerList);
     },
 
     /**
@@ -865,7 +851,7 @@ var control = null;
      * @return {Array} controller properties
      */
     palette: function(name, controllerList) {
-      return control.dialog('palette', name, controllerList);
+      return ui.dialog('palette', name, controllerList);
     },
 
     /* end dialog */
@@ -892,12 +878,12 @@ var control = null;
      * ensures values output by interface window are up-to-date
      */
     __updateWinValues: function() {
-      for( var name in control.__winControllerList ) {
+      for( var name in ui.__winControllerList ) {
         // this connects the name of the controller to it's
         // corresponding value, thus making it easier for
         // the user to link interface controller names
         // directly to their value
-        control.__winValue[name] = control.__winControllerList[name].value;
+        ui.__winValue[name] = ui.__winControllerList[name].value;
       }
     },
 
@@ -936,60 +922,60 @@ var control = null;
             : null));
 
       var controller = null;
-      if( control.__winControllersGroup != null) {
+      if( ui.__winControllersGroup != null) {
         // // buttons
         if( type.toLowerCase() === 'button') {
-          control.__winControllerList[name] = controller = new control.controllers().Button(name, control.__winControllersGroup, properties);
+          ui.__winControllerList[name] = controller = new ui.controllers().Button(name, ui.__winControllersGroup, properties);
         }
         else if( type.toLowerCase() === 'checkbox') {
-          control.__winControllerList[name] = controller = new control.controllers().Checkbox(name, control.__winControllersGroup, properties);
+          ui.__winControllerList[name] = controller = new ui.controllers().Checkbox(name, ui.__winControllersGroup, properties);
         }
         else if( type.toLowerCase() === 'color') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Color(name, control.__winControllersGroup, properties);
+        //   ui.__winControllerList[name] = controller = new ui.controllers().Color(name, ui.__winControllersGroup, properties);
         }
         else if( type.toLowerCase() === 'radio') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Radio(name, control.__winControllersGroup, properties);
+        //   ui.__winControllerList[name] = controller = new ui.controllers().Radio(name, ui.__winControllersGroup, properties);
         }
 
         // text
         else if( type.toLowerCase() === 'label') {
-          control.__winControllerList[name] = controller = new control.controllers().Label(name, control.__winControllersGroup, properties);
+          ui.__winControllerList[name] = controller = new ui.controllers().Label(name, ui.__winControllersGroup, properties);
         }
         else if( type.toLowerCase() === 'text') {
-          control.__winControllerList[name] = controller = new control.controllers().Text(name, control.__winControllersGroup, properties);
+          ui.__winControllerList[name] = controller = new ui.controllers().Text(name, ui.__winControllersGroup, properties);
         }
 
         // range
         else if( type.toLowerCase() === 'progress') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Progress(name, control.__winControllersGroup, properties);
+        //   ui.__winControllerList[name] = controller = new ui.controllers().Progress(name, ui.__winControllersGroup, properties);
         }
         else if( type.toLowerCase() === 'slider') {
-          control.__winControllerList[name] = controller = new control.controllers().Slider(name, control.__winControllersGroup, properties);
+          ui.__winControllerList[name] = controller = new ui.controllers().Slider(name, ui.__winControllersGroup, properties);
         }
 
         // list
         else if( type.toLowerCase() === 'dropdown') {
-        //   control.__winControllerList[name] = controller = new control.controllers().Dropdown(name, control.__winControllersGroup, properties);
+        //   ui.__winControllerList[name] = controller = new ui.controllers().Dropdown(name, ui.__winControllersGroup, properties);
         }
 
         // organization
         else if( type.toLowerCase() === 'separator') {
-          control.__winControllerList[name] = controller = new control.controllers().Separator(name, control.__winControllersGroup, properties);
+          ui.__winControllerList[name] = controller = new ui.controllers().Separator(name, ui.__winControllersGroup, properties);
         }
 
         else {
-        //   b.println('control.add(), no valid controller type specified!');
+        //   b.println('ui.add(), no valid controller type specified!');
         }
       }
       else {
-        b.println('control.add(), no valid control dialog or controller type specified!');
+        b.println('ui.add(), no valid control dialog or controller type specified!');
       }
 
       if( controller != null ) {
-        control.__win[name] = controller;
-        control.__win.layout.layout( true );
+        ui.__win[name] = controller;
+        ui.__win.layout.layout( true );
         // update the values
-        control.__updateWinValues();
+        ui.__updateWinValues();
       }
 
       return controller;
@@ -1005,7 +991,7 @@ var control = null;
      */
     __addList: function(controllerList) {
       for( var name in controllerList ) {
-        control.add( controllerList[name].type, name, controllerList[name].value, controllerList[name] )
+        ui.add( controllerList[name].type, name, controllerList[name].value, controllerList[name] )
       }
       return controllerList;
     },
@@ -1023,11 +1009,11 @@ var control = null;
      */
     remove: function(name) {
       var success = false;
-      if( control.__win != null ) {
-        var controller = control.__win.findElement(name);
+      if( ui.__win != null ) {
+        var controller = ui.__win.findElement(name);
         if( controller != null ) {
-          control.parent.remove(controller);
-          control.__win.layout.layout( true );
+          ui.parent.remove(controller);
+          ui.__win.layout.layout( true );
           success = true;
         }
       }
@@ -1098,4 +1084,3 @@ var control = null;
       $.writeln( array[i] );
     }
   };
-  
