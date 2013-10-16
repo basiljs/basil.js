@@ -33,7 +33,7 @@ var palette;
 // 
 // the name i.e. myLabel: is used to access the 
 // controller's output value
-var controllersConfig = {
+var uiConfig = {
 
   //
   // stroke
