@@ -2,20 +2,38 @@
 #include "basiljs/bundle/basil.js";
 
 function draw() {
-  // a riff on the processing example of drawing pie charts
-  // http://processing.org/examples/piechart.html
-  var radius = (b.width/1);
+  b.noFill();
+
+  b.rectMode(b.CENTER); // show bounding boxes
+  b.stroke(128);
+  b.rect(35, 35, 50, 50);
+  b.rect(105, 35, 50, 50);
+  b.rect(175, 35, 50, 50);
+  b.rect(105, 105, 100, 50);
+  
+  b.stroke(0);
+  b.arc(35, 35, 50, 50, 0, b.HALF_PI); // lower quarter circle 
+  b.arc(105, 35, 50, 50, -b.PI, 0);  // upper half of circle
+  b.arc(175, 35, 50, 50, -b.PI / 6, b.PI / 6, b.PIE); // 60 degrees
+  b.arc(105, 105, 100, 50, b.HALF_PI, 3 * b.HALF_PI); // 180 degrees
+
+
+  b.arc(35, 155, 50, 50, 0, b.HALF_PI);
+  b.arc(35, 155, 60, 60, b.HALF_PI, b.PI);
+  b.arc(35, 155, 70, 70, b.PI, b.PI+b.QUARTER_PI);
+  b.arc(35, 155, 80, 80, b.PI+b.QUARTER_PI, b.TWO_PI);
+
+  b.arc(175, 155, 80, 80, 0, b.PI+b.QUARTER_PI, b.OPEN);
+
+  b.arc(315, 155, 80, 80, 0, b.PI+b.QUARTER_PI, b.CHORD);
+
+  b.arc(455, 155, 80, 80, 0, b.PI+b.QUARTER_PI, b.PIE);
 
   b.noStroke();
-
-  var i = 0;
-  for( var y=0; y<b.height-radius; y+=radius ) {
-    for( var x=0; x<b.width; x+=radius ) {
-      var dataset = [75-i,i];
-      PieChart( x+radius/2, y+radius/2, radius, dataset );
-      i += 100 / ((b.width/radius) * (b.height/radius));
-    }
-  }
+  var randomSwatch = b.doc().swatches[ parseInt( b.random(3,b.doc().swatches.length) ) ].name;
+  b.fill( randomSwatch );
+  var dataset = [2.77, 8.33, 9.72, 10.55, 12.5, 16.66, 20.83, 18.61];
+  PieChart( 35, 255, 80, dataset );
 
 };
 
@@ -38,10 +56,10 @@ var PieChart = function(cx, cy, radius, data) {
     data[i] /= 100;
     end = start+b.radians( 360*data[i] );
 
-    b.fill( i/data.length*255 );
-    var slice = b.arc( cx, cy, radius, radius, start, end );
-
+    b.fillTint( b.map(i, 0,data.length, 10,100) );
+    var slice = b.arc( cx, cy, radius, radius, start, end, b.PIE );
     slices.push(slice);
+
     start = end;
   }
   return b.group( slices, 'PieChart' );
