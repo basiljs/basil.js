@@ -5,8 +5,6 @@
  * 
  */
 
-// Basil.js target engine is initiate this keeps global variables
-// active as long as the InDesign is running
 #targetengine basiljs
 
 
@@ -24,15 +22,8 @@
 // Properties
 //
 
-// create a variable for the interface control palette window
 var palette;
 
-// This Array is fed into the Interface constructor
-// and determines what controllers are shown, using a
-// limited list of attributes.
-// 
-// the name i.e. myLabel: is used to access the 
-// controller's output value
 var uiConfig = {
 
   //
@@ -203,11 +194,9 @@ var uiConfig = {
 // Setup
 // ------------------------------------------------------------------------
 function setup() {
-  // set color mode to CMYK
   b.colorMode(b.CMYK);
 
-  // create the dialog palette
-  palette = new control.dialog(b.PALETTE, 'Random Tools', controllers);
+  palette = new b.ui.dialog(b.PALETTE, 'Random Tools', controllers);
 };
 
 
@@ -244,7 +233,6 @@ function update() {
         color = randomSwatch(3);
       }
       else {
-        // generate random color based on slider input
         color = b.color(
           parseInt( b.random( palette.color_c_min, palette.color_c_max ) ),
           parseInt( b.random( palette.color_m_min, palette.color_m_max ) ),
@@ -252,9 +240,7 @@ function update() {
           parseInt( b.random( palette.color_k_min, palette.color_k_max ) )
         );
       }
-      // fill selection with above color
       if( palette.colorFill )   item.fillColor = color;
-      // stroke selection with above color
       if( palette.colorStroke ) item.strokeColor = color;
     }
 

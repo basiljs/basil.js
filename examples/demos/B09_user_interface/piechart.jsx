@@ -1,47 +1,33 @@
-// Basil.js target engine is initiate this keeps global variables
-// active as long as the InDesign is running
 #targetengine basiljs
 
-
-
-//
-//  Includes
-//
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
-#include 'basiljs/bundle/lib/control/control.jsx';
 
 
 
-//
+// ------------------------------------------------------------------------
 // Properties
-//
-
-// create a variable for the interface control palette window
+// ------------------------------------------------------------------------
 var dialog;
 
-// create an associative array to define the individual
-// controllers to created within the palette window
-var uiConfig = {
+var dialogConfig = {
 
-  // radius is the name of the text variable
   radius: {
-    // declare the controller type
-    type: 'text',
-    // this is the label that appears to the left
-    // of the slider controller - can be any string
+    type: 'textfield',
     label: 'Radius (points)',
-    // declare the initial value
     value: 300,
-    // define the type of output ('float', int', 'string', default (for type: 'text'): 'string')
     valueType: 'float',
-    // declare the width of the text box, optional (default: optimal width)
     length: 10,
   },
 
-  // chartData is the name of the text variable
+  // colorsList: {
+  //   type: 'dropdown',
+  //   options: b.doc().swatches,
+  //   value: 'Black'
+  // },
+
   chartData: {
-    type: 'text',
+    type: 'textfield',
     label: 'Values CSV - total must not exceed 100',
     value: '2.77, 8.33, 9.72, 10.55, 12.5, 16.66, 20.83, 18.61',
     length: 10
@@ -55,14 +41,8 @@ var uiConfig = {
 // Setup
 // ------------------------------------------------------------------------
 function setup() {
-  
-  // define the interface prompt
-  dialog = new control.prompt(
-    // title of the dialog
-    'Pie Chart',
-    // the array of defined controllers
-    controllers
-  );
+
+  dialog = new b.ui.prompt( 'Pie Chart', dialogConfig );
 
 };
 
@@ -72,8 +52,6 @@ function setup() {
 // Draw
 // ------------------------------------------------------------------------
 function draw() {
-  // also see examples/shape/arc.jsx
-
   var radius = dialog.radius;
 
   // parse the interface output into an array
@@ -85,8 +63,6 @@ function draw() {
   }
 
   // draw some pie!
-  b.noStroke();
-
   b.noStroke();
   var randomSwatch = b.doc().swatches[ parseInt( b.random(3,b.doc().swatches.length) ) ].name;
   b.fill( randomSwatch );

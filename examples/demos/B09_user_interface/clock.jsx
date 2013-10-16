@@ -21,7 +21,7 @@ var clockDiameter = 250;
 // ------------------------------------------------------------------------
 function setup() {
 
-  myDlg = new control.palette('Clock');
+  myDlg = new b.ui.palette('Clock');
   // myDlg.onClose = function() {
   //   b.remove( b.layer('generated') );
   // };

@@ -101,7 +101,7 @@ var uiConfig = {
   myText: {
     // properties
     // declare the controller type
-    type: 'text',
+    type: 'textfield',
     // this is the label that appears to the left
     // of the text controller - can be any string
     label: 'My Single-line Text',
@@ -135,7 +135,7 @@ var uiConfig = {
   myMultiText: {
     // properties
     // declare the controller type
-    type: 'text',
+    type: 'textfield',
     // this is the label that appears to the left
     // of the text controller - can be any string
     label: 'My Multi-line Text',

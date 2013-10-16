@@ -21,7 +21,7 @@ if ($.engineName !== 'basiljs') {
  *     }
  *   }
  * };
- * var dialog = new control.palette('Interface Example', controllers);
+ * var dialog = new b.ui.palette('Interface Example', controllers);
  *
  * function myFunction() {
  *   // do something when the slider is moved
@@ -29,7 +29,7 @@ if ($.engineName !== 'basiljs') {
  *
  * 
  * @example create dialog and add controllers
- * var dialog = new control.palette('Interface Example');
+ * var dialog = new b.ui.palette('Interface Example');
  * dialog.add('slider', 'mySlider1', 25, {label: 'Doc Width',range: [0,b.width]});
  * dialog.add('slider', 'mySlider2', 25, {label: 'Doc Height', range: [0,b.height]});
  * 
@@ -51,7 +51,7 @@ if ($.engineName !== 'basiljs') {
 
 // static dialog types
 // DISCUSS: push these into the main basil.js structure? do we even want these?
-// I prefer the above method of new control.TYPE
+// I prefer the above method of new b.ui.TYPE
 // but this seems 'more' basil.js like
 b.PALETTE = 'palette';
 b.PROMPT = 'prompt';
@@ -954,42 +954,42 @@ control = {
     if( control.__winControllersGroup != null) {
       // // buttons
       if( type.toLowerCase() === 'button') {
-        control.__winControllerList[name] = controller = new control.controllers().Button(name, control.__winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new b.ui.controllers().Button(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'checkbox') {
-        control.__winControllerList[name] = controller = new control.controllers().Checkbox(name, control.__winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new b.ui.controllers().Checkbox(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'color') {
-      //   control.__winControllerList[name] = controller = new control.controllers().Color(name, control.__winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new b.ui.controllers().Color(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'radio') {
-      //   control.__winControllerList[name] = controller = new control.controllers().Radio(name, control.__winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new b.ui.controllers().Radio(name, control.__winControllersGroup, properties);
       }
 
       // text
       else if( type.toLowerCase() === 'label') {
-        control.__winControllerList[name] = controller = new control.controllers().Label(name, control.__winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new b.ui.controllers().Label(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'text') {
-        control.__winControllerList[name] = controller = new control.controllers().Text(name, control.__winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new b.ui.controllers().Text(name, control.__winControllersGroup, properties);
       }
 
       // range
       else if( type.toLowerCase() === 'progress') {
-      //   control.__winControllerList[name] = controller = new control.controllers().Progress(name, control.__winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new b.ui.controllers().Progress(name, control.__winControllersGroup, properties);
       }
       else if( type.toLowerCase() === 'slider') {
-        control.__winControllerList[name] = controller = new control.controllers().Slider(name, control.__winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new b.ui.controllers().Slider(name, control.__winControllersGroup, properties);
       }
 
       // list
       else if( type.toLowerCase() === 'dropdown') {
-      //   control.__winControllerList[name] = controller = new control.controllers().Dropdown(name, control.__winControllersGroup, properties);
+      //   control.__winControllerList[name] = controller = new b.ui.controllers().Dropdown(name, control.__winControllersGroup, properties);
       }
 
       // organization
       else if( type.toLowerCase() === 'separator') {
-        control.__winControllerList[name] = controller = new control.controllers().Separator(name, control.__winControllersGroup, properties);
+        control.__winControllerList[name] = controller = new b.ui.controllers().Separator(name, control.__winControllersGroup, properties);
       }
 
       else {
