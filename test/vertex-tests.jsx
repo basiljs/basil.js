@@ -62,8 +62,27 @@ b.test('VertexTests', {
     assert(shape.paths.length === 1);
     assert(shape.paths.item(0).entirePath.length === 3);    
     
-  }
+  },
 
+  testArc: function(b) {
+
+    var shape = b.arc(0,0, 50,50, 0,b.QUARTER_PI)
+    assert(shape instanceof GraphicLine);
+    assert(shape.paths.item(0).entirePath.length === 2);
+
+    var shape = b.arc(0,0, 50,50, 0,b.HALF_PI)
+    assert(shape instanceof GraphicLine);
+    assert(shape.paths.item(0).entirePath.length === 2);
+
+    var shape = b.arc(0,0, 50,50, 0,b.PI)
+    assert(shape instanceof GraphicLine);
+    assert(shape.paths.item(0).entirePath.length === 4); // because of overlapping points bug
+
+    var shape = b.arc(0,0, 50,50, 0,b.TWO_PI)
+    assert(shape instanceof GraphicLine);
+    assert(shape.paths.item(0).entirePath.length === 8); // because of overlapping points bug
+    
+  }
 
 });
 

@@ -184,12 +184,7 @@
    * @return {GraphicLine|Polygon} newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
    *
    * TODO(S)
-   * / fix bug when making arcs close to 360, current hack is unreliable
-   * - make work for elliptical arcs
-   * http://www.spaceroots.org/documents/ellipse/
-   * http://www.spaceroots.org/documents/ellipse/elliptical-arc.pdf
-   * http://digerati-illuminatus.blogspot.de/2008/05/approximating-semicircle-with-cubic.html
-   * - not robust enough for primetime
+   * - clean-up overlapping points
    */
   pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
     if (w <= 0 || endAngle < startAngle) {
