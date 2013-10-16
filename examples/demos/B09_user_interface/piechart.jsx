@@ -42,7 +42,7 @@ var dialogConfig = {
 // ------------------------------------------------------------------------
 function setup() {
 
-  dialog = new b.ui.prompt( 'Pie Chart', dialogConfig );
+  dialog = b.ui.prompt( 'Pie Chart', dialogConfig );
 
 };
 
@@ -66,8 +66,8 @@ function draw() {
   b.noStroke();
   var randomSwatch = b.doc().swatches[ parseInt( b.random(3,b.doc().swatches.length) ) ].name;
   b.fill( randomSwatch );
+  PieChart( b.width/2, b.height/2, radius, dataset );
 
-  var pie = PieChart( b.width/2, b.height/2, radius, dataset );
 };
 
 

@@ -184,7 +184,7 @@
    * @return {GraphicLine|Polygon} newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
    *
    * TODO(S)
-   * - clean-up overlapping points
+   * - fix overlapping points bug
    */
   pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
     if (w <= 0 || endAngle < startAngle) {

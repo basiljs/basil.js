@@ -69,7 +69,7 @@ pub.ui = {
     controllerList = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
-      win = uiProperties.win = new Window(type, name, undefined);
+      win = uiProperties.win = new Window("palette", name, undefined);
       win.orientation = "row";
       // win.alignChildren = "fill";
 
@@ -128,8 +128,8 @@ pub.ui = {
         };
       }
 
-      // win.show();
-      // win.center();
+      win.show();
+      win.center();
 
       return uiProperties.winValue;
     };
@@ -232,11 +232,8 @@ pub.ui = {
         uiProperties.win[name] = controller;
         uiProperties.win.layout.layout( true );
         uiProperties.update();
-
-        uiProperties.win.show();
       }
 
-      alert( uiProperties.win );
       return controller;
     };
 
