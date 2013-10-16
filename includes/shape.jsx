@@ -188,81 +188,88 @@
    * http://www.spaceroots.org/documents/ellipse/
    * http://www.spaceroots.org/documents/ellipse/elliptical-arc.pdf
    * http://digerati-illuminatus.blogspot.de/2008/05/approximating-semicircle-with-cubic.html
-   * - check for beginShape() call - necessary?
    * - not robust enough for primetime
    */
-  // pub.arc = function(cx, cy, w, h, startAngle, endAngle) {
-  //   if (w <= 0 || endAngle < startAngle) {
-  //     return false;
-  //   }
-  //   if (arguments.length !== 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
+  pub.arc = function(cx, cy, w, h, startAngle, endAngle) {
+    if (w <= 0 || endAngle < startAngle) {
+      return false;
+    }
+    if (arguments.length !== 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
     
-  //   var o = b.radians(0); // add 1 degree to ensure angles of 360 degrees are drawn
-  //   startAngle %= b.TWO_PI+o; 
-  //   endAngle %= b.TWO_PI+o;
-  //   w /= 2;
-  //   h /= 2;
+    var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+    startAngle %= b.TWO_PI+o; 
+    endAngle %= b.TWO_PI+o;
+    w /= 2;
+    h /= 2;
 
-  //   if (currEllipseMode === pub.CORNER) {
-  //     cx = (cx-w);
-  //     cy = (cy+h);
-  //   }
-  //   else if (currEllipseMode === pub.CORNERS) {
-  //     // cx = (cx-w);
-  //     // cy = (cy-h);
-  //     // w -= cx;
-  //     // h -= cy;
-  //   }
-  //   else if (currEllipseMode === pub.RADIUS) {
-  //     w *= 2;
-  //     h *= 2;
-  //   }
+    if (currEllipseMode === pub.CORNER) {
+      cx = (cx-w);
+      cy = (cy+h);
+    }
+    else if (currEllipseMode === pub.CORNERS) {
+      // cx = (cx-w);
+      // cy = (cy-h);
+      // w -= cx;
+      // h -= cy;
+    }
+    else if (currEllipseMode === pub.RADIUS) {
+      w *= 2;
+      h *= 2;
+    }
 
-  //   var delta = Math.abs(endAngle - startAngle);
-  //   var direction = (startAngle < endAngle)
-  //     ? 1
-  //     : -1;
-  //   var thetaStart = startAngle;
+    var delta = Math.abs(endAngle - startAngle);
+    var direction = (startAngle < endAngle)
+      ? 1
+      : -1;
+    var thetaStart = startAngle;
 
-  //   // draw arc
-  //   b.beginShape();
-  //   b.vertex( cx, cy );
-  //   for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
-  //     // calculations
-  //     var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
+    // draw arc
+    // TODO: check for beginShape() call
+    // if( beginShape ) {
+    // }
+    // else {
+      b.beginShape(b.CLOSE); // since no beginShape was called, create an independent CLOSED shape
+      b.vertex( cx, cy );
+    // }
+    for (var theta = Math.min(b.TWO_PI, delta); theta > b.EPSILON; ) {
+      // calculations
+      var thetaEnd = thetaStart + direction * Math.min(theta, b.HALF_PI);
 
-  //     // circular arc
-  //     var radius = (w + h)/2; //(Math.sqrt(w * w + h * h) / 2);
-  //     pt = calculateCircularArc(radius, thetaStart, thetaEnd);
-  //     // TODO: eliptical arc
-  //     // pt = calculateEllipticalArc(w, h, startAngle, endAngle);
+      // circular arc
+      var radius = (w + h)/2; //(Math.sqrt(w * w + h * h) / 2);
+      // pt = calculateCircularArc(radius, thetaStart, thetaEnd);
+      // TODO: eliptical arc
+      pt = calculateEllipticalArc(w, h, startAngle, endAngle);
 
-  //     b.vertex(
-  //       cx + pt.startx,
-  //       cy + pt.starty,
-  //       cx + pt.startx,
-  //       cy + pt.starty,
-  //       cx + pt.handle1x,
-  //       cy + pt.handle1y
-  //     );
-  //     b.vertex(
-  //       cx + pt.endx,
-  //       cy + pt.endy,
-  //       cx + pt.handle2x,
-  //       cy + pt.handle2y,
-  //       cx + pt.endx,
-  //       cy + pt.endy
-  //     );
+      b.vertex(
+        cx + pt.startx,
+        cy + pt.starty,
+        cx + pt.startx,
+        cy + pt.starty,
+        cx + pt.handle1x,
+        cy + pt.handle1y
+      );
+      b.vertex(
+        cx + pt.endx,
+        cy + pt.endy,
+        cx + pt.handle2x,
+        cy + pt.handle2y,
+        cx + pt.endx,
+        cy + pt.endy
+      );
 
-  //     // prepare for next rotation
-  //     theta -= b.abs(thetaEnd - thetaStart);
-  //     thetaStart = thetaEnd;
-  //   }
-  //   return b.endShape();
+      // prepare for next rotation
+      theta -= b.abs(thetaEnd - thetaStart);
+      thetaStart = thetaEnd;
+    }
+    // if( beginShape ) {
+    // }
+    // else {
+      return b.endShape();
+    // }
+  };
 
-  // };
-
-  /**
+  /*
    * Cubic bezier approximation of a circular arc 
    * 
    * initial code:
@@ -322,7 +329,7 @@
   };
 
 
-  /**
+  /*
    * Cubic bezier approximation of a circular arc 
    *
    * intial code:
@@ -339,6 +346,8 @@
     // Establish arc parameters.
     // (Note: assert delta != TWO_PI)
     var delta = (endAngle - startAngle)/2.0; // spread of the arc.
+    $.writeln( b.degrees(delta) );
+    $.writeln( b.degrees(b.TWO_PI) );
    
     // Compute raw Bezier coordinates.
     var x0 = Math.cos(delta);
@@ -366,16 +375,27 @@
     var ry3 = sBezAng * x3 + cBezAng * y3;
    
     // Compute scaled and translated Bezier coordinates.
+    var radius = (Math.sqrt(w * w + h * h) / 2);
     return {
-      startx: 1-(w*rx0),
-      starty: h*ry0,
-      handle1x: 1-(w*rx1),
-      handle1y: h*ry1,
+      // startx: 1-(w*rx0),
+      // starty: h*ry0,
+      // handle1x: 1-(w*rx1),
+      // handle1y: h*ry1,
 
-      endx: 1-(w*rx3),
-      endy: h*ry3,
-      handle2x: 1-(w*rx2),
-      handle2y: h*ry2
+      // endx: 1-(w*rx3),
+      // endy: h*ry3,
+      // handle2x: 1-(w*rx2),
+      // handle2y: h*ry2
+      // Compute scaled and translated Bezier coordinates.
+      startx: /* px0: */ 0 + radius*rx0,
+      starty: /* py0: */ 0 + radius*ry0,
+      handle1x: /* px1: */ 0 + radius*rx1,
+      handle1y: /* py1: */ 0 + radius*ry1,
+      
+      handle2x: /* px2: */ 0 + radius*rx2,
+      handle2y: /* py2: */ 0 + radius*ry2,
+      endx: /* px3: */ 0 + radius*rx3,
+      endy: /* py3: */ 0 + radius*ry3
     };
 
     // bezier(startx,starty, handle1x,handle1y, handle2x,handle2y, endx,endy);

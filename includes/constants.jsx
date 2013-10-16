@@ -102,6 +102,30 @@
   pub.CLOSE = "close";
 
   /**
+   * Open, used for arc() modes.
+   * @property OPEN {String}
+   * @cat Document
+   * @subcat Primitives
+   */
+  pub.OPEN = "open";
+
+  /**
+   * Chord, used for arc() modes.
+   * @property CHORD {String}
+   * @cat Document
+   * @subcat Primitives
+   */
+  pub.CHORD = "chord";
+
+  /**
+   * Pie, used for arc() modes.
+   * @property PIE {String}
+   * @cat Document
+   * @subcat Primitives
+   */
+  pub.PIE = "pie";
+
+  /**
    * Two Pi
    * @property TWO_PI {Number}
    * @cat Math

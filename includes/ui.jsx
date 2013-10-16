@@ -73,7 +73,7 @@ pub.ui = {
       win.orientation = 'row';
       // win.alignChildren = 'fill';
 
-      uiProperties.typeface = ScriptUI.newFont('palette', ScriptUI.FontStyle.REGULAR, uiProperties.typesize);
+      uiProperties.typeface = ScriptUI.newFont(type, ScriptUI.FontStyle.REGULAR, uiProperties.typesize);
 
       if( type == 'dialog' || type == 'prompt' ) {
         // always include a basil.js logo with prompts
@@ -128,8 +128,8 @@ pub.ui = {
         };
       }
 
-      win.show();
-      win.center();
+      // win.show();
+      // win.center();
 
       return uiProperties.winValue;
     };
@@ -232,8 +232,11 @@ pub.ui = {
         uiProperties.win[name] = controller;
         uiProperties.win.layout.layout( true );
         uiProperties.update();
+
+        uiProperties.win.show();
       }
 
+      alert( uiProperties.win );
       return controller;
     };
 

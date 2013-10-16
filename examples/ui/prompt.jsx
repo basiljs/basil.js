@@ -1,4 +1,4 @@
-#targetengine basiljs
+#targetengine basiljsABC
 
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
@@ -35,7 +35,7 @@ function setup() {
   //   uiConfig
   // );
 
-  dialog = new b.ui.dialog( b.PALETTE, 'Textfield String Example' );
+  dialog = new b.ui.dialog( b.PROMPT, 'Textfield String Example' );
   dialog.add('textfield', 'theTextfield', 'Single-line Textfield', {
     label: 'Textfield',
     onChanging: function(value) {
