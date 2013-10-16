@@ -7,6 +7,7 @@
  *  / improve standard layout appearance, i.e. ensure labels are aligned on right side (partially fixed)
  *  - components are not respecting width: "full"
  *  - fix independent label bug
+ *  - major bug with prompts, need support .add()
  *  
  *  ROADMAP:
  *  - implement missing/additional controllers
