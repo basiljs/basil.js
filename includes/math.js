@@ -757,7 +757,7 @@ pub.Random = function(seed) {
 function PerlinNoise(seed) {
   var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
   var i, j;
-  var perm = new Uint8Array(512);
+  var perm = [] ;
   for (i = 0; i < 256; ++i) perm[i] = i;
   for (i = 0; i < 256; ++i) {
     var t = perm[j = rnd.nextInt() & 255];
