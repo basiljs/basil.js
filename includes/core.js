@@ -123,7 +123,7 @@ var runSetup = function() {
     if (typeof glob.setup === 'function') {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
 };
 
 var runDrawOnce = function() {
@@ -131,7 +131,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
 };
 
 var runDrawLoop = function() {
@@ -393,11 +393,16 @@ var updatePublicPageSizeVars = function () {
 
 // internal helper to get around try/catch for finding eg. a color in the swatches
 var findInCollectionByName = function(collection, name) {
-  var found = null;
-  for (var i = 0; i < collection.length; i++) {
-    if (collection[i].name === name) return collection[i];
-  };
+  var found = collection.itemByName(name);
+  if (!found || !found.isValid) return null;
   return found;
+  
+   /*var found = null;
+   for (var i = 0; i < collection.length; i++) {
+     if (collection[i].name === name) return collection[i];
+   };
+   return found;
+*/
 };
 
 var error = pub.error = function(msg) {

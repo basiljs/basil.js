@@ -252,13 +252,11 @@ pub.textTracking = function(tracking) {
  */
 pub.characterStyle = function(name) {
   var style = null;
-  try {
-    style = currentDoc().characterStyles.item(name);
-    style.name;
-  } catch (e) {
+  var style = findInCollectionByName(name);
+  if(typeof style === 'undefined'){
     style = currentDoc().characterStyles.add({name: name});
-  }
-  return style;
+  } 
+  return style;  
 };
 
 /**
@@ -271,13 +269,11 @@ pub.characterStyle = function(name) {
  */
 pub.paragraphStyle = function(name) {
   var style = null;
-  try {
-    style = currentDoc().paragraphStyles.item(name);
-    style.name;
-  } catch (e) {
+  var style = findInCollectionByName(name);
+  if(typeof style === 'undefined'){
     style = currentDoc().paragraphStyles.add({name: name});
-  }
-  return style;
+  } 
+  return style;  
 };
 
 /**

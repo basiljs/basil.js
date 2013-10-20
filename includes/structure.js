@@ -45,12 +45,7 @@ pub.stories = function(doc, cb) {
  */
 pub.paragraphs = function(item, cb) {
 
-  var err = false;
-  try{
-    item[0]; // check if list
-    err = true; // access ok -> error
-  } catch (expected) {};
-  if(err) error("b.paragraphs(), Array/Collection has been passed to b.paragraphs(). Single object expected.");
+  if(!item.hasOwnProperty('contents')) error("b.paragraphs(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.paragraphs;
@@ -118,12 +113,7 @@ pub.paragraphs = function(item, cb) {
  */
 pub.lines = function(item, cb) {
 
-  var err = false;
-  try{
-    item[0]; // check if list
-    err = true; // access ok -> error
-  } catch (expected) {};
-  if(err) error("b.lines(), Array/Collection has been passed to b.lines(). Single object expected.");
+  if(!item.hasOwnProperty('contents')) error("b.lines(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.lines;
@@ -149,12 +139,7 @@ pub.lines = function(item, cb) {
  */
 pub.words = function(item, cb) {
 
-  var err = false;
-  try{
-    item[0]; // check if list
-    err = true; // access ok -> error
-  } catch (expected) {};
-  if(err) error("b.words(), Array/Collection has been passed to b.words(). Single object expected.");
+  if(!item.hasOwnProperty('contents')) error("b.words(), Wrong object type.");
   
   if(arguments.length === 1){
     return item.words;
@@ -180,12 +165,7 @@ pub.words = function(item, cb) {
  */
 pub.characters = function(item, cb) {
 
-  var err = false;
-  try{
-    item[0]; // check if list
-    err = true; // access ok -> error
-  } catch (expected) {};
-  if(err) error("characters(), Array/Collection has been passed to b.characters(). Single object expected.");
+  if(!item.hasOwnProperty('contents')) error("b.characters(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.characters;

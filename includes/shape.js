@@ -376,12 +376,10 @@ pub.strokeWeight = function (weight) {
  */
 pub.objectStyle = function(name) {
   var style = null;
-  try {
-    style = currentDoc().objectStyles.item(name);
-    style.name;
-  } catch (e) {
+  var style = findInCollectionByName(name);
+  if(typeof style === 'undefined'){
     style = currentDoc().objectStyles.add({name: name});
-  }
+  } 
   return style;
 };
 
