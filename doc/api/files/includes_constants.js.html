@@ -87,246 +87,240 @@
 <div class="file">
     <pre class="code prettyprint linenums">
 
+
+&#x2F;**
+ * Used with b.units() to set the coordinate system to points.
+ * @property PT {String}
+ * @cat Document
+ * @subcat Units
+ *&#x2F;
+pub.PT = &quot;pt&quot;;
+
+&#x2F;**
+ * Used with b.units() to set the coordinate system to pixels.
+ * @property PX {String}
+ * @cat Document
+ * @subcat Units
+ *&#x2F;
+pub.PX = &quot;px&quot;;
+
+&#x2F;**
+ * Used with b.units() to set the coordinate system to centimeters.
+ * @property CM {String}
+ * @cat Document
+ * @subcat Units
+ *&#x2F;
+
+pub.CM = &quot;cm&quot;;
+
+&#x2F;**
+ * Used with b.units() to set the coordinate system to millimeters.
+ * @property MM {String}
+ * @cat Document
+ * @subcat Units
+ *&#x2F;
+pub.MM = &quot;mm&quot;;
+
+&#x2F;**
+ * Used with b.units() to set the coordinate system to inches.
+ * @property IN {String}
+ * @cat Document
+ * @subcat Units
+ *&#x2F;
+pub.IN = &quot;inch&quot;;
+
+&#x2F;**
+ * Used with b.colorMode() to set the color space.
+ * @property RGB {String}
+ * @cat Color
+ *&#x2F;
+pub.RGB = &quot;rgb&quot;;
+
+&#x2F;**
+ * Used with b.colorMode() to set the color space.
+ * @property CMYK {String}
+ * @cat Color
+ *&#x2F;
+pub.CMYK = &quot;cmyk&quot;;
+
+&#x2F;**
+ * Corner, used for drawing modes.
+ * @property CORNER {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.CORNER = &quot;corner&quot;;
+
+&#x2F;**
+ * Corners, used for drawing modes.
+ * @property CORNERS {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.CORNERS = &quot;corners&quot;;
+
+&#x2F;**
+ * Center, used for drawing modes.
+ * @property CENTER {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.CENTER = &quot;center&quot;;
+
+&#x2F;**
+ * Radius, used for drawing modes.
+ * @property RADIUS {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.RADIUS = &quot;radius&quot;;
+
+&#x2F;**
+ * Close, used for endShape() modes.
+ * @property CLOSE {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.CLOSE = &quot;close&quot;;
+
+&#x2F;**
+ * Two Pi
+ * @property TWO_PI {Number}
+ * @cat Math
+ * @subcat Constants
+ *&#x2F;
+pub.TWO_PI = Math.PI*2;
+
+&#x2F;**
+ * Pi
+ * @property PI {Number}
+ * @cat Math
+ * @subcat Constants
+ *&#x2F;
+pub.PI = Math.PI;
+
+&#x2F;**
+ * Half Pi
+ * @property HALF_PI {Number}
+ * @cat Math
+ * @subcat Constants
+ *&#x2F;
+pub.HALF_PI = Math.PI&#x2F;2;
+
+&#x2F;**
+ * Quarter Pi
+ * @property QUARTER_PI {Number}
+ * @cat Math
+ * @subcat Constants
+ *&#x2F;
+pub.QUARTER_PI = Math.PI&#x2F;4;
+
+&#x2F;**
+ * Used with b.canvasMode() to set the canvas to the full current page.
+ * @property PAGE {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.PAGE = &quot;page&quot;;
+
+&#x2F;**
+ * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
+ * @property MARGIN {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.MARGIN = &quot;margin&quot;;
+
+&#x2F;**
+ * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
+ * @property BLEED {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.BLEED = &quot;bleed&quot;;
+
+&#x2F;**
+ * Used with b.canvasMode() to set the canvas to use the current facing pages.
+ * @property FACING_PAGES {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.FACING_PAGES = &quot;facing_pages&quot;;
+
+&#x2F;**
+ * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
+ * @property FACING_BLEEDS {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.FACING_BLEEDS = &quot;facing_bleeds&quot;;  
+
+&#x2F;**
+ * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
+ * @property FACING_MARGINS {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.FACING_MARGINS = &quot;facing_margins&quot;;
+
+&#x2F;**
+ * Used with b.addPage() to set the position of the new page in the book.
+ * @property AT_BEGINNING {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
+
+&#x2F;**
+ * Used with b.addPage() to set the position of the new page in the book.
+ * @property AT_END {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;  
+pub.AT_END = LocationOptions.AT_END;
+
+&#x2F;**
+ * Used with b.addPage() to set the position of the new page in the book.
+ * @property BEFORE {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.BEFORE = LocationOptions.BEFORE;
+
+&#x2F;**
+   * Used with b.addPage() to set the position of the new page in the book.
+   * @property AFTER {String}
+   * @cat Document
+   * @subcat Page
+   *&#x2F;
+pub.AFTER = LocationOptions.AFTER;
+
   &#x2F;**
-   * The basil version
-   * @property VERSION {String}
+  * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
+  * @property MODESILENT {String}
+  * @cat Environment
+  * @subcat modes
+  *&#x2F;
+pub.MODESILENT = &quot;ModeSilent&quot;;
+  &#x2F;**
+   * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
+   * @property MODEHIDDEN {String}
    * @cat Environment
+   * @subcat modes
    *&#x2F;
-  pub.VERSION = &quot;1.05&quot;;
-
+pub.MODEHIDDEN = &quot;ModeHidden&quot;;
   &#x2F;**
-   * Used with b.units() to set the coordinate system to points.
-   * @property PT {String}
-   * @cat Document
-   * @subcat Units
+   * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
+   * @property MODEVISIBLE {String}
+   * @cat Environment
+   * @subcat modes
    *&#x2F;
-  pub.PT = &quot;pt&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to pixels.
-   * @property PX {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-  pub.PX = &quot;px&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to centimeters.
-   * @property CM {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-
-  pub.CM = &quot;cm&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to millimeters.
-   * @property MM {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-  pub.MM = &quot;mm&quot;;
-
-  &#x2F;**
-   * Used with b.units() to set the coordinate system to inches.
-   * @property IN {String}
-   * @cat Document
-   * @subcat Units
-   *&#x2F;
-  pub.IN = &quot;inch&quot;;
-
-  &#x2F;**
-   * Used with b.colorMode() to set the color space.
-   * @property RGB {String}
-   * @cat Color
-   *&#x2F;
-  pub.RGB = &quot;rgb&quot;;
-
-  &#x2F;**
-   * Used with b.colorMode() to set the color space.
-   * @property CMYK {String}
-   * @cat Color
-   *&#x2F;
-  pub.CMYK = &quot;cmyk&quot;;
-
-  &#x2F;**
-   * Corner, used for drawing modes.
-   * @property CORNER {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CORNER = &quot;corner&quot;;
-
-  &#x2F;**
-   * Corners, used for drawing modes.
-   * @property CORNERS {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CORNERS = &quot;corners&quot;;
-
-  &#x2F;**
-   * Center, used for drawing modes.
-   * @property CENTER {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CENTER = &quot;center&quot;;
-
-  &#x2F;**
-   * Radius, used for drawing modes.
-   * @property RADIUS {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.RADIUS = &quot;radius&quot;;
-
-  &#x2F;**
-   * Close, used for endShape() modes.
-   * @property CLOSE {String}
-   * @cat Document
-   * @subcat Primitives
-   *&#x2F;
-  pub.CLOSE = &quot;close&quot;;
-
-  &#x2F;**
-   * Two Pi
-   * @property TWO_PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.TWO_PI = Math.PI*2;
-
-  &#x2F;**
-   * Pi
-   * @property PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.PI = Math.PI;
-
-  &#x2F;**
-   * Half Pi
-   * @property HALF_PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.HALF_PI = Math.PI&#x2F;2;
-
-  &#x2F;**
-   * Quarter Pi
-   * @property QUARTER_PI {Number}
-   * @cat Math
-   * @subcat Constants
-   *&#x2F;
-  pub.QUARTER_PI = Math.PI&#x2F;4;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to the full current page.
-   * @property PAGE {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.PAGE = &quot;page&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
-   * @property MARGIN {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.MARGIN = &quot;margin&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
-   * @property BLEED {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.BLEED = &quot;bleed&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to use the current facing pages.
-   * @property FACING_PAGES {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.FACING_PAGES = &quot;facing_pages&quot;;
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
-   * @property FACING_BLEEDS {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.FACING_BLEEDS = &quot;facing_bleeds&quot;;  
-
-  &#x2F;**
-   * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
-   * @property FACING_MARGINS {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.FACING_MARGINS = &quot;facing_margins&quot;;
-
-  &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property AT_BEGINNING {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
-
-  &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property AT_END {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;  
-  pub.AT_END = LocationOptions.AT_END;
-
-  &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property BEFORE {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.BEFORE = LocationOptions.BEFORE;
-
-  &#x2F;**
-     * Used with b.addPage() to set the position of the new page in the book.
-     * @property AFTER {String}
-     * @cat Document
-     * @subcat Page
-     *&#x2F;
-  pub.AFTER = LocationOptions.AFTER;
-
-    &#x2F;**
-    * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
-    * @property MODESILENT {String}
-    * @cat Environment
-    * @subcat modes
-    *&#x2F;
-  pub.MODESILENT = &quot;ModeSilent&quot;;
-    &#x2F;**
-     * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
-     * @property MODEHIDDEN {String}
-     * @cat Environment
-     * @subcat modes
-     *&#x2F;
-  pub.MODEHIDDEN = &quot;ModeHidden&quot;;
-    &#x2F;**
-     * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
-     * @property MODEVISIBLE {String}
-     * @cat Environment
-     * @subcat modes
-     *&#x2F;
-  pub.MODEVISIBLE = &quot;ModeVisible&quot;;
-  pub.DEFAULTMODE = pub.MODEVISIBLE; &#x2F;&#x2F; FIXME, DEFAULTMODE shouldn&#x27;t be public, move init to init()
+pub.MODEVISIBLE = &quot;ModeVisible&quot;;
+pub.DEFAULTMODE = pub.MODEVISIBLE; &#x2F;&#x2F; FIXME, DEFAULTMODE shouldn&#x27;t be public, move init to init()
 
 
-  var ERROR_PREFIX = &quot;\nBasil.js Error -&gt; &quot;,
-      WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
+var ERROR_PREFIX = &quot;\nBasil.js Error -&gt; &quot;,
+    WARNING_PREFIX = &quot;### Basil Warning -&gt; &quot;;
     </pre>
 </div>
 

@@ -118,7 +118,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "basil.js",
-            "line": 43,
+            "line": 44,
             "static": 1
         }
     },
@@ -315,17 +315,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 2,
-            "description": "The basil version",
-            "itemtype": "property",
-            "name": "VERSION",
-            "type": "String",
-            "cat": "Environment",
-            "class": "b"
-        },
-        {
-            "file": "includes/constants.js",
-            "line": 9,
+            "line": 3,
             "description": "Used with b.units() to set the coordinate system to points.",
             "itemtype": "property",
             "name": "PT",
@@ -336,7 +326,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 17,
+            "line": 11,
             "description": "Used with b.units() to set the coordinate system to pixels.",
             "itemtype": "property",
             "name": "PX",
@@ -347,7 +337,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 25,
+            "line": 19,
             "description": "Used with b.units() to set the coordinate system to centimeters.",
             "itemtype": "property",
             "name": "CM",
@@ -358,7 +348,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 34,
+            "line": 28,
             "description": "Used with b.units() to set the coordinate system to millimeters.",
             "itemtype": "property",
             "name": "MM",
@@ -369,7 +359,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 42,
+            "line": 36,
             "description": "Used with b.units() to set the coordinate system to inches.",
             "itemtype": "property",
             "name": "IN",
@@ -380,7 +370,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 50,
+            "line": 44,
             "description": "Used with b.colorMode() to set the color space.",
             "itemtype": "property",
             "name": "RGB",
@@ -390,7 +380,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 57,
+            "line": 51,
             "description": "Used with b.colorMode() to set the color space.",
             "itemtype": "property",
             "name": "CMYK",
@@ -400,7 +390,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 64,
+            "line": 58,
             "description": "Corner, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNER",
@@ -411,7 +401,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 72,
+            "line": 66,
             "description": "Corners, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNERS",
@@ -422,7 +412,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 80,
+            "line": 74,
             "description": "Center, used for drawing modes.",
             "itemtype": "property",
             "name": "CENTER",
@@ -433,7 +423,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 88,
+            "line": 82,
             "description": "Radius, used for drawing modes.",
             "itemtype": "property",
             "name": "RADIUS",
@@ -444,7 +434,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 96,
+            "line": 90,
             "description": "Close, used for endShape() modes.",
             "itemtype": "property",
             "name": "CLOSE",
@@ -455,7 +445,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 104,
+            "line": 98,
             "description": "Two Pi",
             "itemtype": "property",
             "name": "TWO_PI",
@@ -466,7 +456,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 112,
+            "line": 106,
             "description": "Pi",
             "itemtype": "property",
             "name": "PI",
@@ -477,7 +467,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 120,
+            "line": 114,
             "description": "Half Pi",
             "itemtype": "property",
             "name": "HALF_PI",
@@ -488,7 +478,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 128,
+            "line": 122,
             "description": "Quarter Pi",
             "itemtype": "property",
             "name": "QUARTER_PI",
@@ -499,7 +489,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 136,
+            "line": 130,
             "description": "Used with b.canvasMode() to set the canvas to the full current page.",
             "itemtype": "property",
             "name": "PAGE",
@@ -510,7 +500,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 144,
+            "line": 138,
             "description": "Used with b.canvasMode() to set the canvas to the full current page minus the margins.",
             "itemtype": "property",
             "name": "MARGIN",
@@ -521,7 +511,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 152,
+            "line": 146,
             "description": "Used with b.canvasMode() to set the canvas to the full current page plus the bleed.",
             "itemtype": "property",
             "name": "BLEED",
@@ -532,7 +522,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 160,
+            "line": 154,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages.",
             "itemtype": "property",
             "name": "FACING_PAGES",
@@ -543,7 +533,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 168,
+            "line": 162,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.",
             "itemtype": "property",
             "name": "FACING_BLEEDS",
@@ -554,7 +544,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 176,
+            "line": 170,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.",
             "itemtype": "property",
             "name": "FACING_MARGINS",
@@ -565,7 +555,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 184,
+            "line": 178,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AT_BEGINNING",
@@ -576,7 +566,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 192,
+            "line": 186,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AT_END",
@@ -587,7 +577,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 200,
+            "line": 194,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "BEFORE",
@@ -598,7 +588,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 208,
+            "line": 202,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AFTER",
@@ -609,7 +599,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 216,
+            "line": 210,
             "description": "Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.",
             "itemtype": "property",
             "name": "MODESILENT",
@@ -620,7 +610,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 223,
+            "line": 217,
             "description": "Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(\"yourMessage\") in your script and look at the Console in estk to get information about the process.",
             "itemtype": "property",
             "name": "MODEHIDDEN",
@@ -631,7 +621,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 230,
+            "line": 224,
             "description": "Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22",
             "itemtype": "property",
             "name": "MODEVISIBLE",
@@ -3745,147 +3735,6 @@
             "class": "b"
         },
         {
-            "file": "includes/math.js",
-            "line": 1428,
-            "description": "Scales the given PageItem to the given width. If width is not given as argument the current width is returned.",
-            "cat": "Document",
-            "subcat": "Transformation",
-            "itemtype": "method",
-            "name": "itemWidth",
-            "params": [
-                {
-                    "name": "pItem",
-                    "description": "The PageItem to alter",
-                    "type": "PageItem"
-                },
-                {
-                    "name": "width",
-                    "description": "The new width",
-                    "type": "Number",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "The current width",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1451,
-            "description": "Scales the given PageItem to the given height. If height is not given as argument the current height is returned.",
-            "cat": "Document",
-            "subcat": "Transformation",
-            "itemtype": "method",
-            "name": "itemHeight",
-            "params": [
-                {
-                    "name": "pItem",
-                    "description": "The PageItem to alter",
-                    "type": "PageItem"
-                },
-                {
-                    "name": "height",
-                    "description": "The new height",
-                    "type": "Number",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "The current height",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1474,
-            "description": "Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.",
-            "cat": "Document",
-            "subcat": "Transformation",
-            "itemtype": "method",
-            "name": "itemPosition",
-            "params": [
-                {
-                    "name": "pItem",
-                    "description": "The PageItem to alter",
-                    "type": "PageItem"
-                },
-                {
-                    "name": "x",
-                    "description": "The new x coordinate",
-                    "type": "Number",
-                    "optional": true
-                },
-                {
-                    "name": "y",
-                    "description": "The new y coordinate",
-                    "type": "Number",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "Returns an object with the fields x and y",
-                "type": "Object"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1511,
-            "description": "Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.",
-            "cat": "Document",
-            "subcat": "Transformation",
-            "itemtype": "method",
-            "name": "itemSize",
-            "params": [
-                {
-                    "name": "pItem",
-                    "description": "The PageItem to alter",
-                    "type": "PageItem"
-                },
-                {
-                    "name": "width",
-                    "description": "The new width",
-                    "type": "Number",
-                    "optional": true
-                },
-                {
-                    "name": "height",
-                    "description": "The new height",
-                    "type": "Number",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "Returns an object with the fields width and height",
-                "type": "Object"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1549,
-            "description": "Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.",
-            "cat": "Document",
-            "subcat": "Transformation",
-            "itemtype": "method",
-            "name": "duplicate",
-            "params": [
-                {
-                    "name": "item",
-                    "description": "The item to duplicate",
-                    "type": "PageItem|Page"
-                }
-            ],
-            "return": {
-                "description": "Returns the new item",
-                "type": "Object"
-            },
-            "class": "b"
-        },
-        {
             "file": "includes/public-vars.js",
             "line": 4,
             "description": "System variable which stores the width of the current page.",
@@ -4171,6 +4020,27 @@
             "class": "b"
         },
         {
+            "file": "includes/shape.js",
+            "line": 387,
+            "description": "Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.",
+            "cat": "Document",
+            "subcat": "Transformation",
+            "itemtype": "method",
+            "name": "duplicate",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "The item to duplicate",
+                    "type": "PageItem|Page"
+                }
+            ],
+            "return": {
+                "description": "Returns the new item",
+                "type": "Object"
+            },
+            "class": "b"
+        },
+        {
             "file": "includes/structure.js",
             "line": 4,
             "description": "Suspends the calling thread for a number of milliseconds.\nDuring a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.",
@@ -4242,7 +4112,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 108,
+            "line": 103,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4269,7 +4139,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 139,
+            "line": 129,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each word of the given document, story, text frame, paragraph or line.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4296,7 +4166,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 170,
+            "line": 155,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4323,7 +4193,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 214,
+            "line": 194,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4350,7 +4220,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 242,
+            "line": 222,
             "description": "Removes all PageItems in the given Document, Page, Layer or Group.",
             "cat": "Document",
             "itemtype": "method",
@@ -4366,7 +4236,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 270,
+            "line": 250,
             "description": "Removes the provided Page, Layer, PageItem, Swatch, etc.",
             "cat": "Document",
             "itemtype": "method",
@@ -4382,7 +4252,127 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 172,
+            "line": 2,
+            "description": "Scales the given PageItem to the given width. If width is not given as argument the current width is returned.",
+            "cat": "Document",
+            "subcat": "Transformation",
+            "itemtype": "method",
+            "name": "itemWidth",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "width",
+                    "description": "The new width",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current width",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/transformation.js",
+            "line": 25,
+            "description": "Scales the given PageItem to the given height. If height is not given as argument the current height is returned.",
+            "cat": "Document",
+            "subcat": "Transformation",
+            "itemtype": "method",
+            "name": "itemHeight",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "height",
+                    "description": "The new height",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The current height",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/transformation.js",
+            "line": 48,
+            "description": "Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.",
+            "cat": "Document",
+            "subcat": "Transformation",
+            "itemtype": "method",
+            "name": "itemPosition",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "x",
+                    "description": "The new x coordinate",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "y",
+                    "description": "The new y coordinate",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Returns an object with the fields x and y",
+                "type": "Object"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/transformation.js",
+            "line": 85,
+            "description": "Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.",
+            "cat": "Document",
+            "subcat": "Transformation",
+            "itemtype": "method",
+            "name": "itemSize",
+            "params": [
+                {
+                    "name": "pItem",
+                    "description": "The PageItem to alter",
+                    "type": "PageItem"
+                },
+                {
+                    "name": "width",
+                    "description": "The new width",
+                    "type": "Number",
+                    "optional": true
+                },
+                {
+                    "name": "height",
+                    "description": "The new height",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Returns an object with the fields width and height",
+                "type": "Object"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/transformation.js",
+            "line": 294,
             "description": "Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4404,7 +4394,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 189,
+            "line": 311,
             "description": "Transforms the given PageItem with the given Matrix2D object.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4426,7 +4416,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 207,
+            "line": 329,
             "description": "Multiplies the current matrix by the one specified through the parameters.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4443,7 +4433,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 219,
+            "line": 341,
             "description": "Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4453,7 +4443,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 234,
+            "line": 356,
             "description": "Prints the current matrix to the console window.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4463,7 +4453,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 245,
+            "line": 367,
             "description": "Pushes the current transformation matrix onto the matrix stack. Understanding pushMatrix() and popMatrix() requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4473,7 +4463,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 256,
+            "line": 378,
             "description": "Replaces the current matrix with the identity matrix.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4483,7 +4473,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 268,
+            "line": 390,
             "description": "Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to PI*2) or converted to radians with the radians() function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and HALF_PI being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling rotate(PI/2) and then rotate(PI/2) is the same as rotate(PI). If rotate() is called within the draw(), the transformation is reset when the loop begins again. Technically, rotate() multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the pushMatrix() and popMatrix().",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4500,7 +4490,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 281,
+            "line": 403,
             "description": "Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().\nIf only one parameter is given, it is applied on X and Y axis.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4522,7 +4512,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 296,
+            "line": 418,
             "description": "Specifies an amount to displace objects within the page. The x parameter specifies left/right translation, the y parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling translate(50, 0) and then translate(20, 0) is the same as translate(70, 0). This function can be further controlled by the pushMatrix() and popMatrix().",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4767,7 +4757,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 264,
+            "line": 262,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4787,7 +4777,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 283,
+            "line": 279,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
             "cat": "Story",
             "itemtype": "method",
@@ -4804,6 +4794,16 @@
                     "type": "TextFrame"
                 }
             ],
+            "class": "b"
+        },
+        {
+            "file": "basil.js",
+            "line": 50,
+            "description": "The basil version",
+            "itemtype": "property",
+            "name": "VERSION",
+            "type": "String",
+            "cat": "Environment",
             "class": "b"
         }
     ]

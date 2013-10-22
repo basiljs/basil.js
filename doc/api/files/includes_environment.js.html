@@ -86,598 +86,598 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-  &#x2F;&#x2F; ----------------------------------------
-  &#x2F;&#x2F; Environment
-  
-  &#x2F;**
-   * Sets or possibly creates the current document and returns it.
-   * If the param doc is not given the current document gets set to the active document
-   * in the application. If no document at all is open, a new document gets created.
-   *
-   * @cat Document
-   * @method doc
-   * @param  {Document} [doc] The document to set the current document to
-   * @return {Document} The current document instance
-   *&#x2F;
-  pub.doc = function(doc) {
-    if (doc instanceof Document) {
-      setCurrDoc(doc);
-    }
-    return currentDoc();
-  };
+&#x2F;&#x2F; ----------------------------------------
+&#x2F;&#x2F; Environment
 
-  &#x2F;**
-   * Closes the current document.
-   *
-   * @cat Document
-   * @method close
-   * @param  {SaveOptions|Boolean} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
-   * @param  {File} [file] Optional: The indesign file instance to save the document to
-   *&#x2F;
-  pub.close = function(saveOptions, file) {
-    var doc = currentDoc();
-    if (doc) {
-      if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === false ) saveOptions = SaveOptions.no;
-      if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === true ) saveOptions = SaveOptions.yes;
-      doc.close(saveOptions, file);
-      resetCurrDoc();
-    }
-  };
-
-  &#x2F;**
-   * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
-   * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
-   * @method canvasMode
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
-  pub.canvasMode = function ( m ) {
-    if(arguments.length == 0) {
-      return currCanvasMode;
-    } else if ( typeof m === &quot;string&quot; ) {
-
-      if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) &amp;&amp; !b.doc().documentPreferences.facingPages ) b.error(&quot;b.canvasMode(), cannot set a facing pages mode to a single page document&quot;);
-
-      currCanvasMode = m;
-      updatePublicPageSizeVars();
-    } else {
-      error(&quot;b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.&quot;);
-    }
-
-  };  
-
-  &#x2F;**
-   * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
-   *
-   * @cat Document
-   * @subcat Page
-   * @method page
-   * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it&#x27;s containing page.
-   * @return {Page} The current page instance
-   *&#x2F;
-  pub.page = function(page) {
-    if (page instanceof Page) {
-      currPage = page;
-    } else if ( typeof page !== &#x27;undefined&#x27; &amp;&amp; page.hasOwnProperty(&quot;parentPage&quot;) ) {
-      currPage = page.parentPage; &#x2F;&#x2F; page is actually a PageItem
-    } else if (typeof page === &#x27;number&#x27;) {
-      if( page &lt; 1 ) {
-        p = 0;
-      } else {
-        p = page - 1;
-      }
-      var tempPage = currentDoc().pages[p];
-      try {
-        tempPage.id;
-      } catch (e) {
-        error(&#x27;b.page(), &#x27; + page + &#x27; does not exist.&#x27;);
-      }
-      currPage = tempPage;
-    } else if (typeof page !== &#x27;undefined&#x27;) {
-      error(&quot;b.page(), bad type for b.page().&quot;);
-    }
-    updatePublicPageSizeVars();
-      if (currDoc.windows.length)
-        app.activeWindow.activePage = currPage; &#x2F;&#x2F; focus in GUI  if not in MODEHIDDEN
-    return currentPage();
-  };
-
-  &#x2F;**
-   * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method addPage
-   * @param  {String} [location] The location placement mode
-   * @return {Page} The new page
-   *&#x2F;
-  pub.addPage = function(location) {
-
-    if(arguments.length === 0) location = b.AT_END; &#x2F;&#x2F; default
-    
-    var nP;
-    try {
-      
-      switch ( location ) {
-        
-        case b.AT_END:
-          nP = currentDoc().pages.add(location);
-          break;
-
-        case b.AT_BEGINNING:
-          nP = currentDoc().pages.add(location);     
-          break;
-
-        case b.AFTER:
-          nP = currentDoc().pages.add(location, pub.page() ); 
-          break;
-
-        case b.BEFORE:
-          nP = currentDoc().pages.add(location, pub.page() );
-          break;
-
-        default:
-          throw new Error(); 
-          break;
-
-      };
-
-      pub.page( nP ); 
-      return nP;
-
-    } catch (e) {
-      error(&quot;b.addPage(), invalid location argument passed to addPage()&quot;);
-    }
-
-  };
-
-  &#x2F;**
-   * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method removePage
-   * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
-   *&#x2F;
-  pub.removePage = function (page) {
-
-    if( typeof page === &#x27;number&#x27; || arguments.length === 0 || page instanceof Page ){
-      var p = pub.page(page); &#x2F;&#x2F; get the page object, todo: add an internal method of page retrieval without setting it to current
-      p.remove();
-      currPage = null; &#x2F;&#x2F; reset!
-      currentPage();
-    } else {
-      error(&quot;b.removePage(), invalid call. Wrong parameter!&quot;);
-    }
-
-  };
-
-  &#x2F;**
-   * Returns the current page number of either the current page or the given Page object.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method pageNumber
-   * @param  {Page} [pageObj] Optional: The page you want to know the number of.
-   * @return {Number} The page number within the document.
-   *&#x2F;
-  pub.pageNumber = function (pageObj) {
-
-      if (typeof pageObj === &#x27;number&#x27;) error(&quot;b.pageNumber(), cannot be called with a Number argument.&quot;);
-
-      if (pageObj instanceof Page) {
-          return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
-      } else {
-          return parseInt(pub.page().name); &#x2F;&#x2F; number of current page
-      }
-
-  };
-
-  &#x2F;&#x2F; TODO: does not work?
-  pub.nextPage = function () {
-      var p = pub.doc().pages.nextItem(currentPage());
-      return pub.page(p);
-  };
-
-  &#x2F;&#x2F; TODO: does not work?
-  pub.previousPage = function () {
-      var p = pub.doc().pages.previousItem(currentPage());
-      return pub.page(p);
-  };
-
-  &#x2F;**
-   * The number of all pages in the current document.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method pageCount
-   * @return The amount of pages.
-   *&#x2F;
-  pub.pageCount = function() {
-    return currentDoc().pages.count();
-  };
-
-  &#x2F;**
-   * The number of all stories in the current document.
-   *
-   * @cat Story
-   * @method storyCount
-   * @return {Number} count The amount of stories.
-   *&#x2F;
-  pub.storyCount = function() {
-    return currentDoc().stories.count();
-  };
-
-  &#x2F;**
-   * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
-   *
-   * @cat Story
-   * @method addToStory
-   * @param {Story} story The story
-   * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
-   * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
-   *&#x2F;
-  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
-    if (story instanceof Story &amp;&amp; arguments.length &gt;= 2) {
-      &#x2F;&#x2F; add string
-      if (isString(itemOrString)) {
-        if (insertionPointorMode instanceof InsertionPoint) {
-          insertionPointorMode.contents = itemOrString;
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
-          story.insertionPoints.firstItem().contents = itemOrString;
-        } else {
-          story.insertionPoints.lastItem().contents = itemOrString;
-        }
-      }
-      &#x2F;&#x2F; add other stuff
-      else {
-        app.select(itemOrString);
-        app.cut();
-        if (insertionPointorMode instanceof InsertionPoint) {
-          app.select(insertionPointorMode);
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
-          app.select(story.insertionPoints.firstItem());
-        } else {
-          app.select(story.insertionPoints.lastItem());
-        }
-        app.paste();
-      }
-    } else {
-      error(&quot;b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
-    }
-  };
-
-  &#x2F;**
-   * Returns the current layer and sets it if argument layer is given.
-   *
-   * @cat Document
-   * @subcat Page
-   * @method layer
-   * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
-   * @return {Layer} The current layer instance
-   *&#x2F;
-  pub.layer = function(layer) {
-    if (layer instanceof Layer) {
-      currLayer = layer;
-    } else if (typeof layer === &#x27;string&#x27;) {
-      var layers = currentDoc().layers;
-      currLayer = layers.item(layer);
-      if (!currLayer.isValid) {
-        currLayer = layers.add({name: layer});
-      }
-    }
-    return currentLayer();
-  };
-
-  &#x2F;**
-   *  Returns the Group instance and sets it if argument Group is given.
-   *
-   *  @cat Document
-   *  @subCat Page
-   *  @method Group
-   *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance
-   *  @param {String} name (optional) The name of the Group, only when creating a Group from Page Item(s)
-   *  @return {Group} the current Group instance
-   *&#x2F;
-  pub.group = function (pItem, name) {
-    var group = null;
-    if( pItem instanceof Array) {
-      if(pItem.length &lt; 2) error(&quot;There must be at least two PageItems passed to b.group().&quot;);
-      &#x2F;&#x2F; creates a group from Page Items
-      group = currentDoc().groups.add(pItem);
-      if(typeof name != &#x27;undefined&#x27;) group.name = name;
-    }
-    else if( typeof pItem === &#x27;string&#x27; ) {
-      &#x2F;&#x2F; get the Group of the given name
-      group = currentDoc().groups.item(pItem);
-    }
-    else {
-      error(&quot;b.group(), not a valid argument.&quot;)
-    }
-
-    return group;
-  };
-
-  &#x2F;**
-   *  Returns an array of the items that were within the Group before b.ungroup() was called
-   *
-   *  @cat Document
-   *  @subCat Page
-   *  @method Group
-   *  @param {Object|String} [pItem] The Group or name of Group name instance
-   *  @param {String} name The name of the Group, only when creating a Group from Page Item(s)
-   *  @return {Group} the Page Item(s) that were grouped
-   *&#x2F;
-  pub.ungroup = function(pItem) {
-    var ungroupedItems = null;
-    if( pItem instanceof Group) {
-      ungroupedItems = b.items( pItem );
-      pItem.ungroup();
-    }
-    else if( typeof pItem === &#x27;string&#x27; ) {
-      &#x2F;&#x2F; get the Group of the given name
-      var group = currentDoc().groups.item(pItem);
-      ungroupedItems = b.items( group );
-      group.ungroup();
-    }
-    else {
-      error(&quot;b.ungroup(), not a valid Group. Please select a valid Group.&quot;);
-    }
-
-    return ungroupedItems;
-  };
-
-  &#x2F;**
-   * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method labels
-   * @param  {String} label The label identifier
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
-   *&#x2F;
-  pub.labels = function(label, cb) {
-    var result = [];
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        &#x2F;&#x2F; push pageItem&#x27;s 1st element to get the concrete PageItem instance, e.g. a TextFrame
-        result.push(pageItem.getElements()[0]);
-      }
-    }
-    if (arguments.length === 2 &amp;&amp; cb instanceof Function) {
-      return forEach(result, cb);
-    }
-    if(result.length === 0) b.error(&quot;b.labels(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
-    return result;
-  };
-  
-  &#x2F;**
-   * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don&#x27;t want to deal with a single-element array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method label
-   * @param  {String} label The label identifier
-   * @return {PageItem} The first PageItem of all the hits
-   *&#x2F;  
-  pub.label = function(label) {
-    var doc = currentDoc();
-    for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
-      var pageItem = doc.pageItems[i];
-      if (pageItem.label === label) {
-        return pageItem;  
-      }
-    }
-    b.error(&quot;b.label(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
+&#x2F;**
+ * Sets or possibly creates the current document and returns it.
+ * If the param doc is not given the current document gets set to the active document
+ * in the application. If no document at all is open, a new document gets created.
+ *
+ * @cat Document
+ * @method doc
+ * @param  {Document} [doc] The document to set the current document to
+ * @return {Document} The current document instance
+ *&#x2F;
+pub.doc = function(doc) {
+  if (doc instanceof Document) {
+    setCurrDoc(doc);
   }
-  
-  &#x2F;**
-   * Returns the first currently selected object. Use this if you know you only have one selected item and don&#x27;t want to deal with an array.
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selection
-   * @return {Object} The first selected object
-   *&#x2F;
-  pub.selection = function() {
-    if(app.selection.length === 0) error(&quot;b.selection(), selection is empty. Please select something.&quot;);
-    return app.selection[0];
-  }; 
+  return currentDoc();
+};
 
-  &#x2F;**
-   * Returns the currently selected object(s)
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method selections
-   * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
-   * @return {Object[]} Array of selected object(s).
-   *&#x2F;
-  pub.selections = function(cb) {
-    if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something.&quot;);
-    if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
-      return forEach(app.selection, cb);
-    } 
-    return app.selection;
-  };
+&#x2F;**
+ * Closes the current document.
+ *
+ * @cat Document
+ * @method close
+ * @param  {SaveOptions|Boolean} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param  {File} [file] Optional: The indesign file instance to save the document to
+ *&#x2F;
+pub.close = function(saveOptions, file) {
+  var doc = currentDoc();
+  if (doc) {
+    if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === false ) saveOptions = SaveOptions.no;
+    if( typeof saveOptions === &#x27;boolean&#x27; &amp;&amp; saveOptions === true ) saveOptions = SaveOptions.yes;
+    doc.close(saveOptions, file);
+    resetCurrDoc();
+  }
+};
 
-  &#x2F;**
-   * Returns the first item on the active page that is named by the given name in the Layers pane (Window -&gt; Layer).
-   *
-   * @cat Document
-   * @subcat Multi-Getters
-   * @method nameOnPage
-   * @return {Object} The first object on the active page with the given name
-   *&#x2F;
-  pub.nameOnPage = function(name) {
-    var result = null;
-    var page = currentPage();
-    for (var i = 0, len = page.allPageItems.length; i &lt; len; i++) {
-      var pageItem = page.allPageItems[i];
-      if (pageItem.name === name) {
-        result = pageItem.getElements()[0];
-        break;
-      }
-    }
-    if(result === null) b.error(&quot;b.nameOnPage(), no item found with the name &#x27;&quot; + name + &quot;&#x27; on page &quot;+pub.pageNumber());
-    return result;
-  };
+&#x2F;**
+ * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
+ * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+ * @method canvasMode
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
+pub.canvasMode = function ( m ) {
+  if(arguments.length == 0) {
+    return currCanvasMode;
+  } else if ( typeof m === &quot;string&quot; ) {
 
-  &#x2F;**
-   * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
-   *
-   * @cat Document
-   * @method units
-   * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
-   * @return {Constant} Current unit setting
-   *&#x2F;
-  pub.units = function (units) {
-    if (arguments.length === 0) return currUnits;
+    if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) &amp;&amp; !b.doc().documentPreferences.facingPages ) b.error(&quot;b.canvasMode(), cannot set a facing pages mode to a single page document&quot;);
 
-    if (units === pub.CM ||
-        units === pub.MM ||
-        units === pub.PT ||
-        units === pub.PX ||
-        units === pub.IN) {
-      var unitType = null;
-      if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
-      else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
-      else if (units === pub.PT) unitType = MeasurementUnits.points;
-      else if (units === pub.PX) unitType = MeasurementUnits.pixels;
-      else if (units === pub.IN) unitType = MeasurementUnits.inches;
-      var doc = currentDoc();
-      with (doc.viewPreferences){
-        &#x2F;&#x2F;* MeasurementUnits.agates
-        &#x2F;&#x2F;* MeasurementUnits.picas
-        &#x2F;&#x2F;* MeasurementUnits.points
-        &#x2F;&#x2F;* MeasurementUnits.inches
-        &#x2F;&#x2F;* MeasurementUnits.inchesDecimal
-        &#x2F;&#x2F;* MeasurementUnits.millimeters
-        &#x2F;&#x2F;* MeasurementUnits.centimeters
-        &#x2F;&#x2F;* MeasurementUnits.ciceros
-        horizontalMeasurementUnits = unitType;
-        verticalMeasurementUnits = unitType;
-      }
-      currUnits = units;
-      updatePublicPageSizeVars();
+    currCanvasMode = m;
+    updatePublicPageSizeVars();
+  } else {
+    error(&quot;b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.&quot;);
+  }
+
+};  
+
+&#x2F;**
+ * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
+ *
+ * @cat Document
+ * @subcat Page
+ * @method page
+ * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it&#x27;s containing page.
+ * @return {Page} The current page instance
+ *&#x2F;
+pub.page = function(page) {
+  if (page instanceof Page) {
+    currPage = page;
+  } else if ( typeof page !== &#x27;undefined&#x27; &amp;&amp; page.hasOwnProperty(&quot;parentPage&quot;) ) {
+    currPage = page.parentPage; &#x2F;&#x2F; page is actually a PageItem
+  } else if (typeof page === &#x27;number&#x27;) {
+    if( page &lt; 1 ) {
+      p = 0;
     } else {
-      error(&quot;b.unit(), not supported unit&quot;);
+      p = page - 1;
     }
-    return currUnits;
-  };
-
-  &#x2F;**
-   * Creates a vertical guide line at the current spread and current layer.
-   *
-   * @cat Document
-   * @method guideX
-   * @param  {Number} x Position of the new guide
-   * @return {Guide} New guide
-   *&#x2F;
-  pub.guideX = function (x) {
-    var guides = currentPage().guides;
-    var guide = guides.add( currentLayer() );
-    with (guide) {
-      fitToPage = true;
-      orientation = HorizontalOrVertical.VERTICAL;
-      location = x;
+    var tempPage = currentDoc().pages[p];
+    try {
+      tempPage.id;
+    } catch (e) {
+      error(&#x27;b.page(), &#x27; + page + &#x27; does not exist.&#x27;);
     }
-    return guide;
-  };
+    currPage = tempPage;
+  } else if (typeof page !== &#x27;undefined&#x27;) {
+    error(&quot;b.page(), bad type for b.page().&quot;);
+  }
+  updatePublicPageSizeVars();
+    if (currDoc.windows.length)
+      app.activeWindow.activePage = currPage; &#x2F;&#x2F; focus in GUI  if not in MODEHIDDEN
+  return currentPage();
+};
 
-  &#x2F;**
-   * Creates a horizontal guide line at the current spread and current layer.
-   *
-   * @cat Document
-   * @method guideY
-   * @param  {Number} y Position of the new guide
-   * @return {Guide} New guide
-   *&#x2F;
-  pub.guideY = function (y) {
-    var guides = currentPage().guides;
-    var guide = guides.add( currentLayer() );
-    with (guide) {
-      fitToPage = true;
-      orientation = HorizontalOrVertical.HORIZONTAL;
-      location = y;
-    }
-    return guide;
-  };
+&#x2F;**
+ * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method addPage
+ * @param  {String} [location] The location placement mode
+ * @return {Page} The new page
+ *&#x2F;
+pub.addPage = function(location) {
 
-  &#x2F;**
-   * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
-   *
-   * @cat Document
-   * @subcat Page
-   * @method margins
-   * @param {Number} [top] Top margin or all if only one
-   * @param {Number} [right] Right margin
-   * @param {Number} [bottom] Bottom margin
-   * @param {Number} [left] Left margin
-   * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank
-   * @return {Object} Current page margins with these properties: top, right, bottom, left
-   *&#x2F;
-  pub.margins = function(top, right, bottom, left, pageNumber) {
-
-    if (arguments.length === 0){
+  if(arguments.length === 0) location = b.AT_END; &#x2F;&#x2F; default
+  
+  var nP;
+  try {
+    
+    switch ( location ) {
       
-      return {&#x27;top&#x27;:pub.page(pageNumber).marginPreferences.top,
-              &#x27;right&#x27;:pub.page(pageNumber).marginPreferences.right,
-              &#x27;bottom&#x27;:pub.page(pageNumber).marginPreferences.bottom,
-              &#x27;left&#x27;:pub.page(pageNumber).marginPreferences.left
-              };
-      
-    } else if (arguments.length === 1) {
-      right = bottom = left = top;
-      }
+      case b.AT_END:
+        nP = currentDoc().pages.add(location);
+        break;
 
-    if(pageNumber != undefined){
-      pub.page(pageNumber).marginPreferences.top = top;
-      pub.page(pageNumber).marginPreferences.right = right;
-      pub.page(pageNumber).marginPreferences.bottom = bottom;
-      pub.page(pageNumber).marginPreferences.left = left;
-    }else{
-      currentPage().marginPreferences.top = top;
-      currentPage().marginPreferences.right = right;
-      currentPage().marginPreferences.bottom = bottom;
-      currentPage().marginPreferences.left = left;
-    }
+      case b.AT_BEGINNING:
+        nP = currentDoc().pages.add(location);     
+        break;
+
+      case b.AFTER:
+        nP = currentDoc().pages.add(location, pub.page() ); 
+        break;
+
+      case b.BEFORE:
+        nP = currentDoc().pages.add(location, pub.page() );
+        break;
+
+      default:
+        throw new Error(); 
+        break;
+
     };
 
-  &#x2F;**
-   * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top&#x2F;right&#x2F;bottom&#x2F;left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
-   *
-   * @cat Document
-   * @subcat Page
-   * @method bleeds
-   * @param {Number} [top] Top bleed or all if only one
-   * @param {Number} [right] Right bleed
-   * @param {Number} [bottom] Bottom bleed
-   * @param {Number} [left] Left bleed
-   *&#x2F;
-  pub.bleeds = function(top, right, bottom, left) {
+    pub.page( nP ); 
+    return nP;
 
-    if (arguments.length === 0){
-      return {&#x27;top&#x27;:currentDoc().documentPreferences.documentBleedTopOffset,
-              &#x27;right&#x27;:currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
-              &#x27;bottom&#x27;:currentDoc().documentPreferences.documentBleedBottomOffset,
-              &#x27;left&#x27;:currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
-              };
-              
-  } else if (arguments.length === 1) {
-    right = bottom = left = top;
-    }else{
-    currentDoc().documentPreferences.documentBleedUniformSize = false;
+  } catch (e) {
+    error(&quot;b.addPage(), invalid location argument passed to addPage()&quot;);
   }
 
-    currentDoc().documentPreferences.documentBleedTopOffset = top;
-    currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
-    currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
-    currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
+};
+
+&#x2F;**
+ * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method removePage
+ * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
+ *&#x2F;
+pub.removePage = function (page) {
+
+  if( typeof page === &#x27;number&#x27; || arguments.length === 0 || page instanceof Page ){
+    var p = pub.page(page); &#x2F;&#x2F; get the page object, todo: add an internal method of page retrieval without setting it to current
+    p.remove();
+    currPage = null; &#x2F;&#x2F; reset!
+    currentPage();
+  } else {
+    error(&quot;b.removePage(), invalid call. Wrong parameter!&quot;);
+  }
+
+};
+
+&#x2F;**
+ * Returns the current page number of either the current page or the given Page object.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method pageNumber
+ * @param  {Page} [pageObj] Optional: The page you want to know the number of.
+ * @return {Number} The page number within the document.
+ *&#x2F;
+pub.pageNumber = function (pageObj) {
+
+    if (typeof pageObj === &#x27;number&#x27;) error(&quot;b.pageNumber(), cannot be called with a Number argument.&quot;);
+
+    if (pageObj instanceof Page) {
+        return parseInt(pageObj.name); &#x2F;&#x2F; current number of given page
+    } else {
+        return parseInt(pub.page().name); &#x2F;&#x2F; number of current page
+    }
+
+};
+
+&#x2F;&#x2F; TODO: does not work?
+pub.nextPage = function () {
+    var p = pub.doc().pages.nextItem(currentPage());
+    return pub.page(p);
+};
+
+&#x2F;&#x2F; TODO: does not work?
+pub.previousPage = function () {
+    var p = pub.doc().pages.previousItem(currentPage());
+    return pub.page(p);
+};
+
+&#x2F;**
+ * The number of all pages in the current document.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method pageCount
+ * @return The amount of pages.
+ *&#x2F;
+pub.pageCount = function() {
+  return currentDoc().pages.count();
+};
+
+&#x2F;**
+ * The number of all stories in the current document.
+ *
+ * @cat Story
+ * @method storyCount
+ * @return {Number} count The amount of stories.
+ *&#x2F;
+pub.storyCount = function() {
+  return currentDoc().stories.count();
+};
+
+&#x2F;**
+ * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+ *
+ * @cat Story
+ * @method addToStory
+ * @param {Story} story The story
+ * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
+ * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+ *&#x2F;
+pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+  if (story instanceof Story &amp;&amp; arguments.length &gt;= 2) {
+    &#x2F;&#x2F; add string
+    if (isString(itemOrString)) {
+      if (insertionPointorMode instanceof InsertionPoint) {
+        insertionPointorMode.contents = itemOrString;
+      } else if (insertionPointorMode === pub.AT_BEGINNING) {
+        story.insertionPoints.firstItem().contents = itemOrString;
+      } else {
+        story.insertionPoints.lastItem().contents = itemOrString;
+      }
+    }
+    &#x2F;&#x2F; add other stuff
+    else {
+      app.select(itemOrString);
+      app.cut();
+      if (insertionPointorMode instanceof InsertionPoint) {
+        app.select(insertionPointorMode);
+      } else if (insertionPointorMode === pub.AT_BEGINNING) {
+        app.select(story.insertionPoints.firstItem());
+      } else {
+        app.select(story.insertionPoints.lastItem());
+      }
+      app.paste();
+    }
+  } else {
+    error(&quot;b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
+  }
+};
+
+&#x2F;**
+ * Returns the current layer and sets it if argument layer is given.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method layer
+ * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
+ * @return {Layer} The current layer instance
+ *&#x2F;
+pub.layer = function(layer) {
+  if (layer instanceof Layer) {
+    currLayer = layer;
+  } else if (typeof layer === &#x27;string&#x27;) {
+    var layers = currentDoc().layers;
+    currLayer = layers.item(layer);
+    if (!currLayer.isValid) {
+      currLayer = layers.add({name: layer});
+    }
+  }
+  return currentLayer();
+};
+
+&#x2F;**
+ *  Returns the Group instance and sets it if argument Group is given.
+ *
+ *  @cat Document
+ *  @subCat Page
+ *  @method Group
+ *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance
+ *  @param {String} name (optional) The name of the Group, only when creating a Group from Page Item(s)
+ *  @return {Group} the current Group instance
+ *&#x2F;
+pub.group = function (pItem, name) {
+  var group = null;
+  if( pItem instanceof Array) {
+    if(pItem.length &lt; 2) error(&quot;There must be at least two PageItems passed to b.group().&quot;);
+    &#x2F;&#x2F; creates a group from Page Items
+    group = currentDoc().groups.add(pItem);
+    if(typeof name != &#x27;undefined&#x27;) group.name = name;
+  }
+  else if( typeof pItem === &#x27;string&#x27; ) {
+    &#x2F;&#x2F; get the Group of the given name
+    group = currentDoc().groups.item(pItem);
+  }
+  else {
+    error(&quot;b.group(), not a valid argument.&quot;)
+  }
+
+  return group;
+};
+
+&#x2F;**
+ *  Returns an array of the items that were within the Group before b.ungroup() was called
+ *
+ *  @cat Document
+ *  @subCat Page
+ *  @method Group
+ *  @param {Object|String} [pItem] The Group or name of Group name instance
+ *  @param {String} name The name of the Group, only when creating a Group from Page Item(s)
+ *  @return {Group} the Page Item(s) that were grouped
+ *&#x2F;
+pub.ungroup = function(pItem) {
+  var ungroupedItems = null;
+  if( pItem instanceof Group) {
+    ungroupedItems = b.items( pItem );
+    pItem.ungroup();
+  }
+  else if( typeof pItem === &#x27;string&#x27; ) {
+    &#x2F;&#x2F; get the Group of the given name
+    var group = currentDoc().groups.item(pItem);
+    ungroupedItems = b.items( group );
+    group.ungroup();
+  }
+  else {
+    error(&quot;b.ungroup(), not a valid Group. Please select a valid Group.&quot;);
+  }
+
+  return ungroupedItems;
+};
+
+&#x2F;**
+ * Returns items tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label).
+ *
+ * @cat Document
+ * @subcat Multi-Getters
+ * @method labels
+ * @param  {String} label The label identifier
+ * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
+ * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+ *&#x2F;
+pub.labels = function(label, cb) {
+  var result = [];
+  var doc = currentDoc();
+  for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
+    var pageItem = doc.pageItems[i];
+    if (pageItem.label === label) {
+      &#x2F;&#x2F; push pageItem&#x27;s 1st element to get the concrete PageItem instance, e.g. a TextFrame
+      result.push(pageItem.getElements()[0]);
+    }
+  }
+  if (arguments.length === 2 &amp;&amp; cb instanceof Function) {
+    return forEach(result, cb);
+  }
+  if(result.length === 0) b.error(&quot;b.labels(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
+  return result;
+};
+
+&#x2F;**
+ * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -&gt; Utilities -&gt; Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don&#x27;t want to deal with a single-element array.
+ *
+ * @cat Document
+ * @subcat Multi-Getters
+ * @method label
+ * @param  {String} label The label identifier
+ * @return {PageItem} The first PageItem of all the hits
+ *&#x2F;  
+pub.label = function(label) {
+  var doc = currentDoc();
+  for (var i = 0, len = doc.pageItems.length; i &lt; len; i++) {
+    var pageItem = doc.pageItems[i];
+    if (pageItem.label === label) {
+      return pageItem;  
+    }
+  }
+  b.error(&quot;b.label(), no item found with the given label &#x27;&quot; + label + &quot;&#x27;. Check for line breaks and whitespaces in the script label panel.&quot;);
+}
+
+&#x2F;**
+ * Returns the first currently selected object. Use this if you know you only have one selected item and don&#x27;t want to deal with an array.
+ *
+ * @cat Document
+ * @subcat Multi-Getters
+ * @method selection
+ * @return {Object} The first selected object
+ *&#x2F;
+pub.selection = function() {
+  if(app.selection.length === 0) error(&quot;b.selection(), selection is empty. Please select something.&quot;);
+  return app.selection[0];
+}; 
+
+&#x2F;**
+ * Returns the currently selected object(s)
+ *
+ * @cat Document
+ * @subcat Multi-Getters
+ * @method selections
+ * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
+ * @return {Object[]} Array of selected object(s).
+ *&#x2F;
+pub.selections = function(cb) {
+  if(app.selection.length === 0) error(&quot;b.selections(), selection is empty. Please select something.&quot;);
+  if (arguments.length === 1 &amp;&amp; cb instanceof Function) {
+    return forEach(app.selection, cb);
+  } 
+  return app.selection;
+};
+
+&#x2F;**
+ * Returns the first item on the active page that is named by the given name in the Layers pane (Window -&gt; Layer).
+ *
+ * @cat Document
+ * @subcat Multi-Getters
+ * @method nameOnPage
+ * @return {Object} The first object on the active page with the given name
+ *&#x2F;
+pub.nameOnPage = function(name) {
+  var result = null;
+  var page = currentPage();
+  for (var i = 0, len = page.allPageItems.length; i &lt; len; i++) {
+    var pageItem = page.allPageItems[i];
+    if (pageItem.name === name) {
+      result = pageItem.getElements()[0];
+      break;
+    }
+  }
+  if(result === null) b.error(&quot;b.nameOnPage(), no item found with the name &#x27;&quot; + name + &quot;&#x27; on page &quot;+pub.pageNumber());
+  return result;
+};
+
+&#x2F;**
+ * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
+ *
+ * @cat Document
+ * @method units
+ * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
+ * @return {Constant} Current unit setting
+ *&#x2F;
+pub.units = function (units) {
+  if (arguments.length === 0) return currUnits;
+
+  if (units === pub.CM ||
+      units === pub.MM ||
+      units === pub.PT ||
+      units === pub.PX ||
+      units === pub.IN) {
+    var unitType = null;
+    if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
+    else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
+    else if (units === pub.PT) unitType = MeasurementUnits.points;
+    else if (units === pub.PX) unitType = MeasurementUnits.pixels;
+    else if (units === pub.IN) unitType = MeasurementUnits.inches;
+    var doc = currentDoc();
+    with (doc.viewPreferences){
+      &#x2F;&#x2F;* MeasurementUnits.agates
+      &#x2F;&#x2F;* MeasurementUnits.picas
+      &#x2F;&#x2F;* MeasurementUnits.points
+      &#x2F;&#x2F;* MeasurementUnits.inches
+      &#x2F;&#x2F;* MeasurementUnits.inchesDecimal
+      &#x2F;&#x2F;* MeasurementUnits.millimeters
+      &#x2F;&#x2F;* MeasurementUnits.centimeters
+      &#x2F;&#x2F;* MeasurementUnits.ciceros
+      horizontalMeasurementUnits = unitType;
+      verticalMeasurementUnits = unitType;
+    }
+    currUnits = units;
+    updatePublicPageSizeVars();
+  } else {
+    error(&quot;b.unit(), not supported unit&quot;);
+  }
+  return currUnits;
+};
+
+&#x2F;**
+ * Creates a vertical guide line at the current spread and current layer.
+ *
+ * @cat Document
+ * @method guideX
+ * @param  {Number} x Position of the new guide
+ * @return {Guide} New guide
+ *&#x2F;
+pub.guideX = function (x) {
+  var guides = currentPage().guides;
+  var guide = guides.add( currentLayer() );
+  with (guide) {
+    fitToPage = true;
+    orientation = HorizontalOrVertical.VERTICAL;
+    location = x;
+  }
+  return guide;
+};
+
+&#x2F;**
+ * Creates a horizontal guide line at the current spread and current layer.
+ *
+ * @cat Document
+ * @method guideY
+ * @param  {Number} y Position of the new guide
+ * @return {Guide} New guide
+ *&#x2F;
+pub.guideY = function (y) {
+  var guides = currentPage().guides;
+  var guide = guides.add( currentLayer() );
+  with (guide) {
+    fitToPage = true;
+    orientation = HorizontalOrVertical.HORIZONTAL;
+    location = y;
+  }
+  return guide;
+};
+
+&#x2F;**
+ * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
+ *
+ * @cat Document
+ * @subcat Page
+ * @method margins
+ * @param {Number} [top] Top margin or all if only one
+ * @param {Number} [right] Right margin
+ * @param {Number} [bottom] Bottom margin
+ * @param {Number} [left] Left margin
+ * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank
+ * @return {Object} Current page margins with these properties: top, right, bottom, left
+ *&#x2F;
+pub.margins = function(top, right, bottom, left, pageNumber) {
+
+  if (arguments.length === 0){
+    
+    return {&#x27;top&#x27;:pub.page(pageNumber).marginPreferences.top,
+            &#x27;right&#x27;:pub.page(pageNumber).marginPreferences.right,
+            &#x27;bottom&#x27;:pub.page(pageNumber).marginPreferences.bottom,
+            &#x27;left&#x27;:pub.page(pageNumber).marginPreferences.left
+            };
+    
+  } else if (arguments.length === 1) {
+    right = bottom = left = top;
+    }
+
+  if(pageNumber != undefined){
+    pub.page(pageNumber).marginPreferences.top = top;
+    pub.page(pageNumber).marginPreferences.right = right;
+    pub.page(pageNumber).marginPreferences.bottom = bottom;
+    pub.page(pageNumber).marginPreferences.left = left;
+  }else{
+    currentPage().marginPreferences.top = top;
+    currentPage().marginPreferences.right = right;
+    currentPage().marginPreferences.bottom = bottom;
+    currentPage().marginPreferences.left = left;
+  }
   };
+
+&#x2F;**
+ * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top&#x2F;right&#x2F;bottom&#x2F;left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
+ *
+ * @cat Document
+ * @subcat Page
+ * @method bleeds
+ * @param {Number} [top] Top bleed or all if only one
+ * @param {Number} [right] Right bleed
+ * @param {Number} [bottom] Bottom bleed
+ * @param {Number} [left] Left bleed
+ *&#x2F;
+pub.bleeds = function(top, right, bottom, left) {
+
+  if (arguments.length === 0){
+    return {&#x27;top&#x27;:currentDoc().documentPreferences.documentBleedTopOffset,
+            &#x27;right&#x27;:currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
+            &#x27;bottom&#x27;:currentDoc().documentPreferences.documentBleedBottomOffset,
+            &#x27;left&#x27;:currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
+            };
+            
+} else if (arguments.length === 1) {
+  right = bottom = left = top;
+  }else{
+  currentDoc().documentPreferences.documentBleedUniformSize = false;
+}
+
+  currentDoc().documentPreferences.documentBleedTopOffset = top;
+  currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
+  currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
+  currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
+};
 
     </pre>
 </div>

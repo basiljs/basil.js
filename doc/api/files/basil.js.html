@@ -128,29 +128,37 @@
 #target &quot;InDesign&quot;;
 
 (function(glob, app, undef) {
+  
   &#x2F;**
    * @class b
    * @static
    *&#x2F;
   var pub = {};
 
-  #include &quot;includes&#x2F;core.jsx&quot;;
+  &#x2F;**
+   * The basil version
+   * @property VERSION {String}
+   * @cat Environment
+   *&#x2F;
+  pub.VERSION = &quot;1.07-experimental&quot;;  
 
-  #include &quot;includes&#x2F;constants.jsx&quot;;
-  #include &quot;includes&#x2F;public-vars.jsx&quot;;
-  #include &quot;includes&#x2F;private-vars.jsx&quot;;
-  #include &quot;includes&#x2F;global-functions.jsx&quot;;
+  #include &quot;includes&#x2F;core.js&quot;;
+
+  #include &quot;includes&#x2F;constants.js&quot;;
+  #include &quot;includes&#x2F;public-vars.js&quot;;
+  #include &quot;includes&#x2F;private-vars.js&quot;;
+  #include &quot;includes&#x2F;global-functions.js&quot;;
   
-  #include &quot;includes&#x2F;structure.jsx&quot;;
-  #include &quot;includes&#x2F;environment.jsx&quot;;
-  #include &quot;includes&#x2F;data.jsx&quot;;
-  #include &quot;includes&#x2F;shape.jsx&quot;;
-  #include &quot;includes&#x2F;color.jsx&quot;;
-  #include &quot;includes&#x2F;typography.jsx&quot;;
-  #include &quot;includes&#x2F;image.jsx&quot;;
-  #include &quot;includes&#x2F;math.jsx&quot;;
-  #include &quot;includes&#x2F;transformation.jsx&quot;;
-  #include &quot;includes&#x2F;ui.jsx&quot;;
+  #include &quot;includes&#x2F;structure.js&quot;;
+  #include &quot;includes&#x2F;environment.js&quot;;
+  #include &quot;includes&#x2F;data.js&quot;;
+  #include &quot;includes&#x2F;shape.js&quot;;
+  #include &quot;includes&#x2F;color.js&quot;;
+  #include &quot;includes&#x2F;typography.js&quot;;
+  #include &quot;includes&#x2F;image.js&quot;;
+  #include &quot;includes&#x2F;math.js&quot;;
+  #include &quot;includes&#x2F;transformation.js&quot;;
+  #include &quot;includes&#x2F;ui.js&quot;;
 
   init();
   
