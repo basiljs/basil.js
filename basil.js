@@ -52,7 +52,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.07";  
+  pub.VERSION = "1.07-experimental";  
 
   #include "includes/core.js";
 
