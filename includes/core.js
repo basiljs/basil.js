@@ -393,16 +393,17 @@ var updatePublicPageSizeVars = function () {
 
 // internal helper to get around try/catch for finding eg. a color in the swatches
 var findInCollectionByName = function(collection, name) {
-  var found = collection.itemByName(name);
+
+/*  var found = collection.itemByName(name);
   if (!found || !found.isValid) return null;
-  return found;
+  return found;*/
   
-   /*var found = null;
+   var found = null;
    for (var i = 0; i < collection.length; i++) {
      if (collection[i].name === name) return collection[i];
    };
    return found;
-*/
+
 };
 
 var error = pub.error = function(msg) {
