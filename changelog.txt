@@ -3,6 +3,20 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.07-experimental - 22 October 2013
+
+* Fixed buggy b.noise()
+* Urgent bug fix to b.color() and others
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.06-experimental - 21 October 2013
+
+* Internal refactorings (split basil.js into many includes)
+* Changed to FAST_ENTIRE_SCRIPT execution mode
+
+Please note that this release is still experimental.
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.05 - 9 October 2013
 
 * Bugfix to b.endShape()
