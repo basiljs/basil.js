@@ -11,7 +11,7 @@ var init = function() {
   currFillTint = 100;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
-};    
+};
 
 
 // ----------------------------------------
@@ -21,7 +21,7 @@ var init = function() {
  * Run the sketch! Has to be called in every sketch a the very end of the code.
  * You may add performance setting options when calling b.go():<br /><br />
  *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />   
+ * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
  * b.go(b.MODESILENT) <br />
  * b.go(b.MODEHIDDEN)<br /><br />
  *
@@ -43,6 +43,7 @@ pub.go = function (mode) {
       progressPanel = new Progress();
     runSetup();
     runDrawOnce();
+    runUpdateOnce();
     var executionDuration = pub.millis();
     if (executionDuration < 1000) {
       println("[Finished in " + executionDuration + "ms]");
@@ -93,6 +94,7 @@ pub.loop = function(framerate) {
   var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
   idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
     runDrawLoop();
+    runUpdateLoop();
   }, false);
   println("Run the script lib/stop.jsx to end the draw loop and clean up!");
 //    println("loop()");
@@ -138,6 +140,22 @@ var runDrawLoop = function() {
   app.doScript(function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
+    }
+  }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
+};
+
+var runUpdateOnce = function() {
+  app.doScript(function() {
+    if (typeof glob.update === 'function') {
+      glob.update();
+    }
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+};
+
+var runUpdateLoop = function() {
+  app.doScript(function() {
+    if (typeof glob.update === 'function') {
+      glob.update();
     }
   }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
 };
@@ -190,7 +208,7 @@ var setCurrDoc = function(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
-  
+
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   currFont = currDoc.textDefaults.appliedFont.name;
   currFontSize = currDoc.textDefaults.pointSize;
@@ -313,7 +331,7 @@ var updatePublicPageSizeVars = function () {
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-      
+
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
         b.resetMatrix();
         b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
@@ -325,9 +343,9 @@ var updatePublicPageSizeVars = function () {
       widthOffset = 0;
       heightOffset = 0;
       b.resetMatrix();
-      
+
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
 
@@ -336,10 +354,10 @@ var updatePublicPageSizeVars = function () {
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
         pub.translate(-w,0);
       }
-       
-      
+
+
       pub.height = h;
-      break; 
+      break;
 
     case pub.FACING_BLEEDS:
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
@@ -348,7 +366,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -366,7 +384,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -375,7 +393,7 @@ var updatePublicPageSizeVars = function () {
         pub.translate(-w-widthOffset/2,0);
       }
 
-      return; // early exit    
+      return; // early exit
 
     default:
       b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
@@ -384,7 +402,7 @@ var updatePublicPageSizeVars = function () {
 
   if(singlePageMode){
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+    var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
     pub.width = w;
     pub.height = h;
@@ -397,7 +415,7 @@ var findInCollectionByName = function(collection, name) {
 /*  var found = collection.itemByName(name);
   if (!found || !found.isValid) return null;
   return found;*/
-  
+
    var found = null;
    for (var i = 0; i < collection.length; i++) {
      if (collection[i].name === name) return collection[i];
