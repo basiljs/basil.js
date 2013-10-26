@@ -70,7 +70,7 @@ pub.ui = {
     controllerList = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
-      win = uiProperties.win = new Window("palette", name, undefined);
+      win = uiProperties.win = new Window("window", name, undefined);
       win.orientation = "row";
       // win.alignChildren = "fill";
 
