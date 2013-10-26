@@ -195,11 +195,11 @@ pub.pageNumber = function (pageObj) {
  */
 pub.nextPage = function () {
   var index = currentPage().documentOffset;
-  try {
+  if( index+1 < currentDoc().pages.length ) {
     var p = currentDoc().pages.item( index+1 );
     return pub.page(p);
   }
-  catch(e) {
+  else {
     error("b.nextPage(), at the end of document try b.page(0) or b.previousPage() instead" );
   }
 };
@@ -214,11 +214,11 @@ pub.nextPage = function () {
  */
 pub.previousPage = function () {
   var index = currentPage().documentOffset;
-  try {
+  if( index-1 >= 0 ) {
     var p = currentDoc().pages.item( index-1 );
     return pub.page(p);
   }
-  catch(e) {
+  else {
     error("b.previousPage(), at the beginning of document try b.page(b.pageCount()) or b.nextPage() instead" );
   }
 };
