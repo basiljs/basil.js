@@ -28,4 +28,6 @@ var currDoc = null,
     currVertexPoints = null,
     currPathPointer = null,  
     currPolygon = null,    
-    currShapeMode = null;
+    currShapeMode = null,
+    // tmp cache, see addToStroy(), via indesign external library file
+    addToStoryCache = null;

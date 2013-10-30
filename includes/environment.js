@@ -230,33 +230,53 @@ pub.storyCount = function() {
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  */
 pub.addToStory = function(story, itemOrString, insertionPointorMode) {
-  if (story instanceof Story && arguments.length >= 2) {
-    // add string
-    if (isString(itemOrString)) {
-      if (insertionPointorMode instanceof InsertionPoint) {
-        insertionPointorMode.contents = itemOrString;
-      } else if (insertionPointorMode === pub.AT_BEGINNING) {
-        story.insertionPoints.firstItem().contents = itemOrString;
-      } else {
-        story.insertionPoints.lastItem().contents = itemOrString;
+  // init
+  var libFileName = "addToStoryLib.indl";
+  var libFile = new File(Folder.temp+"/"+libFileName);
+  addToStoryCache = findInCollectionByName(app.libraries, libFileName);
+  // if and a cache is existing from previous executions, remove it
+  if (addToStoryCache) {
+    addToStoryCache.close();
+    libFile.remove();
+  } 
+  //create an indesign library for caching the page items
+  addToStoryCache = app.libraries.add(libFile);
+
+  // self-overwrite, see self-defining-functions pattern
+  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+    if (story instanceof Story && arguments.length >= 2) {
+      // add string
+      if (isString(itemOrString)) {
+        if (insertionPointorMode instanceof InsertionPoint) {
+          insertionPointorMode.contents = itemOrString;
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          story.insertionPoints.firstItem().contents = itemOrString;
+        } else {
+          story.insertionPoints.lastItem().contents = itemOrString;
+        }
       }
-    }
-    // add other stuff
-    else {
-      app.select(itemOrString);
-      app.cut();
-      if (insertionPointorMode instanceof InsertionPoint) {
-        app.select(insertionPointorMode);
-      } else if (insertionPointorMode === pub.AT_BEGINNING) {
-        app.select(story.insertionPoints.firstItem());
-      } else {
-        app.select(story.insertionPoints.lastItem());
+      // add other stuff
+      else {
+        // store the item as first asset in cache
+        addToStoryCache.store(itemOrString);
+
+        var insertionPoint = null;
+        if (insertionPointorMode instanceof InsertionPoint) {
+          insertionPoint = insertionPointorMode;
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          insertionPoint = story.insertionPoints.firstItem();
+        } else {
+          insertionPoint = story.insertionPoints.lastItem();
+        }
+
+        // place & remove from cache
+        addToStoryCache.assets.firstItem().placeAsset(insertionPoint);
+        addToStoryCache.assets.firstItem().remove();
       }
-      app.paste();
+    } else {
+      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.")
     }
-  } else {
-    error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.")
-  }
+  };
 };
 
 /**
