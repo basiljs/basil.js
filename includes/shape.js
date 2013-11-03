@@ -253,7 +253,6 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   return pub.endShape();
 };
 
-
 /*
  * Cubic bezier approximation of a eliptical arc
  *

@@ -1,36 +1,77 @@
-////////////////////////////////////////////////////////////////////////////////
-// This script belongs to the following tutorial:
+/**
+ *
+ * Prompt Interface Window Example
+ *
+ */
+
+#targetengine basiljs
+
+
+
 //
-// http://scriptographer.org/tutorials/user-interface/creating-palette-windows/
+//  Includes
+//
+#includepath '~/Documents/;%USERPROFILE%Documents';
+#include 'basiljs/bundle/basil.js';
 
-// Define the values object, declaring default values and also
-// receiving the user changes, for simpler further reference:
-var values = {
-	firstName: '',
-	lastName: '',
-	email: ''
+
+
+//
+// Properties
+//
+
+// create a variable for the interface control palette window
+var dialog;
+
+var output = [];
+
+var uiConfig = {
+  firstName: {
+    type: 'textfield',
+    label: 'First Name',
+    value: 'Anthony'
+  },
+  lastName: {
+    type: 'textfield',
+    label: 'Last Name',
+    value: 'Other'
+  },
+  email: {
+    type: 'textfield',
+    label: 'Email Address',
+    value: 'a.other@email.com'
+  }
 };
 
-// Define the interface components to edit each value. Note that they
-// need to use the same names as the properties in the values object:
-var components = {
-	firstName: { type: 'string', label: 'First Name' },
-	lastName: { type: 'string', label: 'Last Name' },
-	email: { type: 'string', label: 'Email Address' },
 
-	// Define the hello button which when clicked says hello:
-	hello: {
-		type: 'button', value: 'Hello',
-		onClick: function() {
-			// The user clicked 'Hello', so let's say hello to him:
-			Dialog.alert('Hello ' + values.firstName
-				+ ' ' + values.lastName
-				+ ', your email address is: '
-				+ values.email);
-		}
-	}
+
+function setup() {
+  // define the interface palette window
+  dialog = new b.ui.palette(
+    // title of the dialog
+    'Contact Form',
+    // the array of defined controllers
+    uiConfig
+  );
+
+  b.textAlign(Justification.CENTER_ALIGN, VerticalJustification.CENTER_ALIGN);
+
+  // create text boxes
+  output[0] = b.text( dialog.firstName, b.width/2-150, 100, 300, 80);
+  output[1] = b.text( dialog.lastName,  b.width/2-150, 180, 300, 80);
+  output[2] = b.text( dialog.email,     b.width/2-150, 260, 300, 80);
 };
 
-// Now we create the palette window using the components
-// and values definitions:
-var palette = new Palette('Contact Details', components, values);
+function draw() {
+};
+
+function update() {
+  // live update from our prompt
+  output[0].contents = dialog.firstName;
+  output[1].contents = dialog.lastName;
+  output[2].contents = dialog.email;
+};
+
+
+
+b.go();

@@ -8,7 +8,7 @@
  *  - components are not respecting width: "full"
  *  - fix independent label bug
  *  - major bug with prompts, need support .add()
- *  
+ *
  *  ROADMAP:
  *  - implement missing/additional controllers
  *  - add layout customizeability
@@ -54,14 +54,14 @@ pub.ui = {
    *   }
    * };
    * var dialog = new ui.dialog(b.PALETTE, "Interface Example", uiConfig);
-   * 
+   *
    * @cat UI
    * @subcat dialog
    * @method dialog
    * @param {String} type           b.PALETTE or b.PROMPT
    * @param {String} name           the name of the controller window
    * @param {Array} controllerList  array of controllers
-   * 
+   *
    * @return {Array} ui properties and methods
    */
   dialog: function(type, name, controllerList) {
@@ -95,7 +95,7 @@ pub.ui = {
         window:  uiProperties.win,             // this initiated window (palette)
         update:  uiProperties.win.update,      // this window"s update function
         add:     addController,     // add controllers on-the-fly
-        remove:  removeController,  // remove controllers on-the-fly 
+        remove:  removeController,  // remove controllers on-the-fly
         onClose: function() {}      // callback for window onClose
       };
 
@@ -165,7 +165,7 @@ pub.ui = {
      * add controller to the current control window
      * var slider = dialog.add("slider", "mySlider", 100, {range: [10,200]});
      *
-     * @param {String} type       the controller type 
+     * @param {String} type       the controller type
      * @param {String} name       the name of the controller (also it"s variable name)
      * @param {Number} value      the controller"s initial value
      * @param {Array} properties  controller properties (i.e type, label, range, etc.), optional
@@ -177,7 +177,7 @@ pub.ui = {
       properties["type"] = (arguments[0] != undefined) ? arguments[0].toLowerCase() : "undefined";
       properties["name"] = arguments[1];
 
-      // if properties.value != undefined use that 
+      // if properties.value != undefined use that
       // if value == number || value == string use that
       // if there are only 3 arguments use properties.value
       // else use null
@@ -216,7 +216,7 @@ pub.ui = {
           uiProperties.winControllerList[name] = controller = new pub.controllers().Slider(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "dropdown") {
-        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Dropdown(name, uiProperties.winControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Dropdown(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "separator") {
           uiProperties.winControllerList[name] = controller = new pub.controllers().Separator(name, uiProperties.winControllersGroup, properties);
@@ -241,7 +241,7 @@ pub.ui = {
     /*
      * remove controller from current control window
      * @param {String} name       the name of the controller to remove
-     * 
+     *
      * @return {Boolean} true if control found and removed, false otherwise
      */
     function removeController(name) {
@@ -300,7 +300,7 @@ pub.ui = {
 
   /**
    * Displays a prompt dialog window
-   * 
+   *
    * @cat UI
    * @subcat dialog
    * @method prompt
@@ -314,7 +314,7 @@ pub.ui = {
 
   /**
    * Creates a modeless interface window, also called a floating palette.
-   * 
+   *
    * @cat UI
    * @subcat dialog
    * @method palette
@@ -340,7 +340,7 @@ pub.controllers = function() {
   /*
    * Private
    * controller initialization of base properties for every controller
-   * 
+   *
    * @param {Array} properties    Basil.js controller properties (i.e type, label, range, etc.)
    *
    * @return {Array} properties
@@ -370,7 +370,7 @@ pub.controllers = function() {
   /*
    * Private
    * initialization of Text Controller properties
-   * 
+   *
    * @param {Array} properties
    * @return {Array} properties
    */
@@ -384,9 +384,9 @@ pub.controllers = function() {
         alignment:  "center",  /* default: "center" */
         valueType:  (properties.valueType != undefined)
                       ? properties.valueType
-                      : (typeof properties.value == "number")
+                      : (typeof properties.value === "number")
                         ? "float"
-                        : "string"  /* default: "string" */ 
+                        : "string"  /* default: "string" */
       },
       init(properties));
   };
@@ -394,7 +394,7 @@ pub.controllers = function() {
   /*
    * Private
    * initialization of Range Controller properties
-   * 
+   *
    * @param {Array} properties
    * @return {Array} properties
    */
@@ -411,7 +411,7 @@ pub.controllers = function() {
                       : (properties.value != undefined)
                         ? properties.value
                         : 1.0) ], /* default: [0.0,1.0] */
-      min:    (properties.min != undefined) 
+      min:    (properties.min != undefined)
                 ? properties.min
                 : (properties.range != undefined)
                   ? this.range[0]
@@ -429,16 +429,39 @@ pub.controllers = function() {
 
   /*
    * Private
+   * initialization of List Controller properties
+   *
+   * @param {Array} properties
+   * @return {Array} properties
+   */
+  var initList = function(properties) {
+    return mergeArray({
+        items:      [],
+        alignment:  "center", /* default: "center" */
+        value:      (properties.value != null)
+                      ? properties.value
+                      : properties.items[0],
+        valueType:  (properties.valueType != undefined)
+                      ? properties.valueType
+                      : (typeof properties.value === "number")
+                        ? "float"
+                        : "string"  /* default: "string" */
+      },
+      init(properties));
+  };
+
+  /*
+   * Private
    * update a property with a specific value
-   * 
+   *
    * @param {Array} properties
    * @param {Object} value
    * @return {Array} properties
    */
   var updateValue = function(properties, value) {
-    return (properties.valueType == "int")
+    return (properties.valueType === "int")
       ? parseInt(value)
-      : (properties.valueType == "string"
+      : (properties.valueType === "string"
         ? value.toString()
         : precision(value,2)); // default float
   };
@@ -571,7 +594,7 @@ pub.controllers = function() {
   };
 
   /**
-   * A static text field that the user cannot change 
+   * A static text field that the user cannot change
    * @cat UI
    * @subcat controllers
    * @method label
@@ -593,7 +616,7 @@ pub.controllers = function() {
       width: properties.width
     });*/
     // var xwidth = label.preferredSize[0];
-    // uiProperties.maximumLabelWidth = (labelText.length*xwidth > uiProperties.maximumLabelWidth) 
+    // uiProperties.maximumLabelWidth = (labelText.length*xwidth > uiProperties.maximumLabelWidth)
     //   ? labelText.length*xwidth
     //   : uiProperties.maximumLabelWidth;
     label.justify = "right";
@@ -611,7 +634,7 @@ pub.controllers = function() {
     label.alignment = properties.alignment;
 
     // set longest label for layout adjustment
-    uiProperties.maximumLabelWidth = (label.preferredSize[0] > uiProperties.maximumLabelWidth) 
+    uiProperties.maximumLabelWidth = (label.preferredSize[0] > uiProperties.maximumLabelWidth)
       ? label.preferredSize[0]
       : uiProperties.maximumLabelWidth;
 
@@ -659,7 +682,7 @@ pub.controllers = function() {
           : (properties.multiline && properties.length == undefined)
             ? properties.maxLength-2 // -2 accounts for width for scrollbar
             :  properties.maxLength;
-    text.minimumSize.height = (properties.multiline && properties.rows != undefined) 
+    text.minimumSize.height = (properties.multiline && properties.rows != undefined)
       ? (uiProperties.typesize+2)*(properties.rows+1)
       : (uiProperties.typesize+2)*1;
     text.graphics.font = uiProperties.typeface;
@@ -806,6 +829,53 @@ pub.controllers = function() {
    * @return {Array} properties
    */
   function Dropdown(name, container, properties) {
+    properties = initList(properties);
+
+    var group = container.add("group");
+    group.orientation = "row";
+
+    var label = new Label("label", group, {
+      alignment: "center",
+      label: properties.label
+    });
+
+    var dropdown = group.add("dropdownlist", undefined, undefined,
+      properties
+    );
+    // dropdown.title = attributes.label;
+    // dropdown.titleLayout = {
+    //   alignment: ["left", "center"],
+    //   spacing: 3,
+    //   characters: 16,
+    //   justify: "right"
+    // };
+    dropdown.selection = (properties.items.findIndex( properties.value ) != undefined)
+      ? properties.items.findIndex( properties.value )
+      : 0; // select first element
+    dropdown.graphics.font = uiProperties.typeface;
+    dropdown.onClick = function() {
+      var value = updateValue(properties,this.selection.text);
+      properties["value"] = value;
+      uiProperties.update();
+
+      properties.onClick(value);
+      runUpdateOnce();
+
+      return value;
+    };
+    dropdown.onChange = function() {
+      var value = updateValue(properties,this.selection.text);
+      properties["value"] = value;
+      uiProperties.update();
+
+      properties.onChange(value);
+      runUpdateOnce();
+
+      return value;
+    };
+
+    properties["value"] = updateValue(properties,dropdown.selection.text);
+    return properties;
   };
 
   /**
@@ -853,7 +923,7 @@ pub.controllers = function() {
     Textfield: Textfield,
     // Progress: Progress,
     Slider: Slider,
-    // Dropdown: Dropdown,
+    Dropdown: Dropdown,
     Separator: Separator
   };
 
@@ -874,7 +944,16 @@ function mergeArray(base, arr) {
   return arr;
 };
 
-
+if (!Array.prototype.findIndex) {
+  Array.prototype.findIndex = function(search){
+    for (var i=this.length-1; i>=0; i--) {
+      if (this[i].toLowerCase() === search.toLowerCase()){
+          break;
+      }
+    }
+    return i;
+  };
+}
 
 function printProperties(obj) {
   $.writeln("------------------");
