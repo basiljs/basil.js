@@ -59,8 +59,12 @@ pub.go = function (mode) {
     currDoc.windows.add(); //open the hidden doc
   }
   closeHiddenDocs();
-  if (progressPanel)
+  if (progressPanel) {
     progressPanel.closePanel();
+  }
+  if (addToStoryCache) {
+    addToStoryCache.close();
+  }
   app.scriptPreferences.enableRedraw = true;
   app.preflightOptions.preflightOff = false;
   exit(); // quit program execution
