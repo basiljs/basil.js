@@ -228,9 +228,6 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   }
   for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON; ) {
     var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
-
-    // var radius = (w + h)/2; //(pub.sqrt(w * w + h * h) / 2);
-    // var points = calculateCircularArc(radius, thetaStart, thetaEnd);
     var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
 
     pub.vertex(
@@ -257,61 +254,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 };
 
 /*
- * Cubic bezier approximation of a circular arc
- *
- * initial code:
- * Hans Muller
- * hmuller@adobe.com
- * http://hansmuller-flex.blogspot.de/2011/04/approximating-circular-arc-with-cubic.html
- * http://hansmuller-flex.blogspot.de/2011/10/more-about-approximating-circular-arcs.html
- *
- * This work is licensed under the Creative Commons Attribution 3.0
- * Unported License. To view a copy of this license, visit
- * http://creativecommons.org/licenses/by/3.0/ or send a letter to
- * Creative Commons, 444 Castro Street, Suite 900, Mountain View,
- * California, 94041, USA.
- *
- * This algorithm is based on the approach described in:
- * A. Riškus, "Approximation of a Cubic Bezier Curve by Circular Arcs and Vice Versa,"
- * Information Technology and Control, 35(4), 2006 pp. 371-378.
- *
- */
-function calculateCircularArc(radius, startAngle, endAngle) {
-  var delta = (endAngle - startAngle)/2.0;
-  var total = delta + startAngle;
-
-  var cos_delta = pub.cos(total);
-  var sin_delta = pub.sin(total);
-
-  var x0 = radius * pub.cos(delta);
-  var y0 = radius * pub.sin(delta);
-  var x1 = x0;
-  var y1 = -y0
-
-  var q1 = x1*x1 + y1*y1;
-  var q2 = q1 + x1*x0 + y1*y0;
-  var k = 4/3 * (pub.sqrt(2 * q1 * q2) - q2) / (x1 * y0 - y1 * x0); // calculate kappa
-
-  var x2 = x1 - k * y1;
-  var y2 = y1 + k * x1;
-  var x3 = x2;
-  var y3 = -y2;
-
-  return {
-    startx:   radius * pub.cos(startAngle),
-    starty:   radius * pub.sin(startAngle),
-    handle1x: x2 * cos_delta - y2 * sin_delta,
-    handle1y: x2 * sin_delta + y2 * cos_delta,
-
-    endx:     radius * pub.cos(endAngle),
-    endy:     radius * pub.sin(endAngle),
-    handle2x: x3 * cos_delta - y3 * sin_delta,
-    handle2y: x3 * sin_delta + y3 * cos_delta,
-  };
-};
-
-/*
- * Cubic bezier approximation of a circular arc
+ * Cubic bezier approximation of a eliptical arc
  *
  * intial source code:
  * Golan Levin
