@@ -76,7 +76,7 @@ pub.ui = {
 
       uiProperties.typeface = ScriptUI.newFont(type, ScriptUI.FontStyle.REGULAR, uiProperties.typesize);
 
-      if( type == "dialog" || type == "prompt" ) {
+      if( type === "dialog" || type === "prompt" ) {
         // always include a basil.js logo with prompts
         var logoGroup = win.add("group");
         logoGroup.add("image", undefined, File("~/Documents/basiljs/bundle/lib/basil_simple.png"));
@@ -111,7 +111,7 @@ pub.ui = {
         uiProperties.update();
       });
 
-      if( type == "dialog" || type == "prompt" ) {
+      if( type === "dialog" || type === "prompt" ) {
         var buttongroup = mainGroup.add("group");
         buttongroup.alignment = "right";
 
@@ -178,14 +178,14 @@ pub.ui = {
       properties["name"] = arguments[1];
 
       // if properties.value != undefined use that
-      // if value == number || value == string use that
+      // if value === number || value === string use that
       // if there are only 3 arguments use properties.value
       // else use null
       properties["value"] = ( properties["value"] != undefined )
         ? properties["value"]
-        : (typeof arguments[2] == "number" || typeof arguments[2] == "string"
+        : (typeof arguments[2] === "number" || typeof arguments[2] === "string"
           ? arguments[2]
-          : (arguments.length == 3
+          : (arguments.length === 3
             ? arguments[2].value
             : null));
 
@@ -279,14 +279,14 @@ pub.ui = {
       uiProperties.win.layout.layout( true );
     };
     function adjustFullWidth(child) {
-      if( child.properties.width == "full" ) {
+      if( child.properties.width === "full" ) {
         // child.size.width = child.preferredSize.width = child.maximumSize.width = uiProperties.win.size.width;
         // child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
         child.alignment = ["center","center"];
       }
     };
     function adjustLabelWidth(child) {
-      if( child.type == "statictext" && child.properties.name == "label" ) {
+      if( child.type === "statictext" && child.properties.name === "label" ) {
         child.size.width = uiProperties.maximumLabelWidth;
       }
     };
@@ -377,7 +377,7 @@ pub.controllers = function() {
   var initText = function(properties) {
     return mergeArray({
         length:     null,
-        maxLength:  22,        /* default: 22 (== width: 200px) */
+        maxLength:  22,        /* default: 22 (=== width: 200px) */
         multiline:  false,     /* default: false */
         columns:    null,
         rows:       null,
@@ -498,7 +498,7 @@ pub.controllers = function() {
     });*/
     button.graphics.font = uiProperties.typeface;
     button.preferredSize.height = properties.height;
-    button.preferredSize.width = (properties.width == "full")
+    button.preferredSize.width = (properties.width === "full")
       ? uiProperties.win.preferredSize.width
       : properties.width;
 
@@ -547,7 +547,7 @@ pub.controllers = function() {
     check.value = properties.value;
 
     check.onClick = function() {
-      var value = (properties.valueType == "int")
+      var value = (properties.valueType === "int")
         ? ((this.value) ? 1 : 0)
         : this.value;
       properties["value"] = value;
@@ -559,7 +559,7 @@ pub.controllers = function() {
       return value;
     };
 
-    properties["value"] = (properties.valueType == "int")
+    properties["value"] = (properties.valueType === "int")
       ? ((check.value) ? 1 : 0)
       : check.value;
     return properties;
@@ -622,7 +622,7 @@ pub.controllers = function() {
     label.justify = "right";
     label.graphics.font = uiProperties.typeface;
 
-    // if( label.characters == null ) {
+    // if( label.characters === null ) {
     //   // TODO: define and allow maximum width override
     //   var width = (uiProperties.maximumLabelWidth < 200) ? uiProperties.maximumLabelWidth : 200;
     //   label.preferredSize = [,-1];
@@ -842,17 +842,11 @@ pub.controllers = function() {
     var dropdown = group.add("dropdownlist", undefined, undefined,
       properties
     );
-    // dropdown.title = attributes.label;
-    // dropdown.titleLayout = {
-    //   alignment: ["left", "center"],
-    //   spacing: 3,
-    //   characters: 16,
-    //   justify: "right"
-    // };
     dropdown.selection = (properties.items.findIndex( properties.value ) != undefined)
       ? properties.items.findIndex( properties.value )
       : 0; // select first element
     dropdown.graphics.font = uiProperties.typeface;
+
     dropdown.onClick = function() {
       var value = updateValue(properties,this.selection.text);
       properties["value"] = value;
@@ -935,14 +929,16 @@ pub.controllers = function() {
  * merge two arrays together
  * http://stackoverflow.com/questions/929776/merging-associative-arrays-javascript (modified)
  */
-function mergeArray(base, arr) {
-  for(item in base) {
-    arr[item] = (arr[item] != undefined)
-      ? arr[item]
-      : base[item];
-  }
-  return arr;
-};
+// if (!Array.prototype.merge) {
+  function mergeArray(base, arr) {
+    for(item in base) {
+      arr[item] = (arr[item] != undefined)
+        ? arr[item]
+        : base[item];
+    }
+    return arr;
+  };
+// }
 
 if (!Array.prototype.findIndex) {
   Array.prototype.findIndex = function(search){

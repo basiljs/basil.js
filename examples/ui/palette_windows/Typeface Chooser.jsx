@@ -1,10 +1,10 @@
 /**
  *
- * Prompt Interface Window Example
+ * Palette Interface Window Example
  *
  */
 
-#targetengine ddsd3eds4fmrrrr
+#targetengine basiljs
 
 
 
@@ -20,7 +20,6 @@
 // Properties
 //
 var typeFamilies = app.fonts.everyItem().fontFamily.unique();
-var typeStyles   = app.fonts.everyItem().fontStyleName.unique();
 
 
 // create a variable for the interface control palette window
@@ -39,28 +38,25 @@ var uiConfig = {
 		type: 'dropdown',
 		label: 'Type Family',
 		items: typeFamilies,
-		value: 'Futura'
+		value: 'Helvetica'
 	},
 	size: {
 		type: 'textfield',
 		label: 'Size',
     valueType: 'int',
-		value: 14
+		value: 72
 	},
-	color: {
-		type: 'color',
-		label: 'Circle Color',
-		value: 'black'
-	},
+	// color: {
+	// 	type: 'color',
+	// 	label: 'Circle Color',
+	// 	value: 'black'
+	// },
 
-	// The create button, with an onClick() handler that creates the
-	// text item for us:
 	create: {
 		type: 'button',
 		value: 'Create',
 		onClick: function() {
-			// Create a PointText
-			// Set content and characterStyle properties on it
+			draw();
 		}
 	}
 };
@@ -68,50 +64,37 @@ var uiConfig = {
 
 
 function setup() {
-  // define the interface palette window
-  dialog = new b.ui.palette(
-    // title of the dialog
-    'Typeface Chooser',
-    // the array of defined controllers
-    uiConfig
-  );
+  dialog = new b.ui.palette( 'Typeface Chooser', uiConfig );
 
+  b.layer('generated');
+  b.canvasMode(b.PAGE);
 };
+
+
 
 function draw() {
+	b.clear(b.layer('generated'));
 
-	// $.writeln( app.fonts.item("Futura") );
-	// printProperties( app.fonts.item( dialog.typeface ) );
+	// b.fill( dialog.color );
+  b.textSize( dialog.size );
+  b.textFont( app.fonts.item( dialog.typeface ) );
+  b.textAlign(Justification.CENTER_ALIGN, VerticalJustification.CENTER_ALIGN);
 
+  textFrame = b.text(
+  	dialog.text + "\n" +
+  	dialog.typeface + "\n" +
+  	dialog.size,
+  	0,0,
+  	b.width,b.height
+  );
 };
 
+
+
 function update() {
-	alert( dialog.typeface );
 };
 
 
 
 b.go();
 
-
-
-
-function printProperties(obj) {
-  $.writeln("------------------");
-  $.writeln(obj.reflect.name);
-  $.writeln("\rProperties");
-  $.writeln("------------------");
-  var props = obj.reflect.properties;
-  var array = [];
-  for( var i=0; i<props.length; i++ ) {
-    try {
-      array.push( props[i].name + ":\t\t" + obj[props[i].name] );
-    }
-    catch(err) {}
-    array.sort();
-    // $.writeln( array.join ("\r") );
-  }
-  for( var i=0; i<array.length; i++ ) {
-    $.writeln( array[i] );
-  }
-};
