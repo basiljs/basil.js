@@ -198,7 +198,7 @@ pub.ui = {
           uiProperties.winControllerList[name] = controller = new pub.controllers().Checkbox(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "color") {
-        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Color(name, uiProperties.winControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Color(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "radio") {
         //   uiProperties.winControllerList[name] = controller = new pub.controllers().Radio(name, uiProperties.winControllersGroup, properties);
@@ -430,6 +430,29 @@ pub.controllers = function() {
 
   /*
    * Private
+   * initialization of Color Controller properties
+   *
+   * @param {Array} properties
+   * @return {Array} properties
+   */
+  var initColor = function(properties) {
+    return mergeArray({
+        color:      properties.value,
+        colormode:  (properties.colormode != null)
+                      ? properties.colormode
+                      : (typeof properties.value === "number")
+                        ? "float"
+                        : "string",  /* default: "string" */
+        size:       (properties.size === "small")
+                      ? 12
+                      : (properties.size === "large")
+                        ? 28
+                        : 18 // "medium"
+      },
+      init(properties));
+  };
+  /*
+   * Private
    * initialization of List Controller properties
    *
    * @param {Array} properties
@@ -493,10 +516,7 @@ pub.controllers = function() {
     }
 
     var clickCount = 0;
-    var button = group.add("button", undefined, properties.value, properties ); /*{
-      name: name,
-      width: properties.width
-    });*/
+    var button = group.add("button", undefined, properties.value, properties );
     button.graphics.font = uiProperties.typeface;
     button.preferredSize.height = properties.height;
     button.preferredSize.width = (properties.width === "full")
@@ -587,7 +607,7 @@ pub.controllers = function() {
    * @method color
    * @param {String} name         the (variable) name of the Controller
    * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in
-   * @param {Array} properties    Basil.js Range Controller properties (i.e type, label, range, etc.)
+   * @param {Array} properties    Basil.js Color Controller properties (i.e type, label, range, etc.)
    *
    * @return {Array} properties
    */
@@ -913,7 +933,7 @@ pub.controllers = function() {
   return {
     Button: Button,
     Checkbox: Checkbox,
-    // Color: Color,
+    Color: Color,
     // Radio: Radio,
     Label: Label,
     Textfield: Textfield,

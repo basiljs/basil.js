@@ -4,7 +4,7 @@
  *
  */
 
-#targetengine basilfffffffjs
+#targetengine bay783ijqrokwlddfjs
 
 
 
@@ -46,11 +46,6 @@ var uiConfig = {
     valueType: 'int',
 		value: 72
 	},
-	// color: {
-	// 	type: 'color',
-	// 	label: 'Circle Color',
-	// 	value: 'black'
-	// },
 
 	create: {
 		type: 'button',
@@ -65,7 +60,7 @@ var uiConfig = {
 
 
 function setup() {
-  dialog = new b.ui.prompt( 'Typeface Chooser', uiConfig );
+  dialog = new b.ui.palette( 'Typeface Chooser', uiConfig );
 
   b.layer('generated');
   b.canvasMode(b.PAGE);
@@ -76,7 +71,6 @@ function setup() {
 function draw() {
 	b.clear(b.layer('generated'));
 
-	// b.fill( dialog.color );
   b.textSize( dialog.size );
   b.textFont( app.fonts.item( dialog.typeface ) );
   b.textAlign(Justification.CENTER_ALIGN, VerticalJustification.CENTER_ALIGN);
