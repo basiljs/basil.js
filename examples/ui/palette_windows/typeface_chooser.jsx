@@ -21,7 +21,6 @@
 //
 var typeFamilies = app.fonts.everyItem().fontFamily.unique();
 
-
 // create a variable for the interface control palette window
 var dialog;
 

@@ -1,17 +1,31 @@
-#targetengine basiljs
+/**
+ *
+ * Prompt Interface Window Example
+ *
+ */
 
+#targetengine bfgdhfsrasiljs
+
+
+
+//
+//  Includes
+//
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
 
 
 
-// ------------------------------------------------------------------------
+//
 // Properties
-// ------------------------------------------------------------------------
+//
+
+// create a variable for the interface control palette window
 var dialog;
 
-var dialogConfig = {
+var swatches = b.doc().swatches.everyItem().name.unique();
 
+var uiConfig = {
   radius: {
     type: 'textfield',
     label: 'Radius (points)',
@@ -20,11 +34,12 @@ var dialogConfig = {
     length: 10,
   },
 
-  // colorsList: {
-  //   type: 'dropdown',
-  //   options: b.doc().swatches,
-  //   value: 'Black'
-  // },
+  colorsList: {
+    type: 'dropdown',
+    label: 'Colors',
+    items: swatches,
+    value: 'Black'
+  },
 
   chartData: {
     type: 'textfield',
@@ -37,23 +52,15 @@ var dialogConfig = {
 
 
 
-// ------------------------------------------------------------------------
-// Setup
-// ------------------------------------------------------------------------
 function setup() {
 
-  dialog = b.ui.prompt( 'Pie Chart', dialogConfig );
+  dialog = b.ui.prompt( 'Pie Chart', uiConfig );
 
 };
 
 
 
-// ------------------------------------------------------------------------
-// Draw
-// ------------------------------------------------------------------------
 function draw() {
-  var radius = dialog.radius;
-
   // parse the interface output into an array
   // that the PieChart method can use
   var dataset = [];
@@ -64,20 +71,16 @@ function draw() {
 
   // draw some pie!
   b.noStroke();
-  var randomSwatch = b.doc().swatches[ parseInt( b.random(3,b.doc().swatches.length) ) ].name;
-  b.fill( randomSwatch );
-  PieChart( b.width/2, b.height/2, radius, dataset );
+  b.fill( dialog.colorsList );
+  PieChart( b.width/2, b.height/2, dialog.radius, dataset );
 
 };
 
 
 
-// ------------------------------------------------------------------------
-// Methods
-// ------------------------------------------------------------------------
 /**
  *  Draw a Pie Chart
- * 
+ *
  *  @param {Number} cx     y-coordinate of the pie chart's center
  *  @param {Number} cy     y-coordinate of the pie chart's center
  *  @param {Number} radius radius of pie chart
