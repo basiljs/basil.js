@@ -10,7 +10,7 @@
  *  - major bug with prompts, need support .add()
  *
  *  ROADMAP:
- *  - implement missing/additional controllers
+ *  / implement missing/additional controllers
  *  - add layout customizeability
  */
 
@@ -42,7 +42,6 @@ var uiProperties = {
  * Create simple user interfaces
  * @cat UI
  */
-pub.ui = null;
 pub.ui = {
   /**
    * Creates a dialog window
@@ -70,17 +69,17 @@ pub.ui = {
     controllerList = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
-      win = uiProperties.win = new Window("window", name, undefined);
+      win = uiProperties.win = new Window("palette", name.toString(), undefined, undefined);
       win.orientation = "row";
       // win.alignChildren = "fill";
 
       uiProperties.typeface = ScriptUI.newFont(type, ScriptUI.FontStyle.REGULAR, uiProperties.typesize);
 
-      if( type === "dialog" || type === "prompt" ) {
-        // always include a basil.js logo with prompts
-        var logoGroup = win.add("group");
-        logoGroup.add("image", undefined, File("~/Documents/basiljs/bundle/lib/basil_simple.png"));
-      }
+      // if( type === "dialog" || type === "prompt" ) {
+      //   // always include a basil.js logo with prompts
+      //   var logoGroup = win.add("group");
+      //   logoGroup.add("image", undefined, File("~/Documents/basiljs/bundle/lib/basil_simple.png"));
+      // }
 
       var mainGroup = win.add("group");
       mainGroup.orientation = "column";
@@ -92,8 +91,8 @@ pub.ui = {
 
       // create core return values
       uiProperties.winValue = {
-        window:  uiProperties.win,             // this initiated window (palette)
-        update:  uiProperties.win.update,      // this window"s update function
+        window:  win,               // this initiated window (palette)
+        update:  win.update,        // this window"s update function
         add:     addController,     // add controllers on-the-fly
         remove:  removeController,  // remove controllers on-the-fly
         onClose: function() {}      // callback for window onClose
@@ -125,6 +124,7 @@ pub.ui = {
         ok.graphics.font = uiProperties.typeface;
         ok.onClick = function() {
           win.close(1);
+          runDrawOnce();
           runUpdateOnce();
         };
       }
@@ -230,6 +230,7 @@ pub.ui = {
       }
 
       if( controller != null ) {
+        adjustLayout( uiProperties.winControllersGroup );
         uiProperties.win[name] = controller;
         uiProperties.win.layout.layout( true );
         uiProperties.update();
@@ -260,14 +261,14 @@ pub.ui = {
     function adjustLayout(container) {
       for ( var i=0; i<container.children.length; i++) {
         var child = container.children[i];
-        adjustFullWidth( child );   // adjust full width elements
+        // adjustFullWidth( child );   // adjust full width elements
         adjustLabelWidth( child );  // adjust label sizes
-        adjustSpacing( child );     // adjust spacing
+        // adjustSpacing( child );     // adjust spacing
         if( typeof child.layout != "undefined" ) child.layout.layout( true );
 
         for ( var j=0; j<child.children.length; j++ ) {
           var grandChild = child.children[j];
-          adjustFullWidth( grandChild );   // adjust full width elements
+          // adjustFullWidth( grandChild );   // adjust full width elements
           adjustLabelWidth( grandChild );  // adjust label sizes
           if( typeof grandChild.layout != "undefined" ) grandChild.layout.layout( true );
         }
@@ -606,6 +607,7 @@ pub.controllers = function() {
    */
   function Label(name, container, properties) {
     properties = initText(properties);
+    properties.name = name;
     properties.valueType = "string";
     var labelText = (properties.value != null)
       ? properties.label + "\u00A0" + properties.value

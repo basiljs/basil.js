@@ -4,7 +4,7 @@
  *
  */
 
-#targetengine basiljs
+#targetengine basilfffffffjs
 
 
 
@@ -55,6 +55,7 @@ var uiConfig = {
 	create: {
 		type: 'button',
 		value: 'Create',
+		width: 'full',
 		onClick: function() {
 			draw();
 		}
@@ -64,7 +65,7 @@ var uiConfig = {
 
 
 function setup() {
-  dialog = new b.ui.palette( 'Typeface Chooser', uiConfig );
+  dialog = new b.ui.prompt( 'Typeface Chooser', uiConfig );
 
   b.layer('generated');
   b.canvasMode(b.PAGE);
