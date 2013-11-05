@@ -52,7 +52,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.07-experimental";  
+  pub.VERSION = "1.08-experimental";  
 
   #include "includes/constants.js";
   #include "includes/public-vars.js";
