@@ -127,7 +127,7 @@ var runSetup = function() {
     if (typeof glob.setup === 'function') {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawOnce = function() {
@@ -135,7 +135,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawLoop = function() {
@@ -143,7 +143,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var welcome = function() {
@@ -195,6 +195,7 @@ var setCurrDoc = function(doc) {
   currDoc = doc;
   // -- setup document --
   
+  currDoc.pasteboardPreferences.pasteboardMargins = ["1000pt", "1000pt"];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   currFont = currDoc.textDefaults.appliedFont.name;
   currFontSize = currDoc.textDefaults.pointSize;
