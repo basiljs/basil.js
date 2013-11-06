@@ -50,19 +50,7 @@ if (!Array.prototype.map) {
       k++;
     }
     return A;
-  };
-}
-
-// http://indisnip.wordpress.com/2010/08/04/get-font-styles-from-font-family/
-if (!Array.prototype.unique) {
-  Array.prototype.unique = function() {
-    var r = new Array();
-    o:for(var i = 0, n = this.length; i < n; i++){
-      for(var x = 0, y = r.length; x < y; x++){
-        if(r[x]==this[i]) continue o;}
-      r[r.length] = this[i];}
-    return r;
-  };
+  };      
 }
 
 /**
@@ -77,10 +65,10 @@ if (!Array.prototype.unique) {
 if (!glob.forEach) {
   glob.forEach = function(collection, cb) {
     for (var i = 0, len = collection.length; i < len; i++) {
-
+      
       if(!isValid(collection[i])) {
         warning("forEach(), invalid object processed.");
-        continue;
+        continue;          
       }
 
       if(cb(collection[i],i) === false) {
@@ -94,7 +82,7 @@ pub.forEach = glob.forEach;
 
 /**
  * HashList is a data container that allows you to store information as key -> value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
- *
+ * 
  * @constructor
  * @cat Data
  * @subcat HashList
@@ -105,23 +93,23 @@ glob.HashList = function () {
   var that = {};
   that.length = 0;
   that.items = {};
-
-  // TODO: initial function removal in items?
+  
+  // TODO: initial function removal in items?      
   for ( var key in that.items ) {
     b.println(key);
   }
-
+  
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
   function checkKey(key) {
     if(that.items[key] instanceof Function) {
-        that.items[key] = undefined;
+        that.items[key] = undefined; 
     };
   }
 
   /**
-   *
+   * 
    * This removes a key -> value pair by its key.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.remove
@@ -140,20 +128,20 @@ glob.HashList = function () {
 
   /**
    * This gets a value by its key.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.get
    * @param {any} key The key to look for
    * @return {any} The value
    */
-  that.get = function(key) {
+  that.get = function(key) {    
     return that.items[key];
   }
 
   /**
    * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.set
@@ -176,12 +164,12 @@ glob.HashList = function () {
 
   /**
    * Checks for the existence of a given key.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.hasKey
    * @param {any} key The key to check
-   * @return {boolean}
+   * @return {boolean} 
    */
   that.hasKey = function(key) {
     checkKey(key);
@@ -190,12 +178,12 @@ glob.HashList = function () {
 
   /**
    * Checks if a certain value exists at least once in all of the key -> value pairs.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.hasValue
-   * @param {any} value
-   * @return {boolean}
+   * @param {any} value 
+   * @return {boolean} 
    */
   that.hasValue = function(value) {
     var obj = that.items;
@@ -208,19 +196,19 @@ glob.HashList = function () {
     }
     return found;
   }
-
+  
   /**
-   * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
-   *
+   * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeysByValues
-   * @return {Array} An array with all the keys
+   * @return {Array} An array with all the keys 
    */
   that.getKeysByValues = function() {
       var obj = that.items;
       var keys = [];
-      for(var key in obj)
+      for(var key in obj) 
         {
           if( typeof obj[key] != 'number' ) error("HashList.getKeysByValues(), only works with Numbers as values. ");
           keys.push(key);
@@ -229,24 +217,24 @@ glob.HashList = function () {
   }
 
   /**
-   * Returns an array with all keys in a sorted order from higher to lower magnitude.
-   *
+   * Returns an array with all keys in a sorted order from higher to lower magnitude. 
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.getSortedKeys
-   * @return {Array} An array with all the keys
+   * @return {Array} An array with all the keys 
    */
   that.getSortedKeys = function () {
       return that.getKeys().sort(); // ["a", "b", "z"]
-  }
+  }    
 
   /**
    * Returns an array with all keys.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeys
-   * @return {Array} An array with all the keys
+   * @return {Array} An array with all the keys 
    */
   that.getKeys = function () {
       var keys = [];
@@ -263,11 +251,11 @@ glob.HashList = function () {
 
   /**
    * Returns an array with all keys.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeys
-   * @return {Array} An array with all the keys
+   * @return {Array} An array with all the keys 
    */
   that.getValues = function () {
 
@@ -278,12 +266,12 @@ glob.HashList = function () {
         values.push(obj[key]);
     }
     return values;
-
+    
   }
 
   /**
    * Deletes all the key -> value pairs in this HashList.
-   *
+   * 
    * @cat Data
    * @subcat HashList
    * @method HashList.clear
@@ -296,4 +284,4 @@ glob.HashList = function () {
   }
 
   return that;
-}
+}  

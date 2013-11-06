@@ -45,14 +45,6 @@ function draw() {
     b.addPage(b.AFTER); 
     b.text("Example AFTER 15 becomes 16", b.width / 2, b.height / 2, 100, 100);
 
-    // jump to next page (which is 17)
-    b.nextPage();
-    b.text("Example NEXT PAGE after 16 is 17", b.width / 2, b.height / 2 - 100, 100, 100);
-
-    // jump to previous page (which is 16)
-    b.previousPage();
-    b.text("Example PREVIOUS PAGE before 17 is 16", b.width / 2, b.height / 2 - 100, 100, 100);
-
     b.println(b.pageCount());
 
 }

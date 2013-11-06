@@ -5,7 +5,7 @@
 // finding, creating, releasing
 
 function draw() {
-
+	
   // create array of objects
   var arr = [];
   
