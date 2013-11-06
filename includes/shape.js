@@ -77,9 +77,9 @@ if(w === 0 || h === 0)
  * @param  {Number} y2 Point B y-value
  * @return {GraphicLine} New GraphicLine
  */
-/* 
+/*
  *  TODO: Vectors as arguments
- *  @example 
+ *  @example
  *    var vec1 = new b.Vector( x1, y1 );
  *    var vec2 = new b.Vector( x2, y2 );
  *    b.line( vec1, vec2 );
@@ -103,10 +103,10 @@ pub.line = function(x1, y1, x2, y2) {
 };
 
 /**
- * Using the beginShape() and endShape() functions allow creating more complex forms. 
- * beginShape() begins recording vertices for a shape and endShape() stops recording. 
- * After calling the beginShape() function, a series of vertex() commands must follow. 
- * To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to 
+ * Using the beginShape() and endShape() functions allow creating more complex forms.
+ * beginShape() begins recording vertices for a shape and endShape() stops recording.
+ * After calling the beginShape() function, a series of vertex() commands must follow.
+ * To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to
  * create from the provided vertices have to be closed or not (to connect the beginning and the end).
  *
  * @cat Document
@@ -126,14 +126,14 @@ pub.beginShape = function(shapeMode) {
 };
 
 /**
- * Shapes are constructed by connecting a series of vertices. vertex() is used to 
+ * Shapes are constructed by connecting a series of vertices. vertex() is used to
  * specify the vertex coordinates lines and polygons. It is used exclusively within
  * the beginShape() and endShape() functions.
  *
- * Please use either vertex(x, y) or 
+ * Please use either vertex(x, y) or
  * for drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).
  * You can also mix the two approaches.
- * 
+ *
  * @cat Document
  * @subcat Primitives
  * @method vertex
@@ -161,10 +161,145 @@ pub.vertex = function() {
   }
 };
 
+/**
+ * The arc() function draws an arc in the display window.
+ * Arcs are drawn along the outer edge of an ellipse defined by the
+ * <b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.
+ * The origin or the arc's ellipse may be changed with the
+ * <b>ellipseMode()</b> function.
+ * The <b>start</b> and <b>stop</b> parameters specify the angles
+ * at which to draw the arc.
+ *
+ * @cat Document
+ * @subcat Primitives
+ * @method arc
+ * @param {Number} cx         x-coordinate of the arc's center
+ * @param {Number} cy         y-coordinate of the arc's center
+ * @param {Number} w          width of the arc's ellipse
+ * @param {Number} h     height of the arc's ellipse
+ * @param {Number} startAngle starting angle of the arc (radians)
+ * @param {Number} endAngle   ending angle of the arc (radians)
+ * @param {String} mode optional property defines rendering technique of arc, b.OPEN (default), b.CHORD, or b.PIE
+ *
+ * @return {GraphicLine|Polygon} newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
+ *
+ * TODO(S)
+ * - fix overlapping points bug
+ */
+pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
+  if (w <= 0 || endAngle < startAngle) {
+    return false;
+  }
+  if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
+
+  var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  startAngle %= pub.TWO_PI+o;
+  endAngle %= pub.TWO_PI+o;
+  w /= 2;
+  h /= 2;
+
+  if (currEllipseMode === pub.CORNER) {
+    cx = (cx-w);
+    cy = (cy+h);
+  }
+  else if (currEllipseMode === pub.CORNERS) {
+    // cx = (cx-w);
+    // cy = (cy-h);
+    // w -= cx;
+    // h -= cy;
+  }
+  else if (currEllipseMode === pub.RADIUS) {
+    w *= 2;
+    h *= 2;
+  }
+
+  var delta = pub.abs(endAngle - startAngle);
+  var direction = (startAngle < endAngle) ? 1 : -1;
+  var thetaStart = startAngle;
+
+  if( mode == pub.CHORD ) {
+    pub.beginShape(pub.CLOSE);
+  }
+  else if( mode == pub.PIE ) {
+    pub.beginShape(pub.CLOSE);
+    pub.vertex( cx, cy );
+  }
+  else {
+    pub.beginShape();
+  }
+  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON; ) {
+    var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
+    var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
+
+    pub.vertex(
+      cx + points.startx,
+      cy + points.starty,
+      cx + points.startx,
+      cy + points.starty,
+      cx + points.handle1x,
+      cy + points.handle1y
+    );
+    pub.vertex(
+      cx + points.endx,
+      cy + points.endy,
+      cx + points.handle2x,
+      cy + points.handle2y,
+      cx + points.endx,
+      cy + points.endy
+    );
+
+    theta -= pub.abs(thetaEnd - thetaStart);
+    thetaStart = thetaEnd;
+  }
+  return pub.endShape();
+};
+
+/*
+ * Cubic bezier approximation of a eliptical arc
+ *
+ * intial source code:
+ * Golan Levin
+ * golan@flong.com
+ * http://www.flong.com/blog/2009/bezier-approximation-of-a-circular-arc-in-processing/
+ *
+ * The solution is taken from this PDF by Richard DeVeneza:
+ * http://www.tinaja.com/glib/bezcirc2.pdf
+ * linked from this excellent site by Don Lancaster:
+ * http://www.tinaja.com/cubic01.asp
+ *
+ */
+function calculateEllipticalArc(w, h, startAngle, endAngle) {
+  var theta = (endAngle - startAngle);
+
+  var x0 = pub.cos(theta/2.0);
+  var y0 = pub.sin(theta/2.0);
+  var x3 = x0;
+  var y3 = 0-y0;
+  var x1 = (4.0-x0)/3.0;
+  var y1 = ((1.0-x0)*(3.0-x0))/(3.0*y0);
+  var x2 = x1;
+  var y2 = 0-y1;
+
+  var bezAng = startAngle + theta/2.0;
+  var cBezAng = pub.cos(bezAng);
+  var sBezAng = pub.sin(bezAng);
+
+  return {
+    startx:   w*(cBezAng * x0 - sBezAng * y0),
+    starty:   h*(sBezAng * x0 + cBezAng * y0),
+    handle1x: w*(cBezAng * x1 - sBezAng * y1),
+    handle1y: h*(sBezAng * x1 + cBezAng * y1),
+
+    handle2x: w*(cBezAng * x2 - sBezAng * y2),
+    handle2y: h*(sBezAng * x2 + cBezAng * y2),
+    endx:     w*(cBezAng * x3 - sBezAng * y3),
+    endy:     h*(sBezAng * x3 + cBezAng * y3)
+  };
+};
 
 /**
- * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. 
- * New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for 
+ * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path.
+ * New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for
  * the setting (see b.CLOSE) given in beginShape(shapeMode).
  *
  * @cat Document
@@ -177,8 +312,8 @@ pub.addPath = function() {
 }
 
 /**
- * The endShape() function is the companion to beginShape() and may only be called 
- * after beginShape(). 
+ * The endShape() function is the companion to beginShape() and may only be called
+ * after beginShape().
  *
  * @cat Document
  * @subcat Primitives
@@ -189,20 +324,20 @@ pub.endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );    
+                   currMatrix.adobeMatrix() );
   return currPolygon;
 };
 
 function doAddPath() {
   if (isArray(currVertexPoints)) {
     if (currVertexPoints.length > 0) {
-      
+
       if(currPolygon === null) {
         addPolygon();
       } else {
         currPolygon.paths.add();
       }
-      
+
       currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
       currVertexPoints = [];
     }
@@ -223,7 +358,7 @@ function addPolygon() {
     fillColor = currFillColor;
     fillTint = currFillTint;
     strokeColor = currStrokeColor;
-  }       
+  }
 }
 
 
@@ -249,7 +384,7 @@ pub.rect = function(x, y, w, h){
     return false;
   }
   if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
-  
+
   var rectBounds = [];
   if (currRectMode === pub.CORNER) {
     rectBounds[0] = y;
@@ -294,24 +429,24 @@ pub.rect = function(x, y, w, h){
 // -- Attributes --
 
 /**
- * Modifies the location from which rectangles draw. The default mode is 
- * rectMode(CORNER), which specifies the location to be the upper left 
- * corner of the shape and uses the third and fourth parameters of rect() 
- * to specify the width and height. The syntax rectMode(CORNERS) uses the 
- * first and second parameters of rect() to set the location of one corner 
- * and uses the third and fourth parameters to set the opposite corner. 
- * The syntax rectMode(CENTER) draws the image from its center point and 
- * uses the third and forth parameters of rect() to specify the image's 
- * width and height. The syntax rectMode(RADIUS) draws the image from its 
- * center point and uses the third and forth parameters of rect() to specify 
- * half of the image's width and height. The parameter must be written in 
+ * Modifies the location from which rectangles draw. The default mode is
+ * rectMode(CORNER), which specifies the location to be the upper left
+ * corner of the shape and uses the third and fourth parameters of rect()
+ * to specify the width and height. The syntax rectMode(CORNERS) uses the
+ * first and second parameters of rect() to set the location of one corner
+ * and uses the third and fourth parameters to set the opposite corner.
+ * The syntax rectMode(CENTER) draws the image from its center point and
+ * uses the third and forth parameters of rect() to specify the image's
+ * width and height. The syntax rectMode(RADIUS) draws the image from its
+ * center point and uses the third and forth parameters of rect() to specify
+ * half of the image's width and height. The parameter must be written in
  * "ALL CAPS".
  *
  * @cat Document
  * @subcat Attributes
  * @method rectMode
  * @param {String} mode Either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS
- * 
+ *
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
@@ -324,20 +459,20 @@ pub.rectMode = function (mode) {
 };
 
 /**
- * The origin of the ellipse is modified by the ellipseMode() function. 
- * The default configuration is ellipseMode(CENTER), which specifies the 
- * location of the ellipse as the center of the shape. The RADIUS mode is 
- * the same, but the width and height parameters to ellipse() specify the 
- * radius of the ellipse, rather than the diameter. The CORNER mode draws 
- * the shape from the upper-left corner of its bounding box. The CORNERS 
- * mode uses the four parameters to ellipse() to set two opposing corners 
+ * The origin of the ellipse is modified by the ellipseMode() function.
+ * The default configuration is ellipseMode(CENTER), which specifies the
+ * location of the ellipse as the center of the shape. The RADIUS mode is
+ * the same, but the width and height parameters to ellipse() specify the
+ * radius of the ellipse, rather than the diameter. The CORNER mode draws
+ * the shape from the upper-left corner of its bounding box. The CORNERS
+ * mode uses the four parameters to ellipse() to set two opposing corners
  * of the ellipse's bounding box. The parameter must be written in "ALL CAPS".
  *
  * @cat Document
  * @subcat Attributes
  * @method ellipseMode
  * @param {String} mode Either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS
- */ 
+ */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
   if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
@@ -350,9 +485,9 @@ pub.ellipseMode = function (mode) {
 
 
 /**
- * Sets the width of the stroke used for lines and the border 
- * around shapes. 
- * 
+ * Sets the width of the stroke used for lines and the border
+ * around shapes.
+ *
  * @cat Document
  * @subcat Attributes
  * @method strokeWeight
@@ -379,7 +514,7 @@ pub.objectStyle = function(name) {
   var style = findInCollectionByName(name);
   if(typeof style === 'undefined'){
     style = currentDoc().objectStyles.add({name: name});
-  } 
+  }
   return style;
 };
 
@@ -399,7 +534,7 @@ pub.duplicate = function(item){
 
     var newItem = item.duplicate(currentPage());
     newItem.move(currentLayer());
-    
+
     if (currRectMode === pub.CENTER) {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
