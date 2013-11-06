@@ -309,7 +309,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
 pub.addPath = function() {
   doAddPath();
   currPathPointer++;
-}
+};
 
 /**
  * The endShape() function is the companion to beginShape() and may only be called
@@ -344,7 +344,7 @@ function doAddPath() {
   } else {
     notCalledBeginShapeError();
   }
-}
+};
 
 function addPolygon() {
   if (currShapeMode === pub.CLOSE) {
@@ -359,12 +359,12 @@ function addPolygon() {
     fillTint = currFillTint;
     strokeColor = currStrokeColor;
   }
-}
+};
 
 
 function notCalledBeginShapeError () {
   error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
-}
+};
 
 /**
  * Draws a rectangle on the page.
@@ -483,7 +483,6 @@ pub.ellipseMode = function (mode) {
   }
 };
 
-
 /**
  * Sets the width of the stroke used for lines and the border
  * around shapes.
@@ -556,4 +555,4 @@ pub.duplicate = function(item){
     error("Please provide a valid Page or PageItem as parameter for duplicate().");
   }
 
-}
+};
