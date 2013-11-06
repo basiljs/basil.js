@@ -10,9 +10,9 @@ function draw() {
   b.rect(105, 35, 50, 50);
   b.rect(175, 35, 50, 50);
   b.rect(105, 105, 100, 50);
-  
+
   b.stroke(0);
-  b.arc(35, 35, 50, 50, 0, b.HALF_PI); // lower quarter circle 
+  b.arc(35, 35, 50, 50, 0, b.HALF_PI); // lower quarter circle
   b.arc(105, 35, 50, 50, -b.PI, 0);  // upper half of circle
   b.arc(175, 35, 50, 50, -b.PI / 6, b.PI / 6); // 60 degrees
   b.arc(105, 105, 100, 50, b.HALF_PI, 3 * b.HALF_PI); // 180 degrees
