@@ -32,26 +32,29 @@ var init = function() {
  */
 pub.go = function (mode) {
   if (!mode) {
-    mode = b.DEFAULTMODE;
+    mode = pub.DEFAULTMODE;
   }
-  app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
+  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE);
   app.preflightOptions.preflightOff = true;
 
-  try {
-    currentDoc(mode);
-    if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
-      progressPanel = new Progress();
-    runSetup();
-    runDrawOnce();
-    var executionDuration = pub.millis();
-    if (executionDuration < 1000) {
-      println("[Finished in " + executionDuration + "ms]");
-    } else {
-      println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
-    }
+  currentDoc(mode);
+  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+    progressPanel = new Progress();
+  }
 
-  } catch (e) { // exception not caught individually
-      alert(e); // make verbose
+  if (typeof glob.setup === 'function') {
+    runSetup();
+  };
+
+  if (typeof glob.draw === 'function') {
+    runDrawOnce();
+  };
+  
+  var executionDuration = pub.millis();
+  if (executionDuration < 1000) {
+    println("[Finished in " + executionDuration + "ms]");
+  } else {
+    println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
   }
 
   if(currDoc && !currDoc.windows.length) {
