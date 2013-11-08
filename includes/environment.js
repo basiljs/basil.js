@@ -610,3 +610,61 @@ pub.bleeds = function(top, right, bottom, left) {
   currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
   currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
 };
+
+
+/**
+ * Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.
+ *
+ * @cat Output
+ * @method inspect
+ * @param  {Object} obj : the Object to inspect
+ * @param  {Number} maxlevel Optional: recursion limit, default maxlevel = 2
+ */
+pub.inspect = function(obj, maxlevel, level, propname) {
+  if (!level) level = 0;
+  if (!maxlevel) maxlevel = 2;
+  if (level > maxlevel) return;
+
+  var constructorName = obj.constructor.name;
+
+  var indent = "";
+  for (var i = 0; i < level; i++) indent = indent + "\t";
+
+  if (level === 0) {
+    println(obj);
+  } else {
+    if (constructorName === "Boolean" ||
+        constructorName === "Number" ||
+        constructorName === "String") {
+      println(indent+propname+": "+obj);
+    }
+    else if (constructorName === "Array") {
+      println(indent+propname+": "+constructorName+"("+obj.length+")");
+    }
+    else if (constructorName === "Color") {
+      println(indent+propname+": ["+obj.colorValue+"] "+constructorName);
+    } 
+    else {
+      println(indent+propname+": "+constructorName);
+    }
+  }
+
+  if ( constructorName === 'Array' ) {
+    for (var i = 0, len = obj.length; i < len; i++) {
+      pub.inspect(obj[i], maxlevel, level+1, i);
+    };
+  } else if (typeof obj === 'object') {
+    try {
+      for (var i in obj){
+        if (obj.hasOwnProperty(i)) {
+          pub.inspect(obj[i], maxlevel, level+1, i);
+        }
+      }
+    }
+    catch(e) {
+      println(indent+"--> "+propname+" "+e);
+    }
+  }
+}; 
+
+
