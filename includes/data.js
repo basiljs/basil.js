@@ -780,3 +780,251 @@ var projectPath = pub.projectPath = function() {
   return docPath;
 };
 
+
+/**
+ * Executes a shell command and returns the result, currently Mac only.
+ * 
+ * BE CAREFUL!
+ * 
+ * @cat Data
+ * @subcat Input
+ * @method shellExecute
+ * @param  {String} cmd The shell command to execute
+ * @return {String}
+ */
+pub.shellExecute = function(cmd) {
+  if (Folder.fs === "Macintosh") {
+    try {
+      return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
+    } catch (e) {
+      error("b.shellExecute(): "+e);
+    }
+  } else {
+    error("b.shellExecute() is a Mac only feature at the moment. Sorry!")
+  }
+};
+
+/**
+ * Reads the contents of a file or loads an URL into a String.
+ * If the file is specified by name as String, it must be located in the document's data directory.
+ *
+ * @cat Data
+ * @subcat Input
+ * @method loadString
+ * @param  {String|File} fileOrString The text file name in the document's data directory or a File instance or an URL
+ * @return {String}  String file or URL content.
+ */
+pub.loadString = function(fileOrString) {
+  if (isURL(fileOrString)) {
+    return getURL(fileOrString);
+  } else {
+    var inputFile = initDataFile(fileOrString, true),
+    data = null;
+    inputFile.open('r');
+    data = inputFile.read();
+    inputFile.close();
+    return data;
+  }
+};
+
+var getURL = function(url) {
+  if (isURL(url)) {
+    if (Folder.fs === "Macintosh") {
+      return pub.shellExecute("curl -m 15 -L '"+url+"'");
+    } else {
+      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
+    }
+  } else {
+    error("The url "+url+" is not a valid one. Please double check!")
+  }
+};
+
+/**
+ * Reads the contents of a file or loads an URL and creates a String array of its individual lines.
+ * If the file is specified by name as String, it must be located in the document's data directory.
+ *
+ * @cat Data
+ * @subcat Input
+ * @method loadStrings
+ * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
+ * @return {String[]}  Array of the individual lines in the given File or URL
+ */
+pub.loadStrings = function(file) {
+  if (isURL(file)) {
+    var result = getURL(file);
+    return result.match(/[^\r\n]+/g);
+  } else {
+    var inputFile = initDataFile(file, true),
+    result = [];
+    inputFile.open('r');
+    while (!inputFile.eof) {
+      result.push(inputFile.readln());
+    }
+    inputFile.close();
+    return result;
+  }
+};
+
+
+// ----------------------------------------
+// Output
+
+/**
+ * Prints a message line to the console output in the ExtendScript editor. 
+ * 
+ * @cat Output
+ * @method println
+ * @param {String} msg The message to print
+ */
+var println = pub.println = function(msg) {
+  $.writeln(msg);
+  if (progressPanel)
+    progressPanel.writeMessage(msg + "\n");
+};
+
+/**
+ * Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.
+ * 
+ * @cat Output
+ * @method print
+ * @param {String} msg The message to print
+ */
+pub.print = function(msg) {
+  $.write(msg);
+  if (progressPanel)
+    progressPanel.writeMessage(msg);
+};
+
+/**
+ * Print numerous information about the current environment to the console
+ * 
+ * @cat Output
+ * @method printInfo
+ */
+pub.printInfo = function() {
+
+  pub.println("###");
+  pub.println("OS: " + $.os);
+  pub.println("ExtendScript Build: " + $.build);
+  pub.println("ExtendScript Version:" + $.version);                    
+  pub.println("Engine: " + $.engineName);         
+  pub.println("memCache: " + $.memCache + " bytes");            
+  pub.println("###");
+
+};
+
+/**
+ * Writes an array of strings to a file, one line per string.
+ * If the given file exists it gets overridden.
+ *
+ * @cat Output
+ * @method saveStrings
+ * @param  {String|File} file The file name or a File instance
+ * @param  {String[]} strings The string array to be written
+ */
+pub.saveStrings = function(file, strings) {
+  var outputFile = initExportFile(file);
+  outputFile.open('w');
+  forEach(strings, function(s) {
+    outputFile.writeln(s);
+  });
+  outputFile.close();
+};
+
+/**
+ * Writes a string to a file.
+ * If the given file exists it gets overridden.
+ *
+ * @cat Output
+ * @method saveString
+ * @param  {String|File} file The file name or a File instance
+ * @param  {String} string The string to be written
+ */
+pub.saveString = function(file, string) {
+  var outputFile = initExportFile(file);
+  outputFile.open('w');
+  outputFile.write(string);
+  outputFile.close();
+};
+
+// TODO: make savePDF and savePNG D.R.Y.
+/**
+ * Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.
+ *
+ * @cat Output
+ * @method savePDF
+ * @param {String|File} file The file name or a File instance
+ * @param {Boolean} [showOptions] Whether to show the export dialog
+ */
+pub.savePDF = function(file, showOptions){
+  var outputFile = initExportFile(file);
+  if (typeof showOptions !== "boolean") showOptions = false;
+  currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+};
+
+/**
+ * Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.
+ *
+ * @cat Output
+ * @method savePNG
+ * @param {String|File} file The file name or a File instance
+ * @param {Boolean} [showOptions] Whether to show the export dialog
+ */
+pub.savePNG = function(file, showOptions){
+  var outputFile = initExportFile(file);
+  if (typeof showOptions !== "boolean") showOptions = false;
+  currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+};
+
+/**
+ * Downloads an URL to a file, currently Mac only.
+ *
+ * @cat Output
+ * @method download
+ * @param {String} url The download url
+ * @param {String|File} [file] A relative file path in the project folder or a File instance
+ */
+pub.download = function(url, file){
+  var projPath = projectPath().fsName.replace(" ","\\ ");
+  var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
+
+  if (isURL(url)) {
+    var cmd = null;
+
+    if (file) {
+      if (file instanceof File) {
+        var downloadFolder = file.parent.fsName;
+        var fileName = file.displayName;
+        downloadFolder = downloadFolder.replace(" ","\\ ");
+        fileName = fileName.replace(" ","\\ ");
+        cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+
+      } else { 
+        var downloadFolder = file.substr(0,file.lastIndexOf("/"));
+        var fileName = file.substr(file.lastIndexOf("/")+1);
+
+        // get rif of some special cases
+        if(startsWith(downloadFolder,"./")) downloadFolder.substr(2);
+        if(startsWith(downloadFolder,"/")) downloadFolder.substr(1);
+
+        downloadFolder = downloadFolder.replace(" ","\\ ");
+        fileName = fileName.replace(" ","\\ ");
+        downloadFolder = projPath + "/"+ downloadFolder;  
+        cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+        
+      }
+
+    } else {
+      var downloadFolder = projPath + "/data/download";
+      var cmd = ["sh",scriptPath,downloadFolder,url].join(" ");
+    }
+
+    println(cmd);
+    pub.shellExecute(cmd);
+
+  } else {
+    error("The url "+url+" is not a valid one. Please double check!")
+  }
+};
+
+
