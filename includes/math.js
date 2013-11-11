@@ -1002,6 +1002,18 @@ pub.millis = function() {
 };
 
 /**
+ * The milliseconds() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method milliseconds
+ * @return {Number}
+ */
+pub.milliseconds = function() {
+  return (new Date()).getMilliseconds();
+};
+
+/**
  * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
  * 
  * @cat Environment
