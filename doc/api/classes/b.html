@@ -174,6 +174,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_arc">arc</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_asin">asin</a>
 
                                 
@@ -1392,14 +1399,14 @@
                                 <a href="#method_Vector.dist">Vector.dist</a>
 
                                 
-                                    <span class="flag static">static</span>
-                                
                                 
                             </li>
                         
                             <li class="index-item method">
                                 <a href="#method_Vector.dist">Vector.dist</a>
 
+                                
+                                    <span class="flag static">static</span>
                                 
                                 
                             </li>
@@ -1564,6 +1571,13 @@
                             </li>
                         
                             <li class="index-item property">
+                                <a href="#property_CHORD">CHORD</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
                                 <a href="#property_CLOSE">CLOSE</a>
 
                                 
@@ -1593,6 +1607,13 @@
                         
                             <li class="index-item property">
                                 <a href="#property_CORNERS">CORNERS</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_EPSILON">EPSILON</a>
 
                                 
                                 
@@ -1641,6 +1662,13 @@
                             </li>
                         
                             <li class="index-item property">
+                                <a href="#property_KAPPA">KAPPA</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
                                 <a href="#property_MARGIN">MARGIN</a>
 
                                 
@@ -1676,6 +1704,13 @@
                             </li>
                         
                             <li class="index-item property">
+                                <a href="#property_OPEN">OPEN</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
                                 <a href="#property_PAGE">PAGE</a>
 
                                 
@@ -1684,6 +1719,13 @@
                         
                             <li class="index-item property">
                                 <a href="#property_PI">PI</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_PIE">PIE</a>
 
                                 
                                 
@@ -1719,6 +1761,13 @@
                         
                             <li class="index-item property">
                                 <a href="#property_RGB">RGB</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property">
+                                <a href="#property_SINCOS_LENGTH">SINCOS_LENGTH</a>
 
                                 
                                 
@@ -2101,7 +2150,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l165"><code>includes&#x2F;shape.js:165</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l300"><code>includes&#x2F;shape.js:300</code></a>
         
         </p>
 
@@ -2112,8 +2161,8 @@
     </div>
 
     <div class="description">
-        <p>addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. 
-New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for 
+        <p>addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path.
+New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for
 the setting (see b.CLOSE) given in beginShape(shapeMode).</p>
     </div>
 
@@ -2335,6 +2384,245 @@ the setting (see b.CLOSE) given in beginShape(shapeMode).</p>
         </div>
     
 
+    
+
+    
+</div>
+
+                
+                    <div id="method_arc" class="method item">
+    <h3 class="name"><code>arc</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>cx</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>cy</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>w</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>h</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>startAngle</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>endAngle</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>mode</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">GraphicLine | Polygon</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l164"><code>includes&#x2F;shape.js:164</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The arc() function draws an arc in the display window.
+Arcs are drawn along the outer edge of an ellipse defined by the
+<b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.
+The origin or the arc's ellipse may be changed with the
+<b>ellipseMode()</b> function.
+The <b>start</b> and <b>stop</b> parameters specify the angles
+at which to draw the arc.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">cx</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>x-coordinate of the arc's center</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">cy</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>y-coordinate of the arc's center</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">w</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>width of the arc's ellipse</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">h</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>height of the arc's ellipse</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">startAngle</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>starting angle of the arc (radians)</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">endAngle</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>ending angle of the arc (radians)</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">mode</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>optional property defines rendering technique of arc, b.OPEN (default), b.CHORD, or b.PIE</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">GraphicLine | Polygon</span>:
+                    
+                    newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
+
+TODO(S)
+- fix overlapping points bug
+                
+            </div>
+        </div>
     
 
     
@@ -2724,10 +3012,10 @@ the setting (see b.CLOSE) given in beginShape(shapeMode).</p>
     </div>
 
     <div class="description">
-        <p>Using the beginShape() and endShape() functions allow creating more complex forms. 
-beginShape() begins recording vertices for a shape and endShape() stops recording. 
-After calling the beginShape() function, a series of vertex() commands must follow. 
-To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to 
+        <p>Using the beginShape() and endShape() functions allow creating more complex forms.
+beginShape() begins recording vertices for a shape and endShape() stops recording.
+After calling the beginShape() function, a series of vertex() commands must follow.
+To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to
 create from the provided vertices have to be closed or not (to connect the beginning and the end).</p>
     </div>
 
@@ -2951,7 +3239,7 @@ function can help make your geeky debugging sessions much happier.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l562"><code>includes&#x2F;environment.js:562</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l582"><code>includes&#x2F;environment.js:582</code></a>
         
         </p>
 
@@ -3215,7 +3503,7 @@ function can help make your geeky debugging sessions much happier.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1300"><code>includes&#x2F;math.js:1300</code></a>
+        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1000"><code>includes&#x2F;math.js:1000</code></a>
         
         </p>
 
@@ -5198,7 +5486,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1186"><code>includes&#x2F;math.js:1186</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l979"><code>includes&#x2F;data.js:979</code></a>
         
         </p>
 
@@ -5305,7 +5593,7 @@ in the application. If no document at all is open, a new document gets created.<
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l387"><code>includes&#x2F;shape.js:387</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l521"><code>includes&#x2F;shape.js:521</code></a>
         
         </p>
 
@@ -5573,7 +5861,7 @@ The first two parameters set the location, the third sets the width, and the fou
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l326"><code>includes&#x2F;shape.js:326</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l461"><code>includes&#x2F;shape.js:461</code></a>
         
         </p>
 
@@ -5584,13 +5872,13 @@ The first two parameters set the location, the third sets the width, and the fou
     </div>
 
     <div class="description">
-        <p>The origin of the ellipse is modified by the ellipseMode() function. 
-The default configuration is ellipseMode(CENTER), which specifies the 
-location of the ellipse as the center of the shape. The RADIUS mode is 
-the same, but the width and height parameters to ellipse() specify the 
-radius of the ellipse, rather than the diameter. The CORNER mode draws 
-the shape from the upper-left corner of its bounding box. The CORNERS 
-mode uses the four parameters to ellipse() to set two opposing corners 
+        <p>The origin of the ellipse is modified by the ellipseMode() function.
+The default configuration is ellipseMode(CENTER), which specifies the
+location of the ellipse as the center of the shape. The RADIUS mode is
+the same, but the width and height parameters to ellipse() specify the
+radius of the ellipse, rather than the diameter. The CORNER mode draws
+the shape from the upper-left corner of its bounding box. The CORNERS
+mode uses the four parameters to ellipse() to set two opposing corners
 of the ellipse's bounding box. The parameter must be written in "ALL CAPS".</p>
     </div>
 
@@ -5661,7 +5949,7 @@ of the ellipse's bounding box. The parameter must be written in "ALL CAPS".</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l179"><code>includes&#x2F;shape.js:179</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l314"><code>includes&#x2F;shape.js:314</code></a>
         
         </p>
 
@@ -5672,7 +5960,7 @@ of the ellipse's bounding box. The parameter must be written in "ALL CAPS".</p>
     </div>
 
     <div class="description">
-        <p>The endShape() function is the companion to beginShape() and may only be called 
+        <p>The endShape() function is the companion to beginShape() and may only be called
 after beginShape().</p>
     </div>
 
@@ -6436,133 +6724,7 @@ b.go(b.MODEHIDDEN)<br /><br /></p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l284"><code>includes&#x2F;environment.js:284</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Returns the Group instance and sets it if argument Group is given.</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name optional">[pItem]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The PageItems array (must be at least 2) or name of Group name instance</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">name</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>(optional) The name of the Group, only when creating a Group from Page Item(s)</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type">Group</span>:
-                    
-                    the current Group instance
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_Group" class="method item">
-    <h3 class="name"><code>Group</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
-                        <code class="optional">[pItem]</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>name</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type">Group</span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l313"><code>includes&#x2F;environment.js:313</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l333"><code>includes&#x2F;environment.js:333</code></a>
         
         </p>
 
@@ -6636,6 +6798,132 @@ b.go(b.MODEHIDDEN)<br /><br /></p>
 </div>
 
                 
+                    <div id="method_Group" class="method item">
+    <h3 class="name"><code>Group</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code class="optional">[pItem]</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>name</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type">Group</span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l304"><code>includes&#x2F;environment.js:304</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Returns the Group instance and sets it if argument Group is given.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name optional">[pItem]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The PageItems array (must be at least 2) or name of Group name instance</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">name</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>(optional) The name of the Group, only when creating a Group from Page Item(s)</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type">Group</span>:
+                    
+                    the current Group instance
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
                     <div id="method_guideX" class="method item">
     <h3 class="name"><code>guideX</code></h3>
 
@@ -6682,7 +6970,7 @@ b.go(b.MODEHIDDEN)<br /><br /></p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l484"><code>includes&#x2F;environment.js:484</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l504"><code>includes&#x2F;environment.js:504</code></a>
         
         </p>
 
@@ -6786,7 +7074,7 @@ b.go(b.MODEHIDDEN)<br /><br /></p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l503"><code>includes&#x2F;environment.js:503</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l523"><code>includes&#x2F;environment.js:523</code></a>
         
         </p>
 
@@ -7092,7 +7380,7 @@ b.go(b.MODEHIDDEN)<br /><br /></p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_global-functions.js.html#l231"><code>includes&#x2F;global-functions.js:231</code></a>
+        <a href="..&#x2F;files&#x2F;includes_global-functions.js.html#l252"><code>includes&#x2F;global-functions.js:252</code></a>
         
         </p>
 
@@ -7163,7 +7451,7 @@ b.go(b.MODEHIDDEN)<br /><br /></p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_global-functions.js.html#l252"><code>includes&#x2F;global-functions.js:252</code></a>
+        <a href="..&#x2F;files&#x2F;includes_global-functions.js.html#l231"><code>includes&#x2F;global-functions.js:231</code></a>
         
         </p>
 
@@ -8321,7 +8609,7 @@ If no parameter is passed the currently set mode is returned as String.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1237"><code>includes&#x2F;math.js:1237</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l615"><code>includes&#x2F;environment.js:615</code></a>
         
         </p>
 
@@ -9629,7 +9917,7 @@ So you could say that isText() refers to all the things inside a TextFrame.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1371"><code>includes&#x2F;math.js:1371</code></a>
+        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1071"><code>includes&#x2F;math.js:1071</code></a>
         
         </p>
 
@@ -9755,7 +10043,7 @@ So you could say that isText() refers to all the things inside a TextFrame.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1399"><code>includes&#x2F;math.js:1399</code></a>
+        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1099"><code>includes&#x2F;math.js:1099</code></a>
         
         </p>
 
@@ -10215,7 +10503,7 @@ var obj = b.JSON.decode(str);</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l369"><code>includes&#x2F;environment.js:369</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l389"><code>includes&#x2F;environment.js:389</code></a>
         
         </p>
 
@@ -10325,7 +10613,7 @@ var obj = b.JSON.decode(str);</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l342"><code>includes&#x2F;environment.js:342</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l362"><code>includes&#x2F;environment.js:362</code></a>
         
         </p>
 
@@ -10445,7 +10733,7 @@ var obj = b.JSON.decode(str);</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l262"><code>includes&#x2F;environment.js:262</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l282"><code>includes&#x2F;environment.js:282</code></a>
         
         </p>
 
@@ -11246,7 +11534,7 @@ N.B.: Both color must be either CMYK or RGB.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1014"><code>includes&#x2F;math.js:1014</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l807"><code>includes&#x2F;data.js:807</code></a>
         
         </p>
 
@@ -11351,7 +11639,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1049"><code>includes&#x2F;math.js:1049</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l842"><code>includes&#x2F;data.js:842</code></a>
         
         </p>
 
@@ -11555,7 +11843,7 @@ If the file is specified by name as String, it must be located in the document's
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_core.js.html#l68"><code>includes&#x2F;core.js:68</code></a>
+        <a href="..&#x2F;files&#x2F;includes_core.js.html#l75"><code>includes&#x2F;core.js:75</code></a>
         
         </p>
 
@@ -12015,7 +12303,7 @@ The framerate property determines how often draw() is called per second, e.g. a 
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l522"><code>includes&#x2F;environment.js:522</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l542"><code>includes&#x2F;environment.js:542</code></a>
         
         </p>
 
@@ -12781,7 +13069,7 @@ The framerate property determines how often draw() is called per second, e.g. a 
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l419"><code>includes&#x2F;environment.js:419</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l439"><code>includes&#x2F;environment.js:439</code></a>
         
         </p>
 
@@ -13858,7 +14146,7 @@ newly drawn shapes will be invisible.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_core.js.html#l101"><code>includes&#x2F;core.js:101</code></a>
+        <a href="..&#x2F;files&#x2F;includes_core.js.html#l108"><code>includes&#x2F;core.js:108</code></a>
         
         </p>
 
@@ -14133,7 +14421,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l369"><code>includes&#x2F;shape.js:369</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l503"><code>includes&#x2F;shape.js:503</code></a>
         
         </p>
 
@@ -15029,7 +15317,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1092"><code>includes&#x2F;math.js:1092</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l885"><code>includes&#x2F;data.js:885</code></a>
         
         </p>
 
@@ -15106,7 +15394,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1105"><code>includes&#x2F;math.js:1105</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l898"><code>includes&#x2F;data.js:898</code></a>
         
         </p>
 
@@ -15170,7 +15458,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1079"><code>includes&#x2F;math.js:1079</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l872"><code>includes&#x2F;data.js:872</code></a>
         
         </p>
 
@@ -15691,7 +15979,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l234"><code>includes&#x2F;shape.js:234</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l369"><code>includes&#x2F;shape.js:369</code></a>
         
         </p>
 
@@ -15836,7 +16124,7 @@ are called, nothing will be drawn to the screen.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l296"><code>includes&#x2F;shape.js:296</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l431"><code>includes&#x2F;shape.js:431</code></a>
         
         </p>
 
@@ -15847,17 +16135,17 @@ are called, nothing will be drawn to the screen.</p>
     </div>
 
     <div class="description">
-        <p>Modifies the location from which rectangles draw. The default mode is 
-rectMode(CORNER), which specifies the location to be the upper left 
-corner of the shape and uses the third and fourth parameters of rect() 
-to specify the width and height. The syntax rectMode(CORNERS) uses the 
-first and second parameters of rect() to set the location of one corner 
-and uses the third and fourth parameters to set the opposite corner. 
-The syntax rectMode(CENTER) draws the image from its center point and 
-uses the third and forth parameters of rect() to specify the image's 
-width and height. The syntax rectMode(RADIUS) draws the image from its 
-center point and uses the third and forth parameters of rect() to specify 
-half of the image's width and height. The parameter must be written in 
+        <p>Modifies the location from which rectangles draw. The default mode is
+rectMode(CORNER), which specifies the location to be the upper left
+corner of the shape and uses the third and fourth parameters of rect()
+to specify the width and height. The syntax rectMode(CORNERS) uses the
+first and second parameters of rect() to set the location of one corner
+and uses the third and fourth parameters to set the opposite corner.
+The syntax rectMode(CENTER) draws the image from its center point and
+uses the third and forth parameters of rect() to specify the image's
+width and height. The syntax rectMode(RADIUS) draws the image from its
+center point and uses the third and forth parameters of rect() to specify
+half of the image's width and height. The parameter must be written in
 "ALL CAPS".</p>
     </div>
 
@@ -16360,7 +16648,7 @@ half of the image's width and height. The parameter must be written in
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1158"><code>includes&#x2F;math.js:1158</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l951"><code>includes&#x2F;data.js:951</code></a>
         
         </p>
 
@@ -16469,7 +16757,7 @@ half of the image's width and height. The parameter must be written in
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1172"><code>includes&#x2F;math.js:1172</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l965"><code>includes&#x2F;data.js:965</code></a>
         
         </p>
 
@@ -16578,7 +16866,7 @@ half of the image's width and height. The parameter must be written in
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1141"><code>includes&#x2F;math.js:1141</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l934"><code>includes&#x2F;data.js:934</code></a>
         
         </p>
 
@@ -16687,7 +16975,7 @@ If the given file exists it gets overridden.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l1123"><code>includes&#x2F;math.js:1123</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l916"><code>includes&#x2F;data.js:916</code></a>
         
         </p>
 
@@ -16963,7 +17251,7 @@ If only one parameter is given, it is applied on X and Y axis.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l389"><code>includes&#x2F;environment.js:389</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l409"><code>includes&#x2F;environment.js:409</code></a>
         
         </p>
 
@@ -17044,7 +17332,7 @@ If only one parameter is given, it is applied on X and Y axis.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l402"><code>includes&#x2F;environment.js:402</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l422"><code>includes&#x2F;environment.js:422</code></a>
         
         </p>
 
@@ -17149,7 +17437,7 @@ If only one parameter is given, it is applied on X and Y axis.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l991"><code>includes&#x2F;math.js:991</code></a>
+        <a href="..&#x2F;files&#x2F;includes_data.js.html#l784"><code>includes&#x2F;data.js:784</code></a>
         
         </p>
 
@@ -18305,7 +18593,7 @@ int() and float() to convert the array of Strings.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l352"><code>includes&#x2F;shape.js:352</code></a>
+        <a href="..&#x2F;files&#x2F;includes_shape.js.html#l486"><code>includes&#x2F;shape.js:486</code></a>
         
         </p>
 
@@ -18316,7 +18604,7 @@ int() and float() to convert the array of Strings.</p>
     </div>
 
     <div class="description">
-        <p>Sets the width of the stroke used for lines and the border 
+        <p>Sets the width of the stroke used for lines and the border
 around shapes.</p>
     </div>
 
@@ -20307,7 +20595,7 @@ return 8.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l441"><code>includes&#x2F;environment.js:441</code></a>
+        <a href="..&#x2F;files&#x2F;includes_environment.js.html#l461"><code>includes&#x2F;environment.js:461</code></a>
         
         </p>
 
@@ -21113,134 +21401,6 @@ Is meant to be called "static" i.e. Vector.cross(v1, v2);</p>
             
                 <li class="arg">
                     
-                        <code>v1</code>
-                    
-                </li>
-            
-                <li class="arg">
-                    
-                        <code>v2</code>
-                    
-                </li>
-            
-            </ul><span class="paren">)</span>
-        </div>
-    
-
-    
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-        </span>
-    
-
-    
-
-    
-
-    
-
-    
-        <span class="flag static">static</span>
-    
-
-    
-
-    
-
-    <div class="meta">
-        
-            
-                
-                <p>
-                
-                Defined in
-                
-            
-        
-        
-        <a href="..&#x2F;files&#x2F;includes_math.js.html#l25"><code>includes&#x2F;math.js:25</code></a>
-        
-        </p>
-
-
-        
-
-        
-    </div>
-
-    <div class="description">
-        <p>Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
-Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
-    </div>
-
-    
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-            
-                <li class="param">
-                    
-                        <code class="param-name">v1</code>
-                        <span class="type">Vector</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The first vector</p>
-                    </div>
-
-                    
-                </li>
-            
-                <li class="param">
-                    
-                        <code class="param-name">v2</code>
-                        <span class="type">Vector</span>
-                    
-
-                    
-
-                    <div class="param-description">
-                        <p>The second vector</p>
-                    </div>
-
-                    
-                </li>
-            
-            </ul>
-        </div>
-    
-
-    
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                
-                    
-                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
-                    
-                    The distance
-                
-            </div>
-        </div>
-    
-
-    
-</div>
-
-                
-                    <div id="method_Vector.dist" class="method item">
-    <h3 class="name"><code>Vector.dist</code></h3>
-
-    
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-            
-                <li class="arg">
-                    
                         <code>v</code>
                     
                 </li>
@@ -21352,6 +21512,134 @@ Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
 
                     <div class="param-description">
                         <p>The z component</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                
+                    
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    
+                    The distance
+                
+            </div>
+        </div>
+    
+
+    
+</div>
+
+                
+                    <div id="method_Vector.dist" class="method item">
+    <h3 class="name"><code>Vector.dist</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>v1</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>v2</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_math.js.html#l25"><code>includes&#x2F;math.js:25</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
+Is meant to be called "static" i.e. Vector.dist(v1, v2);</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">v1</code>
+                        <span class="type">Vector</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The first vector</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">v2</code>
+                        <span class="type">Vector</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The second vector</p>
                     </div>
 
                     
@@ -22688,11 +22976,11 @@ Is meant to be called "static" i.e. Vector.dot(v1, v2);</p>
     </div>
 
     <div class="description">
-        <p>Shapes are constructed by connecting a series of vertices. vertex() is used to 
+        <p>Shapes are constructed by connecting a series of vertices. vertex() is used to
 specify the vertex coordinates lines and polygons. It is used exclusively within
 the beginShape() and endShape() functions.</p>
 
-<p>Please use either vertex(x, y) or 
+<p>Please use either vertex(x, y) or
 for drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).
 You can also mix the two approaches.</p>
     </div>
@@ -23035,7 +23323,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l202"><code>includes&#x2F;constants.js:202</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l249"><code>includes&#x2F;constants.js:249</code></a>
         
         </p>
 
@@ -23079,7 +23367,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l178"><code>includes&#x2F;constants.js:178</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l225"><code>includes&#x2F;constants.js:225</code></a>
         
         </p>
 
@@ -23123,7 +23411,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l186"><code>includes&#x2F;constants.js:186</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l233"><code>includes&#x2F;constants.js:233</code></a>
         
         </p>
 
@@ -23167,7 +23455,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l194"><code>includes&#x2F;constants.js:194</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l241"><code>includes&#x2F;constants.js:241</code></a>
         
         </p>
 
@@ -23211,7 +23499,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l146"><code>includes&#x2F;constants.js:146</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l193"><code>includes&#x2F;constants.js:193</code></a>
         
         </p>
 
@@ -23255,7 +23543,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l74"><code>includes&#x2F;constants.js:74</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l72"><code>includes&#x2F;constants.js:72</code></a>
         
         </p>
 
@@ -23266,6 +23554,50 @@ You can also mix the two approaches.</p>
 
     <div class="description">
         <p>Center, used for drawing modes.</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_CHORD" class="property item">
+    <h3 class="name"><code>CHORD</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l104"><code>includes&#x2F;constants.js:104</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Chord, used for arc() modes.</p>
     </div>
 
     
@@ -23299,7 +23631,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l90"><code>includes&#x2F;constants.js:90</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l88"><code>includes&#x2F;constants.js:88</code></a>
         
         </p>
 
@@ -23343,7 +23675,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l19"><code>includes&#x2F;constants.js:19</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l17"><code>includes&#x2F;constants.js:17</code></a>
         
         </p>
 
@@ -23387,7 +23719,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l51"><code>includes&#x2F;constants.js:51</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l49"><code>includes&#x2F;constants.js:49</code></a>
         
         </p>
 
@@ -23431,7 +23763,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l58"><code>includes&#x2F;constants.js:58</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l56"><code>includes&#x2F;constants.js:56</code></a>
         
         </p>
 
@@ -23475,7 +23807,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l66"><code>includes&#x2F;constants.js:66</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l64"><code>includes&#x2F;constants.js:64</code></a>
         
         </p>
 
@@ -23486,6 +23818,50 @@ You can also mix the two approaches.</p>
 
     <div class="description">
         <p>Corners, used for drawing modes.</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_EPSILON" class="property item">
+    <h3 class="name"><code>EPSILON</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l160"><code>includes&#x2F;constants.js:160</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Epsilon</p>
     </div>
 
     
@@ -23519,7 +23895,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l162"><code>includes&#x2F;constants.js:162</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l209"><code>includes&#x2F;constants.js:209</code></a>
         
         </p>
 
@@ -23563,7 +23939,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l170"><code>includes&#x2F;constants.js:170</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l217"><code>includes&#x2F;constants.js:217</code></a>
         
         </p>
 
@@ -23607,7 +23983,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l154"><code>includes&#x2F;constants.js:154</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l201"><code>includes&#x2F;constants.js:201</code></a>
         
         </p>
 
@@ -23651,7 +24027,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l114"><code>includes&#x2F;constants.js:114</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l136"><code>includes&#x2F;constants.js:136</code></a>
         
         </p>
 
@@ -23739,7 +24115,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l36"><code>includes&#x2F;constants.js:36</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l34"><code>includes&#x2F;constants.js:34</code></a>
         
         </p>
 
@@ -23750,6 +24126,50 @@ You can also mix the two approaches.</p>
 
     <div class="description">
         <p>Used with b.units() to set the coordinate system to inches.</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_KAPPA" class="property item">
+    <h3 class="name"><code>KAPPA</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l168"><code>includes&#x2F;constants.js:168</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Kappa</p>
     </div>
 
     
@@ -23783,7 +24203,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l138"><code>includes&#x2F;constants.js:138</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l185"><code>includes&#x2F;constants.js:185</code></a>
         
         </p>
 
@@ -23827,7 +24247,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l28"><code>includes&#x2F;constants.js:28</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l26"><code>includes&#x2F;constants.js:26</code></a>
         
         </p>
 
@@ -23871,7 +24291,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l217"><code>includes&#x2F;constants.js:217</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l265"><code>includes&#x2F;constants.js:265</code></a>
         
         </p>
 
@@ -23915,7 +24335,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l210"><code>includes&#x2F;constants.js:210</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l257"><code>includes&#x2F;constants.js:257</code></a>
         
         </p>
 
@@ -23959,7 +24379,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l224"><code>includes&#x2F;constants.js:224</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l273"><code>includes&#x2F;constants.js:273</code></a>
         
         </p>
 
@@ -23970,6 +24390,50 @@ You can also mix the two approaches.</p>
 
     <div class="description">
         <p>Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_OPEN" class="property item">
+    <h3 class="name"><code>OPEN</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l96"><code>includes&#x2F;constants.js:96</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Open, used for arc() modes.</p>
     </div>
 
     
@@ -24003,7 +24467,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l130"><code>includes&#x2F;constants.js:130</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l177"><code>includes&#x2F;constants.js:177</code></a>
         
         </p>
 
@@ -24047,7 +24511,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l106"><code>includes&#x2F;constants.js:106</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l128"><code>includes&#x2F;constants.js:128</code></a>
         
         </p>
 
@@ -24058,6 +24522,50 @@ You can also mix the two approaches.</p>
 
     <div class="description">
         <p>Pi</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_PIE" class="property item">
+    <h3 class="name"><code>PIE</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l112"><code>includes&#x2F;constants.js:112</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Pie, used for arc() modes.</p>
     </div>
 
     
@@ -24091,7 +24599,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l3"><code>includes&#x2F;constants.js:3</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l1"><code>includes&#x2F;constants.js:1</code></a>
         
         </p>
 
@@ -24135,7 +24643,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l11"><code>includes&#x2F;constants.js:11</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l9"><code>includes&#x2F;constants.js:9</code></a>
         
         </p>
 
@@ -24179,7 +24687,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l122"><code>includes&#x2F;constants.js:122</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l144"><code>includes&#x2F;constants.js:144</code></a>
         
         </p>
 
@@ -24223,7 +24731,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l82"><code>includes&#x2F;constants.js:82</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l80"><code>includes&#x2F;constants.js:80</code></a>
         
         </p>
 
@@ -24267,7 +24775,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l44"><code>includes&#x2F;constants.js:44</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l42"><code>includes&#x2F;constants.js:42</code></a>
         
         </p>
 
@@ -24278,6 +24786,50 @@ You can also mix the two approaches.</p>
 
     <div class="description">
         <p>Used with b.colorMode() to set the color space.</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_SINCOS_LENGTH" class="property item">
+    <h3 class="name"><code>SINCOS_LENGTH</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l152"><code>includes&#x2F;constants.js:152</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Sin Cos Length</p>
     </div>
 
     
@@ -24311,7 +24863,7 @@ You can also mix the two approaches.</p>
             
         
         
-        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l98"><code>includes&#x2F;constants.js:98</code></a>
+        <a href="..&#x2F;files&#x2F;includes_constants.js.html#l120"><code>includes&#x2F;constants.js:120</code></a>
         
         </p>
 

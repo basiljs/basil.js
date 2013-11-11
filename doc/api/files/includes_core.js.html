@@ -120,34 +120,41 @@ var init = function() {
  *&#x2F;
 pub.go = function (mode) {
   if (!mode) {
-    mode = b.DEFAULTMODE;
+    mode = pub.DEFAULTMODE;
   }
-  app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
+  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
   app.preflightOptions.preflightOff = true;
 
-  try {
-    currentDoc(mode);
-    if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
-      progressPanel = new Progress();
-    runSetup();
-    runDrawOnce();
-    var executionDuration = pub.millis();
-    if (executionDuration &lt; 1000) {
-      println(&quot;[Finished in &quot; + executionDuration + &quot;ms]&quot;);
-    } else {
-      println(&quot;[Finished in &quot; + (executionDuration&#x2F;1000).toPrecision(3) + &quot;s]&quot;);
-    }
+  currentDoc(mode);
+  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+    progressPanel = new Progress();
+  }
 
-  } catch (e) { &#x2F;&#x2F; exception not caught individually
-      alert(e); &#x2F;&#x2F; make verbose
+  if (typeof glob.setup === &#x27;function&#x27;) {
+    runSetup();
+  };
+
+  if (typeof glob.draw === &#x27;function&#x27;) {
+    runDrawOnce();
+  };
+  
+  var executionDuration = pub.millis();
+  if (executionDuration &lt; 1000) {
+    println(&quot;[Finished in &quot; + executionDuration + &quot;ms]&quot;);
+  } else {
+    println(&quot;[Finished in &quot; + (executionDuration&#x2F;1000).toPrecision(3) + &quot;s]&quot;);
   }
 
   if(currDoc &amp;&amp; !currDoc.windows.length) {
     currDoc.windows.add(); &#x2F;&#x2F;open the hidden doc
   }
   closeHiddenDocs();
-  if (progressPanel)
+  if (progressPanel) {
     progressPanel.closePanel();
+  }
+  if (addToStoryCache) {
+    addToStoryCache.close();
+  }
   app.scriptPreferences.enableRedraw = true;
   app.preflightOptions.preflightOff = false;
   exit(); &#x2F;&#x2F; quit program execution
@@ -211,7 +218,7 @@ var runSetup = function() {
     if (typeof glob.setup === &#x27;function&#x27;) {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawOnce = function() {
@@ -219,7 +226,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === &#x27;function&#x27;) {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawLoop = function() {
@@ -227,7 +234,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === &#x27;function&#x27;) {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var welcome = function() {
@@ -248,7 +255,8 @@ var currentDoc = function (mode) {
       doc = app.activeDocument;
       if (mode == b.MODEHIDDEN) {
         if (doc.modified) {
-          throw (&quot;To run in MODEHIDDEN save your active doc before processing.&quot;);
+          doc.save();
+          warning(&quot;Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.&quot;);
         }
         var docPath = doc.fullName;
         doc.close(); &#x2F;&#x2F; Close the doc and reopen it without adding to the display list
@@ -279,6 +287,7 @@ var setCurrDoc = function(doc) {
   currDoc = doc;
   &#x2F;&#x2F; -- setup document --
   
+  currDoc.pasteboardPreferences.pasteboardMargins = [&quot;1000pt&quot;, &quot;1000pt&quot;];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   currFont = currDoc.textDefaults.appliedFont.name;
   currFontSize = currDoc.textDefaults.pointSize;

@@ -315,7 +315,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 3,
+            "line": 1,
             "description": "Used with b.units() to set the coordinate system to points.",
             "itemtype": "property",
             "name": "PT",
@@ -326,7 +326,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 11,
+            "line": 9,
             "description": "Used with b.units() to set the coordinate system to pixels.",
             "itemtype": "property",
             "name": "PX",
@@ -337,7 +337,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 19,
+            "line": 17,
             "description": "Used with b.units() to set the coordinate system to centimeters.",
             "itemtype": "property",
             "name": "CM",
@@ -348,7 +348,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 28,
+            "line": 26,
             "description": "Used with b.units() to set the coordinate system to millimeters.",
             "itemtype": "property",
             "name": "MM",
@@ -359,7 +359,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 36,
+            "line": 34,
             "description": "Used with b.units() to set the coordinate system to inches.",
             "itemtype": "property",
             "name": "IN",
@@ -370,7 +370,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 44,
+            "line": 42,
             "description": "Used with b.colorMode() to set the color space.",
             "itemtype": "property",
             "name": "RGB",
@@ -380,7 +380,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 51,
+            "line": 49,
             "description": "Used with b.colorMode() to set the color space.",
             "itemtype": "property",
             "name": "CMYK",
@@ -390,7 +390,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 58,
+            "line": 56,
             "description": "Corner, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNER",
@@ -401,7 +401,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 66,
+            "line": 64,
             "description": "Corners, used for drawing modes.",
             "itemtype": "property",
             "name": "CORNERS",
@@ -412,7 +412,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 74,
+            "line": 72,
             "description": "Center, used for drawing modes.",
             "itemtype": "property",
             "name": "CENTER",
@@ -423,7 +423,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 82,
+            "line": 80,
             "description": "Radius, used for drawing modes.",
             "itemtype": "property",
             "name": "RADIUS",
@@ -434,7 +434,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 90,
+            "line": 88,
             "description": "Close, used for endShape() modes.",
             "itemtype": "property",
             "name": "CLOSE",
@@ -445,7 +445,40 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 98,
+            "line": 96,
+            "description": "Open, used for arc() modes.",
+            "itemtype": "property",
+            "name": "OPEN",
+            "type": "String",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "class": "b"
+        },
+        {
+            "file": "includes/constants.js",
+            "line": 104,
+            "description": "Chord, used for arc() modes.",
+            "itemtype": "property",
+            "name": "CHORD",
+            "type": "String",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "class": "b"
+        },
+        {
+            "file": "includes/constants.js",
+            "line": 112,
+            "description": "Pie, used for arc() modes.",
+            "itemtype": "property",
+            "name": "PIE",
+            "type": "String",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "class": "b"
+        },
+        {
+            "file": "includes/constants.js",
+            "line": 120,
             "description": "Two Pi",
             "itemtype": "property",
             "name": "TWO_PI",
@@ -456,7 +489,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 106,
+            "line": 128,
             "description": "Pi",
             "itemtype": "property",
             "name": "PI",
@@ -467,7 +500,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 114,
+            "line": 136,
             "description": "Half Pi",
             "itemtype": "property",
             "name": "HALF_PI",
@@ -478,7 +511,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 122,
+            "line": 144,
             "description": "Quarter Pi",
             "itemtype": "property",
             "name": "QUARTER_PI",
@@ -489,7 +522,40 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 130,
+            "line": 152,
+            "description": "Sin Cos Length",
+            "itemtype": "property",
+            "name": "SINCOS_LENGTH",
+            "type": "Number",
+            "cat": "Math",
+            "subcat": "Constants",
+            "class": "b"
+        },
+        {
+            "file": "includes/constants.js",
+            "line": 160,
+            "description": "Epsilon",
+            "itemtype": "property",
+            "name": "EPSILON",
+            "type": "Number",
+            "cat": "Math",
+            "subcat": "Constants",
+            "class": "b"
+        },
+        {
+            "file": "includes/constants.js",
+            "line": 168,
+            "description": "Kappa",
+            "itemtype": "property",
+            "name": "KAPPA",
+            "type": "Number",
+            "cat": "Math",
+            "subcat": "Constants",
+            "class": "b"
+        },
+        {
+            "file": "includes/constants.js",
+            "line": 177,
             "description": "Used with b.canvasMode() to set the canvas to the full current page.",
             "itemtype": "property",
             "name": "PAGE",
@@ -500,7 +566,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 138,
+            "line": 185,
             "description": "Used with b.canvasMode() to set the canvas to the full current page minus the margins.",
             "itemtype": "property",
             "name": "MARGIN",
@@ -511,7 +577,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 146,
+            "line": 193,
             "description": "Used with b.canvasMode() to set the canvas to the full current page plus the bleed.",
             "itemtype": "property",
             "name": "BLEED",
@@ -522,7 +588,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 154,
+            "line": 201,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages.",
             "itemtype": "property",
             "name": "FACING_PAGES",
@@ -533,7 +599,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 162,
+            "line": 209,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.",
             "itemtype": "property",
             "name": "FACING_BLEEDS",
@@ -544,7 +610,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 170,
+            "line": 217,
             "description": "Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.",
             "itemtype": "property",
             "name": "FACING_MARGINS",
@@ -555,7 +621,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 178,
+            "line": 225,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AT_BEGINNING",
@@ -566,7 +632,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 186,
+            "line": 233,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AT_END",
@@ -577,7 +643,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 194,
+            "line": 241,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "BEFORE",
@@ -588,7 +654,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 202,
+            "line": 249,
             "description": "Used with b.addPage() to set the position of the new page in the book.",
             "itemtype": "property",
             "name": "AFTER",
@@ -599,7 +665,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 210,
+            "line": 257,
             "description": "Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.",
             "itemtype": "property",
             "name": "MODESILENT",
@@ -610,7 +676,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 217,
+            "line": 265,
             "description": "Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(\"yourMessage\") in your script and look at the Console in estk to get information about the process.",
             "itemtype": "property",
             "name": "MODEHIDDEN",
@@ -621,7 +687,7 @@
         },
         {
             "file": "includes/constants.js",
-            "line": 224,
+            "line": 273,
             "description": "Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22",
             "itemtype": "property",
             "name": "MODEVISIBLE",
@@ -649,7 +715,7 @@
         },
         {
             "file": "includes/core.js",
-            "line": 68,
+            "line": 75,
             "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle.\n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!\nThe framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.",
             "cat": "Environment",
             "itemtype": "method",
@@ -665,7 +731,7 @@
         },
         {
             "file": "includes/core.js",
-            "line": 101,
+            "line": 108,
             "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
             "cat": "Environment",
             "itemtype": "method",
@@ -1283,6 +1349,218 @@
             "class": "b"
         },
         {
+            "file": "includes/data.js",
+            "line": 784,
+            "description": "Executes a shell command and returns the result, currently Mac only.\n\nBE CAREFUL!",
+            "cat": "Data",
+            "subcat": "Input",
+            "itemtype": "method",
+            "name": "shellExecute",
+            "params": [
+                {
+                    "name": "cmd",
+                    "description": "The shell command to execute",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 807,
+            "description": "Reads the contents of a file or loads an URL into a String.\nIf the file is specified by name as String, it must be located in the document's data directory.",
+            "cat": "Data",
+            "subcat": "Input",
+            "itemtype": "method",
+            "name": "loadString",
+            "params": [
+                {
+                    "name": "fileOrString",
+                    "description": "The text file name in the document's data directory or a File instance or an URL",
+                    "type": "String|File"
+                }
+            ],
+            "return": {
+                "description": "String file or URL content.",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 842,
+            "description": "Reads the contents of a file or loads an URL and creates a String array of its individual lines.\nIf the file is specified by name as String, it must be located in the document's data directory.",
+            "cat": "Data",
+            "subcat": "Input",
+            "itemtype": "method",
+            "name": "loadStrings",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "The text file name in the document's data directory or a File instance or an URL",
+                    "type": "String|File"
+                }
+            ],
+            "return": {
+                "description": "Array of the individual lines in the given File or URL",
+                "type": "String[]"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 872,
+            "description": "Prints a message line to the console output in the ExtendScript editor.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "println",
+            "params": [
+                {
+                    "name": "msg",
+                    "description": "The message to print",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 885,
+            "description": "Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "print",
+            "params": [
+                {
+                    "name": "msg",
+                    "description": "The message to print",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 898,
+            "description": "Print numerous information about the current environment to the console",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "printInfo",
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 916,
+            "description": "Writes an array of strings to a file, one line per string.\nIf the given file exists it gets overridden.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "saveStrings",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "The file name or a File instance",
+                    "type": "String|File"
+                },
+                {
+                    "name": "strings",
+                    "description": "The string array to be written",
+                    "type": "String[]"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 934,
+            "description": "Writes a string to a file.\nIf the given file exists it gets overridden.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "saveString",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "The file name or a File instance",
+                    "type": "String|File"
+                },
+                {
+                    "name": "string",
+                    "description": "The string to be written",
+                    "type": "String"
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 951,
+            "description": "Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "savePDF",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "The file name or a File instance",
+                    "type": "String|File"
+                },
+                {
+                    "name": "showOptions",
+                    "description": "Whether to show the export dialog",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 965,
+            "description": "Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "savePNG",
+            "params": [
+                {
+                    "name": "file",
+                    "description": "The file name or a File instance",
+                    "type": "String|File"
+                },
+                {
+                    "name": "showOptions",
+                    "description": "Whether to show the export dialog",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 979,
+            "description": "Downloads an URL to a file, currently Mac only.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "download",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "The download url",
+                    "type": "String"
+                },
+                {
+                    "name": "file",
+                    "description": "A relative file path in the project folder or a File instance",
+                    "type": "String|File",
+                    "optional": true
+                }
+            ],
+            "class": "b"
+        },
+        {
             "file": "includes/environment.js",
             "line": 4,
             "description": "Sets or possibly creates the current document and returns it.\nIf the param doc is not given the current document gets set to the active document\nin the application. If no document at all is open, a new document gets created.",
@@ -1474,7 +1752,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 262,
+            "line": 282,
             "description": "Returns the current layer and sets it if argument layer is given.",
             "cat": "Document",
             "subcat": "Page",
@@ -1496,7 +1774,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 284,
+            "line": 304,
             "description": "Returns the Group instance and sets it if argument Group is given.",
             "cat": "Document",
             "subcat": "Page",
@@ -1523,7 +1801,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 313,
+            "line": 333,
             "description": "Returns an array of the items that were within the Group before b.ungroup() was called",
             "cat": "Document",
             "subcat": "Page",
@@ -1550,7 +1828,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 342,
+            "line": 362,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1577,7 +1855,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 369,
+            "line": 389,
             "description": "Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1598,7 +1876,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 389,
+            "line": 409,
             "description": "Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1612,7 +1890,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 402,
+            "line": 422,
             "description": "Returns the currently selected object(s)",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1634,7 +1912,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 419,
+            "line": 439,
             "description": "Returns the first item on the active page that is named by the given name in the Layers pane (Window -> Layer).",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1648,7 +1926,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 441,
+            "line": 461,
             "description": "Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.",
             "cat": "Document",
             "itemtype": "method",
@@ -1669,7 +1947,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 484,
+            "line": 504,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1689,7 +1967,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 503,
+            "line": 523,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1709,7 +1987,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 522,
+            "line": 542,
             "description": "Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.",
             "cat": "Document",
             "subcat": "Page",
@@ -1755,7 +2033,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 562,
+            "line": 582,
             "description": "Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.",
             "cat": "Document",
             "subcat": "Page",
@@ -1785,6 +2063,27 @@
                     "description": "Left bleed",
                     "type": "Number",
                     "optional": true
+                }
+            ],
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 615,
+            "description": "Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.",
+            "cat": "Output",
+            "itemtype": "method",
+            "name": "inspect",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": ": the Object to inspect",
+                    "type": "Object"
+                },
+                {
+                    "name": "maxlevel",
+                    "description": "Optional: recursion limit, default maxlevel = 2",
+                    "type": "Number"
                 }
             ],
             "class": "b"
@@ -3428,240 +3727,7 @@
         },
         {
             "file": "includes/math.js",
-            "line": 991,
-            "description": "Executes a shell command and returns the result, currently Mac only.\n\nBE CAREFUL!",
-            "cat": "Data",
-            "subcat": "Input",
-            "itemtype": "method",
-            "name": "shellExecute",
-            "params": [
-                {
-                    "name": "cmd",
-                    "description": "The shell command to execute",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "String"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1014,
-            "description": "Reads the contents of a file or loads an URL into a String.\nIf the file is specified by name as String, it must be located in the document's data directory.",
-            "cat": "Data",
-            "subcat": "Input",
-            "itemtype": "method",
-            "name": "loadString",
-            "params": [
-                {
-                    "name": "fileOrString",
-                    "description": "The text file name in the document's data directory or a File instance or an URL",
-                    "type": "String|File"
-                }
-            ],
-            "return": {
-                "description": "String file or URL content.",
-                "type": "String"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1049,
-            "description": "Reads the contents of a file or loads an URL and creates a String array of its individual lines.\nIf the file is specified by name as String, it must be located in the document's data directory.",
-            "cat": "Data",
-            "subcat": "Input",
-            "itemtype": "method",
-            "name": "loadStrings",
-            "params": [
-                {
-                    "name": "file",
-                    "description": "The text file name in the document's data directory or a File instance or an URL",
-                    "type": "String|File"
-                }
-            ],
-            "return": {
-                "description": "Array of the individual lines in the given File or URL",
-                "type": "String[]"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1079,
-            "description": "Prints a message line to the console output in the ExtendScript editor.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "println",
-            "params": [
-                {
-                    "name": "msg",
-                    "description": "The message to print",
-                    "type": "String"
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1092,
-            "description": "Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "print",
-            "params": [
-                {
-                    "name": "msg",
-                    "description": "The message to print",
-                    "type": "String"
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1105,
-            "description": "Print numerous information about the current environment to the console",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "printInfo",
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1123,
-            "description": "Writes an array of strings to a file, one line per string.\nIf the given file exists it gets overridden.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "saveStrings",
-            "params": [
-                {
-                    "name": "file",
-                    "description": "The file name or a File instance",
-                    "type": "String|File"
-                },
-                {
-                    "name": "strings",
-                    "description": "The string array to be written",
-                    "type": "String[]"
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1141,
-            "description": "Writes a string to a file.\nIf the given file exists it gets overridden.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "saveString",
-            "params": [
-                {
-                    "name": "file",
-                    "description": "The file name or a File instance",
-                    "type": "String|File"
-                },
-                {
-                    "name": "string",
-                    "description": "The string to be written",
-                    "type": "String"
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1158,
-            "description": "Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "savePDF",
-            "params": [
-                {
-                    "name": "file",
-                    "description": "The file name or a File instance",
-                    "type": "String|File"
-                },
-                {
-                    "name": "showOptions",
-                    "description": "Whether to show the export dialog",
-                    "type": "Boolean",
-                    "optional": true
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1172,
-            "description": "Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "savePNG",
-            "params": [
-                {
-                    "name": "file",
-                    "description": "The file name or a File instance",
-                    "type": "String|File"
-                },
-                {
-                    "name": "showOptions",
-                    "description": "Whether to show the export dialog",
-                    "type": "Boolean",
-                    "optional": true
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1186,
-            "description": "Downloads an URL to a file, currently Mac only.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "download",
-            "params": [
-                {
-                    "name": "url",
-                    "description": "The download url",
-                    "type": "String"
-                },
-                {
-                    "name": "file",
-                    "description": "A relative file path in the project folder or a File instance",
-                    "type": "String|File",
-                    "optional": true
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1237,
-            "description": "Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.",
-            "cat": "Output",
-            "itemtype": "method",
-            "name": "inspect",
-            "params": [
-                {
-                    "name": "obj",
-                    "description": ": the Object to inspect",
-                    "type": "Object"
-                },
-                {
-                    "name": "maxlevel",
-                    "description": "Optional: recursion limit, default maxlevel = 2",
-                    "type": "Number"
-                }
-            ],
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1300,
+            "line": 1000,
             "description": "The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.\nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3682,7 +3748,7 @@
         },
         {
             "file": "includes/math.js",
-            "line": 1371,
+            "line": 1071,
             "description": "Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3709,7 +3775,7 @@
         },
         {
             "file": "includes/math.js",
-            "line": 1399,
+            "line": 1099,
             "description": "Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3829,7 +3895,7 @@
         {
             "file": "includes/shape.js",
             "line": 105,
-            "description": "Using the beginShape() and endShape() functions allow creating more complex forms. \nbeginShape() begins recording vertices for a shape and endShape() stops recording. \nAfter calling the beginShape() function, a series of vertex() commands must follow. \nTo stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to \ncreate from the provided vertices have to be closed or not (to connect the beginning and the end).",
+            "description": "Using the beginShape() and endShape() functions allow creating more complex forms.\nbeginShape() begins recording vertices for a shape and endShape() stops recording.\nAfter calling the beginShape() function, a series of vertex() commands must follow.\nTo stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to\ncreate from the provided vertices have to be closed or not (to connect the beginning and the end).",
             "cat": "Document",
             "subcat": "Primitives",
             "itemtype": "method",
@@ -3845,7 +3911,7 @@
         {
             "file": "includes/shape.js",
             "line": 128,
-            "description": "Shapes are constructed by connecting a series of vertices. vertex() is used to \nspecify the vertex coordinates lines and polygons. It is used exclusively within\nthe beginShape() and endShape() functions.\n\nPlease use either vertex(x, y) or \nfor drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).\nYou can also mix the two approaches.",
+            "description": "Shapes are constructed by connecting a series of vertices. vertex() is used to\nspecify the vertex coordinates lines and polygons. It is used exclusively within\nthe beginShape() and endShape() functions.\n\nPlease use either vertex(x, y) or\nfor drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).\nYou can also mix the two approaches.",
             "cat": "Document",
             "subcat": "Primitives",
             "itemtype": "method",
@@ -3890,8 +3956,59 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 165,
-            "description": "addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path. \nNew vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for \nthe setting (see b.CLOSE) given in beginShape(shapeMode).",
+            "line": 164,
+            "description": "The arc() function draws an arc in the display window.\nArcs are drawn along the outer edge of an ellipse defined by the\n<b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.\nThe origin or the arc's ellipse may be changed with the\n<b>ellipseMode()</b> function.\nThe <b>start</b> and <b>stop</b> parameters specify the angles\nat which to draw the arc.",
+            "cat": "Document",
+            "subcat": "Primitives",
+            "itemtype": "method",
+            "name": "arc",
+            "params": [
+                {
+                    "name": "cx",
+                    "description": "x-coordinate of the arc's center",
+                    "type": "Number"
+                },
+                {
+                    "name": "cy",
+                    "description": "y-coordinate of the arc's center",
+                    "type": "Number"
+                },
+                {
+                    "name": "w",
+                    "description": "width of the arc's ellipse",
+                    "type": "Number"
+                },
+                {
+                    "name": "h",
+                    "description": "height of the arc's ellipse",
+                    "type": "Number"
+                },
+                {
+                    "name": "startAngle",
+                    "description": "starting angle of the arc (radians)",
+                    "type": "Number"
+                },
+                {
+                    "name": "endAngle",
+                    "description": "ending angle of the arc (radians)",
+                    "type": "Number"
+                },
+                {
+                    "name": "mode",
+                    "description": "optional property defines rendering technique of arc, b.OPEN (default), b.CHORD, or b.PIE",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)\n\nTODO(S)\n- fix overlapping points bug",
+                "type": "GraphicLine|Polygon"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/shape.js",
+            "line": 300,
+            "description": "addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path.\nNew vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for\nthe setting (see b.CLOSE) given in beginShape(shapeMode).",
             "cat": "Document",
             "subcat": "Primitives",
             "itemtype": "method",
@@ -3900,8 +4017,8 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 179,
-            "description": "The endShape() function is the companion to beginShape() and may only be called \nafter beginShape().",
+            "line": 314,
+            "description": "The endShape() function is the companion to beginShape() and may only be called\nafter beginShape().",
             "cat": "Document",
             "subcat": "Primitives",
             "itemtype": "method",
@@ -3914,7 +4031,7 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 234,
+            "line": 369,
             "description": "Draws a rectangle on the page.",
             "cat": "Document",
             "subcat": "Primitives",
@@ -3950,8 +4067,8 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 296,
-            "description": "Modifies the location from which rectangles draw. The default mode is \nrectMode(CORNER), which specifies the location to be the upper left \ncorner of the shape and uses the third and fourth parameters of rect() \nto specify the width and height. The syntax rectMode(CORNERS) uses the \nfirst and second parameters of rect() to set the location of one corner \nand uses the third and fourth parameters to set the opposite corner. \nThe syntax rectMode(CENTER) draws the image from its center point and \nuses the third and forth parameters of rect() to specify the image's \nwidth and height. The syntax rectMode(RADIUS) draws the image from its \ncenter point and uses the third and forth parameters of rect() to specify \nhalf of the image's width and height. The parameter must be written in \n\"ALL CAPS\".",
+            "line": 431,
+            "description": "Modifies the location from which rectangles draw. The default mode is\nrectMode(CORNER), which specifies the location to be the upper left\ncorner of the shape and uses the third and fourth parameters of rect()\nto specify the width and height. The syntax rectMode(CORNERS) uses the\nfirst and second parameters of rect() to set the location of one corner\nand uses the third and fourth parameters to set the opposite corner.\nThe syntax rectMode(CENTER) draws the image from its center point and\nuses the third and forth parameters of rect() to specify the image's\nwidth and height. The syntax rectMode(RADIUS) draws the image from its\ncenter point and uses the third and forth parameters of rect() to specify\nhalf of the image's width and height. The parameter must be written in\n\"ALL CAPS\".",
             "cat": "Document",
             "subcat": "Attributes",
             "itemtype": "method",
@@ -3967,8 +4084,8 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 326,
-            "description": "The origin of the ellipse is modified by the ellipseMode() function. \nThe default configuration is ellipseMode(CENTER), which specifies the \nlocation of the ellipse as the center of the shape. The RADIUS mode is \nthe same, but the width and height parameters to ellipse() specify the \nradius of the ellipse, rather than the diameter. The CORNER mode draws \nthe shape from the upper-left corner of its bounding box. The CORNERS \nmode uses the four parameters to ellipse() to set two opposing corners \nof the ellipse's bounding box. The parameter must be written in \"ALL CAPS\".",
+            "line": 461,
+            "description": "The origin of the ellipse is modified by the ellipseMode() function.\nThe default configuration is ellipseMode(CENTER), which specifies the\nlocation of the ellipse as the center of the shape. The RADIUS mode is\nthe same, but the width and height parameters to ellipse() specify the\nradius of the ellipse, rather than the diameter. The CORNER mode draws\nthe shape from the upper-left corner of its bounding box. The CORNERS\nmode uses the four parameters to ellipse() to set two opposing corners\nof the ellipse's bounding box. The parameter must be written in \"ALL CAPS\".",
             "cat": "Document",
             "subcat": "Attributes",
             "itemtype": "method",
@@ -3984,8 +4101,8 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 352,
-            "description": "Sets the width of the stroke used for lines and the border \naround shapes.",
+            "line": 486,
+            "description": "Sets the width of the stroke used for lines and the border\naround shapes.",
             "cat": "Document",
             "subcat": "Attributes",
             "itemtype": "method",
@@ -4001,7 +4118,7 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 369,
+            "line": 503,
             "description": "Returns the object style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4021,7 +4138,7 @@
         },
         {
             "file": "includes/shape.js",
-            "line": 387,
+            "line": 521,
             "description": "Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.",
             "cat": "Document",
             "subcat": "Transformation",

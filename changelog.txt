@@ -3,6 +3,17 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.08 - 11 November 2013
+
+* Fixed output to progress panel 
+* Added auto save to MODEHIDDEN
+* Added 15s timeout to loadStrings via TCP/IP
+* Improved error reporting
+* Added b.arc() by Ken Frederick, cheers mate!
+* Bugix to b.addStory()
+
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.07-experimental - 22 October 2013
 
 * Fixed buggy b.noise()

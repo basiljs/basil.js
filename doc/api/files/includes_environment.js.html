@@ -318,33 +318,53 @@ pub.storyCount = function() {
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  *&#x2F;
 pub.addToStory = function(story, itemOrString, insertionPointorMode) {
-  if (story instanceof Story &amp;&amp; arguments.length &gt;= 2) {
-    &#x2F;&#x2F; add string
-    if (isString(itemOrString)) {
-      if (insertionPointorMode instanceof InsertionPoint) {
-        insertionPointorMode.contents = itemOrString;
-      } else if (insertionPointorMode === pub.AT_BEGINNING) {
-        story.insertionPoints.firstItem().contents = itemOrString;
-      } else {
-        story.insertionPoints.lastItem().contents = itemOrString;
+  &#x2F;&#x2F; init
+  var libFileName = &quot;addToStoryLib.indl&quot;;
+  var libFile = new File(Folder.temp+&quot;&#x2F;&quot;+libFileName);
+  addToStoryCache = findInCollectionByName(app.libraries, libFileName);
+  &#x2F;&#x2F; if and a cache is existing from previous executions, remove it
+  if (addToStoryCache) {
+    addToStoryCache.close();
+    libFile.remove();
+  } 
+  &#x2F;&#x2F;create an indesign library for caching the page items
+  addToStoryCache = app.libraries.add(libFile);
+
+  &#x2F;&#x2F; self-overwrite, see self-defining-functions pattern
+  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+    if (story instanceof Story &amp;&amp; arguments.length &gt;= 2) {
+      &#x2F;&#x2F; add string
+      if (isString(itemOrString)) {
+        if (insertionPointorMode instanceof InsertionPoint) {
+          insertionPointorMode.contents = itemOrString;
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          story.insertionPoints.firstItem().contents = itemOrString;
+        } else {
+          story.insertionPoints.lastItem().contents = itemOrString;
+        }
       }
-    }
-    &#x2F;&#x2F; add other stuff
-    else {
-      app.select(itemOrString);
-      app.cut();
-      if (insertionPointorMode instanceof InsertionPoint) {
-        app.select(insertionPointorMode);
-      } else if (insertionPointorMode === pub.AT_BEGINNING) {
-        app.select(story.insertionPoints.firstItem());
-      } else {
-        app.select(story.insertionPoints.lastItem());
+      &#x2F;&#x2F; add other stuff
+      else {
+        &#x2F;&#x2F; store the item as first asset in cache
+        addToStoryCache.store(itemOrString);
+
+        var insertionPoint = null;
+        if (insertionPointorMode instanceof InsertionPoint) {
+          insertionPoint = insertionPointorMode;
+        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+          insertionPoint = story.insertionPoints.firstItem();
+        } else {
+          insertionPoint = story.insertionPoints.lastItem();
+        }
+
+        &#x2F;&#x2F; place &amp; remove from cache
+        addToStoryCache.assets.firstItem().placeAsset(insertionPoint);
+        addToStoryCache.assets.firstItem().remove();
       }
-      app.paste();
+    } else {
+      error(&quot;b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
     }
-  } else {
-    error(&quot;b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.&quot;)
-  }
+  };
 };
 
 &#x2F;**
@@ -678,6 +698,64 @@ pub.bleeds = function(top, right, bottom, left) {
   currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
   currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
 };
+
+
+&#x2F;**
+ * Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.
+ *
+ * @cat Output
+ * @method inspect
+ * @param  {Object} obj : the Object to inspect
+ * @param  {Number} maxlevel Optional: recursion limit, default maxlevel = 2
+ *&#x2F;
+pub.inspect = function(obj, maxlevel, level, propname) {
+  if (!level) level = 0;
+  if (!maxlevel) maxlevel = 2;
+  if (level &gt; maxlevel) return;
+
+  var constructorName = obj.constructor.name;
+
+  var indent = &quot;&quot;;
+  for (var i = 0; i &lt; level; i++) indent = indent + &quot;\t&quot;;
+
+  if (level === 0) {
+    println(obj);
+  } else {
+    if (constructorName === &quot;Boolean&quot; ||
+        constructorName === &quot;Number&quot; ||
+        constructorName === &quot;String&quot;) {
+      println(indent+propname+&quot;: &quot;+obj);
+    }
+    else if (constructorName === &quot;Array&quot;) {
+      println(indent+propname+&quot;: &quot;+constructorName+&quot;(&quot;+obj.length+&quot;)&quot;);
+    }
+    else if (constructorName === &quot;Color&quot;) {
+      println(indent+propname+&quot;: [&quot;+obj.colorValue+&quot;] &quot;+constructorName);
+    } 
+    else {
+      println(indent+propname+&quot;: &quot;+constructorName);
+    }
+  }
+
+  if ( constructorName === &#x27;Array&#x27; ) {
+    for (var i = 0, len = obj.length; i &lt; len; i++) {
+      pub.inspect(obj[i], maxlevel, level+1, i);
+    };
+  } else if (typeof obj === &#x27;object&#x27;) {
+    try {
+      for (var i in obj){
+        if (obj.hasOwnProperty(i)) {
+          pub.inspect(obj[i], maxlevel, level+1, i);
+        }
+      }
+    }
+    catch(e) {
+      println(indent+&quot;--&gt; &quot;+propname+&quot; &quot;+e);
+    }
+  }
+}; 
+
+
 
     </pre>
 </div>

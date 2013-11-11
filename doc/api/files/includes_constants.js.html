@@ -86,8 +86,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-
-
 &#x2F;**
  * Used with b.units() to set the coordinate system to points.
  * @property PT {String}
@@ -184,6 +182,30 @@ pub.RADIUS = &quot;radius&quot;;
 pub.CLOSE = &quot;close&quot;;
 
 &#x2F;**
+ * Open, used for arc() modes.
+ * @property OPEN {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.OPEN = &quot;open&quot;;
+
+&#x2F;**
+ * Chord, used for arc() modes.
+ * @property CHORD {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.CHORD = &quot;chord&quot;;
+
+&#x2F;**
+ * Pie, used for arc() modes.
+ * @property PIE {String}
+ * @cat Document
+ * @subcat Primitives
+ *&#x2F;
+pub.PIE = &quot;pie&quot;;
+
+&#x2F;**
  * Two Pi
  * @property TWO_PI {Number}
  * @cat Math
@@ -214,6 +236,31 @@ pub.HALF_PI = Math.PI&#x2F;2;
  * @subcat Constants
  *&#x2F;
 pub.QUARTER_PI = Math.PI&#x2F;4;
+
+&#x2F;**
+ * Sin Cos Length
+ * @property SINCOS_LENGTH {Number}
+ * @cat Math
+ * @subcat Constants
+ *&#x2F;
+pub.SINCOS_LENGTH = 720;
+
+&#x2F;**
+ * Epsilon
+ * @property EPSILON {Number}
+ * @cat Math
+ * @subcat Constants
+ *&#x2F;
+pub.EPSILON = 10e-12;
+
+&#x2F;**
+ * Kappa
+ * @property KAPPA {Number}
+ * @cat Math
+ * @subcat Constants
+ *&#x2F;
+&#x2F;&#x2F; Kappa, see: http:&#x2F;&#x2F;www.whizkidtech.redprince.net&#x2F;bezier&#x2F;circle&#x2F;kappa&#x2F;
+pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) &#x2F; 3.0);
 
 &#x2F;**
  * Used with b.canvasMode() to set the canvas to the full current page.
@@ -253,7 +300,7 @@ pub.FACING_PAGES = &quot;facing_pages&quot;;
  * @cat Document
  * @subcat Page
  *&#x2F;
-pub.FACING_BLEEDS = &quot;facing_bleeds&quot;;  
+pub.FACING_BLEEDS = &quot;facing_bleeds&quot;;
 
 &#x2F;**
  * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
@@ -276,7 +323,7 @@ pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
  * @property AT_END {String}
  * @cat Document
  * @subcat Page
- *&#x2F;  
+ *&#x2F;
 pub.AT_END = LocationOptions.AT_END;
 
 &#x2F;**
@@ -288,33 +335,35 @@ pub.AT_END = LocationOptions.AT_END;
 pub.BEFORE = LocationOptions.BEFORE;
 
 &#x2F;**
-   * Used with b.addPage() to set the position of the new page in the book.
-   * @property AFTER {String}
-   * @cat Document
-   * @subcat Page
-   *&#x2F;
+ * Used with b.addPage() to set the position of the new page in the book.
+ * @property AFTER {String}
+ * @cat Document
+ * @subcat Page
+ *&#x2F;
 pub.AFTER = LocationOptions.AFTER;
 
-  &#x2F;**
-  * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
-  * @property MODESILENT {String}
-  * @cat Environment
-  * @subcat modes
-  *&#x2F;
+&#x2F;**
+* Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
+* @property MODESILENT {String}
+* @cat Environment
+* @subcat modes
+*&#x2F;
 pub.MODESILENT = &quot;ModeSilent&quot;;
-  &#x2F;**
-   * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
-   * @property MODEHIDDEN {String}
-   * @cat Environment
-   * @subcat modes
-   *&#x2F;
+
+&#x2F;**
+ * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you&#x27;ll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println(&quot;yourMessage&quot;) in your script and look at the Console in estk to get information about the process.
+ * @property MODEHIDDEN {String}
+ * @cat Environment
+ * @subcat modes
+ *&#x2F;
 pub.MODEHIDDEN = &quot;ModeHidden&quot;;
-  &#x2F;**
-   * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
-   * @property MODEVISIBLE {String}
-   * @cat Environment
-   * @subcat modes
-   *&#x2F;
+
+&#x2F;**
+ * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
+ * @property MODEVISIBLE {String}
+ * @cat Environment
+ * @subcat modes
+ *&#x2F;
 pub.MODEVISIBLE = &quot;ModeVisible&quot;;
 pub.DEFAULTMODE = pub.MODEVISIBLE; &#x2F;&#x2F; FIXME, DEFAULTMODE shouldn&#x27;t be public, move init to init()
 
