@@ -990,7 +990,7 @@ pub.second = function() {
 };
 
 /**
- * Returns the number of milliseconds (thousandths of a second) since starting an applet. This information is often used for timing animation sequences.
+ * Returns the number of milliseconds (thousandths of a second) since starting an applet.
  * 
  * @cat Environment
  * @subcat Date
