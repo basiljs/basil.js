@@ -7,11 +7,11 @@
   
   License        - MIT
 
-  Developers     
+  Core     
                  - Ted Davis http://teddavis.org
                  - Benedikt Groß http://benedikt-gross.de
                  - Ludwig Zeller http://ludwigzeller.de
-  Contributers   
+  Members   
                  - Philipp Adrian http://www.philippadrian.com/
                  - be:screen GmbH http://bescreen.de
                  - Stefan Landsbek http://47nord.de
