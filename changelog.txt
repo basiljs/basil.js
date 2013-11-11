@@ -11,7 +11,7 @@ basil.js 1.08 - 11 November 2013
 * Improved error reporting
 * Added b.arc() by Ken Frederick, cheers mate!
 * Bugix to b.addStory()
-
+* Changed default folder for b.download() to data/
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.07-experimental - 22 October 2013
