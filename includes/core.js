@@ -34,7 +34,7 @@ pub.go = function (mode) {
   if (!mode) {
     mode = pub.DEFAULTMODE;
   }
-  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE);
+  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
   app.preflightOptions.preflightOff = true;
 
   currentDoc(mode);
