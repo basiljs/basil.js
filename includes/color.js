@@ -174,7 +174,7 @@ pub.color = function() {
         props.name = "C="+0+" M="+0+" Y="+0+" K="+a;
       }
     } else {
-      error("b.color(), wrong type of first paramter.");
+      error("b.color(), wrong type of first parameter.");
     }
 
   } else if (arguments.length === 2) {
