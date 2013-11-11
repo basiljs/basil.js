@@ -1001,6 +1001,27 @@ pub.millis = function() {
   return Date.now() - startTime;
 };
 
+/**
+ * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method timestamp
+ * @return {String}
+ */
+pub.timestamp = function() {
+  var dt = new Date();
+  var dtf = dt.getFullYear();
+  dtf += pub.nf(dt.getMonth()+1,2);
+  dtf += pub.nf(dt.getDate(),2);
+  dtf += "_";
+  dtf += pub.nf(dt.getHours(),2);
+  dtf += pub.nf(dt.getMinutes(),2);
+  dtf += pub.nf(dt.getSeconds(),2);
+  return dtf;
+};
+
+
 
 // ----------------------------------------
 // Transform
