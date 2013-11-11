@@ -167,7 +167,8 @@ var currentDoc = function (mode) {
       doc = app.activeDocument;
       if (mode == b.MODEHIDDEN) {
         if (doc.modified) {
-          throw ("To run in MODEHIDDEN save your active doc before processing.");
+          doc.save();
+          warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
         }
         var docPath = doc.fullName;
         doc.close(); // Close the doc and reopen it without adding to the display list
