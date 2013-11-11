@@ -913,7 +913,7 @@ pub.noiseSeed = function(seed) {
  * @return {Number}
  */
 pub.year = function() {
-  return (new Date()).getFullYear()();
+  return (new Date()).getFullYear();
 };
 
 /**
