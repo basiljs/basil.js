@@ -1009,7 +1009,7 @@ pub.download = function(url, file){
 
         downloadFolder = downloadFolder.replace(" ","\\ ");
         fileName = fileName.replace(" ","\\ ");
-        downloadFolder = projPath + "/"+ downloadFolder;  
+        downloadFolder = projPath + "/data/"+ downloadFolder;  
         cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
         
       }

@@ -14,7 +14,7 @@ function draw() {
   b.download(url);
 
   // download url to a specific location in the project folder:
-  // -> "the project folder" + download_txt_files/my changelog.txt
+  // -> "the project folder" + data/download_txt_files/my changelog.txt
   b.download(url, "download_txt_files/my changelog.txt");
 
   // download url to a specific location e.g. to your desktop
