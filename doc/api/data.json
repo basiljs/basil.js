@@ -2089,6 +2089,146 @@
             "class": "b"
         },
         {
+            "file": "includes/environment.js",
+            "line": 674,
+            "description": "The year() function returns the current year as an integer (2012, 2013 etc).",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "year",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 686,
+            "description": "The month() function returns the current month as a value from 1 - 12.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "month",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 698,
+            "description": "The day() function returns the current day as a value from 1 - 31.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "day",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 710,
+            "description": "The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "weekday",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 723,
+            "description": "The hour() function returns the current hour as a value from 0 - 23.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "hour",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 735,
+            "description": "The minute() function returns the current minute as a value from 0 - 59.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "minute",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 747,
+            "description": "The second() function returns the current second as a value from 0 - 59.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "second",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 759,
+            "description": "Returns the number of milliseconds (thousandths of a second) since starting an applet.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "millis",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 771,
+            "description": "The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "millisecond",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 783,
+            "description": "The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.",
+            "cat": "Environment",
+            "subcat": "Date",
+            "itemtype": "method",
+            "name": "timestamp",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "b"
+        },
+        {
             "file": "includes/global-functions.js",
             "line": 56,
             "description": "Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.",
@@ -3629,105 +3769,7 @@
         },
         {
             "file": "includes/math.js",
-            "line": 907,
-            "description": "The year() function returns the current year as an integer (2012, 2013 etc).",
-            "cat": "Environment",
-            "subcat": "Date",
-            "itemtype": "method",
-            "name": "year",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 919,
-            "description": "The month() function returns the current month as a value from 1 - 12.",
-            "cat": "Environment",
-            "subcat": "Date",
-            "itemtype": "method",
-            "name": "month",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 931,
-            "description": "The day() function returns the current day as a value from 1 - 31.",
-            "cat": "Environment",
-            "subcat": "Date",
-            "itemtype": "method",
-            "name": "day",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 943,
-            "description": "The hour() function returns the current hour as a value from 0 - 23.",
-            "cat": "Environment",
-            "subcat": "Date",
-            "itemtype": "method",
-            "name": "hour",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 955,
-            "description": "The minute() function returns the current minute as a value from 0 - 59.",
-            "cat": "Environment",
-            "subcat": "Date",
-            "itemtype": "method",
-            "name": "minute",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 967,
-            "description": "The second() function returns the current second as a value from 0 - 59.",
-            "cat": "Environment",
-            "subcat": "Date",
-            "itemtype": "method",
-            "name": "second",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 979,
-            "description": "Returns the number of milliseconds (thousandths of a second) since starting an applet. This information is often used for timing animation sequences.",
-            "cat": "Environment",
-            "subcat": "Date",
-            "itemtype": "method",
-            "name": "millis",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/math.js",
-            "line": 1000,
+            "line": 913,
             "description": "The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.\nIn case the object is any kind of text, then additional typographic information baseline and xHeight are calculated",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3748,7 +3790,7 @@
         },
         {
             "file": "includes/math.js",
-            "line": 1071,
+            "line": 984,
             "description": "Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -3775,7 +3817,7 @@
         },
         {
             "file": "includes/math.js",
-            "line": 1099,
+            "line": 1012,
             "description": "Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.",
             "cat": "Document",
             "subcat": "Transformation",

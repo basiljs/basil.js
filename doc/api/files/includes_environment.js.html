@@ -756,6 +756,139 @@ pub.inspect = function(obj, maxlevel, level, propname) {
 }; 
 
 
+&#x2F;&#x2F; ----------------------------------------
+&#x2F;&#x2F; Date
+
+&#x2F;**
+ * The year() function returns the current year as an integer (2012, 2013 etc).
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method year
+ * @return {Number}
+ *&#x2F;
+pub.year = function() {
+  return (new Date()).getFullYear();
+};
+
+&#x2F;**
+ * The month() function returns the current month as a value from 1 - 12.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method month
+ * @return {Number}
+ *&#x2F;
+pub.month = function() {
+  return (new Date()).getMonth() + 1;
+};
+
+&#x2F;**
+ * The day() function returns the current day as a value from 1 - 31.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method day
+ * @return {Number}
+ *&#x2F;
+pub.day = function() {
+  return (new Date()).getDate();
+};
+
+&#x2F;**
+ * The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method weekday
+ * @return {String}
+ *&#x2F;
+pub.weekday = function() {
+  var weekdays = new Array(&#x27;Sunday&#x27;, &#x27;Monday&#x27;, &#x27;Tuesday&#x27;, &#x27;Wednesday&#x27;, &#x27;Thursday&#x27;, &#x27;Friday&#x27;, &#x27;Saturday&#x27;);
+  return weekdays[(new Date()).getDay()];
+};
+
+&#x2F;**
+ * The hour() function returns the current hour as a value from 0 - 23.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method hour
+ * @return {Number}
+ *&#x2F;
+pub.hour = function() {
+  return (new Date()).getHours();
+};
+
+&#x2F;**
+ * The minute() function returns the current minute as a value from 0 - 59.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method minute
+ * @return {Number}
+ *&#x2F;
+pub.minute = function() {
+  return (new Date()).getMinutes();
+};
+
+&#x2F;**
+ * The second() function returns the current second as a value from 0 - 59.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method second
+ * @return {Number}
+ *&#x2F;
+pub.second = function() {
+  return (new Date()).getSeconds();
+};
+
+&#x2F;**
+ * Returns the number of milliseconds (thousandths of a second) since starting an applet.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method millis
+ * @return {Number}
+ *&#x2F;
+pub.millis = function() {
+  return Date.now() - startTime;
+};
+
+&#x2F;**
+ * The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method millisecond
+ * @return {Number}
+ *&#x2F;
+pub.millisecond = function() {
+  return (new Date()).getMilliseconds();
+};
+
+&#x2F;**
+ * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method timestamp
+ * @return {String}
+ *&#x2F;
+pub.timestamp = function() {
+  var dt = new Date();
+  var dtf = dt.getFullYear();
+  dtf += pub.nf(dt.getMonth()+1,2);
+  dtf += pub.nf(dt.getDate(),2);
+  dtf += &quot;_&quot;;
+  dtf += pub.nf(dt.getHours(),2);
+  dtf += pub.nf(dt.getMinutes(),2);
+  dtf += pub.nf(dt.getSeconds(),2);
+  return dtf;
+};
+
+
 
     </pre>
 </div>

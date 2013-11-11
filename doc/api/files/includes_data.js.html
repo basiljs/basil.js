@@ -1097,7 +1097,7 @@ pub.download = function(url, file){
 
         downloadFolder = downloadFolder.replace(&quot; &quot;,&quot;\\ &quot;);
         fileName = fileName.replace(&quot; &quot;,&quot;\\ &quot;);
-        downloadFolder = projPath + &quot;&#x2F;&quot;+ downloadFolder;  
+        downloadFolder = projPath + &quot;&#x2F;data&#x2F;&quot;+ downloadFolder;  
         cmd = [&quot;sh&quot;,scriptPath,downloadFolder,url,fileName].join(&quot; &quot;);
         
       }
