@@ -941,6 +941,19 @@ pub.day = function() {
 };
 
 /**
+ * The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method weekday
+ * @return {String}
+ */
+pub.weekday = function() {
+  var weekdays = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+  return weekdays[(new Date()).getDay()];
+};
+
+/**
  * The hour() function returns the current hour as a value from 0 - 23.
  * 
  * @cat Environment
