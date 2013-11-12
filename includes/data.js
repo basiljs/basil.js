@@ -716,7 +716,7 @@ var initDataFile = function(file, mustExist) {
   if (file instanceof File) {
     result = file;
   } else {
-    var folder = new Folder(projectPath().absoluteURI + '/data');
+    var folder = new Folder(projectFolder().absoluteURI + '/data');
     folder.create(); // creates data folder if not existing, otherwise it just skips
     result = new File(folder.absoluteURI + '/' + file);
   }
@@ -740,7 +740,7 @@ var initExportFile = function(file, mustExist) {
       };
     };
 
-    var tmpPath = projectPath().absoluteURI;
+    var tmpPath = projectFolder().absoluteURI;
     var fileName = pathNormalized[pathNormalized.length-1];
     
     // contains the path folders? if so create them ...
@@ -753,7 +753,7 @@ var initExportFile = function(file, mustExist) {
       };
     } 
 
-    // result = new File(projectPath().absoluteURI + '/' + file);
+    // result = new File(projectFolder().absoluteURI + '/' + file);
     result = new File(tmpPath + '/' + fileName);
   }
   if (mustExist && !result.exists) {
@@ -770,7 +770,7 @@ var initExportFile = function(file, mustExist) {
  * @method projectFolder
  * @return {Folder} The folder of the the active document
  */
-var projectPath = pub.projectFolder = function() {
+var projectFolder = pub.projectFolder = function() {
   var docPath = null;
   try {
     docPath = currentDoc().filePath;
@@ -985,7 +985,7 @@ pub.savePNG = function(file, showOptions){
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
 pub.download = function(url, file){
-  var projPath = projectPath().fsName.replace(" ","\\ ");
+  var projPath = projectFolder().fsName.replace(" ","\\ ");
   var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
 
   if (isURL(url)) {
