@@ -763,14 +763,14 @@ var initExportFile = function(file, mustExist) {
 };
 
 /**
- * Get the full path to the folder of the active document.
+ * Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
  *
  * @cat Document
  * @subcat Misc
- * @method projectPath
- * @return {File} The folder of the the active document
+ * @method projectFolder
+ * @return {Folder} The folder of the the active document
  */
-var projectPath = pub.projectPath = function() {
+var projectPath = pub.projectFolder = function() {
   var docPath = null;
   try {
     docPath = currentDoc().filePath;
