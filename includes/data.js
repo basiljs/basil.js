@@ -923,7 +923,7 @@ pub.printInfo = function() {
  * @param  {String[]} strings The string array to be written
  */
 pub.saveStrings = function(file, strings) {
-  var outputFile = initExportFile(file);
+  var outputFile = initDataFile(file);
   outputFile.open('w');
   forEach(strings, function(s) {
     outputFile.writeln(s);
@@ -941,7 +941,7 @@ pub.saveStrings = function(file, strings) {
  * @param  {String} string The string to be written
  */
 pub.saveString = function(file, string) {
-  var outputFile = initExportFile(file);
+  var outputFile = initDataFile(file);
   outputFile.open('w');
   outputFile.write(string);
   outputFile.close();
