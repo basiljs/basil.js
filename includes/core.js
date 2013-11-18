@@ -417,7 +417,7 @@ var findInCollectionByName = function(collection, name) {
 
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
-  throw new Error( ERROR_PREFIX + msg );
+  exit();
 };
 
 var warning = pub.warning = function(msg) {
