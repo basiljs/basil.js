@@ -125,12 +125,14 @@ pub.noLoop = function() {
 // ----------------------------------------
 // all private from here
 
+var undoMode = UndoModes.ENTIRE_SCRIPT;
+
 var runSetup = function() {
   app.doScript(function() {
     if (typeof glob.setup === 'function') {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, undoMode);
 };
 
 var runDrawOnce = function() {
@@ -138,7 +140,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, undoMode);
 };
 
 var runDrawLoop = function() {
@@ -146,7 +148,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, undoMode);
 };
 
 var welcome = function() {
@@ -201,6 +203,9 @@ var setCurrDoc = function(doc) {
   
   currDoc.pasteboardPreferences.pasteboardMargins = ["1000pt", "1000pt"];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
+//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
+
   currFont = currDoc.textDefaults.appliedFont.name;
   currFontSize = currDoc.textDefaults.pointSize;
   currAlign = currDoc.textDefaults.justification;
@@ -208,6 +213,7 @@ var setCurrDoc = function(doc) {
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
   pub.units(pub.PT);
+  
   updatePublicPageSizeVars();
 };
 
@@ -264,6 +270,7 @@ var resetCurrDoc = function() {
   currYAlign = VerticalJustification.TOP_ALIGN;
   currFont = null;
   currImageMode = pub.CORNER;
+  
   pub.resetMatrix();
 };
 
