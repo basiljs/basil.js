@@ -125,7 +125,7 @@ pub.noLoop = function() {
 // ----------------------------------------
 // all private from here
 
-var undoMode = UndoModes.ENTIRE_SCRIPT;
+var undoMode = UndoModes.FAST_ENTIRE_SCRIPT;
 
 var runSetup = function() {
   app.doScript(function() {
