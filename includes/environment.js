@@ -58,6 +58,30 @@ pub.canvasMode = function ( m ) {
 
 };  
 
+
+/**
+ * Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given. 
+ * 
+ * @cat Document
+ * @subcat Page
+ * @method pasteboard
+ * @param  {Number} The desired horizontal pasteboard margin.
+ * @param  {Number} The desired vertical pasteboard margin.
+ * @return {array} The current horizontal, vertical pasteboard margins.
+ */
+pub.pasteboard = function ( h, v ) {
+  if(arguments.length == 0) {
+    return currDoc.pasteboardPreferences.pasteboardMargins;
+  } else if(arguments.length == 1){
+	  error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
+  }else if ( typeof h === "number" && typeof v === "number" ) {
+     currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
+     return currDoc.pasteboardPreferences.pasteboardMargins;
+  }else {
+     error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
+  }
+};
+
 /**
  * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
  *

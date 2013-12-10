@@ -201,7 +201,6 @@ var setCurrDoc = function(doc) {
   currDoc = doc;
   // -- setup document --
   
-  currDoc.pasteboardPreferences.pasteboardMargins = ["1000pt", "1000pt"];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
 //  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
 //  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
