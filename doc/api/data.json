@@ -1221,26 +1221,10 @@
                     "name": "str",
                     "description": "A string to be checked",
                     "type": "String"
-                }
-            ],
-            "return": {
-                "description": "Returns either true or false",
-                "type": "Boolean"
-            },
-            "class": "b"
-        },
-        {
-            "file": "includes/data.js",
-            "line": 639,
-            "description": "Checks whether a string starts with a specific character or string.",
-            "cat": "Data",
-            "subcat": "String Functions",
-            "itemtype": "method",
-            "name": "startsWith",
-            "params": [
+                },
                 {
-                    "name": "str",
-                    "description": "A string to be checked",
+                    "name": "suffix",
+                    "description": "The string to look for",
                     "type": "String"
                 }
             ],
@@ -1252,7 +1236,33 @@
         },
         {
             "file": "includes/data.js",
-            "line": 653,
+            "line": 640,
+            "description": "Checks whether a string starts with a specific character or string.",
+            "cat": "Data",
+            "subcat": "String Functions",
+            "itemtype": "method",
+            "name": "startsWith",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "A string to be checked",
+                    "type": "String"
+                },
+                {
+                    "name": "prefix",
+                    "description": "The string to look for",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Returns either true or false",
+                "type": "Boolean"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/data.js",
+            "line": 655,
             "description": "Checks whether a var is an Array, returns true if this is the case",
             "cat": "Data",
             "subcat": "Type-Check",
@@ -1273,7 +1283,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 666,
+            "line": 668,
             "description": "Checks whether a var is a number, returns true if this is the case",
             "cat": "Data",
             "subcat": "Type-Check",
@@ -1294,7 +1304,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 679,
+            "line": 681,
             "description": "Checks whether a var is a string, returns true if this is the case",
             "cat": "Data",
             "subcat": "Type-Check",
@@ -1315,7 +1325,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 692,
+            "line": 694,
             "description": "Checks whether a var is an indesign text object, returns true if this is the case\nNB: a indesign TextFrame will return false as it is just a container holding text. \nSo you could say that isText() refers to all the things inside a TextFrame.",
             "cat": "Document",
             "subcat": "Type-Check",
@@ -1336,21 +1346,21 @@
         },
         {
             "file": "includes/data.js",
-            "line": 765,
-            "description": "Get the full path to the folder of the active document.",
+            "line": 767,
+            "description": "Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.",
             "cat": "Document",
             "subcat": "Misc",
             "itemtype": "method",
-            "name": "projectPath",
+            "name": "projectFolder",
             "return": {
                 "description": "The folder of the the active document",
-                "type": "File"
+                "type": "Folder"
             },
             "class": "b"
         },
         {
             "file": "includes/data.js",
-            "line": 784,
+            "line": 786,
             "description": "Executes a shell command and returns the result, currently Mac only.\n\nBE CAREFUL!",
             "cat": "Data",
             "subcat": "Input",
@@ -1371,7 +1381,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 807,
+            "line": 809,
             "description": "Reads the contents of a file or loads an URL into a String.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "cat": "Data",
             "subcat": "Input",
@@ -1392,7 +1402,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 842,
+            "line": 844,
             "description": "Reads the contents of a file or loads an URL and creates a String array of its individual lines.\nIf the file is specified by name as String, it must be located in the document's data directory.",
             "cat": "Data",
             "subcat": "Input",
@@ -1413,7 +1423,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 872,
+            "line": 874,
             "description": "Prints a message line to the console output in the ExtendScript editor.",
             "cat": "Output",
             "itemtype": "method",
@@ -1429,7 +1439,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 885,
+            "line": 887,
             "description": "Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.",
             "cat": "Output",
             "itemtype": "method",
@@ -1445,7 +1455,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 898,
+            "line": 900,
             "description": "Print numerous information about the current environment to the console",
             "cat": "Output",
             "itemtype": "method",
@@ -1454,7 +1464,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 916,
+            "line": 918,
             "description": "Writes an array of strings to a file, one line per string.\nIf the given file exists it gets overridden.",
             "cat": "Output",
             "itemtype": "method",
@@ -1475,7 +1485,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 934,
+            "line": 936,
             "description": "Writes a string to a file.\nIf the given file exists it gets overridden.",
             "cat": "Output",
             "itemtype": "method",
@@ -1496,7 +1506,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 951,
+            "line": 953,
             "description": "Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.",
             "cat": "Output",
             "itemtype": "method",
@@ -1518,7 +1528,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 965,
+            "line": 967,
             "description": "Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.",
             "cat": "Output",
             "itemtype": "method",
@@ -1540,7 +1550,7 @@
         },
         {
             "file": "includes/data.js",
-            "line": 979,
+            "line": 981,
             "description": "Downloads an URL to a file, currently Mac only.",
             "cat": "Output",
             "itemtype": "method",
@@ -1947,7 +1957,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 504,
+            "line": 505,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1967,7 +1977,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 523,
+            "line": 524,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1987,7 +1997,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 542,
+            "line": 543,
             "description": "Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.",
             "cat": "Document",
             "subcat": "Page",
@@ -2033,7 +2043,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 582,
+            "line": 583,
             "description": "Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.",
             "cat": "Document",
             "subcat": "Page",
@@ -2069,7 +2079,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 615,
+            "line": 616,
             "description": "Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.",
             "cat": "Output",
             "itemtype": "method",
@@ -2090,7 +2100,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 674,
+            "line": 675,
             "description": "The year() function returns the current year as an integer (2012, 2013 etc).",
             "cat": "Environment",
             "subcat": "Date",
@@ -2104,7 +2114,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 686,
+            "line": 687,
             "description": "The month() function returns the current month as a value from 1 - 12.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2118,7 +2128,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 698,
+            "line": 699,
             "description": "The day() function returns the current day as a value from 1 - 31.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2132,7 +2142,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 710,
+            "line": 711,
             "description": "The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...",
             "cat": "Environment",
             "subcat": "Date",
@@ -2146,7 +2156,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 723,
+            "line": 724,
             "description": "The hour() function returns the current hour as a value from 0 - 23.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2160,7 +2170,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 735,
+            "line": 736,
             "description": "The minute() function returns the current minute as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2174,7 +2184,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 747,
+            "line": 748,
             "description": "The second() function returns the current second as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2188,7 +2198,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 759,
+            "line": 760,
             "description": "Returns the number of milliseconds (thousandths of a second) since starting an applet.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2202,7 +2212,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 771,
+            "line": 772,
             "description": "The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2216,7 +2226,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 783,
+            "line": 784,
             "description": "The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.",
             "cat": "Environment",
             "subcat": "Date",
@@ -4531,7 +4541,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 294,
+            "line": 298,
             "description": "Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4553,7 +4563,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 311,
+            "line": 315,
             "description": "Transforms the given PageItem with the given Matrix2D object.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4575,7 +4585,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 329,
+            "line": 333,
             "description": "Multiplies the current matrix by the one specified through the parameters.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4592,7 +4602,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 341,
+            "line": 345,
             "description": "Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4602,7 +4612,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 356,
+            "line": 360,
             "description": "Prints the current matrix to the console window.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4612,7 +4622,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 367,
+            "line": 371,
             "description": "Pushes the current transformation matrix onto the matrix stack. Understanding pushMatrix() and popMatrix() requires understanding the concept of a matrix stack. The pushMatrix() function saves the current coordinate system to the stack and popMatrix() restores the prior coordinate system. pushMatrix() and popMatrix() are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4622,7 +4632,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 378,
+            "line": 382,
             "description": "Replaces the current matrix with the identity matrix.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4632,7 +4642,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 390,
+            "line": 394,
             "description": "Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to PI*2) or converted to radians with the radians() function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and HALF_PI being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling rotate(PI/2) and then rotate(PI/2) is the same as rotate(PI). If rotate() is called within the draw(), the transformation is reset when the loop begins again. Technically, rotate() multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the pushMatrix() and popMatrix().",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4649,7 +4659,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 403,
+            "line": 407,
             "description": "Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().\nIf only one parameter is given, it is applied on X and Y axis.",
             "cat": "Document",
             "subcat": "Transformation",
@@ -4671,7 +4681,7 @@
         },
         {
             "file": "includes/transformation.js",
-            "line": 418,
+            "line": 422,
             "description": "Specifies an amount to displace objects within the page. The x parameter specifies left/right translation, the y parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling translate(50, 0) and then translate(20, 0) is the same as translate(70, 0). This function can be further controlled by the pushMatrix() and popMatrix().",
             "cat": "Document",
             "subcat": "Transformation",

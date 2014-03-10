@@ -630,6 +630,7 @@ var isURL = pub.isURL = function(url) {
  * @subcat String Functions
  * @method endsWith
  * @param {String} str A string to be checked
+ * @param {String} suffix The string to look for
  * @return {Boolean} Returns either true or false
  */
 var endsWith = pub.endsWith = function(str, suffix) {
@@ -643,6 +644,7 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @subcat String Functions
  * @method startsWith
  * @param {String} str A string to be checked
+ * @param {String} prefix The string to look for
  * @return {Boolean} Returns either true or false
  */
 var startsWith = pub.startsWith = function(str, prefix) {

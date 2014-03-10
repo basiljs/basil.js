@@ -245,12 +245,16 @@ Matrix2D.prototype = {
     return this.elements.slice();
   },
   adobeMatrix: function array() {
+
+    var uVX = new UnitValue(this.elements[2], currUnits); 
+    var uVY = new UnitValue(this.elements[5], currUnits); 
+
     return [this.elements[0],
             this.elements[3],
             this.elements[1],
             this.elements[4],
-            this.elements[2],
-            this.elements[5]];
+            uVX.as(&quot;pt&quot;),
+            uVY.as(&quot;pt&quot;)];
   },
   translate: function(tx, ty) {
     this.elements[2] = tx * this.elements[0] + ty * this.elements[1] + this.elements[2];

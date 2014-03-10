@@ -586,6 +586,7 @@ pub.units = function (units) {
   } else {
     error(&quot;b.unit(), not supported unit&quot;);
   }
+  println(&quot;Please note that b.units() will reset the current transformation matrix.&quot;);
   return currUnits;
 };
 

@@ -213,12 +213,14 @@ pub.noLoop = function() {
 &#x2F;&#x2F; ----------------------------------------
 &#x2F;&#x2F; all private from here
 
+var undoMode = UndoModes.FAST_ENTIRE_SCRIPT;
+
 var runSetup = function() {
   app.doScript(function() {
     if (typeof glob.setup === &#x27;function&#x27;) {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, undoMode);
 };
 
 var runDrawOnce = function() {
@@ -226,7 +228,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === &#x27;function&#x27;) {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, undoMode);
 };
 
 var runDrawLoop = function() {
@@ -234,7 +236,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === &#x27;function&#x27;) {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, undoMode);
 };
 
 var welcome = function() {
@@ -289,6 +291,9 @@ var setCurrDoc = function(doc) {
   
   currDoc.pasteboardPreferences.pasteboardMargins = [&quot;1000pt&quot;, &quot;1000pt&quot;];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+&#x2F;&#x2F;  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
+&#x2F;&#x2F;  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
+
   currFont = currDoc.textDefaults.appliedFont.name;
   currFontSize = currDoc.textDefaults.pointSize;
   currAlign = currDoc.textDefaults.justification;
@@ -296,6 +301,7 @@ var setCurrDoc = function(doc) {
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
   pub.units(pub.PT);
+  
   updatePublicPageSizeVars();
 };
 
@@ -352,6 +358,7 @@ var resetCurrDoc = function() {
   currYAlign = VerticalJustification.TOP_ALIGN;
   currFont = null;
   currImageMode = pub.CORNER;
+  
   pub.resetMatrix();
 };
 
@@ -505,7 +512,7 @@ var findInCollectionByName = function(collection, name) {
 
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
-  throw new Error( ERROR_PREFIX + msg );
+  exit();
 };
 
 var warning = pub.warning = function(msg) {

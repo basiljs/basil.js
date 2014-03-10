@@ -718,6 +718,7 @@ var isURL = pub.isURL = function(url) {
  * @subcat String Functions
  * @method endsWith
  * @param {String} str A string to be checked
+ * @param {String} suffix The string to look for
  * @return {Boolean} Returns either true or false
  *&#x2F;
 var endsWith = pub.endsWith = function(str, suffix) {
@@ -731,6 +732,7 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @subcat String Functions
  * @method startsWith
  * @param {String} str A string to be checked
+ * @param {String} prefix The string to look for
  * @return {Boolean} Returns either true or false
  *&#x2F;
 var startsWith = pub.startsWith = function(str, prefix) {
@@ -804,7 +806,7 @@ var initDataFile = function(file, mustExist) {
   if (file instanceof File) {
     result = file;
   } else {
-    var folder = new Folder(projectPath().absoluteURI + &#x27;&#x2F;data&#x27;);
+    var folder = new Folder(projectFolder().absoluteURI + &#x27;&#x2F;data&#x27;);
     folder.create(); &#x2F;&#x2F; creates data folder if not existing, otherwise it just skips
     result = new File(folder.absoluteURI + &#x27;&#x2F;&#x27; + file);
   }
@@ -828,7 +830,7 @@ var initExportFile = function(file, mustExist) {
       };
     };
 
-    var tmpPath = projectPath().absoluteURI;
+    var tmpPath = projectFolder().absoluteURI;
     var fileName = pathNormalized[pathNormalized.length-1];
     
     &#x2F;&#x2F; contains the path folders? if so create them ...
@@ -841,7 +843,7 @@ var initExportFile = function(file, mustExist) {
       };
     } 
 
-    &#x2F;&#x2F; result = new File(projectPath().absoluteURI + &#x27;&#x2F;&#x27; + file);
+    &#x2F;&#x2F; result = new File(projectFolder().absoluteURI + &#x27;&#x2F;&#x27; + file);
     result = new File(tmpPath + &#x27;&#x2F;&#x27; + fileName);
   }
   if (mustExist &amp;&amp; !result.exists) {
@@ -851,14 +853,14 @@ var initExportFile = function(file, mustExist) {
 };
 
 &#x2F;**
- * Get the full path to the folder of the active document.
+ * Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
  *
  * @cat Document
  * @subcat Misc
- * @method projectPath
- * @return {File} The folder of the the active document
+ * @method projectFolder
+ * @return {Folder} The folder of the the active document
  *&#x2F;
-var projectPath = pub.projectPath = function() {
+var projectFolder = pub.projectFolder = function() {
   var docPath = null;
   try {
     docPath = currentDoc().filePath;
@@ -1011,7 +1013,7 @@ pub.printInfo = function() {
  * @param  {String[]} strings The string array to be written
  *&#x2F;
 pub.saveStrings = function(file, strings) {
-  var outputFile = initExportFile(file);
+  var outputFile = initDataFile(file);
   outputFile.open(&#x27;w&#x27;);
   forEach(strings, function(s) {
     outputFile.writeln(s);
@@ -1029,7 +1031,7 @@ pub.saveStrings = function(file, strings) {
  * @param  {String} string The string to be written
  *&#x2F;
 pub.saveString = function(file, string) {
-  var outputFile = initExportFile(file);
+  var outputFile = initDataFile(file);
   outputFile.open(&#x27;w&#x27;);
   outputFile.write(string);
   outputFile.close();
@@ -1073,7 +1075,7 @@ pub.savePNG = function(file, showOptions){
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  *&#x2F;
 pub.download = function(url, file){
-  var projPath = projectPath().fsName.replace(&quot; &quot;,&quot;\\ &quot;);
+  var projPath = projectFolder().fsName.replace(&quot; &quot;,&quot;\\ &quot;);
   var scriptPath = &quot;~&#x2F;Documents&#x2F;basiljs&#x2F;bundle&#x2F;lib&#x2F;download.sh&quot;;
 
   if (isURL(url)) {
