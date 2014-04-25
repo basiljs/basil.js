@@ -21,11 +21,11 @@ function draw() {
       b.layer("generated"); 
 
       b.rotate( b.radians( b.random( -10, 10 ) ) ); 
-//~       b.scale( b.random(0.9, 1.1) ); 
+      // b.scale( b.random(0.9, 1.1) ); 
       
       var newShape = b.duplicate(shape); 
 
-//~       newShape.fillColor = b.color(255,0,0); 
+      // newShape.fillColor = b.color(255,0,0); 
       
       if(center == true) {
         b.itemX( newShape, cellWidth * x + cellWidth / 2 - b.bounds(newShape).width / 2 ); 

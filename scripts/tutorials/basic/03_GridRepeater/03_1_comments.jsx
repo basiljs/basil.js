@@ -21,12 +21,12 @@ function draw() {
 
       b.layer("generated"); // set or create the layer "generated" as target
 
-//~        b.rotate( b.radians( b.random( -10, 10 ) ) );  // set rotation for new item, 2 x Pi is a full rotation
-//~       b.scale( b.random(0.9, 1.1) );        // set scaling for new item
+      // b.rotate( b.radians( b.random( -10, 10 ) ) );  // set rotation for new item, 2 x Pi is a full rotation
+      // b.scale( b.random(0.9, 1.1) );        // set scaling for new item
       
       var newShape = b.duplicate(shape); // create a copy of the shape
 
-//~       newShape.fillColor = b.color(255,0,0); // change the fill color of each shape
+      // newShape.fillColor = b.color(255,0,0); // change the fill color of each shape
       
       if(center == true) {
         // move new shape to position in the grid
