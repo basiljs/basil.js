@@ -490,6 +490,7 @@ pub.nameOnPage = function(name) {
  * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
  * @return {Constant} Current unit setting
  */
+var unitsCalledCounter = 0;
 pub.units = function (units) {
   if (arguments.length === 0) return currUnits;
 
@@ -522,7 +523,10 @@ pub.units = function (units) {
   } else {
     error("b.unit(), not supported unit");
   }
-  println("Please note that b.units() will reset the current transformation matrix.");
+  if (unitsCalledCounter === 1) {
+    warning("Please note that b.units() will reset the current transformation matrix."); 
+  }
+  unitsCalledCounter++;
   return currUnits;
 };
 
