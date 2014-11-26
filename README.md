@@ -5,15 +5,16 @@ An attempt to port the spirit of the [Processing](http://processing.org/) visual
 
 For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch). Follow us on twitter [@basil_js](https://twitter.com/basil_js) for news and updates
 
-**Developers**
+**Core**
 - Ted Davis http://teddavis.org
 - Benedikt Groß http://benedikt-gross.de
 - Ludwig Zeller http://ludwigzeller.de
 
-**Contributers**
+**Members**
 - Philipp Adrian, http://www.philippadrian.com/
 - be:screen GmbH, http://bescreen.de
 - Stefan Landsbek, http://47nord.de
+- Ken Frederick, http://kennethfrederick.de/
 
 basil.js was conceived and is generously supported by
 The Visual Communication Institute / The Basel School of Design

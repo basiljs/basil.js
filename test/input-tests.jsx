@@ -44,9 +44,12 @@ b.test('InputTests', {
   },
 
   testFindByLabelWithNotExistingLabel: function(b) {
-    var found = b.labels('bar');
+    try{
+      var found = b.labels('bar');
+    } catch (e) {
+      assert(true);
+    }
 
-    assert(found.length === 0);
   }
 });
 

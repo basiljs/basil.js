@@ -2,3 +2,7 @@
 basil.sublime-workspace
 examples/image/*.indd
 lib/extendables/log/extendables.log
+
+# debug info
+examples/ui/debug
+includes/ui
