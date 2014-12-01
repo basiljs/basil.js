@@ -129,6 +129,8 @@ pub.page = function(page) {
  */
 pub.addPage = function(location) {
 
+  checkNull(location);
+
   if(arguments.length === 0) location = b.AT_END; // default
   
   var nP;
@@ -177,6 +179,8 @@ pub.addPage = function(location) {
  */
 pub.removePage = function (page) {
 
+  checkNull(page);
+
   if( typeof page === 'number' || arguments.length === 0 || page instanceof Page ){
     var p = pub.page(page); // get the page object, todo: add an internal method of page retrieval without setting it to current
     p.remove();
@@ -198,6 +202,8 @@ pub.removePage = function (page) {
  * @return {Number} The page number within the document.
  */
 pub.pageNumber = function (pageObj) {
+
+    checkNull(pageObj);
 
     if (typeof pageObj === 'number') error("b.pageNumber(), cannot be called with a Number argument.");
 
@@ -254,6 +260,10 @@ pub.storyCount = function() {
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  */
 pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+
+  checkNull(story);
+  checkNull(itemOrString);
+
   // init
   var libFileName = "addToStoryLib.indl";
   var libFile = new File(Folder.temp+"/"+libFileName);
@@ -313,6 +323,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
  * @return {Layer} The current layer instance
  */
 pub.layer = function(layer) {
+  checkNull(layer);
   if (layer instanceof Layer) {
     currLayer = layer;
   } else if (typeof layer === 'string') {
@@ -336,6 +347,7 @@ pub.layer = function(layer) {
  *  @return {Group} the current Group instance
  */
 pub.group = function (pItem, name) {
+  checkNull(pItem);
   var group = null;
   if( pItem instanceof Array) {
     if(pItem.length < 2) error("There must be at least two PageItems passed to b.group().");
@@ -365,6 +377,7 @@ pub.group = function (pItem, name) {
  *  @return {Group} the Page Item(s) that were grouped
  */
 pub.ungroup = function(pItem) {
+  checkNull(pItem);
   var ungroupedItems = null;
   if( pItem instanceof Group) {
     ungroupedItems = b.items( pItem );
@@ -394,6 +407,7 @@ pub.ungroup = function(pItem) {
  * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
 pub.labels = function(label, cb) {
+  checkNull(label);
   var result = [];
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
@@ -420,6 +434,7 @@ pub.labels = function(label, cb) {
  * @return {PageItem} The first PageItem of all the hits
  */  
 pub.label = function(label) {
+  checkNull(label);
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
     var pageItem = doc.pageItems[i];
@@ -469,6 +484,7 @@ pub.selections = function(cb) {
  * @return {Object} The first object on the active page with the given name
  */
 pub.nameOnPage = function(name) {
+  checkNull(name);
   var result = null;
   var page = currentPage();
   for (var i = 0, len = page.allPageItems.length; i < len; i++) {
@@ -492,6 +508,7 @@ pub.nameOnPage = function(name) {
  */
 var unitsCalledCounter = 0;
 pub.units = function (units) {
+  checkNull(units);
   if (arguments.length === 0) return currUnits;
 
   if (units === pub.CM ||
@@ -539,6 +556,7 @@ pub.units = function (units) {
  * @return {Guide} New guide
  */
 pub.guideX = function (x) {
+  checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add( currentLayer() );
   with (guide) {
@@ -558,6 +576,7 @@ pub.guideX = function (x) {
  * @return {Guide} New guide
  */
 pub.guideY = function (y) {
+  checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add( currentLayer() );
   with (guide) {
@@ -583,6 +602,7 @@ pub.guideY = function (y) {
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
 
+  
   if (arguments.length === 0){
     
     return {'top':pub.page(pageNumber).marginPreferences.top,
@@ -650,6 +670,7 @@ pub.bleeds = function(top, right, bottom, left) {
  * @param  {Number} maxlevel Optional: recursion limit, default maxlevel = 2
  */
 pub.inspect = function(obj, maxlevel, level, propname) {
+  checkNull(obj);
   if (!level) level = 0;
   if (!maxlevel) maxlevel = 2;
   if (level > maxlevel) return;
