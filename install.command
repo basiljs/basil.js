@@ -8,8 +8,8 @@ echo "This is where we are :"
 pwd
 # if 
 echo "Installing basil.js... "
-mkdir -p ~/Documents/basiljs-target/
-cp -r ./ ~/Documents/basiljs-target/bundle
-mkdir -p ~/Documents/basiljs-target/user
+mkdir -p ~/Documents/basiljs/
+cp -r ./ ~/Documents/basiljs/bundle
+mkdir -p ~/Documents/basiljs/user
 
 echo "Installation is done!"
