@@ -125,14 +125,13 @@ pub.noLoop = function() {
 // ----------------------------------------
 // all private from here
 
-var undoMode = UndoModes.FAST_ENTIRE_SCRIPT;
 
 var runSetup = function() {
   app.doScript(function() {
     if (typeof glob.setup === 'function') {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, undoMode);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawOnce = function() {
@@ -140,7 +139,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, undoMode);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawLoop = function() {
@@ -148,7 +147,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, undoMode);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var welcome = function() {
