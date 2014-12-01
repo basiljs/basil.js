@@ -124,7 +124,9 @@ pub.typo = function(item, property, value) {
 };
 
 var isValid = function (item) {
-  if (typeof item != 'undefined') {
+  
+  checkNull(item);
+
     if (item.hasOwnProperty("isValid")) {
       if (!item.isValid) {
         return false;
@@ -133,7 +135,7 @@ var isValid = function (item) {
       }
     }
     return true; // if does not have isValid field -> normal array element and not collection
-  }
+  
   return false;
 };
 

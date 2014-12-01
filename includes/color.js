@@ -8,6 +8,7 @@
  * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
  */
 pub.fill = function (fillColor) {
+  
   if (fillColor instanceof Color || fillColor instanceof Swatch) {
     currFillColor = fillColor;
   } else {

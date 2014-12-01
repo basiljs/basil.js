@@ -42,13 +42,18 @@ pub.go = function (mode) {
     progressPanel = new Progress();
   }
 
-  if (typeof glob.setup === 'function') {
-    runSetup();
-  };
+  try {
+    if (typeof glob.setup === 'function') {
+      runSetup();
+    };
 
-  if (typeof glob.draw === 'function') {
-    runDrawOnce();
-  };
+    if (typeof glob.draw === 'function') {
+      runDrawOnce();
+    };
+  } catch (e) {
+    alert(e);
+    exit();
+  }
   
   var executionDuration = pub.millis();
   if (executionDuration < 1000) {
@@ -420,9 +425,16 @@ var findInCollectionByName = function(collection, name) {
 
 };
 
+var checkNull = pub.checkNull = function (obj) {
+
+  if(obj === null || typeof obj === undefined) error("Received null object.");
+}
+
+var isNull = checkNull; // legacy
+
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
-  exit();
+  throw new Error(ERROR_PREFIX + msg);
 };
 
 var warning = pub.warning = function(msg) {
