@@ -6,7 +6,7 @@ BASEDIR="$( dirname "$0" )"
 cd "$BASEDIR"
 echo "This is where we are :"
 pwd
-# if 
+
 echo "Installing basil.js... "
 mkdir -p ~/Documents/basiljs/
 cp -r ./ ~/Documents/basiljs/bundle
