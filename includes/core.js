@@ -42,13 +42,18 @@ pub.go = function (mode) {
     progressPanel = new Progress();
   }
 
-  if (typeof glob.setup === 'function') {
-    runSetup();
-  };
+  try {
+    if (typeof glob.setup === 'function') {
+      runSetup();
+    };
 
-  if (typeof glob.draw === 'function') {
-    runDrawOnce();
-  };
+    if (typeof glob.draw === 'function') {
+      runDrawOnce();
+    };
+  } catch (e) {
+    alert(e);
+    exit();
+  }
   
   var executionDuration = pub.millis();
   if (executionDuration < 1000) {
@@ -125,14 +130,13 @@ pub.noLoop = function() {
 // ----------------------------------------
 // all private from here
 
-var undoMode = UndoModes.FAST_ENTIRE_SCRIPT;
 
 var runSetup = function() {
   app.doScript(function() {
     if (typeof glob.setup === 'function') {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, undoMode);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawOnce = function() {
@@ -140,7 +144,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, undoMode);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawLoop = function() {
@@ -148,7 +152,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, undoMode);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var welcome = function() {
@@ -421,9 +425,16 @@ var findInCollectionByName = function(collection, name) {
 
 };
 
+var checkNull = pub.checkNull = function (obj) {
+
+  if(obj === null || typeof obj === undefined) error("Received null object.");
+}
+
+var isNull = checkNull; // legacy
+
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
-  exit();
+  throw new Error(ERROR_PREFIX + msg);
 };
 
 var warning = pub.warning = function(msg) {

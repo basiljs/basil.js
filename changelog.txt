@@ -2,6 +2,14 @@
 * changed
 - removed
 
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.09 - 
+
++ Added installer scripts for OS X and Windows
+* Added some better error reporting for null objects
+* Minor bug fixes
+
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.08 - 11 November 2013
 

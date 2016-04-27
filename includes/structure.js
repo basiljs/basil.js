@@ -24,6 +24,9 @@ pub.delay = function (milliseconds) {
  * @return {Stories[]} Array of Stories.
  */
 pub.stories = function(doc, cb) {
+  
+  checkNull(doc);
+
   if(arguments.length === 1 && doc instanceof Document) {
     return doc.stories;
   } else if (cb instanceof Function) {
@@ -45,6 +48,8 @@ pub.stories = function(doc, cb) {
  */
 pub.paragraphs = function(item, cb) {
 
+  checkNull(item);
+    
   if(!item.hasOwnProperty('contents')) error("b.paragraphs(), Wrong object type.");
 
   if(arguments.length === 1) {
@@ -72,6 +77,7 @@ pub.paragraphs = function(item, cb) {
 //  // FIXME
 // pub.sentences = function(item, cb) {
 
+//   checkNull(item);
 //   var err = false;
 //   try{
 //     item[0]; // check if list
@@ -113,6 +119,8 @@ pub.paragraphs = function(item, cb) {
  */
 pub.lines = function(item, cb) {
 
+  checkNull(item);
+
   if(!item.hasOwnProperty('contents')) error("b.lines(), Wrong object type.");
 
   if(arguments.length === 1) {
@@ -139,6 +147,8 @@ pub.lines = function(item, cb) {
  */
 pub.words = function(item, cb) {
 
+  checkNull(item);
+
   if(!item.hasOwnProperty('contents')) error("b.words(), Wrong object type.");
   
   if(arguments.length === 1){
@@ -164,6 +174,8 @@ pub.words = function(item, cb) {
  * @return {Characters} You can use it like an array.
  */
 pub.characters = function(item, cb) {
+
+  checkNull(item);
 
   if(!item.hasOwnProperty('contents')) error("b.characters(), Wrong object type.");
 

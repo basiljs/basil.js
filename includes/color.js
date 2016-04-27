@@ -8,6 +8,8 @@
  * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
  */
 pub.fill = function (fillColor) {
+
+  checkNull(fillColor);
   if (fillColor instanceof Color || fillColor instanceof Swatch) {
     currFillColor = fillColor;
   } else {
@@ -49,6 +51,7 @@ pub.noFill = function () {
  * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
  */
 pub.stroke = function (strokeColor) {
+  checkNull(strokeColor);
   if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
     currStrokeColor = strokeColor;
   } else {
@@ -90,6 +93,7 @@ pub.noStroke = function () {
  * @param  {Number} tint Number from 0 to 100
  */
 pub.fillTint = function (tint) {
+  checkNull(tint);
   if (typeof tint === 'string' || typeof tint === 'number') {
     currFillTint = tint;
   } else {
@@ -105,6 +109,7 @@ pub.fillTint = function (tint) {
  * @param  {Number} tint Number from 0 to 100
  */
 pub.strokeTint = function (tint) {
+  checkNull(tint);
   if (typeof tint === 'string' || typeof tint === 'number') {
     currStrokeTint = tint;
   } else {
@@ -120,6 +125,7 @@ pub.strokeTint = function (tint) {
  * @param  {Number} colorMode Either b.RGB or b.CMYK
  */
 pub.colorMode = function(colorMode) {
+  checkNull(colorMode);
   if (arguments.length === 0) return currColorMode;
   if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
@@ -266,6 +272,7 @@ pub.color = function() {
  * @param  {Number} opacity The opacity value form 0 to 100
  */
 pub.opacity = function(obj, opacity){
+  checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
   } else {
@@ -298,6 +305,7 @@ pub.opacity = function(obj, opacity){
  *                           BlendMode.LUMINOSITY <br />
  */
 pub.blendMode = function(obj, blendMode){
+  checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
   } else {
@@ -318,6 +326,8 @@ pub.blendMode = function(obj, blendMode){
  * @return {Color} Interpolated color
  */
 pub.lerpColor = function (c1, c2, amt) {
+  checkNull(c1);
+  checkNull(c2);
   if ( (c1 instanceof Color || c1 instanceof Swatch) && 
      (c2 instanceof Color || c2 instanceof Swatch) && 
       typeof amt === 'number') {
