@@ -4,7 +4,13 @@
 
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 1.09 - 
+basil.js 1.0.10 -
+
++ Added package.json definition
+* Changed versioning scheme to npm style
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js 1.09 -
 
 + Added installer scripts for OS X and Windows
 * Added some better error reporting for null objects
@@ -15,7 +21,7 @@ basil.js 1.08 - 11 November 2013
 
 + Added b.arc() by Ken Frederick, cheers mate!
 + Added b.weekday(), b.timestamp() and b.millisecond()
-* Fixed output to progress panel 
+* Fixed output to progress panel
 * Added auto save to MODEHIDDEN
 * Added 15s timeout to loadStrings via TCP/IP
 * Improved error reporting
@@ -40,7 +46,7 @@ Please note that this release is still experimental.
 basil.js 1.05 - 9 October 2013
 
 * Bugfix to b.endShape()
-* Bugfix to b.loadString() and b.download(), 
+* Bugfix to b.loadString() and b.download(),
   now supports more than one GET parameter
 * changed default anchor to center for transforms with line()
 * internal safety improvements
@@ -67,8 +73,8 @@ basil.js 1.04 - 23 September 2013
 * Extended loadString() and loadStrings() to handle URLs. Happy GET URL!
   see examples/input/loadStringURL.jsx
 
-* all export functions can handle now sub-folders 
-  e.g. exportPNG("swiss/basel/snap.png") 
+* all export functions can handle now sub-folders
+  e.g. exportPNG("swiss/basel/snap.png")
 
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
@@ -81,7 +87,7 @@ basil.js 1.03 - 3 July 2013
 basil.js 1.02 - 3 June 2013
 
 * fixed a bug with b.constrain()
-* added constraints for b.color() and b.fill(), where illegal channel 
+* added constraints for b.color() and b.fill(), where illegal channel
   values would previously produce strange results
 
 
@@ -103,7 +109,7 @@ basil.js 1.00 - 28 Feb 2013
 
 First public release!
 
-+ new functions to work conveniently with stories (indesign model of linked 
++ new functions to work conveniently with stories (indesign model of linked
   content or many textframes), e.g. b.addToStory(), b.storyCount() ...
   see: examples/document/story.jsx
 
@@ -111,19 +117,19 @@ First public release!
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 0.22 - 25 Feb 2013
 
-+ new computation modes MODESILENT, MODEHIDDEN, MODEVISIBLE. 
++ new computation modes MODESILENT, MODEHIDDEN, MODEVISIBLE.
   HIDDEN is very handy for working with large files, as the document is
   processed completely in background, performance is a lot better.
-  
+
 * Changes for b.go().
   You can switch between the computation modes via b.go( b.MODESILENT ),
-  b.go( b.MODEHIDDEN ) and b.go( b.MODEVISIBLE ). If b.go() is called 
+  b.go( b.MODEHIDDEN ) and b.go( b.MODEVISIBLE ). If b.go() is called
   without a paramter, then the default mode MODESILENT is used.
 
-Special thanks to be:screen GmbH for the new computation modes and 
+Special thanks to be:screen GmbH for the new computation modes and
 performance optimization!
 
-+ new functions for creating shapes. you can create arbitrary lines, 
++ new functions for creating shapes. you can create arbitrary lines,
   bezier curves, polygones with beginShape(), endShape() and vertex()
 
 
@@ -136,8 +142,8 @@ basil.js goes semi public with a private beta release
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js pre 0.21 - May to Dec 2012
 
-basil.js is developed over the Summer by Ted Davis, Benedikt Groß, 
-Stefan Landsbek and Ludwig Zeller. 
+basil.js is developed over the Summer by Ted Davis, Benedikt Groß,
+Stefan Landsbek and Ludwig Zeller.
 
 Special thanks to Stefan Landsbek for the inital code architecture!
 
