@@ -1,0 +1,36 @@
+{
+  "name": "basiljs",
+  "version": "1.0.10",
+  "description": "An attempt to port the spirit of the Processing visualization language to Adobe InDesign.",
+  "main": "basil.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basiljs/basil.js.git"
+  },
+  "keywords": [
+    "Basil.js",
+    "InDesign",
+    "Processing"
+  ],
+  "contributors":[
+
+{"name":"Ted Davis","url": "http://teddavis.org"},
+{"name":"Benedikt Groß","url": "http://benedikt-gross.de"},
+{"name":"Ludwig Zeller","url": "http://ludwigzeller.de"},
+{"name":"Philipp Adrian", "url":"http://www.philippadrian.com/"},
+{"name":"be:screen GmbH", "url":"http://bescreen.de"},
+{"name":"Stefan Landsbek", "url":"http://47nord.de"},
+{"name":"Ken Frederick", "url":"http://kennethfrederick.de/"}],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/basiljs/basil.js/issues"
+  },
+  "homepage": "http://basiljs.ch/"
+}
