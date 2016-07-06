@@ -8,6 +8,10 @@ Where is Basil.js heading? (This document should eventually be converted into mi
 - [ ] bundle the library to make it a single file distribution  
 - [ ] ES6?  
 
+## Enhancements
+
+- [ ] Set MM as default unit not pixels. We are in ID on paper as output
+
 ## Possible new features
 
 - [ ] HSL / HSB color mode  
