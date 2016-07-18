@@ -56,12 +56,12 @@ pub.canvasMode = function ( m ) {
     error("b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
 
-};  
+};
 
 
 /**
- * Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given. 
- * 
+ * Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given.
+ *
  * @cat Document
  * @subcat Page
  * @method pasteboard
@@ -83,7 +83,7 @@ pub.pasteboard = function ( h, v ) {
 };
 
 /**
- * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
+ * Returns the current page and sets it if argument page is given. Numbering starts with 1.
  *
  * @cat Document
  * @subcat Page
@@ -132,22 +132,22 @@ pub.addPage = function(location) {
   checkNull(location);
 
   if(arguments.length === 0) location = b.AT_END; // default
-  
+
   var nP;
   try {
-    
+
     switch ( location ) {
-      
+
       case b.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
       case b.AT_BEGINNING:
-        nP = currentDoc().pages.add(location);     
+        nP = currentDoc().pages.add(location);
         break;
 
       case b.AFTER:
-        nP = currentDoc().pages.add(location, pub.page() ); 
+        nP = currentDoc().pages.add(location, pub.page() );
         break;
 
       case b.BEFORE:
@@ -155,12 +155,12 @@ pub.addPage = function(location) {
         break;
 
       default:
-        throw new Error(); 
+        throw new Error();
         break;
 
     };
 
-    pub.page( nP ); 
+    pub.page( nP );
     return nP;
 
   } catch (e) {
@@ -272,7 +272,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
   if (addToStoryCache) {
     addToStoryCache.close();
     libFile.remove();
-  } 
+  }
   //create an indesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
@@ -432,14 +432,14 @@ pub.labels = function(label, cb) {
  * @method label
  * @param  {String} label The label identifier
  * @return {PageItem} The first PageItem of all the hits
- */  
+ */
 pub.label = function(label) {
   checkNull(label);
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
     var pageItem = doc.pageItems[i];
     if (pageItem.label === label) {
-      return pageItem;  
+      return pageItem;
     }
   }
   b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
@@ -456,7 +456,7 @@ pub.label = function(label) {
 pub.selection = function() {
   if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
   return app.selection[0];
-}; 
+};
 
 /**
  * Returns the currently selected object(s)
@@ -471,7 +471,7 @@ pub.selections = function(cb) {
   if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
   if (arguments.length === 1 && cb instanceof Function) {
     return forEach(app.selection, cb);
-  } 
+  }
   return app.selection;
 };
 
@@ -499,7 +499,7 @@ pub.nameOnPage = function(name) {
 };
 
 /**
- * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
+ * Sets the units of the document (like right clicking the rulers). The default unit setting of basil.js is MM.
  *
  * @cat Document
  * @method units
@@ -536,12 +536,12 @@ pub.units = function (units) {
       verticalMeasurementUnits = unitType;
     }
     currUnits = units;
-    updatePublicPageSizeVars();
+    if (unitsCalledCounter) updatePublicPageSizeVars();
   } else {
-    error("b.unit(), not supported unit");
+    error("b.unit(), invalid unit. Please use: b.MM, b.PT, b.PX, b.CM or b.IN.");
   }
   if (unitsCalledCounter === 1) {
-    warning("Please note that b.units() will reset the current transformation matrix."); 
+    warning("Please note that b.units() will reset the current transformation matrix.");
   }
   unitsCalledCounter++;
   return currUnits;
@@ -588,7 +588,7 @@ pub.guideY = function (y) {
 };
 
 /**
- * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
+ * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
  *
  * @cat Document
  * @subcat Page
@@ -602,15 +602,15 @@ pub.guideY = function (y) {
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
 
-  
+
   if (arguments.length === 0){
-    
+
     return {'top':pub.page(pageNumber).marginPreferences.top,
             'right':pub.page(pageNumber).marginPreferences.right,
             'bottom':pub.page(pageNumber).marginPreferences.bottom,
             'left':pub.page(pageNumber).marginPreferences.left
             };
-    
+
   } else if (arguments.length === 1) {
     right = bottom = left = top;
     }
@@ -629,7 +629,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
   };
 
 /**
- * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
+ * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
  *
  * @cat Document
  * @subcat Page
@@ -647,7 +647,7 @@ pub.bleeds = function(top, right, bottom, left) {
             'bottom':currentDoc().documentPreferences.documentBleedBottomOffset,
             'left':currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
             };
-            
+
 } else if (arguments.length === 1) {
   right = bottom = left = top;
   }else{
@@ -693,7 +693,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
     }
     else if (constructorName === "Color") {
       println(indent+propname+": ["+obj.colorValue+"] "+constructorName);
-    } 
+    }
     else {
       println(indent+propname+": "+constructorName);
     }
@@ -715,7 +715,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
       println(indent+"--> "+propname+" "+e);
     }
   }
-}; 
+};
 
 
 // ----------------------------------------
@@ -723,7 +723,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
 
 /**
  * The year() function returns the current year as an integer (2012, 2013 etc).
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method year
@@ -735,7 +735,7 @@ pub.year = function() {
 
 /**
  * The month() function returns the current month as a value from 1 - 12.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method month
@@ -747,7 +747,7 @@ pub.month = function() {
 
 /**
  * The day() function returns the current day as a value from 1 - 31.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method day
@@ -759,7 +759,7 @@ pub.day = function() {
 
 /**
  * The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method weekday
@@ -772,7 +772,7 @@ pub.weekday = function() {
 
 /**
  * The hour() function returns the current hour as a value from 0 - 23.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method hour
@@ -784,7 +784,7 @@ pub.hour = function() {
 
 /**
  * The minute() function returns the current minute as a value from 0 - 59.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method minute
@@ -796,7 +796,7 @@ pub.minute = function() {
 
 /**
  * The second() function returns the current second as a value from 0 - 59.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method second
@@ -808,7 +808,7 @@ pub.second = function() {
 
 /**
  * Returns the number of milliseconds (thousandths of a second) since starting an applet.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method millis
@@ -820,7 +820,7 @@ pub.millis = function() {
 
 /**
  * The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method millisecond
@@ -832,7 +832,7 @@ pub.millisecond = function() {
 
 /**
  * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method timestamp
