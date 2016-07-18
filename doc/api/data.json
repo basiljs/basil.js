@@ -122,6 +122,7 @@
             "static": 1
         }
     },
+    "elements": {},
     "classitems": [
         {
             "file": "includes/color.js",
@@ -141,7 +142,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 34,
+            "line": 36,
             "description": "Disables filling geometry. If both noStroke() and noFill() are called, \nnewly drawn shapes will be invisible.",
             "cat": "Color",
             "itemtype": "method",
@@ -150,7 +151,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 45,
+            "line": 47,
             "description": "Sets the color used to draw lines and borders around shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -166,7 +167,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 74,
+            "line": 77,
             "description": "Disables drawing the stroke (outline). If both noStroke() and noFill() \nare called, nothing will be drawn to the screen.",
             "cat": "Color",
             "itemtype": "method",
@@ -175,7 +176,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 85,
+            "line": 88,
             "description": "Sets the tint of the color used to fill shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -191,7 +192,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 100,
+            "line": 104,
             "description": "Sets the tint of the color used to draw lines and borders around shapes.",
             "cat": "Color",
             "itemtype": "method",
@@ -207,7 +208,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 115,
+            "line": 120,
             "description": "Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RBG.",
             "cat": "Color",
             "itemtype": "method",
@@ -223,7 +224,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 131,
+            "line": 137,
             "description": "Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document. The default color mode is RBG.",
             "cat": "Color",
             "itemtype": "method",
@@ -243,7 +244,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 260,
+            "line": 266,
             "description": "Sets the opacity property of an object.",
             "cat": "Color",
             "itemtype": "method",
@@ -264,7 +265,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 276,
+            "line": 283,
             "description": "Sets the Effects blendMode property of an object.",
             "cat": "Color",
             "itemtype": "method",
@@ -285,7 +286,7 @@
         },
         {
             "file": "includes/color.js",
-            "line": 308,
+            "line": 316,
             "description": "Calculates a color or colors between two color at a specific increment. \nThe amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.\nN.B.: Both color must be either CMYK or RGB.",
             "cat": "Color",
             "itemtype": "method",
@@ -699,7 +700,7 @@
         {
             "file": "includes/core.js",
             "line": 20,
-            "description": "Run the sketch! Has to be called in every sketch a the very end of the code.\nYou may add performance setting options when calling b.go():<br /><br />\n\nb.go(b.MODEVISIBLE) or alternatively: b.go()<br />   \nb.go(b.MODESILENT) <br />\nb.go(b.MODEHIDDEN)<br /><br />\n\nCurrently there is no performance optimization in b.loop()<br />",
+            "description": "Run the sketch! Has to be called in every sketch a the very end of the code.\nYou may add performance setting options when calling b.go():<br /><br />\n\nb.go(b.MODEVISIBLE) or alternatively: b.go()<br />\nb.go(b.MODESILENT) <br />\nb.go(b.MODEHIDDEN)<br /><br />\n\nCurrently there is no performance optimization in b.loop()<br />",
             "cat": "Environment",
             "itemtype": "method",
             "name": "go",
@@ -715,7 +716,7 @@
         },
         {
             "file": "includes/core.js",
-            "line": 75,
+            "line": 80,
             "description": "EXPERIMENTAL!\n\nCauses basil to continuously execute the code within draw() when InDesign is idle.\n#targetengine \"loop\"; must be at the very top in the script file.\nIf noLoop() is called, the code in draw() stops executing.\nIt is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!\nThe framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.",
             "cat": "Environment",
             "itemtype": "method",
@@ -731,7 +732,7 @@
         },
         {
             "file": "includes/core.js",
-            "line": 108,
+            "line": 113,
             "description": "EXPERIMENTAL!\n\nStops basil from continuously executing the code within draw().",
             "cat": "Environment",
             "itemtype": "method",
@@ -1626,7 +1627,33 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 61,
+            "line": 62,
+            "description": "Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given.",
+            "cat": "Document",
+            "subcat": "Page",
+            "itemtype": "method",
+            "name": "pasteboard",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "desired horizontal pasteboard margin.",
+                    "type": "Number"
+                },
+                {
+                    "name": "The",
+                    "description": "desired vertical pasteboard margin.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The current horizontal, vertical pasteboard margins.",
+                "type": "Array"
+            },
+            "class": "b"
+        },
+        {
+            "file": "includes/environment.js",
+            "line": 85,
             "description": "Returns the current page and sets it if argument page is given. Numbering starts with 1.",
             "cat": "Document",
             "subcat": "Page",
@@ -1648,7 +1675,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 97,
+            "line": 121,
             "description": "Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.",
             "cat": "Document",
             "subcat": "Page",
@@ -1670,7 +1697,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 146,
+            "line": 172,
             "description": "Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.",
             "cat": "Document",
             "subcat": "Page",
@@ -1688,7 +1715,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 167,
+            "line": 195,
             "description": "Returns the current page number of either the current page or the given Page object.",
             "cat": "Document",
             "subcat": "Page",
@@ -1710,7 +1737,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 200,
+            "line": 230,
             "description": "The number of all pages in the current document.",
             "cat": "Document",
             "subcat": "Page",
@@ -1723,7 +1750,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 212,
+            "line": 242,
             "description": "The number of all stories in the current document.",
             "cat": "Story",
             "itemtype": "method",
@@ -1736,7 +1763,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 223,
+            "line": 253,
             "description": "Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.",
             "cat": "Story",
             "itemtype": "method",
@@ -1762,7 +1789,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 282,
+            "line": 316,
             "description": "Returns the current layer and sets it if argument layer is given.",
             "cat": "Document",
             "subcat": "Page",
@@ -1784,7 +1811,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 304,
+            "line": 339,
             "description": "Returns the Group instance and sets it if argument Group is given.",
             "cat": "Document",
             "subcat": "Page",
@@ -1811,7 +1838,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 333,
+            "line": 369,
             "description": "Returns an array of the items that were within the Group before b.ungroup() was called",
             "cat": "Document",
             "subcat": "Page",
@@ -1838,7 +1865,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 362,
+            "line": 399,
             "description": "Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1865,7 +1892,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 389,
+            "line": 427,
             "description": "Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1886,7 +1913,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 409,
+            "line": 448,
             "description": "Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1900,7 +1927,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 422,
+            "line": 461,
             "description": "Returns the currently selected object(s)",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1922,7 +1949,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 439,
+            "line": 478,
             "description": "Returns the first item on the active page that is named by the given name in the Layers pane (Window -> Layer).",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -1936,8 +1963,8 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 461,
-            "description": "Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.",
+            "line": 501,
+            "description": "Sets the units of the document (like right clicking the rulers). The default unit setting of basil.js is MM.",
             "cat": "Document",
             "itemtype": "method",
             "name": "units",
@@ -1957,7 +1984,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 505,
+            "line": 550,
             "description": "Creates a vertical guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1977,7 +2004,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 524,
+            "line": 570,
             "description": "Creates a horizontal guide line at the current spread and current layer.",
             "cat": "Document",
             "itemtype": "method",
@@ -1997,7 +2024,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 543,
+            "line": 590,
             "description": "Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.",
             "cat": "Document",
             "subcat": "Page",
@@ -2043,7 +2070,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 583,
+            "line": 631,
             "description": "Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.",
             "cat": "Document",
             "subcat": "Page",
@@ -2079,7 +2106,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 616,
+            "line": 664,
             "description": "Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.",
             "cat": "Output",
             "itemtype": "method",
@@ -2100,7 +2127,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 675,
+            "line": 724,
             "description": "The year() function returns the current year as an integer (2012, 2013 etc).",
             "cat": "Environment",
             "subcat": "Date",
@@ -2114,7 +2141,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 687,
+            "line": 736,
             "description": "The month() function returns the current month as a value from 1 - 12.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2128,7 +2155,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 699,
+            "line": 748,
             "description": "The day() function returns the current day as a value from 1 - 31.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2142,7 +2169,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 711,
+            "line": 760,
             "description": "The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...",
             "cat": "Environment",
             "subcat": "Date",
@@ -2156,7 +2183,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 724,
+            "line": 773,
             "description": "The hour() function returns the current hour as a value from 0 - 23.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2170,7 +2197,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 736,
+            "line": 785,
             "description": "The minute() function returns the current minute as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2184,7 +2211,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 748,
+            "line": 797,
             "description": "The second() function returns the current second as a value from 0 - 59.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2198,7 +2225,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 760,
+            "line": 809,
             "description": "Returns the number of milliseconds (thousandths of a second) since starting an applet.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2212,7 +2239,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 772,
+            "line": 821,
             "description": "The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.",
             "cat": "Environment",
             "subcat": "Date",
@@ -2226,7 +2253,7 @@
         },
         {
             "file": "includes/environment.js",
-            "line": 784,
+            "line": 833,
             "description": "The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.",
             "cat": "Environment",
             "subcat": "Date",
@@ -4254,7 +4281,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 36,
+            "line": 39,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each paragraph of the given document, story or text frame.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4281,7 +4308,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 103,
+            "line": 109,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each line of the given document, story, text frame or paragraph.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4308,7 +4335,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 129,
+            "line": 137,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each word of the given document, story, text frame, paragraph or line.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4335,7 +4362,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 155,
+            "line": 165,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function with each character of the given document, story, text frame, paragraph, line or word.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4362,7 +4389,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 194,
+            "line": 206,
             "description": "If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.",
             "cat": "Document",
             "subcat": "Multi-Getters",
@@ -4389,7 +4416,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 222,
+            "line": 234,
             "description": "Removes all PageItems in the given Document, Page, Layer or Group.",
             "cat": "Document",
             "itemtype": "method",
@@ -4405,7 +4432,7 @@
         },
         {
             "file": "includes/structure.js",
-            "line": 250,
+            "line": 262,
             "description": "Removes the provided Page, Layer, PageItem, Swatch, etc.",
             "cat": "Document",
             "itemtype": "method",
@@ -4774,7 +4801,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 140,
+            "line": 142,
             "description": "Returns the current font and sets it if argument fontName is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4800,7 +4827,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 159,
+            "line": 161,
             "description": "Returns the current font size in points and sets it if argument pointSize is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4821,7 +4848,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 174,
+            "line": 176,
             "description": "Sets the current horizontal and vertical text alignment.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4843,7 +4870,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 199,
+            "line": 201,
             "description": "Returns the spacing between lines of text in units of points and sets it if argument leading is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4864,7 +4891,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 215,
+            "line": 217,
             "description": "Returns the current kerning and sets it if argument kerning is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4885,7 +4912,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 230,
+            "line": 232,
             "description": "Returns the current tracking and sets it if argument tracking is given.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4906,7 +4933,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 245,
+            "line": 247,
             "description": "Returns the character style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4926,7 +4953,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 262,
+            "line": 264,
             "description": "Returns the paragraph style with the given name. If the style does not exist it gets created.",
             "cat": "Typography",
             "itemtype": "method",
@@ -4946,7 +4973,7 @@
         },
         {
             "file": "includes/typography.js",
-            "line": 279,
+            "line": 281,
             "description": "Links the stories of two textframes to one story. Text of first textframe overflows to second one.",
             "cat": "Story",
             "itemtype": "method",
@@ -4974,6 +5001,1760 @@
             "type": "String",
             "cat": "Environment",
             "class": "b"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:4"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:36"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:47"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:77"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:88"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:104"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:120"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:137"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:266"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:283"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/color.js:316"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:1"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:1"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:9"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:9"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:17"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:17"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:26"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:26"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:34"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:34"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:42"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:49"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:56"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:56"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:64"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:64"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:72"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:72"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:80"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:80"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:88"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:88"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:96"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:96"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:104"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:104"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:112"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:112"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:120"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:120"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:128"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:128"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:136"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:136"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:144"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:144"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:152"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:152"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:160"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:160"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:168"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:168"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:177"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:177"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:185"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:185"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:193"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:193"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:201"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:201"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:209"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:209"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:217"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:217"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:225"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:225"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:233"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:233"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:241"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:241"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:249"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:249"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:257"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:257"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:265"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:265"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/constants.js:273"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/constants.js:273"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/core.js:20"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/core.js:80"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/core.js:113"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:5"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:5"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:35"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:35"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:87"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:87"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:105"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:105"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:130"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:130"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:234"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:234"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:264"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:264"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:299"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:299"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:320"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:320"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:343"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:343"
+        },
+        {
+            "message": "param name/type/descript missing",
+            "line": " includes/data.js:343"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:361"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:361"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:379"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:379"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:405"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:405"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:506"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:506"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:530"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:530"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:551"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:551"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:571"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:571"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:591"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:591"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:612"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:612"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:626"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:626"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:640"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:640"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:655"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:655"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:668"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:668"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:681"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:681"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:694"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:694"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:767"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:767"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:786"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:786"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:809"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:809"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:844"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/data.js:844"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:874"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:887"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:900"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:918"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:936"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:953"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:967"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/data.js:981"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:4"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:21"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:39"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:39"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:62"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:62"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:85"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:85"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:121"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:121"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:172"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:172"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:195"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:195"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:230"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:230"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:242"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:253"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:316"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:316"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:339"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:339"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:369"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:369"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:399"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:399"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:427"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:427"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:448"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:448"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:461"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:461"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:478"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:478"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:501"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:550"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:570"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:590"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:590"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:631"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:631"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:664"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:724"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:724"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:736"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:736"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:748"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:748"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:760"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:760"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:773"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:773"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:785"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:785"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:797"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:797"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:809"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:809"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:821"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:821"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/environment.js:833"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/environment.js:833"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:56"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:56"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:83"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:83"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:109"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:109"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:129"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:129"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:142"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:142"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:165"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:165"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:179"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:179"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:200"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:200"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:219"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:219"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:231"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:231"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:252"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:252"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/global-functions.js:272"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/global-functions.js:272"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/image.js:4"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/image.js:4"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/image.js:83"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/image.js:83"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/image.js:110"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/image.js:110"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:7"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:7"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:25"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:25"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:40"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:40"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:55"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:55"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:70"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:70"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:87"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:87"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:104"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:104"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:114"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:114"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:127"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:127"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:147"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:147"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:167"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:167"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:187"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:187"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:207"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:207"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:223"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:223"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:237"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:237"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:253"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:253"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:263"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:263"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:276"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:276"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:286"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:286"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:296"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:296"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:322"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:322"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:333"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:333"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:344"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:344"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:362"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:362"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:385"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:385"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:396"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:396"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:407"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:407"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:423"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:423"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:434"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:434"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:451"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:451"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:471"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:471"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:492"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:492"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:513"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:513"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:533"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:533"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:545"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:545"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:556"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:556"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:572"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:572"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:583"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:583"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:594"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:594"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:605"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:605"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:616"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:616"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:628"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:628"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:639"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:639"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:652"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:652"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:665"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:665"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:676"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:676"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:691"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:691"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:833"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:833"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:874"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:874"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:890"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:890"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:913"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:913"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:984"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:984"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/math.js:984"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/math.js:1012"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/math.js:1012"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/math.js:1012"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/public-vars.js:4"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/public-vars.js:11"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:4"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:4"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:68"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:68"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:105"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:105"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:128"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:128"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:164"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:164"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:300"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:300"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:314"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:314"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:369"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:369"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:431"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:431"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:461"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:461"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:486"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:486"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:503"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/shape.js:521"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/shape.js:521"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/shape.js:521"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:4"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:16"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/structure.js:16"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:39"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/structure.js:39"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:109"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/structure.js:109"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:137"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/structure.js:137"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:165"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/structure.js:165"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:206"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/structure.js:206"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:234"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/structure.js:262"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:2"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:2"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/transformation.js:2"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:25"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:25"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/transformation.js:25"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:48"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:48"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/transformation.js:48"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:85"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:85"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/transformation.js:85"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:298"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:298"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " includes/transformation.js:298"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:315"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:315"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:333"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:333"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:345"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:345"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:360"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:360"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:371"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:371"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:382"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:382"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:394"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:394"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:407"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:407"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/transformation.js:422"
+        },
+        {
+            "message": "unknown tag: subcat",
+            "line": " includes/transformation.js:422"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:4"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:55"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:142"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:161"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:176"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:201"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:217"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:232"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:247"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:264"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " includes/typography.js:281"
+        },
+        {
+            "message": "unknown tag: cat",
+            "line": " basil.js:50"
+        },
+        {
+            "message": "Missing item type",
+            "line": " includes/data.js:232"
         }
     ]
 }
