@@ -536,9 +536,9 @@ pub.units = function (units) {
       verticalMeasurementUnits = unitType;
     }
     currUnits = units;
-    updatePublicPageSizeVars();
+    if (unitsCalledCounter) updatePublicPageSizeVars();
   } else {
-    error("b.unit(), not supported unit");
+    error("b.unit(), invalid unit. Please use: b.MM, b.PT, b.PX, b.CM or b.IN.");
   }
   if (unitsCalledCounter === 1) {
     warning("Please note that b.units() will reset the current transformation matrix.");
