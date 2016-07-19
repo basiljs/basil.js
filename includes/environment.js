@@ -499,11 +499,11 @@ pub.nameOnPage = function(name) {
 };
 
 /**
- * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
+ * Sets the units of the document (like right clicking the rulers). The default unit setting of basil.js is MM.
  *
  * @cat Document
  * @method units
- * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
+ * @param  {Constant} [units] Supported units: MM, PT, PX, CM, IN
  * @return {Constant} Current unit setting
  */
 var unitsCalledCounter = 0;
@@ -538,7 +538,7 @@ pub.units = function (units) {
     currUnits = units;
     updatePublicPageSizeVars();
   } else {
-    error("b.unit(), not supported unit");
+    error("b.unit(), invalid unit. Please use: P.MM, P.PT, P.PX, P.CM or P.IN.");
   }
   if (unitsCalledCounter === 1) {
     warning("Please note that b.units() will reset the current transformation matrix."); 
