@@ -536,7 +536,7 @@ pub.units = function (units) {
       verticalMeasurementUnits = unitType;
     }
     currUnits = units;
-    updatePublicPageSizeVars();
+    if (unitsCalledCounter) updatePublicPageSizeVars();
   } else {
     error("b.unit(), invalid unit. Please use: P.MM, P.PT, P.PX, P.CM or P.IN.");
   }
