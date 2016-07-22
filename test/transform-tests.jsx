@@ -68,35 +68,43 @@ b.test('TransformTests', {
 
   testWidth: function(b) {
     var doc = b.doc();
+    // use tolerance value to avoid rounding errors
+    var tolerance = 0.0001;
     // create box at 0,0
     var rect = b.rect(0,0,100,100);
-    assert( b.itemWidth(rect) === 100 );    
+    assert( b.itemWidth(rect) > (100 - tolerance) && b.itemWidth(rect) < (100 + tolerance) );
     // move to 50,0
     b.itemWidth(rect, 50);
     // check new x coordinate
-    assert( b.itemWidth(rect) === 50 );    
+    assert( b.itemWidth(rect) > (50 - tolerance) && b.itemWidth(rect) < (50 + tolerance) );
   },
 
   testHeight: function(b) {
     var doc = b.doc();
+    // use tolerance value to avoid rounding errors
+    var tolerance = 0.0001;
     // create box at 0,0
     var rect = b.rect(0,0,100,100);
-    assert( b.itemHeight(rect) === 100 );    
+    assert( b.itemHeight(rect) > (100 - tolerance) && b.itemHeight(rect) < (100 + tolerance) );
     // move to 50,0
     b.itemHeight(rect, 50);
     // check new x coordinate
-    assert( b.itemHeight(rect) === 50 );    
+    assert( b.itemHeight(rect) > (50 - tolerance) && b.itemHeight(rect) < (50 + tolerance) );
   },
 
   testSize: function(b) {
     var doc = b.doc();
+    // use tolerance value to avoid rounding errors
+    var tolerance = 0.0001;
     // create box at 0,0
     var rect = b.rect(0,0,100,100);
-    assert( b.itemSize(rect).width === 100 && b.itemSize(rect).height === 100 );    
+    assert( b.itemSize(rect).width > (100 - tolerance) && b.itemSize(rect).width < (100 + tolerance) );
+    assert( b.itemSize(rect).height > (100 - tolerance) && b.itemSize(rect).height < (100 + tolerance) );
     // move to 50,0
     b.itemSize(rect, 50, 50);
     // check new x coordinate
-    assert( b.itemSize(rect).width === 50 && b.itemSize(rect).height === 50 );    
+    assert( b.itemSize(rect).width > (50 - tolerance) && b.itemSize(rect).width < (50 + tolerance) );
+    assert( b.itemSize(rect).height > (50 - tolerance) && b.itemSize(rect).height < (50 + tolerance) );
   }
 
   // todo: add matrix transformation tests here ...
@@ -105,5 +113,4 @@ b.test('TransformTests', {
 
 // print collected test results
 b.test.result();
-
 
