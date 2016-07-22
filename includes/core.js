@@ -2,6 +2,7 @@
 var init = function() {
   glob.b = pub;
 
+
   welcome();
 
   // -- init internal state vars --
@@ -11,7 +12,7 @@ var init = function() {
   currFillTint = 100;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
-};    
+};
 
 
 // ----------------------------------------
@@ -21,7 +22,7 @@ var init = function() {
  * Run the sketch! Has to be called in every sketch a the very end of the code.
  * You may add performance setting options when calling b.go():<br /><br />
  *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />   
+ * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
  * b.go(b.MODESILENT) <br />
  * b.go(b.MODEHIDDEN)<br /><br />
  *
@@ -43,18 +44,26 @@ pub.go = function (mode) {
   }
 
   try {
-    if (typeof glob.setup === 'function') {
+    if (typeof glob.setup === "function") {
       runSetup();
     };
 
-    if (typeof glob.draw === 'function') {
+    if (typeof glob.draw === "function") {
       runDrawOnce();
     };
   } catch (e) {
-    alert(e);
+    // A bit more verbose error reporting
+    // if the DEBUG flag is true the error gets passed up
+    // into this try catch
+    if(pub.VERBOSE_ERRORS === true || pub.DEBUG === true) {
+      var msg = verboseErrorMsg(e);
+      alert(msg);
+    }else{
+      alert(e);
+    }
     exit();
   }
-  
+
   var executionDuration = pub.millis();
   if (executionDuration < 1000) {
     println("[Finished in " + executionDuration + "ms]");
@@ -63,7 +72,7 @@ pub.go = function (mode) {
   }
 
   if(currDoc && !currDoc.windows.length) {
-    currDoc.windows.add(); //open the hidden doc
+    currDoc.windows.add(); // open the hidden doc
   }
   closeHiddenDocs();
   if (progressPanel) {
@@ -95,8 +104,8 @@ pub.loop = function(framerate) {
   if (arguments.length === 0) sleep = Math.round(1000/25);
   else sleep = Math.round(1000/framerate);
 
-  if ($.engineName !== 'loop') {
-    error('b.loop(), Add #targetengine "loop"; at the very top of your script.');
+  if ($.engineName !== "loop") {
+    error("b.loop(), Add #targetengine \"loop\"; at the very top of your script.");
   }
 
   currentDoc();
@@ -132,27 +141,48 @@ pub.noLoop = function() {
 
 
 var runSetup = function() {
-  app.doScript(function() {
-    if (typeof glob.setup === 'function') {
+  if(pub.DEBUG === false) {
+
+    app.doScript(function() {
+      if (typeof glob.setup === "function") {
+        glob.setup();
+      }
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }else{
+    if (typeof glob.setup === "function") {  // eslint-disable-line no-lonely-if
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }
 };
 
 var runDrawOnce = function() {
-  app.doScript(function() {
-    if (typeof glob.draw === 'function') {
+  if(pub.DEBUG === false) {
+
+    app.doScript(function() {
+      if (typeof glob.draw === "function") {
+        glob.draw();
+      }
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  } else {
+    if (typeof glob.draw === "function") {  // eslint-disable-line no-lonely-if
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }
 };
 
 var runDrawLoop = function() {
-  app.doScript(function() {
-    if (typeof glob.draw === 'function') {
+  if(pub.DEBUG === false) {
+
+    app.doScript(function() {
+      if (typeof glob.draw === "function") {
+        glob.draw();
+      }
+    }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  } else {
+    if (typeof glob.draw === "function") { // eslint-disable-line no-lonely-if
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }
 };
 
 var welcome = function() {
@@ -204,7 +234,7 @@ var setCurrDoc = function(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
-  
+
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
 //  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
 //  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
@@ -216,7 +246,7 @@ var setCurrDoc = function(doc) {
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
   pub.units(pub.PT);
-  
+
   updatePublicPageSizeVars();
 };
 
@@ -273,7 +303,7 @@ var resetCurrDoc = function() {
   currYAlign = VerticalJustification.TOP_ALIGN;
   currFont = null;
   currImageMode = pub.CORNER;
-  
+
   pub.resetMatrix();
 };
 
@@ -332,7 +362,7 @@ var updatePublicPageSizeVars = function () {
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-      
+
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
         b.resetMatrix();
         b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
@@ -344,9 +374,9 @@ var updatePublicPageSizeVars = function () {
       widthOffset = 0;
       heightOffset = 0;
       b.resetMatrix();
-      
+
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
 
@@ -355,10 +385,10 @@ var updatePublicPageSizeVars = function () {
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
         pub.translate(-w,0);
       }
-       
-      
+
+
       pub.height = h;
-      break; 
+      break;
 
     case pub.FACING_BLEEDS:
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
@@ -367,7 +397,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -385,7 +415,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -394,7 +424,7 @@ var updatePublicPageSizeVars = function () {
         pub.translate(-w-widthOffset/2,0);
       }
 
-      return; // early exit    
+      return; // early exit
 
     default:
       b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
@@ -403,7 +433,7 @@ var updatePublicPageSizeVars = function () {
 
   if(singlePageMode){
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+    var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
     pub.width = w;
     pub.height = h;
@@ -416,7 +446,7 @@ var findInCollectionByName = function(collection, name) {
 /*  var found = collection.itemByName(name);
   if (!found || !found.isValid) return null;
   return found;*/
-  
+
    var found = null;
    for (var i = 0; i < collection.length; i++) {
      if (collection[i].name === name) return collection[i];
@@ -428,13 +458,27 @@ var findInCollectionByName = function(collection, name) {
 var checkNull = pub.checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
-}
+};
 
 var isNull = checkNull; // legacy
 
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
-  throw new Error(ERROR_PREFIX + msg);
+  if(pub.VERBOSE_ERRORS === false) {
+    throw new Error(ERROR_PREFIX + msg);
+  } else {
+    // this is not the place catching errors when developing on basil
+    // the Error here is especially created by Basil and not by InDesign itself
+    // to have more informational errors we need to work on call of the draw/setup functions
+    // we could provide some more information just by extending the message
+    // but we can't trace the error as long as we use the app.doScript function
+    // a possibility would be calling $.eval
+    //
+    // For this function here I would suggest something like
+    // error(msg, description)
+    // but that would mean to write a extended description every time we use this.
+    throw new Error(ERROR_PREFIX + msg);
+  }
 };
 
 var warning = pub.warning = function(msg) {
@@ -448,4 +492,17 @@ var clearConsole = function() {
   bt.onError = function(errObj) {};
   bt.onResult = function(resObj) {};
   bt.send();
+};
+
+// internal funtion for creating more verbose error messages
+var verboseErrorMsg = pub.verboseErrorMsg = function(err) {
+  var txt = [];
+  txt.push("Error: " + err.name);
+  txt.push("Description: " + err.description);
+  txt.push("Message: " + err.message);
+  txt.push("Line: " + err.line);
+  txt.push("File: " + err.fileName);
+  txt.push("Number: " + err.number);
+  txt.push("Stack: " + $.stack);
+  return txt.join("\n");
 };
