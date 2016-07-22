@@ -54,6 +54,18 @@
    */
   pub.VERSION = "1.0.10";
 
+/**
+ * A more verbose error reporting
+ * @property VERBOSE_ERRORS {Boolean}
+ * @cat Environment
+ */
+  pub.VERBOSE_ERRORS = true; // gives the user more verbose errors
+
+  // both are helpfull for developers/advanced users
+  // for the beginner this can be a bit to much
+  // so they should be disabled in a distribution version
+  pub.DEBUG = true; // this is a debug flag for basil
+
   #include "includes/constants.js";
   #include "includes/public-vars.js";
   #include "includes/private-vars.js";
