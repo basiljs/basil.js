@@ -169,11 +169,13 @@ pub.color = function() {
     } else if (typeof a === 'number') {
       // GREY
       if (currColorMode === pub.RGB) {
+        a = pub.constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
         props.colorValue = [a,a,a];
         props.name = "R="+a+" G="+a+" B="+a;
       } else {
+        a = pub.constrain(a, 0, 100);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
         props.colorValue = [0,0,0,a];
@@ -215,28 +217,36 @@ pub.color = function() {
     
 
   } else if (arguments.length === 4 && typeof d === 'string') {
-  // R G B + name
-    a = pub.constrain(a, 0, 255);
-    b = pub.constrain(b, 0, 255);
-    c = pub.constrain(c, 0, 255);
-    props.model = ColorModel.PROCESS;
-    props.space = ColorSpace.RGB;
-    props.colorValue = [a,b,c];
-    props.name = d; 
+    // R G B + name
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
+      b = pub.constrain(b, 0, 255);
+      c = pub.constrain(c, 0, 255);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.RGB;
+      props.colorValue = [a,b,c];
+      props.name = d;
+    } else {
+      error(colorErrorMsg);
+    }
 
   // C M Y K
   } else if (arguments.length === 4 && typeof d === 'number'){
-    a = pub.constrain(a, 0, 100);
-    b = pub.constrain(b, 0, 100);
-    c = pub.constrain(c, 0, 100);      
-    d = pub.constrain(d, 0, 100);      
-    props.model = ColorModel.PROCESS;
-    props.space = ColorSpace.CMYK;
-    props.colorValue = [a,b,c,d];
-    props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+    if (currColorMode === pub.CMYK) {
+      a = pub.constrain(a, 0, 100);
+      b = pub.constrain(b, 0, 100);
+      c = pub.constrain(c, 0, 100);      
+      d = pub.constrain(d, 0, 100);      
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.CMYK;
+      props.colorValue = [a,b,c,d];
+      props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+    } else {
+      error(colorErrorMsg);
+    }
    
   // C M Y K + name
-  } else if (arguments.length === 5) {
+  } else if (arguments.length === 5 && typeof e === 'string' && currColorMode === pub.CMYK) {
     a = pub.constrain(a, 0, 100);
     b = pub.constrain(b, 0, 100);
     c = pub.constrain(c, 0, 100);      
