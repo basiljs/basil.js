@@ -160,11 +160,11 @@ pub.color = function() {
   if (arguments.length === 1) {
     // get color by name
     if (typeof a === 'string') {
-      newCol = findInCollectionByName(currentDoc().swatches, a);
+      newCol = findInCollectionByName(currentDoc().colors, a);
       if (newCol) {
         return newCol;
       } else {
-        error("b.color(), a swatch with the provided name doesn't exist.");
+        error("b.color(), a color with the provided name doesn't exist.");
       }
     } else if (typeof a === 'number') {
       // GREY
