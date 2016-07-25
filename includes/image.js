@@ -2,11 +2,11 @@
 // Image
 
 /**
- * Adds an image to the document. If the image argument is given as a string the image file  must be in the document's
+ * Adds an image to the document. If the image argument is given as a string the image file must be in the document's
  * data directory which is in the same directory where the document is saved in. The image argument can also be a File
  * instance which can be placed even before the document was saved.
  * The second argument can either be the x position of the frame to create or an instance of a rectangle,
- * oval or polygon to place the image in.
+ * oval or polygon to place the image in. If an x position is given, a y position must be given, too.
  * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
  *
  * @cat Document
@@ -36,30 +36,38 @@ pub.image = function(img, x, y, w, h) {
       x instanceof Oval ||
       x instanceof Polygon) {
     frame = x;
-  } else {
+    fitOptions = FitOptions.FILL_PROPORTIONALLY;
+  } else if (typeof x === 'number' && typeof y === 'number') {
     width = 1;
     height = 1;
     if (currImageMode === pub.CORNERS) {
-      if (w && h){
+      if (typeof w === 'number' && typeof h === 'number'){
         width = w - x;
         height = h - y;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
-      } else {
+      } else if (arguments.length === 3){
         fitOptions = FitOptions.frameToContent;
+      } else {
+        error(imgErrorMsg);
       }
     } else {
-      if (w && h) {
+      if (typeof w === 'number' && typeof h === 'number'){
+        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.") 
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
-      } else {
+      } else if (arguments.length === 3){
         fitOptions = FitOptions.frameToContent;
+      } else {
+        error(imgErrorMsg);
       }
     }
     
     frame = currentPage().rectangles.add(currentLayer(), 
       { geometricBounds:[y, x, y + height, x + width] }
     );
+  } else {
+    error(imgErrorMsg);
   }
   
   frame.place(file);
