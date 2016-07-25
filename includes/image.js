@@ -24,7 +24,14 @@ pub.image = function(img, x, y, w, h) {
     frame = null,
     fitOptions = null,
     width = null,
-    height = null;
+    height = null,
+    imgErrorMsg = "b.image(), wrong parameters. Use:\n"
+      + "b.image( {String|File}, {Rectangle|Oval|Polygon} ) or\n"
+      + "b.image( {String|File}, x, y ) or\n"
+      + "b.image( {String|File}, x, y, w, h )";
+
+  if(arguments.length < 2 || arguments.length === 4 || arguments.length > 5) error(imgErrorMsg);
+
   if (x instanceof Rectangle ||
       x instanceof Oval ||
       x instanceof Polygon) {
@@ -33,9 +40,13 @@ pub.image = function(img, x, y, w, h) {
     width = 1;
     height = 1;
     if (currImageMode === pub.CORNERS) {
-      width = w - x;
-      height = h - y;
-      fitOptions = FitOptions.FILL_PROPORTIONALLY;
+      if (w && h){
+        width = w - x;
+        height = h - y;
+        fitOptions = FitOptions.FILL_PROPORTIONALLY;
+      } else {
+        fitOptions = FitOptions.frameToContent;
+      }
     } else {
       if (w && h) {
         width = w;
