@@ -264,6 +264,35 @@ pub.color = function() {
 };
 
 /**
+ * Creates a new gradient and adds it to the document, or gets a gradient by name from the document.
+ * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used
+ * as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array
+ * a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions
+ * range from 0 to 100. Instead of colors also gradients can be given. All parameter options allow for an additional name parameter to name the new gradient.
+ * If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
+ *
+ * @cat Color
+ * @method gradient
+ * @param  {Color|Gradient|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
+ * @param  {Color|Gradient|Array} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
+ * @param  {String} [name] Optional name of the gradient.
+ * @return {Gradient} Found or new gradient
+ */
+pub.gradient = function() {
+  var newGrad;
+  var props = {};
+  var a = arguments[0],
+      b = arguments[1],
+      c = arguments[2];
+  var gradientErrorMsg = "b.gradient(), wrong parameters. Use:\n"
+      + "c1,c2,[name] or\n"
+      + "arrayOfColors,[name] or\n"
+      + "arrayOfColors,arrayOfGradientStops,[name] or\n"
+      + "gradientName";
+};
+
+
+/**
  * Sets the opacity property of an object.
  * 
  * @cat Color
