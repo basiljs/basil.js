@@ -162,7 +162,11 @@ pub.color = function() {
     if (typeof a === 'string') {
       newCol = findInCollectionByName(currentDoc().swatches, a);
       if (newCol) {
-        return newCol;
+        if( newCol.hasOwnProperty("colorValue") ) {
+          return newCol; 
+        } else {
+          error("Swatch is not a color.");
+        }
       } else {
         error("b.color(), a swatch with the provided name doesn't exist.");
       }
