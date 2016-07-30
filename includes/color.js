@@ -2,15 +2,15 @@
 // Color
 
 /**
- * Sets the color used to fill shapes.
+ * Sets the color or gradient used to fill shapes.
  * @cat Color
  * @method fill
- * @param  {Color|Swatch|Numbers} fillColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
+ * @param  {Color|Gradient|Swatch|Numbers} fillColor  Accepts a color/gradient/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
  */
 pub.fill = function (fillColor) {
 
   checkNull(fillColor);
-  if (fillColor instanceof Color || fillColor instanceof Swatch) {
+  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
     currFillColor = fillColor;
   } else {
     if (arguments.length === 1) {
