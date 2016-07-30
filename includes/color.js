@@ -322,9 +322,9 @@ pub.gradient = function() {
     newGrad.gradientStops[1].stopColor = b;
     if(typeof c === 'string') newGrad.name = c;
     if(currGradientType === pub.LINEAR) {
-      newGrad.type === GradientType.LINEAR;
+      newGrad.type = GradientType.LINEAR;
     } else {
-      newGrad.type === GradientType.RADIAL;
+      newGrad.type = GradientType.RADIAL;
     }
     return newGrad;
   } else if (a instanceof Array){
@@ -352,9 +352,9 @@ pub.gradient = function() {
     if(arguments.length === 2 && typeof b === 'string') newGrad.name = b;
     if(arguments.length === 3) newGrad.name = c;
     if(currGradientType === pub.LINEAR) {
-      newGrad.type === GradientType.LINEAR;
+      newGrad.type = GradientType.LINEAR;
     } else {
-      newGrad.type === GradientType.RADIAL;
+      newGrad.type = GradientType.RADIAL;
     }
     return newGrad;
   } else {
