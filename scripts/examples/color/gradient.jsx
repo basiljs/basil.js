@@ -22,15 +22,22 @@ function draw() {
     randomNumbers.push( b.random(0, 100) );
   }
 
+  // draw rectangles and fill them with different types of gradients
+
+  // grandient from color1 to color2 
   b.fill( b.gradient(red, blue) );
   b.rect(0, dist * 0, b.width, dist);
 
+  // gradient from array of colors
   b.fill( b.gradient(randomColors) );
   b.rect(0, dist * 1, b.width, dist);
 
+  // gradient from same array of colors with random gradient stop positions
   b.fill( b.gradient(randomColors, randomNumbers) );
   b.rect(0, dist * 2, b.width, dist);
 
+  // radial gradient from color1 to color2
+  b.gradientMode( b.RADIAL );
   b.fill( b.gradient(red, blue) );
   b.rect(0, dist * 3, b.width, dist);
 }
