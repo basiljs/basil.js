@@ -328,6 +328,9 @@ pub.gradient = function() {
         newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
       }
     }
+    if(arguments.length === 2 && typeof b === 'string') newGrad.name = b;
+    if(arguments.length === 3) newGrad.name = c;
+    // LINEAR || RADIAL
     return newGrad;
   } else {
     error(gradientErrorMsg);
