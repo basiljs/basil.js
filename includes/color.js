@@ -144,7 +144,7 @@ pub.colorMode = function(colorMode) {
 pub.gradientType = function(gradientType) {
   checkNull(gradientType);
   if (arguments.length === 0) return currGradientType;
-  if (gradientType === pub.LINEAR || colorMode === pub.RADIAL) {
+  if (gradientType === pub.LINEAR || gradientType === pub.RADIAL) {
     currGradientType = gradientType;
   } else {
     error("b.gradientType(), unsupported gradient type, use: b.LINEAR or b.RADIAL");
@@ -321,7 +321,11 @@ pub.gradient = function() {
     newGrad.gradientStops[0].stopColor = a;
     newGrad.gradientStops[1].stopColor = b;
     if(typeof c === 'string') newGrad.name = c;
-    // LINEAR || RADIAL
+    if(currGradientType === pub.LINEAR) {
+      newGrad.type === GradientType.LINEAR;
+    } else {
+      newGrad.type === GradientType.RADIAL;
+    }
     return newGrad;
   } else if (a instanceof Array){
     // array of colors
@@ -347,7 +351,11 @@ pub.gradient = function() {
     }
     if(arguments.length === 2 && typeof b === 'string') newGrad.name = b;
     if(arguments.length === 3) newGrad.name = c;
-    // LINEAR || RADIAL
+    if(currGradientType === pub.LINEAR) {
+      newGrad.type === GradientType.LINEAR;
+    } else {
+      newGrad.type === GradientType.RADIAL;
+    }
     return newGrad;
   } else {
     error(gradientErrorMsg);

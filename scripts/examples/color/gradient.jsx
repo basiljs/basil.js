@@ -37,7 +37,7 @@ function draw() {
   b.rect(0, dist * 2, b.width, dist);
 
   // radial gradient from color1 to color2
-  b.gradientMode( b.RADIAL );
+  b.gradientType( b.RADIAL );
   b.fill( b.gradient(red, blue) );
   b.rect(0, dist * 3, b.width, dist);
 }
