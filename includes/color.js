@@ -135,6 +135,23 @@ pub.colorMode = function(colorMode) {
 };
 
 /**
+ * Sets the gradient type for creating new gradients with b.gradient() to LINEAR or RADIAL. The default gradient type is LINEAR.
+ *
+ * @cat Color
+ * @method gradientType
+ * @param  {String} gradientType Either b.LINEAR or b.RADIAL
+ */
+pub.gradientType = function(gradientType) {
+  checkNull(gradientType);
+  if (arguments.length === 0) return currGradientType;
+  if (gradientType === pub.LINEAR || colorMode === pub.RADIAL) {
+    currGradientType = gradientType;
+  } else {
+    error("b.gradientType(), unsupported gradient type, use: b.LINEAR or b.RADIAL");
+  }
+};
+
+/**
  * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document. The default color mode is RBG.
  *
  * @cat Color
