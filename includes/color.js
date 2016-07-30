@@ -268,7 +268,7 @@ pub.color = function() {
  * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used
  * as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array
  * a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions
- * range from 0 to 100. Instead of colors also gradients can be given. All parameter options allow for an additional name parameter to name the new gradient.
+ * range from 0 to 100. Instead of colors gradients can be given, too. All parameter options allow for an additional name parameter at the end to name the new gradient.
  * If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
  *
  * @cat Color
@@ -289,6 +289,26 @@ pub.gradient = function() {
       + "arrayOfColors,[name] or\n"
       + "arrayOfColors,arrayOfGradientStops,[name] or\n"
       + "gradientName";
+
+  if (typeof a === 'string' && arguments.length === 1) {
+    // get gradient by name
+    newGrad = findInCollectionByName(currentDoc().gradients, a);
+    if (newGrad) {
+      return newGrad;
+    } else {
+      error("b.gradient(), a gradient with the provided name doesn't exist.");
+    }
+  } else if (a instanceof Color && b instanceof Color && (typeof c === 'string' || arguments.length === 2)) {
+    // c1 and c2
+    newGrad = currentDoc().gradients.add();
+    newGrad.gradientStops[0].stopColor = a;
+    newGrad.gradientStops[1].stopColor = b;
+    if(typeof c === 'string') newGrad.name = c;
+    // LINEAR || RADIAL
+    return newGrad;
+  } else {
+    error(gradientErrorMsg);
+  }
 };
 
 
