@@ -306,6 +306,29 @@ pub.gradient = function() {
     if(typeof c === 'string') newGrad.name = c;
     // LINEAR || RADIAL
     return newGrad;
+  } else if (a instanceof Array){
+    // array of colors
+    var customStopLocations = false;
+    if(arguments.length > 3) error(gradientErrorMsg);
+    if(arguments.length > 1 && !(b instanceof Array || typeof b === 'string')) error(gradientErrorMsg);
+    if(arguments.length === 3 && !(typeof c === 'string')) error(gradientErrorMsg);
+    if(arguments.length > 1 && b instanceof Array) customStopLocations = true;
+    if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.")
+    newGrad = currentDoc().gradients.add();
+    for (var i = 0; i < a.length; i++) {
+      if(! (a[i] instanceof Color || a[i] instanceof Gradient || a[i] instanceof Swatch)) {
+        error("b.gradient(), element #" + (i+1) + " of the given arrayOfColors is not a color/gradient/swatch.");
+      }
+      if(i > newGrad.gradientStops.length - 1) newGrad.gradientStops.add();
+      newGrad.gradientStops[i].stopColor = a[i];
+      if(customStopLocations){
+        if(! (typeof b[i] === 'number')) error("b.gradient(), element #" + (i+1) + " of the given arrayOfGradientStops is not a number.")
+        newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
+      } else {
+        newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
+      }
+    }
+    return newGrad;
   } else {
     error(gradientErrorMsg);
   }
