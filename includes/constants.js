@@ -54,6 +54,20 @@ pub.RGB = "rgb";
 pub.CMYK = "cmyk";
 
 /**
+ * Used with b.gradientType() to set the gradient type.
+ * @property LINEAR {String}
+ * @cat Color
+ */
+pub.LINEAR = "linear";
+
+/**
+ * Used with b.gradientType() to set the gradient type.
+ * @property RADIAL {String}
+ * @cat Color
+ */
+pub.RADIAL = "radial";
+
+/**
  * Corner, used for drawing modes.
  * @property CORNER {String}
  * @cat Document
