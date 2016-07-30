@@ -362,7 +362,6 @@ pub.gradient = function() {
   }
 };
 
-
 /**
  * Sets the opacity property of an object.
  * 
