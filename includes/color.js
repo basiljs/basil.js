@@ -317,10 +317,18 @@ pub.gradient = function() {
     }
   } else if (a instanceof Color && b instanceof Color && (typeof c === 'string' || arguments.length === 2)) {
     // c1 and c2
-    newGrad = currentDoc().gradients.add();
+    if (typeof c === 'string') {
+      if(currentDoc().colors.itemByName(c).isValid) error('b.gradient(), the name "' + c + '" already exists for a color. Use another name for the gradient.');
+      if(currentDoc().gradients.itemByName(c).isValid) {
+        currentDoc().gradients.itemByName(c).remove();
+        warning('b.gradient(), a gradient named "' + c + '" already existed. The old gradient is replaced by a new one.')
+      }
+      newGrad = currentDoc().gradients.add({name: c});
+    } else {
+      newGrad = currentDoc().gradients.add();
+    }
     newGrad.gradientStops[0].stopColor = a;
     newGrad.gradientStops[1].stopColor = b;
-    if(typeof c === 'string') newGrad.name = c;
     if(currGradientType === pub.LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
@@ -334,8 +342,18 @@ pub.gradient = function() {
     if(arguments.length > 1 && !(b instanceof Array || typeof b === 'string')) error(gradientErrorMsg);
     if(arguments.length === 3 && !(typeof c === 'string')) error(gradientErrorMsg);
     if(arguments.length > 1 && b instanceof Array) customStopLocations = true;
-    if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.")
-    newGrad = currentDoc().gradients.add();
+    if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    var z = arguments[arguments.length - 1];
+    if (typeof z === 'string') {
+      if(currentDoc().colors.itemByName(z).isValid) error('b.gradient(), the name "' + z + '" already exists for a color. Use another name for the gradient.');
+      if(currentDoc().gradients.itemByName(z).isValid) {
+        currentDoc().gradients.itemByName(z).remove();
+        warning('b.gradient(), a gradient named "' + z + '" already existed. The old gradient is replaced by a new one.')
+      }
+      newGrad = currentDoc().gradients.add({name: z});
+    } else {
+      newGrad = currentDoc().gradients.add();
+    }
     for (var i = 0; i < a.length; i++) {
       if(! (a[i] instanceof Color || a[i] instanceof Swatch)) {
         error("b.gradient(), element #" + (i+1) + " of the given arrayOfColors is not a color or swatch.");
@@ -349,8 +367,6 @@ pub.gradient = function() {
         newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
       }
     }
-    if(arguments.length === 2 && typeof b === 'string') newGrad.name = b;
-    if(arguments.length === 3) newGrad.name = c;
     if(currGradientType === pub.LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
