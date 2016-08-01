@@ -285,13 +285,13 @@ pub.color = function() {
  * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used
  * as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array
  * a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions
- * range from 0 to 100. Instead of colors gradients can be given, too. All parameter options allow for an additional name parameter at the end to name the new gradient.
+ * range from 0 to 100. All parameter options allow for an additional name parameter at the end to name the new gradient.
  * If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
  *
  * @cat Color
  * @method gradient
- * @param  {Color|Gradient|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
- * @param  {Color|Gradient|Array} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
+ * @param  {Color|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
+ * @param  {Color|Array|String} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
  * @param  {String} [name] Optional name of the gradient.
  * @return {Gradient} Found or new gradient
  */
@@ -337,8 +337,8 @@ pub.gradient = function() {
     if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.")
     newGrad = currentDoc().gradients.add();
     for (var i = 0; i < a.length; i++) {
-      if(! (a[i] instanceof Color || a[i] instanceof Gradient || a[i] instanceof Swatch)) {
-        error("b.gradient(), element #" + (i+1) + " of the given arrayOfColors is not a color/gradient/swatch.");
+      if(! (a[i] instanceof Color || a[i] instanceof Swatch)) {
+        error("b.gradient(), element #" + (i+1) + " of the given arrayOfColors is not a color or swatch.");
       }
       if(i > newGrad.gradientStops.length - 1) newGrad.gradientStops.add();
       newGrad.gradientStops[i].stopColor = a[i];
