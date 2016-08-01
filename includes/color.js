@@ -309,8 +309,8 @@ pub.gradient = function() {
 
   if (typeof a === 'string' && arguments.length === 1) {
     // get gradient by name
-    newGrad = findInCollectionByName(currentDoc().gradients, a);
-    if (newGrad) {
+    newGrad = currentDoc().gradients.itemByName(a);
+    if (newGrad.isValid) {
       return newGrad;
     } else {
       error("b.gradient(), a gradient with the provided name doesn't exist.");
@@ -318,7 +318,7 @@ pub.gradient = function() {
   } else if (a instanceof Color && b instanceof Color && (typeof c === 'string' || arguments.length === 2)) {
     // c1 and c2
     if (typeof c === 'string') {
-      if(currentDoc().colors.itemByName(c).isValid) error('b.gradient(), the name "' + c + '" already exists for a color. Use another name for the gradient.');
+      if(currentDoc().colors.itemByName(c).isValid) error('b.gradient(), "' + c + '" already exists as a color. Use another name for the gradient.');
       if(currentDoc().gradients.itemByName(c).isValid) {
         currentDoc().gradients.itemByName(c).remove();
         warning('b.gradient(), a gradient named "' + c + '" already existed. The old gradient is replaced by a new one.')
@@ -345,7 +345,7 @@ pub.gradient = function() {
     if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
     var z = arguments[arguments.length - 1];
     if (typeof z === 'string') {
-      if(currentDoc().colors.itemByName(z).isValid) error('b.gradient(), the name "' + z + '" already exists for a color. Use another name for the gradient.');
+      if(currentDoc().colors.itemByName(z).isValid) error('b.gradient(), "' + z + '" already exists as a color. Use another name for the gradient.');
       if(currentDoc().gradients.itemByName(z).isValid) {
         currentDoc().gradients.itemByName(z).remove();
         warning('b.gradient(), a gradient named "' + z + '" already existed. The old gradient is replaced by a new one.')
