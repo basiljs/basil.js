@@ -135,19 +135,19 @@ pub.colorMode = function(colorMode) {
 };
 
 /**
- * Sets the gradient type for creating new gradients with b.gradient() to LINEAR or RADIAL. The default gradient type is LINEAR.
+ * Sets the gradient mode for creating new gradients with b.gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
  *
  * @cat Color
- * @method gradientType
- * @param  {String} gradientType Either b.LINEAR or b.RADIAL
+ * @method gradientMode
+ * @param  {String} gradientMode Either b.LINEAR or b.RADIAL
  */
-pub.gradientType = function(gradientType) {
-  checkNull(gradientType);
-  if (arguments.length === 0) return currGradientType;
-  if (gradientType === pub.LINEAR || gradientType === pub.RADIAL) {
-    currGradientType = gradientType;
+pub.gradientMode = function(gradientMode) {
+  checkNull(gradientMode);
+  if (arguments.length === 0) return currGradientMode;
+  if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
+    currGradientMode = gradientMode;
   } else {
-    error("b.gradientType(), unsupported gradient type, use: b.LINEAR or b.RADIAL");
+    error("b.gradientMode(), unsupported gradient mode, use: b.LINEAR or b.RADIAL");
   }
 };
 
@@ -339,7 +339,7 @@ pub.gradient = function() {
     }
     newGrad.gradientStops[0].stopColor = a;
     newGrad.gradientStops[1].stopColor = b;
-    if(currGradientType === pub.LINEAR) {
+    if(currGradientMode === pub.LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
       newGrad.type = GradientType.RADIAL;
@@ -377,7 +377,7 @@ pub.gradient = function() {
         newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
       }
     }
-    if(currGradientType === pub.LINEAR) {
+    if(currGradientMode === pub.LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
       newGrad.type = GradientType.RADIAL;

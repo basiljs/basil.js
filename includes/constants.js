@@ -54,14 +54,14 @@ pub.RGB = "rgb";
 pub.CMYK = "cmyk";
 
 /**
- * Used with b.gradientType() to set the gradient type.
+ * Used with b.gradientMode() to set the gradient mode.
  * @property LINEAR {String}
  * @cat Color
  */
 pub.LINEAR = "linear";
 
 /**
- * Used with b.gradientType() to set the gradient type.
+ * Used with b.gradientMode() to set the gradient mode.
  * @property RADIAL {String}
  * @cat Color
  */
