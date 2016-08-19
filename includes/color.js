@@ -152,11 +152,11 @@ pub.gradientType = function(gradientType) {
 };
 
 /**
- * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document. The default color mode is RBG.
+ * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document. The default color mode is RGB.
  *
  * @cat Color
  * @method color
- * @param  {String|Numbers} Get color: the color name. Create new color: R,G,B,name or C,M,Y,K,name or Grey,name. Name is always optional
+ * @param  {String|Numbers} Get color: the color name. Create new color: R,G,B,[name] or C,M,Y,K,[name] or Grey,name. Name is always optional
  * @return {Color} found or new color
  */
 pub.color = function() {
@@ -167,30 +167,32 @@ pub.color = function() {
       c = arguments[2],
       d = arguments[3],
       e = arguments[4];
-  var colorErrorMsg = "b.color(), wrong parameters. Use: "
-      + "R,G,B,name in b.colorMode(b.RGB) or "
-      + "C,M,Y,K,name in b.colorMode(b.CMYK) or "
-      + "GREY,name. "
-      + "Name is optional. "
-      + "NB: In indesign colors don't have an alpha value, use b.opacity() to set alpha.";
+  var colorErrorMsg = "b.color(), wrong parameters. Use:\n"
+      + "R,G,B,[name] in b.colorMode(b.RGB) or\n"
+      + "C,M,Y,K,[name] in b.colorMode(b.CMYK) or\n"
+      + "GREY,[name].\n"
+      + "Name is optional.\n"
+      + "NB: In InDesign colors don't have an alpha value, use b.opacity() to set alpha.";
 
   if (arguments.length === 1) {
     // get color by name
     if (typeof a === 'string') {
-      newCol = findInCollectionByName(currentDoc().swatches, a);
+      newCol = findInCollectionByName(currentDoc().colors, a);
       if (newCol) {
         return newCol;
       } else {
-        error("b.color(), a swatch with the provided name doesn't exist.");
+        error("b.color(), a color with the provided name doesn't exist.");
       }
     } else if (typeof a === 'number') {
       // GREY
       if (currColorMode === pub.RGB) {
+        a = pub.constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
         props.colorValue = [a,a,a];
         props.name = "R="+a+" G="+a+" B="+a;
       } else {
+        a = pub.constrain(a, 0, 100);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
         props.colorValue = [0,0,0,a];
@@ -201,7 +203,7 @@ pub.color = function() {
     }
 
   } else if (arguments.length === 2) {
-    // GREY + with custom name
+    // GREY + name
     if (currColorMode === pub.RGB) {
       a = pub.constrain(a, 0, 255);
       props.model = ColorModel.PROCESS;
@@ -232,28 +234,36 @@ pub.color = function() {
     
 
   } else if (arguments.length === 4 && typeof d === 'string') {
-  // R G B + name
-    a = pub.constrain(a, 0, 255);
-    b = pub.constrain(b, 0, 255);
-    c = pub.constrain(c, 0, 255);
-    props.model = ColorModel.PROCESS;
-    props.space = ColorSpace.RGB;
-    props.colorValue = [a,b,c];
-    props.name = d; 
+    // R G B + name
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
+      b = pub.constrain(b, 0, 255);
+      c = pub.constrain(c, 0, 255);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.RGB;
+      props.colorValue = [a,b,c];
+      props.name = d;
+    } else {
+      error(colorErrorMsg);
+    }
 
-  // C M Y K
   } else if (arguments.length === 4 && typeof d === 'number'){
-    a = pub.constrain(a, 0, 100);
-    b = pub.constrain(b, 0, 100);
-    c = pub.constrain(c, 0, 100);      
-    d = pub.constrain(d, 0, 100);      
-    props.model = ColorModel.PROCESS;
-    props.space = ColorSpace.CMYK;
-    props.colorValue = [a,b,c,d];
-    props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+    // C M Y K
+    if (currColorMode === pub.CMYK) {
+      a = pub.constrain(a, 0, 100);
+      b = pub.constrain(b, 0, 100);
+      c = pub.constrain(c, 0, 100);      
+      d = pub.constrain(d, 0, 100);      
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.CMYK;
+      props.colorValue = [a,b,c,d];
+      props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+    } else {
+      error(colorErrorMsg);
+    }
    
-  // C M Y K + name
-  } else if (arguments.length === 5) {
+  } else if (arguments.length === 5 && typeof e === 'string' && currColorMode === pub.CMYK) {
+    // C M Y K + name
     a = pub.constrain(a, 0, 100);
     b = pub.constrain(b, 0, 100);
     c = pub.constrain(c, 0, 100);      

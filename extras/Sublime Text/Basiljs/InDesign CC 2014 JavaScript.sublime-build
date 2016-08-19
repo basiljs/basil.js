@@ -1,0 +1,3 @@
+{
+    "cmd": ["osascript", "$packages/Basiljs/run_idscript_CC_2014.scpt", "$file"]
+}
