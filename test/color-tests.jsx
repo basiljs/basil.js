@@ -19,17 +19,15 @@ b.test('ColorTests', {
     b.close(SaveOptions.no); 
   },
 
-//~   testDefaultColors: function(b) {
-//~     var doc = b.doc();
-//~     var rect = b.rect(0,0,100,100);
-//~     var black = b.color('Black');
+  testDefaultColors: function(b) {
+    var doc = b.doc();
+    var rect = b.rect(0,0,100,100);
+    var black = b.color('Black');
 
-//~     assert(black instanceof Color);
-//~     assert(rect.fillColor.colorValue.toString() === black.colorValue.toString());
-//~     assert(rect.strokeColor.colorValue.toString() === black.colorValue.toString());
-//~   }, 
-// This test failed for me at some point... can we really assert default settings? Couldn't they be different on each InDesign installation after alteration?
-
+    assert(black instanceof Color);
+    assert(rect.fillColor.colorValue.toString() === black.colorValue.toString());
+    assert(rect.strokeColor.colorValue.toString() === black.colorValue.toString());
+  },
 
   testCreateRGBColor: function(b) {
     var doc = b.doc();
