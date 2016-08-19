@@ -314,7 +314,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 };
 
 /**
- * Returns the current layer and sets it if argument layer is given.
+ * Returns the current layer if no argument is given. Sets active layer if layer object or name of existing layer is given. Newly creates layer and sets it to active if new name is given.
  *
  * @cat Document
  * @subcat Page
@@ -326,12 +326,17 @@ pub.layer = function(layer) {
   checkNull(layer);
   if (layer instanceof Layer) {
     currLayer = layer;
+    currentDoc().activeLayer = currLayer;
   } else if (typeof layer === 'string') {
     var layers = currentDoc().layers;
     currLayer = layers.item(layer);
     if (!currLayer.isValid) {
       currLayer = layers.add({name: layer});
+    } else {
+      currentDoc().activeLayer = currLayer;
     }
+  } else if (arguments.length > 0) {
+    error("b.layer(), wrong arguments. Use layer object or string instead.")
   }
   return currentLayer();
 };
