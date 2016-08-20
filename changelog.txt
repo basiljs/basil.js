@@ -2,6 +2,15 @@
 * changed
 - removed
 
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js x.x.x -
+
++ Added b.gradient() by @trych, cheers!
+* Bugfix: b.color("colorName") error when using resulting color in b.fill() twice
+* Bugfix: b.layer() did not set active layer to given argument
+* Bugfix: b.image() error/warning handling if incomplete arguments
+
+Many thanks @trych @fabiantheblind for bugfixes and contributions
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.0.10 -
