@@ -11,6 +11,7 @@ var init = function() {
   currFillTint = 100;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
+  currGradientMode = pub.LINEAR;
 };    
 
 

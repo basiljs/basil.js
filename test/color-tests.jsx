@@ -19,17 +19,15 @@ b.test('ColorTests', {
     b.close(SaveOptions.no); 
   },
 
-//~   testDefaultColors: function(b) {
-//~     var doc = b.doc();
-//~     var rect = b.rect(0,0,100,100);
-//~     var black = b.color('Black');
+  testDefaultColors: function(b) {
+    var doc = b.doc();
+    var rect = b.rect(0,0,100,100);
+    var black = b.color('Black');
 
-//~     assert(black instanceof Color);
-//~     assert(rect.fillColor.colorValue.toString() === black.colorValue.toString());
-//~     assert(rect.strokeColor.colorValue.toString() === black.colorValue.toString());
-//~   }, 
-// This test failed for me at some point... can we really assert default settings? Couldn't they be different on each InDesign installation after alteration?
-
+    assert(black instanceof Color);
+    assert(rect.fillColor.colorValue.toString() === black.colorValue.toString());
+    assert(rect.strokeColor.colorValue.toString() === black.colorValue.toString());
+  },
 
   testCreateRGBColor: function(b) {
     var doc = b.doc();
@@ -105,6 +103,66 @@ b.test('ColorTests', {
     assert(greenSwatch.colorValue[0] === 1);
     assert(greenSwatch.colorValue[1] === 255);
     assert(greenSwatch.colorValue[2] === 3);
+  },
+
+  testCreateGradient: function(b) {
+    var doc = b.doc();
+    var red = b.color(255,0,0);
+    var green = b.color(0,255,0);
+    var blue = b.color(0,0,255);
+
+    var redBlue = b.gradient(red, blue);
+    var multiStop = b.gradient([red, green, blue, red, green]);
+    var stopPositions = b.gradient([red, green, blue], [5, 80, 97]);
+    var switchedStops = b.gradient([red, blue], [80, 20]);
+    b.gradientMode(b.RADIAL);
+    var radial = b.gradient(red, blue, "radial");
+
+    assert(redBlue instanceof Gradient);
+    assert(multiStop instanceof Gradient);
+    assert(stopPositions instanceof Gradient);
+    assert(radial instanceof Gradient);
+
+    assert(redBlue.type === GradientType.LINEAR);
+    assert(radial.type === GradientType.RADIAL);
+
+    assert(b.gradient("radial") === radial);
+
+    assert(redBlue.gradientStops.length === 2);
+    assert(multiStop.gradientStops.length === 5);
+    assert(stopPositions.gradientStops.length === 3);
+    assert(radial.gradientStops.length === 2);
+
+    assert(multiStop.gradientStops.firstItem().location === 0);
+    assert(multiStop.gradientStops.middleItem().location === 50);
+    assert(multiStop.gradientStops.lastItem().location === 100);
+    assert(stopPositions.gradientStops.firstItem().location === 5);
+    assert(stopPositions.gradientStops.middleItem().location === 80);
+    assert(stopPositions.gradientStops.lastItem().location === 97);
+
+    assert(redBlue.gradientStops.firstItem().stopColor === red);
+    assert(redBlue.gradientStops.lastItem().stopColor === blue);
+    assert(multiStop.gradientStops.firstItem().stopColor === red);
+    assert(multiStop.gradientStops.middleItem().stopColor === blue);
+    assert(multiStop.gradientStops.lastItem().stopColor === green);
+    assert(stopPositions.gradientStops.firstItem().stopColor === red);
+    assert(stopPositions.gradientStops.middleItem().stopColor === green);
+    assert(stopPositions.gradientStops.lastItem().stopColor === blue);
+    assert(switchedStops.gradientStops.firstItem().stopColor === blue);
+    assert(switchedStops.gradientStops.lastItem().stopColor === red);
+  },
+
+  testIsGradientAddedToSwatches: function(b) {
+    var doc = b.doc();
+    var black = b.color(0);
+    var white = b.color(255);
+    var swatchCountStart = doc.swatches.length;
+    var bw = b.gradient(black, white, "Black to White");
+    var wb = b.gradient(white, black, "White to Black");
+    var bwb = b.gradient([black, white, black]);
+    var swatchCountEnd = doc.swatches.length;
+
+    assert((swatchCountStart+3) === swatchCountEnd);
   }
 });
 
