@@ -17,12 +17,34 @@ b.test('EnvironmentTests', {
   },
 
   tearDown: function(b) {
-    b.close(SaveOptions.no); 
+    b.close(SaveOptions.no);
   },
 
+  testSizeAllArgs: function(b){
+    var doc = app.documents.add();
+    b.size(100,200);
+    assert(doc.documentPreferences.pageWidth === 100);
+    assert(doc.documentPreferences.pageHeight === 200);
+  },
+  testSizeOneArg: function(b){
+    var doc = app.documents.add();
+    b.size(100);
+    assert(doc.documentPreferences.pageWidth === 100);
+    assert(doc.documentPreferences.pageHeight === 100);
+  },
+    testSizeNoArg: function(b){
+    var doc = app.documents.add();
+    var result = b.size();
+    assert(result instanceof Object);
+    assert(result.hasOwnProperty('height') === true);
+    assert(result.hasOwnProperty('width') === true);
+    assert(result.height === b.height);
+    assert(result.width === b.width);
+
+  },
   testDocCreatesDocument: function(b) {
     var doc = b.doc();
-        
+
     assert(doc instanceof Document);
     assert(app.documents.length === 1);
   },

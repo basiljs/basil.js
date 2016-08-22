@@ -19,6 +19,46 @@ pub.doc = function(doc) {
 };
 
 /**
+ * @cat Document
+ * @method size
+ * @param  {Number} width The desired width of the current document
+ * @param  {Number} [height] optional the desired height of the current document. If not provided the widht will be used as the height.
+ * @return {Object} if no argument is given it returns an object containing the current widht and height of the document.
+ *
+ */
+pub.size = function(width, height){
+  if(app.documents.length === 0){
+    // there are no documents
+    warning('b.size(width, height)', 'You have no open document.');
+    return;
+  } else {
+    if (arguments.length === 0){
+      // no arguments given
+      // return the curent values
+      // warning('b.size(width, height)', 'no arguments given');
+      return {width: pub.width, height: pub.height};
+    }
+
+    if(arguments.length === 1){
+      // only one argument set the first to the secound
+      height = width;
+    }
+    var doc = app.documents[0];
+    // set the documents pageHeiht and pageWidth
+    doc.properties =  {
+      documentPreferences:{
+      pageHeight: height,
+      pageWidth: width
+      }
+    };
+    // set height and width
+    pub.height = height;
+    pub.width = width;
+  }
+
+}
+
+/**
  * Closes the current document.
  *
  * @cat Document
