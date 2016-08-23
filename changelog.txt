@@ -5,7 +5,8 @@
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js x.x.x -
 
-+ Added b.gradient() by @trych, cheers!
++ Added b.size() to set the document size, by @fabiantheblind
++ Added b.gradient() great colorful gradients, by @trych
 * Bugfix: b.color("colorName") error when using resulting color in b.fill() twice
 * Bugfix: b.layer() did not set active layer to given argument
 * Bugfix: b.image() error/warning handling if incomplete arguments
