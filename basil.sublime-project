@@ -1,14 +1,15 @@
 {
-	"folders":
-	[
-		{
-			"path": "."
-		}
-	],
-	"settings":
-	{
-		"tab_size": 2,
-		"translate_tabs_to_spaces": true,
-		"use_tab_stops": true
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "ignored_packages": [
+      "ESLint-Formatter"
+    ],
+    "tab_size": 2,
+    "translate_tabs_to_spaces": true,
+    "use_tab_stops": true
+  }
 }
