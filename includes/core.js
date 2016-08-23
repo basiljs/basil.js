@@ -216,7 +216,7 @@ var setCurrDoc = function(doc) {
   currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
-  pub.units(pub.PT);
+  pub.units(pub.MM);
   
   updatePublicPageSizeVars();
 };
