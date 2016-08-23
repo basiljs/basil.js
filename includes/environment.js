@@ -19,11 +19,15 @@ pub.doc = function(doc) {
 };
 
 /**
+ * Sets the size of the current document, if arguments are given.
+ * If only one argument is given, both the width and the height are set to this value.
+ * If no argument is given, an object containing the current document's width and height is returned.
+ *
  * @cat Document
  * @method size
  * @param  {Number} width The desired width of the current document
- * @param  {Number} [height] optional the desired height of the current document. If not provided the widht will be used as the height.
- * @return {Object} if no argument is given it returns an object containing the current widht and height of the document.
+ * @param  {Number} [height] optional the desired height of the current document. If not provided the width will be used as the height.
+ * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
  *
  */
 pub.size = function(width, height){
