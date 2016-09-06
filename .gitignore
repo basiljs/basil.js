@@ -6,3 +6,5 @@ lib/extendables/log/extendables.log
 # debug info
 examples/ui/debug
 includes/ui
+# test files
+test/download/data/
