@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "./node_modules/.bin/exsbundlr -i basil.js -o basil.bundle.js",
-    "watch":"./node_modules/.bin/watch 'npm run bundle' ./includes"
+    "bundle": "./node_modules/.bin/exsbundlr -i src/main.js -o basil.js",
+    "watch":"./node_modules/.bin/watch 'npm run bundle' ./src"
   },
   "repository": {
     "type": "git",
