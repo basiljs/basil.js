@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "./node_modules/.bin/exsbundlr -i src/main.js -o basil.js",
+    "bundle": "./node_modules/.bin/exsbundlr -i src/main.js -o basil.js -p '/* Basil.js v'${npm_package_version}' '$(date '+%Y.%m.%d-%H:%M:%S')' */'",
     "watch":"./node_modules/.bin/watch 'npm run bundle' ./src"
   },
   "repository": {
@@ -57,7 +57,7 @@
   },
   "homepage": "http://basiljs.ch/",
   "devDependencies": {
-    "extendscript-bundlr": "^0.2.1",
+    "extendscript-bundlr": "^0.3.0",
     "watch": "^0.19.2"
   }
 }
