@@ -2,7 +2,9 @@
 basil.sublime-workspace
 examples/image/*.indd
 lib/extendables/log/extendables.log
-
+*.idlk
 # debug info
 examples/ui/debug
 includes/ui
+# test files
+test/download/data/

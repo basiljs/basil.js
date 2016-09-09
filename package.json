@@ -8,7 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "./node_modules/.bin/exsbundlr -i src/main.js -o basil.js -p '/* Basil.js v'${npm_package_version}' '$(date '+%Y.%m.%d-%H:%M:%S')' */'",
+    "watch":"./node_modules/.bin/watch 'npm run bundle' ./src"
   },
   "repository": {
     "type": "git",
@@ -19,18 +21,43 @@
     "InDesign",
     "Processing"
   ],
-  "contributors":[
-
-{"name":"Ted Davis","url": "http://teddavis.org"},
-{"name":"Benedikt Groß","url": "http://benedikt-gross.de"},
-{"name":"Ludwig Zeller","url": "http://ludwigzeller.de"},
-{"name":"Philipp Adrian", "url":"http://www.philippadrian.com/"},
-{"name":"be:screen GmbH", "url":"http://bescreen.de"},
-{"name":"Stefan Landsbek", "url":"http://47nord.de"},
-{"name":"Ken Frederick", "url":"http://kennethfrederick.de/"}],
+  "contributors": [
+    {
+      "name": "Ted Davis",
+      "url": "http://teddavis.org"
+    },
+    {
+      "name": "Benedikt Groß",
+      "url": "http://benedikt-gross.de"
+    },
+    {
+      "name": "Ludwig Zeller",
+      "url": "http://ludwigzeller.de"
+    },
+    {
+      "name": "Philipp Adrian",
+      "url": "http://www.philippadrian.com/"
+    },
+    {
+      "name": "be:screen GmbH",
+      "url": "http://bescreen.de"
+    },
+    {
+      "name": "Stefan Landsbek",
+      "url": "http://47nord.de"
+    },
+    {
+      "name": "Ken Frederick",
+      "url": "http://kennethfrederick.de/"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/basiljs/basil.js/issues"
   },
-  "homepage": "http://basiljs.ch/"
+  "homepage": "http://basiljs.ch/",
+  "devDependencies": {
+    "extendscript-bundlr": "^0.3.0",
+    "watch": "^0.19.2"
+  }
 }
