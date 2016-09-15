@@ -785,6 +785,44 @@ pub.go = function (mode) {
  * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
  */
 pub.loop = function(framerate) {
+  // before running the loop we need to check if
+  // the stop script exists
+    // the Script looks for the lib folder next to itself
+  var currentBasilFolderPath = File($.fileName).parent.fsName;
+  var scriptPath = currentBasilFolderPath + "/lib/stop.jsx";
+  if(File(scriptPath).exists !== true) {
+    // the script is not there. lets create it
+    var scriptContent = [
+      "//@targetengine \"loop\"",
+      "//@include \"../basil.js\";",
+      "b.noLoop();",
+      "if (typeof cleanUp === \"function\") {",
+      "cleanUp();",
+      "}",
+      "cleanUp = null;"
+    ];
+    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
+      // the lib folder also does not exist
+      var res = Folder(currentBasilFolderPath + "/lib").create();
+      if(res === false) {
+        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
+        return;
+      }else{
+        // the folder is there
+      }
+      var libFolder = Folder(currentBasilFolderPath + "/lib");
+      var stopScript = new File(libFolder.fsName + "/stop.jsx");
+      stopScript.open("w", undef, undef);
+    // set encoding and linefeeds
+      stopScript.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+      stopScript.encoding = "UTF-8";
+      stopScript.write(scriptContent.join("\n"));
+      stopScript.close();
+    }
+  }else{
+    // the script is there
+    // awesome
+  }
   var sleep = null;
   if (arguments.length === 0) sleep = Math.round(1000/25);
   else sleep = Math.round(1000/framerate);
