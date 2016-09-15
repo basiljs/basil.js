@@ -5,6 +5,9 @@ lib/extendables/log/extendables.log
 *.idlk
 # test files
 test/download/data/
+test/download/lib/
+test/download/lib/basil.js
+test/loop/lib/basil.js
 
 # Dependency directories
 node_modules
