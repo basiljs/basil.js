@@ -3,8 +3,22 @@ basil.sublime-workspace
 examples/image/*.indd
 lib/extendables/log/extendables.log
 *.idlk
-# debug info
-examples/ui/debug
-includes/ui
 # test files
 test/download/data/
+
+# Dependency directories
+node_modules
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Optional npm cache directory
+.npm
+# Optional REPL history
+.node_repl_history
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
