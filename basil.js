@@ -3312,9 +3312,55 @@ pub.savePNG = function(file, showOptions){
  * @param {String} url The download url
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
-pub.download = function(url, file){
-  var projPath = projectFolder().fsName.replace(" ","\\ ");
-  var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
+pub.download = function(url, file) {
+  var projPath = projectFolder().fsName.replace(" ", "\\ ");
+  // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
+  // This is more portable then a fixed location
+  // the Script looks for the lib folder next to itself
+  var currentBasilFolderPath = File($.fileName).parent.fsName;
+  var scriptPath = currentBasilFolderPath + "/lib/download.sh";
+  if(File(scriptPath).exists === true) {
+    // the script is there. Great
+    scriptPath = File(scriptPath).fsName;
+  } else {
+    // if not lets create it on the fly
+    var scriptContent = [
+      "#!/bin/bash",
+      "mkdir -p \"$1\"",
+      "cd \"$1\"",
+      "if [ -z \"$3\" ]",
+      "  then",
+      "    # echo \"-O\"",
+      "    curl -L -O $2",
+      "  else",
+      "    # echo \"-o\"",
+      "    curl -L -o \"$3\" $2",
+      "fi"];
+    // check if the lib folder is there.
+    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
+      // no its not lets create ot
+      // should be functionalized
+      // will be needed for loop and stop.jsx as well
+      var res = Folder(currentBasilFolderPath + "/lib").create();
+      if(res === false) {
+        // ! Error creating folder :-(
+        // uh this should never happen
+        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
+        return;
+      }
+    } // end of lib folder check
+    // the folder should be there.
+    // lets get it
+    var libFolder = Folder(currentBasilFolderPath + "/lib");
+    // now create the script file
+    var downloadScript = new File(libFolder.fsName + "/download.sh");
+    downloadScript.open("w", undef, undef);
+    // set encoding and linefeeds
+    downloadScript.lineFeed = "Unix";
+    downloadScript.encoding = "UTF-8";
+    downloadScript.write(scriptContent.join("\n"));
+    downloadScript.close();
+  } // end of file and folder creation
 
   if (isURL(url)) {
     var cmd = null;
