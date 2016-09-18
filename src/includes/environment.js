@@ -311,9 +311,9 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
   // init
   var libFileName = "addToStoryLib.indl";
   var libFile = new File(Folder.temp+"/"+libFileName);
-  addToStoryCache = findInCollectionByName(app.libraries, libFileName);
+  addToStoryCache = app.libraries.itemByName(libFileName);
   // if and a cache is existing from previous executions, remove it
-  if (addToStoryCache) {
+  if (addToStoryCache.isValid) {
     addToStoryCache.close();
     libFile.remove();
   } 
