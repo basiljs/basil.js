@@ -411,19 +411,12 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
-// internal helper to get around try/catch for finding eg. a color in the swatches
-var findInCollectionByName = function(collection, name) {
-
-/*  var found = collection.itemByName(name);
-  if (!found || !found.isValid) return null;
-  return found;*/
-  
-   var found = null;
-   for (var i = 0; i < collection.length; i++) {
-     if (collection[i].name === name) return collection[i];
+// internal helper to get a style by name, wether it is nested in a stlye group or not
+var findInStylesByName = function(allStylesCollection, name) {
+   for (var i = 0; i < allStylesCollection.length; i++) {
+     if (allStylesCollection[i].name === name) return allStylesCollection[i];
    };
-   return found;
-
+   return null;
 };
 
 var checkNull = pub.checkNull = function (obj) {
