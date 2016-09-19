@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.09.08-10:54:10 */
+/* Basil.js v1.0.10 2016.09.19-02:45:55 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -1104,19 +1104,12 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
-// internal helper to get around try/catch for finding eg. a color in the swatches
-var findInCollectionByName = function(collection, name) {
-
-/*  var found = collection.itemByName(name);
-  if (!found || !found.isValid) return null;
-  return found;*/
-  
-   var found = null;
-   for (var i = 0; i < collection.length; i++) {
-     if (collection[i].name === name) return collection[i];
+// internal helper to get a style by name, wether it is nested in a stlye group or not
+var findInStylesByName = function(allStylesCollection, name) {
+   for (var i = 0; i < allStylesCollection.length; i++) {
+     if (allStylesCollection[i].name === name) return allStylesCollection[i];
    };
-   return found;
-
+   return null;
 };
 
 var checkNull = pub.checkNull = function (obj) {
@@ -1733,9 +1726,9 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
   // init
   var libFileName = "addToStoryLib.indl";
   var libFile = new File(Folder.temp+"/"+libFileName);
-  addToStoryCache = findInCollectionByName(app.libraries, libFileName);
+  addToStoryCache = app.libraries.itemByName(libFileName);
   // if and a cache is existing from previous executions, remove it
-  if (addToStoryCache) {
+  if (addToStoryCache.isValid) {
     addToStoryCache.close();
     libFile.remove();
   } 
@@ -3868,9 +3861,8 @@ pub.strokeWeight = function (weight) {
  * @return {ObjectStyle}  The object style instance.
  */
 pub.objectStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === 'undefined'){
+  var style = findInStylesByName(currentDoc().allObjectStyles, name);
+  if(!style){
     style = currentDoc().objectStyles.add({name: name});
   }
   return style;
@@ -4095,8 +4087,8 @@ pub.color = function() {
   if (arguments.length === 1) {
     // get color by name
     if (typeof a === 'string') {
-      newCol = findInCollectionByName(currentDoc().colors, a);
-      if (newCol) {
+      newCol = currentDoc().colors.itemByName(a);
+      if (newCol.isValid) {
         return newCol;
       } else {
         error("b.color(), a color with the provided name doesn't exist.");
@@ -4197,8 +4189,8 @@ pub.color = function() {
 
   // check whether color was already created and added to colors,
   // keeps the document clean ...
-  newCol = findInCollectionByName(currentDoc().colors, props.name);
-  if (newCol) {
+  newCol = currentDoc().colors.itemByName(props.name);
+  if (newCol.isValid) {
     newCol.properties = props;
     return newCol;
   } else {
@@ -4668,9 +4660,8 @@ pub.textTracking = function(tracking) {
  * @return {CharachterStyle}  The character style instance.
  */
 pub.characterStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === 'undefined'){
+  var style = findInStylesByName(currentDoc().allCharacterStyles, name);
+  if(!style){
     style = currentDoc().characterStyles.add({name: name});
   } 
   return style;  
@@ -4685,9 +4676,8 @@ pub.characterStyle = function(name) {
  * @return {ParagraphStyle}  The paragraph style instance.
  */
 pub.paragraphStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === 'undefined'){
+  var style = findInStylesByName(currentDoc().allParagraphStyles, name);
+  if(!style){
     style = currentDoc().paragraphStyles.add({name: name});
   } 
   return style;  
