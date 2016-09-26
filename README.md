@@ -10,7 +10,7 @@ For tutorials, examples and documentation go to the official website: [http://ba
 
 **Contributors**
 [Philipp Adrian](http://philippadrian.com), [be:screen GmbH](http://bescreen.de), [Ken Frederick](http://kennethfrederick.de), 
-[Stefan Landsbek](http://47nord.de), [Timo Rychert](http://timorychert.de) and [Fabian Morón Zirfas](http://fabianmoronzirfas.me)
+[Stefan Landsbek](http://47nord.de), [Timo Rychert](http://timorychert.de), [Fabian Morón Zirfas](http://fabianmoronzirfas.me)
 
 
 basil.js was conceived and is generously supported by
