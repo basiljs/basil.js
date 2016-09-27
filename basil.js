@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.09.08-10:54:10 */
+/* Basil.js v1.0.10 2016.09.15-10:05:27 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -705,7 +705,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
-};    
+};
 
 
 // ----------------------------------------
@@ -715,7 +715,7 @@ var init = function() {
  * Run the sketch! Has to be called in every sketch a the very end of the code.
  * You may add performance setting options when calling b.go():<br /><br />
  *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />   
+ * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
  * b.go(b.MODESILENT) <br />
  * b.go(b.MODEHIDDEN)<br /><br />
  *
@@ -748,7 +748,7 @@ pub.go = function (mode) {
     alert(e);
     exit();
   }
-  
+
   var executionDuration = pub.millis();
   if (executionDuration < 1000) {
     println("[Finished in " + executionDuration + "ms]");
@@ -785,6 +785,44 @@ pub.go = function (mode) {
  * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
  */
 pub.loop = function(framerate) {
+  // before running the loop we need to check if
+  // the stop script exists
+    // the Script looks for the lib folder next to itself
+  var currentBasilFolderPath = File($.fileName).parent.fsName;
+  var scriptPath = currentBasilFolderPath + "/lib/stop.jsx";
+  if(File(scriptPath).exists !== true) {
+    // the script is not there. lets create it
+    var scriptContent = [
+      "//@targetengine \"loop\"",
+      "//@include \"../basil.js\";",
+      "b.noLoop();",
+      "if (typeof cleanUp === \"function\") {",
+      "cleanUp();",
+      "}",
+      "cleanUp = null;"
+    ];
+    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
+      // the lib folder also does not exist
+      var res = Folder(currentBasilFolderPath + "/lib").create();
+      if(res === false) {
+        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
+        return;
+      }else{
+        // the folder is there
+      }
+      var libFolder = Folder(currentBasilFolderPath + "/lib");
+      var stopScript = new File(libFolder.fsName + "/stop.jsx");
+      stopScript.open("w", undef, undef);
+    // set encoding and linefeeds
+      stopScript.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+      stopScript.encoding = "UTF-8";
+      stopScript.write(scriptContent.join("\n"));
+      stopScript.close();
+    }
+  }else{
+    // the script is there
+    // awesome
+  }
   var sleep = null;
   if (arguments.length === 0) sleep = Math.round(1000/25);
   else sleep = Math.round(1000/framerate);
@@ -898,7 +936,7 @@ var setCurrDoc = function(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
-  
+
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
 //  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
 //  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
@@ -910,7 +948,7 @@ var setCurrDoc = function(doc) {
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
   pub.units(pub.PT);
-  
+
   updatePublicPageSizeVars();
 };
 
@@ -967,7 +1005,7 @@ var resetCurrDoc = function() {
   currYAlign = VerticalJustification.TOP_ALIGN;
   currFont = null;
   currImageMode = pub.CORNER;
-  
+
   pub.resetMatrix();
 };
 
@@ -1026,7 +1064,7 @@ var updatePublicPageSizeVars = function () {
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-      
+
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
         b.resetMatrix();
         b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
@@ -1038,9 +1076,9 @@ var updatePublicPageSizeVars = function () {
       widthOffset = 0;
       heightOffset = 0;
       b.resetMatrix();
-      
+
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
 
@@ -1049,10 +1087,10 @@ var updatePublicPageSizeVars = function () {
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
         pub.translate(-w,0);
       }
-       
-      
+
+
       pub.height = h;
-      break; 
+      break;
 
     case pub.FACING_BLEEDS:
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
@@ -1061,7 +1099,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -1079,7 +1117,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -1088,7 +1126,7 @@ var updatePublicPageSizeVars = function () {
         pub.translate(-w-widthOffset/2,0);
       }
 
-      return; // early exit    
+      return; // early exit
 
     default:
       b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
@@ -1097,7 +1135,7 @@ var updatePublicPageSizeVars = function () {
 
   if(singlePageMode){
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+    var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
     pub.width = w;
     pub.height = h;
@@ -1110,7 +1148,7 @@ var findInCollectionByName = function(collection, name) {
 /*  var found = collection.itemByName(name);
   if (!found || !found.isValid) return null;
   return found;*/
-  
+
    var found = null;
    for (var i = 0; i < collection.length; i++) {
      if (collection[i].name === name) return collection[i];
@@ -3312,9 +3350,55 @@ pub.savePNG = function(file, showOptions){
  * @param {String} url The download url
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
-pub.download = function(url, file){
-  var projPath = projectFolder().fsName.replace(" ","\\ ");
-  var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
+pub.download = function(url, file) {
+  var projPath = projectFolder().fsName.replace(" ", "\\ ");
+  // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
+  // This is more portable then a fixed location
+  // the Script looks for the lib folder next to itself
+  var currentBasilFolderPath = File($.fileName).parent.fsName;
+  var scriptPath = currentBasilFolderPath + "/lib/download.sh";
+  if(File(scriptPath).exists === true) {
+    // the script is there. Great
+    scriptPath = File(scriptPath).fsName;
+  } else {
+    // if not lets create it on the fly
+    var scriptContent = [
+      "#!/bin/bash",
+      "mkdir -p \"$1\"",
+      "cd \"$1\"",
+      "if [ -z \"$3\" ]",
+      "  then",
+      "    # echo \"-O\"",
+      "    curl -L -O $2",
+      "  else",
+      "    # echo \"-o\"",
+      "    curl -L -o \"$3\" $2",
+      "fi"];
+    // check if the lib folder is there.
+    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
+      // no its not lets create ot
+      // should be functionalized
+      // will be needed for loop and stop.jsx as well
+      var res = Folder(currentBasilFolderPath + "/lib").create();
+      if(res === false) {
+        // ! Error creating folder :-(
+        // uh this should never happen
+        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
+        return;
+      }
+    } // end of lib folder check
+    // the folder should be there.
+    // lets get it
+    var libFolder = Folder(currentBasilFolderPath + "/lib");
+    // now create the script file
+    var downloadScript = new File(libFolder.fsName + "/download.sh");
+    downloadScript.open("w", undef, undef);
+    // set encoding and linefeeds
+    downloadScript.lineFeed = "Unix";
+    downloadScript.encoding = "UTF-8";
+    downloadScript.write(scriptContent.join("\n"));
+    downloadScript.close();
+  } // end of file and folder creation
 
   if (isURL(url)) {
     var cmd = null;
