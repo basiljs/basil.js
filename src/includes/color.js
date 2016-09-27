@@ -34,7 +34,7 @@ pub.fill = function (fillColor) {
 };
 
 /**
- * Disables filling geometry. If both noStroke() and noFill() are called, 
+ * Disables filling geometry. If both noStroke() and noFill() are called,
  * newly drawn shapes will be invisible.
  *
  * @cat Color
@@ -75,9 +75,9 @@ pub.stroke = function (strokeColor) {
 };
 
 /**
- * Disables drawing the stroke (outline). If both noStroke() and noFill() 
+ * Disables drawing the stroke (outline). If both noStroke() and noFill()
  * are called, nothing will be drawn to the screen.
- * 
+ *
  * @cat Color
  * @method noStroke
  */
@@ -87,7 +87,7 @@ pub.noStroke = function () {
 
 /**
  * Sets the tint of the color used to fill shapes.
- * 
+ *
  * @cat Color
  * @method fillTint
  * @param  {Number} tint Number from 0 to 100
@@ -103,7 +103,7 @@ pub.fillTint = function (tint) {
 
 /**
  * Sets the tint of the color used to draw lines and borders around shapes.
- * 
+ *
  * @cat Color
  * @method strokeTint
  * @param  {Number} tint Number from 0 to 100
@@ -119,7 +119,7 @@ pub.strokeTint = function (tint) {
 
 /**
  * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RBG.
- * 
+ *
  * @cat Color
  * @method colorMode
  * @param  {Number} colorMode Either b.RGB or b.CMYK
@@ -231,7 +231,7 @@ pub.color = function() {
     } else {
       error(colorErrorMsg);
     }
-    
+
 
   } else if (arguments.length === 4 && typeof d === 'string') {
     // R G B + name
@@ -252,8 +252,8 @@ pub.color = function() {
     if (currColorMode === pub.CMYK) {
       a = pub.constrain(a, 0, 100);
       b = pub.constrain(b, 0, 100);
-      c = pub.constrain(c, 0, 100);      
-      d = pub.constrain(d, 0, 100);      
+      c = pub.constrain(c, 0, 100);
+      d = pub.constrain(d, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [a,b,c,d];
@@ -261,13 +261,13 @@ pub.color = function() {
     } else {
       error(colorErrorMsg);
     }
-   
+
   } else if (arguments.length === 5 && typeof e === 'string' && currColorMode === pub.CMYK) {
     // C M Y K + name
     a = pub.constrain(a, 0, 100);
     b = pub.constrain(b, 0, 100);
-    c = pub.constrain(c, 0, 100);      
-    d = pub.constrain(d, 0, 100);       
+    c = pub.constrain(c, 0, 100);
+    d = pub.constrain(d, 0, 100);
     props.model = ColorModel.PROCESS;
     props.space = ColorSpace.CMYK;
     props.colorValue = [a,b,c,d];
@@ -390,7 +390,7 @@ pub.gradient = function() {
 
 /**
  * Sets the opacity property of an object.
- * 
+ *
  * @cat Color
  * @method opacity
  * @param  {Object} obj The object to set opacity property
@@ -407,7 +407,7 @@ pub.opacity = function(obj, opacity){
 
 /**
  * Sets the Effects blendMode property of an object.
- * 
+ *
  * @cat Color
  * @method blendMode
  * @param  {Object} obj The object to set blendMode property
@@ -439,10 +439,10 @@ pub.blendMode = function(obj, blendMode){
 };
 
 /**
- * Calculates a color or colors between two color at a specific increment. 
+ * Calculates a color or colors between two color at a specific increment.
  * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
  * N.B.: Both color must be either CMYK or RGB.
- * 
+ *
  * @cat Color
  * @method lerpColor
  * @param  {Color} c1   Input color 1
@@ -453,8 +453,8 @@ pub.blendMode = function(obj, blendMode){
 pub.lerpColor = function (c1, c2, amt) {
   checkNull(c1);
   checkNull(c2);
-  if ( (c1 instanceof Color || c1 instanceof Swatch) && 
-     (c2 instanceof Color || c2 instanceof Swatch) && 
+  if ( (c1 instanceof Color || c1 instanceof Swatch) &&
+     (c2 instanceof Color || c2 instanceof Swatch) &&
       typeof amt === 'number') {
     if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
       var C1 = c1.colorValue[0];
