@@ -2,14 +2,14 @@
 // Typography
 
 /**
- * Creates a text frame on the current layer on the current page in the current document. 
+ * Creates a text frame on the current layer on the current page in the current document.
  * The text frame gets created in the position specified by the x and y parameters.
- * The default document font will be used unless a font is set with the textFont() function. 
- * The default document font size will be used unless a font size is set with the textSize() function. 
+ * The default document font will be used unless a font is set with the textFont() function.
+ * The default document font size will be used unless a font size is set with the textSize() function.
  * Change the color of the text with the fill() function.
- * The text displays in relation to the textAlign() and textYAlign() functions. 
+ * The text displays in relation to the textAlign() and textYAlign() functions.
  * The width and height parameters define a rectangular area.
- * 
+ *
  * @cat Typography
  * @method text
  * @param  {String} txt The text content to set in the text frame.
@@ -38,7 +38,7 @@ pub.text = function(txt, x, y, w, h) {
     'tracking': currTracking
   });
 
-  
+
   if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
@@ -124,7 +124,7 @@ pub.typo = function(item, property, value) {
 };
 
 var isValid = function (item) {
-  
+
   checkNull(item);
 
     if (item.hasOwnProperty("isValid")) {
@@ -135,7 +135,7 @@ var isValid = function (item) {
       }
     }
     return true; // if does not have isValid field -> normal array element and not collection
-  
+
   return false;
 };
 
@@ -257,8 +257,8 @@ pub.characterStyle = function(name) {
   var style = findInCollectionByName(name);
   if(typeof style === 'undefined'){
     style = currentDoc().characterStyles.add({name: name});
-  } 
-  return style;  
+  }
+  return style;
 };
 
 /**
@@ -274,8 +274,8 @@ pub.paragraphStyle = function(name) {
   var style = findInCollectionByName(name);
   if(typeof style === 'undefined'){
     style = currentDoc().paragraphStyles.add({name: name});
-  } 
-  return style;  
+  }
+  return style;
 };
 
 /**

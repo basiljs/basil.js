@@ -27,8 +27,8 @@ var currDoc = null,
     currImageMode = null,
     currCanvasMode = null,
     currVertexPoints = null,
-    currPathPointer = null,  
-    currPolygon = null,    
+    currPathPointer = null,
+    currPolygon = null,
     currShapeMode = null,
     // tmp cache, see addToStroy(), via indesign external library file
     addToStoryCache = null;
