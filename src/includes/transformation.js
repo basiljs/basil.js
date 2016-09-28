@@ -61,7 +61,7 @@ pub.itemPosition = function(pItem, x, y) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
 
   if ( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-  
+
     if( typeof x === 'number' && typeof y === 'number') {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
@@ -72,11 +72,11 @@ pub.itemPosition = function(pItem, x, y) {
       //   offY = height / 2;
       // }
       pItem.geometricBounds = [ y + offY, x + offX, y + height + offY, x + width + offX];
-      
+
     } else {
       return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
     }
-    
+
   } else {
     error("b.itemPosition(), works only with child classes of PageItem.");
   }
@@ -96,7 +96,7 @@ pub.itemPosition = function(pItem, x, y) {
 pub.itemSize = function(pItem, width, height) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-  
+
     var x = pItem.geometricBounds[1];
     var y = pItem.geometricBounds[0];
 
@@ -109,11 +109,11 @@ pub.itemSize = function(pItem, width, height) {
       // } else {
         pItem.geometricBounds = [ y, x, y + height, x + width];
       // }
-      
+
     } else {
       return { width: pItem.geometricBounds[3] - pItem.geometricBounds[1] , height: pItem.geometricBounds[2] - pItem.geometricBounds[0] };
     }
-    
+
   } else {
     error("b.itemSize(), works only with child classes of PageItem.");
   }
@@ -158,8 +158,8 @@ Matrix2D.prototype = {
   },
   adobeMatrix: function array() {
 
-    var uVX = new UnitValue(this.elements[2], currUnits); 
-    var uVY = new UnitValue(this.elements[5], currUnits); 
+    var uVX = new UnitValue(this.elements[2], currUnits);
+    var uVY = new UnitValue(this.elements[5], currUnits);
 
     return [this.elements[0],
             this.elements[3],
@@ -322,16 +322,16 @@ pub.matrix = function(matrix) {
  * @param {Matrix2D} matrix The matrix to be applied
  */
 pub.transform = function(obj, matrix) {
-  
+
   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   matrix.adobeMatrix() 
-  );  
+                   matrix.adobeMatrix()
+  );
 
-}  
+}
 
 /**
- * Multiplies the current matrix by the one specified through the parameters. 
+ * Multiplies the current matrix by the one specified through the parameters.
  *
  * @cat Document
  * @subcat Transformation
@@ -406,7 +406,7 @@ pub.rotate = function (angle) {
 
 /**
  * Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().
- * If only one parameter is given, it is applied on X and Y axis. 
+ * If only one parameter is given, it is applied on X and Y axis.
  *
  * @cat Document
  * @subcat Transformation
@@ -425,7 +425,7 @@ pub.scale = function (scaleX,scaleY) {
  * @cat Document
  * @subcat Transformation
  * @method translate
- * @param {Number} tx The amount of offset on the X axis. 
+ * @param {Number} tx The amount of offset on the X axis.
  * @param {Number} ty The amount of offset on the Y axis.
  */
 pub.translate = function (tx,ty) {

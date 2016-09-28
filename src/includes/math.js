@@ -8,7 +8,7 @@ var Vector = pub.Vector = function() {
    * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the Vector class.
    *
    * Constructor of Vector, can be two- or three-dimensional.
-   * 
+   *
    * @constructor
    * @cat Data
    * @subcat Vector
@@ -293,7 +293,7 @@ var Vector = pub.Vector = function() {
     toString: function() {
       return "[" + this.x + ", " + this.y + ", " + this.z + "]";
     },
-    /** 
+    /**
      * Returns this vector as an array [x,y,z].
      * @method Vector.array
      * @cat Data
@@ -317,9 +317,9 @@ var Vector = pub.Vector = function() {
 }();
 
 
-// -- Calculation --  
- 
-/** 
+// -- Calculation --
+
+/**
  * Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.
  *
  * @cat Math
@@ -384,7 +384,7 @@ pub.dist = function() {
 
 /**
  * Returns Euler's number e (2.71828...) raised to the power of the value parameter.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method exp
@@ -395,7 +395,7 @@ pub.exp = Math.exp;
 
 /**
  * Calculates the closest int value that is less than or equal to the value of the parameter.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method floor
@@ -422,7 +422,7 @@ pub.lerp = function(value1, value2, amt) {
 
 /**
  * Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than 0.0.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method log
@@ -433,7 +433,7 @@ pub.log = Math.log;
 
 /**
  * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method mag
@@ -450,9 +450,9 @@ pub.mag = function(a, b, c) {
 
 /**
  * Re-maps a number from one range to another. In the example above, the number '25' is converted from a value in the range 0..100 into a value that ranges from the left edge (0) to the right edge (width) of the screen.
- * 
+ *
  * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method map
@@ -470,15 +470,15 @@ pub.map = function(value, istart, istop, ostart, ostop) {
 
 /**
  * Determines the largest value in a sequence of numbers.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method max
- * @param {Number|Array} param1 Either the first value or an array of Numbers 
+ * @param {Number|Array} param1 Either the first value or an array of Numbers
  * @param {Number} param2 Another value to be compared
  * @param {Number} param3 Another value to be compared
  * @return {Number} The highest value
- */ 
+ */
 pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -491,15 +491,15 @@ pub.max = function() {
 
 /**
  * Determines the smallest value in a sequence of numbers.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method min
- * @param {Number|Array} param1 Either the first value or an array of Numbers 
+ * @param {Number|Array} param1 Either the first value or an array of Numbers
  * @param {Number} param2 Another value to be compared
  * @param {Number} param3 Another value to be compared
  * @return {Number} The lowest value
- */ 
+ */
 pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -511,9 +511,9 @@ pub.min = function() {
 };
 
 /**
- * Normalizes a number from another range into a value between 0 and 1. 
+ * Normalizes a number from another range into a value between 0 and 1.
  *
- * Identical to map(value, low, high, 0, 1); 
+ * Identical to map(value, low, high, 0, 1);
  *
  * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
  *
@@ -560,7 +560,7 @@ pub.round = Math.round;
  * @subcat Calculation
  * @method sq
  * @param {Number} aNumber The value to be squared
- * @return {Number} 
+ * @return {Number}
  */
 pub.sq = function(aNumber) {
   if(arguments.length !== 1 ) error("b.sq(), wrong argument count.");
@@ -576,69 +576,69 @@ pub.sq = function(aNumber) {
  * @subcat Trigonometry
  * @method sqrt
  * @param {Number} val The value to be calculated
- * @return {Number} 
+ * @return {Number}
  */
 pub.sqrt = Math.sqrt;
 
 /**
  * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method acos
  * @param {Number} value the value whose arc cosine is to be returned
- * @return {Number} 
+ * @return {Number}
  */
 pub.acos = Math.acos;
 
 /**
  * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method asin
  * @param {Number} value the value whose arc sine is to be returned
- * @return {Number} 
- */  
+ * @return {Number}
+ */
 pub.asin = Math.asin;
 
 /**
  * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method atan
  * @param {Number} value the value whose arc tangent is to be returned
- * @return {Number} 
+ * @return {Number}
  */
 pub.atan = Math.atan;
 
 /**
  * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method atan2
  * @param {Number} y the y coordinate
  * @param {Number} x the x coordinate
- * @return {Number} 
+ * @return {Number}
  */
 pub.atan2 = Math.atan2;
 
 /**
  * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method cos
  * @param {Number} rad a value in radians
- * @return {Number} 
+ * @return {Number}
  */
 pub.cos = Math.cos;
 
 /**
  * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method degrees
@@ -651,7 +651,7 @@ pub.degrees = function(aAngle) {
 
 /**
  * Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method radians
@@ -664,23 +664,23 @@ pub.radians = function(aAngle) {
 
 /**
  * Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to 6.28). Values are returned in the range -1 to 1.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method sin
  * @param {Number} rad a value in radians
- * @return {Number} 
+ * @return {Number}
  */
 pub.sin = Math.sin;
 
 /**
  * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method tan
  * @param {Number} rad a value in radians
- * @return {Number} 
+ * @return {Number}
  */
 pub.tan = Math.tan;
 
@@ -690,7 +690,7 @@ var currentRandom = Math.random;
 
 /**
  * Generates random numbers. Each time the random() function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call random(5) returns values between 0 and 5. If two parameters are passed, it will return a float with a value between the the parameters. The function call random(-5, 10.2) returns values between -5 and 10.2.
- * 
+ *
  * One parameter sets the range from 0 to the given parameter, while with two parameters present you set the range from val1 - val2.
  *
  * @cat Math
@@ -765,26 +765,26 @@ function PerlinNoise(seed) {
     perm[i] = t;
   }
   for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
-  
+
   function grad3d(i, x, y, z) {
     var h = i & 15;
     var u = h < 8 ? x : y,
     v = h < 4 ? y : h === 12 || h === 14 ? x : z;
     return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
   }
-  
+
   function grad2d(i, x, y) {
     var v = (i & 1) === 0 ? x : y;
     return (i & 2) === 0 ? -v : v;
   }
-  
+
   function grad1d(i, x) {
     return (i & 1) === 0 ? -x : x;
   }
   function lerp(t, a, b) {
     return a + t * (b - a);
   }
-  
+
   this.noise3d = function(x, y, z) {
     var X = Math.floor(x) & 255,
       Y = Math.floor(y) & 255,
@@ -803,7 +803,7 @@ function PerlinNoise(seed) {
       p11 = perm[p1 + 1] + Z;
     return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
   };
-  
+
   this.noise2d = function(x, y) {
     var X = Math.floor(x) & 255,
       Y = Math.floor(y) & 255;
@@ -815,7 +815,7 @@ function PerlinNoise(seed) {
       p1 = perm[X + 1] + Y;
     return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
   };
-  
+
   this.noise1d = function(x) {
     var X = Math.floor(x) & 255;
     x -= Math.floor(x);
@@ -835,7 +835,7 @@ var noiseProfile = {
  *
  * The main difference to the random() function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between 0.0 and 1.0. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.
  *
- * The actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result. 
+ * The actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result.
  *
  * Another way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn't matter as such, only the distance between successive coordinates does (eg. when using noise() within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of 0.005-0.03 work best for most applications, but this will differ depending on use.
  *
@@ -875,7 +875,7 @@ pub.noise = function(x, y, z) {
  * Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().
  *
  * By changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.
- * 
+ *
  * @cat Math
  * @subcat Random
  * @method noiseDetail
@@ -887,13 +887,13 @@ pub.noiseDetail = function(octaves, fallout) {
   if (fallout !== undef) noiseProfile.fallout = fallout;
 };
 
-/** 
+/**
  * Sets the seed value for noise(). By default, noise() produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.
- * 
+ *
  * @cat Math
  * @subcat Random
  * @method noiseSeed
- * @param {Number} seed 
+ * @param {Number} seed
  */
 pub.noiseSeed = function(seed) {
   noiseProfile.seed = seed;
@@ -979,11 +979,11 @@ pub.bounds = function (obj) {
       error("b.bounds(), invalide type of parameter! Can't get bounds for this object.");
     }
   }
-};  
+};
 
 /**
  * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
- * 
+ *
  * @cat Document
  * @subcat Transformation
  * @method itemX
