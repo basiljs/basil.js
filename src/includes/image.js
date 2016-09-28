@@ -52,7 +52,7 @@ pub.image = function(img, x, y, w, h) {
       }
     } else {
       if (typeof w === 'number' && typeof h === 'number'){
-        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.") 
+        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.")
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
@@ -62,14 +62,14 @@ pub.image = function(img, x, y, w, h) {
         error(imgErrorMsg);
       }
     }
-    
-    frame = currentPage().rectangles.add(currentLayer(), 
+
+    frame = currentPage().rectangles.add(currentLayer(),
       { geometricBounds:[y, x, y + height, x + width] }
     );
   } else {
     error(imgErrorMsg);
   }
-  
+
   frame.place(file);
 
   if (fitOptions) {

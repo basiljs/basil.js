@@ -24,7 +24,7 @@ pub.delay = function (milliseconds) {
  * @return {Stories[]} Array of Stories.
  */
 pub.stories = function(doc, cb) {
-  
+
   checkNull(doc);
 
   if(arguments.length === 1 && doc instanceof Document) {
@@ -44,12 +44,12 @@ pub.stories = function(doc, cb) {
  * @method paragraphs
  * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
  * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
- * @return {Paragraphs[]} Array of Paragraphs.   
+ * @return {Paragraphs[]} Array of Paragraphs.
  */
 pub.paragraphs = function(item, cb) {
 
   checkNull(item);
-    
+
   if(!item.hasOwnProperty('contents')) error("b.paragraphs(), Wrong object type.");
 
   if(arguments.length === 1) {
@@ -72,7 +72,7 @@ pub.paragraphs = function(item, cb) {
 //  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
 //  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
 //  * return {Array} An array of strings
-//  * 
+//  *
 //  */
 //  // FIXME
 // pub.sentences = function(item, cb) {
@@ -88,7 +88,7 @@ pub.paragraphs = function(item, cb) {
 //   if(arguments.length >= 1 ) {
 //     var arr;
 //     try{
-//       str = item.contents;  
+//       str = item.contents;
 //       arr = str.match( /[^\.!\?]+[\.!\?]+/g );
 //     } catch (e){
 //       error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
@@ -150,7 +150,7 @@ pub.words = function(item, cb) {
   checkNull(item);
 
   if(!item.hasOwnProperty('contents')) error("b.words(), Wrong object type.");
-  
+
   if(arguments.length === 1){
     return item.words;
   } else if (cb instanceof Function) {
@@ -210,14 +210,14 @@ var forEachStoryProperty = function(doc, property, cb) {
  * @subcat Multi-Getters
  * @method items
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
- * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+ * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {PageItems[]} array or PageItems.
  */
 pub.items = function(container, cb) {
 
-  if (container instanceof Document 
-    || container instanceof Page 
-    || container instanceof Layer 
+  if (container instanceof Document
+    || container instanceof Page
+    || container instanceof Layer
     || container instanceof Group) {
 
     if(arguments.length === 1 || cb === false){
@@ -240,9 +240,9 @@ pub.items = function(container, cb) {
  */
 pub.clear = function(container) {
 
-  if (container instanceof Document 
-    || container instanceof Page 
-    || container instanceof Layer 
+  if (container instanceof Document
+    || container instanceof Page
+    || container instanceof Layer
     || container instanceof Group) {
 
       return forEach(container.allPageItems, function(item,n){
