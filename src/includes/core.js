@@ -451,10 +451,12 @@ var updatePublicPageSizeVars = function () {
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {
-   for (var i = 0; i < allStylesCollection.length; i++) {
-     if (allStylesCollection[i].name === name) return allStylesCollection[i];
-   };
-   return null;
+  for (var i = 0; i < allStylesCollection.length; i++) {
+    if (allStylesCollection[i].name === name) {
+      return allStylesCollection[i];
+    }
+  };
+  return null;
 };
 
 var checkNull = pub.checkNull = function (obj) {
