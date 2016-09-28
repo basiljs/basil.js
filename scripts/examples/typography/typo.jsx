@@ -1,4 +1,4 @@
-﻿#includepath "~/Documents/;%USERPROFILE%Documents";
+#includepath "~/Documents/;%USERPROFILE%Documents";
 #include "basiljs/bundle/basil.js";
 
 function draw() {
@@ -9,16 +9,16 @@ function draw() {
 
   // add 5 pages to doc
   for (var i = 0; i < 5; i++) {
-    doc.pages.add();  
+    doc.pages.add();
   }
-  
+
   // add 2 text frame on each page
   for (var i = 0, len = doc.pages.length; i < len; i++) {
     b.page(i);
     b.text(content, 0, 0, 600, 300);
     b.text(content, 0, 350, 600, 300);
   }
-  
+
   var green = b.color(0, 255, 0, "green");
   var red = b.color(255, 0, 0, "red");
 
@@ -41,7 +41,7 @@ function draw() {
   b.typo(textFrame.paragraphs[1], 'strokeColor', red);
 
 // todo: add more relevant fields as a list here
-// b.typo(textFrame, 'justification', Justification.RIGHT_ALIGN);     
+// b.typo(textFrame, 'justification', Justification.RIGHT_ALIGN);
 
 }
 
