@@ -126,7 +126,9 @@ pub.strokeTint = function (tint) {
  */
 pub.colorMode = function(colorMode) {
   checkNull(colorMode);
-  if (arguments.length === 0) return currColorMode;
+  if (arguments.length === 0) {
+    return currColorMode;
+  }
   if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
   } else {
@@ -143,7 +145,9 @@ pub.colorMode = function(colorMode) {
  */
 pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
-  if (arguments.length === 0) return currGradientMode;
+  if (arguments.length === 0) {
+    return currGradientMode;
+  }
   if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
     currGradientMode = gradientMode;
   } else {
@@ -347,33 +351,49 @@ pub.gradient = function() {
       newGrad.type = GradientType.RADIAL;
     }
     return newGrad;
-  } else if (a instanceof Array){
+  } else if (a instanceof Array) {
     // array of colors
     var customStopLocations = false;
-    if(arguments.length > 3) error(gradientErrorMsg);
-    if(arguments.length > 1 && !(b instanceof Array || typeof b === 'string')) error(gradientErrorMsg);
-    if(arguments.length === 3 && !(typeof c === 'string')) error(gradientErrorMsg);
-    if(arguments.length > 1 && b instanceof Array) customStopLocations = true;
-    if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    if(arguments.length > 3) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && !(b instanceof Array || typeof b === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length === 3 && !(typeof c === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && b instanceof Array) {
+      customStopLocations = true;
+    }
+    if(customStopLocations && !(a.length === b.length)) {
+      error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    }
     var z = arguments[arguments.length - 1];
-    if (typeof z === 'string') {
-      if(currentDoc().colors.itemByName(z).isValid) error('b.gradient(), "' + z + '" already exists as a color. Use another name for the gradient.');
+    if (typeof z === "string") {
+      if(currentDoc().colors.itemByName(z).isValid) {
+        error("b.gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
+      }
       if(currentDoc().gradients.itemByName(z).isValid) {
         currentDoc().gradients.itemByName(z).remove();
-        warning('b.gradient(), a gradient named "' + z + '" already existed. The old gradient is replaced by a new one.')
+        warning("b.gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: z});
     } else {
       newGrad = currentDoc().gradients.add();
     }
     for (var i = 0; i < a.length; i++) {
-      if(! (a[i] instanceof Color || a[i] instanceof Swatch)) {
-        error("b.gradient(), element #" + (i+1) + " of the given arrayOfColors is not a color or swatch.");
+      if(!(a[i] instanceof Color || a[i] instanceof Swatch)) {
+        error("b.gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
       }
-      if(i > newGrad.gradientStops.length - 1) newGrad.gradientStops.add();
+      if(i > newGrad.gradientStops.length - 1) {
+        newGrad.gradientStops.add();
+      }
       newGrad.gradientStops[i].stopColor = a[i];
-      if(customStopLocations){
-        if(! (typeof b[i] === 'number')) error("b.gradient(), element #" + (i+1) + " of the given arrayOfGradientStops is not a number.")
+      if(customStopLocations) {
+        if(!(typeof b[i] === "number")) {
+          error("b.gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
+        }
         newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
       } else {
         newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
