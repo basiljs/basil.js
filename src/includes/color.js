@@ -291,7 +291,7 @@ pub.color = function() {
     newCol = currentDoc().colors.add();
     newCol.properties = props;
     return newCol;
-  };
+  }
 };
 
 /**
