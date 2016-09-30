@@ -181,8 +181,8 @@ pub.color = function() {
   if (arguments.length === 1) {
     // get color by name
     if (typeof a === "string") {
-      newCol = findInCollectionByName(currentDoc().colors, a);
-      if (newCol) {
+      newCol = currentDoc().colors.itemByName(a);
+      if (newCol.isValid) {
         return newCol;
       } else {
         error("b.color(), a color with the provided name doesn't exist.");
@@ -283,8 +283,8 @@ pub.color = function() {
 
   // check whether color was already created and added to colors,
   // keeps the document clean ...
-  newCol = findInCollectionByName(currentDoc().colors, props.name);
-  if (newCol) {
+  newCol = currentDoc().colors.itemByName(props.name);
+  if (newCol.isValid) {
     newCol.properties = props;
     return newCol;
   } else {
