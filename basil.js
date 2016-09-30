@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.09.28-18:52:19 */
+/* Basil.js v1.0.10 2016.09.30-10:02:12 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -4012,13 +4012,13 @@ pub.fill = function (fillColor) {
     if (arguments.length === 1) {
       currFillColor = pub.color(arguments[0]);
     } else if (arguments.length === 2) {
-      currFillColor = pub.color(arguments[0],arguments[1]);
+      currFillColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currFillColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.fill(), wrong parameters. Use: "
         + "R,G,B,name or "
@@ -4054,13 +4054,13 @@ pub.stroke = function (strokeColor) {
     if (arguments.length === 1) {
       currStrokeColor = pub.color(arguments[0]);
     } else if (arguments.length === 2) {
-      currStrokeColor = pub.color(arguments[0],arguments[1]);
+      currStrokeColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.stroke(), too many parameters. Use: "
         + "R,G,B,name or "
@@ -4090,7 +4090,7 @@ pub.noStroke = function () {
  */
 pub.fillTint = function (tint) {
   checkNull(tint);
-  if (typeof tint === 'string' || typeof tint === 'number') {
+  if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
   } else {
     error("b.fillTint, not supported type. Please make sure the strokeweight is a number or string");
@@ -4106,7 +4106,7 @@ pub.fillTint = function (tint) {
  */
 pub.strokeTint = function (tint) {
   checkNull(tint);
-  if (typeof tint === 'string' || typeof tint === 'number') {
+  if (typeof tint === "string" || typeof tint === "number") {
     currStrokeTint = tint;
   } else {
     error("strokeTint(), not supported type. Please make sure the tint parameter is a number or string");
@@ -4122,7 +4122,9 @@ pub.strokeTint = function (tint) {
  */
 pub.colorMode = function(colorMode) {
   checkNull(colorMode);
-  if (arguments.length === 0) return currColorMode;
+  if (arguments.length === 0) {
+    return currColorMode;
+  }
   if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
   } else {
@@ -4139,7 +4141,9 @@ pub.colorMode = function(colorMode) {
  */
 pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
-  if (arguments.length === 0) return currGradientMode;
+  if (arguments.length === 0) {
+    return currGradientMode;
+  }
   if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
     currGradientMode = gradientMode;
   } else {
@@ -4159,10 +4163,10 @@ pub.color = function() {
   var newCol;
   var props = {};
   var a = arguments[0],
-      b = arguments[1],
-      c = arguments[2],
-      d = arguments[3],
-      e = arguments[4];
+    b = arguments[1],
+    c = arguments[2],
+    d = arguments[3],
+    e = arguments[4];
   var colorErrorMsg = "b.color(), wrong parameters. Use:\n"
       + "R,G,B,[name] in b.colorMode(b.RGB) or\n"
       + "C,M,Y,K,[name] in b.colorMode(b.CMYK) or\n"
@@ -4172,27 +4176,27 @@ pub.color = function() {
 
   if (arguments.length === 1) {
     // get color by name
-    if (typeof a === 'string') {
+    if (typeof a === "string") {
       newCol = currentDoc().colors.itemByName(a);
       if (newCol.isValid) {
         return newCol;
       } else {
         error("b.color(), a color with the provided name doesn't exist.");
       }
-    } else if (typeof a === 'number') {
+    } else if (typeof a === "number") {
       // GREY
       if (currColorMode === pub.RGB) {
         a = pub.constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
-        props.colorValue = [a,a,a];
-        props.name = "R="+a+" G="+a+" B="+a;
+        props.colorValue = [a, a, a];
+        props.name = "R=" + a + " G=" + a + " B=" + a;
       } else {
         a = pub.constrain(a, 0, 100);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
-        props.colorValue = [0,0,0,a];
-        props.name = "C="+0+" M="+0+" Y="+0+" K="+a;
+        props.colorValue = [0, 0, 0, a];
+        props.name = "C=" + 0 + " M=" + 0 + " Y=" + 0 + " K=" + a;
       }
     } else {
       error("b.color(), wrong type of first parameter.");
@@ -4204,13 +4208,13 @@ pub.color = function() {
       a = pub.constrain(a, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
-      props.colorValue = [a,a,a];
+      props.colorValue = [a, a, a];
       props.name = b;
     } else {
       a = pub.constrain(a, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
-      props.colorValue = [0,0,0,a];
+      props.colorValue = [0, 0, 0, a];
       props.name = b;
     }
 
@@ -4222,14 +4226,14 @@ pub.color = function() {
       c = pub.constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
-      props.colorValue = [a,b,c];
-      props.name = "R="+a+" G="+b+" B="+c;
+      props.colorValue = [a, b, c];
+      props.name = "R=" + a + " G=" + b + " B=" + c;
     } else {
       error(colorErrorMsg);
     }
 
 
-  } else if (arguments.length === 4 && typeof d === 'string') {
+  } else if (arguments.length === 4 && typeof d === "string") {
     // R G B + name
     if (currColorMode === pub.RGB) {
       a = pub.constrain(a, 0, 255);
@@ -4237,13 +4241,13 @@ pub.color = function() {
       c = pub.constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
-      props.colorValue = [a,b,c];
+      props.colorValue = [a, b, c];
       props.name = d;
     } else {
       error(colorErrorMsg);
     }
 
-  } else if (arguments.length === 4 && typeof d === 'number'){
+  } else if (arguments.length === 4 && typeof d === "number") {
     // C M Y K
     if (currColorMode === pub.CMYK) {
       a = pub.constrain(a, 0, 100);
@@ -4252,13 +4256,13 @@ pub.color = function() {
       d = pub.constrain(d, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
-      props.colorValue = [a,b,c,d];
-      props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+      props.colorValue = [a, b, c, d];
+      props.name = "C=" + a + " M=" + b + " Y=" + c + " K=" + d;
     } else {
       error(colorErrorMsg);
     }
 
-  } else if (arguments.length === 5 && typeof e === 'string' && currColorMode === pub.CMYK) {
+  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === pub.CMYK) {
     // C M Y K + name
     a = pub.constrain(a, 0, 100);
     b = pub.constrain(b, 0, 100);
@@ -4266,7 +4270,7 @@ pub.color = function() {
     d = pub.constrain(d, 0, 100);
     props.model = ColorModel.PROCESS;
     props.space = ColorSpace.CMYK;
-    props.colorValue = [a,b,c,d];
+    props.colorValue = [a, b, c, d];
     props.name = e;
 
   } else {
@@ -4283,7 +4287,7 @@ pub.color = function() {
     newCol = currentDoc().colors.add();
     newCol.properties = props;
     return newCol;
-  };
+  }
 };
 
 /**
@@ -4303,17 +4307,17 @@ pub.color = function() {
  */
 pub.gradient = function() {
   var newGrad;
-  var props = {};
+  // var props = {};
   var a = arguments[0],
-      b = arguments[1],
-      c = arguments[2];
+    b = arguments[1],
+    c = arguments[2];
   var gradientErrorMsg = "b.gradient(), wrong parameters. Use:\n"
       + "c1,c2,[name] or\n"
       + "arrayOfColors,[name] or\n"
       + "arrayOfColors,arrayOfGradientStops,[name] or\n"
       + "gradientName";
 
-  if (typeof a === 'string' && arguments.length === 1) {
+  if (typeof a === "string" && arguments.length === 1) {
     // get gradient by name
     newGrad = currentDoc().gradients.itemByName(a);
     if (newGrad.isValid) {
@@ -4321,13 +4325,15 @@ pub.gradient = function() {
     } else {
       error("b.gradient(), a gradient with the provided name doesn't exist.");
     }
-  } else if (a instanceof Color && b instanceof Color && (typeof c === 'string' || arguments.length === 2)) {
+  } else if (a instanceof Color && b instanceof Color && (typeof c === "string" || arguments.length === 2)) {
     // c1 and c2
-    if (typeof c === 'string') {
-      if(currentDoc().colors.itemByName(c).isValid) error('b.gradient(), "' + c + '" already exists as a color. Use another name for the gradient.');
+    if (typeof c === "string") {
+      if(currentDoc().colors.itemByName(c).isValid) {
+        error("b.gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
+      }
       if(currentDoc().gradients.itemByName(c).isValid) {
         currentDoc().gradients.itemByName(c).remove();
-        warning('b.gradient(), a gradient named "' + c + '" already existed. The old gradient is replaced by a new one.')
+        warning("b.gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: c});
     } else {
@@ -4341,33 +4347,49 @@ pub.gradient = function() {
       newGrad.type = GradientType.RADIAL;
     }
     return newGrad;
-  } else if (a instanceof Array){
+  } else if (a instanceof Array) {
     // array of colors
     var customStopLocations = false;
-    if(arguments.length > 3) error(gradientErrorMsg);
-    if(arguments.length > 1 && !(b instanceof Array || typeof b === 'string')) error(gradientErrorMsg);
-    if(arguments.length === 3 && !(typeof c === 'string')) error(gradientErrorMsg);
-    if(arguments.length > 1 && b instanceof Array) customStopLocations = true;
-    if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    if(arguments.length > 3) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && !(b instanceof Array || typeof b === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length === 3 && !(typeof c === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && b instanceof Array) {
+      customStopLocations = true;
+    }
+    if(customStopLocations && !(a.length === b.length)) {
+      error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    }
     var z = arguments[arguments.length - 1];
-    if (typeof z === 'string') {
-      if(currentDoc().colors.itemByName(z).isValid) error('b.gradient(), "' + z + '" already exists as a color. Use another name for the gradient.');
+    if (typeof z === "string") {
+      if(currentDoc().colors.itemByName(z).isValid) {
+        error("b.gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
+      }
       if(currentDoc().gradients.itemByName(z).isValid) {
         currentDoc().gradients.itemByName(z).remove();
-        warning('b.gradient(), a gradient named "' + z + '" already existed. The old gradient is replaced by a new one.')
+        warning("b.gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: z});
     } else {
       newGrad = currentDoc().gradients.add();
     }
     for (var i = 0; i < a.length; i++) {
-      if(! (a[i] instanceof Color || a[i] instanceof Swatch)) {
-        error("b.gradient(), element #" + (i+1) + " of the given arrayOfColors is not a color or swatch.");
+      if(!(a[i] instanceof Color || a[i] instanceof Swatch)) {
+        error("b.gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
       }
-      if(i > newGrad.gradientStops.length - 1) newGrad.gradientStops.add();
+      if(i > newGrad.gradientStops.length - 1) {
+        newGrad.gradientStops.add();
+      }
       newGrad.gradientStops[i].stopColor = a[i];
-      if(customStopLocations){
-        if(! (typeof b[i] === 'number')) error("b.gradient(), element #" + (i+1) + " of the given arrayOfGradientStops is not a number.")
+      if(customStopLocations) {
+        if(!(typeof b[i] === "number")) {
+          error("b.gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
+        }
         newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
       } else {
         newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
@@ -4392,12 +4414,12 @@ pub.gradient = function() {
  * @param  {Object} obj The object to set opacity property
  * @param  {Number} opacity The opacity value form 0 to 100
  */
-pub.opacity = function(obj, opacity){
+pub.opacity = function(obj, opacity) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
   } else {
-    warning("b.opacity(), the object "+ obj.toString() +" doesn't have an opacity property");
+    warning("b.opacity(), the object " + obj.toString() + " doesn't have an opacity property");
   }
 };
 
@@ -4425,12 +4447,12 @@ pub.opacity = function(obj, opacity){
  *                           BlendMode.COLOR <br />
  *                           BlendMode.LUMINOSITY <br />
  */
-pub.blendMode = function(obj, blendMode){
+pub.blendMode = function(obj, blendMode) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
   } else {
-    warning("b.blendMode(), the object "+ obj.toString() +" doesn't have a blendMode property");
+    warning("b.blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
   }
 };
 
@@ -4449,9 +4471,9 @@ pub.blendMode = function(obj, blendMode){
 pub.lerpColor = function (c1, c2, amt) {
   checkNull(c1);
   checkNull(c2);
-  if ( (c1 instanceof Color || c1 instanceof Swatch) &&
+  if ((c1 instanceof Color || c1 instanceof Swatch) &&
      (c2 instanceof Color || c2 instanceof Swatch) &&
-      typeof amt === 'number') {
+      typeof amt === "number") {
     if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
       var C1 = c1.colorValue[0];
       var M1 = c1.colorValue[1];
@@ -4463,11 +4485,11 @@ pub.lerpColor = function (c1, c2, amt) {
       var Y2 = c2.colorValue[2];
       var K2 = c2.colorValue[3];
 
-      var COut = Math.round( pub.lerp(C1,C2,amt) );
-      var MOut = Math.round( pub.lerp(M1,M2,amt) );
-      var YOut = Math.round( pub.lerp(Y1,Y2,amt) );
-      var KOut = Math.round( pub.lerp(K1,K2,amt) );
-      return pub.color(COut,MOut,YOut,KOut);
+      var COut = Math.round(pub.lerp(C1, C2, amt));
+      var MOut = Math.round(pub.lerp(M1, M2, amt));
+      var YOut = Math.round(pub.lerp(Y1, Y2, amt));
+      var KOut = Math.round(pub.lerp(K1, K2, amt));
+      return pub.color(COut, MOut, YOut, KOut);
 
     } else if (c1.space === ColorSpace.RGB && c2.space === ColorSpace.RGB) {
       var R1 = c1.colorValue[0];
@@ -4478,10 +4500,10 @@ pub.lerpColor = function (c1, c2, amt) {
       var G2 = c2.colorValue[1];
       var B2 = c2.colorValue[2];
 
-      var ROut = Math.round( pub.lerp(R1,R2,amt) );
-      var GOut = Math.round( pub.lerp(G1,G2,amt) );
-      var BOut = Math.round( pub.lerp(B1,B2,amt) );
-      return pub.color(ROut,GOut,BOut);
+      var ROut = Math.round(pub.lerp(R1, R2, amt));
+      var GOut = Math.round(pub.lerp(G1, G2, amt));
+      var BOut = Math.round(pub.lerp(B1, B2, amt));
+      return pub.color(ROut, GOut, BOut);
 
     } else {
       error("b.lerpColor(), both color must be either CMYK or RGB.");
