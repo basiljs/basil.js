@@ -117,7 +117,7 @@ pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
-	                                                                                                                                                                  error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
+	                                                                                                                                                                                                          error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
   }else if (typeof h === "number" && typeof v === "number") {
     currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
     return currDoc.pasteboardPreferences.pasteboardMargins;
@@ -310,10 +310,11 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
   // init
   var libFileName = "addToStoryLib.indl";
+
   var libFile = new File(Folder.temp + "/" + libFileName);
-  addToStoryCache = findInCollectionByName(app.libraries, libFileName);
+  addToStoryCache = app.libraries.itemByName(libFileName);
   // if and a cache is existing from previous executions, remove it
-  if (addToStoryCache) {
+  if (addToStoryCache.isValid) {
     addToStoryCache.close();
     libFile.remove();
   }

@@ -253,9 +253,9 @@ pub.textTracking = function(tracking) {
  * @return {CharachterStyle}  The character style instance.
  */
 pub.characterStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === "undefined") {
+
+  var style = findInStylesByName(currentDoc().allCharacterStyles, name);
+  if(!style) {
     style = currentDoc().characterStyles.add({name: name});
   }
   return style;
@@ -270,9 +270,8 @@ pub.characterStyle = function(name) {
  * @return {ParagraphStyle}  The paragraph style instance.
  */
 pub.paragraphStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === "undefined") {
+  var style = findInStylesByName(currentDoc().allParagraphStyles, name);
+  if(!style) {
     style = currentDoc().paragraphStyles.add({name: name});
   }
   return style;
