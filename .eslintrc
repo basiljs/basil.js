@@ -68,7 +68,7 @@
     "no-sequences": 2,
     "no-unused-expressions": 2,
     "no-void": 0,
-    "no-warning-comments": 2,
+    "no-warning-comments": 0,
     "no-with": 2,
     "radix": 2,
     "vars-on-top": 0,
@@ -82,7 +82,7 @@
     "no-undef": 2,
     "no-undef-init": 2,
     "no-undefined": 2,
-    "no-unused-vars": 2,
+    "no-unused-vars": 0,
     "no-use-before-define": 2,
     "indent": [
       2,
