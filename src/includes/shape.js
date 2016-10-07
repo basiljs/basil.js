@@ -509,9 +509,9 @@ pub.strokeWeight = function (weight) {
  * @return {ObjectStyle}  The object style instance.
  */
 pub.objectStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === "undefined") {
+
+  var style = findInStylesByName(currentDoc().allObjectStyles, name);
+  if(!style) {
     style = currentDoc().objectStyles.add({name: name});
   }
   return style;

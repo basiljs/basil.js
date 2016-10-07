@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.09.15-10:05:27 */
+/* Basil.js v1.0.10 2016.09.30-10:02:12 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -397,8 +397,8 @@ var currDoc = null,
     currImageMode = null,
     currCanvasMode = null,
     currVertexPoints = null,
-    currPathPointer = null,  
-    currPolygon = null,    
+    currPathPointer = null,
+    currPolygon = null,
     currShapeMode = null,
     // tmp cache, see addToStroy(), via indesign external library file
     addToStoryCache = null;
@@ -454,7 +454,7 @@ if (!Array.prototype.map) {
       k++;
     }
     return A;
-  };      
+  };
 }
 
 /**
@@ -469,10 +469,10 @@ if (!Array.prototype.map) {
 if (!glob.forEach) {
   glob.forEach = function(collection, cb) {
     for (var i = 0, len = collection.length; i < len; i++) {
-      
+
       if(!isValid(collection[i])) {
         warning("forEach(), invalid object processed.");
-        continue;          
+        continue;
       }
 
       if(cb(collection[i],i) === false) {
@@ -486,7 +486,7 @@ pub.forEach = glob.forEach;
 
 /**
  * HashList is a data container that allows you to store information as key -> value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
- * 
+ *
  * @constructor
  * @cat Data
  * @subcat HashList
@@ -497,23 +497,23 @@ glob.HashList = function () {
   var that = {};
   that.length = 0;
   that.items = {};
-  
-  // TODO: initial function removal in items?      
+
+  // TODO: initial function removal in items?
   for ( var key in that.items ) {
     b.println(key);
   }
-  
+
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
   function checkKey(key) {
     if(that.items[key] instanceof Function) {
-        that.items[key] = undefined; 
+        that.items[key] = undefined;
     };
   }
 
   /**
-   * 
+   *
    * This removes a key -> value pair by its key.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.remove
@@ -532,20 +532,20 @@ glob.HashList = function () {
 
   /**
    * This gets a value by its key.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.get
    * @param {any} key The key to look for
    * @return {any} The value
    */
-  that.get = function(key) {    
+  that.get = function(key) {
     return that.items[key];
   }
 
   /**
    * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.set
@@ -568,12 +568,12 @@ glob.HashList = function () {
 
   /**
    * Checks for the existence of a given key.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.hasKey
    * @param {any} key The key to check
-   * @return {boolean} 
+   * @return {boolean}
    */
   that.hasKey = function(key) {
     checkKey(key);
@@ -582,12 +582,12 @@ glob.HashList = function () {
 
   /**
    * Checks if a certain value exists at least once in all of the key -> value pairs.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.hasValue
-   * @param {any} value 
-   * @return {boolean} 
+   * @param {any} value
+   * @return {boolean}
    */
   that.hasValue = function(value) {
     var obj = that.items;
@@ -600,19 +600,19 @@ glob.HashList = function () {
     }
     return found;
   }
-  
+
   /**
-   * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values. 
-   * 
+   * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeysByValues
-   * @return {Array} An array with all the keys 
+   * @return {Array} An array with all the keys
    */
   that.getKeysByValues = function() {
       var obj = that.items;
       var keys = [];
-      for(var key in obj) 
+      for(var key in obj)
         {
           if( typeof obj[key] != 'number' ) error("HashList.getKeysByValues(), only works with Numbers as values. ");
           keys.push(key);
@@ -621,24 +621,24 @@ glob.HashList = function () {
   }
 
   /**
-   * Returns an array with all keys in a sorted order from higher to lower magnitude. 
-   * 
+   * Returns an array with all keys in a sorted order from higher to lower magnitude.
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.getSortedKeys
-   * @return {Array} An array with all the keys 
+   * @return {Array} An array with all the keys
    */
   that.getSortedKeys = function () {
       return that.getKeys().sort(); // ["a", "b", "z"]
-  }    
+  }
 
   /**
    * Returns an array with all keys.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeys
-   * @return {Array} An array with all the keys 
+   * @return {Array} An array with all the keys
    */
   that.getKeys = function () {
       var keys = [];
@@ -655,11 +655,11 @@ glob.HashList = function () {
 
   /**
    * Returns an array with all keys.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeys
-   * @return {Array} An array with all the keys 
+   * @return {Array} An array with all the keys
    */
   that.getValues = function () {
 
@@ -670,12 +670,12 @@ glob.HashList = function () {
         values.push(obj[key]);
     }
     return values;
-    
+
   }
 
   /**
    * Deletes all the key -> value pairs in this HashList.
-   * 
+   *
    * @cat Data
    * @subcat HashList
    * @method HashList.clear
@@ -688,7 +688,7 @@ glob.HashList = function () {
   }
 
   return that;
-}  
+}
 
 
 // all initialisations should go here
@@ -1142,19 +1142,14 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
-// internal helper to get around try/catch for finding eg. a color in the swatches
-var findInCollectionByName = function(collection, name) {
-
-/*  var found = collection.itemByName(name);
-  if (!found || !found.isValid) return null;
-  return found;*/
-
-   var found = null;
-   for (var i = 0; i < collection.length; i++) {
-     if (collection[i].name === name) return collection[i];
-   };
-   return found;
-
+// internal helper to get a style by name, wether it is nested in a stlye group or not
+var findInStylesByName = function(allStylesCollection, name) {
+  for (var i = 0; i < allStylesCollection.length; i++) {
+    if (allStylesCollection[i].name === name) {
+      return allStylesCollection[i];
+    }
+  };
+  return null;
 };
 
 var checkNull = pub.checkNull = function (obj) {
@@ -1208,7 +1203,7 @@ pub.delay = function (milliseconds) {
  * @return {Stories[]} Array of Stories.
  */
 pub.stories = function(doc, cb) {
-  
+
   checkNull(doc);
 
   if(arguments.length === 1 && doc instanceof Document) {
@@ -1228,12 +1223,12 @@ pub.stories = function(doc, cb) {
  * @method paragraphs
  * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
  * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
- * @return {Paragraphs[]} Array of Paragraphs.   
+ * @return {Paragraphs[]} Array of Paragraphs.
  */
 pub.paragraphs = function(item, cb) {
 
   checkNull(item);
-    
+
   if(!item.hasOwnProperty('contents')) error("b.paragraphs(), Wrong object type.");
 
   if(arguments.length === 1) {
@@ -1256,7 +1251,7 @@ pub.paragraphs = function(item, cb) {
 //  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
 //  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
 //  * return {Array} An array of strings
-//  * 
+//  *
 //  */
 //  // FIXME
 // pub.sentences = function(item, cb) {
@@ -1272,7 +1267,7 @@ pub.paragraphs = function(item, cb) {
 //   if(arguments.length >= 1 ) {
 //     var arr;
 //     try{
-//       str = item.contents;  
+//       str = item.contents;
 //       arr = str.match( /[^\.!\?]+[\.!\?]+/g );
 //     } catch (e){
 //       error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
@@ -1334,7 +1329,7 @@ pub.words = function(item, cb) {
   checkNull(item);
 
   if(!item.hasOwnProperty('contents')) error("b.words(), Wrong object type.");
-  
+
   if(arguments.length === 1){
     return item.words;
   } else if (cb instanceof Function) {
@@ -1394,14 +1389,14 @@ var forEachStoryProperty = function(doc, property, cb) {
  * @subcat Multi-Getters
  * @method items
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
- * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+ * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {PageItems[]} array or PageItems.
  */
 pub.items = function(container, cb) {
 
-  if (container instanceof Document 
-    || container instanceof Page 
-    || container instanceof Layer 
+  if (container instanceof Document
+    || container instanceof Page
+    || container instanceof Layer
     || container instanceof Group) {
 
     if(arguments.length === 1 || cb === false){
@@ -1424,9 +1419,9 @@ pub.items = function(container, cb) {
  */
 pub.clear = function(container) {
 
-  if (container instanceof Document 
-    || container instanceof Page 
-    || container instanceof Layer 
+  if (container instanceof Document
+    || container instanceof Page
+    || container instanceof Layer
     || container instanceof Group) {
 
       return forEach(container.allPageItems, function(item,n){
@@ -1560,12 +1555,12 @@ pub.canvasMode = function ( m ) {
     error("b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
 
-};  
+};
 
 
 /**
- * Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given. 
- * 
+ * Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given.
+ *
  * @cat Document
  * @subcat Page
  * @method pasteboard
@@ -1587,7 +1582,7 @@ pub.pasteboard = function ( h, v ) {
 };
 
 /**
- * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
+ * Returns the current page and sets it if argument page is given. Numbering starts with 1.
  *
  * @cat Document
  * @subcat Page
@@ -1636,22 +1631,22 @@ pub.addPage = function(location) {
   checkNull(location);
 
   if(arguments.length === 0) location = b.AT_END; // default
-  
+
   var nP;
   try {
-    
+
     switch ( location ) {
-      
+
       case b.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
       case b.AT_BEGINNING:
-        nP = currentDoc().pages.add(location);     
+        nP = currentDoc().pages.add(location);
         break;
 
       case b.AFTER:
-        nP = currentDoc().pages.add(location, pub.page() ); 
+        nP = currentDoc().pages.add(location, pub.page() );
         break;
 
       case b.BEFORE:
@@ -1659,12 +1654,12 @@ pub.addPage = function(location) {
         break;
 
       default:
-        throw new Error(); 
+        throw new Error();
         break;
 
     };
 
-    pub.page( nP ); 
+    pub.page( nP );
     return nP;
 
   } catch (e) {
@@ -1771,12 +1766,12 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
   // init
   var libFileName = "addToStoryLib.indl";
   var libFile = new File(Folder.temp+"/"+libFileName);
-  addToStoryCache = findInCollectionByName(app.libraries, libFileName);
+  addToStoryCache = app.libraries.itemByName(libFileName);
   // if and a cache is existing from previous executions, remove it
-  if (addToStoryCache) {
+  if (addToStoryCache.isValid) {
     addToStoryCache.close();
     libFile.remove();
-  } 
+  }
   //create an indesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
@@ -1941,14 +1936,14 @@ pub.labels = function(label, cb) {
  * @method label
  * @param  {String} label The label identifier
  * @return {PageItem} The first PageItem of all the hits
- */  
+ */
 pub.label = function(label) {
   checkNull(label);
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
     var pageItem = doc.pageItems[i];
     if (pageItem.label === label) {
-      return pageItem;  
+      return pageItem;
     }
   }
   b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
@@ -1965,7 +1960,7 @@ pub.label = function(label) {
 pub.selection = function() {
   if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
   return app.selection[0];
-}; 
+};
 
 /**
  * Returns the currently selected object(s)
@@ -1980,7 +1975,7 @@ pub.selections = function(cb) {
   if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
   if (arguments.length === 1 && cb instanceof Function) {
     return forEach(app.selection, cb);
-  } 
+  }
   return app.selection;
 };
 
@@ -2050,7 +2045,7 @@ pub.units = function (units) {
     error("b.unit(), not supported unit");
   }
   if (unitsCalledCounter === 1) {
-    warning("Please note that b.units() will reset the current transformation matrix."); 
+    warning("Please note that b.units() will reset the current transformation matrix.");
   }
   unitsCalledCounter++;
   return currUnits;
@@ -2097,7 +2092,7 @@ pub.guideY = function (y) {
 };
 
 /**
- * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
+ * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
  *
  * @cat Document
  * @subcat Page
@@ -2111,15 +2106,15 @@ pub.guideY = function (y) {
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
 
-  
+
   if (arguments.length === 0){
-    
+
     return {'top':pub.page(pageNumber).marginPreferences.top,
             'right':pub.page(pageNumber).marginPreferences.right,
             'bottom':pub.page(pageNumber).marginPreferences.bottom,
             'left':pub.page(pageNumber).marginPreferences.left
             };
-    
+
   } else if (arguments.length === 1) {
     right = bottom = left = top;
     }
@@ -2138,7 +2133,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
   };
 
 /**
- * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
+ * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
  *
  * @cat Document
  * @subcat Page
@@ -2156,7 +2151,7 @@ pub.bleeds = function(top, right, bottom, left) {
             'bottom':currentDoc().documentPreferences.documentBleedBottomOffset,
             'left':currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
             };
-            
+
 } else if (arguments.length === 1) {
   right = bottom = left = top;
   }else{
@@ -2202,7 +2197,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
     }
     else if (constructorName === "Color") {
       println(indent+propname+": ["+obj.colorValue+"] "+constructorName);
-    } 
+    }
     else {
       println(indent+propname+": "+constructorName);
     }
@@ -2224,7 +2219,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
       println(indent+"--> "+propname+" "+e);
     }
   }
-}; 
+};
 
 
 // ----------------------------------------
@@ -2232,7 +2227,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
 
 /**
  * The year() function returns the current year as an integer (2012, 2013 etc).
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method year
@@ -2244,7 +2239,7 @@ pub.year = function() {
 
 /**
  * The month() function returns the current month as a value from 1 - 12.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method month
@@ -2256,7 +2251,7 @@ pub.month = function() {
 
 /**
  * The day() function returns the current day as a value from 1 - 31.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method day
@@ -2268,7 +2263,7 @@ pub.day = function() {
 
 /**
  * The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method weekday
@@ -2281,7 +2276,7 @@ pub.weekday = function() {
 
 /**
  * The hour() function returns the current hour as a value from 0 - 23.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method hour
@@ -2293,7 +2288,7 @@ pub.hour = function() {
 
 /**
  * The minute() function returns the current minute as a value from 0 - 59.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method minute
@@ -2305,7 +2300,7 @@ pub.minute = function() {
 
 /**
  * The second() function returns the current second as a value from 0 - 59.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method second
@@ -2317,7 +2312,7 @@ pub.second = function() {
 
 /**
  * Returns the number of milliseconds (thousandths of a second) since starting an applet.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method millis
@@ -2329,7 +2324,7 @@ pub.millis = function() {
 
 /**
  * The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method millisecond
@@ -2341,7 +2336,7 @@ pub.millisecond = function() {
 
 /**
  * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
- * 
+ *
  * @cat Environment
  * @subcat Date
  * @method timestamp
@@ -3952,9 +3947,8 @@ pub.strokeWeight = function (weight) {
  * @return {ObjectStyle}  The object style instance.
  */
 pub.objectStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === 'undefined'){
+  var style = findInStylesByName(currentDoc().allObjectStyles, name);
+  if(!style){
     style = currentDoc().objectStyles.add({name: name});
   }
   return style;
@@ -4018,13 +4012,13 @@ pub.fill = function (fillColor) {
     if (arguments.length === 1) {
       currFillColor = pub.color(arguments[0]);
     } else if (arguments.length === 2) {
-      currFillColor = pub.color(arguments[0],arguments[1]);
+      currFillColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currFillColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currFillColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.fill(), wrong parameters. Use: "
         + "R,G,B,name or "
@@ -4036,7 +4030,7 @@ pub.fill = function (fillColor) {
 };
 
 /**
- * Disables filling geometry. If both noStroke() and noFill() are called, 
+ * Disables filling geometry. If both noStroke() and noFill() are called,
  * newly drawn shapes will be invisible.
  *
  * @cat Color
@@ -4060,13 +4054,13 @@ pub.stroke = function (strokeColor) {
     if (arguments.length === 1) {
       currStrokeColor = pub.color(arguments[0]);
     } else if (arguments.length === 2) {
-      currStrokeColor = pub.color(arguments[0],arguments[1]);
+      currStrokeColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currStrokeColor = pub.color(arguments[0],arguments[1],arguments[2],arguments[3],arguments[4]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.stroke(), too many parameters. Use: "
         + "R,G,B,name or "
@@ -4077,9 +4071,9 @@ pub.stroke = function (strokeColor) {
 };
 
 /**
- * Disables drawing the stroke (outline). If both noStroke() and noFill() 
+ * Disables drawing the stroke (outline). If both noStroke() and noFill()
  * are called, nothing will be drawn to the screen.
- * 
+ *
  * @cat Color
  * @method noStroke
  */
@@ -4089,14 +4083,14 @@ pub.noStroke = function () {
 
 /**
  * Sets the tint of the color used to fill shapes.
- * 
+ *
  * @cat Color
  * @method fillTint
  * @param  {Number} tint Number from 0 to 100
  */
 pub.fillTint = function (tint) {
   checkNull(tint);
-  if (typeof tint === 'string' || typeof tint === 'number') {
+  if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
   } else {
     error("b.fillTint, not supported type. Please make sure the strokeweight is a number or string");
@@ -4105,14 +4099,14 @@ pub.fillTint = function (tint) {
 
 /**
  * Sets the tint of the color used to draw lines and borders around shapes.
- * 
+ *
  * @cat Color
  * @method strokeTint
  * @param  {Number} tint Number from 0 to 100
  */
 pub.strokeTint = function (tint) {
   checkNull(tint);
-  if (typeof tint === 'string' || typeof tint === 'number') {
+  if (typeof tint === "string" || typeof tint === "number") {
     currStrokeTint = tint;
   } else {
     error("strokeTint(), not supported type. Please make sure the tint parameter is a number or string");
@@ -4121,14 +4115,16 @@ pub.strokeTint = function (tint) {
 
 /**
  * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RBG.
- * 
+ *
  * @cat Color
  * @method colorMode
  * @param  {Number} colorMode Either b.RGB or b.CMYK
  */
 pub.colorMode = function(colorMode) {
   checkNull(colorMode);
-  if (arguments.length === 0) return currColorMode;
+  if (arguments.length === 0) {
+    return currColorMode;
+  }
   if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
   } else {
@@ -4145,7 +4141,9 @@ pub.colorMode = function(colorMode) {
  */
 pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
-  if (arguments.length === 0) return currGradientMode;
+  if (arguments.length === 0) {
+    return currGradientMode;
+  }
   if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
     currGradientMode = gradientMode;
   } else {
@@ -4165,10 +4163,10 @@ pub.color = function() {
   var newCol;
   var props = {};
   var a = arguments[0],
-      b = arguments[1],
-      c = arguments[2],
-      d = arguments[3],
-      e = arguments[4];
+    b = arguments[1],
+    c = arguments[2],
+    d = arguments[3],
+    e = arguments[4];
   var colorErrorMsg = "b.color(), wrong parameters. Use:\n"
       + "R,G,B,[name] in b.colorMode(b.RGB) or\n"
       + "C,M,Y,K,[name] in b.colorMode(b.CMYK) or\n"
@@ -4178,27 +4176,27 @@ pub.color = function() {
 
   if (arguments.length === 1) {
     // get color by name
-    if (typeof a === 'string') {
-      newCol = findInCollectionByName(currentDoc().colors, a);
-      if (newCol) {
+    if (typeof a === "string") {
+      newCol = currentDoc().colors.itemByName(a);
+      if (newCol.isValid) {
         return newCol;
       } else {
         error("b.color(), a color with the provided name doesn't exist.");
       }
-    } else if (typeof a === 'number') {
+    } else if (typeof a === "number") {
       // GREY
       if (currColorMode === pub.RGB) {
         a = pub.constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
-        props.colorValue = [a,a,a];
-        props.name = "R="+a+" G="+a+" B="+a;
+        props.colorValue = [a, a, a];
+        props.name = "R=" + a + " G=" + a + " B=" + a;
       } else {
         a = pub.constrain(a, 0, 100);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
-        props.colorValue = [0,0,0,a];
-        props.name = "C="+0+" M="+0+" Y="+0+" K="+a;
+        props.colorValue = [0, 0, 0, a];
+        props.name = "C=" + 0 + " M=" + 0 + " Y=" + 0 + " K=" + a;
       }
     } else {
       error("b.color(), wrong type of first parameter.");
@@ -4210,13 +4208,13 @@ pub.color = function() {
       a = pub.constrain(a, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
-      props.colorValue = [a,a,a];
+      props.colorValue = [a, a, a];
       props.name = b;
     } else {
       a = pub.constrain(a, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
-      props.colorValue = [0,0,0,a];
+      props.colorValue = [0, 0, 0, a];
       props.name = b;
     }
 
@@ -4228,14 +4226,14 @@ pub.color = function() {
       c = pub.constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
-      props.colorValue = [a,b,c];
-      props.name = "R="+a+" G="+b+" B="+c;
+      props.colorValue = [a, b, c];
+      props.name = "R=" + a + " G=" + b + " B=" + c;
     } else {
       error(colorErrorMsg);
     }
-    
 
-  } else if (arguments.length === 4 && typeof d === 'string') {
+
+  } else if (arguments.length === 4 && typeof d === "string") {
     // R G B + name
     if (currColorMode === pub.RGB) {
       a = pub.constrain(a, 0, 255);
@@ -4243,36 +4241,36 @@ pub.color = function() {
       c = pub.constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
-      props.colorValue = [a,b,c];
+      props.colorValue = [a, b, c];
       props.name = d;
     } else {
       error(colorErrorMsg);
     }
 
-  } else if (arguments.length === 4 && typeof d === 'number'){
+  } else if (arguments.length === 4 && typeof d === "number") {
     // C M Y K
     if (currColorMode === pub.CMYK) {
       a = pub.constrain(a, 0, 100);
       b = pub.constrain(b, 0, 100);
-      c = pub.constrain(c, 0, 100);      
-      d = pub.constrain(d, 0, 100);      
+      c = pub.constrain(c, 0, 100);
+      d = pub.constrain(d, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
-      props.colorValue = [a,b,c,d];
-      props.name = "C="+a+" M="+b+" Y="+c+" K="+d;
+      props.colorValue = [a, b, c, d];
+      props.name = "C=" + a + " M=" + b + " Y=" + c + " K=" + d;
     } else {
       error(colorErrorMsg);
     }
-   
-  } else if (arguments.length === 5 && typeof e === 'string' && currColorMode === pub.CMYK) {
+
+  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === pub.CMYK) {
     // C M Y K + name
     a = pub.constrain(a, 0, 100);
     b = pub.constrain(b, 0, 100);
-    c = pub.constrain(c, 0, 100);      
-    d = pub.constrain(d, 0, 100);       
+    c = pub.constrain(c, 0, 100);
+    d = pub.constrain(d, 0, 100);
     props.model = ColorModel.PROCESS;
     props.space = ColorSpace.CMYK;
-    props.colorValue = [a,b,c,d];
+    props.colorValue = [a, b, c, d];
     props.name = e;
 
   } else {
@@ -4281,15 +4279,15 @@ pub.color = function() {
 
   // check whether color was already created and added to colors,
   // keeps the document clean ...
-  newCol = findInCollectionByName(currentDoc().colors, props.name);
-  if (newCol) {
+  newCol = currentDoc().colors.itemByName(props.name);
+  if (newCol.isValid) {
     newCol.properties = props;
     return newCol;
   } else {
     newCol = currentDoc().colors.add();
     newCol.properties = props;
     return newCol;
-  };
+  }
 };
 
 /**
@@ -4309,17 +4307,17 @@ pub.color = function() {
  */
 pub.gradient = function() {
   var newGrad;
-  var props = {};
+  // var props = {};
   var a = arguments[0],
-      b = arguments[1],
-      c = arguments[2];
+    b = arguments[1],
+    c = arguments[2];
   var gradientErrorMsg = "b.gradient(), wrong parameters. Use:\n"
       + "c1,c2,[name] or\n"
       + "arrayOfColors,[name] or\n"
       + "arrayOfColors,arrayOfGradientStops,[name] or\n"
       + "gradientName";
 
-  if (typeof a === 'string' && arguments.length === 1) {
+  if (typeof a === "string" && arguments.length === 1) {
     // get gradient by name
     newGrad = currentDoc().gradients.itemByName(a);
     if (newGrad.isValid) {
@@ -4327,13 +4325,15 @@ pub.gradient = function() {
     } else {
       error("b.gradient(), a gradient with the provided name doesn't exist.");
     }
-  } else if (a instanceof Color && b instanceof Color && (typeof c === 'string' || arguments.length === 2)) {
+  } else if (a instanceof Color && b instanceof Color && (typeof c === "string" || arguments.length === 2)) {
     // c1 and c2
-    if (typeof c === 'string') {
-      if(currentDoc().colors.itemByName(c).isValid) error('b.gradient(), "' + c + '" already exists as a color. Use another name for the gradient.');
+    if (typeof c === "string") {
+      if(currentDoc().colors.itemByName(c).isValid) {
+        error("b.gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
+      }
       if(currentDoc().gradients.itemByName(c).isValid) {
         currentDoc().gradients.itemByName(c).remove();
-        warning('b.gradient(), a gradient named "' + c + '" already existed. The old gradient is replaced by a new one.')
+        warning("b.gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: c});
     } else {
@@ -4347,33 +4347,49 @@ pub.gradient = function() {
       newGrad.type = GradientType.RADIAL;
     }
     return newGrad;
-  } else if (a instanceof Array){
+  } else if (a instanceof Array) {
     // array of colors
     var customStopLocations = false;
-    if(arguments.length > 3) error(gradientErrorMsg);
-    if(arguments.length > 1 && !(b instanceof Array || typeof b === 'string')) error(gradientErrorMsg);
-    if(arguments.length === 3 && !(typeof c === 'string')) error(gradientErrorMsg);
-    if(arguments.length > 1 && b instanceof Array) customStopLocations = true;
-    if(customStopLocations && !(a.length === b.length)) error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    if(arguments.length > 3) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && !(b instanceof Array || typeof b === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length === 3 && !(typeof c === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && b instanceof Array) {
+      customStopLocations = true;
+    }
+    if(customStopLocations && !(a.length === b.length)) {
+      error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    }
     var z = arguments[arguments.length - 1];
-    if (typeof z === 'string') {
-      if(currentDoc().colors.itemByName(z).isValid) error('b.gradient(), "' + z + '" already exists as a color. Use another name for the gradient.');
+    if (typeof z === "string") {
+      if(currentDoc().colors.itemByName(z).isValid) {
+        error("b.gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
+      }
       if(currentDoc().gradients.itemByName(z).isValid) {
         currentDoc().gradients.itemByName(z).remove();
-        warning('b.gradient(), a gradient named "' + z + '" already existed. The old gradient is replaced by a new one.')
+        warning("b.gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: z});
     } else {
       newGrad = currentDoc().gradients.add();
     }
     for (var i = 0; i < a.length; i++) {
-      if(! (a[i] instanceof Color || a[i] instanceof Swatch)) {
-        error("b.gradient(), element #" + (i+1) + " of the given arrayOfColors is not a color or swatch.");
+      if(!(a[i] instanceof Color || a[i] instanceof Swatch)) {
+        error("b.gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
       }
-      if(i > newGrad.gradientStops.length - 1) newGrad.gradientStops.add();
+      if(i > newGrad.gradientStops.length - 1) {
+        newGrad.gradientStops.add();
+      }
       newGrad.gradientStops[i].stopColor = a[i];
-      if(customStopLocations){
-        if(! (typeof b[i] === 'number')) error("b.gradient(), element #" + (i+1) + " of the given arrayOfGradientStops is not a number.")
+      if(customStopLocations) {
+        if(!(typeof b[i] === "number")) {
+          error("b.gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
+        }
         newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
       } else {
         newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
@@ -4392,24 +4408,24 @@ pub.gradient = function() {
 
 /**
  * Sets the opacity property of an object.
- * 
+ *
  * @cat Color
  * @method opacity
  * @param  {Object} obj The object to set opacity property
  * @param  {Number} opacity The opacity value form 0 to 100
  */
-pub.opacity = function(obj, opacity){
+pub.opacity = function(obj, opacity) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
   } else {
-    warning("b.opacity(), the object "+ obj.toString() +" doesn't have an opacity property");
+    warning("b.opacity(), the object " + obj.toString() + " doesn't have an opacity property");
   }
 };
 
 /**
  * Sets the Effects blendMode property of an object.
- * 
+ *
  * @cat Color
  * @method blendMode
  * @param  {Object} obj The object to set blendMode property
@@ -4431,20 +4447,20 @@ pub.opacity = function(obj, opacity){
  *                           BlendMode.COLOR <br />
  *                           BlendMode.LUMINOSITY <br />
  */
-pub.blendMode = function(obj, blendMode){
+pub.blendMode = function(obj, blendMode) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
   } else {
-    warning("b.blendMode(), the object "+ obj.toString() +" doesn't have a blendMode property");
+    warning("b.blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
   }
 };
 
 /**
- * Calculates a color or colors between two color at a specific increment. 
+ * Calculates a color or colors between two color at a specific increment.
  * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
  * N.B.: Both color must be either CMYK or RGB.
- * 
+ *
  * @cat Color
  * @method lerpColor
  * @param  {Color} c1   Input color 1
@@ -4455,9 +4471,9 @@ pub.blendMode = function(obj, blendMode){
 pub.lerpColor = function (c1, c2, amt) {
   checkNull(c1);
   checkNull(c2);
-  if ( (c1 instanceof Color || c1 instanceof Swatch) && 
-     (c2 instanceof Color || c2 instanceof Swatch) && 
-      typeof amt === 'number') {
+  if ((c1 instanceof Color || c1 instanceof Swatch) &&
+     (c2 instanceof Color || c2 instanceof Swatch) &&
+      typeof amt === "number") {
     if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
       var C1 = c1.colorValue[0];
       var M1 = c1.colorValue[1];
@@ -4469,11 +4485,11 @@ pub.lerpColor = function (c1, c2, amt) {
       var Y2 = c2.colorValue[2];
       var K2 = c2.colorValue[3];
 
-      var COut = Math.round( pub.lerp(C1,C2,amt) );
-      var MOut = Math.round( pub.lerp(M1,M2,amt) );
-      var YOut = Math.round( pub.lerp(Y1,Y2,amt) );
-      var KOut = Math.round( pub.lerp(K1,K2,amt) );
-      return pub.color(COut,MOut,YOut,KOut);
+      var COut = Math.round(pub.lerp(C1, C2, amt));
+      var MOut = Math.round(pub.lerp(M1, M2, amt));
+      var YOut = Math.round(pub.lerp(Y1, Y2, amt));
+      var KOut = Math.round(pub.lerp(K1, K2, amt));
+      return pub.color(COut, MOut, YOut, KOut);
 
     } else if (c1.space === ColorSpace.RGB && c2.space === ColorSpace.RGB) {
       var R1 = c1.colorValue[0];
@@ -4484,10 +4500,10 @@ pub.lerpColor = function (c1, c2, amt) {
       var G2 = c2.colorValue[1];
       var B2 = c2.colorValue[2];
 
-      var ROut = Math.round( pub.lerp(R1,R2,amt) );
-      var GOut = Math.round( pub.lerp(G1,G2,amt) );
-      var BOut = Math.round( pub.lerp(B1,B2,amt) );
-      return pub.color(ROut,GOut,BOut);
+      var ROut = Math.round(pub.lerp(R1, R2, amt));
+      var GOut = Math.round(pub.lerp(G1, G2, amt));
+      var BOut = Math.round(pub.lerp(B1, B2, amt));
+      return pub.color(ROut, GOut, BOut);
 
     } else {
       error("b.lerpColor(), both color must be either CMYK or RGB.");
@@ -4501,14 +4517,14 @@ pub.lerpColor = function (c1, c2, amt) {
 // Typography
 
 /**
- * Creates a text frame on the current layer on the current page in the current document. 
+ * Creates a text frame on the current layer on the current page in the current document.
  * The text frame gets created in the position specified by the x and y parameters.
- * The default document font will be used unless a font is set with the textFont() function. 
- * The default document font size will be used unless a font size is set with the textSize() function. 
+ * The default document font will be used unless a font is set with the textFont() function.
+ * The default document font size will be used unless a font size is set with the textSize() function.
  * Change the color of the text with the fill() function.
- * The text displays in relation to the textAlign() and textYAlign() functions. 
+ * The text displays in relation to the textAlign() and textYAlign() functions.
  * The width and height parameters define a rectangular area.
- * 
+ *
  * @cat Typography
  * @method text
  * @param  {String} txt The text content to set in the text frame.
@@ -4537,7 +4553,7 @@ pub.text = function(txt, x, y, w, h) {
     'tracking': currTracking
   });
 
-  
+
   if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
@@ -4623,7 +4639,7 @@ pub.typo = function(item, property, value) {
 };
 
 var isValid = function (item) {
-  
+
   checkNull(item);
 
     if (item.hasOwnProperty("isValid")) {
@@ -4634,7 +4650,7 @@ var isValid = function (item) {
       }
     }
     return true; // if does not have isValid field -> normal array element and not collection
-  
+
   return false;
 };
 
@@ -4752,12 +4768,11 @@ pub.textTracking = function(tracking) {
  * @return {CharachterStyle}  The character style instance.
  */
 pub.characterStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === 'undefined'){
+  var style = findInStylesByName(currentDoc().allCharacterStyles, name);
+  if(!style){
     style = currentDoc().characterStyles.add({name: name});
-  } 
-  return style;  
+  }
+  return style;
 };
 
 /**
@@ -4769,12 +4784,11 @@ pub.characterStyle = function(name) {
  * @return {ParagraphStyle}  The paragraph style instance.
  */
 pub.paragraphStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === 'undefined'){
+  var style = findInStylesByName(currentDoc().allParagraphStyles, name);
+  if(!style){
     style = currentDoc().paragraphStyles.add({name: name});
-  } 
-  return style;  
+  }
+  return style;
 };
 
 /**
@@ -4847,7 +4861,7 @@ pub.image = function(img, x, y, w, h) {
       }
     } else {
       if (typeof w === 'number' && typeof h === 'number'){
-        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.") 
+        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.")
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
@@ -4857,14 +4871,14 @@ pub.image = function(img, x, y, w, h) {
         error(imgErrorMsg);
       }
     }
-    
-    frame = currentPage().rectangles.add(currentLayer(), 
+
+    frame = currentPage().rectangles.add(currentLayer(),
       { geometricBounds:[y, x, y + height, x + width] }
     );
   } else {
     error(imgErrorMsg);
   }
-  
+
   frame.place(file);
 
   if (fitOptions) {
@@ -4951,7 +4965,7 @@ var Vector = pub.Vector = function() {
    * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the Vector class.
    *
    * Constructor of Vector, can be two- or three-dimensional.
-   * 
+   *
    * @constructor
    * @cat Data
    * @subcat Vector
@@ -5236,7 +5250,7 @@ var Vector = pub.Vector = function() {
     toString: function() {
       return "[" + this.x + ", " + this.y + ", " + this.z + "]";
     },
-    /** 
+    /**
      * Returns this vector as an array [x,y,z].
      * @method Vector.array
      * @cat Data
@@ -5260,9 +5274,9 @@ var Vector = pub.Vector = function() {
 }();
 
 
-// -- Calculation --  
- 
-/** 
+// -- Calculation --
+
+/**
  * Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.
  *
  * @cat Math
@@ -5327,7 +5341,7 @@ pub.dist = function() {
 
 /**
  * Returns Euler's number e (2.71828...) raised to the power of the value parameter.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method exp
@@ -5338,7 +5352,7 @@ pub.exp = Math.exp;
 
 /**
  * Calculates the closest int value that is less than or equal to the value of the parameter.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method floor
@@ -5365,7 +5379,7 @@ pub.lerp = function(value1, value2, amt) {
 
 /**
  * Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than 0.0.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method log
@@ -5376,7 +5390,7 @@ pub.log = Math.log;
 
 /**
  * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method mag
@@ -5393,9 +5407,9 @@ pub.mag = function(a, b, c) {
 
 /**
  * Re-maps a number from one range to another. In the example above, the number '25' is converted from a value in the range 0..100 into a value that ranges from the left edge (0) to the right edge (width) of the screen.
- * 
+ *
  * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method map
@@ -5413,15 +5427,15 @@ pub.map = function(value, istart, istop, ostart, ostop) {
 
 /**
  * Determines the largest value in a sequence of numbers.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method max
- * @param {Number|Array} param1 Either the first value or an array of Numbers 
+ * @param {Number|Array} param1 Either the first value or an array of Numbers
  * @param {Number} param2 Another value to be compared
  * @param {Number} param3 Another value to be compared
  * @return {Number} The highest value
- */ 
+ */
 pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -5434,15 +5448,15 @@ pub.max = function() {
 
 /**
  * Determines the smallest value in a sequence of numbers.
- * 
+ *
  * @cat Math
  * @subcat Calculation
  * @method min
- * @param {Number|Array} param1 Either the first value or an array of Numbers 
+ * @param {Number|Array} param1 Either the first value or an array of Numbers
  * @param {Number} param2 Another value to be compared
  * @param {Number} param3 Another value to be compared
  * @return {Number} The lowest value
- */ 
+ */
 pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
@@ -5454,9 +5468,9 @@ pub.min = function() {
 };
 
 /**
- * Normalizes a number from another range into a value between 0 and 1. 
+ * Normalizes a number from another range into a value between 0 and 1.
  *
- * Identical to map(value, low, high, 0, 1); 
+ * Identical to map(value, low, high, 0, 1);
  *
  * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
  *
@@ -5503,7 +5517,7 @@ pub.round = Math.round;
  * @subcat Calculation
  * @method sq
  * @param {Number} aNumber The value to be squared
- * @return {Number} 
+ * @return {Number}
  */
 pub.sq = function(aNumber) {
   if(arguments.length !== 1 ) error("b.sq(), wrong argument count.");
@@ -5519,69 +5533,69 @@ pub.sq = function(aNumber) {
  * @subcat Trigonometry
  * @method sqrt
  * @param {Number} val The value to be calculated
- * @return {Number} 
+ * @return {Number}
  */
 pub.sqrt = Math.sqrt;
 
 /**
  * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method acos
  * @param {Number} value the value whose arc cosine is to be returned
- * @return {Number} 
+ * @return {Number}
  */
 pub.acos = Math.acos;
 
 /**
  * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method asin
  * @param {Number} value the value whose arc sine is to be returned
- * @return {Number} 
- */  
+ * @return {Number}
+ */
 pub.asin = Math.asin;
 
 /**
  * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method atan
  * @param {Number} value the value whose arc tangent is to be returned
- * @return {Number} 
+ * @return {Number}
  */
 pub.atan = Math.atan;
 
 /**
  * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method atan2
  * @param {Number} y the y coordinate
  * @param {Number} x the x coordinate
- * @return {Number} 
+ * @return {Number}
  */
 pub.atan2 = Math.atan2;
 
 /**
  * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method cos
  * @param {Number} rad a value in radians
- * @return {Number} 
+ * @return {Number}
  */
 pub.cos = Math.cos;
 
 /**
  * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method degrees
@@ -5594,7 +5608,7 @@ pub.degrees = function(aAngle) {
 
 /**
  * Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method radians
@@ -5607,23 +5621,23 @@ pub.radians = function(aAngle) {
 
 /**
  * Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to 6.28). Values are returned in the range -1 to 1.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method sin
  * @param {Number} rad a value in radians
- * @return {Number} 
+ * @return {Number}
  */
 pub.sin = Math.sin;
 
 /**
  * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
- * 
+ *
  * @cat Math
  * @subcat Trigonometry
  * @method tan
  * @param {Number} rad a value in radians
- * @return {Number} 
+ * @return {Number}
  */
 pub.tan = Math.tan;
 
@@ -5633,7 +5647,7 @@ var currentRandom = Math.random;
 
 /**
  * Generates random numbers. Each time the random() function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call random(5) returns values between 0 and 5. If two parameters are passed, it will return a float with a value between the the parameters. The function call random(-5, 10.2) returns values between -5 and 10.2.
- * 
+ *
  * One parameter sets the range from 0 to the given parameter, while with two parameters present you set the range from val1 - val2.
  *
  * @cat Math
@@ -5708,26 +5722,26 @@ function PerlinNoise(seed) {
     perm[i] = t;
   }
   for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
-  
+
   function grad3d(i, x, y, z) {
     var h = i & 15;
     var u = h < 8 ? x : y,
     v = h < 4 ? y : h === 12 || h === 14 ? x : z;
     return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
   }
-  
+
   function grad2d(i, x, y) {
     var v = (i & 1) === 0 ? x : y;
     return (i & 2) === 0 ? -v : v;
   }
-  
+
   function grad1d(i, x) {
     return (i & 1) === 0 ? -x : x;
   }
   function lerp(t, a, b) {
     return a + t * (b - a);
   }
-  
+
   this.noise3d = function(x, y, z) {
     var X = Math.floor(x) & 255,
       Y = Math.floor(y) & 255,
@@ -5746,7 +5760,7 @@ function PerlinNoise(seed) {
       p11 = perm[p1 + 1] + Z;
     return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
   };
-  
+
   this.noise2d = function(x, y) {
     var X = Math.floor(x) & 255,
       Y = Math.floor(y) & 255;
@@ -5758,7 +5772,7 @@ function PerlinNoise(seed) {
       p1 = perm[X + 1] + Y;
     return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
   };
-  
+
   this.noise1d = function(x) {
     var X = Math.floor(x) & 255;
     x -= Math.floor(x);
@@ -5778,7 +5792,7 @@ var noiseProfile = {
  *
  * The main difference to the random() function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between 0.0 and 1.0. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.
  *
- * The actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result. 
+ * The actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result.
  *
  * Another way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn't matter as such, only the distance between successive coordinates does (eg. when using noise() within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of 0.005-0.03 work best for most applications, but this will differ depending on use.
  *
@@ -5818,7 +5832,7 @@ pub.noise = function(x, y, z) {
  * Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().
  *
  * By changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.
- * 
+ *
  * @cat Math
  * @subcat Random
  * @method noiseDetail
@@ -5830,13 +5844,13 @@ pub.noiseDetail = function(octaves, fallout) {
   if (fallout !== undef) noiseProfile.fallout = fallout;
 };
 
-/** 
+/**
  * Sets the seed value for noise(). By default, noise() produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.
- * 
+ *
  * @cat Math
  * @subcat Random
  * @method noiseSeed
- * @param {Number} seed 
+ * @param {Number} seed
  */
 pub.noiseSeed = function(seed) {
   noiseProfile.seed = seed;
@@ -5922,11 +5936,11 @@ pub.bounds = function (obj) {
       error("b.bounds(), invalide type of parameter! Can't get bounds for this object.");
     }
   }
-};  
+};
 
 /**
  * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
- * 
+ *
  * @cat Document
  * @subcat Transformation
  * @method itemX
@@ -6046,7 +6060,7 @@ pub.itemPosition = function(pItem, x, y) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
 
   if ( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-  
+
     if( typeof x === 'number' && typeof y === 'number') {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
@@ -6057,11 +6071,11 @@ pub.itemPosition = function(pItem, x, y) {
       //   offY = height / 2;
       // }
       pItem.geometricBounds = [ y + offY, x + offX, y + height + offY, x + width + offX];
-      
+
     } else {
       return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
     }
-    
+
   } else {
     error("b.itemPosition(), works only with child classes of PageItem.");
   }
@@ -6081,7 +6095,7 @@ pub.itemPosition = function(pItem, x, y) {
 pub.itemSize = function(pItem, width, height) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-  
+
     var x = pItem.geometricBounds[1];
     var y = pItem.geometricBounds[0];
 
@@ -6094,11 +6108,11 @@ pub.itemSize = function(pItem, width, height) {
       // } else {
         pItem.geometricBounds = [ y, x, y + height, x + width];
       // }
-      
+
     } else {
       return { width: pItem.geometricBounds[3] - pItem.geometricBounds[1] , height: pItem.geometricBounds[2] - pItem.geometricBounds[0] };
     }
-    
+
   } else {
     error("b.itemSize(), works only with child classes of PageItem.");
   }
@@ -6143,8 +6157,8 @@ Matrix2D.prototype = {
   },
   adobeMatrix: function array() {
 
-    var uVX = new UnitValue(this.elements[2], currUnits); 
-    var uVY = new UnitValue(this.elements[5], currUnits); 
+    var uVX = new UnitValue(this.elements[2], currUnits);
+    var uVY = new UnitValue(this.elements[5], currUnits);
 
     return [this.elements[0],
             this.elements[3],
@@ -6307,16 +6321,16 @@ pub.matrix = function(matrix) {
  * @param {Matrix2D} matrix The matrix to be applied
  */
 pub.transform = function(obj, matrix) {
-  
+
   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   matrix.adobeMatrix() 
-  );  
+                   matrix.adobeMatrix()
+  );
 
-}  
+}
 
 /**
- * Multiplies the current matrix by the one specified through the parameters. 
+ * Multiplies the current matrix by the one specified through the parameters.
  *
  * @cat Document
  * @subcat Transformation
@@ -6391,7 +6405,7 @@ pub.rotate = function (angle) {
 
 /**
  * Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().
- * If only one parameter is given, it is applied on X and Y axis. 
+ * If only one parameter is given, it is applied on X and Y axis.
  *
  * @cat Document
  * @subcat Transformation
@@ -6410,7 +6424,7 @@ pub.scale = function (scaleX,scaleY) {
  * @cat Document
  * @subcat Transformation
  * @method translate
- * @param {Number} tx The amount of offset on the X axis. 
+ * @param {Number} tx The amount of offset on the X axis.
  * @param {Number} ty The amount of offset on the Y axis.
  */
 pub.translate = function (tx,ty) {
