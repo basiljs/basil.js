@@ -44,13 +44,13 @@ pub.go = function (mode) {
   }
 
   try {
-    if (typeof glob.setup === 'function') {
+    if (typeof glob.setup === "function") {
       runSetup();
-    };
+    }
 
-    if (typeof glob.draw === 'function') {
+    if (typeof glob.draw === "function") {
       runDrawOnce();
-    };
+    }
   } catch (e) {
     alert(e);
     exit();
@@ -60,11 +60,11 @@ pub.go = function (mode) {
   if (executionDuration < 1000) {
     println("[Finished in " + executionDuration + "ms]");
   } else {
-    println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
+    println("[Finished in " + (executionDuration / 1000).toPrecision(3) + "s]");
   }
 
   if(currDoc && !currDoc.windows.length) {
-    currDoc.windows.add(); //open the hidden doc
+    currDoc.windows.add(); // open the hidden doc
   }
   closeHiddenDocs();
   if (progressPanel) {
@@ -131,11 +131,11 @@ pub.loop = function(framerate) {
     // awesome
   }
   var sleep = null;
-  if (arguments.length === 0) sleep = Math.round(1000/25);
-  else sleep = Math.round(1000/framerate);
+  if (arguments.length === 0) sleep = Math.round(1000 / 25);
+  else sleep = Math.round(1000 / framerate);
 
-  if ($.engineName !== 'loop') {
-    error('b.loop(), Add #targetengine "loop"; at the very top of your script.');
+  if ($.engineName !== "loop") {
+    error("b.loop(), Add #targetengine \"loop\"; at the very top of your script.");
   }
 
   currentDoc();
@@ -172,7 +172,7 @@ pub.noLoop = function() {
 
 var runSetup = function() {
   app.doScript(function() {
-    if (typeof glob.setup === 'function') {
+    if (typeof glob.setup === "function") {
       glob.setup();
     }
   }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
@@ -180,7 +180,7 @@ var runSetup = function() {
 
 var runDrawOnce = function() {
   app.doScript(function() {
-    if (typeof glob.draw === 'function') {
+    if (typeof glob.draw === "function") {
       glob.draw();
     }
   }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
@@ -188,7 +188,7 @@ var runDrawOnce = function() {
 
 var runDrawLoop = function() {
   app.doScript(function() {
-    if (typeof glob.draw === 'function') {
+    if (typeof glob.draw === "function") {
       glob.draw();
     }
   }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
@@ -204,7 +204,7 @@ var welcome = function() {
 var currentDoc = function (mode) {
   if (!currDoc) {
     var stack = $.stack;
-    if (!(stack.match(/go\(.*\)/)||stack.match(/loop\(.*\)/))) {
+    if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
       warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
     }
     var doc = null;
@@ -230,13 +230,13 @@ var currentDoc = function (mode) {
 };
 
 var closeHiddenDocs = function () {
-    //in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
-    for (var i = app.documents.length - 1; i >= 0; i -= 1) {
-        var d = app.documents[i];
-        if (!d.windows.length) {
-            d.close(SaveOptions.NO);
-        }
+    // in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+  for (var i = app.documents.length - 1; i >= 0; i -= 1) {
+    var d = app.documents[i];
+    if (!d.windows.length) {
+      d.close(SaveOptions.NO);
     }
+  }
 };
 
 var setCurrDoc = function(doc) {
@@ -265,8 +265,8 @@ var Progress = function () {
   this.init = function () {
     this.panel = Window.find("window", "processing...");
     if (this.panel === null) {
-      this.panel = new Window('window', "processing...");
-      var logo = (Folder.fs == "Macintosh" ) ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png");
+      this.panel = new Window("window", "processing...");
+      var logo = (Folder.fs == "Macintosh") ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png");
       if (logo.exists) {
         this.panel.add("image", undefined, logo);
       }
@@ -282,7 +282,7 @@ var Progress = function () {
     }
   };
   this.writeMessage = function (msg) {
-    if (Folder.fs == "Macintosh") { //Indesign Bug on Mac: Need to set app.scriptPreferences.enableRedraw = true to redraw window....
+    if (Folder.fs == "Macintosh") { // Indesign Bug on Mac: Need to set app.scriptPreferences.enableRedraw = true to redraw window....
       var rd = app.scriptPreferences.enableRedraw;
       app.scriptPreferences.enableRedraw = true;
     }
@@ -321,7 +321,7 @@ var currentLayer = function() {
     currentDoc();
     if (currDoc.windows.length)
       currLayer = app.activeDocument.activeLayer;
-     else
+    else
       currLayer = currDoc.layers[0];
 
   }
@@ -331,9 +331,9 @@ var currentLayer = function() {
 var currentPage = function() {
   if (!currPage) {
     currentDoc();
-      if (currDoc.windows.length)
-        currPage = app.activeWindow.activePage;
-      else
+    if (currDoc.windows.length)
+      currPage = app.activeWindow.activePage;
+    else
         currPage = currDoc.pages[0];
   }
   return currPage;
@@ -356,8 +356,8 @@ var updatePublicPageSizeVars = function () {
       break;
 
     case pub.MARGIN:
-      widthOffset = - currentPage().marginPreferences.left - currentPage().marginPreferences.right;
-      heightOffset = - currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
+      widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
+      heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
       b.resetMatrix();
       b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
@@ -365,16 +365,16 @@ var updatePublicPageSizeVars = function () {
 
     case pub.BLEED:
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      if(facingPages){
+      if(facingPages) {
         widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
-      b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
 
-      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
+      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
         b.resetMatrix();
-        b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
+        b.translate(0, -b.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
@@ -389,10 +389,10 @@ var updatePublicPageSizeVars = function () {
 
       pub.width = w * 2;
 
-      if(currentPage().name === '1') {
+      if(currentPage().name === "1") {
         pub.width = w;
-      } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w,0);
+      } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
+        pub.translate(-w, 0);
       }
 
 
@@ -403,7 +403,7 @@ var updatePublicPageSizeVars = function () {
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
-      b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -411,8 +411,8 @@ var updatePublicPageSizeVars = function () {
       pub.width = w * 2;
       pub.height = h;
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w+widthOffset/2,0);
+      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
+        pub.translate(-w + widthOffset / 2, 0);
       }
 
       break;
@@ -421,7 +421,7 @@ var updatePublicPageSizeVars = function () {
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
       b.resetMatrix();
-      b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
+      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
@@ -429,8 +429,8 @@ var updatePublicPageSizeVars = function () {
       pub.width = w * 2;
       pub.height = h;
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w-widthOffset/2,0);
+      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
+        pub.translate(-w - widthOffset / 2, 0);
       }
 
       return; // early exit
@@ -440,7 +440,7 @@ var updatePublicPageSizeVars = function () {
       break;
   }
 
-  if(singlePageMode){
+  if(singlePageMode) {
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
     var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
@@ -456,18 +456,18 @@ var findInCollectionByName = function(collection, name) {
   if (!found || !found.isValid) return null;
   return found;*/
 
-   var found = null;
-   for (var i = 0; i < collection.length; i++) {
-     if (collection[i].name === name) return collection[i];
-   };
-   return found;
+  var found = null;
+  for (var i = 0; i < collection.length; i++) {
+    if (collection[i].name === name) return collection[i];
+  }
+  return found;
 
 };
 
 var checkNull = pub.checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
-}
+};
 
 var isNull = checkNull; // legacy
 
