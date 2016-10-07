@@ -71,7 +71,7 @@ if (!glob.forEach) {
         continue;
       }
 
-      if(cb(collection[i],i) === false) {
+      if(cb(collection[i], i) === false) {
         return false;
       }
     }
@@ -95,15 +95,15 @@ glob.HashList = function () {
   that.items = {};
 
   // TODO: initial function removal in items?
-  for ( var key in that.items ) {
+  for (var key in that.items) {
     b.println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
   function checkKey(key) {
     if(that.items[key] instanceof Function) {
-        that.items[key] = undefined;
-    };
+      that.items[key] = undefined;
+    }
   }
 
   /**
@@ -118,13 +118,13 @@ glob.HashList = function () {
    */
   that.remove = function(key) {
     var tmp_previous;
-    if (typeof that.items[key] != 'undefined') {
+    if (typeof that.items[key] != "undefined") {
       var tmp_previous = that.items[key];
       delete that.items[key];
       that.length--;
     }
     return tmp_previous;
-  }
+  };
 
   /**
    * This gets a value by its key.
@@ -137,7 +137,7 @@ glob.HashList = function () {
    */
   that.get = function(key) {
     return that.items[key];
-  }
+  };
 
   /**
    * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
@@ -151,16 +151,16 @@ glob.HashList = function () {
    */
   that.set = function(key, value) {
 
-    if( value instanceof Function ) error("HashList does not support storing Functions as values.");
+    if(value instanceof Function) error("HashList does not support storing Functions as values.");
     checkKey(key);
-    if (typeof value != 'undefined') {
-      if (typeof that.items[key] === 'undefined') {
+    if (typeof value != "undefined") {
+      if (typeof that.items[key] === "undefined") {
         that.length++;
       }
       that.items[key] = value;
     }
     return that.items[key];
-  }
+  };
 
   /**
    * Checks for the existence of a given key.
@@ -173,8 +173,8 @@ glob.HashList = function () {
    */
   that.hasKey = function(key) {
     checkKey(key);
-    return typeof that.items[key] != 'undefined';
-  }
+    return typeof that.items[key] != "undefined";
+  };
 
   /**
    * Checks if a certain value exists at least once in all of the key -> value pairs.
@@ -192,10 +192,10 @@ glob.HashList = function () {
       if (obj[key] === value) {
         found = true;
         break;
-      };
+      }
     }
     return found;
-  }
+  };
 
   /**
    * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
@@ -206,15 +206,15 @@ glob.HashList = function () {
    * @return {Array} An array with all the keys
    */
   that.getKeysByValues = function() {
-      var obj = that.items;
-      var keys = [];
-      for(var key in obj)
+    var obj = that.items;
+    var keys = [];
+    for(var key in obj)
         {
-          if( typeof obj[key] != 'number' ) error("HashList.getKeysByValues(), only works with Numbers as values. ");
-          keys.push(key);
-        }
-      return keys.sort(function(a,b){return obj[b]-obj[a]});
-  }
+      if(typeof obj[key] != "number") error("HashList.getKeysByValues(), only works with Numbers as values. ");
+      keys.push(key);
+    }
+    return keys.sort(function(a, b) {return obj[b] - obj[a];});
+  };
 
   /**
    * Returns an array with all keys in a sorted order from higher to lower magnitude.
@@ -225,8 +225,8 @@ glob.HashList = function () {
    * @return {Array} An array with all the keys
    */
   that.getSortedKeys = function () {
-      return that.getKeys().sort(); // ["a", "b", "z"]
-  }
+    return that.getKeys().sort(); // ["a", "b", "z"]
+  };
 
   /**
    * Returns an array with all keys.
@@ -237,17 +237,17 @@ glob.HashList = function () {
    * @return {Array} An array with all the keys
    */
   that.getKeys = function () {
-      var keys = [];
+    var keys = [];
 
-      for(var key in that.items)
+    for(var key in that.items)
       {
-          if(that.items.hasOwnProperty(key))
+      if(that.items.hasOwnProperty(key))
           {
-              keys.push(key);
-          }
+        keys.push(key);
       }
-      return keys;
-  }
+    }
+    return keys;
+  };
 
   /**
    * Returns an array with all keys.
@@ -263,11 +263,11 @@ glob.HashList = function () {
     var values = [];
 
     for(var key in obj) {
-        values.push(obj[key]);
+      values.push(obj[key]);
     }
     return values;
 
-  }
+  };
 
   /**
    * Deletes all the key -> value pairs in this HashList.
@@ -281,7 +281,7 @@ glob.HashList = function () {
       delete that.items[i];
     }
     that.length = 0;
-  }
+  };
 
   return that;
-}
+};
