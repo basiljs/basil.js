@@ -30,29 +30,29 @@ pub.doc = function(doc) {
  * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
  *
  */
-pub.size = function(width, height){
-  if(app.documents.length === 0){
+pub.size = function(width, height) {
+  if(app.documents.length === 0) {
     // there are no documents
-    warning('b.size(width, height)', 'You have no open document.');
+    warning("b.size(width, height)", "You have no open document.");
     return;
   } else {
-    if (arguments.length === 0){
+    if (arguments.length === 0) {
       // no arguments given
       // return the curent values
       // warning('b.size(width, height)', 'no arguments given');
       return {width: pub.width, height: pub.height};
     }
 
-    if(arguments.length === 1){
+    if(arguments.length === 1) {
       // only one argument set the first to the secound
       height = width;
     }
     var doc = app.documents[0];
     // set the documents pageHeiht and pageWidth
-    doc.properties =  {
+    doc.properties = {
       documentPreferences:{
-      pageHeight: height,
-      pageWidth: width
+        pageHeight: height,
+        pageWidth: width
       }
     };
     // set height and width
@@ -60,7 +60,7 @@ pub.size = function(width, height){
     pub.width = width;
   }
 
-}
+};
 
 /**
  * Closes the current document.
@@ -73,8 +73,8 @@ pub.size = function(width, height){
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
-    if( typeof saveOptions === 'boolean' && saveOptions === false ) saveOptions = SaveOptions.no;
-    if( typeof saveOptions === 'boolean' && saveOptions === true ) saveOptions = SaveOptions.yes;
+    if(typeof saveOptions === "boolean" && saveOptions === false) saveOptions = SaveOptions.no;
+    if(typeof saveOptions === "boolean" && saveOptions === true) saveOptions = SaveOptions.yes;
     doc.close(saveOptions, file);
     resetCurrDoc();
   }
@@ -87,12 +87,12 @@ pub.close = function(saveOptions, file) {
  * @cat Document
  * @subcat Page
  */
-pub.canvasMode = function ( m ) {
+pub.canvasMode = function (m) {
   if(arguments.length == 0) {
     return currCanvasMode;
-  } else if ( typeof m === "string" ) {
+  } else if (typeof m === "string") {
 
-    if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages ) b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
 
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -113,16 +113,16 @@ pub.canvasMode = function ( m ) {
  * @param  {Number} The desired vertical pasteboard margin.
  * @return {array} The current horizontal, vertical pasteboard margins.
  */
-pub.pasteboard = function ( h, v ) {
+pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
-  } else if(arguments.length == 1){
-	  error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
-  }else if ( typeof h === "number" && typeof v === "number" ) {
-     currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
-     return currDoc.pasteboardPreferences.pasteboardMargins;
+  } else if(arguments.length == 1) {
+	                                                                                                                                                                  error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
+  }else if (typeof h === "number" && typeof v === "number") {
+    currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
+    return currDoc.pasteboardPreferences.pasteboardMargins;
   }else {
-     error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
+    error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
   }
 };
 
@@ -138,10 +138,10 @@ pub.pasteboard = function ( h, v ) {
 pub.page = function(page) {
   if (page instanceof Page) {
     currPage = page;
-  } else if ( typeof page !== 'undefined' && page.hasOwnProperty("parentPage") ) {
+  } else if (typeof page !== "undefined" && page.hasOwnProperty("parentPage")) {
     currPage = page.parentPage; // page is actually a PageItem
-  } else if (typeof page === 'number') {
-    if( page < 1 ) {
+  } else if (typeof page === "number") {
+    if(page < 1) {
       p = 0;
     } else {
       p = page - 1;
@@ -150,15 +150,15 @@ pub.page = function(page) {
     try {
       tempPage.id;
     } catch (e) {
-      error('b.page(), ' + page + ' does not exist.');
+      error("b.page(), " + page + " does not exist.");
     }
     currPage = tempPage;
-  } else if (typeof page !== 'undefined') {
+  } else if (typeof page !== "undefined") {
     error("b.page(), bad type for b.page().");
   }
   updatePublicPageSizeVars();
-    if (currDoc.windows.length)
-      app.activeWindow.activePage = currPage; // focus in GUI  if not in MODEHIDDEN
+  if (currDoc.windows.length)
+    app.activeWindow.activePage = currPage; // focus in GUI  if not in MODEHIDDEN
   return currentPage();
 };
 
@@ -180,7 +180,7 @@ pub.addPage = function(location) {
   var nP;
   try {
 
-    switch ( location ) {
+    switch (location) {
 
       case b.AT_END:
         nP = currentDoc().pages.add(location);
@@ -191,20 +191,20 @@ pub.addPage = function(location) {
         break;
 
       case b.AFTER:
-        nP = currentDoc().pages.add(location, pub.page() );
+        nP = currentDoc().pages.add(location, pub.page());
         break;
 
       case b.BEFORE:
-        nP = currentDoc().pages.add(location, pub.page() );
+        nP = currentDoc().pages.add(location, pub.page());
         break;
 
       default:
         throw new Error();
         break;
 
-    };
+    }
 
-    pub.page( nP );
+    pub.page(nP);
     return nP;
 
   } catch (e) {
@@ -225,7 +225,7 @@ pub.removePage = function (page) {
 
   checkNull(page);
 
-  if( typeof page === 'number' || arguments.length === 0 || page instanceof Page ){
+  if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
     var p = pub.page(page); // get the page object, todo: add an internal method of page retrieval without setting it to current
     p.remove();
     currPage = null; // reset!
@@ -247,28 +247,28 @@ pub.removePage = function (page) {
  */
 pub.pageNumber = function (pageObj) {
 
-    checkNull(pageObj);
+  checkNull(pageObj);
 
-    if (typeof pageObj === 'number') error("b.pageNumber(), cannot be called with a Number argument.");
+  if (typeof pageObj === "number") error("b.pageNumber(), cannot be called with a Number argument.");
 
-    if (pageObj instanceof Page) {
-        return parseInt(pageObj.name); // current number of given page
-    } else {
-        return parseInt(pub.page().name); // number of current page
-    }
+  if (pageObj instanceof Page) {
+    return parseInt(pageObj.name); // current number of given page
+  } else {
+    return parseInt(pub.page().name); // number of current page
+  }
 
 };
 
 // TODO: does not work?
 pub.nextPage = function () {
-    var p = pub.doc().pages.nextItem(currentPage());
-    return pub.page(p);
+  var p = pub.doc().pages.nextItem(currentPage());
+  return pub.page(p);
 };
 
 // TODO: does not work?
 pub.previousPage = function () {
-    var p = pub.doc().pages.previousItem(currentPage());
-    return pub.page(p);
+  var p = pub.doc().pages.previousItem(currentPage());
+  return pub.page(p);
 };
 
 /**
@@ -310,14 +310,14 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
   // init
   var libFileName = "addToStoryLib.indl";
-  var libFile = new File(Folder.temp+"/"+libFileName);
+  var libFile = new File(Folder.temp + "/" + libFileName);
   addToStoryCache = findInCollectionByName(app.libraries, libFileName);
   // if and a cache is existing from previous executions, remove it
   if (addToStoryCache) {
     addToStoryCache.close();
     libFile.remove();
   }
-  //create an indesign library for caching the page items
+  // create an indesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
@@ -352,7 +352,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
         addToStoryCache.assets.firstItem().remove();
       }
     } else {
-      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.")
+      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.");
     }
   };
 };
@@ -371,7 +371,7 @@ pub.layer = function(layer) {
   if (layer instanceof Layer) {
     currLayer = layer;
     currentDoc().activeLayer = currLayer;
-  } else if (typeof layer === 'string') {
+  } else if (typeof layer === "string") {
     var layers = currentDoc().layers;
     currLayer = layers.item(layer);
     if (!currLayer.isValid) {
@@ -380,7 +380,7 @@ pub.layer = function(layer) {
       currentDoc().activeLayer = currLayer;
     }
   } else if (arguments.length > 0) {
-    error("b.layer(), wrong arguments. Use layer object or string instead.")
+    error("b.layer(), wrong arguments. Use layer object or string instead.");
   }
   return currentLayer();
 };
@@ -398,18 +398,18 @@ pub.layer = function(layer) {
 pub.group = function (pItem, name) {
   checkNull(pItem);
   var group = null;
-  if( pItem instanceof Array) {
+  if(pItem instanceof Array) {
     if(pItem.length < 2) error("There must be at least two PageItems passed to b.group().");
     // creates a group from Page Items
     group = currentDoc().groups.add(pItem);
-    if(typeof name != 'undefined') group.name = name;
+    if(typeof name != "undefined") group.name = name;
   }
-  else if( typeof pItem === 'string' ) {
+  else if(typeof pItem === "string") {
     // get the Group of the given name
     group = currentDoc().groups.item(pItem);
   }
   else {
-    error("b.group(), not a valid argument.")
+    error("b.group(), not a valid argument.");
   }
 
   return group;
@@ -428,14 +428,14 @@ pub.group = function (pItem, name) {
 pub.ungroup = function(pItem) {
   checkNull(pItem);
   var ungroupedItems = null;
-  if( pItem instanceof Group) {
-    ungroupedItems = b.items( pItem );
+  if(pItem instanceof Group) {
+    ungroupedItems = b.items(pItem);
     pItem.ungroup();
   }
-  else if( typeof pItem === 'string' ) {
+  else if(typeof pItem === "string") {
     // get the Group of the given name
     var group = currentDoc().groups.item(pItem);
-    ungroupedItems = b.items( group );
+    ungroupedItems = b.items(group);
     group.ungroup();
   }
   else {
@@ -492,7 +492,7 @@ pub.label = function(label) {
     }
   }
   b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
-}
+};
 
 /**
  * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
@@ -543,7 +543,7 @@ pub.nameOnPage = function(name) {
       break;
     }
   }
-  if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page "+pub.pageNumber());
+  if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   return result;
 };
 
@@ -566,13 +566,13 @@ pub.units = function (units) {
       units === pub.PX ||
       units === pub.IN) {
     var unitType = null;
-    if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
+    if (units === pub.CM) unitType = MeasurementUnits.centimeters;
     else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
     else if (units === pub.PT) unitType = MeasurementUnits.points;
     else if (units === pub.PX) unitType = MeasurementUnits.pixels;
     else if (units === pub.IN) unitType = MeasurementUnits.inches;
     var doc = currentDoc();
-    with (doc.viewPreferences){
+    with (doc.viewPreferences) {
       //* MeasurementUnits.agates
       //* MeasurementUnits.picas
       //* MeasurementUnits.points
@@ -607,7 +607,7 @@ pub.units = function (units) {
 pub.guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
-  var guide = guides.add( currentLayer() );
+  var guide = guides.add(currentLayer());
   with (guide) {
     fitToPage = true;
     orientation = HorizontalOrVertical.VERTICAL;
@@ -627,7 +627,7 @@ pub.guideX = function (x) {
 pub.guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
-  var guide = guides.add( currentLayer() );
+  var guide = guides.add(currentLayer());
   with (guide) {
     fitToPage = true;
     orientation = HorizontalOrVertical.HORIZONTAL;
@@ -652,19 +652,19 @@ pub.guideY = function (y) {
 pub.margins = function(top, right, bottom, left, pageNumber) {
 
 
-  if (arguments.length === 0){
+  if (arguments.length === 0) {
 
-    return {'top':pub.page(pageNumber).marginPreferences.top,
-            'right':pub.page(pageNumber).marginPreferences.right,
-            'bottom':pub.page(pageNumber).marginPreferences.bottom,
-            'left':pub.page(pageNumber).marginPreferences.left
+    return {"top":pub.page(pageNumber).marginPreferences.top,
+            "right":pub.page(pageNumber).marginPreferences.right,
+            "bottom":pub.page(pageNumber).marginPreferences.bottom,
+            "left":pub.page(pageNumber).marginPreferences.left
             };
 
   } else if (arguments.length === 1) {
     right = bottom = left = top;
-    }
+  }
 
-  if(pageNumber != undefined){
+  if(pageNumber != undefined) {
     pub.page(pageNumber).marginPreferences.top = top;
     pub.page(pageNumber).marginPreferences.right = right;
     pub.page(pageNumber).marginPreferences.bottom = bottom;
@@ -675,7 +675,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
     currentPage().marginPreferences.bottom = bottom;
     currentPage().marginPreferences.left = left;
   }
-  };
+};
 
 /**
  * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
@@ -690,18 +690,18 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
  */
 pub.bleeds = function(top, right, bottom, left) {
 
-  if (arguments.length === 0){
-    return {'top':currentDoc().documentPreferences.documentBleedTopOffset,
-            'right':currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
-            'bottom':currentDoc().documentPreferences.documentBleedBottomOffset,
-            'left':currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
+  if (arguments.length === 0) {
+    return {"top":currentDoc().documentPreferences.documentBleedTopOffset,
+            "right":currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
+            "bottom":currentDoc().documentPreferences.documentBleedBottomOffset,
+            "left":currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
             };
 
-} else if (arguments.length === 1) {
-  right = bottom = left = top;
+  } else if (arguments.length === 1) {
+    right = bottom = left = top;
   }else{
-  currentDoc().documentPreferences.documentBleedUniformSize = false;
-}
+    currentDoc().documentPreferences.documentBleedUniformSize = false;
+  }
 
   currentDoc().documentPreferences.documentBleedTopOffset = top;
   currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
@@ -735,33 +735,33 @@ pub.inspect = function(obj, maxlevel, level, propname) {
     if (constructorName === "Boolean" ||
         constructorName === "Number" ||
         constructorName === "String") {
-      println(indent+propname+": "+obj);
+      println(indent + propname + ": " + obj);
     }
     else if (constructorName === "Array") {
-      println(indent+propname+": "+constructorName+"("+obj.length+")");
+      println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
     }
     else if (constructorName === "Color") {
-      println(indent+propname+": ["+obj.colorValue+"] "+constructorName);
+      println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
     }
     else {
-      println(indent+propname+": "+constructorName);
+      println(indent + propname + ": " + constructorName);
     }
   }
 
-  if ( constructorName === 'Array' ) {
+  if (constructorName === "Array") {
     for (var i = 0, len = obj.length; i < len; i++) {
-      pub.inspect(obj[i], maxlevel, level+1, i);
-    };
-  } else if (typeof obj === 'object') {
+      pub.inspect(obj[i], maxlevel, level + 1, i);
+    }
+  } else if (typeof obj === "object") {
     try {
-      for (var i in obj){
+      for (var i in obj) {
         if (obj.hasOwnProperty(i)) {
-          pub.inspect(obj[i], maxlevel, level+1, i);
+          pub.inspect(obj[i], maxlevel, level + 1, i);
         }
       }
     }
     catch(e) {
-      println(indent+"--> "+propname+" "+e);
+      println(indent + "--> " + propname + " " + e);
     }
   }
 };
@@ -815,7 +815,7 @@ pub.day = function() {
  * @return {String}
  */
 pub.weekday = function() {
-  var weekdays = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+  var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   return weekdays[(new Date()).getDay()];
 };
 
@@ -890,12 +890,12 @@ pub.millisecond = function() {
 pub.timestamp = function() {
   var dt = new Date();
   var dtf = dt.getFullYear();
-  dtf += pub.nf(dt.getMonth()+1,2);
-  dtf += pub.nf(dt.getDate(),2);
+  dtf += pub.nf(dt.getMonth() + 1, 2);
+  dtf += pub.nf(dt.getDate(), 2);
   dtf += "_";
-  dtf += pub.nf(dt.getHours(),2);
-  dtf += pub.nf(dt.getMinutes(),2);
-  dtf += pub.nf(dt.getSeconds(),2);
+  dtf += pub.nf(dt.getHours(), 2);
+  dtf += pub.nf(dt.getMinutes(), 2);
+  dtf += pub.nf(dt.getSeconds(), 2);
   return dtf;
 };
 
