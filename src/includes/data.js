@@ -15,7 +15,7 @@ pub.JSON = {
   */
   // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
   decode: function(data) {
-    if ( typeof data !== "string" || !data ) {
+    if (typeof data !== "string" || !data) {
       return null;
     }
     var rvalidchars = /^[\],:{}\s]*$/,
@@ -25,12 +25,12 @@ pub.JSON = {
 
     // Make sure the incoming data is actual JSON
     // Logic borrowed from http://json.org/json2.js
-    if ( rvalidchars.test( data.replace( rvalidescape, "@" )
-      .replace( rvalidtokens, "]" )
-      .replace( rvalidbraces, "")) ) {
-      return ( new Function( "return " + data ) )();
+    if (rvalidchars.test(data.replace(rvalidescape, "@")
+      .replace(rvalidtokens, "]")
+      .replace(rvalidbraces, ""))) {
+      return (new Function("return " + data))();
     }
-    error( "b.JSON.decode(), invalid JSON: " + data );
+    error("b.JSON.decode(), invalid JSON: " + data);
   },
   /**
    * Function convert an javascript object to a JSON-string. Usage:
@@ -48,7 +48,7 @@ pub.JSON = {
     var t = typeof (obj);
     if (t !== "object" || obj === null) {
       // simple data type
-      if (t === "string") obj = '"' + obj + '"';
+      if (t === "string") obj = "\"" + obj + "\"";
       return String(obj);
     } else {
       // recurse array or object
@@ -56,10 +56,10 @@ pub.JSON = {
 
       for (n in obj) {
         v = obj[n];
-        t = typeof(v);
+        t = typeof (v);
         if (obj.hasOwnProperty(n)) {
-          if (t === "string") v = '"' + v + '"'; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
-          json.push((arr ? "" : '"' + n + '":') + String(v));
+          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
+          json.push((arr ? "" : "\"" + n + "\":") + String(v));
         }
       }
       return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
@@ -72,17 +72,17 @@ pub.JSON = {
 pub.CSV = new CSV();
 function CSV() {
   var reParse = null,
-      reFormat = null,
-      delimiterStr = null,
-      delimiterCode = null;
+    reFormat = null,
+    delimiterStr = null,
+    delimiterCode = null;
 
-  initDelimiter(',');
+  initDelimiter(",");
   function initDelimiter(delimiter) {
     reParse = new RegExp("\r\n|[" + delimiter + "\r\n]", "g"), // field separator regex
     reFormat = new RegExp("[\"" + delimiter + "\n]"),
     delimiterCode = delimiter.charCodeAt(0);
     delimiterStr = delimiter;
-  };
+  }
 
   /**
    * Sets the delimiter of the CSV decode and encode function.
@@ -95,7 +95,7 @@ function CSV() {
   */
   this.delimiter = function(delimiter) {
     if (arguments.length === 0) return delimiterStr;
-    if (typeof delimiter === 'string') {
+    if (typeof delimiter === "string") {
       initDelimiter(delimiter);
     } else {
       error("b.CSV.delimiter, separator has to be a character or string");
@@ -146,17 +146,17 @@ function CSV() {
     for (var propname in firstRow) {
       if (firstRow.hasOwnProperty(propname)) {
         header.push(propname);
-      };
-    };
-    csvStrings.push( formatRow(header) );
+      }
+    }
+    csvStrings.push(formatRow(header));
     for (var i = 0; i < rows.length; i++) {
       var row = rows[i];
       var tokens = [];
       for (var ii = 0; ii < header.length; ii++) {
         tokens.push(row[header[ii]]);
-      };
-      csvStrings.push( formatRow(tokens) );
-    };
+      }
+      csvStrings.push(formatRow(tokens));
+    }
     return csvStrings.join("\n");
   };
 
@@ -170,11 +170,11 @@ function CSV() {
 
   function parseRows(text, f) {
     var EOL = {}, // sentinel value for end-of-line
-        EOF = {}, // sentinel value for end-of-file
-        rows = [], // output rows
-        n = 0, // the current line number
-        t, // the current token
-        eol; // is the current token followed by EOL?
+      EOF = {}, // sentinel value for end-of-file
+      rows = [], // output rows
+      n = 0, // the current line number
+      t, // the current token
+      eol; // is the current token followed by EOL?
 
     reParse.lastIndex = 0; // work-around bug in FF 3.6
 
@@ -224,8 +224,8 @@ function CSV() {
     }
 
     return rows;
-  };
-};
+  }
+}
 
 // -- Conversion --
 
@@ -315,7 +315,7 @@ var unhexScalar = function(hex) {
   var value = parseInt("0x" + hex, 16);
   if (value > 2147483647) value -= 4294967296;
   return value;
-}
+};
 
 /**
  * Convert a hex representation to a number.
@@ -351,11 +351,11 @@ pub.unhex = function(hex) {
  */
  // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
 pub.trimWord = function(s) {
-    s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi,"");
-    s = s.replace(/\s*/gi,"");
+  s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi, "");
+  s = s.replace(/\s*/gi, "");
 //    s = s.replace(/[ ]{2,}/gi," ");
-    s = s.replace(/\n*/,"");
-    return s;
+  s = s.replace(/\n*/, "");
+  return s;
 };
 
 /**
@@ -662,7 +662,7 @@ var startsWith = pub.startsWith = function(str, prefix) {
  * @return {Boolean} returns true if this is the case
  */
 var isArray = pub.isArray = function(obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]';
+  return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
 /**
@@ -688,7 +688,7 @@ var isNumber = pub.isNumber = function(num) {
  * @return {Boolean} returns true if this is the case
  */
 var isString = pub.isString = function(str) {
-  return Object.prototype.toString.call(str) === '[object String]';
+  return Object.prototype.toString.call(str) === "[object String]";
 };
 
 /**
@@ -719,12 +719,12 @@ var initDataFile = function(file, mustExist) {
   if (file instanceof File) {
     result = file;
   } else {
-    var folder = new Folder(projectFolder().absoluteURI + '/data');
+    var folder = new Folder(projectFolder().absoluteURI + "/data");
     folder.create(); // creates data folder if not existing, otherwise it just skips
-    result = new File(folder.absoluteURI + '/' + file);
+    result = new File(folder.absoluteURI + "/" + file);
   }
   if (mustExist && !result.exists) {
-    error('The file "' + result + '" does not exist.');
+    error("The file \"" + result + "\" does not exist.");
   }
   return result;
 };
@@ -739,28 +739,28 @@ var initExportFile = function(file, mustExist) {
     var pathNormalized = file.split("/");
     for (var i = 0; i < pathNormalized.length; i++) {
       if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
-        pathNormalized.splice(i,1);
-      };
-    };
+        pathNormalized.splice(i, 1);
+      }
+    }
 
     var tmpPath = projectFolder().absoluteURI;
-    var fileName = pathNormalized[pathNormalized.length-1];
+    var fileName = pathNormalized[pathNormalized.length - 1];
 
     // contains the path folders? if so create them ...
     if (pathNormalized.length > 1) {
-      var folders = pathNormalized.slice(0,-1);
+      var folders = pathNormalized.slice(0, -1);
       for (var i = 0; i < folders.length; i++) {
-        tmpPath += "/"+folders[i]
+        tmpPath += "/" + folders[i];
         var f = new Folder(tmpPath);
         if (!f.exists) f.create();
-      };
+      }
     }
 
     // result = new File(projectFolder().absoluteURI + '/' + file);
-    result = new File(tmpPath + '/' + fileName);
+    result = new File(tmpPath + "/" + fileName);
   }
   if (mustExist && !result.exists) {
-    error('The file "' + result + '" does not exist.');
+    error("The file \"" + result + "\" does not exist.");
   }
   return result;
 };
@@ -800,10 +800,10 @@ pub.shellExecute = function(cmd) {
     try {
       return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
     } catch (e) {
-      error("b.shellExecute(): "+e);
+      error("b.shellExecute(): " + e);
     }
   } else {
-    error("b.shellExecute() is a Mac only feature at the moment. Sorry!")
+    error("b.shellExecute() is a Mac only feature at the moment. Sorry!");
   }
 };
 
@@ -822,8 +822,8 @@ pub.loadString = function(fileOrString) {
     return getURL(fileOrString);
   } else {
     var inputFile = initDataFile(fileOrString, true),
-    data = null;
-    inputFile.open('r');
+      data = null;
+    inputFile.open("r");
     data = inputFile.read();
     inputFile.close();
     return data;
@@ -833,12 +833,12 @@ pub.loadString = function(fileOrString) {
 var getURL = function(url) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
-      return pub.shellExecute("curl -m 15 -L '"+url+"'");
+      return pub.shellExecute("curl -m 15 -L '" + url + "'");
     } else {
-      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
+      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
   } else {
-    error("The url "+url+" is not a valid one. Please double check!")
+    error("The url " + url + " is not a valid one. Please double check!");
   }
 };
 
@@ -858,8 +858,8 @@ pub.loadStrings = function(file) {
     return result.match(/[^\r\n]+/g);
   } else {
     var inputFile = initDataFile(file, true),
-    result = [];
-    inputFile.open('r');
+      result = [];
+    inputFile.open("r");
     while (!inputFile.eof) {
       result.push(inputFile.readln());
     }
@@ -927,7 +927,7 @@ pub.printInfo = function() {
  */
 pub.saveStrings = function(file, strings) {
   var outputFile = initDataFile(file);
-  outputFile.open('w');
+  outputFile.open("w");
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
@@ -945,7 +945,7 @@ pub.saveStrings = function(file, strings) {
  */
 pub.saveString = function(file, string) {
   var outputFile = initDataFile(file);
-  outputFile.open('w');
+  outputFile.open("w");
   outputFile.write(string);
   outputFile.close();
 };
@@ -959,7 +959,7 @@ pub.saveString = function(file, string) {
  * @param {String|File} file The file name or a File instance
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
-pub.savePDF = function(file, showOptions){
+pub.savePDF = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (typeof showOptions !== "boolean") showOptions = false;
   currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
@@ -973,7 +973,7 @@ pub.savePDF = function(file, showOptions){
  * @param {String|File} file The file name or a File instance
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
-pub.savePNG = function(file, showOptions){
+pub.savePNG = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (typeof showOptions !== "boolean") showOptions = false;
   currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
@@ -1044,35 +1044,35 @@ pub.download = function(url, file) {
       if (file instanceof File) {
         var downloadFolder = file.parent.fsName;
         var fileName = file.displayName;
-        downloadFolder = downloadFolder.replace(" ","\\ ");
-        fileName = fileName.replace(" ","\\ ");
-        cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+        downloadFolder = downloadFolder.replace(" ", "\\ ");
+        fileName = fileName.replace(" ", "\\ ");
+        cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
 
       } else {
-        var downloadFolder = file.substr(0,file.lastIndexOf("/"));
-        var fileName = file.substr(file.lastIndexOf("/")+1);
+        var downloadFolder = file.substr(0, file.lastIndexOf("/"));
+        var fileName = file.substr(file.lastIndexOf("/") + 1);
 
         // get rif of some special cases
-        if(startsWith(downloadFolder,"./")) downloadFolder.substr(2);
-        if(startsWith(downloadFolder,"/")) downloadFolder.substr(1);
+        if(startsWith(downloadFolder, "./")) downloadFolder.substr(2);
+        if(startsWith(downloadFolder, "/")) downloadFolder.substr(1);
 
-        downloadFolder = downloadFolder.replace(" ","\\ ");
-        fileName = fileName.replace(" ","\\ ");
-        downloadFolder = projPath + "/data/"+ downloadFolder;
-        cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+        downloadFolder = downloadFolder.replace(" ", "\\ ");
+        fileName = fileName.replace(" ", "\\ ");
+        downloadFolder = projPath + "/data/" + downloadFolder;
+        cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
 
       }
 
     } else {
       var downloadFolder = projPath + "/data/download";
-      var cmd = ["sh",scriptPath,downloadFolder,url].join(" ");
+      var cmd = ["sh", scriptPath, downloadFolder, url].join(" ");
     }
 
     println(cmd);
     pub.shellExecute(cmd);
 
   } else {
-    error("The url "+url+" is not a valid one. Please double check!")
+    error("The url " + url + " is not a valid one. Please double check!");
   }
 };
 
