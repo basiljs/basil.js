@@ -50,13 +50,13 @@ pub.paragraphs = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.paragraphs(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.paragraphs(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.paragraphs;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'paragraphs', cb);
+      return forEachStoryProperty(item, "paragraphs", cb);
     } else {
       return forEach(item.paragraphs, cb);
     }
@@ -121,13 +121,13 @@ pub.lines = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.lines(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.lines(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.lines;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'lines', cb);
+      return forEachStoryProperty(item, "lines", cb);
     } else {
       return forEach(item.lines, cb);
     }
@@ -149,13 +149,13 @@ pub.words = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.words(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.words(), Wrong object type.");
 
-  if(arguments.length === 1){
+  if(arguments.length === 1) {
     return item.words;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'words', cb);
+      return forEachStoryProperty(item, "words", cb);
     } else {
       return forEach(item.words, cb);
     }
@@ -177,13 +177,13 @@ pub.characters = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.characters(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.characters(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.characters;
-  } else if ( cb instanceof Function) {
+  } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'characters', cb);
+      return forEachStoryProperty(item, "characters", cb);
     } else {
       return forEach(item.characters, cb);
     }
@@ -220,9 +220,9 @@ pub.items = function(container, cb) {
     || container instanceof Layer
     || container instanceof Group) {
 
-    if(arguments.length === 1 || cb === false){
+    if(arguments.length === 1 || cb === false) {
       return container.allPageItems;
-    } else if(cb instanceof Function ) {
+    } else if(cb instanceof Function) {
       return forEach(container.allPageItems, cb);
     }
   } else {
@@ -245,18 +245,18 @@ pub.clear = function(container) {
     || container instanceof Layer
     || container instanceof Group) {
 
-      return forEach(container.allPageItems, function(item,n){
+    return forEach(container.allPageItems, function(item, n) {
         // Groups have to be avoided for deletion
         // otherwise deletion process is confused
-        if(item !== null && ! (item instanceof Group) ) {
-          if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
-          item.remove();
-        }
-      });
+      if(item !== null && !(item instanceof Group)) {
+        if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
+        item.remove();
+      }
+    });
 
-    } else {
-      return false;
-    }
+  } else {
+    return false;
+  }
 };
 
 /**
@@ -273,4 +273,4 @@ pub.remove = function(obj) {
   } else {
     throw new Error("Provided object cannot be removed in b.remove().");
   }
-}
+};
