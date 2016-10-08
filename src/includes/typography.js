@@ -21,32 +21,32 @@
  */
 pub.text = function(txt, x, y, w, h) {
   if (arguments.length !== 5) error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
-  if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: "+ typeof txt +". Use: b.text(txt, x, y, w, h)");
-  var textFrame = currentPage().textFrames.add( currentLayer() );
+  if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
+  var textFrame = currentPage().textFrames.add(currentLayer());
   with (textFrame) {
     contents = txt.toString();
-    geometricBounds = [y, x, (y+h), (x+w)];
+    geometricBounds = [y, x, (y + h), (x + w)];
     textFramePreferences.verticalJustification = currYAlign;
   }
   pub.typo(textFrame, {
-    'appliedFont': currFont,
-    'pointSize': currFontSize,
-    'fillColor': currFillColor,
-    'justification': currAlign,
-    'leading': currLeading,
-    'kerningValue': currKerning,
-    'tracking': currTracking
+    "appliedFont": currFont,
+    "pointSize": currFontSize,
+    "fillColor": currFillColor,
+    "justification": currAlign,
+    "leading": currLeading,
+    "kerningValue": currKerning,
+    "tracking": currTracking
   });
 
 
   if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
 
   return textFrame;
@@ -71,7 +71,7 @@ pub.text = function(txt, x, y, w, h) {
  */
 pub.typo = function(item, property, value) {
   var result = [],
-    actsAsGetter = typeof property === 'string' && (value === undef || value === null),
+    actsAsGetter = typeof property === "string" && (value === undef || value === null),
     getOrSetProperties = function(textItem) {
       if (actsAsGetter) {
         result.push(textItem[property]);
@@ -80,10 +80,10 @@ pub.typo = function(item, property, value) {
       }
     },
     setProperties = function(textItem) {
-      if (typeof property === 'string') {
+      if (typeof property === "string") {
         result.push(textItem);
         setProperty(textItem, property, value);
-      } else if (typeof property === 'object') {
+      } else if (typeof property === "object") {
         result.push(textItem);
         for (var prop in property) {
           setProperty(textItem, prop, property[prop]);
@@ -94,9 +94,9 @@ pub.typo = function(item, property, value) {
       textItem[prop] = val;
     };
 
-  if(typeof item === 'string') error( "b.typo() cannot work on strings. Please pass a Text object to modify." );
+  if(typeof item === "string") error("b.typo() cannot work on strings. Please pass a Text object to modify.");
 
-  if(!isValid(item)){
+  if(!isValid(item)) {
     warning("b.typo(), invalid object passed");
     return;
   }
@@ -127,14 +127,14 @@ var isValid = function (item) {
 
   checkNull(item);
 
-    if (item.hasOwnProperty("isValid")) {
-      if (!item.isValid) {
-        return false;
-      } else {
-        return true;
-      }
+  if (item.hasOwnProperty("isValid")) {
+    if (!item.isValid) {
+      return false;
+    } else {
+      return true;
     }
-    return true; // if does not have isValid field -> normal array element and not collection
+  }
+  return true; // if does not have isValid field -> normal array element and not collection
 
   return false;
 };
@@ -153,7 +153,7 @@ pub.textFont = function(fontName, fontStyle) {
     currFont = fontName;
   }
   if (arguments.length === 2) {
-    currFont = fontName+"\t"+fontStyle;
+    currFont = fontName + "\t" + fontStyle;
   }
   return currFont;
 };
@@ -253,8 +253,9 @@ pub.textTracking = function(tracking) {
  * @return {CharachterStyle}  The character style instance.
  */
 pub.characterStyle = function(name) {
+
   var style = findInStylesByName(currentDoc().allCharacterStyles, name);
-  if(!style){
+  if(!style) {
     style = currentDoc().characterStyles.add({name: name});
   }
   return style;
@@ -270,7 +271,7 @@ pub.characterStyle = function(name) {
  */
 pub.paragraphStyle = function(name) {
   var style = findInStylesByName(currentDoc().allParagraphStyles, name);
-  if(!style){
+  if(!style) {
     style = currentDoc().paragraphStyles.add({name: name});
   }
   return style;

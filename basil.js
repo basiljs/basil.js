@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.09.30-10:02:12 */
+/* Basil.js v1.0.10 2016.10.07-15:07:08 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -193,7 +193,7 @@ pub.PIE = "pie";
  * @cat Math
  * @subcat Constants
  */
-pub.TWO_PI = Math.PI*2;
+pub.TWO_PI = Math.PI * 2;
 
 /**
  * Pi
@@ -209,7 +209,7 @@ pub.PI = Math.PI;
  * @cat Math
  * @subcat Constants
  */
-pub.HALF_PI = Math.PI/2;
+pub.HALF_PI = Math.PI / 2;
 
 /**
  * Quarter Pi
@@ -217,7 +217,7 @@ pub.HALF_PI = Math.PI/2;
  * @cat Math
  * @subcat Constants
  */
-pub.QUARTER_PI = Math.PI/4;
+pub.QUARTER_PI = Math.PI / 4;
 
 /**
  * Sin Cos Length
@@ -351,7 +351,8 @@ pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, mo
 
 
 var ERROR_PREFIX = "\nBasil.js Error -> ",
-    WARNING_PREFIX = "### Basil Warning -> ";
+  WARNING_PREFIX = "### Basil Warning -> ";
+
 // ----------------------------------------
 // public vars
 
@@ -368,40 +369,41 @@ pub.width = null;
  * @cat Environment
  */
 pub.height = null;
+
 // ----------------------------------------
 // private vars
-var currDoc = null,
-    currPage = null,
-    currLayer = null,
-    currUnits = null,
-    currMatrix = null,
-    matrixStack = null,
-    currColorMode = null,
-    currGradientMode = null,
-    currFillColor = null,
-    currStrokeColor = null,
-    currStrokeTint = null,
-    currFillTint = null,
-    currStrokeWeight = null,
-    currRectMode = null,
-    currEllipseMode = null,
-    noneSwatchColor = null,
-    startTime = null,
-    currFont = null,
-    currFontSize = null,
-    currAlign = null,
-    currYAlign = null,
-    currLeading = null,
-    currKerning = null,
-    currTracking = null,
-    currImageMode = null,
-    currCanvasMode = null,
-    currVertexPoints = null,
-    currPathPointer = null,
-    currPolygon = null,
-    currShapeMode = null,
-    // tmp cache, see addToStroy(), via indesign external library file
-    addToStoryCache = null;
+var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign external library file*/
+  currAlign = null,
+  currCanvasMode = null,
+  currColorMode = null,
+  currDoc = null,
+  currEllipseMode = null,
+  currFillColor = null,
+  currFillTint = null,
+  currFont = null,
+  currFontSize = null,
+  currGradientMode = null,
+  currImageMode = null,
+  currKerning = null,
+  currLayer = null,
+  currLeading = null,
+  currMatrix = null,
+  currPage = null,
+  currPathPointer = null,
+  currPolygon = null,
+  currRectMode = null,
+  currShapeMode = null,
+  currStrokeColor = null,
+  currStrokeTint = null,
+  currStrokeWeight = null,
+  currTracking = null,
+  currUnits = null,
+  currVertexPoints = null,
+  currYAlign = null,
+  matrixStack = null,
+  noneSwatchColor = null,
+  startTime = null;
+
 // ----------------------------------------
 // global functions
 
@@ -475,7 +477,7 @@ if (!glob.forEach) {
         continue;
       }
 
-      if(cb(collection[i],i) === false) {
+      if(cb(collection[i], i) === false) {
         return false;
       }
     }
@@ -499,15 +501,15 @@ glob.HashList = function () {
   that.items = {};
 
   // TODO: initial function removal in items?
-  for ( var key in that.items ) {
+  for (var key in that.items) {
     b.println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
   function checkKey(key) {
     if(that.items[key] instanceof Function) {
-        that.items[key] = undefined;
-    };
+      that.items[key] = undefined;
+    }
   }
 
   /**
@@ -522,13 +524,13 @@ glob.HashList = function () {
    */
   that.remove = function(key) {
     var tmp_previous;
-    if (typeof that.items[key] != 'undefined') {
+    if (typeof that.items[key] != "undefined") {
       var tmp_previous = that.items[key];
       delete that.items[key];
       that.length--;
     }
     return tmp_previous;
-  }
+  };
 
   /**
    * This gets a value by its key.
@@ -541,7 +543,7 @@ glob.HashList = function () {
    */
   that.get = function(key) {
     return that.items[key];
-  }
+  };
 
   /**
    * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
@@ -555,16 +557,16 @@ glob.HashList = function () {
    */
   that.set = function(key, value) {
 
-    if( value instanceof Function ) error("HashList does not support storing Functions as values.");
+    if(value instanceof Function) error("HashList does not support storing Functions as values.");
     checkKey(key);
-    if (typeof value != 'undefined') {
-      if (typeof that.items[key] === 'undefined') {
+    if (typeof value != "undefined") {
+      if (typeof that.items[key] === "undefined") {
         that.length++;
       }
       that.items[key] = value;
     }
     return that.items[key];
-  }
+  };
 
   /**
    * Checks for the existence of a given key.
@@ -577,8 +579,8 @@ glob.HashList = function () {
    */
   that.hasKey = function(key) {
     checkKey(key);
-    return typeof that.items[key] != 'undefined';
-  }
+    return typeof that.items[key] != "undefined";
+  };
 
   /**
    * Checks if a certain value exists at least once in all of the key -> value pairs.
@@ -596,10 +598,10 @@ glob.HashList = function () {
       if (obj[key] === value) {
         found = true;
         break;
-      };
+      }
     }
     return found;
-  }
+  };
 
   /**
    * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
@@ -610,15 +612,15 @@ glob.HashList = function () {
    * @return {Array} An array with all the keys
    */
   that.getKeysByValues = function() {
-      var obj = that.items;
-      var keys = [];
-      for(var key in obj)
+    var obj = that.items;
+    var keys = [];
+    for(var key in obj)
         {
-          if( typeof obj[key] != 'number' ) error("HashList.getKeysByValues(), only works with Numbers as values. ");
-          keys.push(key);
-        }
-      return keys.sort(function(a,b){return obj[b]-obj[a]});
-  }
+      if(typeof obj[key] != "number") error("HashList.getKeysByValues(), only works with Numbers as values. ");
+      keys.push(key);
+    }
+    return keys.sort(function(a, b) {return obj[b] - obj[a];});
+  };
 
   /**
    * Returns an array with all keys in a sorted order from higher to lower magnitude.
@@ -629,8 +631,8 @@ glob.HashList = function () {
    * @return {Array} An array with all the keys
    */
   that.getSortedKeys = function () {
-      return that.getKeys().sort(); // ["a", "b", "z"]
-  }
+    return that.getKeys().sort(); // ["a", "b", "z"]
+  };
 
   /**
    * Returns an array with all keys.
@@ -641,17 +643,17 @@ glob.HashList = function () {
    * @return {Array} An array with all the keys
    */
   that.getKeys = function () {
-      var keys = [];
+    var keys = [];
 
-      for(var key in that.items)
+    for(var key in that.items)
       {
-          if(that.items.hasOwnProperty(key))
+      if(that.items.hasOwnProperty(key))
           {
-              keys.push(key);
-          }
+        keys.push(key);
       }
-      return keys;
-  }
+    }
+    return keys;
+  };
 
   /**
    * Returns an array with all keys.
@@ -667,11 +669,11 @@ glob.HashList = function () {
     var values = [];
 
     for(var key in obj) {
-        values.push(obj[key]);
+      values.push(obj[key]);
     }
     return values;
 
-  }
+  };
 
   /**
    * Deletes all the key -> value pairs in this HashList.
@@ -685,10 +687,10 @@ glob.HashList = function () {
       delete that.items[i];
     }
     that.length = 0;
-  }
+  };
 
   return that;
-}
+};
 
 
 // all initialisations should go here
@@ -737,13 +739,13 @@ pub.go = function (mode) {
   }
 
   try {
-    if (typeof glob.setup === 'function') {
+    if (typeof glob.setup === "function") {
       runSetup();
-    };
+    }
 
-    if (typeof glob.draw === 'function') {
+    if (typeof glob.draw === "function") {
       runDrawOnce();
-    };
+    }
   } catch (e) {
     alert(e);
     exit();
@@ -753,11 +755,11 @@ pub.go = function (mode) {
   if (executionDuration < 1000) {
     println("[Finished in " + executionDuration + "ms]");
   } else {
-    println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
+    println("[Finished in " + (executionDuration / 1000).toPrecision(3) + "s]");
   }
 
   if(currDoc && !currDoc.windows.length) {
-    currDoc.windows.add(); //open the hidden doc
+    currDoc.windows.add(); // open the hidden doc
   }
   closeHiddenDocs();
   if (progressPanel) {
@@ -824,11 +826,11 @@ pub.loop = function(framerate) {
     // awesome
   }
   var sleep = null;
-  if (arguments.length === 0) sleep = Math.round(1000/25);
-  else sleep = Math.round(1000/framerate);
+  if (arguments.length === 0) sleep = Math.round(1000 / 25);
+  else sleep = Math.round(1000 / framerate);
 
-  if ($.engineName !== 'loop') {
-    error('b.loop(), Add #targetengine "loop"; at the very top of your script.');
+  if ($.engineName !== "loop") {
+    error("b.loop(), Add #targetengine \"loop\"; at the very top of your script.");
   }
 
   currentDoc();
@@ -865,7 +867,7 @@ pub.noLoop = function() {
 
 var runSetup = function() {
   app.doScript(function() {
-    if (typeof glob.setup === 'function') {
+    if (typeof glob.setup === "function") {
       glob.setup();
     }
   }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
@@ -873,7 +875,7 @@ var runSetup = function() {
 
 var runDrawOnce = function() {
   app.doScript(function() {
-    if (typeof glob.draw === 'function') {
+    if (typeof glob.draw === "function") {
       glob.draw();
     }
   }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
@@ -881,7 +883,7 @@ var runDrawOnce = function() {
 
 var runDrawLoop = function() {
   app.doScript(function() {
-    if (typeof glob.draw === 'function') {
+    if (typeof glob.draw === "function") {
       glob.draw();
     }
   }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
@@ -897,7 +899,7 @@ var welcome = function() {
 var currentDoc = function (mode) {
   if (!currDoc) {
     var stack = $.stack;
-    if (!(stack.match(/go\(.*\)/)||stack.match(/loop\(.*\)/))) {
+    if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
       warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
     }
     var doc = null;
@@ -923,13 +925,13 @@ var currentDoc = function (mode) {
 };
 
 var closeHiddenDocs = function () {
-    //in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
-    for (var i = app.documents.length - 1; i >= 0; i -= 1) {
-        var d = app.documents[i];
-        if (!d.windows.length) {
-            d.close(SaveOptions.NO);
-        }
+    // in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+  for (var i = app.documents.length - 1; i >= 0; i -= 1) {
+    var d = app.documents[i];
+    if (!d.windows.length) {
+      d.close(SaveOptions.NO);
     }
+  }
 };
 
 var setCurrDoc = function(doc) {
@@ -958,8 +960,8 @@ var Progress = function () {
   this.init = function () {
     this.panel = Window.find("window", "processing...");
     if (this.panel === null) {
-      this.panel = new Window('window', "processing...");
-      var logo = (Folder.fs == "Macintosh" ) ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png");
+      this.panel = new Window("window", "processing...");
+      var logo = (Folder.fs == "Macintosh") ? new File("~/Documents/basiljs/bundle/lib/basil.png") : new File("%USERPROFILE%Documents/basiljs/bundle/lib/basil.png");
       if (logo.exists) {
         this.panel.add("image", undefined, logo);
       }
@@ -975,7 +977,7 @@ var Progress = function () {
     }
   };
   this.writeMessage = function (msg) {
-    if (Folder.fs == "Macintosh") { //Indesign Bug on Mac: Need to set app.scriptPreferences.enableRedraw = true to redraw window....
+    if (Folder.fs == "Macintosh") { // Indesign Bug on Mac: Need to set app.scriptPreferences.enableRedraw = true to redraw window....
       var rd = app.scriptPreferences.enableRedraw;
       app.scriptPreferences.enableRedraw = true;
     }
@@ -1014,7 +1016,7 @@ var currentLayer = function() {
     currentDoc();
     if (currDoc.windows.length)
       currLayer = app.activeDocument.activeLayer;
-     else
+    else
       currLayer = currDoc.layers[0];
 
   }
@@ -1024,9 +1026,9 @@ var currentLayer = function() {
 var currentPage = function() {
   if (!currPage) {
     currentDoc();
-      if (currDoc.windows.length)
-        currPage = app.activeWindow.activePage;
-      else
+    if (currDoc.windows.length)
+      currPage = app.activeWindow.activePage;
+    else
         currPage = currDoc.pages[0];
   }
   return currPage;
@@ -1049,8 +1051,8 @@ var updatePublicPageSizeVars = function () {
       break;
 
     case pub.MARGIN:
-      widthOffset = - currentPage().marginPreferences.left - currentPage().marginPreferences.right;
-      heightOffset = - currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
+      widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
+      heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
       b.resetMatrix();
       b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
@@ -1058,16 +1060,16 @@ var updatePublicPageSizeVars = function () {
 
     case pub.BLEED:
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      if(facingPages){
+      if(facingPages) {
         widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
-      b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
 
-      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
+      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
         b.resetMatrix();
-        b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
+        b.translate(0, -b.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
@@ -1082,10 +1084,10 @@ var updatePublicPageSizeVars = function () {
 
       pub.width = w * 2;
 
-      if(currentPage().name === '1') {
+      if(currentPage().name === "1") {
         pub.width = w;
-      } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w,0);
+      } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
+        pub.translate(-w, 0);
       }
 
 
@@ -1096,7 +1098,7 @@ var updatePublicPageSizeVars = function () {
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
-      b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
+      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -1104,8 +1106,8 @@ var updatePublicPageSizeVars = function () {
       pub.width = w * 2;
       pub.height = h;
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w+widthOffset/2,0);
+      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
+        pub.translate(-w + widthOffset / 2, 0);
       }
 
       break;
@@ -1114,7 +1116,7 @@ var updatePublicPageSizeVars = function () {
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
       b.resetMatrix();
-      b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
+      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
@@ -1122,8 +1124,8 @@ var updatePublicPageSizeVars = function () {
       pub.width = w * 2;
       pub.height = h;
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND){
-        pub.translate(-w-widthOffset/2,0);
+      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
+        pub.translate(-w - widthOffset / 2, 0);
       }
 
       return; // early exit
@@ -1133,7 +1135,7 @@ var updatePublicPageSizeVars = function () {
       break;
   }
 
-  if(singlePageMode){
+  if(singlePageMode) {
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
     var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
@@ -1142,20 +1144,21 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
+
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {
   for (var i = 0; i < allStylesCollection.length; i++) {
     if (allStylesCollection[i].name === name) {
       return allStylesCollection[i];
     }
-  };
+  }
   return null;
 };
 
 var checkNull = pub.checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
-}
+};
 
 var isNull = checkNull; // legacy
 
@@ -1176,6 +1179,7 @@ var clearConsole = function() {
   bt.onResult = function(resObj) {};
   bt.send();
 };
+
 
 // ----------------------------------------
 // Structure
@@ -1229,13 +1233,13 @@ pub.paragraphs = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.paragraphs(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.paragraphs(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.paragraphs;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'paragraphs', cb);
+      return forEachStoryProperty(item, "paragraphs", cb);
     } else {
       return forEach(item.paragraphs, cb);
     }
@@ -1300,13 +1304,13 @@ pub.lines = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.lines(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.lines(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.lines;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'lines', cb);
+      return forEachStoryProperty(item, "lines", cb);
     } else {
       return forEach(item.lines, cb);
     }
@@ -1328,13 +1332,13 @@ pub.words = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.words(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.words(), Wrong object type.");
 
-  if(arguments.length === 1){
+  if(arguments.length === 1) {
     return item.words;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'words', cb);
+      return forEachStoryProperty(item, "words", cb);
     } else {
       return forEach(item.words, cb);
     }
@@ -1356,13 +1360,13 @@ pub.characters = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.characters(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.characters(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.characters;
-  } else if ( cb instanceof Function) {
+  } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'characters', cb);
+      return forEachStoryProperty(item, "characters", cb);
     } else {
       return forEach(item.characters, cb);
     }
@@ -1399,9 +1403,9 @@ pub.items = function(container, cb) {
     || container instanceof Layer
     || container instanceof Group) {
 
-    if(arguments.length === 1 || cb === false){
+    if(arguments.length === 1 || cb === false) {
       return container.allPageItems;
-    } else if(cb instanceof Function ) {
+    } else if(cb instanceof Function) {
       return forEach(container.allPageItems, cb);
     }
   } else {
@@ -1424,18 +1428,18 @@ pub.clear = function(container) {
     || container instanceof Layer
     || container instanceof Group) {
 
-      return forEach(container.allPageItems, function(item,n){
+    return forEach(container.allPageItems, function(item, n) {
         // Groups have to be avoided for deletion
         // otherwise deletion process is confused
-        if(item !== null && ! (item instanceof Group) ) {
-          if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
-          item.remove();
-        }
-      });
+      if(item !== null && !(item instanceof Group)) {
+        if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
+        item.remove();
+      }
+    });
 
-    } else {
-      return false;
-    }
+  } else {
+    return false;
+  }
 };
 
 /**
@@ -1452,7 +1456,8 @@ pub.remove = function(obj) {
   } else {
     throw new Error("Provided object cannot be removed in b.remove().");
   }
-}
+};
+
 // ----------------------------------------
 // Environment
 
@@ -1485,29 +1490,29 @@ pub.doc = function(doc) {
  * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
  *
  */
-pub.size = function(width, height){
-  if(app.documents.length === 0){
+pub.size = function(width, height) {
+  if(app.documents.length === 0) {
     // there are no documents
-    warning('b.size(width, height)', 'You have no open document.');
+    warning("b.size(width, height)", "You have no open document.");
     return;
   } else {
-    if (arguments.length === 0){
+    if (arguments.length === 0) {
       // no arguments given
       // return the curent values
       // warning('b.size(width, height)', 'no arguments given');
       return {width: pub.width, height: pub.height};
     }
 
-    if(arguments.length === 1){
+    if(arguments.length === 1) {
       // only one argument set the first to the secound
       height = width;
     }
     var doc = app.documents[0];
     // set the documents pageHeiht and pageWidth
-    doc.properties =  {
+    doc.properties = {
       documentPreferences:{
-      pageHeight: height,
-      pageWidth: width
+        pageHeight: height,
+        pageWidth: width
       }
     };
     // set height and width
@@ -1515,7 +1520,7 @@ pub.size = function(width, height){
     pub.width = width;
   }
 
-}
+};
 
 /**
  * Closes the current document.
@@ -1528,8 +1533,8 @@ pub.size = function(width, height){
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
-    if( typeof saveOptions === 'boolean' && saveOptions === false ) saveOptions = SaveOptions.no;
-    if( typeof saveOptions === 'boolean' && saveOptions === true ) saveOptions = SaveOptions.yes;
+    if(typeof saveOptions === "boolean" && saveOptions === false) saveOptions = SaveOptions.no;
+    if(typeof saveOptions === "boolean" && saveOptions === true) saveOptions = SaveOptions.yes;
     doc.close(saveOptions, file);
     resetCurrDoc();
   }
@@ -1542,12 +1547,12 @@ pub.close = function(saveOptions, file) {
  * @cat Document
  * @subcat Page
  */
-pub.canvasMode = function ( m ) {
+pub.canvasMode = function (m) {
   if(arguments.length == 0) {
     return currCanvasMode;
-  } else if ( typeof m === "string" ) {
+  } else if (typeof m === "string") {
 
-    if ( (m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages ) b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
 
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -1568,16 +1573,16 @@ pub.canvasMode = function ( m ) {
  * @param  {Number} The desired vertical pasteboard margin.
  * @return {array} The current horizontal, vertical pasteboard margins.
  */
-pub.pasteboard = function ( h, v ) {
+pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
-  } else if(arguments.length == 1){
-	  error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
-  }else if ( typeof h === "number" && typeof v === "number" ) {
-     currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
-     return currDoc.pasteboardPreferences.pasteboardMargins;
+  } else if(arguments.length == 1) {
+	                                                                                                                                                                                                          error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
+  }else if (typeof h === "number" && typeof v === "number") {
+    currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
+    return currDoc.pasteboardPreferences.pasteboardMargins;
   }else {
-     error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
+    error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
   }
 };
 
@@ -1593,10 +1598,10 @@ pub.pasteboard = function ( h, v ) {
 pub.page = function(page) {
   if (page instanceof Page) {
     currPage = page;
-  } else if ( typeof page !== 'undefined' && page.hasOwnProperty("parentPage") ) {
+  } else if (typeof page !== "undefined" && page.hasOwnProperty("parentPage")) {
     currPage = page.parentPage; // page is actually a PageItem
-  } else if (typeof page === 'number') {
-    if( page < 1 ) {
+  } else if (typeof page === "number") {
+    if(page < 1) {
       p = 0;
     } else {
       p = page - 1;
@@ -1605,15 +1610,15 @@ pub.page = function(page) {
     try {
       tempPage.id;
     } catch (e) {
-      error('b.page(), ' + page + ' does not exist.');
+      error("b.page(), " + page + " does not exist.");
     }
     currPage = tempPage;
-  } else if (typeof page !== 'undefined') {
+  } else if (typeof page !== "undefined") {
     error("b.page(), bad type for b.page().");
   }
   updatePublicPageSizeVars();
-    if (currDoc.windows.length)
-      app.activeWindow.activePage = currPage; // focus in GUI  if not in MODEHIDDEN
+  if (currDoc.windows.length)
+    app.activeWindow.activePage = currPage; // focus in GUI  if not in MODEHIDDEN
   return currentPage();
 };
 
@@ -1635,7 +1640,7 @@ pub.addPage = function(location) {
   var nP;
   try {
 
-    switch ( location ) {
+    switch (location) {
 
       case b.AT_END:
         nP = currentDoc().pages.add(location);
@@ -1646,20 +1651,20 @@ pub.addPage = function(location) {
         break;
 
       case b.AFTER:
-        nP = currentDoc().pages.add(location, pub.page() );
+        nP = currentDoc().pages.add(location, pub.page());
         break;
 
       case b.BEFORE:
-        nP = currentDoc().pages.add(location, pub.page() );
+        nP = currentDoc().pages.add(location, pub.page());
         break;
 
       default:
         throw new Error();
         break;
 
-    };
+    }
 
-    pub.page( nP );
+    pub.page(nP);
     return nP;
 
   } catch (e) {
@@ -1680,7 +1685,7 @@ pub.removePage = function (page) {
 
   checkNull(page);
 
-  if( typeof page === 'number' || arguments.length === 0 || page instanceof Page ){
+  if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
     var p = pub.page(page); // get the page object, todo: add an internal method of page retrieval without setting it to current
     p.remove();
     currPage = null; // reset!
@@ -1702,28 +1707,28 @@ pub.removePage = function (page) {
  */
 pub.pageNumber = function (pageObj) {
 
-    checkNull(pageObj);
+  checkNull(pageObj);
 
-    if (typeof pageObj === 'number') error("b.pageNumber(), cannot be called with a Number argument.");
+  if (typeof pageObj === "number") error("b.pageNumber(), cannot be called with a Number argument.");
 
-    if (pageObj instanceof Page) {
-        return parseInt(pageObj.name); // current number of given page
-    } else {
-        return parseInt(pub.page().name); // number of current page
-    }
+  if (pageObj instanceof Page) {
+    return parseInt(pageObj.name); // current number of given page
+  } else {
+    return parseInt(pub.page().name); // number of current page
+  }
 
 };
 
 // TODO: does not work?
 pub.nextPage = function () {
-    var p = pub.doc().pages.nextItem(currentPage());
-    return pub.page(p);
+  var p = pub.doc().pages.nextItem(currentPage());
+  return pub.page(p);
 };
 
 // TODO: does not work?
 pub.previousPage = function () {
-    var p = pub.doc().pages.previousItem(currentPage());
-    return pub.page(p);
+  var p = pub.doc().pages.previousItem(currentPage());
+  return pub.page(p);
 };
 
 /**
@@ -1765,14 +1770,15 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
   // init
   var libFileName = "addToStoryLib.indl";
-  var libFile = new File(Folder.temp+"/"+libFileName);
+
+  var libFile = new File(Folder.temp + "/" + libFileName);
   addToStoryCache = app.libraries.itemByName(libFileName);
   // if and a cache is existing from previous executions, remove it
   if (addToStoryCache.isValid) {
     addToStoryCache.close();
     libFile.remove();
   }
-  //create an indesign library for caching the page items
+  // create an indesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
@@ -1807,7 +1813,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
         addToStoryCache.assets.firstItem().remove();
       }
     } else {
-      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.")
+      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.");
     }
   };
 };
@@ -1826,7 +1832,7 @@ pub.layer = function(layer) {
   if (layer instanceof Layer) {
     currLayer = layer;
     currentDoc().activeLayer = currLayer;
-  } else if (typeof layer === 'string') {
+  } else if (typeof layer === "string") {
     var layers = currentDoc().layers;
     currLayer = layers.item(layer);
     if (!currLayer.isValid) {
@@ -1835,7 +1841,7 @@ pub.layer = function(layer) {
       currentDoc().activeLayer = currLayer;
     }
   } else if (arguments.length > 0) {
-    error("b.layer(), wrong arguments. Use layer object or string instead.")
+    error("b.layer(), wrong arguments. Use layer object or string instead.");
   }
   return currentLayer();
 };
@@ -1853,18 +1859,18 @@ pub.layer = function(layer) {
 pub.group = function (pItem, name) {
   checkNull(pItem);
   var group = null;
-  if( pItem instanceof Array) {
+  if(pItem instanceof Array) {
     if(pItem.length < 2) error("There must be at least two PageItems passed to b.group().");
     // creates a group from Page Items
     group = currentDoc().groups.add(pItem);
-    if(typeof name != 'undefined') group.name = name;
+    if(typeof name != "undefined") group.name = name;
   }
-  else if( typeof pItem === 'string' ) {
+  else if(typeof pItem === "string") {
     // get the Group of the given name
     group = currentDoc().groups.item(pItem);
   }
   else {
-    error("b.group(), not a valid argument.")
+    error("b.group(), not a valid argument.");
   }
 
   return group;
@@ -1883,14 +1889,14 @@ pub.group = function (pItem, name) {
 pub.ungroup = function(pItem) {
   checkNull(pItem);
   var ungroupedItems = null;
-  if( pItem instanceof Group) {
-    ungroupedItems = b.items( pItem );
+  if(pItem instanceof Group) {
+    ungroupedItems = b.items(pItem);
     pItem.ungroup();
   }
-  else if( typeof pItem === 'string' ) {
+  else if(typeof pItem === "string") {
     // get the Group of the given name
     var group = currentDoc().groups.item(pItem);
-    ungroupedItems = b.items( group );
+    ungroupedItems = b.items(group);
     group.ungroup();
   }
   else {
@@ -1947,7 +1953,7 @@ pub.label = function(label) {
     }
   }
   b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
-}
+};
 
 /**
  * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
@@ -1998,7 +2004,7 @@ pub.nameOnPage = function(name) {
       break;
     }
   }
-  if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page "+pub.pageNumber());
+  if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   return result;
 };
 
@@ -2021,13 +2027,13 @@ pub.units = function (units) {
       units === pub.PX ||
       units === pub.IN) {
     var unitType = null;
-    if      (units === pub.CM) unitType = MeasurementUnits.centimeters;
+    if (units === pub.CM) unitType = MeasurementUnits.centimeters;
     else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
     else if (units === pub.PT) unitType = MeasurementUnits.points;
     else if (units === pub.PX) unitType = MeasurementUnits.pixels;
     else if (units === pub.IN) unitType = MeasurementUnits.inches;
     var doc = currentDoc();
-    with (doc.viewPreferences){
+    with (doc.viewPreferences) {
       //* MeasurementUnits.agates
       //* MeasurementUnits.picas
       //* MeasurementUnits.points
@@ -2062,7 +2068,7 @@ pub.units = function (units) {
 pub.guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
-  var guide = guides.add( currentLayer() );
+  var guide = guides.add(currentLayer());
   with (guide) {
     fitToPage = true;
     orientation = HorizontalOrVertical.VERTICAL;
@@ -2082,7 +2088,7 @@ pub.guideX = function (x) {
 pub.guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
-  var guide = guides.add( currentLayer() );
+  var guide = guides.add(currentLayer());
   with (guide) {
     fitToPage = true;
     orientation = HorizontalOrVertical.HORIZONTAL;
@@ -2107,19 +2113,19 @@ pub.guideY = function (y) {
 pub.margins = function(top, right, bottom, left, pageNumber) {
 
 
-  if (arguments.length === 0){
+  if (arguments.length === 0) {
 
-    return {'top':pub.page(pageNumber).marginPreferences.top,
-            'right':pub.page(pageNumber).marginPreferences.right,
-            'bottom':pub.page(pageNumber).marginPreferences.bottom,
-            'left':pub.page(pageNumber).marginPreferences.left
+    return {"top":pub.page(pageNumber).marginPreferences.top,
+            "right":pub.page(pageNumber).marginPreferences.right,
+            "bottom":pub.page(pageNumber).marginPreferences.bottom,
+            "left":pub.page(pageNumber).marginPreferences.left
             };
 
   } else if (arguments.length === 1) {
     right = bottom = left = top;
-    }
+  }
 
-  if(pageNumber != undefined){
+  if(pageNumber != undefined) {
     pub.page(pageNumber).marginPreferences.top = top;
     pub.page(pageNumber).marginPreferences.right = right;
     pub.page(pageNumber).marginPreferences.bottom = bottom;
@@ -2130,7 +2136,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
     currentPage().marginPreferences.bottom = bottom;
     currentPage().marginPreferences.left = left;
   }
-  };
+};
 
 /**
  * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
@@ -2145,18 +2151,18 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
  */
 pub.bleeds = function(top, right, bottom, left) {
 
-  if (arguments.length === 0){
-    return {'top':currentDoc().documentPreferences.documentBleedTopOffset,
-            'right':currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
-            'bottom':currentDoc().documentPreferences.documentBleedBottomOffset,
-            'left':currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
+  if (arguments.length === 0) {
+    return {"top":currentDoc().documentPreferences.documentBleedTopOffset,
+            "right":currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
+            "bottom":currentDoc().documentPreferences.documentBleedBottomOffset,
+            "left":currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
             };
 
-} else if (arguments.length === 1) {
-  right = bottom = left = top;
+  } else if (arguments.length === 1) {
+    right = bottom = left = top;
   }else{
-  currentDoc().documentPreferences.documentBleedUniformSize = false;
-}
+    currentDoc().documentPreferences.documentBleedUniformSize = false;
+  }
 
   currentDoc().documentPreferences.documentBleedTopOffset = top;
   currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
@@ -2190,33 +2196,33 @@ pub.inspect = function(obj, maxlevel, level, propname) {
     if (constructorName === "Boolean" ||
         constructorName === "Number" ||
         constructorName === "String") {
-      println(indent+propname+": "+obj);
+      println(indent + propname + ": " + obj);
     }
     else if (constructorName === "Array") {
-      println(indent+propname+": "+constructorName+"("+obj.length+")");
+      println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
     }
     else if (constructorName === "Color") {
-      println(indent+propname+": ["+obj.colorValue+"] "+constructorName);
+      println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
     }
     else {
-      println(indent+propname+": "+constructorName);
+      println(indent + propname + ": " + constructorName);
     }
   }
 
-  if ( constructorName === 'Array' ) {
+  if (constructorName === "Array") {
     for (var i = 0, len = obj.length; i < len; i++) {
-      pub.inspect(obj[i], maxlevel, level+1, i);
-    };
-  } else if (typeof obj === 'object') {
+      pub.inspect(obj[i], maxlevel, level + 1, i);
+    }
+  } else if (typeof obj === "object") {
     try {
-      for (var i in obj){
+      for (var i in obj) {
         if (obj.hasOwnProperty(i)) {
-          pub.inspect(obj[i], maxlevel, level+1, i);
+          pub.inspect(obj[i], maxlevel, level + 1, i);
         }
       }
     }
     catch(e) {
-      println(indent+"--> "+propname+" "+e);
+      println(indent + "--> " + propname + " " + e);
     }
   }
 };
@@ -2270,7 +2276,7 @@ pub.day = function() {
  * @return {String}
  */
 pub.weekday = function() {
-  var weekdays = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+  var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   return weekdays[(new Date()).getDay()];
 };
 
@@ -2345,12 +2351,12 @@ pub.millisecond = function() {
 pub.timestamp = function() {
   var dt = new Date();
   var dtf = dt.getFullYear();
-  dtf += pub.nf(dt.getMonth()+1,2);
-  dtf += pub.nf(dt.getDate(),2);
+  dtf += pub.nf(dt.getMonth() + 1, 2);
+  dtf += pub.nf(dt.getDate(), 2);
   dtf += "_";
-  dtf += pub.nf(dt.getHours(),2);
-  dtf += pub.nf(dt.getMinutes(),2);
-  dtf += pub.nf(dt.getSeconds(),2);
+  dtf += pub.nf(dt.getHours(), 2);
+  dtf += pub.nf(dt.getMinutes(), 2);
+  dtf += pub.nf(dt.getSeconds(), 2);
   return dtf;
 };
 
@@ -2373,7 +2379,7 @@ pub.JSON = {
   */
   // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
   decode: function(data) {
-    if ( typeof data !== "string" || !data ) {
+    if (typeof data !== "string" || !data) {
       return null;
     }
     var rvalidchars = /^[\],:{}\s]*$/,
@@ -2383,12 +2389,12 @@ pub.JSON = {
 
     // Make sure the incoming data is actual JSON
     // Logic borrowed from http://json.org/json2.js
-    if ( rvalidchars.test( data.replace( rvalidescape, "@" )
-      .replace( rvalidtokens, "]" )
-      .replace( rvalidbraces, "")) ) {
-      return ( new Function( "return " + data ) )();
+    if (rvalidchars.test(data.replace(rvalidescape, "@")
+      .replace(rvalidtokens, "]")
+      .replace(rvalidbraces, ""))) {
+      return (new Function("return " + data))();
     }
-    error( "b.JSON.decode(), invalid JSON: " + data );
+    error("b.JSON.decode(), invalid JSON: " + data);
   },
   /**
    * Function convert an javascript object to a JSON-string. Usage:
@@ -2406,7 +2412,7 @@ pub.JSON = {
     var t = typeof (obj);
     if (t !== "object" || obj === null) {
       // simple data type
-      if (t === "string") obj = '"' + obj + '"';
+      if (t === "string") obj = "\"" + obj + "\"";
       return String(obj);
     } else {
       // recurse array or object
@@ -2414,10 +2420,10 @@ pub.JSON = {
 
       for (n in obj) {
         v = obj[n];
-        t = typeof(v);
+        t = typeof (v);
         if (obj.hasOwnProperty(n)) {
-          if (t === "string") v = '"' + v + '"'; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
-          json.push((arr ? "" : '"' + n + '":') + String(v));
+          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
+          json.push((arr ? "" : "\"" + n + "\":") + String(v));
         }
       }
       return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
@@ -2430,17 +2436,17 @@ pub.JSON = {
 pub.CSV = new CSV();
 function CSV() {
   var reParse = null,
-      reFormat = null,
-      delimiterStr = null,
-      delimiterCode = null;
+    reFormat = null,
+    delimiterStr = null,
+    delimiterCode = null;
 
-  initDelimiter(',');
+  initDelimiter(",");
   function initDelimiter(delimiter) {
     reParse = new RegExp("\r\n|[" + delimiter + "\r\n]", "g"), // field separator regex
     reFormat = new RegExp("[\"" + delimiter + "\n]"),
     delimiterCode = delimiter.charCodeAt(0);
     delimiterStr = delimiter;
-  };
+  }
 
   /**
    * Sets the delimiter of the CSV decode and encode function.
@@ -2453,7 +2459,7 @@ function CSV() {
   */
   this.delimiter = function(delimiter) {
     if (arguments.length === 0) return delimiterStr;
-    if (typeof delimiter === 'string') {
+    if (typeof delimiter === "string") {
       initDelimiter(delimiter);
     } else {
       error("b.CSV.delimiter, separator has to be a character or string");
@@ -2504,17 +2510,17 @@ function CSV() {
     for (var propname in firstRow) {
       if (firstRow.hasOwnProperty(propname)) {
         header.push(propname);
-      };
-    };
-    csvStrings.push( formatRow(header) );
+      }
+    }
+    csvStrings.push(formatRow(header));
     for (var i = 0; i < rows.length; i++) {
       var row = rows[i];
       var tokens = [];
       for (var ii = 0; ii < header.length; ii++) {
         tokens.push(row[header[ii]]);
-      };
-      csvStrings.push( formatRow(tokens) );
-    };
+      }
+      csvStrings.push(formatRow(tokens));
+    }
     return csvStrings.join("\n");
   };
 
@@ -2528,11 +2534,11 @@ function CSV() {
 
   function parseRows(text, f) {
     var EOL = {}, // sentinel value for end-of-line
-        EOF = {}, // sentinel value for end-of-file
-        rows = [], // output rows
-        n = 0, // the current line number
-        t, // the current token
-        eol; // is the current token followed by EOL?
+      EOF = {}, // sentinel value for end-of-file
+      rows = [], // output rows
+      n = 0, // the current line number
+      t, // the current token
+      eol; // is the current token followed by EOL?
 
     reParse.lastIndex = 0; // work-around bug in FF 3.6
 
@@ -2582,8 +2588,8 @@ function CSV() {
     }
 
     return rows;
-  };
-};
+  }
+}
 
 // -- Conversion --
 
@@ -2673,7 +2679,7 @@ var unhexScalar = function(hex) {
   var value = parseInt("0x" + hex, 16);
   if (value > 2147483647) value -= 4294967296;
   return value;
-}
+};
 
 /**
  * Convert a hex representation to a number.
@@ -2709,11 +2715,11 @@ pub.unhex = function(hex) {
  */
  // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
 pub.trimWord = function(s) {
-    s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi,"");
-    s = s.replace(/\s*/gi,"");
+  s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi, "");
+  s = s.replace(/\s*/gi, "");
 //    s = s.replace(/[ ]{2,}/gi," ");
-    s = s.replace(/\n*/,"");
-    return s;
+  s = s.replace(/\n*/, "");
+  return s;
 };
 
 /**
@@ -3020,7 +3026,7 @@ var startsWith = pub.startsWith = function(str, prefix) {
  * @return {Boolean} returns true if this is the case
  */
 var isArray = pub.isArray = function(obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]';
+  return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
 /**
@@ -3046,7 +3052,7 @@ var isNumber = pub.isNumber = function(num) {
  * @return {Boolean} returns true if this is the case
  */
 var isString = pub.isString = function(str) {
-  return Object.prototype.toString.call(str) === '[object String]';
+  return Object.prototype.toString.call(str) === "[object String]";
 };
 
 /**
@@ -3077,12 +3083,12 @@ var initDataFile = function(file, mustExist) {
   if (file instanceof File) {
     result = file;
   } else {
-    var folder = new Folder(projectFolder().absoluteURI + '/data');
+    var folder = new Folder(projectFolder().absoluteURI + "/data");
     folder.create(); // creates data folder if not existing, otherwise it just skips
-    result = new File(folder.absoluteURI + '/' + file);
+    result = new File(folder.absoluteURI + "/" + file);
   }
   if (mustExist && !result.exists) {
-    error('The file "' + result + '" does not exist.');
+    error("The file \"" + result + "\" does not exist.");
   }
   return result;
 };
@@ -3097,28 +3103,28 @@ var initExportFile = function(file, mustExist) {
     var pathNormalized = file.split("/");
     for (var i = 0; i < pathNormalized.length; i++) {
       if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
-        pathNormalized.splice(i,1);
-      };
-    };
+        pathNormalized.splice(i, 1);
+      }
+    }
 
     var tmpPath = projectFolder().absoluteURI;
-    var fileName = pathNormalized[pathNormalized.length-1];
+    var fileName = pathNormalized[pathNormalized.length - 1];
 
     // contains the path folders? if so create them ...
     if (pathNormalized.length > 1) {
-      var folders = pathNormalized.slice(0,-1);
+      var folders = pathNormalized.slice(0, -1);
       for (var i = 0; i < folders.length; i++) {
-        tmpPath += "/"+folders[i]
+        tmpPath += "/" + folders[i];
         var f = new Folder(tmpPath);
         if (!f.exists) f.create();
-      };
+      }
     }
 
     // result = new File(projectFolder().absoluteURI + '/' + file);
-    result = new File(tmpPath + '/' + fileName);
+    result = new File(tmpPath + "/" + fileName);
   }
   if (mustExist && !result.exists) {
-    error('The file "' + result + '" does not exist.');
+    error("The file \"" + result + "\" does not exist.");
   }
   return result;
 };
@@ -3158,10 +3164,10 @@ pub.shellExecute = function(cmd) {
     try {
       return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
     } catch (e) {
-      error("b.shellExecute(): "+e);
+      error("b.shellExecute(): " + e);
     }
   } else {
-    error("b.shellExecute() is a Mac only feature at the moment. Sorry!")
+    error("b.shellExecute() is a Mac only feature at the moment. Sorry!");
   }
 };
 
@@ -3180,8 +3186,8 @@ pub.loadString = function(fileOrString) {
     return getURL(fileOrString);
   } else {
     var inputFile = initDataFile(fileOrString, true),
-    data = null;
-    inputFile.open('r');
+      data = null;
+    inputFile.open("r");
     data = inputFile.read();
     inputFile.close();
     return data;
@@ -3191,12 +3197,12 @@ pub.loadString = function(fileOrString) {
 var getURL = function(url) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
-      return pub.shellExecute("curl -m 15 -L '"+url+"'");
+      return pub.shellExecute("curl -m 15 -L '" + url + "'");
     } else {
-      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!")
+      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
   } else {
-    error("The url "+url+" is not a valid one. Please double check!")
+    error("The url " + url + " is not a valid one. Please double check!");
   }
 };
 
@@ -3216,8 +3222,8 @@ pub.loadStrings = function(file) {
     return result.match(/[^\r\n]+/g);
   } else {
     var inputFile = initDataFile(file, true),
-    result = [];
-    inputFile.open('r');
+      result = [];
+    inputFile.open("r");
     while (!inputFile.eof) {
       result.push(inputFile.readln());
     }
@@ -3285,7 +3291,7 @@ pub.printInfo = function() {
  */
 pub.saveStrings = function(file, strings) {
   var outputFile = initDataFile(file);
-  outputFile.open('w');
+  outputFile.open("w");
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
@@ -3303,7 +3309,7 @@ pub.saveStrings = function(file, strings) {
  */
 pub.saveString = function(file, string) {
   var outputFile = initDataFile(file);
-  outputFile.open('w');
+  outputFile.open("w");
   outputFile.write(string);
   outputFile.close();
 };
@@ -3317,7 +3323,7 @@ pub.saveString = function(file, string) {
  * @param {String|File} file The file name or a File instance
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
-pub.savePDF = function(file, showOptions){
+pub.savePDF = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (typeof showOptions !== "boolean") showOptions = false;
   currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
@@ -3331,7 +3337,7 @@ pub.savePDF = function(file, showOptions){
  * @param {String|File} file The file name or a File instance
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
-pub.savePNG = function(file, showOptions){
+pub.savePNG = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (typeof showOptions !== "boolean") showOptions = false;
   currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
@@ -3402,35 +3408,35 @@ pub.download = function(url, file) {
       if (file instanceof File) {
         var downloadFolder = file.parent.fsName;
         var fileName = file.displayName;
-        downloadFolder = downloadFolder.replace(" ","\\ ");
-        fileName = fileName.replace(" ","\\ ");
-        cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+        downloadFolder = downloadFolder.replace(" ", "\\ ");
+        fileName = fileName.replace(" ", "\\ ");
+        cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
 
       } else {
-        var downloadFolder = file.substr(0,file.lastIndexOf("/"));
-        var fileName = file.substr(file.lastIndexOf("/")+1);
+        var downloadFolder = file.substr(0, file.lastIndexOf("/"));
+        var fileName = file.substr(file.lastIndexOf("/") + 1);
 
         // get rif of some special cases
-        if(startsWith(downloadFolder,"./")) downloadFolder.substr(2);
-        if(startsWith(downloadFolder,"/")) downloadFolder.substr(1);
+        if(startsWith(downloadFolder, "./")) downloadFolder.substr(2);
+        if(startsWith(downloadFolder, "/")) downloadFolder.substr(1);
 
-        downloadFolder = downloadFolder.replace(" ","\\ ");
-        fileName = fileName.replace(" ","\\ ");
-        downloadFolder = projPath + "/data/"+ downloadFolder;
-        cmd = ["sh",scriptPath,downloadFolder,url,fileName].join(" ");
+        downloadFolder = downloadFolder.replace(" ", "\\ ");
+        fileName = fileName.replace(" ", "\\ ");
+        downloadFolder = projPath + "/data/" + downloadFolder;
+        cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
 
       }
 
     } else {
       var downloadFolder = projPath + "/data/download";
-      var cmd = ["sh",scriptPath,downloadFolder,url].join(" ");
+      var cmd = ["sh", scriptPath, downloadFolder, url].join(" ");
     }
 
     println(cmd);
     pub.shellExecute(cmd);
 
   } else {
-    error("The url "+url+" is not a valid one. Please double check!")
+    error("The url " + url + " is not a valid one. Please double check!");
   }
 };
 
@@ -3452,36 +3458,36 @@ pub.download = function(url, file) {
  * @param  {Number} h Height
  * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
  */
-pub.ellipse = function(x, y, w, h){
+pub.ellipse = function(x, y, w, h) {
   if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
-    ellipseBounds[2] = (y+h);
-    ellipseBounds[3] = (x+w);
+    ellipseBounds[2] = (y + h);
+    ellipseBounds[3] = (x + w);
   } else if (currEllipseMode === pub.CORNERS) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
     ellipseBounds[2] = h;
     ellipseBounds[3] = w;
   } else if (currEllipseMode === pub.CENTER) {
-    ellipseBounds[0] = y-(h/2);
-    ellipseBounds[1] = x-(w/2);
-    ellipseBounds[2] = (y+h)-(h/2);
-    ellipseBounds[3] = (x+w)-(w/2);
+    ellipseBounds[0] = y - (h / 2);
+    ellipseBounds[1] = x - (w / 2);
+    ellipseBounds[2] = (y + h) - (h / 2);
+    ellipseBounds[3] = (x + w) - (w / 2);
   } else if (currEllipseMode === pub.RADIUS) {
-    ellipseBounds[0] = y-(h);
-    ellipseBounds[1] = x-(w);
-    ellipseBounds[2] = y+(h);
-    ellipseBounds[3] = x+(w);
+    ellipseBounds[0] = y - (h);
+    ellipseBounds[1] = x - (w);
+    ellipseBounds[2] = y + (h);
+    ellipseBounds[3] = x + (w);
   }
 
-if(w === 0 || h === 0)
-  return false;
+  if(w === 0 || h === 0)
+    return false;
 
   var ovals = currentPage().ovals;
-  var newOval = ovals.add( currentLayer() );
+  var newOval = ovals.add(currentLayer());
   with (newOval) {
     strokeWeight = currStrokeWeight;
     strokeTint = currStrokeTint;
@@ -3494,11 +3500,11 @@ if(w === 0 || h === 0)
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
   return newOval;
 };
@@ -3525,7 +3531,7 @@ if(w === 0 || h === 0)
 pub.line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   var lines = currentPage().graphicLines;
-  var newLine = lines.add( currentLayer() );
+  var newLine = lines.add(currentLayer());
   with (newLine) {
     strokeWeight = currStrokeWeight;
     strokeTint = currStrokeTint;
@@ -3536,7 +3542,7 @@ pub.line = function(x1, y1, x2, y2) {
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   return newLine;
 };
 
@@ -3556,7 +3562,7 @@ pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
-  if( typeof shapeMode != null) {
+  if(typeof shapeMode != null) {
     currShapeMode = shapeMode;
   } else {
     currShapeMode = null;
@@ -3588,11 +3594,11 @@ pub.vertex = function() {
       currVertexPoints.push([arguments[0], arguments[1]]);
     } else if (arguments.length === 6) {
       // [[xL1, YL1], [x1, y1], [xR1, yR1]]
-      currVertexPoints.push([ [arguments[2], arguments[3]],
+      currVertexPoints.push([[arguments[2], arguments[3]],
                               [arguments[0], arguments[1]],
-                              [arguments[4], arguments[5]] ]);
+                              [arguments[4], arguments[5]]]);
     } else {
-      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!" );
+      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!");
     }
   } else {
     notCalledBeginShapeError();
@@ -3631,14 +3637,14 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
   var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
-  startAngle %= pub.TWO_PI+o;
-  endAngle %= pub.TWO_PI+o;
+  startAngle %= pub.TWO_PI + o;
+  endAngle %= pub.TWO_PI + o;
   w /= 2;
   h /= 2;
 
   if (currEllipseMode === pub.CORNER) {
-    cx = (cx-w);
-    cy = (cy+h);
+    cx = (cx - w);
+    cy = (cy + h);
   }
   else if (currEllipseMode === pub.CORNERS) {
     // cx = (cx-w);
@@ -3655,17 +3661,17 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   var direction = (startAngle < endAngle) ? 1 : -1;
   var thetaStart = startAngle;
 
-  if( mode == pub.CHORD ) {
+  if(mode == pub.CHORD) {
     pub.beginShape(pub.CLOSE);
   }
-  else if( mode == pub.PIE ) {
+  else if(mode == pub.PIE) {
     pub.beginShape(pub.CLOSE);
-    pub.vertex( cx, cy );
+    pub.vertex(cx, cy);
   }
   else {
     pub.beginShape();
   }
-  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON; ) {
+  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON;) {
     var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
     var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
 
@@ -3709,31 +3715,31 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var theta = (endAngle - startAngle);
 
-  var x0 = pub.cos(theta/2.0);
-  var y0 = pub.sin(theta/2.0);
+  var x0 = pub.cos(theta / 2.0);
+  var y0 = pub.sin(theta / 2.0);
   var x3 = x0;
-  var y3 = 0-y0;
-  var x1 = (4.0-x0)/3.0;
-  var y1 = ((1.0-x0)*(3.0-x0))/(3.0*y0);
+  var y3 = 0 - y0;
+  var x1 = (4.0 - x0) / 3.0;
+  var y1 = ((1.0 - x0) * (3.0 - x0)) / (3.0 * y0);
   var x2 = x1;
-  var y2 = 0-y1;
+  var y2 = 0 - y1;
 
-  var bezAng = startAngle + theta/2.0;
+  var bezAng = startAngle + theta / 2.0;
   var cBezAng = pub.cos(bezAng);
   var sBezAng = pub.sin(bezAng);
 
   return {
-    startx:   w*(cBezAng * x0 - sBezAng * y0),
-    starty:   h*(sBezAng * x0 + cBezAng * y0),
-    handle1x: w*(cBezAng * x1 - sBezAng * y1),
-    handle1y: h*(sBezAng * x1 + cBezAng * y1),
+    startx:   w * (cBezAng * x0 - sBezAng * y0),
+    starty:   h * (sBezAng * x0 + cBezAng * y0),
+    handle1x: w * (cBezAng * x1 - sBezAng * y1),
+    handle1y: h * (sBezAng * x1 + cBezAng * y1),
 
-    handle2x: w*(cBezAng * x2 - sBezAng * y2),
-    handle2y: h*(sBezAng * x2 + cBezAng * y2),
-    endx:     w*(cBezAng * x3 - sBezAng * y3),
-    endy:     h*(sBezAng * x3 + cBezAng * y3)
+    handle2x: w * (cBezAng * x2 - sBezAng * y2),
+    handle2y: h * (sBezAng * x2 + cBezAng * y2),
+    endx:     w * (cBezAng * x3 - sBezAng * y3),
+    endy:     h * (sBezAng * x3 + cBezAng * y3)
   };
-};
+}
 
 /**
  * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path.
@@ -3762,7 +3768,7 @@ pub.endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   return currPolygon;
 };
 
@@ -3782,13 +3788,13 @@ function doAddPath() {
   } else {
     notCalledBeginShapeError();
   }
-};
+}
 
 function addPolygon() {
   if (currShapeMode === pub.CLOSE) {
-    currPolygon = currentPage().polygons.add( currentLayer() );
+    currPolygon = currentPage().polygons.add(currentLayer());
   } else {
-    currPolygon = currentPage().graphicLines.add( currentLayer() );
+    currPolygon = currentPage().graphicLines.add(currentLayer());
   }
   with (currPolygon) {
     strokeWeight = currStrokeWeight;
@@ -3797,12 +3803,12 @@ function addPolygon() {
     fillTint = currFillTint;
     strokeColor = currStrokeColor;
   }
-};
+}
 
 
 function notCalledBeginShapeError () {
   error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
-};
+}
 
 /**
  * Draws a rectangle on the page.
@@ -3816,7 +3822,7 @@ function notCalledBeginShapeError () {
  * @param  {Number} h Height
  * @return {Rectangle} New rectangle
  */
-pub.rect = function(x, y, w, h){
+pub.rect = function(x, y, w, h) {
   if (w === 0 || h === 0) {
     // indesign doesn't draw a rectangle if width or height are set to 0
     return false;
@@ -3827,21 +3833,21 @@ pub.rect = function(x, y, w, h){
   if (currRectMode === pub.CORNER) {
     rectBounds[0] = y;
     rectBounds[1] = x;
-    rectBounds[2] = (y+h);
-    rectBounds[3] = (x+w);
+    rectBounds[2] = (y + h);
+    rectBounds[3] = (x + w);
   } else if (currRectMode === pub.CORNERS) {
     rectBounds[0] = y;
     rectBounds[1] = x;
     rectBounds[2] = h;
     rectBounds[3] = w;
   } else if (currRectMode === pub.CENTER) {
-    rectBounds[0] = y-(h/2);
-    rectBounds[1] = x-(w/2);
-    rectBounds[2] = (y+h)-(h/2);
-    rectBounds[3] = (x+w)-(w/2);
+    rectBounds[0] = y - (h / 2);
+    rectBounds[1] = x - (w / 2);
+    rectBounds[2] = (y + h) - (h / 2);
+    rectBounds[3] = (x + w) - (w / 2);
   }
 
-  var newRect = currentPage().rectangles.add( currentLayer() );
+  var newRect = currentPage().rectangles.add(currentLayer());
   with (newRect) {
     geometricBounds = rectBounds;
     strokeWeight = currStrokeWeight;
@@ -3854,11 +3860,11 @@ pub.rect = function(x, y, w, h){
   if (currRectMode === pub.CENTER) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
   return newRect;
 };
@@ -3888,7 +3894,7 @@ pub.rect = function(x, y, w, h){
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
     currRectMode = mode;
     return currRectMode;
   } else {
@@ -3913,7 +3919,7 @@ pub.rectMode = function (mode) {
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
@@ -3931,7 +3937,7 @@ pub.ellipseMode = function (mode) {
  * @param {Number} weight The width of the stroke
  */
 pub.strokeWeight = function (weight) {
-  if (typeof weight === 'string' || typeof weight === 'number') {
+  if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
     error("b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string");
@@ -3947,8 +3953,9 @@ pub.strokeWeight = function (weight) {
  * @return {ObjectStyle}  The object style instance.
  */
 pub.objectStyle = function(name) {
+
   var style = findInStylesByName(currentDoc().allObjectStyles, name);
-  if(!style){
+  if(!style) {
     style = currentDoc().objectStyles.add({name: name});
   }
   return style;
@@ -3964,9 +3971,9 @@ pub.objectStyle = function(name) {
  * @param {PageItem|Page} item The item to duplicate
  * @returns {Object} Returns the new item
  */
-pub.duplicate = function(item){
+pub.duplicate = function(item) {
 
-  if( !(item instanceof Page) && typeof(item) !== "undefined" && item.hasOwnProperty("duplicate") ) {
+  if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
     var newItem = item.duplicate(currentPage());
     newItem.move(currentLayer());
@@ -3974,11 +3981,11 @@ pub.duplicate = function(item){
     if (currRectMode === pub.CENTER) {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
     } else {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                      AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix() );
+                     currMatrix.adobeMatrix());
     }
 
     return newItem;
@@ -4536,32 +4543,32 @@ pub.lerpColor = function (c1, c2, amt) {
  */
 pub.text = function(txt, x, y, w, h) {
   if (arguments.length !== 5) error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
-  if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: "+ typeof txt +". Use: b.text(txt, x, y, w, h)");
-  var textFrame = currentPage().textFrames.add( currentLayer() );
+  if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
+  var textFrame = currentPage().textFrames.add(currentLayer());
   with (textFrame) {
     contents = txt.toString();
-    geometricBounds = [y, x, (y+h), (x+w)];
+    geometricBounds = [y, x, (y + h), (x + w)];
     textFramePreferences.verticalJustification = currYAlign;
   }
   pub.typo(textFrame, {
-    'appliedFont': currFont,
-    'pointSize': currFontSize,
-    'fillColor': currFillColor,
-    'justification': currAlign,
-    'leading': currLeading,
-    'kerningValue': currKerning,
-    'tracking': currTracking
+    "appliedFont": currFont,
+    "pointSize": currFontSize,
+    "fillColor": currFillColor,
+    "justification": currAlign,
+    "leading": currLeading,
+    "kerningValue": currKerning,
+    "tracking": currTracking
   });
 
 
   if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
 
   return textFrame;
@@ -4586,7 +4593,7 @@ pub.text = function(txt, x, y, w, h) {
  */
 pub.typo = function(item, property, value) {
   var result = [],
-    actsAsGetter = typeof property === 'string' && (value === undef || value === null),
+    actsAsGetter = typeof property === "string" && (value === undef || value === null),
     getOrSetProperties = function(textItem) {
       if (actsAsGetter) {
         result.push(textItem[property]);
@@ -4595,10 +4602,10 @@ pub.typo = function(item, property, value) {
       }
     },
     setProperties = function(textItem) {
-      if (typeof property === 'string') {
+      if (typeof property === "string") {
         result.push(textItem);
         setProperty(textItem, property, value);
-      } else if (typeof property === 'object') {
+      } else if (typeof property === "object") {
         result.push(textItem);
         for (var prop in property) {
           setProperty(textItem, prop, property[prop]);
@@ -4609,9 +4616,9 @@ pub.typo = function(item, property, value) {
       textItem[prop] = val;
     };
 
-  if(typeof item === 'string') error( "b.typo() cannot work on strings. Please pass a Text object to modify." );
+  if(typeof item === "string") error("b.typo() cannot work on strings. Please pass a Text object to modify.");
 
-  if(!isValid(item)){
+  if(!isValid(item)) {
     warning("b.typo(), invalid object passed");
     return;
   }
@@ -4642,14 +4649,14 @@ var isValid = function (item) {
 
   checkNull(item);
 
-    if (item.hasOwnProperty("isValid")) {
-      if (!item.isValid) {
-        return false;
-      } else {
-        return true;
-      }
+  if (item.hasOwnProperty("isValid")) {
+    if (!item.isValid) {
+      return false;
+    } else {
+      return true;
     }
-    return true; // if does not have isValid field -> normal array element and not collection
+  }
+  return true; // if does not have isValid field -> normal array element and not collection
 
   return false;
 };
@@ -4668,7 +4675,7 @@ pub.textFont = function(fontName, fontStyle) {
     currFont = fontName;
   }
   if (arguments.length === 2) {
-    currFont = fontName+"\t"+fontStyle;
+    currFont = fontName + "\t" + fontStyle;
   }
   return currFont;
 };
@@ -4768,8 +4775,9 @@ pub.textTracking = function(tracking) {
  * @return {CharachterStyle}  The character style instance.
  */
 pub.characterStyle = function(name) {
+
   var style = findInStylesByName(currentDoc().allCharacterStyles, name);
-  if(!style){
+  if(!style) {
     style = currentDoc().characterStyles.add({name: name});
   }
   return style;
@@ -4785,7 +4793,7 @@ pub.characterStyle = function(name) {
  */
 pub.paragraphStyle = function(name) {
   var style = findInStylesByName(currentDoc().allParagraphStyles, name);
-  if(!style){
+  if(!style) {
     style = currentDoc().paragraphStyles.add({name: name});
   }
   return style;
@@ -4846,26 +4854,26 @@ pub.image = function(img, x, y, w, h) {
       x instanceof Polygon) {
     frame = x;
     fitOptions = FitOptions.FILL_PROPORTIONALLY;
-  } else if (typeof x === 'number' && typeof y === 'number') {
+  } else if (typeof x === "number" && typeof y === "number") {
     width = 1;
     height = 1;
     if (currImageMode === pub.CORNERS) {
-      if (typeof w === 'number' && typeof h === 'number'){
+      if (typeof w === "number" && typeof h === "number") {
         width = w - x;
         height = h - y;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
-      } else if (arguments.length === 3){
+      } else if (arguments.length === 3) {
         fitOptions = FitOptions.frameToContent;
       } else {
         error(imgErrorMsg);
       }
     } else {
-      if (typeof w === 'number' && typeof h === 'number'){
-        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.")
+      if (typeof w === "number" && typeof h === "number") {
+        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.");
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
-      } else if (arguments.length === 3){
+      } else if (arguments.length === 3) {
         fitOptions = FitOptions.frameToContent;
       } else {
         error(imgErrorMsg);
@@ -4873,7 +4881,7 @@ pub.image = function(img, x, y, w, h) {
     }
 
     frame = currentPage().rectangles.add(currentLayer(),
-      { geometricBounds:[y, x, y + height, x + width] }
+      {geometricBounds:[y, x, y + height, x + width]}
     );
   } else {
     error(imgErrorMsg);
@@ -4892,11 +4900,11 @@ pub.image = function(img, x, y, w, h) {
     frame.move(null, [-(width / 2), -(height / 2)]);
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
 
   with (frame) {
@@ -4923,13 +4931,13 @@ pub.image = function(img, x, y, w, h) {
  */
 pub.transformImage = function(img, x, y, width, height) {
   if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
-    //[y1, x1, y2, x2]
-    img.geometricBounds = [y,x,y+height,x+width];
+    // [y1, x1, y2, x2]
+    img.geometricBounds = [y, x, y + height, x + width];
     if (currImageMode === pub.CENTER) {
       img.move(null, [-(width / 2), -(height / 2)]);
     }
-    img.fit( FitOptions.CENTER_CONTENT );
-    img.fit( FitOptions.contentToFrame );
+    img.fit(FitOptions.CENTER_CONTENT);
+    img.fit(FitOptions.contentToFrame);
   } else {
     error("b.transformImage(), wrong type! Use: img, x, y, width, height");
   }
@@ -4948,13 +4956,14 @@ pub.transformImage = function(img, x, y, width, height) {
 pub.imageMode = function(mode) {
   if (arguments.length === 0) return currImageMode;
 
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
     currImageMode = mode;
   } else {
     error("b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
   }
   return currImageMode;
 };
+
 
 // ----------------------------------------
 // Math
@@ -5310,7 +5319,7 @@ pub.ceil = Math.ceil;
  * @return The constrained value
  */
 pub.constrain = function(aNumber, aMin, aMax) {
-  if(arguments.length !== 3 ) error("b.constrain(), wrong argument count.");
+  if(arguments.length !== 3) error("b.constrain(), wrong argument count.");
   if(aNumber <= aMin) return aMin;
   if(aNumber >= aMax) return aMax;
   return aNumber;
@@ -5373,7 +5382,7 @@ pub.floor = Math.floor;
  * @return {Number} The mapped value
  */
 pub.lerp = function(value1, value2, amt) {
-  if(arguments.length !== 3 ) error("b.lerp(), wrong argument count.");
+  if(arguments.length !== 3) error("b.lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
 
@@ -5400,7 +5409,7 @@ pub.log = Math.log;
  * @return {Number} the magnitude
  */
 pub.mag = function(a, b, c) {
-  if( ! (arguments.length === 2 || arguments.length === 3 ) )  error("b.mag(), wrong argument count.");
+  if(!(arguments.length === 2 || arguments.length === 3)) error("b.mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
 };
@@ -5421,7 +5430,7 @@ pub.mag = function(a, b, c) {
  * @return {Number} the mapped value
  */
 pub.map = function(value, istart, istop, ostart, ostop) {
-  if(arguments.length !== 5 ) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
+  if(arguments.length !== 5) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
 
@@ -5439,7 +5448,7 @@ pub.map = function(value, istart, istop, ostart, ostop) {
 pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (! ("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
   var max = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
@@ -5460,7 +5469,7 @@ pub.max = function() {
 pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (! ("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
   var min = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
@@ -5483,7 +5492,7 @@ pub.min = function() {
  * @return {Number} The normalized value
  */
 pub.norm = function(aNumber, low, high) {
-  if(arguments.length !== 3 ) error("b.norm, wrong argument count.");
+  if(arguments.length !== 3) error("b.norm, wrong argument count.");
   return (aNumber - low) / (high - low);
 };
 
@@ -5520,7 +5529,7 @@ pub.round = Math.round;
  * @return {Number}
  */
 pub.sq = function(aNumber) {
-  if(arguments.length !== 1 ) error("b.sq(), wrong argument count.");
+  if(arguments.length !== 1) error("b.sq(), wrong argument count.");
   return aNumber * aNumber;
 };
 
@@ -5714,7 +5723,7 @@ pub.Random = function(seed) {
 function PerlinNoise(seed) {
   var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
   var i, j;
-  var perm = [] ;
+  var perm = [];
   for (i = 0; i < 256; ++i) perm[i] = i;
   for (i = 0; i < 256; ++i) {
     var t = perm[j = rnd.nextInt() & 255];
@@ -5726,7 +5735,7 @@ function PerlinNoise(seed) {
   function grad3d(i, x, y, z) {
     var h = i & 15;
     var u = h < 8 ? x : y,
-    v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+      v = h < 4 ? y : h === 12 || h === 14 ? x : z;
     return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
   }
 
@@ -5813,15 +5822,15 @@ pub.noise = function(x, y, z) {
   for (var i = 0; i < noiseProfile.octaves; ++i) {
     effect *= noiseProfile.fallout;
     switch (arguments.length) {
-    case 1:
-      sum += effect * (1 + generator.noise1d(k * x)) / 2;
-      break;
-    case 2:
-      sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
-      break;
-    case 3:
-      sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
-      break;
+      case 1:
+        sum += effect * (1 + generator.noise1d(k * x)) / 2;
+        break;
+      case 2:
+        sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
+        break;
+      case 3:
+        sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
+        break;
     }
     k *= 2;
   }
@@ -5878,7 +5887,7 @@ var precision = function(num, dec) {
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
  */
 pub.bounds = function (obj) {
-  var x1,y1,x2,y2,w,h;
+  var x1, y1, x2, y2, w, h;
 
   if (isText(obj)) {
     var baseline = obj.baseline;
@@ -5889,47 +5898,47 @@ pub.bounds = function (obj) {
     y1 = baseline - ascent;
     x2 = obj.endHorizontalOffset;
     y2 = baseline + descent;
-    w = x2-x1;
-    h = y2-y1;
+    w = x2 - x1;
+    h = y2 - y1;
 
-    if (w < 0 || h <0) {
+    if (w < 0 || h < 0) {
       warning("b.bounds(), not possible to get correct bounds, possible line break within textObj");
     }
 
     // TODO: not sure if this 100% correct, check
     // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
-    var xHeight = y1+descent;
+    var xHeight = y1 + descent;
 
-    return {'width':w,
-            'height':h,
-            'left':x1,
-            'right':x2,
-            'top':y1,
-            'bottom':y2,
-            'baseline':baseline,
-            'xHeight':xHeight };
+    return {"width":w,
+            "height":h,
+            "left":x1,
+            "right":x2,
+            "top":y1,
+            "bottom":y2,
+            "baseline":baseline,
+            "xHeight":xHeight};
   } else {
     // is it a pageItem?
     if (obj.hasOwnProperty("geometricBounds")) {
-      var geometricBounds = obj.geometricBounds; //[y1, x1, y2, x2]
+      var geometricBounds = obj.geometricBounds; // [y1, x1, y2, x2]
       x1 = geometricBounds[1];
       y1 = geometricBounds[0];
       x2 = geometricBounds[3];
       y2 = geometricBounds[2];
-      w = x2-x1;
-      h = y2-y1;
-      return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      w = x2 - x1;
+      h = y2 - y1;
+      return {"width":w, "height":h, "left":x1, "right":x2, "top":y1, "bottom":y2};
     }
     // everything else e.g. page, spread
     else if (obj.hasOwnProperty("bounds")) {
-      var bounds = obj.bounds; //[y1, x1, y2, x2]
+      var bounds = obj.bounds; // [y1, x1, y2, x2]
       x1 = bounds[1];
       y1 = bounds[0];
       x2 = bounds[3];
       y2 = bounds[2];
-      w = x2-x1;
-      h = y2-y1;
-      return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      w = x2 - x1;
+      h = y2 - y1;
+      return {"width":w, "height":h, "left":x1, "right":x2, "top":y1, "bottom":y2};
     }
     // no idea what that might be, give up
     else {
@@ -5951,12 +5960,12 @@ pub.bounds = function (obj) {
 pub.itemX = function(pItem, x) {
   var off = 0;
   if(currRectMode !== b.CORNER) pub.warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof x === 'number' ){
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof x === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) / 2;
-      pItem.geometricBounds = [ pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width ];
+      pItem.geometricBounds = [pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width];
     } else {
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) / 2;
       return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
@@ -5979,13 +5988,13 @@ pub.itemX = function(pItem, x) {
 pub.itemY = function(pItem, y) {
   var off = 0;
   if(currRectMode !== b.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof y === 'number' ) {
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) / 2;
       b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
-      pItem.geometricBounds = [ y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off ];
+      pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) / 2;
       return precision(pItem.geometricBounds[0], 5) + off;
@@ -6010,9 +6019,9 @@ pub.itemY = function(pItem, y) {
  */
 pub.itemWidth = function(pItem, width) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof width === 'number' ){
-      b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof width === "number") {
+      b.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -6033,9 +6042,9 @@ pub.itemWidth = function(pItem, width) {
  */
 pub.itemHeight = function(pItem, height) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof height === 'number' ){
-      b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof height === "number") {
+      b.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -6059,9 +6068,9 @@ pub.itemPosition = function(pItem, x, y) {
 
   if(currRectMode !== b.CORNER) pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
 
-  if ( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
+  if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
 
-    if( typeof x === 'number' && typeof y === 'number') {
+    if(typeof x === "number" && typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
       var offX = 0;
@@ -6070,10 +6079,10 @@ pub.itemPosition = function(pItem, x, y) {
       //   offX = width / 2;
       //   offY = height / 2;
       // }
-      pItem.geometricBounds = [ y + offY, x + offX, y + height + offY, x + width + offX];
+      pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
 
     } else {
-      return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
+      return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
     }
 
   } else {
@@ -6099,18 +6108,18 @@ pub.itemSize = function(pItem, width, height) {
     var x = pItem.geometricBounds[1];
     var y = pItem.geometricBounds[0];
 
-    if( typeof width === 'number'  && typeof height === 'number' ) {
+    if(typeof width === "number" && typeof height === "number") {
       // if(currRectMode === b.CENTER) {
       //   // current center, calc old width and height
       //   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) / 2;
       //   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) / 2;
       //   pItem.geometricBounds = [ y - height / 2, x - width / 2, y + height / 2, x + width / 2];
       // } else {
-        pItem.geometricBounds = [ y, x, y + height, x + width];
+      pItem.geometricBounds = [y, x, y + height, x + width];
       // }
 
     } else {
-      return { width: pItem.geometricBounds[3] - pItem.geometricBounds[1] , height: pItem.geometricBounds[2] - pItem.geometricBounds[0] };
+      return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
     }
 
   } else {
@@ -6122,7 +6131,7 @@ pub.itemSize = function(pItem, width, height) {
 var printMatrixHelper = function(elements) {
   var big = 0;
   for (var i = 0; i < elements.length; i++) if (i !== 0) big = Math.max(big, Math.abs(elements[i]));
-  else big = Math.abs(elements[i]);
+    else big = Math.abs(elements[i]);
   var digits = (big + "").indexOf(".");
   if (digits === 0) digits = 1;
   else if (digits === -1) digits = (big + "").length;
@@ -6309,7 +6318,7 @@ pub.matrix = function(matrix) {
     currMatrix = matrix;
   }
   return currMatrix;
-}
+};
 
 /**
  * Transforms the given PageItem with the given Matrix2D object.
@@ -6327,7 +6336,7 @@ pub.transform = function(obj, matrix) {
                    matrix.adobeMatrix()
   );
 
-}
+};
 
 /**
  * Multiplies the current matrix by the one specified through the parameters.
@@ -6350,7 +6359,7 @@ pub.applyMatrix = function (matrix) {
  */
 pub.popMatrix = function () {
   if (matrixStack.length > 0) {
-    currMatrix.set( matrixStack.pop() );
+    currMatrix.set(matrixStack.pop());
   } else {
     error("b.popMatrix(), missing a pushMatrix() to go with that popMatrix()");
   }
@@ -6375,7 +6384,7 @@ pub.printMatrix = function () {
  * @method pushMatrix
  */
 pub.pushMatrix = function () {
-  matrixStack.push( currMatrix.array() );
+  matrixStack.push(currMatrix.array());
 };
 
 /**
@@ -6399,7 +6408,7 @@ pub.resetMatrix = function () {
  * @param {Number} angle The angle specified in radians
  */
 pub.rotate = function (angle) {
-  if(typeof arguments[0] === 'undefined') error("Please provide an angle for rotation.");
+  if(typeof arguments[0] === "undefined") error("Please provide an angle for rotation.");
   currMatrix.rotate(angle);
 };
 
@@ -6413,9 +6422,9 @@ pub.rotate = function (angle) {
  * @param {Number} scaleX The amount to scale the X axis.
  * @param {Number} scaleY The amount to scale the Y axis.
  */
-pub.scale = function (scaleX,scaleY) {
-  if(typeof arguments[0] != 'number' || (arguments.length === 2 && typeof arguments[1] != 'number') ) error("Please provide valid x and/or y factors for scaling.");
-  currMatrix.scale(scaleX,scaleY);
+pub.scale = function (scaleX, scaleY) {
+  if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) error("Please provide valid x and/or y factors for scaling.");
+  currMatrix.scale(scaleX, scaleY);
 };
 
 /**
@@ -6427,9 +6436,9 @@ pub.scale = function (scaleX,scaleY) {
  * @param {Number} tx The amount of offset on the X axis.
  * @param {Number} ty The amount of offset on the Y axis.
  */
-pub.translate = function (tx,ty) {
-  if(typeof arguments[0] === 'undefined' || typeof arguments[1] === 'undefined') error("Please provide x and y coordinates for translation.");
-  currMatrix.translate(tx,ty);
+pub.translate = function (tx, ty) {
+  if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") error("Please provide x and y coordinates for translation.");
+  currMatrix.translate(tx, ty);
 };
 
 // Hey Ken, this is your new home...

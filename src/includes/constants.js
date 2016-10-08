@@ -137,7 +137,7 @@ pub.PIE = "pie";
  * @cat Math
  * @subcat Constants
  */
-pub.TWO_PI = Math.PI*2;
+pub.TWO_PI = Math.PI * 2;
 
 /**
  * Pi
@@ -153,7 +153,7 @@ pub.PI = Math.PI;
  * @cat Math
  * @subcat Constants
  */
-pub.HALF_PI = Math.PI/2;
+pub.HALF_PI = Math.PI / 2;
 
 /**
  * Quarter Pi
@@ -161,7 +161,7 @@ pub.HALF_PI = Math.PI/2;
  * @cat Math
  * @subcat Constants
  */
-pub.QUARTER_PI = Math.PI/4;
+pub.QUARTER_PI = Math.PI / 4;
 
 /**
  * Sin Cos Length
@@ -295,4 +295,4 @@ pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, mo
 
 
 var ERROR_PREFIX = "\nBasil.js Error -> ",
-    WARNING_PREFIX = "### Basil Warning -> ";
+  WARNING_PREFIX = "### Basil Warning -> ";

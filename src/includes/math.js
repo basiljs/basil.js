@@ -353,7 +353,7 @@ pub.ceil = Math.ceil;
  * @return The constrained value
  */
 pub.constrain = function(aNumber, aMin, aMax) {
-  if(arguments.length !== 3 ) error("b.constrain(), wrong argument count.");
+  if(arguments.length !== 3) error("b.constrain(), wrong argument count.");
   if(aNumber <= aMin) return aMin;
   if(aNumber >= aMax) return aMax;
   return aNumber;
@@ -416,7 +416,7 @@ pub.floor = Math.floor;
  * @return {Number} The mapped value
  */
 pub.lerp = function(value1, value2, amt) {
-  if(arguments.length !== 3 ) error("b.lerp(), wrong argument count.");
+  if(arguments.length !== 3) error("b.lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
 
@@ -443,7 +443,7 @@ pub.log = Math.log;
  * @return {Number} the magnitude
  */
 pub.mag = function(a, b, c) {
-  if( ! (arguments.length === 2 || arguments.length === 3 ) )  error("b.mag(), wrong argument count.");
+  if(!(arguments.length === 2 || arguments.length === 3)) error("b.mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
 };
@@ -464,7 +464,7 @@ pub.mag = function(a, b, c) {
  * @return {Number} the mapped value
  */
 pub.map = function(value, istart, istop, ostart, ostop) {
-  if(arguments.length !== 5 ) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
+  if(arguments.length !== 5) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
 
@@ -482,7 +482,7 @@ pub.map = function(value, istart, istop, ostart, ostop) {
 pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (! ("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
   var max = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
@@ -503,7 +503,7 @@ pub.max = function() {
 pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (! ("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
   var min = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
@@ -526,7 +526,7 @@ pub.min = function() {
  * @return {Number} The normalized value
  */
 pub.norm = function(aNumber, low, high) {
-  if(arguments.length !== 3 ) error("b.norm, wrong argument count.");
+  if(arguments.length !== 3) error("b.norm, wrong argument count.");
   return (aNumber - low) / (high - low);
 };
 
@@ -563,7 +563,7 @@ pub.round = Math.round;
  * @return {Number}
  */
 pub.sq = function(aNumber) {
-  if(arguments.length !== 1 ) error("b.sq(), wrong argument count.");
+  if(arguments.length !== 1) error("b.sq(), wrong argument count.");
   return aNumber * aNumber;
 };
 
@@ -757,7 +757,7 @@ pub.Random = function(seed) {
 function PerlinNoise(seed) {
   var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
   var i, j;
-  var perm = [] ;
+  var perm = [];
   for (i = 0; i < 256; ++i) perm[i] = i;
   for (i = 0; i < 256; ++i) {
     var t = perm[j = rnd.nextInt() & 255];
@@ -769,7 +769,7 @@ function PerlinNoise(seed) {
   function grad3d(i, x, y, z) {
     var h = i & 15;
     var u = h < 8 ? x : y,
-    v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+      v = h < 4 ? y : h === 12 || h === 14 ? x : z;
     return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
   }
 
@@ -856,15 +856,15 @@ pub.noise = function(x, y, z) {
   for (var i = 0; i < noiseProfile.octaves; ++i) {
     effect *= noiseProfile.fallout;
     switch (arguments.length) {
-    case 1:
-      sum += effect * (1 + generator.noise1d(k * x)) / 2;
-      break;
-    case 2:
-      sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
-      break;
-    case 3:
-      sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
-      break;
+      case 1:
+        sum += effect * (1 + generator.noise1d(k * x)) / 2;
+        break;
+      case 2:
+        sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
+        break;
+      case 3:
+        sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
+        break;
     }
     k *= 2;
   }
@@ -921,7 +921,7 @@ var precision = function(num, dec) {
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
  */
 pub.bounds = function (obj) {
-  var x1,y1,x2,y2,w,h;
+  var x1, y1, x2, y2, w, h;
 
   if (isText(obj)) {
     var baseline = obj.baseline;
@@ -932,47 +932,47 @@ pub.bounds = function (obj) {
     y1 = baseline - ascent;
     x2 = obj.endHorizontalOffset;
     y2 = baseline + descent;
-    w = x2-x1;
-    h = y2-y1;
+    w = x2 - x1;
+    h = y2 - y1;
 
-    if (w < 0 || h <0) {
+    if (w < 0 || h < 0) {
       warning("b.bounds(), not possible to get correct bounds, possible line break within textObj");
     }
 
     // TODO: not sure if this 100% correct, check
     // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
-    var xHeight = y1+descent;
+    var xHeight = y1 + descent;
 
-    return {'width':w,
-            'height':h,
-            'left':x1,
-            'right':x2,
-            'top':y1,
-            'bottom':y2,
-            'baseline':baseline,
-            'xHeight':xHeight };
+    return {"width":w,
+            "height":h,
+            "left":x1,
+            "right":x2,
+            "top":y1,
+            "bottom":y2,
+            "baseline":baseline,
+            "xHeight":xHeight};
   } else {
     // is it a pageItem?
     if (obj.hasOwnProperty("geometricBounds")) {
-      var geometricBounds = obj.geometricBounds; //[y1, x1, y2, x2]
+      var geometricBounds = obj.geometricBounds; // [y1, x1, y2, x2]
       x1 = geometricBounds[1];
       y1 = geometricBounds[0];
       x2 = geometricBounds[3];
       y2 = geometricBounds[2];
-      w = x2-x1;
-      h = y2-y1;
-      return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      w = x2 - x1;
+      h = y2 - y1;
+      return {"width":w, "height":h, "left":x1, "right":x2, "top":y1, "bottom":y2};
     }
     // everything else e.g. page, spread
     else if (obj.hasOwnProperty("bounds")) {
-      var bounds = obj.bounds; //[y1, x1, y2, x2]
+      var bounds = obj.bounds; // [y1, x1, y2, x2]
       x1 = bounds[1];
       y1 = bounds[0];
       x2 = bounds[3];
       y2 = bounds[2];
-      w = x2-x1;
-      h = y2-y1;
-      return {'width':w, 'height':h, 'left':x1, 'right':x2, 'top':y1, 'bottom':y2};
+      w = x2 - x1;
+      h = y2 - y1;
+      return {"width":w, "height":h, "left":x1, "right":x2, "top":y1, "bottom":y2};
     }
     // no idea what that might be, give up
     else {
@@ -994,12 +994,12 @@ pub.bounds = function (obj) {
 pub.itemX = function(pItem, x) {
   var off = 0;
   if(currRectMode !== b.CORNER) pub.warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof x === 'number' ){
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof x === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) / 2;
-      pItem.geometricBounds = [ pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width ];
+      pItem.geometricBounds = [pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width];
     } else {
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) / 2;
       return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
@@ -1022,13 +1022,13 @@ pub.itemX = function(pItem, x) {
 pub.itemY = function(pItem, y) {
   var off = 0;
   if(currRectMode !== b.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof y === 'number' ) {
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) / 2;
       b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
-      pItem.geometricBounds = [ y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off ];
+      pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
 //        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) / 2;
       return precision(pItem.geometricBounds[0], 5) + off;
