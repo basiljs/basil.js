@@ -1,7 +1,7 @@
 basil.js
 ========
 
-An attempt to port the spirit of the [Processing](http://processing.org/) visualization language to Adobe Indesign.
+An attempt to port the spirit of the [Processing](http://processing.org/) visualization language to Adobe InDesign.
 
 For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch). Follow us on twitter [@basil_js](https://twitter.com/basil_js) for news and updates
 
@@ -22,6 +22,6 @@ http://thebaselschoolofdesign.ch
 Please note: Big general parts e.g. random() of the basil.js source code are copy & paste
 of the fantasic [processing.js](http://processingjs.org) by the Processing.js team. We would have had a hard time to figure all of that out on our own!
 
-Supported Adobe Indesign versions: CS 5+
+Supported Adobe InDesign versions: CS 5+
 
 If you want use Sublime Text instead of Adobe's Extendscript Toolkit, use the buildscript here: [extras/Sublime Text/](extras/Sublime Text/)

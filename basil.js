@@ -1,9 +1,9 @@
-/* Basil.js v1.0.10 2016.10.07-15:07:08 */
+/* Basil.js v1.0.10 2016.10.10-08:25:01 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
   B A S I L . J S
-  Bringing the spirit of the Processing visualization language to Adobe Indesign.
+  Bringing the spirit of the Processing visualization language to Adobe InDesign.
 
   License        - MIT
 
@@ -16,6 +16,8 @@
                  - be:screen GmbH http://bescreen.de
                  - Stefan Landsbek http://47nord.de
                  - Ken Frederick http://kennethfrederick.de/
+                 - Timo Rychert http://timorychert.de/
+                 - Fabian Morón Zirfas http://fabianmoronzirfas.me/
 
   Web Site       - http://basiljs.ch
   Github Repo.   - https://github.com/basiljs/basil.js
@@ -32,7 +34,7 @@
   from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
 
-  Supported Adobe Indesign versions: CS 5, CS 5.5 and CS 6
+  Supported Adobe InDesign versions: CS 5+
 
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
 */
