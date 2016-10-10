@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.10.10-08:25:01 */
+/* Basil.js v1.0.10 2016.10.10-09:33:40 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -729,6 +729,17 @@ var init = function() {
  * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
  */
 pub.go = function (mode) {
+
+  /*
+   * add all functions of pub into the global scope.
+   * This makes it possible to call everything without using b.
+   *
+   */
+  for(var key in pub) {
+    if(pub.hasOwnProperty(key)) {
+      glob[key] = pub[key];
+    }
+  }
   if (!mode) {
     mode = pub.DEFAULTMODE;
   }
@@ -6448,4 +6459,3 @@ pub.translate = function (tx, ty) {
   init();
 
 })(this, app);
-

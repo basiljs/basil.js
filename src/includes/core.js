@@ -32,6 +32,17 @@ var init = function() {
  * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
  */
 pub.go = function (mode) {
+
+  /*
+   * add all functions of pub into the global scope.
+   * This makes it possible to call everything without using b.
+   *
+   */
+  for(var key in pub) {
+    if(pub.hasOwnProperty(key)) {
+      glob[key] = pub[key];
+    }
+  }
   if (!mode) {
     mode = pub.DEFAULTMODE;
   }

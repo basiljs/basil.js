@@ -76,4 +76,3 @@
   init();
 
 })(this, app);
-
