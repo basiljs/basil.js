@@ -3,6 +3,7 @@
 
 function draw() {
   b.clear(b.doc());
+  b.noStroke();
 
   var dist = b.height / 4;
 
@@ -24,7 +25,7 @@ function draw() {
 
   // draw rectangles and fill them with different types of gradients
 
-  // grandient from color1 to color2 
+  // grandient from color1 to color2
   b.fill( b.gradient(red, blue, "RedBlueLinear") );
   b.rect(0, dist * 0, b.width, dist);
 
@@ -40,6 +41,13 @@ function draw() {
   b.gradientMode( b.RADIAL );
   b.fill( b.gradient(red, blue, "RedBlueRadial") );
   b.rect(0, dist * 3, b.width, dist);
+
+  // stroke gradient
+  b.noFill();
+  b.strokeWeight(4);
+  b.gradientMode( b.LINEAR );
+  b.stroke( b.gradient(blue, red, "BlueRedLinear"));
+  b.ellipse(b.width / 2, b.height / 2, dist * 2, dist * 2);
 }
 
 b.go();

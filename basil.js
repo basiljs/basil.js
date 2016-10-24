@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.10.10-08:25:01 */
+/* Basil.js v1.0.10 2016.10.24-03:18:56 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -4029,11 +4029,11 @@ pub.fill = function (fillColor) {
     } else if (arguments.length === 5) {
       currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.fill(), wrong parameters. Use: "
-        + "R,G,B,name or "
-        + "C,M,Y,K,name. "
-        + "Grey,name "
-        + "Name is optional");
+      error("b.fill(), wrong parameters. Use:\n"
+        + "R,G,B,[name] or\n"
+        + "C,M,Y,K,[name] or\n"
+        + "GREY,[name].\n"
+        + "Name is optional.");
     }
   }
 };
@@ -4050,14 +4050,14 @@ pub.noFill = function () {
 };
 
 /**
- * Sets the color used to draw lines and borders around shapes.
+ * Sets the color or gradient used to draw lines and borders around shapes.
  * @cat Color
  * @method stroke
- * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
+ * @param  {Color|Gradient|Swatch|Numbers} strokeColor  Accepts a color/gradient/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
  */
 pub.stroke = function (strokeColor) {
   checkNull(strokeColor);
-  if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
+  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
     currStrokeColor = strokeColor;
   } else {
     if (arguments.length === 1) {
@@ -4071,10 +4071,11 @@ pub.stroke = function (strokeColor) {
     } else if (arguments.length === 5) {
       currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.stroke(), too many parameters. Use: "
-        + "R,G,B,name or "
-        + "C,M,Y,K,name. "
-        + "Grey,name ");
+      error("b.stroke(), wrong parameters. Use:\n"
+        + "R,G,B,[name] or\n"
+        + "C,M,Y,K,[name] or\n"
+        + "GREY,[name].\n"
+        + "Name is optional.");
     }
   }
 };
