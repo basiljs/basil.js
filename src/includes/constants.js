@@ -269,6 +269,13 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Returns a Lorem ipsum string that can be used for testing.
+ * @property LOREM {String}
+ * @cat Typography
+ */
+pub.LOREM = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+
+/**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
 * @property MODESILENT {String}
 * @cat Environment

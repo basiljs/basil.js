@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.10.24-03:18:56 */
+/* Basil.js v1.0.10 2016.11.01-00:17:16 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -325,6 +325,13 @@ pub.BEFORE = LocationOptions.BEFORE;
  * @subcat Page
  */
 pub.AFTER = LocationOptions.AFTER;
+
+/**
+ * Returns a Lorem ipsum string that can be used for testing.
+ * @property LOREM {String}
+ * @cat Typography
+ */
+pub.LOREM = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
 
 /**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
