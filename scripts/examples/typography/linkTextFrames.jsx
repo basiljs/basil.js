@@ -3,11 +3,9 @@
 
 function draw() {
   b.textFont('Helvetica\tBold');
-  b.textSize(22);
+  b.textSize(16);
 
-  var lorem = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient";
-
-  var textframeA = b.text(lorem, 0, 0, 100, 100);
+  var textframeA = b.text(b.LOREM, 0, 0, 100, 100);
   var textframeB = b.text('', 100, 100, 100, 100);
   b.linkTextFrames(textframeA, textframeB);
   var textframeC = b.text('', 200, 200, 100, 100);
