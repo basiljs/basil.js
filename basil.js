@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.11.01-00:17:16 */
+/* Basil.js v1.0.10 2016.11.04-20:27:57 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -33,6 +33,9 @@
   Please note: Big general parts e.g. random() of the basil.js source code are copied
   from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
+
+  The Lorem ipsum string of b.LOREM is taken from https://indieweb.org/Lorem_ipsum and
+  is available under a CC0 public domain dedication.
 
   Supported Adobe InDesign versions: CS 5+
 
@@ -331,7 +334,7 @@ pub.AFTER = LocationOptions.AFTER;
  * @property LOREM {String}
  * @cat Typography
  */
-pub.LOREM = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
 /**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
