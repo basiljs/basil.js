@@ -2,7 +2,7 @@
 #include "basiljs/bundle/basil.js";
 
 function setup() {
-  var contents = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\rUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+  var contents = 'This is the first paragraph of the text frame.\rThis is the second one.';
   b.text(contents, 0, 0, 400, 200);
   b.text(contents, 0, 400, 400, 200);
 

@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.11.08-02:37:21 */
+/* Basil.js v1.0.10 2016.11.08-03:38:37 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -1379,10 +1379,8 @@ var forEachTextCollection = function(container, collection, cb) {
   var collection;
   if(container instanceof Document) {
     collection = container.stories.everyItem()[collection];
-  } else if (container instanceof Page) {
-    collection = container.textFrames.everyItem()[collection];
   } else {
-    collection = container[collection];
+    collection = container.textFrames.everyItem()[collection];
   }
 
   for (var i = 0; i < collection.length; i++) {

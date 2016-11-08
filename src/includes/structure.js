@@ -184,10 +184,8 @@ var forEachTextCollection = function(container, collection, cb) {
   var collection;
   if(container instanceof Document) {
     collection = container.stories.everyItem()[collection];
-  } else if (container instanceof Page) {
-    collection = container.textFrames.everyItem()[collection];
   } else {
-    collection = container[collection];
+    collection = container.textFrames.everyItem()[collection];
   }
 
   for (var i = 0; i < collection.length; i++) {
