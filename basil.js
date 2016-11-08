@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.10.10-09:33:40 */
+/* Basil.js v1.0.10 2016.11.08-15:42:09 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -33,6 +33,9 @@
   Please note: Big general parts e.g. random() of the basil.js source code are copied
   from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
+
+  The Lorem ipsum string of b.LOREM is taken from https://indieweb.org/Lorem_ipsum and
+  is available under a CC0 public domain dedication.
 
   Supported Adobe InDesign versions: CS 5+
 
@@ -325,6 +328,13 @@ pub.BEFORE = LocationOptions.BEFORE;
  * @subcat Page
  */
 pub.AFTER = LocationOptions.AFTER;
+
+/**
+ * Returns a Lorem ipsum string that can be used for testing.
+ * @property LOREM {String}
+ * @cat Typography
+ */
+pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
 /**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
@@ -4040,11 +4050,11 @@ pub.fill = function (fillColor) {
     } else if (arguments.length === 5) {
       currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.fill(), wrong parameters. Use: "
-        + "R,G,B,name or "
-        + "C,M,Y,K,name. "
-        + "Grey,name "
-        + "Name is optional");
+      error("b.fill(), wrong parameters. Use:\n"
+        + "R,G,B,[name] or\n"
+        + "C,M,Y,K,[name] or\n"
+        + "GREY,[name].\n"
+        + "Name is optional.");
     }
   }
 };
@@ -4061,14 +4071,14 @@ pub.noFill = function () {
 };
 
 /**
- * Sets the color used to draw lines and borders around shapes.
+ * Sets the color or gradient used to draw lines and borders around shapes.
  * @cat Color
  * @method stroke
- * @param  {Color|Swatch|Numbers} strokeColor  Accepts a Color/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
+ * @param  {Color|Gradient|Swatch|Numbers} strokeColor  Accepts a color/gradient/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
  */
 pub.stroke = function (strokeColor) {
   checkNull(strokeColor);
-  if (strokeColor instanceof Color || strokeColor instanceof Swatch) {
+  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
     currStrokeColor = strokeColor;
   } else {
     if (arguments.length === 1) {
@@ -4082,10 +4092,11 @@ pub.stroke = function (strokeColor) {
     } else if (arguments.length === 5) {
       currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.stroke(), too many parameters. Use: "
-        + "R,G,B,name or "
-        + "C,M,Y,K,name. "
-        + "Grey,name ");
+      error("b.stroke(), wrong parameters. Use:\n"
+        + "R,G,B,[name] or\n"
+        + "C,M,Y,K,[name] or\n"
+        + "GREY,[name].\n"
+        + "Name is optional.");
     }
   }
 };
