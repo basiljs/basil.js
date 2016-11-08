@@ -49,7 +49,7 @@ pub.stories = function(doc, cb) {
 pub.paragraphs = function(container, cb) {
 
   var legalContainers = "Document, Story, Page or TextFrame.";
-  textCollection("paragraphs", legalContainers, container, cb);
+  return textCollection("paragraphs", legalContainers, container, cb);
 
 };
 
@@ -110,7 +110,7 @@ pub.paragraphs = function(container, cb) {
 pub.lines = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
-  textCollection("lines", legalContainers, container, cb);
+  return textCollection("lines", legalContainers, container, cb);
 
 };
 
@@ -128,7 +128,7 @@ pub.lines = function(container, cb) {
 pub.words = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
-  textCollection("words", legalContainers, container, cb);
+  return textCollection("words", legalContainers, container, cb);
 
 };
 
@@ -146,7 +146,7 @@ pub.words = function(container, cb) {
 pub.characters = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
-  textCollection("characters", legalContainers, container, cb);
+  return textCollection("characters", legalContainers, container, cb);
 
 };
 
@@ -157,11 +157,8 @@ var textCollection = function(collection, legalContainers, container, cb) {
   if(!(container.hasOwnProperty("contents") || container instanceof Document || container instanceof Page)) {
     error("b." + collection + "(), wrong object type. Use: " + legalContainers);
   }
-  if(arguments.length > 3 && !(cb instanceof Function)) {
-    error("b." + collection + "(), wrong function parameter. Use: container, cb. cb must be a function.");
-  }
 
-  if(cb) {
+  if(cb instanceof Function) {
     // callback function is passed
     if (container instanceof Document || container instanceof Page) {
       return forEachTextCollection(container, collection, cb);
