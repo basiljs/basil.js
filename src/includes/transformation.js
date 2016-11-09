@@ -11,9 +11,9 @@
  */
 pub.itemWidth = function(pItem, width) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof width === 'number' ){
-      b.itemSize( pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]) );
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof width === "number") {
+      b.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -34,9 +34,9 @@ pub.itemWidth = function(pItem, width) {
  */
 pub.itemHeight = function(pItem, height) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-    if( typeof height === 'number' ){
-      b.itemSize( pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height );
+  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+    if(typeof height === "number") {
+      b.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -60,9 +60,9 @@ pub.itemPosition = function(pItem, x, y) {
 
   if(currRectMode !== b.CORNER) pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
 
-  if ( typeof pItem !== 'undef' && pItem.hasOwnProperty("geometricBounds")) {
-  
-    if( typeof x === 'number' && typeof y === 'number') {
+  if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+
+    if(typeof x === "number" && typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
       var offX = 0;
@@ -71,12 +71,12 @@ pub.itemPosition = function(pItem, x, y) {
       //   offX = width / 2;
       //   offY = height / 2;
       // }
-      pItem.geometricBounds = [ y + offY, x + offX, y + height + offY, x + width + offX];
-      
+      pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
+
     } else {
-      return { x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5) };
+      return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
     }
-    
+
   } else {
     error("b.itemPosition(), works only with child classes of PageItem.");
   }
@@ -96,24 +96,24 @@ pub.itemPosition = function(pItem, x, y) {
 pub.itemSize = function(pItem, width, height) {
   if(currRectMode !== b.CORNER) pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-  
+
     var x = pItem.geometricBounds[1];
     var y = pItem.geometricBounds[0];
 
-    if( typeof width === 'number'  && typeof height === 'number' ) {
+    if(typeof width === "number" && typeof height === "number") {
       // if(currRectMode === b.CENTER) {
       //   // current center, calc old width and height
       //   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) / 2;
       //   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) / 2;
       //   pItem.geometricBounds = [ y - height / 2, x - width / 2, y + height / 2, x + width / 2];
       // } else {
-        pItem.geometricBounds = [ y, x, y + height, x + width];
+      pItem.geometricBounds = [y, x, y + height, x + width];
       // }
-      
+
     } else {
-      return { width: pItem.geometricBounds[3] - pItem.geometricBounds[1] , height: pItem.geometricBounds[2] - pItem.geometricBounds[0] };
+      return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
     }
-    
+
   } else {
     error("b.itemSize(), works only with child classes of PageItem.");
   }
@@ -123,7 +123,7 @@ pub.itemSize = function(pItem, width, height) {
 var printMatrixHelper = function(elements) {
   var big = 0;
   for (var i = 0; i < elements.length; i++) if (i !== 0) big = Math.max(big, Math.abs(elements[i]));
-  else big = Math.abs(elements[i]);
+    else big = Math.abs(elements[i]);
   var digits = (big + "").indexOf(".");
   if (digits === 0) digits = 1;
   else if (digits === -1) digits = (big + "").length;
@@ -158,8 +158,8 @@ Matrix2D.prototype = {
   },
   adobeMatrix: function array() {
 
-    var uVX = new UnitValue(this.elements[2], currUnits); 
-    var uVY = new UnitValue(this.elements[5], currUnits); 
+    var uVX = new UnitValue(this.elements[2], currUnits);
+    var uVY = new UnitValue(this.elements[5], currUnits);
 
     return [this.elements[0],
             this.elements[3],
@@ -310,7 +310,7 @@ pub.matrix = function(matrix) {
     currMatrix = matrix;
   }
   return currMatrix;
-}
+};
 
 /**
  * Transforms the given PageItem with the given Matrix2D object.
@@ -322,16 +322,16 @@ pub.matrix = function(matrix) {
  * @param {Matrix2D} matrix The matrix to be applied
  */
 pub.transform = function(obj, matrix) {
-  
+
   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   matrix.adobeMatrix() 
-  );  
+                   matrix.adobeMatrix()
+  );
 
-}  
+};
 
 /**
- * Multiplies the current matrix by the one specified through the parameters. 
+ * Multiplies the current matrix by the one specified through the parameters.
  *
  * @cat Document
  * @subcat Transformation
@@ -351,7 +351,7 @@ pub.applyMatrix = function (matrix) {
  */
 pub.popMatrix = function () {
   if (matrixStack.length > 0) {
-    currMatrix.set( matrixStack.pop() );
+    currMatrix.set(matrixStack.pop());
   } else {
     error("b.popMatrix(), missing a pushMatrix() to go with that popMatrix()");
   }
@@ -376,7 +376,7 @@ pub.printMatrix = function () {
  * @method pushMatrix
  */
 pub.pushMatrix = function () {
-  matrixStack.push( currMatrix.array() );
+  matrixStack.push(currMatrix.array());
 };
 
 /**
@@ -400,13 +400,13 @@ pub.resetMatrix = function () {
  * @param {Number} angle The angle specified in radians
  */
 pub.rotate = function (angle) {
-  if(typeof arguments[0] === 'undefined') error("Please provide an angle for rotation.");
+  if(typeof arguments[0] === "undefined") error("Please provide an angle for rotation.");
   currMatrix.rotate(angle);
 };
 
 /**
  * Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call scale(2.0) increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling scale(2.0) and then scale(1.5) is the same as scale(3.0). If scale() is called within draw(), the transformation is reset when the loop begins again. This function can be further controlled by pushMatrix() and popMatrix().
- * If only one parameter is given, it is applied on X and Y axis. 
+ * If only one parameter is given, it is applied on X and Y axis.
  *
  * @cat Document
  * @subcat Transformation
@@ -414,9 +414,9 @@ pub.rotate = function (angle) {
  * @param {Number} scaleX The amount to scale the X axis.
  * @param {Number} scaleY The amount to scale the Y axis.
  */
-pub.scale = function (scaleX,scaleY) {
-  if(typeof arguments[0] != 'number' || (arguments.length === 2 && typeof arguments[1] != 'number') ) error("Please provide valid x and/or y factors for scaling.");
-  currMatrix.scale(scaleX,scaleY);
+pub.scale = function (scaleX, scaleY) {
+  if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) error("Please provide valid x and/or y factors for scaling.");
+  currMatrix.scale(scaleX, scaleY);
 };
 
 /**
@@ -425,10 +425,10 @@ pub.scale = function (scaleX,scaleY) {
  * @cat Document
  * @subcat Transformation
  * @method translate
- * @param {Number} tx The amount of offset on the X axis. 
+ * @param {Number} tx The amount of offset on the X axis.
  * @param {Number} ty The amount of offset on the Y axis.
  */
-pub.translate = function (tx,ty) {
-  if(typeof arguments[0] === 'undefined' || typeof arguments[1] === 'undefined') error("Please provide x and y coordinates for translation.");
-  currMatrix.translate(tx,ty);
+pub.translate = function (tx, ty) {
+  if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") error("Please provide x and y coordinates for translation.");
+  currMatrix.translate(tx, ty);
 };

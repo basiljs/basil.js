@@ -37,39 +37,39 @@ pub.image = function(img, x, y, w, h) {
       x instanceof Polygon) {
     frame = x;
     fitOptions = FitOptions.FILL_PROPORTIONALLY;
-  } else if (typeof x === 'number' && typeof y === 'number') {
+  } else if (typeof x === "number" && typeof y === "number") {
     width = 1;
     height = 1;
     if (currImageMode === pub.CORNERS) {
-      if (typeof w === 'number' && typeof h === 'number'){
+      if (typeof w === "number" && typeof h === "number") {
         width = w - x;
         height = h - y;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
-      } else if (arguments.length === 3){
+      } else if (arguments.length === 3) {
         fitOptions = FitOptions.frameToContent;
       } else {
         error(imgErrorMsg);
       }
     } else {
-      if (typeof w === 'number' && typeof h === 'number'){
-        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.") 
+      if (typeof w === "number" && typeof h === "number") {
+        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.");
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
-      } else if (arguments.length === 3){
+      } else if (arguments.length === 3) {
         fitOptions = FitOptions.frameToContent;
       } else {
         error(imgErrorMsg);
       }
     }
-    
-    frame = currentPage().rectangles.add(currentLayer(), 
-      { geometricBounds:[y, x, y + height, x + width] }
+
+    frame = currentPage().rectangles.add(currentLayer(),
+      {geometricBounds:[y, x, y + height, x + width]}
     );
   } else {
     error(imgErrorMsg);
   }
-  
+
   frame.place(file);
 
   if (fitOptions) {
@@ -83,11 +83,11 @@ pub.image = function(img, x, y, w, h) {
     frame.move(null, [-(width / 2), -(height / 2)]);
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
 
   with (frame) {
@@ -114,13 +114,13 @@ pub.image = function(img, x, y, w, h) {
  */
 pub.transformImage = function(img, x, y, width, height) {
   if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
-    //[y1, x1, y2, x2]
-    img.geometricBounds = [y,x,y+height,x+width];
+    // [y1, x1, y2, x2]
+    img.geometricBounds = [y, x, y + height, x + width];
     if (currImageMode === pub.CENTER) {
       img.move(null, [-(width / 2), -(height / 2)]);
     }
-    img.fit( FitOptions.CENTER_CONTENT );
-    img.fit( FitOptions.contentToFrame );
+    img.fit(FitOptions.CENTER_CONTENT);
+    img.fit(FitOptions.contentToFrame);
   } else {
     error("b.transformImage(), wrong type! Use: img, x, y, width, height");
   }
@@ -139,7 +139,7 @@ pub.transformImage = function(img, x, y, width, height) {
 pub.imageMode = function(mode) {
   if (arguments.length === 0) return currImageMode;
 
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
     currImageMode = mode;
   } else {
     error("b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");

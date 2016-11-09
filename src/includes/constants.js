@@ -137,7 +137,7 @@ pub.PIE = "pie";
  * @cat Math
  * @subcat Constants
  */
-pub.TWO_PI = Math.PI*2;
+pub.TWO_PI = Math.PI * 2;
 
 /**
  * Pi
@@ -153,7 +153,7 @@ pub.PI = Math.PI;
  * @cat Math
  * @subcat Constants
  */
-pub.HALF_PI = Math.PI/2;
+pub.HALF_PI = Math.PI / 2;
 
 /**
  * Quarter Pi
@@ -161,7 +161,7 @@ pub.HALF_PI = Math.PI/2;
  * @cat Math
  * @subcat Constants
  */
-pub.QUARTER_PI = Math.PI/4;
+pub.QUARTER_PI = Math.PI / 4;
 
 /**
  * Sin Cos Length
@@ -269,6 +269,13 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Returns a Lorem ipsum string that can be used for testing.
+ * @property LOREM {String}
+ * @cat Typography
+ */
+pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+
+/**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
 * @property MODESILENT {String}
 * @cat Environment
@@ -295,4 +302,4 @@ pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, mo
 
 
 var ERROR_PREFIX = "\nBasil.js Error -> ",
-    WARNING_PREFIX = "### Basil Warning -> ";
+  WARNING_PREFIX = "### Basil Warning -> ";

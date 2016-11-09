@@ -24,7 +24,7 @@ pub.delay = function (milliseconds) {
  * @return {Stories[]} Array of Stories.
  */
 pub.stories = function(doc, cb) {
-  
+
   checkNull(doc);
 
   if(arguments.length === 1 && doc instanceof Document) {
@@ -44,19 +44,19 @@ pub.stories = function(doc, cb) {
  * @method paragraphs
  * @param  {Document|Story|TextFrame} item The story or text frame instance to iterate the paragraphs in
  * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
- * @return {Paragraphs[]} Array of Paragraphs.   
+ * @return {Paragraphs[]} Array of Paragraphs.
  */
 pub.paragraphs = function(item, cb) {
 
   checkNull(item);
-    
-  if(!item.hasOwnProperty('contents')) error("b.paragraphs(), Wrong object type.");
+
+  if(!item.hasOwnProperty("contents")) error("b.paragraphs(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.paragraphs;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'paragraphs', cb);
+      return forEachStoryProperty(item, "paragraphs", cb);
     } else {
       return forEach(item.paragraphs, cb);
     }
@@ -72,7 +72,7 @@ pub.paragraphs = function(item, cb) {
 //  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
 //  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
 //  * return {Array} An array of strings
-//  * 
+//  *
 //  */
 //  // FIXME
 // pub.sentences = function(item, cb) {
@@ -88,7 +88,7 @@ pub.paragraphs = function(item, cb) {
 //   if(arguments.length >= 1 ) {
 //     var arr;
 //     try{
-//       str = item.contents;  
+//       str = item.contents;
 //       arr = str.match( /[^\.!\?]+[\.!\?]+/g );
 //     } catch (e){
 //       error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
@@ -121,13 +121,13 @@ pub.lines = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.lines(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.lines(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.lines;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'lines', cb);
+      return forEachStoryProperty(item, "lines", cb);
     } else {
       return forEach(item.lines, cb);
     }
@@ -149,13 +149,13 @@ pub.words = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.words(), Wrong object type.");
-  
-  if(arguments.length === 1){
+  if(!item.hasOwnProperty("contents")) error("b.words(), Wrong object type.");
+
+  if(arguments.length === 1) {
     return item.words;
   } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'words', cb);
+      return forEachStoryProperty(item, "words", cb);
     } else {
       return forEach(item.words, cb);
     }
@@ -177,13 +177,13 @@ pub.characters = function(item, cb) {
 
   checkNull(item);
 
-  if(!item.hasOwnProperty('contents')) error("b.characters(), Wrong object type.");
+  if(!item.hasOwnProperty("contents")) error("b.characters(), Wrong object type.");
 
   if(arguments.length === 1) {
     return item.characters;
-  } else if ( cb instanceof Function) {
+  } else if (cb instanceof Function) {
     if (item instanceof Document) {
-      return forEachStoryProperty(item, 'characters', cb);
+      return forEachStoryProperty(item, "characters", cb);
     } else {
       return forEach(item.characters, cb);
     }
@@ -210,19 +210,19 @@ var forEachStoryProperty = function(doc, property, cb) {
  * @subcat Multi-Getters
  * @method items
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
- * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount. 
+ * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {PageItems[]} array or PageItems.
  */
 pub.items = function(container, cb) {
 
-  if (container instanceof Document 
-    || container instanceof Page 
-    || container instanceof Layer 
+  if (container instanceof Document
+    || container instanceof Page
+    || container instanceof Layer
     || container instanceof Group) {
 
-    if(arguments.length === 1 || cb === false){
+    if(arguments.length === 1 || cb === false) {
       return container.allPageItems;
-    } else if(cb instanceof Function ) {
+    } else if(cb instanceof Function) {
       return forEach(container.allPageItems, cb);
     }
   } else {
@@ -240,23 +240,23 @@ pub.items = function(container, cb) {
  */
 pub.clear = function(container) {
 
-  if (container instanceof Document 
-    || container instanceof Page 
-    || container instanceof Layer 
+  if (container instanceof Document
+    || container instanceof Page
+    || container instanceof Layer
     || container instanceof Group) {
 
-      return forEach(container.allPageItems, function(item,n){
+    return forEach(container.allPageItems, function(item, n) {
         // Groups have to be avoided for deletion
         // otherwise deletion process is confused
-        if(item !== null && ! (item instanceof Group) ) {
-          if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
-          item.remove();
-        }
-      });
+      if(item !== null && !(item instanceof Group)) {
+        if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
+        item.remove();
+      }
+    });
 
-    } else {
-      return false;
-    }
+  } else {
+    return false;
+  }
 };
 
 /**
@@ -273,4 +273,4 @@ pub.remove = function(obj) {
   } else {
     throw new Error("Provided object cannot be removed in b.remove().");
   }
-}
+};

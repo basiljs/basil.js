@@ -14,36 +14,36 @@
  * @param  {Number} h Height
  * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
  */
-pub.ellipse = function(x, y, w, h){
+pub.ellipse = function(x, y, w, h) {
   if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
-    ellipseBounds[2] = (y+h);
-    ellipseBounds[3] = (x+w);
+    ellipseBounds[2] = (y + h);
+    ellipseBounds[3] = (x + w);
   } else if (currEllipseMode === pub.CORNERS) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
     ellipseBounds[2] = h;
     ellipseBounds[3] = w;
   } else if (currEllipseMode === pub.CENTER) {
-    ellipseBounds[0] = y-(h/2);
-    ellipseBounds[1] = x-(w/2);
-    ellipseBounds[2] = (y+h)-(h/2);
-    ellipseBounds[3] = (x+w)-(w/2);
+    ellipseBounds[0] = y - (h / 2);
+    ellipseBounds[1] = x - (w / 2);
+    ellipseBounds[2] = (y + h) - (h / 2);
+    ellipseBounds[3] = (x + w) - (w / 2);
   } else if (currEllipseMode === pub.RADIUS) {
-    ellipseBounds[0] = y-(h);
-    ellipseBounds[1] = x-(w);
-    ellipseBounds[2] = y+(h);
-    ellipseBounds[3] = x+(w);
+    ellipseBounds[0] = y - (h);
+    ellipseBounds[1] = x - (w);
+    ellipseBounds[2] = y + (h);
+    ellipseBounds[3] = x + (w);
   }
 
-if(w === 0 || h === 0)
-  return false;
+  if(w === 0 || h === 0)
+    return false;
 
   var ovals = currentPage().ovals;
-  var newOval = ovals.add( currentLayer() );
+  var newOval = ovals.add(currentLayer());
   with (newOval) {
     strokeWeight = currStrokeWeight;
     strokeTint = currStrokeTint;
@@ -56,11 +56,11 @@ if(w === 0 || h === 0)
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
   return newOval;
 };
@@ -87,7 +87,7 @@ if(w === 0 || h === 0)
 pub.line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   var lines = currentPage().graphicLines;
-  var newLine = lines.add( currentLayer() );
+  var newLine = lines.add(currentLayer());
   with (newLine) {
     strokeWeight = currStrokeWeight;
     strokeTint = currStrokeTint;
@@ -98,7 +98,7 @@ pub.line = function(x1, y1, x2, y2) {
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   return newLine;
 };
 
@@ -118,7 +118,7 @@ pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
-  if( typeof shapeMode != null) {
+  if(typeof shapeMode != null) {
     currShapeMode = shapeMode;
   } else {
     currShapeMode = null;
@@ -150,11 +150,11 @@ pub.vertex = function() {
       currVertexPoints.push([arguments[0], arguments[1]]);
     } else if (arguments.length === 6) {
       // [[xL1, YL1], [x1, y1], [xR1, yR1]]
-      currVertexPoints.push([ [arguments[2], arguments[3]],
+      currVertexPoints.push([[arguments[2], arguments[3]],
                               [arguments[0], arguments[1]],
-                              [arguments[4], arguments[5]] ]);
+                              [arguments[4], arguments[5]]]);
     } else {
-      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!" );
+      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!");
     }
   } else {
     notCalledBeginShapeError();
@@ -193,14 +193,14 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
   var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
-  startAngle %= pub.TWO_PI+o;
-  endAngle %= pub.TWO_PI+o;
+  startAngle %= pub.TWO_PI + o;
+  endAngle %= pub.TWO_PI + o;
   w /= 2;
   h /= 2;
 
   if (currEllipseMode === pub.CORNER) {
-    cx = (cx-w);
-    cy = (cy+h);
+    cx = (cx - w);
+    cy = (cy + h);
   }
   else if (currEllipseMode === pub.CORNERS) {
     // cx = (cx-w);
@@ -217,17 +217,17 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   var direction = (startAngle < endAngle) ? 1 : -1;
   var thetaStart = startAngle;
 
-  if( mode == pub.CHORD ) {
+  if(mode == pub.CHORD) {
     pub.beginShape(pub.CLOSE);
   }
-  else if( mode == pub.PIE ) {
+  else if(mode == pub.PIE) {
     pub.beginShape(pub.CLOSE);
-    pub.vertex( cx, cy );
+    pub.vertex(cx, cy);
   }
   else {
     pub.beginShape();
   }
-  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON; ) {
+  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON;) {
     var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
     var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
 
@@ -271,31 +271,31 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var theta = (endAngle - startAngle);
 
-  var x0 = pub.cos(theta/2.0);
-  var y0 = pub.sin(theta/2.0);
+  var x0 = pub.cos(theta / 2.0);
+  var y0 = pub.sin(theta / 2.0);
   var x3 = x0;
-  var y3 = 0-y0;
-  var x1 = (4.0-x0)/3.0;
-  var y1 = ((1.0-x0)*(3.0-x0))/(3.0*y0);
+  var y3 = 0 - y0;
+  var x1 = (4.0 - x0) / 3.0;
+  var y1 = ((1.0 - x0) * (3.0 - x0)) / (3.0 * y0);
   var x2 = x1;
-  var y2 = 0-y1;
+  var y2 = 0 - y1;
 
-  var bezAng = startAngle + theta/2.0;
+  var bezAng = startAngle + theta / 2.0;
   var cBezAng = pub.cos(bezAng);
   var sBezAng = pub.sin(bezAng);
 
   return {
-    startx:   w*(cBezAng * x0 - sBezAng * y0),
-    starty:   h*(sBezAng * x0 + cBezAng * y0),
-    handle1x: w*(cBezAng * x1 - sBezAng * y1),
-    handle1y: h*(sBezAng * x1 + cBezAng * y1),
+    startx:   w * (cBezAng * x0 - sBezAng * y0),
+    starty:   h * (sBezAng * x0 + cBezAng * y0),
+    handle1x: w * (cBezAng * x1 - sBezAng * y1),
+    handle1y: h * (sBezAng * x1 + cBezAng * y1),
 
-    handle2x: w*(cBezAng * x2 - sBezAng * y2),
-    handle2y: h*(sBezAng * x2 + cBezAng * y2),
-    endx:     w*(cBezAng * x3 - sBezAng * y3),
-    endy:     h*(sBezAng * x3 + cBezAng * y3)
+    handle2x: w * (cBezAng * x2 - sBezAng * y2),
+    handle2y: h * (sBezAng * x2 + cBezAng * y2),
+    endx:     w * (cBezAng * x3 - sBezAng * y3),
+    endy:     h * (sBezAng * x3 + cBezAng * y3)
   };
-};
+}
 
 /**
  * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path.
@@ -324,7 +324,7 @@ pub.endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   return currPolygon;
 };
 
@@ -344,13 +344,13 @@ function doAddPath() {
   } else {
     notCalledBeginShapeError();
   }
-};
+}
 
 function addPolygon() {
   if (currShapeMode === pub.CLOSE) {
-    currPolygon = currentPage().polygons.add( currentLayer() );
+    currPolygon = currentPage().polygons.add(currentLayer());
   } else {
-    currPolygon = currentPage().graphicLines.add( currentLayer() );
+    currPolygon = currentPage().graphicLines.add(currentLayer());
   }
   with (currPolygon) {
     strokeWeight = currStrokeWeight;
@@ -359,12 +359,12 @@ function addPolygon() {
     fillTint = currFillTint;
     strokeColor = currStrokeColor;
   }
-};
+}
 
 
 function notCalledBeginShapeError () {
   error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
-};
+}
 
 /**
  * Draws a rectangle on the page.
@@ -378,7 +378,7 @@ function notCalledBeginShapeError () {
  * @param  {Number} h Height
  * @return {Rectangle} New rectangle
  */
-pub.rect = function(x, y, w, h){
+pub.rect = function(x, y, w, h) {
   if (w === 0 || h === 0) {
     // indesign doesn't draw a rectangle if width or height are set to 0
     return false;
@@ -389,21 +389,21 @@ pub.rect = function(x, y, w, h){
   if (currRectMode === pub.CORNER) {
     rectBounds[0] = y;
     rectBounds[1] = x;
-    rectBounds[2] = (y+h);
-    rectBounds[3] = (x+w);
+    rectBounds[2] = (y + h);
+    rectBounds[3] = (x + w);
   } else if (currRectMode === pub.CORNERS) {
     rectBounds[0] = y;
     rectBounds[1] = x;
     rectBounds[2] = h;
     rectBounds[3] = w;
   } else if (currRectMode === pub.CENTER) {
-    rectBounds[0] = y-(h/2);
-    rectBounds[1] = x-(w/2);
-    rectBounds[2] = (y+h)-(h/2);
-    rectBounds[3] = (x+w)-(w/2);
+    rectBounds[0] = y - (h / 2);
+    rectBounds[1] = x - (w / 2);
+    rectBounds[2] = (y + h) - (h / 2);
+    rectBounds[3] = (x + w) - (w / 2);
   }
 
-  var newRect = currentPage().rectangles.add( currentLayer() );
+  var newRect = currentPage().rectangles.add(currentLayer());
   with (newRect) {
     geometricBounds = rectBounds;
     strokeWeight = currStrokeWeight;
@@ -416,11 +416,11 @@ pub.rect = function(x, y, w, h){
   if (currRectMode === pub.CENTER) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
   } else {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix() );
+                   currMatrix.adobeMatrix());
   }
   return newRect;
 };
@@ -450,7 +450,7 @@ pub.rect = function(x, y, w, h){
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER ) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
     currRectMode = mode;
     return currRectMode;
   } else {
@@ -475,7 +475,7 @@ pub.rectMode = function (mode) {
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS ) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
@@ -493,7 +493,7 @@ pub.ellipseMode = function (mode) {
  * @param {Number} weight The width of the stroke
  */
 pub.strokeWeight = function (weight) {
-  if (typeof weight === 'string' || typeof weight === 'number') {
+  if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
     error("b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string");
@@ -509,9 +509,9 @@ pub.strokeWeight = function (weight) {
  * @return {ObjectStyle}  The object style instance.
  */
 pub.objectStyle = function(name) {
-  var style = null;
-  var style = findInCollectionByName(name);
-  if(typeof style === 'undefined'){
+
+  var style = findInStylesByName(currentDoc().allObjectStyles, name);
+  if(!style) {
     style = currentDoc().objectStyles.add({name: name});
   }
   return style;
@@ -527,9 +527,9 @@ pub.objectStyle = function(name) {
  * @param {PageItem|Page} item The item to duplicate
  * @returns {Object} Returns the new item
  */
-pub.duplicate = function(item){
+pub.duplicate = function(item) {
 
-  if( !(item instanceof Page) && typeof(item) !== "undefined" && item.hasOwnProperty("duplicate") ) {
+  if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
     var newItem = item.duplicate(currentPage());
     newItem.move(currentLayer());
@@ -537,11 +537,11 @@ pub.duplicate = function(item){
     if (currRectMode === pub.CENTER) {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix() );
+                       currMatrix.adobeMatrix());
     } else {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                      AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix() );
+                     currMatrix.adobeMatrix());
     }
 
     return newItem;
