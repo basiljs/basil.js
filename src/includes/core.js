@@ -40,6 +40,18 @@ pub.go = function (mode) {
    */
   for(var key in pub) {
     if(pub.hasOwnProperty(key)) {
+      if(glob.hasOwnProperty(key)) {
+        // the user created a function or variable
+        // with the same name as a Basil has.
+        // ABORT!
+        if(key.localeCompare("forEach") !== 0 && key.localeCompare("go") !== 0) {
+
+          var isFunction = (glob[key] instanceof Function === true) ? true : false;
+          warning("You are using the reserved name \"" + key + "\" for your "
+          + (isFunction === true ? "function" : "variable"));
+          exit();
+        }
+      }
       glob[key] = pub[key];
     }
   }
@@ -89,6 +101,7 @@ pub.go = function (mode) {
   exit(); // quit program execution
 };
 
+glob.go = pub.go;
 /**
  * EXPERIMENTAL!
  *
