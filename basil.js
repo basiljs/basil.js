@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.11.08-15:42:09 */
+/* Basil.js v1.0.10 2016.11.09-09:55:02 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -705,6 +705,7 @@ glob.HashList = function () {
 };
 
 
+/* global println*/
 // all initialisations should go here
 var init = function() {
   glob.b = pub;
