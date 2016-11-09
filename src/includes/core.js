@@ -1,3 +1,4 @@
+/* global println*/
 // all initialisations should go here
 var init = function() {
   glob.b = pub;
