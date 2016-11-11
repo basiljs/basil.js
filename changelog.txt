@@ -3,7 +3,7 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js x.x.x -
+basil.js 1.1.0 - 11 November 2016
 
 + Added b.size() to set and get the document size
 + Added b.gradient() to great colourful gradients
@@ -12,7 +12,8 @@ basil.js x.x.x -
 + Added b.LOREM constant holding a lorem ipsum string
 + Added npm script for better tooling and development
   npm run watch
-  npm run release
+  npm run release (insert timestamp + version string in first line of bundle)
+  npm run bundle (without timestamp + version string)
 + Added .eslintrc file (linting rules) to reflect current coding style
 
 * The basil.js file is bundled from /src to a single file:
@@ -29,7 +30,7 @@ basil.js x.x.x -
 * Bugfix: b.words(), b.lines() etc. were broken
 * Bugfix: b.objectStyle(), b.characterStyle() and b.paragraphStyle() were broken
 
-Shout outs to @trych @fabiantheblind!
+Shout outs to @trych @fabianmoronzirfas!
 This release is entirely based on your hard work!
 Many thanks for this massive contributions!
 
