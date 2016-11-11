@@ -292,3 +292,22 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
     error("linkTextFrames(), wrong type of parameter! linkTextFrames() needs two textFrame objects to link the stories. Use: textFrameA, textFrameB");
   }
 };
+
+/**
+ * Fills the given textFrame and all linked textFrame with random placeholder text. The placeholder text will be added at the end of any already existing text in the text frame.
+ *
+ * @cat Story
+ * @method placeholder
+ * @param  {TextFrame} textFrame
+ * @return {Text} The inserted placeholder text.
+ */
+pub.placeholder = function (textFrame) {
+  if (textFrame instanceof TextFrame) {
+    var startIx = textFrame.parentStory.insertionPoints[-1].index;
+    textFrame.contents = TextFrameContents.PLACEHOLDER_TEXT;
+    var endIx = textFrame.parentStory.insertionPoints[-1].index - 1;
+    return textFrame.parentStory.characters.itemByRange(startIx, endIx);
+  } else {
+    error("placeholder(), wrong type of parameter! Use: textFrame");
+  }
+};
