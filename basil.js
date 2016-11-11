@@ -1,4 +1,4 @@
-/* Basil.js v1.0.10 2016.11.09-09:55:02 */
+/* Basil.js v1.0.10 2016.11.11-11:03:07 */
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -4853,6 +4853,24 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
   }
 };
 
+/**
+ * Fills the given textFrame and all linked textFrame with random placeholder text. The placeholder text will be added at the end of any already existing text in the text frame.
+ *
+ * @cat Story
+ * @method placeholder
+ * @param  {TextFrame} textFrame
+ * @return {Text} The inserted placeholder text.
+ */
+pub.placeholder = function (textFrame) {
+  if (textFrame instanceof TextFrame) {
+    var startIx = textFrame.parentStory.insertionPoints[-1].index;
+    textFrame.contents = TextFrameContents.PLACEHOLDER_TEXT;
+    var endIx = textFrame.parentStory.insertionPoints[-1].index - 1;
+    return textFrame.parentStory.characters.itemByRange(startIx, endIx);
+  } else {
+    error("placeholder(), wrong type of parameter! Use: textFrame");
+  }
+};
 // ----------------------------------------
 // Image
 
