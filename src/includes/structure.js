@@ -242,20 +242,18 @@ pub.clear = function(container) {
 
   if (container instanceof Document
     || container instanceof Page
-    || container instanceof Layer
-    || container instanceof Group) {
+    || container instanceof Layer) {
 
-    return forEach(container.allPageItems, function(item, n) {
-        // Groups have to be avoided for deletion
-        // otherwise deletion process is confused
-      if(item !== null && !(item instanceof Group)) {
-        if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
-        item.remove();
-      }
-    });
+    container.pageItems.everyItem().locked = false;
+    container.pageItems.everyItem().remove();
+
+  } else if (container instanceof Group) {
+
+    container.locked = false;
+    container.remove();
 
   } else {
-    return false;
+    error("b.clear(), not a valid container! Use: Document, Page, Layer or Group.");
   }
 };
 
