@@ -3,15 +3,36 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js x.x.x -
+basil.js 1.1.0 - 11 November 2016
 
-+ Added b.size() to set the document size, by @fabiantheblind
-+ Added b.gradient() great colorful gradients, by @trych
++ Added b.size() to set and get the document size
++ Added b.gradient() to great colourful gradients
++ Added b.gradientMode() to set gradient type b.LINEAR or b.RADIAL
++ Added b.placeholder() to fill a textFrame with random placeholder text
++ Added b.LOREM constant holding a lorem ipsum string
++ Added npm script for better tooling and development
+  npm run watch
+  npm run release (insert timestamp + version string in first line of bundle)
+  npm run bundle (without timestamp + version string)
++ Added .eslintrc file (linting rules) to reflect current coding style
+
+* The basil.js file is bundled from /src to a single file:
+  It is no longer required to have the basil.js file at a certain path.
+  Break out with your project folders to any location w/o breaking things!
+* Entire source code is linted, wrong line breaks fixed
+* Source code reorganised to /src folder
+* Readme files updated to acknowledge new contributors
+
 * Bugfix: b.color("colorName") error when using resulting color in b.fill() twice
 * Bugfix: b.layer() did not set active layer to given argument
 * Bugfix: b.image() error/warning handling if incomplete arguments
+* Bugfix: b.isText() did not work for instances of Text
+* Bugfix: b.words(), b.lines() etc. were broken
+* Bugfix: b.objectStyle(), b.characterStyle() and b.paragraphStyle() were broken
 
-Many thanks @trych @fabiantheblind for bugfixes and contributions
+Shout outs to @trych @fabianmoronzirfas!
+This release is entirely based on your hard work!
+Many thanks for this massive contributions!
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.0.10 -

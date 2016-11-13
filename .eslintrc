@@ -1261,6 +1261,7 @@
     "UIEvent": true,
     "alert": true,
     "prompt": true,
+    "println":true,
     "confirm": true,
     "exit": true,
     "b": true,
@@ -1310,4 +1311,5 @@
     "Vector": true,
     "forEach": true
   }
+>>>>>>> develop
 }
