@@ -223,7 +223,7 @@ pub.items = function(container, cb) {
 
 
 /**
- * Removes all PageItems in the given Document, Page, Layer or Group.
+ * Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
  *
  * @cat Document
  * @method clear
