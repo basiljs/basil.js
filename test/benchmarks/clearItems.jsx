@@ -39,6 +39,8 @@ function draw() {
   b.clear(page);
   b.println("Clearing " +  count + " items on page: " + ((b.millis() - time)/1000) + " seconds.");
 
+  b.page(1);
+
   time = b.millis();
   b.clear(layer);
   b.println("Clearing " +  count + " items on layer: " + ((b.millis() - time)/1000) + " seconds.");
