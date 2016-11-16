@@ -1,3 +1,4 @@
+
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -704,7 +705,6 @@ glob.HashList = function () {
 };
 
 
-/* global println*/
 // all initialisations should go here
 var init = function() {
   glob.b = pub;
@@ -740,6 +740,15 @@ var init = function() {
  */
 pub.go = function (mode) {
 
+  /**
+   * this Array holds the names of all public variables
+   * that need to be updated if changed.
+   * Currently this is only width and height
+   * If this changes over time we should move this into the public vars file
+   *
+   * @type {Array}
+   */
+  var publicVars = ["width", "height"];
   /*
    * add all functions of pub into the global scope.
    * This makes it possible to call everything without using b.
@@ -752,14 +761,23 @@ pub.go = function (mode) {
         // with the same name as a Basil has.
         // ABORT!
         if(key.localeCompare("forEach") !== 0 && key.localeCompare("go") !== 0) {
-
           var isFunction = (glob[key] instanceof Function === true) ? true : false;
           warning("You are using the reserved name \"" + key + "\" for your "
           + (isFunction === true ? "function" : "variable"));
           exit();
         }
       }
+      // loop the public vars to attach a watch function to them
       glob[key] = pub[key];
+      for(var i = 0; i < publicVars.length; i++) {
+        if(key === publicVars[i]) {
+          pub.watch(key, function(prop, oldval, newval) {
+            $.global[prop] = newval;
+            // $.writeln($.global[prop]);
+            // $.writeln("This is object: " + prop + " Old Value: " + oldval + " New Value:" + newval);
+          });
+        }
+      }
     }
   }
   if (!mode) {
