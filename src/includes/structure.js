@@ -223,7 +223,7 @@ pub.items = function(container, cb) {
 
 
 /**
- * Removes all PageItems in the given Document, Page, Layer or Group.
+ * Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
  *
  * @cat Document
  * @method clear
@@ -233,20 +233,18 @@ pub.clear = function(container) {
 
   if (container instanceof Document
     || container instanceof Page
-    || container instanceof Layer
-    || container instanceof Group) {
+    || container instanceof Layer) {
 
-    return forEach(container.allPageItems, function(item, n) {
-        // Groups have to be avoided for deletion
-        // otherwise deletion process is confused
-      if(item !== null && !(item instanceof Group)) {
-        if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
-        item.remove();
-      }
-    });
+    container.pageItems.everyItem().locked = false;
+    container.pageItems.everyItem().remove();
+
+  } else if (container instanceof Group) {
+
+    container.locked = false;
+    container.remove();
 
   } else {
-    return false;
+    error("b.clear(), not a valid container! Use: Document, Page, Layer or Group.");
   }
 };
 
