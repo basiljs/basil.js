@@ -3,6 +3,11 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
+basil.js x.x.x
+
+* Improved the speed of b.clear() considerably
+
+..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.1.0 - 11 November 2016
 
 + Added b.size() to set and get the document size
@@ -30,7 +35,7 @@ basil.js 1.1.0 - 11 November 2016
 * Bugfix: b.words(), b.lines() etc. were broken
 * Bugfix: b.objectStyle(), b.characterStyle() and b.paragraphStyle() were broken
 
-Shout outs to @trych @fabianmoronzirfas!
+Shout outs to Timo Rychert and Fabian Morón Zirfas!
 This release is entirely based on your hard work!
 Many thanks for this massive contributions!
 
