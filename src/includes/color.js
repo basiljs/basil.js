@@ -285,14 +285,11 @@ pub.color = function() {
   // check whether color was already created and added to colors,
   // keeps the document clean ...
   newCol = currentDoc().colors.itemByName(props.name);
-  if (newCol.isValid) {
-    newCol.properties = props;
-    return newCol;
-  } else {
+  if (!newCol.isValid) {
     newCol = currentDoc().colors.add();
-    newCol.properties = props;
-    return newCol;
   }
+  newCol.properties = props;
+  return newCol;
 };
 
 /**
