@@ -4776,12 +4776,35 @@ pub.textTracking = function(tracking) {
  * @param  {String} name      The name of the character style to return.
  * @return {CharachterStyle}  The character style instance.
  */
-pub.characterStyle = function(name) {
+pub.characterStyle = function(textOrName, props) {
+  var styleErrorMsg = "b.characterStyles(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allCharacterStyles, name);
-  if(!style) {
-    style = currentDoc().characterStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedCharacterStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allCharacterStyles, textOrName);
+    if(!style) {
+      style = currentDoc().characterStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.characterStyles(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
@@ -4793,11 +4816,35 @@ pub.characterStyle = function(name) {
  * @param  {String} name     The name of the paragraph style to return.
  * @return {ParagraphStyle}  The paragraph style instance.
  */
-pub.paragraphStyle = function(name) {
-  var style = findInStylesByName(currentDoc().allParagraphStyles, name);
-  if(!style) {
-    style = currentDoc().paragraphStyles.add({name: name});
+pub.paragraphStyle = function(textOrName, props) {
+  var styleErrorMsg = "b.paragraphStyles(), wrong parameters. Use: textObject|name and props. Props is optional.";
+
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedParagraphStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allParagraphStyles, textOrName);
+    if(!style) {
+      style = currentDoc().paragraphStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.paragraphStyles(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
