@@ -508,12 +508,35 @@ pub.strokeWeight = function (weight) {
  * @param  {String} name  The name of the object style to return.
  * @return {ObjectStyle}  The object style instance.
  */
-pub.objectStyle = function(name) {
+pub.objectStyle = function(itemOrName, props) {
+  var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allObjectStyles, name);
-  if(!style) {
-    style = currentDoc().objectStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(itemOrName.hasOwnProperty("appliedObjectStyle")) {
+    // text object is given
+    style = itemOrName.appliedObjectStyle;
+  } else if(isString(itemOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allObjectStyles, itemOrName);
+    if(!style) {
+      style = currentDoc().objectStyles.add({name: itemOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.objectStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
