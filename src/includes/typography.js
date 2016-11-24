@@ -245,12 +245,15 @@ pub.textTracking = function(tracking) {
 };
 
 /**
- * Returns the character style with the given name. If the style does not exist it gets created.
+ * Returns the character style of a given text object or the character style with the given name. If a
+ * character style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the character style's properties.
  *
  * @cat Typography
  * @method characterStyle
- * @param  {String} name      The name of the character style to return.
- * @return {CharachterStyle}  The character style instance.
+ * @param  {Text|String} textOrName  A text object whose style to return or the name of the character style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
+ * @return {CharacterStyle}  The character style instance.
  */
 pub.characterStyle = function(textOrName, props) {
   var styleErrorMsg = "b.characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
@@ -285,11 +288,14 @@ pub.characterStyle = function(textOrName, props) {
 };
 
 /**
- * Returns the paragraph style with the given name. If the style does not exist it gets created.
+ * Returns the paragraph style of a given text object or the paragraph style with the given name. If a
+ * paragraph style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the paragraph style's properties.
  *
  * @cat Typography
  * @method paragraphStyle
- * @param  {String} name     The name of the paragraph style to return.
+ * @param  {Text|String} textOrName  A text object whose style to return or the name of the paragraph style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ParagraphStyle}  The paragraph style instance.
  */
 pub.paragraphStyle = function(textOrName, props) {
