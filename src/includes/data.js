@@ -718,6 +718,8 @@ var initDataFile = function(file, mustExist) {
   var result = null;
   if (file instanceof File) {
     result = file;
+  } else if (file.charAt(0) == '/') {
+    result = new File(file);
   } else {
     var folder = new Folder(projectFolder().absoluteURI + "/data");
     folder.create(); // creates data folder if not existing, otherwise it just skips
@@ -809,7 +811,7 @@ pub.shellExecute = function(cmd) {
 
 /**
  * Reads the contents of a file or loads an URL into a String.
- * If the file is specified by name as String, it must be located in the document's data directory.
+ * If the file is specified by name as relative path String, it must be located in the document's data directory.
  *
  * @cat Data
  * @subcat Input
@@ -844,7 +846,7 @@ var getURL = function(url) {
 
 /**
  * Reads the contents of a file or loads an URL and creates a String array of its individual lines.
- * If the file is specified by name as String, it must be located in the document's data directory.
+ * If the file is specified by name as relative path String, it must be located in the document's data directory.
  *
  * @cat Data
  * @subcat Input
@@ -1075,5 +1077,3 @@ pub.download = function(url, file) {
     error("The url " + url + " is not a valid one. Please double check!");
   }
 };
-
-
