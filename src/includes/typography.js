@@ -287,6 +287,29 @@ pub.characterStyle = function(textOrName, props) {
   return style;
 };
 
+pub.applyCharacterStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allCharacterStyles, name);
+    if(!style) {
+      error("b.applyCharacterStyle(), a character style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
+    error("b.applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.characters.everyItem();
+  }
+
+  text.appliedCharacterStyle = style;
+
+  return text;
+};
+
 /**
  * Returns the paragraph style of a given text object or the paragraph style with the given name. If a
  * paragraph style of the given name does not exist, it gets created. Optionally a props object of
@@ -328,6 +351,29 @@ pub.paragraphStyle = function(textOrName, props) {
   }
 
   return style;
+};
+
+pub.applyParagraphStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allParagraphStyles, name);
+    if(!style) {
+      error("b.applyParagraphStyle(), a paragraph style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
+    error("b.applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.paragraphs.everyItem();
+  }
+
+  text.appliedParagraphStyle = style;
+
+  return text;
 };
 
 /**

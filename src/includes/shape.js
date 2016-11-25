@@ -543,6 +543,24 @@ pub.objectStyle = function(itemOrName, props) {
   return style;
 };
 
+pub.applyObjectStyle = function(item, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allObjectStyles, name);
+    if(!style) {
+      error("b.applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(item.hasOwnProperty("appliedObjectStyle")) || !(style instanceof ObjectStyle)) {
+    error("b.applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
+  }
+
+  item.appliedObjectStyle = style;
+
+  return item;
+};
 
 /**
  * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
