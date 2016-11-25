@@ -543,6 +543,17 @@ pub.objectStyle = function(itemOrName, props) {
   return style;
 };
 
+/**
+ * Applies an object style to the given page item. The object style can be given as
+ * name or as an object style instance.
+ *
+ * @cat Typography
+ * @method applyObjectStyle
+ * @param  {PageItem} item  The page item to apply the style to.
+ * @param {ObjectStyle|String} style  An object style instance or the name of the object style to apply.
+ * @return {PageItem}  The page item that the style was applied to.
+ */
+
 pub.applyObjectStyle = function(item, style) {
 
   if(isString(style)) {

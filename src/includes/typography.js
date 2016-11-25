@@ -287,6 +287,17 @@ pub.characterStyle = function(textOrName, props) {
   return style;
 };
 
+/**
+ * Applies a character style to the given text object, text frame or story. The character style
+ * can be given as name or as character style instance.
+ *
+ * @cat Typography
+ * @method applyCharacterStyle
+ * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
+ * @param {CharacterStyle|String} style  A character style instance or the name of the character style to apply.
+ * @return {Text}  The text that the style was applied to.
+ */
+
 pub.applyCharacterStyle = function(text, style) {
 
   if(isString(style)) {
@@ -352,6 +363,17 @@ pub.paragraphStyle = function(textOrName, props) {
 
   return style;
 };
+
+/**
+ * Applies a paragraph style to the given text object, text frame or story. The paragraph style
+ * can be given as name or as paragraph style instance.
+ *
+ * @cat Typography
+ * @method applyParagraphStyle
+ * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
+ * @param {ParagraphStyle|String} style  A paragraph style instance or the name of the paragraph style to apply.
+ * @return {Text}  The text that the style was applied to.
+ */
 
 pub.applyParagraphStyle = function(text, style) {
 
