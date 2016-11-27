@@ -1,11 +1,11 @@
-﻿if (typeof b === 'undefined') {
-  // @include "../basil.js";
+﻿if (typeof b === "undefined") {
+  #include "../basil.js";
 }
-if (typeof b.test === 'undefined') {
-  //include "../lib/basil.test.js";
+if (typeof b.test === "undefined") {
+  #include "../lib/basil.test.js";
 }
 
-b.test('TypographyTests', {
+b.test("TypographyTests", {
   doc: null,
   layer: null,
 
@@ -19,7 +19,7 @@ b.test('TypographyTests', {
 
   setUp: function(b) {
     doc = b.doc();
-    layer = doc.layers.add({name: 'test layer'});
+    layer = doc.layers.add({name: "test layer"});
   },
 
   tearDown: function(b) {
@@ -27,7 +27,7 @@ b.test('TypographyTests', {
   },
 
   testWriteText: function(b) {
-    var contents = 'foo bar';
+    var contents = "foo bar";
 
     b.doc(doc);
     b.page(0);
@@ -39,8 +39,8 @@ b.test('TypographyTests', {
   },
 
   testCreateMultipleTextFrames: function(b) {
-    var contents1 = 'foo bar',
-      contents2 = 'bar foo';
+    var contents1 = "foo bar",
+      contents2 = "bar foo";
 
     b.doc(doc);
     b.page(0);
@@ -55,7 +55,7 @@ b.test('TypographyTests', {
   },
 
   testWriteTextWithSpecialCharacters: function(b) {
-    var contents = 'Copyright: ©, Euro: €';
+    var contents = "Copyright: ©, Euro: €";
 
     b.doc(doc);
     b.page(0);
@@ -67,7 +67,7 @@ b.test('TypographyTests', {
   },
 
   testWriteTextWithCarriageReturns: function(b) {
-    var contents = 'foo\rbar\rfoobar';
+    var contents = "foo\rbar\rfoobar";
 
     b.doc(doc);
     b.page(0);
@@ -76,14 +76,14 @@ b.test('TypographyTests', {
 
     assert(layer.textFrames.length === 1);
     assert(layer.textFrames[0].contents === contents);
-    assert(layer.textFrames[0].contents.split('\r').length === 3);
+    assert(layer.textFrames[0].contents.split("\r").length === 3);
   },
 
   testGetAppliedFontFromTextFrame: function(b) {
     b.doc(doc);
-    var textFrame = b.text('foo', 0, 0, 100, 100);
+    var textFrame = b.text("foo", 0, 0, 100, 100);
 
-    var font = b.typo(textFrame, 'appliedFont');
+    var font = b.typo(textFrame, "appliedFont");
 
     assert(font.length === 1);
     assert(font[0] instanceof Font);
@@ -91,24 +91,24 @@ b.test('TypographyTests', {
 
   testSetPointSizeInTextFrame: function(b) {
     b.doc(doc);
-    var textFrame = b.text('foo', 0, 0, 100, 100),
+    var textFrame = b.text("foo", 0, 0, 100, 100),
       size = 36;
 
-    b.typo(textFrame, 'pointSize', size);
+    b.typo(textFrame, "pointSize", size);
 
-    var currSize = b.typo(textFrame, 'pointSize');
+    var currSize = b.typo(textFrame, "pointSize");
     assert(currSize.length === 1);
     assert(currSize[0] === size);
   },
 
   testSetPointSizeInOverlownPara: function(b) {
     b.doc(doc);
-    var textFrame = b.text('lorem ipsum dolor sit amet\rlorem ipsum dolor sit amet', 0, 0, 100, 30),
+    var textFrame = b.text("lorem ipsum dolor sit amet\rlorem ipsum dolor sit amet", 0, 0, 100, 30),
       size = 30;
 
-    b.typo(textFrame, 'pointSize', size);
+    b.typo(textFrame, "pointSize", size);
 
-    var currSize = b.typo(textFrame, 'pointSize');
+    var currSize = b.typo(textFrame, "pointSize");
     forEach(currSize, function(s) {
       assert(s === size);
     });
