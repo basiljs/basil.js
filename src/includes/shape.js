@@ -501,22 +501,77 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
- * Returns the object style with the given name. If the style does not exist it gets created.
+ * Returns the object style of a given page item or the object style with the given name. If an
+ * object style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the object style's properties.
  *
  * @cat Typography
  * @method objectStyle
- * @param  {String} name  The name of the object style to return.
+ * @param  {PageItem|String} pageItemOrName  A page item whose style to return or the name of the object style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle}  The object style instance.
  */
-pub.objectStyle = function(name) {
+pub.objectStyle = function(itemOrName, props) {
+  var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allObjectStyles, name);
-  if(!style) {
-    style = currentDoc().objectStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(itemOrName.hasOwnProperty("appliedObjectStyle")) {
+    // pageItem is given
+    style = itemOrName.appliedObjectStyle;
+  } else if(isString(itemOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allObjectStyles, itemOrName);
+    if(!style) {
+      style = currentDoc().objectStyles.add({name: itemOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.objectStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
+/**
+ * Applies an object style to the given page item. The object style can be given as
+ * name or as an object style instance.
+ *
+ * @cat Typography
+ * @method applyObjectStyle
+ * @param  {PageItem} item  The page item to apply the style to.
+ * @param {ObjectStyle|String} style  An object style instance or the name of the object style to apply.
+ * @return {PageItem}  The page item that the style was applied to.
+ */
+
+pub.applyObjectStyle = function(item, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allObjectStyles, name);
+    if(!style) {
+      error("b.applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(item.hasOwnProperty("appliedObjectStyle")) || !(style instanceof ObjectStyle)) {
+    error("b.applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
+  }
+
+  item.appliedObjectStyle = style;
+
+  return item;
+};
 
 /**
  * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.

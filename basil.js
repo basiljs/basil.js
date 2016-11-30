@@ -3946,22 +3946,77 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
- * Returns the object style with the given name. If the style does not exist it gets created.
+ * Returns the object style of a given page item or the object style with the given name. If an
+ * object style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the object style's properties.
  *
  * @cat Typography
  * @method objectStyle
- * @param  {String} name  The name of the object style to return.
+ * @param  {PageItem|String} pageItemOrName  A page item whose style to return or the name of the object style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle}  The object style instance.
  */
-pub.objectStyle = function(name) {
+pub.objectStyle = function(itemOrName, props) {
+  var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allObjectStyles, name);
-  if(!style) {
-    style = currentDoc().objectStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(itemOrName.hasOwnProperty("appliedObjectStyle")) {
+    // pageItem is given
+    style = itemOrName.appliedObjectStyle;
+  } else if(isString(itemOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allObjectStyles, itemOrName);
+    if(!style) {
+      style = currentDoc().objectStyles.add({name: itemOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.objectStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
+/**
+ * Applies an object style to the given page item. The object style can be given as
+ * name or as an object style instance.
+ *
+ * @cat Typography
+ * @method applyObjectStyle
+ * @param  {PageItem} item  The page item to apply the style to.
+ * @param {ObjectStyle|String} style  An object style instance or the name of the object style to apply.
+ * @return {PageItem}  The page item that the style was applied to.
+ */
+
+pub.applyObjectStyle = function(item, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allObjectStyles, name);
+    if(!style) {
+      error("b.applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(item.hasOwnProperty("appliedObjectStyle")) || !(style instanceof ObjectStyle)) {
+    error("b.applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
+  }
+
+  item.appliedObjectStyle = style;
+
+  return item;
+};
 
 /**
  * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
@@ -4766,36 +4821,157 @@ pub.textTracking = function(tracking) {
 };
 
 /**
- * Returns the character style with the given name. If the style does not exist it gets created.
+ * Returns the character style of a given text object or the character style with the given name. If a
+ * character style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the character style's properties.
  *
  * @cat Typography
  * @method characterStyle
- * @param  {String} name      The name of the character style to return.
- * @return {CharachterStyle}  The character style instance.
+ * @param  {Text|String} textOrName  A text object whose style to return or the name of the character style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
+ * @return {CharacterStyle}  The character style instance.
  */
-pub.characterStyle = function(name) {
+pub.characterStyle = function(textOrName, props) {
+  var styleErrorMsg = "b.characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allCharacterStyles, name);
-  if(!style) {
-    style = currentDoc().characterStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedCharacterStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allCharacterStyles, textOrName);
+    if(!style) {
+      style = currentDoc().characterStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.characterStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
 /**
- * Returns the paragraph style with the given name. If the style does not exist it gets created.
+ * Applies a character style to the given text object, text frame or story. The character style
+ * can be given as name or as character style instance.
+ *
+ * @cat Typography
+ * @method applyCharacterStyle
+ * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
+ * @param {CharacterStyle|String} style  A character style instance or the name of the character style to apply.
+ * @return {Text}  The text that the style was applied to.
+ */
+
+pub.applyCharacterStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allCharacterStyles, name);
+    if(!style) {
+      error("b.applyCharacterStyle(), a character style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
+    error("b.applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.characters.everyItem();
+  }
+
+  text.appliedCharacterStyle = style;
+
+  return text;
+};
+
+/**
+ * Returns the paragraph style of a given text object or the paragraph style with the given name. If a
+ * paragraph style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the paragraph style's properties.
  *
  * @cat Typography
  * @method paragraphStyle
- * @param  {String} name     The name of the paragraph style to return.
+ * @param  {Text|String} textOrName  A text object whose style to return or the name of the paragraph style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ParagraphStyle}  The paragraph style instance.
  */
-pub.paragraphStyle = function(name) {
-  var style = findInStylesByName(currentDoc().allParagraphStyles, name);
-  if(!style) {
-    style = currentDoc().paragraphStyles.add({name: name});
+pub.paragraphStyle = function(textOrName, props) {
+  var styleErrorMsg = "b.paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
+
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedParagraphStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allParagraphStyles, textOrName);
+    if(!style) {
+      style = currentDoc().paragraphStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.paragraphStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
+};
+
+/**
+ * Applies a paragraph style to the given text object, text frame or story. The paragraph style
+ * can be given as name or as paragraph style instance.
+ *
+ * @cat Typography
+ * @method applyParagraphStyle
+ * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
+ * @param {ParagraphStyle|String} style  A paragraph style instance or the name of the paragraph style to apply.
+ * @return {Text}  The text that the style was applied to.
+ */
+
+pub.applyParagraphStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allParagraphStyles, name);
+    if(!style) {
+      error("b.applyParagraphStyle(), a paragraph style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
+    error("b.applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.paragraphs.everyItem();
+  }
+
+  text.appliedParagraphStyle = style;
+
+  return text;
 };
 
 /**
