@@ -23,7 +23,7 @@ b.test('EnvironmentTests', {
   testSplitJoin: function(b) {
     var doc = b.doc();
     var str = "hello world how are you, my dear?";
-    assert( b.join(b.split(str, " "), " ") === str );    
+    assert( b.join(b.split(str, " "), " ") === str );
   }
 
 

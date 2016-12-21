@@ -26,7 +26,7 @@ b.test('InputTests', {
     textFrame1.label = label;
 
     var found = b.labels(label);
-    
+
     assert(found.length === 1);
     assert(found[0] instanceof TextFrame);
   },

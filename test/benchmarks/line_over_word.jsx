@@ -24,16 +24,16 @@ function draw() {
 }
 
 function textLines(){
-  // build textframe with lorem text to margin, 
+  // build textframe with lorem text to margin,
   b.canvasMode(b.MARGIN);
   b.layer(textLayer);
   b.textSize(textSize);
   var myTextFrame = b.text(" ",0,0,b.width,b.height);
-  app.documents[0].stories.everyItem().hyphenation = false; 
+  app.documents[0].stories.everyItem().hyphenation = false;
   myTextFrame.contents = TextFrameContents.placeholderText;
 
   // run function with fullpage mode
-  b.canvasMode(b.PAGE); 
+  b.canvasMode(b.PAGE);
   b.layer(lineLayer);
   b.paragraphs(myTextFrame, function(p,n){
     p.hyphenation = false;

@@ -16,7 +16,7 @@ b.test('ColorTests', {
   },
 
   tearDown: function(b) {
-    b.close(SaveOptions.no); 
+    b.close(SaveOptions.no);
   },
 
   testDefaultColors: function(b) {

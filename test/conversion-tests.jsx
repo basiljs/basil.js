@@ -25,10 +25,10 @@ b.test('ConversionTests', {
     var i = 1234;
     var j = 762387452;
     var k = -2034856;
-    
+
     assert( b.unhex(b.hex(i)) == i
-      && b.unhex(b.hex(j)) == j 
-      && b.unhex(b.hex(k)) == k);    
+      && b.unhex(b.hex(j)) == j
+      && b.unhex(b.hex(k)) == k);
   }
 
 

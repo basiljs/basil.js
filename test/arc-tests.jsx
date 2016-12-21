@@ -44,7 +44,7 @@ b.test('ArcTests', {
         lastAngle += b.radians(angles[i]);
       }
     }
-  
+
   }
 
 });
