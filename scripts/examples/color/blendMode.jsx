@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   b.clear(b.doc());
@@ -30,7 +30,7 @@ function draw() {
   BlendMode.COLOR
   BlendMode.LUMINOSITY
    */
-  
+
   b.blendMode(circle, BlendMode.HARD_LIGHT);
 }
 

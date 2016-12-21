@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   // get the number of swatches, to see later how many new ones have been created
@@ -35,7 +35,7 @@ function draw() {
 
   // get a color from the document via the name
   b.fill( b.color("my green") );
-  b.rect(0,500,b.width,50); 
+  b.rect(0,500,b.width,50);
   // a few colors like "Black" are predefined in every indesign document
   var black = b.color("Black");
   b.fill( black );

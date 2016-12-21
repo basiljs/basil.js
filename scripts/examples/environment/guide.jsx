@@ -1,13 +1,13 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
-function draw() {  
+function draw() {
   for (var i = 0; i < 11; i++) {
     var x = fibonacci(i) * 10, y=x;
-    b.guideX(x); 
-    b.guideY(y); 
+    b.guideX(x);
+    b.guideY(y);
   }
-  
+
 }
 
 function fibonacci(n) {
