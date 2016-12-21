@@ -41,8 +41,8 @@
 
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
 */
-
-#target "InDesign";
+/* globals init */
+// @target "InDesign";
 
 (function(glob, app, undef) {
 

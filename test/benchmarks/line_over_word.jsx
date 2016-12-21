@@ -1,5 +1,4 @@
-﻿#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+﻿//@include "../../basil.js";
 
 var numPages = 2;
 var textSize = 30;
@@ -17,7 +16,7 @@ function draw() {
     textLines();
     if(i < numPages-1){
       b.addPage();
-    } 
+    }
     b.println("page " + (i + 1) + " took " + ((b.millis() - pageTime)/1000) + " seconds to process");
     pageTime = b.millis();
   }
