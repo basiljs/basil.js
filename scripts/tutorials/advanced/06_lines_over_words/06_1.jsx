@@ -1,8 +1,8 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
-  
+
   var tf = b.selections()[0]; // use the first selected element
   var lineLayer = b.layer("lines"); // get or create the layer "lines"
 
@@ -12,11 +12,11 @@ function draw() {
 
     var wbp; // declare variable for later use
     var words = b.words(lines[m]); // get all words of the current line as an array
-    
+
     for( var n = 0; n < words.length; n++ ) { // for every word ...
-      
+
       var wb = b.bounds(words[n]); // the geometric bounds of each word
-      
+
       if(n == 0){ // first word draw from paper edge -
         b.line(0,wb.bottom,wb.left,wb.bottom);
       }else{
@@ -27,13 +27,13 @@ function draw() {
       b.line(wb.right,wb.top,wb.right,wb.bottom); // from right/topto right/bottom |
 
       wbp = wb; // remember the previous word for next time
-      
+
     }
-  
+
     b.line(wbp.right,wbp.bottom,b.width,wbp.bottom); // last word connect line to paper edge -
-    
+
   }
-  
+
 }
 
 b.go();

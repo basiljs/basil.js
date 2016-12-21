@@ -1,6 +1,6 @@
 
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 
 var maxCount = 5000; // max count of the cirlces
@@ -25,9 +25,9 @@ function setup() {
   y[0] = 100;
   r[0] = 50;
   closestIndex[0] = 0;
-  
+
   b.ellipseMode(b.CENTER);
-  
+
 }
 
 
@@ -47,7 +47,7 @@ function draw() {
     for(var i=0; i < currentCount; i++) {
       var d = b.dist(newX,newY, x[i],y[i]);
       if (d < (newR + r[i])) {
-        intersection = true; 
+        intersection = true;
         break;
       }
     }
@@ -65,19 +65,19 @@ function draw() {
       }
 
       if (newRadius > maxRadius) newRadius = maxRadius;
-      
+
       x[currentCount] = newX;
       y[currentCount] = newY;
       r[currentCount] = newRadius;
-      
+
       var ell = b.ellipse(newX, newY, newRadius * 2, newRadius * 2);
       ell.contentType = ContentType.TEXT_TYPE;
-      
+
       currentCount++;
     }
 
-    if (currentCount >= maxCount || b.millis() > timeOut ) exit(); 
-  
+    if (currentCount >= maxCount || b.millis() > timeOut ) exit();
+
   }
 
 
