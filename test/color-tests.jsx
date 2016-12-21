@@ -1,11 +1,12 @@
-if (typeof b === 'undefined') {
-  //@include "../basil.js";
+/* globals assert */
+if (typeof b === "undefined") {
+  // @include "../basil.js";
 }
-if (typeof b.test === 'undefined') {
-  //@include "../lib/basil.test.js";
+if (typeof b.test === "undefined") {
+  // @include "../lib/basil.test.js";
 }
 
-b.test('ColorTests', {
+b.test("ColorTests", {
   setUpTest: function(b) {
   },
 
@@ -21,8 +22,8 @@ b.test('ColorTests', {
 
   testDefaultColors: function(b) {
     var doc = b.doc();
-    var rect = b.rect(0,0,100,100);
-    var black = b.color('Black');
+    var rect = b.rect(0, 0, 100, 100);
+    var black = b.color("Black");
 
     assert(black instanceof Color);
     assert(rect.fillColor.colorValue.toString() === black.colorValue.toString());
@@ -32,8 +33,8 @@ b.test('ColorTests', {
   testCreateRGBColor: function(b) {
     var doc = b.doc();
     b.colorMode(b.RGB);
-    var red = b.color(255,2,3);
-    var green = b.color(0,255,0,"green");
+    var red = b.color(255, 2, 3);
+    var green = b.color(0, 255, 0, "green");
     var rgbGrey = b.color(128);
 
     assert(red instanceof Color);
@@ -55,9 +56,9 @@ b.test('ColorTests', {
   testCreateCMYKColor: function(b) {
     var doc = b.doc();
     b.colorMode(b.CMYK);
-    var magenta = b.color(1,100,3,4);
-    var yellow = b.color(0,0,100,0,"yellow");
-    var cmykGrey = b.color(80,"light grey");
+    var magenta = b.color(1, 100, 3, 4);
+    var yellow = b.color(0, 0, 100, 0, "yellow");
+    var cmykGrey = b.color(80, "light grey");
 
     assert(magenta instanceof Color);
     assert(yellow instanceof Color);
@@ -80,20 +81,20 @@ b.test('ColorTests', {
     var doc = b.doc();
     b.colorMode(b.RGB);
     var swatchCountStart = doc.swatches.length;
-    var red = b.color(56,2,3);
-    var green = b.color(0,255,0,"a color with a name");
+    var red = b.color(56, 2, 3);
+    var green = b.color(0, 255, 0, "a color with a name");
     var rgbGrey = b.color(50);
     var swatchCountEnd = doc.swatches.length;
 
-    assert((swatchCountStart+3) === swatchCountEnd);
+    assert((swatchCountStart + 3) === swatchCountEnd);
   },
 
   testAddColorToSwatchesAndGetIt: function(b) {
     var doc = b.doc();
     b.colorMode(b.RGB);
-    var red = b.color(56,2,3,"red");
-    var green = b.color(1,255,3,"green");
-    var grey = b.color(50,"grey");
+    var red = b.color(56, 2, 3, "red");
+    var green = b.color(1, 255, 3, "green");
+    var grey = b.color(50, "grey");
     var greenSwatch = doc.swatches.item("green");
 
     assert(b.color("green") === green);
@@ -107,9 +108,9 @@ b.test('ColorTests', {
 
   testCreateGradient: function(b) {
     var doc = b.doc();
-    var red = b.color(255,0,0);
-    var green = b.color(0,255,0);
-    var blue = b.color(0,0,255);
+    var red = b.color(255, 0, 0);
+    var green = b.color(0, 255, 0);
+    var blue = b.color(0, 0, 255);
 
     var redBlue = b.gradient(red, blue);
     var multiStop = b.gradient([red, green, blue, red, green]);
@@ -162,7 +163,7 @@ b.test('ColorTests', {
     var bwb = b.gradient([black, white, black]);
     var swatchCountEnd = doc.swatches.length;
 
-    assert((swatchCountStart+3) === swatchCountEnd);
+    assert((swatchCountStart + 3) === swatchCountEnd);
   }
 });
 

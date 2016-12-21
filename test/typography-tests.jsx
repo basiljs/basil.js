@@ -1,8 +1,9 @@
-﻿if (typeof b === "undefined") {
-  //@include "../basil.js";
+﻿/* globals assert */
+if (typeof b === "undefined") {
+  // @include "../basil.js";
 }
 if (typeof b.test === "undefined") {
-  //@include "../lib/basil.test.js";
+  // @include "../lib/basil.test.js";
 }
 
 b.test("TypographyTests", {
@@ -10,7 +11,7 @@ b.test("TypographyTests", {
   layer: null,
 
   setUpTest: function(b) {
-    doc = app.documents.add();
+    this.doc = app.documents.add();
   },
 
   tearDownTest: function(b) {
@@ -18,8 +19,8 @@ b.test("TypographyTests", {
   },
 
   setUp: function(b) {
-    doc = b.doc();
-    layer = doc.layers.add({name: "test layer"});
+    this.doc = b.doc();
+    this.layer = this.doc.layers.add({name: "test layer"});
   },
 
   tearDown: function(b) {
@@ -29,58 +30,58 @@ b.test("TypographyTests", {
   testWriteText: function(b) {
     var contents = "foo bar";
 
-    b.doc(doc);
+    b.doc(this.doc);
     b.page(0);
-    b.layer(layer);
+    b.layer(this.layer);
     b.text(contents, 0, 0, 300, 300);
 
-    assert(layer.textFrames.length === 1);
-    assert(layer.textFrames[0].contents === contents);
+    assert(this.layer.textFrames.length === 1);
+    assert(this.layer.textFrames[0].contents === contents);
   },
 
   testCreateMultipleTextFrames: function(b) {
     var contents1 = "foo bar",
       contents2 = "bar foo";
 
-    b.doc(doc);
+    b.doc(this.doc);
     b.page(0);
-    b.layer(layer);
+    b.layer(this.layer);
     b.text(contents1, 0, 0, 300, 300);
     b.text(contents2, 50, 50, 300, 300);
 
-    assert(layer.textFrames.length === 2);
-    assert(layer.textFrames[0].contents !== layer.textFrames[1].contents);
-    assert(layer.textFrames[0].contents === contents1 || contents2);
-    assert(layer.textFrames[1].contents === contents1 || contents2);
+    assert(this.layer.textFrames.length === 2);
+    assert(this.layer.textFrames[0].contents !== this.layer.textFrames[1].contents);
+    assert(this.layer.textFrames[0].contents === contents1 || contents2);
+    assert(this.layer.textFrames[1].contents === contents1 || contents2);
   },
 
   testWriteTextWithSpecialCharacters: function(b) {
     var contents = "Copyright: ©, Euro: €";
 
-    b.doc(doc);
+    b.doc(this.doc);
     b.page(0);
-    b.layer(layer);
+    b.layer(this.layer);
     b.text(contents, 0, 0, 300, 300);
 
-    assert(layer.textFrames.length === 1);
-    assert(layer.textFrames[0].contents === contents);
+    assert(this.layer.textFrames.length === 1);
+    assert(this.layer.textFrames[0].contents === contents);
   },
 
   testWriteTextWithCarriageReturns: function(b) {
     var contents = "foo\rbar\rfoobar";
 
-    b.doc(doc);
+    b.doc(this.doc);
     b.page(0);
-    b.layer(layer);
+    b.layer(this.layer);
     b.text(contents, 0, 0, 300, 300);
 
-    assert(layer.textFrames.length === 1);
-    assert(layer.textFrames[0].contents === contents);
-    assert(layer.textFrames[0].contents.split("\r").length === 3);
+    assert(this.layer.textFrames.length === 1);
+    assert(this.layer.textFrames[0].contents === contents);
+    assert(this.layer.textFrames[0].contents.split("\r").length === 3);
   },
 
   testGetAppliedFontFromTextFrame: function(b) {
-    b.doc(doc);
+    b.doc(this.doc);
     var textFrame = b.text("foo", 0, 0, 100, 100);
 
     var font = b.typo(textFrame, "appliedFont");
@@ -90,9 +91,9 @@ b.test("TypographyTests", {
   },
 
   testSetPointSizeInTextFrame: function(b) {
-    b.doc(doc);
-    var textFrame = b.text("foo", 0, 0, 100, 100),
-      size = 36;
+    b.doc(this.doc);
+    var textFrame = b.text("foo", 0, 0, 100, 100);
+    var size = 36;
 
     b.typo(textFrame, "pointSize", size);
 
@@ -102,9 +103,9 @@ b.test("TypographyTests", {
   },
 
   testSetPointSizeInOverlownPara: function(b) {
-    b.doc(doc);
-    var textFrame = b.text("lorem ipsum dolor sit amet\rlorem ipsum dolor sit amet", 0, 0, 100, 30),
-      size = 30;
+    b.doc(this.doc);
+    var textFrame = b.text("lorem ipsum dolor sit amet\rlorem ipsum dolor sit amet", 0, 0, 100, 30);
+    var size = 30;
 
     b.typo(textFrame, "pointSize", size);
 
@@ -115,31 +116,31 @@ b.test("TypographyTests", {
   },
 
   testCreateEmptyStyles: function(b) {
-    b.doc(doc);
+    b.doc(this.doc);
 
-    var paraStyleCount = doc.paragraphStyles.length;
-    var charStyleCount = doc.characterStyles.length;
-    var objStyleCount = doc.objectStyles.length;
+    var paraStyleCount = this.doc.paragraphStyles.length;
+    var charStyleCount = this.doc.characterStyles.length;
+    var objStyleCount = this.doc.objectStyles.length;
 
     var paragraphStyle = b.paragraphStyle("emptyParagraphStyle");
     var characterStyle = b.characterStyle("emptyCharacterStyle");
     var objectStyle = b.objectStyle("emptyObjectStyle");
 
-    assert(paraStyleCount + 1 === doc.paragraphStyles.length);
-    assert(charStyleCount + 1 === doc.characterStyles.length);
-    assert(objStyleCount + 1 === doc.objectStyles.length);
+    assert(paraStyleCount + 1 === this.doc.paragraphStyles.length);
+    assert(charStyleCount + 1 === this.doc.characterStyles.length);
+    assert(objStyleCount + 1 === this.doc.objectStyles.length);
 
     assert(paragraphStyle instanceof ParagraphStyle);
     assert(characterStyle instanceof CharacterStyle);
     assert(objectStyle instanceof ObjectStyle);
 
-    assert(doc.paragraphStyles.itemByName("emptyParagraphStyle").isValid);
-    assert(doc.characterStyles.itemByName("emptyCharacterStyle").isValid);
-    assert(doc.objectStyles.itemByName("emptyObjectStyle").isValid);
+    assert(this.doc.paragraphStyles.itemByName("emptyParagraphStyle").isValid);
+    assert(this.doc.characterStyles.itemByName("emptyCharacterStyle").isValid);
+    assert(this.doc.objectStyles.itemByName("emptyObjectStyle").isValid);
   },
 
   testReturnExistingStyles: function(b) {
-    b.doc(doc);
+    b.doc(this.doc);
 
     // create empty styles on top level
     b.paragraphStyle("topParagraphStyle");
@@ -147,9 +148,9 @@ b.test("TypographyTests", {
     b.objectStyle("topObjectStyle");
 
     // create styles nested in groups
-    doc.paragraphStyleGroups.add({name: "paraGroup"}).paragraphStyles.add({name: "nestedParagraphStyle"});
-    doc.characterStyleGroups.add({name: "charGroup"}).characterStyles.add({name: "nestedCharacterStyle"});
-    doc.objectStyleGroups.add({name: "objGroup"}).objectStyles.add({name: "nestedObjectStyle"});
+    this.doc.paragraphStyleGroups.add({name: "paraGroup"}).paragraphStyles.add({name: "nestedParagraphStyle"});
+    this.doc.characterStyleGroups.add({name: "charGroup"}).characterStyles.add({name: "nestedCharacterStyle"});
+    this.doc.objectStyleGroups.add({name: "objGroup"}).objectStyles.add({name: "nestedObjectStyle"});
 
     // get styles
     var topPara = b.paragraphStyle("topParagraphStyle");
@@ -175,7 +176,7 @@ b.test("TypographyTests", {
   },
 
   testCreateStylesWithProps: function(b) {
-    b.doc(doc);
+    b.doc(this.doc);
 
     var paraCharProps = {
       baselineShift: 5,
@@ -203,7 +204,7 @@ b.test("TypographyTests", {
   },
 
   testUpdatePropsOfExistingStyles: function(b) {
-    b.doc(doc);
+    b.doc(this.doc);
 
     var paraCharProps = {
       baselineShift: 5,
@@ -243,17 +244,17 @@ b.test("TypographyTests", {
     assert(charStyle.baselineShift === 20 && charStyle.strikeThru === false && charStyle.capitalization === Capitalization.SMALL_CAPS);
     assert(objStyle.strokeWeight === 20 && objStyle.nonprinting === false && objStyle.topLeftCornerOption === CornerOptions.FANCY_CORNER);
 
-    assert(doc.paragraphStyles.item("newStyle").isValid);
-    assert(doc.characterStyles.item("newStyle").isValid);
-    assert(doc.objectStyles.item("newStyle").isValid);
+    assert(this.doc.paragraphStyles.item("newStyle").isValid);
+    assert(this.doc.characterStyles.item("newStyle").isValid);
+    assert(this.doc.objectStyles.item("newStyle").isValid);
 
-    assert(doc.paragraphStyles.item("paragraphStyle").isValid === false);
-    assert(doc.characterStyles.item("characterStyle").isValid === false);
-    assert(doc.objectStyles.item("objectStyle").isValid === false);
+    assert(this.doc.paragraphStyles.item("paragraphStyle").isValid === false);
+    assert(this.doc.characterStyles.item("characterStyle").isValid === false);
+    assert(this.doc.objectStyles.item("objectStyle").isValid === false);
   },
 
   testApplyStyles: function(b) {
-    b.doc(doc);
+    b.doc(this.doc);
 
     // create linked text frames
     var textFrame1 = b.text(b.LOREM + "\r" + b.LOREM, 0, 0, 300, 300);

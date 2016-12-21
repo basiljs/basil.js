@@ -1,11 +1,12 @@
-if (typeof b === 'undefined') {
-  //@include "../basil.js";
+/* globals assert */
+if (typeof b === "undefined") {
+  // @include "../basil.js";
 }
-if (typeof b.test === 'undefined') {
-  //@include "../lib/basil.test.js";
+if (typeof b.test === "undefined") {
+  // @include "../lib/basil.test.js";
 }
 
-b.test('ConversionTests', {
+b.test("ConversionTests", {
 
   setUpTest: function(b) {
   },
@@ -26,13 +27,10 @@ b.test('ConversionTests', {
     var j = 762387452;
     var k = -2034856;
 
-    assert( b.unhex(b.hex(i)) == i
-      && b.unhex(b.hex(j)) == j
-      && b.unhex(b.hex(k)) == k);
+    assert(b.unhex(b.hex(i)) === i
+      && b.unhex(b.hex(j)) === j
+      && b.unhex(b.hex(k)) === k);
   }
-
-
-
 });
 
 // print collected test results

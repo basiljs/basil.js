@@ -1,11 +1,12 @@
-if (typeof b === 'undefined') {
-  //@include "../basil.js";
+/* globals assert */
+if (typeof b === "undefined") {
+  // @include "../basil.js";
 }
-if (typeof b.test === 'undefined') {
-  //@include "../lib/basil.test.js";
+if (typeof b.test === "undefined") {
+  // @include "../lib/basil.test.js";
 }
 
-b.test('MathTests', {
+b.test("MathTests", {
   testRandomWithNoArgs: function(b) {
     var rand = b.random();
 
