@@ -88,10 +88,6 @@ function draw() {
   b.canvasMode(b.FACING_BLEEDS); // only left page
   b.rect(0, 0, b.width, b.height);
 
-
-
-
-
 }
 b.go();
 

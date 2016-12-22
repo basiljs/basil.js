@@ -1,6 +1,6 @@
 {
   "name": "basiljs",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "An attempt to port the spirit of the Processing visualization language to Adobe InDesign.",
   "main": "basil.js",
   "directories": {

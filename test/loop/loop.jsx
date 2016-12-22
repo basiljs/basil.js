@@ -1,5 +1,5 @@
-﻿//@targetengine "loop";
-//@include "./basil.js";
+﻿// @targetengine "loop";
+// @include "./basil.js";
 var x = 0;
 var y = 0;
 function setup() {
