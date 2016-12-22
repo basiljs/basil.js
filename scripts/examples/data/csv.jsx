@@ -3,10 +3,10 @@
  * no idea what CSV is? then have a read here: http://en.wikipedia.org/wiki/Comma-separated_values
  */
 
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
-// to load an external csv file use 
+// to load an external csv file use
 // var jsonString = b.loadString("path/to/file.csv")
 
 var csvString = '';
@@ -26,7 +26,7 @@ csvString += 'Sandy,Raynor,A,Sandy A. Raynor,"Raynor, Sandy A."\n'
 csvString += 'Marion,Moon,O,Marion O. Moon,"Moon, Marion O."\n'
 csvString += 'Beth,Woodard,O,Beth O. Woodard,"Woodard, Beth O."\n'
 csvString += 'Julia,Desai,E,Julia E. Desai,"Desai, Julia E."\n'
-// ... an excerpt of randomNames.csv 
+// ... an excerpt of randomNames.csv
 // from http://www.opensourcecf.com/1/2009/05/10000-Random-Names-Database.cfm
 
 function setup() {

@@ -1,6 +1,6 @@
-#targetengine "loop";
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @targetengine "loop";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 var ctrl, textFramePage;
 

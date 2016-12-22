@@ -1,11 +1,11 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function setup() {
 };
- 
+
 //--------------------------
-// Global variables: 
+// Global variables:
 // The true coordinates of the Bezier control points:
 var px0,py0;
 var px1,py1;
@@ -14,7 +14,7 @@ var px3,py3;
 var radius = 300; // radius of the circular arc
 var cx = 0; // center point of the circular arc
 var cy = 0;
- 
+
 //--------------------------
 function draw() {
 
@@ -106,7 +106,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
   // endAngle = startAngle + theta;    // as in arc()
   var theta = (endAngle - startAngle); // spread of the arc.
 
-  
+
   // Compute raw Bezier coordinates.
   var x0 = b.cos(theta/2.0);
   var y0 = b.sin(theta/2.0);
@@ -116,7 +116,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var y1 = ((1.0-x0)*(3.0-x0))/(3.0*y0); // y0 != 0...
   var x2 = x1;
   var y2 = 0-y1;
- 
+
   // Compute rotationally-offset Bezier coordinates, using:
   // x' = cos(angle) * x - sin(angle) * y;
   // y' = sin(angle) * x + cos(angle) * y;
@@ -131,7 +131,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var ry2 = sBezAng * x2 + cBezAng * y2;
   var rx3 = cBezAng * x3 - sBezAng * y3;
   var ry3 = sBezAng * x3 + cBezAng * y3;
- 
+
   var rw = w/2; //(Math.sqrt(w * w + h * h) / 2);
   var rh = h/2; //(Math.sqrt(w * w + h * h) / 2);
   // Compute scaled and translated Bezier coordinates.
@@ -140,7 +140,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
     starty:   rh*ry0,
     handle1x: rw*rx1,
     handle1y: rh*ry1,
-    
+
     handle2x: rw*rx2,
     handle2y: rh*ry2,
     endx:     rw*rx3,
