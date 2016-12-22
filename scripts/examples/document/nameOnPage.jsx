@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 // The example shows how to select a pageitem on a specific page by the name.
 // Hint: you can manually name a pageitem in the Layers pane (Window -> Layer).

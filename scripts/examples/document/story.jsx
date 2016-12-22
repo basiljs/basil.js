@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   // show the count of all stories in the current document
@@ -20,10 +20,10 @@ function draw() {
     b.addToStory(txtFrameA.parentStory, tmpRect);
     b.addToStory(txtFrameA.parentStory, " | ");
   };
-  
+
   b.addToStory(txtFrameA.parentStory, " - and some text at the end --> ");
 
-  // You can control the position of the insert via the last parameter. 
+  // You can control the position of the insert via the last parameter.
   // It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
   b.addToStory(txtFrameA.parentStory, "<-- some text at the front - ", b.AT_BEGINNING);
 }

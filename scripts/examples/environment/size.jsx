@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 
 // The b.size([width,[height]]) function allows to get/set the size of

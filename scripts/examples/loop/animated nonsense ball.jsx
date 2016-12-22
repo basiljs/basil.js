@@ -1,6 +1,6 @@
-#targetengine "loop";
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @targetengine "loop";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 
 var pos, vel;
@@ -17,14 +17,14 @@ function setup() {
 
 function draw() {
   pos.add(vel);
-  
+
   // detect boundary collision
   // right
   if (pos.x > b.width-ellipseRadius) {
     pos.x = b.width-ellipseRadius;
     vel.x *= -1;
   }
-  // left 
+  // left
   if (pos.x < ellipseRadius) {
     pos.x = ellipseRadius;
     vel.x *= -1;

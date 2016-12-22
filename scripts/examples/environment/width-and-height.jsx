@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   b.println("page size: "+b.width+" x "+b.height);

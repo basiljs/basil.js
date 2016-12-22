@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   var tileCount = 10;
@@ -39,7 +39,7 @@ function draw() {
       b.ellipse(0,0,12,12);
       b.popMatrix();
 
-      b.rotate( b.HALF_PI );      
+      b.rotate( b.HALF_PI );
       b.fill( black );
       b.text( b.nfc(posX,1)+"/"+b.nfc(posY,1), 0,0, rectWidth*0.5, 15);
       b.popMatrix();

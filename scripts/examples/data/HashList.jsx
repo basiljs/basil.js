@@ -1,12 +1,12 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 // example shows how to use a HashList to count the occurrence of words in a text
 
 function draw() {
 
     b.canvasMode(b.MARGIN);
-    
+
     var hash = new HashList();
 
     var longString = "Lor!$$em! ipsum!! dolor? ??!! sit amet, consetetur... --- ... sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. watch. watch.";
@@ -23,12 +23,12 @@ function draw() {
         // count the number of occurances
         if( hash.hasKey(str) ){
             b.println(str);
-            hash.set(str, hash.get(str) + 1); 
+            hash.set(str, hash.get(str) + 1);
         } else {
             hash.set( str, 1 );
         }
     }
-    
+
     var keys = (hash.getKeysByValues() ); // sorts it by the number of its occurences.
     var result1 = "";
     var result2 = "";
