@@ -1,5 +1,4 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+//@include "../../basil.js";
 
 var pageCount = 5;
 

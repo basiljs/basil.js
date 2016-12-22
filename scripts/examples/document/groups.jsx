@@ -1,18 +1,18 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 // groups can be handled in a number a different ways
 // finding, creating, releasing
 
 function draw() {
-	
+
   // create array of objects
   var arr = [];
-  
+
   arr.push(b.rect( 20, 20, 20, 20 ));
-  arr.push(b.rect( 60, 20, 20, 20 ));  
-  arr.push(b.rect( 100, 20, 20, 20 ));  
-  
+  arr.push(b.rect( 60, 20, 20, 20 ));
+  arr.push(b.rect( 100, 20, 20, 20 ));
+
   // group them and modify group
 	var circles = b.group(arr, 'rects');
 	b.itemPosition( circles, 0,0 );
@@ -23,7 +23,7 @@ function draw() {
 
 	// ungroup our selected items
 	var items = b.ungroup( 'rects' );
-	b.println( items ); 
+	b.println( items );
 
 };
 

@@ -1,8 +1,8 @@
 if (typeof b === 'undefined') {
-  #include "../basil.js";
+  //@include "../basil.js";
 }
 if (typeof b.test === 'undefined') {
-  #include "../lib/basil.test.js";
+  //@include "../lib/basil.test.js";
 }
 
 b.test('ArcTests', {
@@ -18,7 +18,7 @@ b.test('ArcTests', {
   tearDown: function(b) {
     b.close(SaveOptions.no);
   },
-  
+
   testCreateArcs: function(b) {
     // http://processing.org/reference/arc_.html
     b.fill(255);

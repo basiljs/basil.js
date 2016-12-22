@@ -1,12 +1,12 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   // Example shows how to shows how to download an url to a file
   // CURRENTYL MAC ONLY!
   b.println( "the project folder: "+b.projectPath() );
-  
-  
+
+
   var url = "https://raw.github.com/basiljs/basil.js/master/changelog.txt";
 
   // download the url to a default location, filename according to url:

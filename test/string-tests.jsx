@@ -1,12 +1,12 @@
 if (typeof b === 'undefined') {
-  #include "../basil.js";
+  //@include "../basil.js";
 }
 if (typeof b.test === 'undefined') {
-  #include "../lib/basil.test.js";  
+  //@include "../lib/basil.test.js";
 }
 
 b.test('EnvironmentTests', {
-  
+
   setUpTest: function(b) {
   },
 

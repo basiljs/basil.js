@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   b.noFill();
@@ -26,10 +26,10 @@ function draw() {
   b.vertex(285, 320, 270, 290, 300, 350);
   b.vertex(285, 375);
   b.endShape();
-  
+
   b.translate(200, 0); // just move down a bit
-  
-  
+
+
   // multi-component shape (~30% faster than adding multiple PageItems)
   b.beginShape();
   b.vertex(30, 20);
@@ -42,11 +42,11 @@ function draw() {
   b.addPath();
   b.vertex(230, 220);
   b.vertex(285, 220);
-  b.vertex(285, 275);  
+  b.vertex(285, 275);
   b.endShape();
-  
-  
-  
+
+
+
 }
 
 b.go();

@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   b.units( b.PT ); // default
@@ -10,7 +10,7 @@ function draw() {
 
   b.units( b.MM );
   b.text('millimenters', 10, 20, 300, 300);
-  
+
   b.units( b.CM );
   b.text('centimenters', 10, 20, 300, 300);
 
