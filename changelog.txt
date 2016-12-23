@@ -3,7 +3,7 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 1.1.0 22 December 2016
+basil.js x.x.x 22 December 2016
 
 * Changed all include/includepath/targetengine statements from # to //@
   This allows linting with eslint of all files
@@ -12,7 +12,7 @@ basil.js 1.1.0 22 December 2016
 The user is allowed to have his files whereever he wants.  
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js 1.1.0 25 November 2016
+basil.js x.x.x 25 November 2016
 
 + Added b.applyParagraphStyle(), b.applyCharacterStyle(), b.applyObjectStyle(),
   set the style of a text object/page item.
