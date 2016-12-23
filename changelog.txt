@@ -3,7 +3,7 @@
 - removed
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
-basil.js x.x.x
+basil.js x.x.x DAY MONTH YEAR
 
 + Added b.applyParagraphStyle(), b.applyCharacterStyle(), b.applyObjectStyle(),
   set the style of a text object/page item.
@@ -14,6 +14,11 @@ basil.js x.x.x
   make use of an optional object with property name/value pairs to set
   the properties of the style.
 * Improved the speed of b.clear() considerably
+* Changed all include/includepath/targetengine statements from # to //@
+  This allows linting with eslint of all files
+* Linted all the test files
+* Changed the location of the basil.js library from `~/Documents/basiljs/bundle/basil.js` to `~/Documents/basiljs/basil.js` in all the example files. 
+The user is allowed to have his files whereever he wants.  
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.1.0 - 11 November 2016
