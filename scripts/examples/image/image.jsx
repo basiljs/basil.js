@@ -8,13 +8,13 @@ function draw() {
 
   // when doc is saved images can be added by name from data directory in same folder as document
   // add image and fit image size to width and height
-  b.image('image-example.jpg', 0, 0, 200, 300);
+  b.image("image-example.jpg", 0, 0, 200, 300);
 
   // add image in original image size
-  b.image('image-example.jpg', 0, 350);
+  b.image("image-example.jpg", 0, 350);
 
   // change fitoption of the image inside the frame
-  var img = b.image('image-example.jpg', 400, 0, 200, 300);
+  var img = b.image("image-example.jpg", 400, 0, 200, 300);
   /*
   FitOptions.CONTENT_TO_FRAME
   FitOptions.CENTER_CONTENT
@@ -26,8 +26,8 @@ function draw() {
   img.fit(FitOptions.PROPORTIONALLY);
 
   // place image inside an circle
-  var circle = b.ellipse(50,50,150,150);
-  b.image('image-example.jpg', circle);
+  var circle = b.ellipse(50, 50, 150, 150);
+  b.image("image-example.jpg", circle);
 }
 
 b.go();

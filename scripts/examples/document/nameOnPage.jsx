@@ -12,16 +12,16 @@ function draw() {
   // add 4 new pages, now threre a 5 pages in the document
   for (var i = 0; i < 4; i++) {
     b.addPage();
-  };
+  }
 
   // create on every page a textframe
   // give the textframe a name for future reference
   // you can change/check the names in the 'Layers' window of indesign
   for (var i = 1; i <= 5; i++) {
     b.page(i);
-    var txtFrame = b.text("this is page #"+i, 0,0,b.width,b.height);
+    var txtFrame = b.text("this is page #" + i, 0, 0, b.width, b.height);
     txtFrame.name = "page count big";
-  };
+  }
 
 
   // -- let's change the textframe on page 3 --
