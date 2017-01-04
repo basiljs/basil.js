@@ -3,9 +3,9 @@
 
 function draw() {
 
-  b.fill(b.random(0, 255), b.random(0, 255), b.random(0, 255))
+  b.fill(b.random(0, 255), b.random(0, 255), b.random(0, 255));
   b.noStroke();
-  b.ellipse( 30, 30, 100, 100 );
+  b.ellipse(30, 30, 100, 100);
 
 }
 

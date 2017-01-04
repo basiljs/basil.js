@@ -25,19 +25,19 @@ function draw() {
 
   var v1, v2, v3;
 
-  b.translate( b.width/2, b.height / 2); // perfect center
-  b.translate( -cellFactor*s*(5-1)/2, 0 ); // horizontal offset to the left
+  b.translate(b.width / 2, b.height / 2); // perfect center
+  b.translate(-cellFactor * s * (5 - 1) / 2, 0); // horizontal offset to the left
 
-  for( var i = 0; i < 5; i++ ) {
+  for(var i = 0; i < 5; i++) {
 
-    v1 = b.round(b.map( data[i].temp.max, 0, 100, 0, 100 ));
-    v2 = b.round(b.map( data[i].humidity, 0, 100, 0, 100 ));
-    v3 = b.round(b.map( data[i].speed, 0, 100, 0, 100));
+    v1 = b.round(b.map(data[i].temp.max, 0, 100, 0, 100));
+    v2 = b.round(b.map(data[i].humidity, 0, 100, 0, 100));
+    v3 = b.round(b.map(data[i].speed, 0, 100, 0, 100));
 
-    generateText( data[i].humidity + " %\n" + data[i].speed + " m/s\n" + data[i].temp.max + " °C");
+    generateText(data[i].humidity + " %\n" + data[i].speed + " m/s\n" + data[i].temp.max + " °C");
 
     generate(v1, v2, v3);
-    b.translate(cellFactor*s, 0);
+    b.translate(cellFactor * s, 0);
   }
 
 
@@ -51,29 +51,29 @@ function generate(v1, v2, v3) {
 
 }
 
-function generateText(text){
+function generateText(text) {
 
   b.textAlign(Justification.CENTER_ALIGN);
   b.textFont("Helvetica Neue", "Light");
   b.textSize(8);
   b.fill(0);
-  b.text(text, -s/2, s/2+60, s, 30 );
+  b.text(text, -s / 2, s / 2 + 60, s, 30);
 
 }
 
 
-function generate1(v1){
+function generate1(v1) {
 
   b.stroke(0);
   b.noFill();
   b.pushMatrix();
-  b.rotate( b.radians(45) );
-  b.translate(-s/2, 0);
-  b.translate( s/2, s/2 );
-  for( var n = 0; n <= v1; n++) {
+  b.rotate(b.radians(45));
+  b.translate(-s / 2, 0);
+  b.translate(s / 2, s / 2);
+  for(var n = 0; n <= v1; n++) {
 
-    b.line( 0, -s/2, 0, s/2);
-    b.translate(s/v1, 0);
+    b.line(0, -s / 2, 0, s / 2);
+    b.translate(s / v1, 0);
   }
 
   b.popMatrix();
@@ -81,25 +81,25 @@ function generate1(v1){
 }
 
 
-function generate2(v2){
+function generate2(v2) {
 
   b.stroke(0);
   b.noFill();
   b.pushMatrix();
-  b.rotate( b.radians(-45) );
-  b.translate(-s/2, 0);
-  b.translate( s/2, -s/2 );
-  for( var n = 0; n <= v2; n++) {
+  b.rotate(b.radians(-45));
+  b.translate(-s / 2, 0);
+  b.translate(s / 2, -s / 2);
+  for(var n = 0; n <= v2; n++) {
 
-    b.line( 0, -s/2, 0, s/2);
-    b.translate(s/v2, 0);
+    b.line(0, -s / 2, 0, s / 2);
+    b.translate(s / v2, 0);
   }
 
   b.popMatrix();
 
 }
 
-function generate3(v3){
+function generate3(v3) {
 
   b.stroke(0);
   b.noFill();
@@ -109,8 +109,8 @@ function generate3(v3){
 
   var diag = b.dist(0, 0, s, s);
 
-  for( var n = 0; n < v3; n++) {
-    b.ellipse(0, 0, (n+1) * diag/v3, (n+1) * diag/v3);
+  for(var n = 0; n < v3; n++) {
+    b.ellipse(0, 0, (n + 1) * diag / v3, (n + 1) * diag / v3);
   }
 
 }
