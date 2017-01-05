@@ -7,7 +7,6 @@ function draw() {
     b.guideX(x);
     b.guideY(y);
   }
-
 }
 
 function fibonacci(n) {

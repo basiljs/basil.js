@@ -14,7 +14,7 @@ function draw() {
 
     b.addPage();
 
-    if(b.page().side == PageSideOptions.LEFT_HAND) {
+    if(b.page().side === PageSideOptions.LEFT_HAND) {
       x = b.width / pageCount * i;
     } else {
       x = b.width - b.width / pageCount * (i - 1) - boxSize;

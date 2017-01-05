@@ -15,8 +15,8 @@ function draw() {
 
       //  have fun using ONE of the following lines below:
 
-// ~         if(n < wordCount/2){
-// ~         if(n%2==0){
+      // if(n < wordCount/2){
+      // if(n%2==0){
 
       if(n < skew) {
         b.typo(w, "skew", skew);
@@ -24,10 +24,10 @@ function draw() {
         b.typo(w, "skew", -skew);
       }
 
-// ~         b.typo(w, "skew", b.random(-75,75)); // all skewed up
+      // b.typo(w, "skew", b.random(-75,75)); // all skewed up
 
       //  turn off code above to just break up line
-// ~         b.typo(w, "baselineShift", -b.random(-10,10)); // cloud cluster of words
+      // b.typo(w, "baselineShift", -b.random(-10,10)); // cloud cluster of words
 
 
     });

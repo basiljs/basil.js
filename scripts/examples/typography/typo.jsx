@@ -13,8 +13,8 @@ function draw() {
   }
 
   // add 2 text frame on each page
-  for (var i = 0, len = doc.pages.length; i < len; i++) {
-    b.page(i);
+  for (var j = 0, len = doc.pages.length; j < len; j++) {
+    b.page(j);
     b.text(content, 0, 0, 600, 300);
     b.text(content, 0, 350, 600, 300);
   }

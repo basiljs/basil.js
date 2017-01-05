@@ -19,7 +19,7 @@ function draw() {
 
   // create array with 10 random numbers (0-100)
   var randomNumbers = [];
-  for (var i = 0; i < 10; i++) {
+  for (var j = 0; j < 10; j++) {
     randomNumbers.push(b.random(0, 100));
   }
 

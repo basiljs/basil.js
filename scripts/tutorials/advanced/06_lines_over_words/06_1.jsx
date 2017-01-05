@@ -17,7 +17,7 @@ function draw() {
 
       var wb = b.bounds(words[n]); // the geometric bounds of each word
 
-      if(n == 0) { // first word draw from paper edge -
+      if(n === 0) { // first word draw from paper edge -
         b.line(0, wb.bottom, wb.left, wb.bottom);
       }else{
         b.line(wbp.right, wbp.bottom, wb.left, wb.bottom);

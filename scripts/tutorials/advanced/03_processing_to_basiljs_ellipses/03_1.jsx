@@ -33,7 +33,7 @@ function setup() {
 
 function draw() {
 
-  while(true) {
+  while(currentCount < maxCount && b.millis() < timeOut) {
 
     // create a random position
     var newX = b.random(0 + maxRadius, b.width - maxRadius);
@@ -41,10 +41,11 @@ function draw() {
     var newR = minRadius;
 
     var intersection = false;
+    var d;
 
     // find out, if new circle intersects with one of the others
     for(var i = 0; i < currentCount; i++) {
-      var d = b.dist(newX, newY, x[i], y[i]);
+      d = b.dist(newX, newY, x[i], y[i]);
       if (d < (newR + r[i])) {
         intersection = true;
         break;
@@ -52,14 +53,14 @@ function draw() {
     }
 
     // no intersection ... add a new circle
-    if (intersection == false) {
+    if (intersection === false) {
       // get closest neighbour and closest possible radius
       var newRadius = b.width;
-      for(var i = 0; i < currentCount; i++) {
-        var d = b.dist(newX, newY, x[i], y[i]);
-        if (newRadius > d - r[i]) {
-          newRadius = d - r[i];
-          closestIndex[currentCount] = i;
+      for(var j = 0; j < currentCount; j++) {
+        d = b.dist(newX, newY, x[j], y[j]);
+        if (newRadius > d - r[j]) {
+          newRadius = d - r[j];
+          closestIndex[currentCount] = j;
         }
       }
 
@@ -75,10 +76,6 @@ function draw() {
       ell.contentType = ContentType.TEXT_TYPE;
 
       currentCount++;
-    }
-
-    if (currentCount >= maxCount || b.millis() > timeOut) {
-      exit();
     }
 
   }

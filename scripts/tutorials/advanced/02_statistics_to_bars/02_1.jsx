@@ -26,6 +26,7 @@ function draw() {
       case "DOUBLE_RIGHT_QUOTE":
         str = "\"";
         break;
+      // no default
     }
 
     str = b.trimWord(str);
@@ -43,17 +44,17 @@ function draw() {
   var valueKeys = hash.getKeysByValues();
   var maxValue = valueKeys[0];
 
-  for(var i = 0; i < keys.length; i++) {
+  for(var j = 0; j < keys.length; j++) {
 
-    b.text(keys[i], 0, b.height / keys.length * i + 6, 20, b.width / 30);
+    b.text(keys[j], 0, b.height / keys.length * j + 6, 20, b.width / 30);
 
     b.textAlign(Justification.CENTER_ALIGN);
     b.textFont("American Typewriter", "Light");
     b.textSize(9);
 
-    var bars = b.map(hash.get(keys[i]), 1, hash.get(maxValue), 10, b.width - 30);
+    var bars = b.map(hash.get(keys[j]), 1, hash.get(maxValue), 10, b.width - 30);
 
-    b.rect(20, b.height / keys.length * i, bars, b.width / 35);
+    b.rect(20, b.height / keys.length * j, bars, b.width / 35);
   }
 
 }

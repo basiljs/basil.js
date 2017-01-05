@@ -34,8 +34,8 @@ function draw() {
   var keys = (hash.getKeysByValues()); // sorts it by the number of its occurences.
   var result1 = "";
   var result2 = "";
-  for (var i = 0; i < keys.length; i++) {
-    var word = keys[i];
+  for (var j = 0; j < keys.length; j++) {
+    var word = keys[j];
     for (var n = 0; n < hash.get(word); n++) {
       result1 += word + " ";
     }
