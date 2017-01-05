@@ -1308,6 +1308,7 @@
     "checkNull": true,
     "findInCollectionByName": true,
     "isString": true,
+    "HashList": true,
     "Vector": true,
     "forEach": true
   }
