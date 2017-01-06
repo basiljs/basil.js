@@ -26,7 +26,7 @@ function draw() {
 
 function addTextForEachLine(lines) {
   forEach(lines, function(line, i) {
-    b.text(line, 0, i*100, 300, 100);
+    b.text(line, 0, i * 100, 300, 100);
   });
 }
 

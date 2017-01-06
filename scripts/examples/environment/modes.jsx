@@ -4,10 +4,10 @@
 function draw() {
   // keep indesign busy
   for (var i = 0; i < 500; i++) {
-    var x = b.random(0,b.width);
-    var y = b.random(0,b.height);
-    b.ellipse(x,y,17,17);
-  };
+    var x = b.random(0, b.width);
+    var y = b.random(0, b.height);
+    b.ellipse(x, y, 17, 17);
+  }
 }
 
 // -- MODEVISIBLE --
@@ -34,6 +34,6 @@ function draw() {
 
 b.go(); // same as writing: b.go(b.MODEVISIBLE)
 
-//b.go(b.MODESILENT);
+// b.go(b.MODESILENT);
 
-//b.go(b.MODEHIDDEN);
+// b.go(b.MODEHIDDEN);

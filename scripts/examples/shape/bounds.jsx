@@ -21,16 +21,14 @@ function draw() {
   b.fill("Black");
 
   // bounds of the oval
-  var ovalBounds = b.bounds( oval );
+  var ovalBounds = b.bounds(oval);
   b.text("ovalBounds", ovalBounds.left, ovalBounds.top, ovalBounds.width, ovalBounds.height);
 
   // bounds of page items
-  var pageBounds = b.bounds( b.page() );
-  for (var prop in pageBounds) {
-    b.println(prop + " " + pageBounds[prop]);
-  }
-  b.println( pageBounds.width);
+  var pageBounds = b.bounds(b.page());
+  b.inspect(pageBounds);
+
   b.text("pageBounds", pageBounds.left, pageBounds.top, pageBounds.width, pageBounds.height);
-};
+}
 
 b.go();

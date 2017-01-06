@@ -46,7 +46,6 @@ function draw() {
   b.endShape();
 
 
-
 }
 
 b.go();

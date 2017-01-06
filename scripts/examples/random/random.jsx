@@ -5,7 +5,7 @@ function draw() {
   var count = 23;
 
   b.doc();
-  b.println( b.width+" x "+b.height);
+  b.println(b.width + " x " + b.height);
 
   for (var i = 0; i < 23; i++) {
     var x = b.random(0, b.width);
