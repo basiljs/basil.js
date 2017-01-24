@@ -615,11 +615,9 @@ pub.guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.VERTICAL;
-    location = x;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.VERTICAL;
+  guide.location = x;
   return guide;
 };
 
@@ -635,11 +633,9 @@ pub.guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.HORIZONTAL;
-    location = y;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.HORIZONTAL;
+  guide.location = y;
   return guide;
 };
 
