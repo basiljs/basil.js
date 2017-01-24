@@ -1,5 +1,5 @@
-REM @ECHO OFF 
+REM @ECHO OFF
 
-md   %userprofile%\Documents\basiljs-target
-xcopy . %userprofile%\Documents\basiljs-target\bundle\ /E
-md %userprofile%\Documents\basiljs-target\user
+md   %userprofile%\Documents\basiljs
+xcopy . %userprofile%\Documents\basiljs\bundle\ /E
+md %userprofile%\Documents\basiljs\user

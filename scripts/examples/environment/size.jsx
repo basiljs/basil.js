@@ -14,7 +14,7 @@
 //
 // Lets try this out:
 //
-function setup(){
+function setup() {
   // For starters - lets get the size
   var documentSize = b.size();
   b.println(documentSize.toSource()); // lets see what we've got
@@ -31,10 +31,10 @@ function setup(){
   // get the size again
   documentSize = b.size();
   // and draw another box
-  b.text(documentSize.toSource(),0, 0, documentSize.width, documentSize.height);
+  b.text(documentSize.toSource(), 0, 0, documentSize.width, documentSize.height);
 }
 
-function draw(){
+function draw() {
   // nothing to see here
 }
 

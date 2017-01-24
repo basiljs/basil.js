@@ -40,18 +40,17 @@ pub.ellipse = function(x, y, w, h) {
   }
 
   if(w === 0 || h === 0)
-    return false;
+    {return false;}
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
-  with (newOval) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-    geometricBounds = ellipseBounds;
-  }
+
+  newOval.strokeWeight = currStrokeWeight;
+  newOval.strokeTint = currStrokeTint;
+  newOval.fillColor = currFillColor;
+  newOval.fillTint = currFillTint;
+  newOval.strokeColor = currStrokeColor;
+  newOval.geometricBounds = ellipseBounds;
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,

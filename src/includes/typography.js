@@ -20,22 +20,25 @@
  * @return {TextFrame}  The created text frame instance
  */
 pub.text = function(txt, x, y, w, h) {
-  if (arguments.length !== 5) error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
-  if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
-  var textFrame = currentPage().textFrames.add(currentLayer());
-  with (textFrame) {
-    contents = txt.toString();
-    geometricBounds = [y, x, (y + h), (x + w)];
-    textFramePreferences.verticalJustification = currYAlign;
+  if (arguments.length !== 5) {
+    error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
   }
+  if (!(isString(txt) || isNumber(txt))) {
+    warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
+  }
+  var textFrame = currentPage().textFrames.add(currentLayer());
+  textFrame.contents = txt.toString();
+  textFrame.geometricBounds = [y, x, (y + h), (x + w)];
+  textFrame.textFramePreferences.verticalJustification = currYAlign;
+
   pub.typo(textFrame, {
-    "appliedFont": currFont,
-    "pointSize": currFontSize,
-    "fillColor": currFillColor,
-    "justification": currAlign,
-    "leading": currLeading,
-    "kerningValue": currKerning,
-    "tracking": currTracking
+    appliedFont: currFont,
+    pointSize: currFontSize,
+    fillColor: currFillColor,
+    justification: currAlign,
+    leading: currLeading,
+    kerningValue: currKerning,
+    tracking: currTracking
   });
 
 

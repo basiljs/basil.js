@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "radix": 0,
+    "no-use-before-define": 0,
+    "sort-vars": 0
+  }
+}
