@@ -567,13 +567,19 @@ pub.units = function (units) {
       units === pub.PX ||
       units === pub.IN) {
     var unitType = null;
-    if (units === pub.CM) unitType = MeasurementUnits.centimeters;
-    else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
-    else if (units === pub.PT) unitType = MeasurementUnits.points;
-    else if (units === pub.PX) unitType = MeasurementUnits.pixels;
-    else if (units === pub.IN) unitType = MeasurementUnits.inches;
+    if (units === pub.CM) {
+      unitType = MeasurementUnits.centimeters;
+    } else if (units === pub.MM) {
+      unitType = MeasurementUnits.millimeters;
+    } else if (units === pub.PT) {
+      unitType = MeasurementUnits.points;
+    } else if (units === pub.PX) {
+      unitType = MeasurementUnits.pixels;
+    } else if (units === pub.IN) {
+      unitType = MeasurementUnits.inches;
+    }
     var doc = currentDoc();
-    with (doc.viewPreferences) {
+
       //* MeasurementUnits.agates
       //* MeasurementUnits.picas
       //* MeasurementUnits.points
@@ -582,9 +588,9 @@ pub.units = function (units) {
       //* MeasurementUnits.millimeters
       //* MeasurementUnits.centimeters
       //* MeasurementUnits.ciceros
-      horizontalMeasurementUnits = unitType;
-      verticalMeasurementUnits = unitType;
-    }
+    doc.viewPreferences.horizontalMeasurementUnits = unitType;
+    doc.viewPreferences.verticalMeasurementUnits = unitType;
+
     currUnits = units;
     updatePublicPageSizeVars();
   } else {
@@ -609,11 +615,9 @@ pub.guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.VERTICAL;
-    location = x;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.VERTICAL;
+  guide.location = x;
   return guide;
 };
 
@@ -629,11 +633,9 @@ pub.guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.HORIZONTAL;
-    location = y;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.HORIZONTAL;
+  guide.location = y;
   return guide;
 };
 

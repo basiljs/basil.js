@@ -40,18 +40,17 @@ pub.ellipse = function(x, y, w, h) {
   }
 
   if(w === 0 || h === 0)
-    return false;
+    {return false;}
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
-  with (newOval) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-    geometricBounds = ellipseBounds;
-  }
+
+  newOval.strokeWeight = currStrokeWeight;
+  newOval.strokeTint = currStrokeTint;
+  newOval.fillColor = currFillColor;
+  newOval.fillTint = currFillTint;
+  newOval.strokeColor = currStrokeColor;
+  newOval.geometricBounds = ellipseBounds;
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
@@ -85,16 +84,16 @@ pub.ellipse = function(x, y, w, h) {
  *    b.line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
-  if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  if (arguments.length !== 4) {
+    error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  }
   var lines = currentPage().graphicLines;
   var newLine = lines.add(currentLayer());
-  with (newLine) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newLine.strokeWeight = currStrokeWeight;
+  newLine.strokeTint = currStrokeTint;
+  newLine.fillColor = currFillColor;
+  newLine.fillTint = currFillTint;
+  newLine.strokeColor = currStrokeColor;
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
@@ -352,13 +351,12 @@ function addPolygon() {
   } else {
     currPolygon = currentPage().graphicLines.add(currentLayer());
   }
-  with (currPolygon) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+
+  currPolygon.strokeWeight = currStrokeWeight;
+  currPolygon.strokeTint = currStrokeTint;
+  currPolygon.fillColor = currFillColor;
+  currPolygon.fillTint = currFillTint;
+  currPolygon.strokeColor = currStrokeColor;
 }
 
 
@@ -404,14 +402,12 @@ pub.rect = function(x, y, w, h) {
   }
 
   var newRect = currentPage().rectangles.add(currentLayer());
-  with (newRect) {
-    geometricBounds = rectBounds;
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newRect.geometricBounds = rectBounds;
+  newRect.strokeWeight = currStrokeWeight;
+  newRect.strokeTint = currStrokeTint;
+  newRect.fillColor = currFillColor;
+  newRect.fillTint = currFillTint;
+  newRect.strokeColor = currStrokeColor;
 
   if (currRectMode === pub.CENTER) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
