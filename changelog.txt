@@ -14,11 +14,13 @@ basil.js x.x.x DAY MONTH YEAR
   make use of an optional object with property name/value pairs to set
   the properties of the style.
 * Improved the speed of b.clear() considerably
+* b.isText() now correctly identifies collections of multiple text objects as text
+  (Characters, Words, Lines etc.)
 * Changed all include/includepath/targetengine statements from # to //@
   This allows linting with eslint of all files
 * Linted all the test files
-* Changed the location of the basil.js library from `~/Documents/basiljs/bundle/basil.js` to `~/Documents/basiljs/basil.js` in all the example files. 
-The user is allowed to have his files whereever he wants.  
+* Changed the location of the basil.js library from `~/Documents/basiljs/bundle/basil.js` to `~/Documents/basiljs/basil.js` in all the example files.
+The user is allowed to have his files whereever he wants.
 
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js 1.1.0 - 11 November 2016

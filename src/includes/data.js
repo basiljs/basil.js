@@ -705,12 +705,20 @@ var isString = pub.isString = function(str) {
 var isText = pub.isText = function(obj) {
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
+         obj instanceof Word ||
          obj instanceof Line ||
+         obj instanceof TextStyleRange ||
          obj instanceof Paragraph ||
          obj instanceof TextColumn ||
-         obj instanceof TextStyleRange ||
          obj instanceof Text ||
-         obj instanceof Word;
+         obj instanceof Characters ||
+         obj instanceof InsertionPoints ||
+         obj instanceof Words ||
+         obj instanceof Lines ||
+         obj instanceof TextStyleRanges ||
+         obj instanceof Paragraphs ||
+         obj instanceof TextColumns ||
+         obj instanceof Texts;
 };
 
 
