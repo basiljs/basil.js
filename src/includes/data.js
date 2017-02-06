@@ -703,6 +703,7 @@ var isString = pub.isString = function(str) {
  * @return {Boolean} returns true if this is the case
  */
 var isText = pub.isText = function(obj) {
+
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
          obj instanceof Word ||
@@ -711,14 +712,14 @@ var isText = pub.isText = function(obj) {
          obj instanceof Paragraph ||
          obj instanceof TextColumn ||
          obj instanceof Text ||
-         obj instanceof Characters ||
-         obj instanceof InsertionPoints ||
-         obj instanceof Words ||
-         obj instanceof Lines ||
-         obj instanceof TextStyleRanges ||
-         obj instanceof Paragraphs ||
-         obj instanceof TextColumns ||
-         obj instanceof Texts;
+         obj.constructor.name === "Characters" ||
+         obj.constructor.name === "InsertionPoints" ||
+         obj.constructor.name === "Words" ||
+         obj.constructor.name === "Lines" ||
+         obj.constructor.name === "TextStyleRanges" ||
+         obj.constructor.name === "Paragraphs" ||
+         obj.constructor.name === "TextColumns" ||
+         obj.constructor.name === "Texts";
 };
 
 

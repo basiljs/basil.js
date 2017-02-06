@@ -8,6 +8,10 @@ if (typeof b.test === "undefined") {
 
 b.test("DataTests", {
 
+  tearDown: function(b) {
+    b.close(SaveOptions.no);
+  },
+
   testHashList: function(b) {
 
     var hash = new HashList();
@@ -108,6 +112,36 @@ b.test("DataTests", {
     // TODO: initial function removal in items?
 
 
+  },
+
+  testIsText: function(b) {
+    var doc = b.doc();
+
+    var tf = b.text(b.LOREM, 0, 0, 200, 200);
+
+    assert(b.isText(b.characters(tf)));
+    assert(b.isText(b.characters(tf)[0]));
+
+    assert(b.isText(tf.insertionPoints));
+    assert(b.isText(tf.insertionPoints.firstItem()));
+
+    assert(b.isText(b.words(tf)));
+    assert(b.isText(b.words(tf).firstItem()));
+
+    assert(b.isText(b.lines(tf)));
+    assert(b.isText(b.lines(tf).firstItem()));
+
+    assert(b.isText(tf.textStyleRanges));
+    assert(b.isText(tf.textStyleRanges.firstItem()));
+
+    assert(b.isText(b.paragraphs(tf)));
+    assert(b.isText(b.paragraphs(tf).firstItem()));
+
+    assert(b.isText(tf.textColumns));
+    assert(b.isText(tf.textColumns.firstItem()));
+
+    // anyone know if and how an [object Texts] can be created?
+    assert(b.isText(tf.characters.itemByRange(0, 2))); // [object Text]
   }
 
 });
