@@ -140,7 +140,6 @@ b.test("DataTests", {
     assert(b.isText(tf.textColumns));
     assert(b.isText(tf.textColumns.firstItem()));
 
-    // anyone know if and how an [object Texts] can be created?
     assert(b.isText(tf.characters.itemByRange(0, 2))); // [object Text]
   }
 

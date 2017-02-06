@@ -718,8 +718,7 @@ var isText = pub.isText = function(obj) {
          obj.constructor.name === "Lines" ||
          obj.constructor.name === "TextStyleRanges" ||
          obj.constructor.name === "Paragraphs" ||
-         obj.constructor.name === "TextColumns" ||
-         obj.constructor.name === "Texts";
+         obj.constructor.name === "TextColumns";
 };
 
 
