@@ -675,7 +675,9 @@ var isArray = pub.isArray = function(obj) {
  * @return {Boolean} returns true if this is the case
  */
 var isNumber = pub.isNumber = function(num) {
-  return !isNaN(parseFloat(num)) && isFinite(num);
+  if (num === null) return false;
+  if (isNaN(num)) return false;
+  return isFinite(num) && num.constructor.name === 'Number';
 };
 
 /**

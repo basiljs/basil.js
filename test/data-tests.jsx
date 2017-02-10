@@ -141,7 +141,30 @@ b.test("DataTests", {
     assert(b.isText(tf.textColumns.firstItem()));
 
     assert(b.isText(tf.characters.itemByRange(0, 2))); // [object Text]
-  }
+  },
+
+  testIsNumber: function(b) {
+    var isNumber = b.isNumber;
+
+    assert(isNumber(null) === false);
+    assert(isNumber(undefined) === false);
+    assert(isNumber(true) === false);
+    assert(isNumber(false) === false);
+    assert(isNumber({}) === false);
+    assert(isNumber([]) === false);
+    assert(isNumber(function(){}) === false);
+
+    assert(isNumber("-33") === false);
+    assert(isNumber("0") === false);
+    assert(isNumber("0.5") === false);
+
+    assert(isNumber(0) === true);
+    assert(isNumber(-0) === true);
+    assert(isNumber(0.6) === true);
+    assert(isNumber(66.123456789) === true);
+    assert(isNumber(43) === true);
+    assert(isNumber(-24) === true);
+  },
 
 });
 
