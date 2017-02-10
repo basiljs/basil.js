@@ -1,4 +1,4 @@
-/* Basil.js v1.1.0 2016.11.11-15:33:03 */
+
 /*
   ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-.-..-.-.... .- .--
 
@@ -41,8 +41,8 @@
 
   .--.--.- .-.-......-....--.-- -.... -..---.-.... .-- . .---.- -... -.-..---.-. ..--.-- -.. -
 */
-
-#target "InDesign";
+/* globals init */
+// @target "InDesign";
 
 (function(glob, app, undef) {
 
@@ -57,7 +57,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.0.10";
+  pub.VERSION = "1.1.0";
 
 /**
  * Used with b.units() to set the coordinate system to points.
@@ -1418,7 +1418,7 @@ pub.items = function(container, cb) {
 
 
 /**
- * Removes all PageItems in the given Document, Page, Layer or Group.
+ * Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
  *
  * @cat Document
  * @method clear
@@ -1428,20 +1428,18 @@ pub.clear = function(container) {
 
   if (container instanceof Document
     || container instanceof Page
-    || container instanceof Layer
-    || container instanceof Group) {
+    || container instanceof Layer) {
 
-    return forEach(container.allPageItems, function(item, n) {
-        // Groups have to be avoided for deletion
-        // otherwise deletion process is confused
-      if(item !== null && !(item instanceof Group)) {
-        if(item.locked) error("b.clear(), some items are locked. Please unlock them first and sue then b.clear().");
-        item.remove();
-      }
-    });
+    container.pageItems.everyItem().locked = false;
+    container.pageItems.everyItem().remove();
+
+  } else if (container instanceof Group) {
+
+    container.locked = false;
+    container.remove();
 
   } else {
-    return false;
+    error("b.clear(), not a valid container! Use: Document, Page, Layer or Group.");
   }
 };
 
@@ -2030,13 +2028,19 @@ pub.units = function (units) {
       units === pub.PX ||
       units === pub.IN) {
     var unitType = null;
-    if (units === pub.CM) unitType = MeasurementUnits.centimeters;
-    else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
-    else if (units === pub.PT) unitType = MeasurementUnits.points;
-    else if (units === pub.PX) unitType = MeasurementUnits.pixels;
-    else if (units === pub.IN) unitType = MeasurementUnits.inches;
+    if (units === pub.CM) {
+      unitType = MeasurementUnits.centimeters;
+    } else if (units === pub.MM) {
+      unitType = MeasurementUnits.millimeters;
+    } else if (units === pub.PT) {
+      unitType = MeasurementUnits.points;
+    } else if (units === pub.PX) {
+      unitType = MeasurementUnits.pixels;
+    } else if (units === pub.IN) {
+      unitType = MeasurementUnits.inches;
+    }
     var doc = currentDoc();
-    with (doc.viewPreferences) {
+
       //* MeasurementUnits.agates
       //* MeasurementUnits.picas
       //* MeasurementUnits.points
@@ -2045,9 +2049,9 @@ pub.units = function (units) {
       //* MeasurementUnits.millimeters
       //* MeasurementUnits.centimeters
       //* MeasurementUnits.ciceros
-      horizontalMeasurementUnits = unitType;
-      verticalMeasurementUnits = unitType;
-    }
+    doc.viewPreferences.horizontalMeasurementUnits = unitType;
+    doc.viewPreferences.verticalMeasurementUnits = unitType;
+
     currUnits = units;
     updatePublicPageSizeVars();
   } else {
@@ -2072,11 +2076,9 @@ pub.guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.VERTICAL;
-    location = x;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.VERTICAL;
+  guide.location = x;
   return guide;
 };
 
@@ -2092,11 +2094,9 @@ pub.guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.HORIZONTAL;
-    location = y;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.HORIZONTAL;
+  guide.location = y;
   return guide;
 };
 
@@ -3042,7 +3042,9 @@ var isArray = pub.isArray = function(obj) {
  * @return {Boolean} returns true if this is the case
  */
 var isNumber = pub.isNumber = function(num) {
-  return !isNaN(parseFloat(num)) && isFinite(num);
+  if (num === null) return false;
+  if (isNaN(num)) return false;
+  return isFinite(num) && num.constructor.name === 'Number';
 };
 
 /**
@@ -3070,14 +3072,22 @@ var isString = pub.isString = function(str) {
  * @return {Boolean} returns true if this is the case
  */
 var isText = pub.isText = function(obj) {
+
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
+         obj instanceof Word ||
          obj instanceof Line ||
+         obj instanceof TextStyleRange ||
          obj instanceof Paragraph ||
          obj instanceof TextColumn ||
-         obj instanceof TextStyleRange ||
          obj instanceof Text ||
-         obj instanceof Word;
+         obj.constructor.name === "Characters" ||
+         obj.constructor.name === "InsertionPoints" ||
+         obj.constructor.name === "Words" ||
+         obj.constructor.name === "Lines" ||
+         obj.constructor.name === "TextStyleRanges" ||
+         obj.constructor.name === "Paragraphs" ||
+         obj.constructor.name === "TextColumns";
 };
 
 
@@ -3487,18 +3497,17 @@ pub.ellipse = function(x, y, w, h) {
   }
 
   if(w === 0 || h === 0)
-    return false;
+    {return false;}
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
-  with (newOval) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-    geometricBounds = ellipseBounds;
-  }
+
+  newOval.strokeWeight = currStrokeWeight;
+  newOval.strokeTint = currStrokeTint;
+  newOval.fillColor = currFillColor;
+  newOval.fillTint = currFillTint;
+  newOval.strokeColor = currStrokeColor;
+  newOval.geometricBounds = ellipseBounds;
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
@@ -3532,16 +3541,16 @@ pub.ellipse = function(x, y, w, h) {
  *    b.line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
-  if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  if (arguments.length !== 4) {
+    error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  }
   var lines = currentPage().graphicLines;
   var newLine = lines.add(currentLayer());
-  with (newLine) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newLine.strokeWeight = currStrokeWeight;
+  newLine.strokeTint = currStrokeTint;
+  newLine.fillColor = currFillColor;
+  newLine.fillTint = currFillTint;
+  newLine.strokeColor = currStrokeColor;
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
@@ -3799,13 +3808,12 @@ function addPolygon() {
   } else {
     currPolygon = currentPage().graphicLines.add(currentLayer());
   }
-  with (currPolygon) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+
+  currPolygon.strokeWeight = currStrokeWeight;
+  currPolygon.strokeTint = currStrokeTint;
+  currPolygon.fillColor = currFillColor;
+  currPolygon.fillTint = currFillTint;
+  currPolygon.strokeColor = currStrokeColor;
 }
 
 
@@ -3851,14 +3859,12 @@ pub.rect = function(x, y, w, h) {
   }
 
   var newRect = currentPage().rectangles.add(currentLayer());
-  with (newRect) {
-    geometricBounds = rectBounds;
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newRect.geometricBounds = rectBounds;
+  newRect.strokeWeight = currStrokeWeight;
+  newRect.strokeTint = currStrokeTint;
+  newRect.fillColor = currFillColor;
+  newRect.fillTint = currFillTint;
+  newRect.strokeColor = currStrokeColor;
 
   if (currRectMode === pub.CENTER) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
@@ -3948,22 +3954,77 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
- * Returns the object style with the given name. If the style does not exist it gets created.
+ * Returns the object style of a given page item or the object style with the given name. If an
+ * object style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the object style's properties.
  *
  * @cat Typography
  * @method objectStyle
- * @param  {String} name  The name of the object style to return.
+ * @param  {PageItem|String} pageItemOrName  A page item whose style to return or the name of the object style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle}  The object style instance.
  */
-pub.objectStyle = function(name) {
+pub.objectStyle = function(itemOrName, props) {
+  var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allObjectStyles, name);
-  if(!style) {
-    style = currentDoc().objectStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(itemOrName.hasOwnProperty("appliedObjectStyle")) {
+    // pageItem is given
+    style = itemOrName.appliedObjectStyle;
+  } else if(isString(itemOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allObjectStyles, itemOrName);
+    if(!style) {
+      style = currentDoc().objectStyles.add({name: itemOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.objectStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
+/**
+ * Applies an object style to the given page item. The object style can be given as
+ * name or as an object style instance.
+ *
+ * @cat Typography
+ * @method applyObjectStyle
+ * @param  {PageItem} item  The page item to apply the style to.
+ * @param {ObjectStyle|String} style  An object style instance or the name of the object style to apply.
+ * @return {PageItem}  The page item that the style was applied to.
+ */
+
+pub.applyObjectStyle = function(item, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allObjectStyles, name);
+    if(!style) {
+      error("b.applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(item.hasOwnProperty("appliedObjectStyle")) || !(style instanceof ObjectStyle)) {
+    error("b.applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
+  }
+
+  item.appliedObjectStyle = style;
+
+  return item;
+};
 
 /**
  * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
@@ -4291,14 +4352,11 @@ pub.color = function() {
   // check whether color was already created and added to colors,
   // keeps the document clean ...
   newCol = currentDoc().colors.itemByName(props.name);
-  if (newCol.isValid) {
-    newCol.properties = props;
-    return newCol;
-  } else {
+  if (!newCol.isValid) {
     newCol = currentDoc().colors.add();
-    newCol.properties = props;
-    return newCol;
   }
+  newCol.properties = props;
+  return newCol;
 };
 
 /**
@@ -4546,22 +4604,25 @@ pub.lerpColor = function (c1, c2, amt) {
  * @return {TextFrame}  The created text frame instance
  */
 pub.text = function(txt, x, y, w, h) {
-  if (arguments.length !== 5) error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
-  if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
-  var textFrame = currentPage().textFrames.add(currentLayer());
-  with (textFrame) {
-    contents = txt.toString();
-    geometricBounds = [y, x, (y + h), (x + w)];
-    textFramePreferences.verticalJustification = currYAlign;
+  if (arguments.length !== 5) {
+    error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
   }
+  if (!(isString(txt) || isNumber(txt))) {
+    warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
+  }
+  var textFrame = currentPage().textFrames.add(currentLayer());
+  textFrame.contents = txt.toString();
+  textFrame.geometricBounds = [y, x, (y + h), (x + w)];
+  textFrame.textFramePreferences.verticalJustification = currYAlign;
+
   pub.typo(textFrame, {
-    "appliedFont": currFont,
-    "pointSize": currFontSize,
-    "fillColor": currFillColor,
-    "justification": currAlign,
-    "leading": currLeading,
-    "kerningValue": currKerning,
-    "tracking": currTracking
+    appliedFont: currFont,
+    pointSize: currFontSize,
+    fillColor: currFillColor,
+    justification: currAlign,
+    leading: currLeading,
+    kerningValue: currKerning,
+    tracking: currTracking
   });
 
 
@@ -4771,36 +4832,157 @@ pub.textTracking = function(tracking) {
 };
 
 /**
- * Returns the character style with the given name. If the style does not exist it gets created.
+ * Returns the character style of a given text object or the character style with the given name. If a
+ * character style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the character style's properties.
  *
  * @cat Typography
  * @method characterStyle
- * @param  {String} name      The name of the character style to return.
- * @return {CharachterStyle}  The character style instance.
+ * @param  {Text|String} textOrName  A text object whose style to return or the name of the character style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
+ * @return {CharacterStyle}  The character style instance.
  */
-pub.characterStyle = function(name) {
+pub.characterStyle = function(textOrName, props) {
+  var styleErrorMsg = "b.characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allCharacterStyles, name);
-  if(!style) {
-    style = currentDoc().characterStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedCharacterStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allCharacterStyles, textOrName);
+    if(!style) {
+      style = currentDoc().characterStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.characterStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
 /**
- * Returns the paragraph style with the given name. If the style does not exist it gets created.
+ * Applies a character style to the given text object, text frame or story. The character style
+ * can be given as name or as character style instance.
+ *
+ * @cat Typography
+ * @method applyCharacterStyle
+ * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
+ * @param {CharacterStyle|String} style  A character style instance or the name of the character style to apply.
+ * @return {Text}  The text that the style was applied to.
+ */
+
+pub.applyCharacterStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allCharacterStyles, name);
+    if(!style) {
+      error("b.applyCharacterStyle(), a character style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
+    error("b.applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.characters.everyItem();
+  }
+
+  text.appliedCharacterStyle = style;
+
+  return text;
+};
+
+/**
+ * Returns the paragraph style of a given text object or the paragraph style with the given name. If a
+ * paragraph style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the paragraph style's properties.
  *
  * @cat Typography
  * @method paragraphStyle
- * @param  {String} name     The name of the paragraph style to return.
+ * @param  {Text|String} textOrName  A text object whose style to return or the name of the paragraph style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ParagraphStyle}  The paragraph style instance.
  */
-pub.paragraphStyle = function(name) {
-  var style = findInStylesByName(currentDoc().allParagraphStyles, name);
-  if(!style) {
-    style = currentDoc().paragraphStyles.add({name: name});
+pub.paragraphStyle = function(textOrName, props) {
+  var styleErrorMsg = "b.paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
+
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedParagraphStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allParagraphStyles, textOrName);
+    if(!style) {
+      style = currentDoc().paragraphStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.paragraphStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
+};
+
+/**
+ * Applies a paragraph style to the given text object, text frame or story. The paragraph style
+ * can be given as name or as paragraph style instance.
+ *
+ * @cat Typography
+ * @method applyParagraphStyle
+ * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
+ * @param {ParagraphStyle|String} style  A paragraph style instance or the name of the paragraph style to apply.
+ * @return {Text}  The text that the style was applied to.
+ */
+
+pub.applyParagraphStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allParagraphStyles, name);
+    if(!style) {
+      error("b.applyParagraphStyle(), a paragraph style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
+    error("b.applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.paragraphs.everyItem();
+  }
+
+  text.appliedParagraphStyle = style;
+
+  return text;
 };
 
 /**
@@ -4929,11 +5111,11 @@ pub.image = function(img, x, y, w, h) {
                    currMatrix.adobeMatrix());
   }
 
-  with (frame) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    strokeColor = currStrokeColor;
-  }
+
+  frame.strokeWeight = currStrokeWeight;
+  frame.strokeTint = currStrokeTint;
+  frame.strokeColor = currStrokeColor;
+
 
   return frame;
 };

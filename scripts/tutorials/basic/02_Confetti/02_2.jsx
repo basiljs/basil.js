@@ -1,17 +1,17 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
 
-  b.noStroke();    
-  
+  b.noStroke();
+
   for(var i = 0; i < 50; i++) {
-    
-    b.fill(b.random(0, 255), b.random(0, 255), b.random(0, 255))
-    b.ellipse( b.random(b.width), b.random(b.height), 20, 20 ); 
-    
+
+    b.fill(b.random(0, 255), b.random(0, 255), b.random(0, 255));
+    b.ellipse(b.random(b.width), b.random(b.height), 20, 20);
+
   }
-   
+
 }
 
 b.go();

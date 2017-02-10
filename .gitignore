@@ -1,19 +1,21 @@
 .DS_Store
 basil.sublime-workspace
-examples/image/*.indd
-lib/extendables/log/extendables.log
 *.idlk
-# test files
+
+# Test files
 test/download/data/
 test/download/lib/
 test/download/basil.js
 test/loop/basil.js
 test/loop/lib/
 
+# User directories
+libraries/
+sketches/
+
 # Dependency directories
-node_modules
+node_modules/
 # Logs
-logs
 *.log
 npm-debug.log*
 

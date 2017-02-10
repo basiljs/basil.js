@@ -1,5 +1,5 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   b.noFill();
@@ -20,16 +20,16 @@ function draw() {
 
   b.arc(35, 175, 50, 50, 0, b.HALF_PI);
   b.arc(35, 175, 60, 60, b.HALF_PI, b.PI);
-  b.arc(35, 175, 70, 70, b.PI, b.PI+b.QUARTER_PI);
-  b.arc(35, 175, 80, 80, b.PI+b.QUARTER_PI, b.TWO_PI);
+  b.arc(35, 175, 70, 70, b.PI, b.PI + b.QUARTER_PI);
+  b.arc(35, 175, 80, 80, b.PI + b.QUARTER_PI, b.TWO_PI);
 
-  b.arc(175, 175, 80, 80, 0, b.PI+b.QUARTER_PI, b.OPEN);
+  b.arc(175, 175, 80, 80, 0, b.PI + b.QUARTER_PI, b.OPEN);
 
-  b.arc(315, 175, 80, 80, 0, b.PI+b.QUARTER_PI, b.CHORD);
+  b.arc(315, 175, 80, 80, 0, b.PI + b.QUARTER_PI, b.CHORD);
 
-  b.arc(455, 175, 80, 80, 0, b.PI+b.QUARTER_PI, b.PIE);
+  b.arc(455, 175, 80, 80, 0, b.PI + b.QUARTER_PI, b.PIE);
 
-};
+}
 
 
 b.go();

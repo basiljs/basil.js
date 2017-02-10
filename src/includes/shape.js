@@ -40,18 +40,17 @@ pub.ellipse = function(x, y, w, h) {
   }
 
   if(w === 0 || h === 0)
-    return false;
+    {return false;}
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
-  with (newOval) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-    geometricBounds = ellipseBounds;
-  }
+
+  newOval.strokeWeight = currStrokeWeight;
+  newOval.strokeTint = currStrokeTint;
+  newOval.fillColor = currFillColor;
+  newOval.fillTint = currFillTint;
+  newOval.strokeColor = currStrokeColor;
+  newOval.geometricBounds = ellipseBounds;
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
@@ -85,16 +84,16 @@ pub.ellipse = function(x, y, w, h) {
  *    b.line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
-  if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  if (arguments.length !== 4) {
+    error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  }
   var lines = currentPage().graphicLines;
   var newLine = lines.add(currentLayer());
-  with (newLine) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newLine.strokeWeight = currStrokeWeight;
+  newLine.strokeTint = currStrokeTint;
+  newLine.fillColor = currFillColor;
+  newLine.fillTint = currFillTint;
+  newLine.strokeColor = currStrokeColor;
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
@@ -352,13 +351,12 @@ function addPolygon() {
   } else {
     currPolygon = currentPage().graphicLines.add(currentLayer());
   }
-  with (currPolygon) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+
+  currPolygon.strokeWeight = currStrokeWeight;
+  currPolygon.strokeTint = currStrokeTint;
+  currPolygon.fillColor = currFillColor;
+  currPolygon.fillTint = currFillTint;
+  currPolygon.strokeColor = currStrokeColor;
 }
 
 
@@ -404,14 +402,12 @@ pub.rect = function(x, y, w, h) {
   }
 
   var newRect = currentPage().rectangles.add(currentLayer());
-  with (newRect) {
-    geometricBounds = rectBounds;
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newRect.geometricBounds = rectBounds;
+  newRect.strokeWeight = currStrokeWeight;
+  newRect.strokeTint = currStrokeTint;
+  newRect.fillColor = currFillColor;
+  newRect.fillTint = currFillTint;
+  newRect.strokeColor = currStrokeColor;
 
   if (currRectMode === pub.CENTER) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
@@ -501,22 +497,77 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
- * Returns the object style with the given name. If the style does not exist it gets created.
+ * Returns the object style of a given page item or the object style with the given name. If an
+ * object style of the given name does not exist, it gets created. Optionally a props object of
+ * property name/value pairs can be used to set the object style's properties.
  *
  * @cat Typography
  * @method objectStyle
- * @param  {String} name  The name of the object style to return.
+ * @param  {PageItem|String} pageItemOrName  A page item whose style to return or the name of the object style to return.
+ * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle}  The object style instance.
  */
-pub.objectStyle = function(name) {
+pub.objectStyle = function(itemOrName, props) {
+  var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
-  var style = findInStylesByName(currentDoc().allObjectStyles, name);
-  if(!style) {
-    style = currentDoc().objectStyles.add({name: name});
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
   }
+
+  var style;
+  if(itemOrName.hasOwnProperty("appliedObjectStyle")) {
+    // pageItem is given
+    style = itemOrName.appliedObjectStyle;
+  } else if(isString(itemOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allObjectStyles, itemOrName);
+    if(!style) {
+      style = currentDoc().objectStyles.add({name: itemOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("b.objectStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
   return style;
 };
 
+/**
+ * Applies an object style to the given page item. The object style can be given as
+ * name or as an object style instance.
+ *
+ * @cat Typography
+ * @method applyObjectStyle
+ * @param  {PageItem} item  The page item to apply the style to.
+ * @param {ObjectStyle|String} style  An object style instance or the name of the object style to apply.
+ * @return {PageItem}  The page item that the style was applied to.
+ */
+
+pub.applyObjectStyle = function(item, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allObjectStyles, name);
+    if(!style) {
+      error("b.applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(item.hasOwnProperty("appliedObjectStyle")) || !(style instanceof ObjectStyle)) {
+    error("b.applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
+  }
+
+  item.appliedObjectStyle = style;
+
+  return item;
+};
 
 /**
  * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.

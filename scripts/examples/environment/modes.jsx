@@ -1,13 +1,13 @@
-#includepath "~/Documents/;%USERPROFILE%Documents";
-#include "basiljs/bundle/basil.js";
+// @includepath "~/Documents/;%USERPROFILE%Documents";
+// @include "basiljs/basil.js";
 
 function draw() {
   // keep indesign busy
   for (var i = 0; i < 500; i++) {
-    var x = b.random(0,b.width);
-    var y = b.random(0,b.height);
-    b.ellipse(x,y,17,17);
-  };
+    var x = b.random(0, b.width);
+    var y = b.random(0, b.height);
+    b.ellipse(x, y, 17, 17);
+  }
 }
 
 // -- MODEVISIBLE --
@@ -29,11 +29,11 @@ function draw() {
 // b.println("yourMessage") in your script and look at the Console in estk to
 // get information about the process.
 
-// and now, compare the executing times in the console ... 
+// and now, compare the executing times in the console ...
 // on my machine i had 10s (MODEVISIBLE), 8s (MODESILENT), 3.5s (MODEHIDDEN)
 
 b.go(); // same as writing: b.go(b.MODEVISIBLE)
 
-//b.go(b.MODESILENT);
+// b.go(b.MODESILENT);
 
-//b.go(b.MODEHIDDEN);
+// b.go(b.MODEHIDDEN);

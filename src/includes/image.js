@@ -90,11 +90,11 @@ pub.image = function(img, x, y, w, h) {
                    currMatrix.adobeMatrix());
   }
 
-  with (frame) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    strokeColor = currStrokeColor;
-  }
+
+  frame.strokeWeight = currStrokeWeight;
+  frame.strokeTint = currStrokeTint;
+  frame.strokeColor = currStrokeColor;
+
 
   return frame;
 };

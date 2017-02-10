@@ -675,7 +675,9 @@ var isArray = pub.isArray = function(obj) {
  * @return {Boolean} returns true if this is the case
  */
 var isNumber = pub.isNumber = function(num) {
-  return !isNaN(parseFloat(num)) && isFinite(num);
+  if (num === null) return false;
+  if (isNaN(num)) return false;
+  return isFinite(num) && num.constructor.name === 'Number';
 };
 
 /**
@@ -703,14 +705,22 @@ var isString = pub.isString = function(str) {
  * @return {Boolean} returns true if this is the case
  */
 var isText = pub.isText = function(obj) {
+
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
+         obj instanceof Word ||
          obj instanceof Line ||
+         obj instanceof TextStyleRange ||
          obj instanceof Paragraph ||
          obj instanceof TextColumn ||
-         obj instanceof TextStyleRange ||
          obj instanceof Text ||
-         obj instanceof Word;
+         obj.constructor.name === "Characters" ||
+         obj.constructor.name === "InsertionPoints" ||
+         obj.constructor.name === "Words" ||
+         obj.constructor.name === "Lines" ||
+         obj.constructor.name === "TextStyleRanges" ||
+         obj.constructor.name === "Paragraphs" ||
+         obj.constructor.name === "TextColumns";
 };
 
 
