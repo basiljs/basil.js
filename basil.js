@@ -2028,13 +2028,19 @@ pub.units = function (units) {
       units === pub.PX ||
       units === pub.IN) {
     var unitType = null;
-    if (units === pub.CM) unitType = MeasurementUnits.centimeters;
-    else if (units === pub.MM) unitType = MeasurementUnits.millimeters;
-    else if (units === pub.PT) unitType = MeasurementUnits.points;
-    else if (units === pub.PX) unitType = MeasurementUnits.pixels;
-    else if (units === pub.IN) unitType = MeasurementUnits.inches;
+    if (units === pub.CM) {
+      unitType = MeasurementUnits.centimeters;
+    } else if (units === pub.MM) {
+      unitType = MeasurementUnits.millimeters;
+    } else if (units === pub.PT) {
+      unitType = MeasurementUnits.points;
+    } else if (units === pub.PX) {
+      unitType = MeasurementUnits.pixels;
+    } else if (units === pub.IN) {
+      unitType = MeasurementUnits.inches;
+    }
     var doc = currentDoc();
-    with (doc.viewPreferences) {
+
       //* MeasurementUnits.agates
       //* MeasurementUnits.picas
       //* MeasurementUnits.points
@@ -2043,9 +2049,9 @@ pub.units = function (units) {
       //* MeasurementUnits.millimeters
       //* MeasurementUnits.centimeters
       //* MeasurementUnits.ciceros
-      horizontalMeasurementUnits = unitType;
-      verticalMeasurementUnits = unitType;
-    }
+    doc.viewPreferences.horizontalMeasurementUnits = unitType;
+    doc.viewPreferences.verticalMeasurementUnits = unitType;
+
     currUnits = units;
     updatePublicPageSizeVars();
   } else {
@@ -2070,11 +2076,9 @@ pub.guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.VERTICAL;
-    location = x;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.VERTICAL;
+  guide.location = x;
   return guide;
 };
 
@@ -2090,11 +2094,9 @@ pub.guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  with (guide) {
-    fitToPage = true;
-    orientation = HorizontalOrVertical.HORIZONTAL;
-    location = y;
-  }
+  guide.fitToPage = true;
+  guide.orientation = HorizontalOrVertical.HORIZONTAL;
+  guide.location = y;
   return guide;
 };
 
@@ -3040,7 +3042,13 @@ var isArray = pub.isArray = function(obj) {
  * @return {Boolean} returns true if this is the case
  */
 var isNumber = pub.isNumber = function(num) {
-  return !isNaN(parseFloat(num)) && isFinite(num);
+  if (num === null) {
+    return false;
+  }
+  if (isNaN(num)) {
+    return false;
+  }
+  return isFinite(num) && num.constructor.name === "Number";
 };
 
 /**
@@ -3068,14 +3076,22 @@ var isString = pub.isString = function(str) {
  * @return {Boolean} returns true if this is the case
  */
 var isText = pub.isText = function(obj) {
+
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
+         obj instanceof Word ||
          obj instanceof Line ||
+         obj instanceof TextStyleRange ||
          obj instanceof Paragraph ||
          obj instanceof TextColumn ||
-         obj instanceof TextStyleRange ||
          obj instanceof Text ||
-         obj instanceof Word;
+         obj.constructor.name === "Characters" ||
+         obj.constructor.name === "InsertionPoints" ||
+         obj.constructor.name === "Words" ||
+         obj.constructor.name === "Lines" ||
+         obj.constructor.name === "TextStyleRanges" ||
+         obj.constructor.name === "Paragraphs" ||
+         obj.constructor.name === "TextColumns";
 };
 
 
@@ -3485,18 +3501,17 @@ pub.ellipse = function(x, y, w, h) {
   }
 
   if(w === 0 || h === 0)
-    return false;
+    {return false;}
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
-  with (newOval) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-    geometricBounds = ellipseBounds;
-  }
+
+  newOval.strokeWeight = currStrokeWeight;
+  newOval.strokeTint = currStrokeTint;
+  newOval.fillColor = currFillColor;
+  newOval.fillTint = currFillTint;
+  newOval.strokeColor = currStrokeColor;
+  newOval.geometricBounds = ellipseBounds;
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
@@ -3530,16 +3545,16 @@ pub.ellipse = function(x, y, w, h) {
  *    b.line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
-  if (arguments.length !== 4) error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  if (arguments.length !== 4) {
+    error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  }
   var lines = currentPage().graphicLines;
   var newLine = lines.add(currentLayer());
-  with (newLine) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newLine.strokeWeight = currStrokeWeight;
+  newLine.strokeTint = currStrokeTint;
+  newLine.fillColor = currFillColor;
+  newLine.fillTint = currFillTint;
+  newLine.strokeColor = currStrokeColor;
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
@@ -3797,13 +3812,12 @@ function addPolygon() {
   } else {
     currPolygon = currentPage().graphicLines.add(currentLayer());
   }
-  with (currPolygon) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+
+  currPolygon.strokeWeight = currStrokeWeight;
+  currPolygon.strokeTint = currStrokeTint;
+  currPolygon.fillColor = currFillColor;
+  currPolygon.fillTint = currFillTint;
+  currPolygon.strokeColor = currStrokeColor;
 }
 
 
@@ -3849,14 +3863,12 @@ pub.rect = function(x, y, w, h) {
   }
 
   var newRect = currentPage().rectangles.add(currentLayer());
-  with (newRect) {
-    geometricBounds = rectBounds;
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    fillColor = currFillColor;
-    fillTint = currFillTint;
-    strokeColor = currStrokeColor;
-  }
+  newRect.geometricBounds = rectBounds;
+  newRect.strokeWeight = currStrokeWeight;
+  newRect.strokeTint = currStrokeTint;
+  newRect.fillColor = currFillColor;
+  newRect.fillTint = currFillTint;
+  newRect.strokeColor = currStrokeColor;
 
   if (currRectMode === pub.CENTER) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
@@ -4596,22 +4608,25 @@ pub.lerpColor = function (c1, c2, amt) {
  * @return {TextFrame}  The created text frame instance
  */
 pub.text = function(txt, x, y, w, h) {
-  if (arguments.length !== 5) error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
-  if (!(isString(txt) || isNumber(txt))) warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
-  var textFrame = currentPage().textFrames.add(currentLayer());
-  with (textFrame) {
-    contents = txt.toString();
-    geometricBounds = [y, x, (y + h), (x + w)];
-    textFramePreferences.verticalJustification = currYAlign;
+  if (arguments.length !== 5) {
+    error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
   }
+  if (!(isString(txt) || isNumber(txt))) {
+    warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
+  }
+  var textFrame = currentPage().textFrames.add(currentLayer());
+  textFrame.contents = txt.toString();
+  textFrame.geometricBounds = [y, x, (y + h), (x + w)];
+  textFrame.textFramePreferences.verticalJustification = currYAlign;
+
   pub.typo(textFrame, {
-    "appliedFont": currFont,
-    "pointSize": currFontSize,
-    "fillColor": currFillColor,
-    "justification": currAlign,
-    "leading": currLeading,
-    "kerningValue": currKerning,
-    "tracking": currTracking
+    appliedFont: currFont,
+    pointSize: currFontSize,
+    fillColor: currFillColor,
+    justification: currAlign,
+    leading: currLeading,
+    kerningValue: currKerning,
+    tracking: currTracking
   });
 
 
@@ -5100,11 +5115,11 @@ pub.image = function(img, x, y, w, h) {
                    currMatrix.adobeMatrix());
   }
 
-  with (frame) {
-    strokeWeight = currStrokeWeight;
-    strokeTint = currStrokeTint;
-    strokeColor = currStrokeColor;
-  }
+
+  frame.strokeWeight = currStrokeWeight;
+  frame.strokeTint = currStrokeTint;
+  frame.strokeColor = currStrokeColor;
+
 
   return frame;
 };
