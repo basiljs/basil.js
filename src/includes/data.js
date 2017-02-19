@@ -229,7 +229,6 @@ function CSV() {
 
 // -- Conversion --
 
-/**  @class b */
 
 /**
  * Converts a byte, char, int, or color to a String containing the
@@ -347,7 +346,7 @@ pub.unhex = function(hex) {
  * @cat Data
  * @subcat String Functions
  * @param {String} s The String to trim
- * @param
+ * @return {String} The trimmed string
  */
  // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
 pub.trimWord = function(s) {

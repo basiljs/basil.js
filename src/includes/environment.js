@@ -111,7 +111,7 @@ pub.canvasMode = function (m) {
  * @method pasteboard
  * @param  {Number} The desired horizontal pasteboard margin.
  * @param  {Number} The desired vertical pasteboard margin.
- * @return {array} The current horizontal, vertical pasteboard margins.
+ * @return {Array} The current horizontal, vertical pasteboard margins.
  */
 pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
@@ -277,7 +277,7 @@ pub.previousPage = function () {
  * @cat Document
  * @subcat Page
  * @method pageCount
- * @return The amount of pages.
+ * @return {Number} The amount of pages.
  */
 pub.pageCount = function() {
   return currentDoc().pages.count();
