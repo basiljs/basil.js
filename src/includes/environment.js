@@ -35,30 +35,30 @@ pub.size = function(width, height) {
     // there are no documents
     warning("b.size(width, height)", "You have no open document.");
     return;
-  } else {
-    if (arguments.length === 0) {
+  }
+  if (arguments.length === 0) {
       // no arguments given
       // return the curent values
       // warning('b.size(width, height)', 'no arguments given');
-      return {width: pub.width, height: pub.height};
-    }
-
-    if(arguments.length === 1) {
-      // only one argument set the first to the secound
-      height = width;
-    }
-    var doc = app.documents[0];
-    // set the documents pageHeiht and pageWidth
-    doc.properties = {
-      documentPreferences:{
-        pageHeight: height,
-        pageWidth: width
-      }
-    };
-    // set height and width
-    pub.height = height;
-    pub.width = width;
+    return {width: pub.width, height: pub.height};
   }
+
+  if(arguments.length === 1) {
+      // only one argument set the first to the secound
+    height = width;
+  }
+  var doc = app.documents[0];
+    // set the documents pageHeiht and pageWidth
+  doc.properties = {
+    documentPreferences: {
+      pageHeight: height,
+      pageWidth: width
+    }
+  };
+    // set height and width
+  pub.height = height;
+  pub.width = width;
+
 
 };
 
@@ -73,8 +73,12 @@ pub.size = function(width, height) {
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
-    if(typeof saveOptions === "boolean" && saveOptions === false) saveOptions = SaveOptions.no;
-    if(typeof saveOptions === "boolean" && saveOptions === true) saveOptions = SaveOptions.yes;
+    if(typeof saveOptions === "boolean" && saveOptions === false) {
+      saveOptions = SaveOptions.no;
+    }
+    if(typeof saveOptions === "boolean" && saveOptions === true) {
+      saveOptions = SaveOptions.yes;
+    }
     doc.close(saveOptions, file);
     resetCurrDoc();
   }
@@ -92,7 +96,9 @@ pub.canvasMode = function (m) {
     return currCanvasMode;
   } else if (typeof m === "string") {
 
-    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
+      b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    }
 
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -109,8 +115,8 @@ pub.canvasMode = function (m) {
  * @cat Document
  * @subcat Page
  * @method pasteboard
- * @param  {Number} The desired horizontal pasteboard margin.
- * @param  {Number} The desired vertical pasteboard margin.
+ * @param  {Number} h The desired horizontal pasteboard margin.
+ * @param  {Number} v The desired vertical pasteboard margin.
  * @return {Array} The current horizontal, vertical pasteboard margins.
  */
 pub.pasteboard = function (h, v) {
@@ -157,8 +163,9 @@ pub.page = function(page) {
     error("b.page(), bad type for b.page().");
   }
   updatePublicPageSizeVars();
-  if (currDoc.windows.length)
-    app.activeWindow.activePage = currPage; // focus in GUI  if not in MODEHIDDEN
+  if (currDoc.windows.length) {
+    app.activeWindow.activePage = currPage;
+  } // focus in GUI  if not in MODEHIDDEN
   return currentPage();
 };
 
@@ -175,7 +182,9 @@ pub.addPage = function(location) {
 
   checkNull(location);
 
-  if(arguments.length === 0) location = b.AT_END; // default
+  if(arguments.length === 0) {
+    location = b.AT_END;
+  } // default
 
   var nP;
   try {
@@ -249,13 +258,15 @@ pub.pageNumber = function (pageObj) {
 
   checkNull(pageObj);
 
-  if (typeof pageObj === "number") error("b.pageNumber(), cannot be called with a Number argument.");
+  if (typeof pageObj === "number") {
+    error("b.pageNumber(), cannot be called with a Number argument.");
+  }
 
   if (pageObj instanceof Page) {
     return parseInt(pageObj.name); // current number of given page
-  } else {
-    return parseInt(pub.page().name); // number of current page
   }
+  return parseInt(pub.page().name); // number of current page
+
 
 };
 
@@ -400,16 +411,18 @@ pub.group = function (pItem, name) {
   checkNull(pItem);
   var group = null;
   if(pItem instanceof Array) {
-    if(pItem.length < 2) error("There must be at least two PageItems passed to b.group().");
+    if(pItem.length < 2) {
+      error("There must be at least two PageItems passed to b.group().");
+    }
     // creates a group from Page Items
     group = currentDoc().groups.add(pItem);
-    if(typeof name != "undefined") group.name = name;
-  }
-  else if(typeof pItem === "string") {
+    if(typeof name !== "undefined") {
+      group.name = name;
+    }
+  } else if(typeof pItem === "string") {
     // get the Group of the given name
     group = currentDoc().groups.item(pItem);
-  }
-  else {
+  } else {
     error("b.group(), not a valid argument.");
   }
 
@@ -432,14 +445,12 @@ pub.ungroup = function(pItem) {
   if(pItem instanceof Group) {
     ungroupedItems = b.items(pItem);
     pItem.ungroup();
-  }
-  else if(typeof pItem === "string") {
+  } else if(typeof pItem === "string") {
     // get the Group of the given name
     var group = currentDoc().groups.item(pItem);
     ungroupedItems = b.items(group);
     group.ungroup();
-  }
-  else {
+  } else {
     error("b.ungroup(), not a valid Group. Please select a valid Group.");
   }
 
@@ -470,7 +481,9 @@ pub.labels = function(label, cb) {
   if (arguments.length === 2 && cb instanceof Function) {
     return forEach(result, cb);
   }
-  if(result.length === 0) b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  if(result.length === 0) {
+    b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  }
   return result;
 };
 
@@ -504,7 +517,9 @@ pub.label = function(label) {
  * @return {Object} The first selected object
  */
 pub.selection = function() {
-  if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
+  if(app.selection.length === 0) {
+    error("b.selection(), selection is empty. Please select something.");
+  }
   return app.selection[0];
 };
 
@@ -518,7 +533,9 @@ pub.selection = function() {
  * @return {Object[]} Array of selected object(s).
  */
 pub.selections = function(cb) {
-  if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
+  if(app.selection.length === 0) {
+    error("b.selections(), selection is empty. Please select something.");
+  }
   if (arguments.length === 1 && cb instanceof Function) {
     return forEach(app.selection, cb);
   }
@@ -544,7 +561,9 @@ pub.nameOnPage = function(name) {
       break;
     }
   }
-  if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+  if(result === null) {
+    b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+  }
   return result;
 };
 
@@ -559,7 +578,9 @@ pub.nameOnPage = function(name) {
 var unitsCalledCounter = 0;
 pub.units = function (units) {
   checkNull(units);
-  if (arguments.length === 0) return currUnits;
+  if (arguments.length === 0) {
+    return currUnits;
+  }
 
   if (units === pub.CM ||
       units === pub.MM ||
@@ -657,11 +678,11 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
 
   if (arguments.length === 0) {
 
-    return {"top":pub.page(pageNumber).marginPreferences.top,
-            "right":pub.page(pageNumber).marginPreferences.right,
-            "bottom":pub.page(pageNumber).marginPreferences.bottom,
-            "left":pub.page(pageNumber).marginPreferences.left
-            };
+    return {top: pub.page(pageNumber).marginPreferences.top,
+      right: pub.page(pageNumber).marginPreferences.right,
+      bottom: pub.page(pageNumber).marginPreferences.bottom,
+      left: pub.page(pageNumber).marginPreferences.left
+    };
 
   } else if (arguments.length === 1) {
     right = bottom = left = top;
@@ -694,11 +715,11 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
 pub.bleeds = function(top, right, bottom, left) {
 
   if (arguments.length === 0) {
-    return {"top":currentDoc().documentPreferences.documentBleedTopOffset,
-            "right":currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
-            "bottom":currentDoc().documentPreferences.documentBleedBottomOffset,
-            "left":currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
-            };
+    return {top: currentDoc().documentPreferences.documentBleedTopOffset,
+      right: currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
+      bottom: currentDoc().documentPreferences.documentBleedBottomOffset,
+      left: currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
+    };
 
   } else if (arguments.length === 1) {
     right = bottom = left = top;
@@ -723,32 +744,35 @@ pub.bleeds = function(top, right, bottom, left) {
  */
 pub.inspect = function(obj, maxlevel, level, propname) {
   checkNull(obj);
-  if (!level) level = 0;
-  if (!maxlevel) maxlevel = 2;
-  if (level > maxlevel) return;
+  if (!level) {
+    level = 0;
+  }
+  if (!maxlevel) {
+    maxlevel = 2;
+  }
+  if (level > maxlevel) {
+    return;
+  }
 
   var constructorName = obj.constructor.name;
 
   var indent = "";
-  for (var i = 0; i < level; i++) indent = indent + "\t";
+  for (var i = 0; i < level; i++) {
+    indent += "\t";
+  }
 
   if (level === 0) {
     println(obj);
-  } else {
-    if (constructorName === "Boolean" ||
+  } else if (constructorName === "Boolean" ||
         constructorName === "Number" ||
         constructorName === "String") {
-      println(indent + propname + ": " + obj);
-    }
-    else if (constructorName === "Array") {
-      println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
-    }
-    else if (constructorName === "Color") {
-      println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
-    }
-    else {
-      println(indent + propname + ": " + constructorName);
-    }
+    println(indent + propname + ": " + obj);
+  } else if (constructorName === "Array") {
+    println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
+  } else if (constructorName === "Color") {
+    println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
+  } else {
+    println(indent + propname + ": " + constructorName);
   }
 
   if (constructorName === "Array") {
@@ -762,8 +786,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
           pub.inspect(obj[i], maxlevel, level + 1, i);
         }
       }
-    }
-    catch(e) {
+    } catch(e) {
       println(indent + "--> " + propname + " " + e);
     }
   }
