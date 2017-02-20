@@ -169,7 +169,7 @@ glob.HashList = function () {
    * @subcat HashList
    * @method HashList.hasKey
    * @param {any} key The key to check
-   * @return {boolean}
+   * @return {Boolean}
    */
   that.hasKey = function(key) {
     checkKey(key);
@@ -183,7 +183,7 @@ glob.HashList = function () {
    * @subcat HashList
    * @method HashList.hasValue
    * @param {any} value
-   * @return {boolean}
+   * @return {Boolean}
    */
   that.hasValue = function(value) {
     var obj = that.items;
