@@ -587,7 +587,7 @@ glob.HashList = function () {
    * @subcat HashList
    * @method HashList.hasKey
    * @param {any} key The key to check
-   * @return {boolean}
+   * @return {Boolean}
    */
   that.hasKey = function(key) {
     checkKey(key);
@@ -601,7 +601,7 @@ glob.HashList = function () {
    * @subcat HashList
    * @method HashList.hasValue
    * @param {any} value
-   * @return {boolean}
+   * @return {Boolean}
    */
   that.hasValue = function(value) {
     var obj = that.items;
@@ -1496,30 +1496,30 @@ pub.size = function(width, height) {
     // there are no documents
     warning("b.size(width, height)", "You have no open document.");
     return;
-  } else {
-    if (arguments.length === 0) {
+  }
+  if (arguments.length === 0) {
       // no arguments given
       // return the curent values
       // warning('b.size(width, height)', 'no arguments given');
-      return {width: pub.width, height: pub.height};
-    }
-
-    if(arguments.length === 1) {
-      // only one argument set the first to the secound
-      height = width;
-    }
-    var doc = app.documents[0];
-    // set the documents pageHeiht and pageWidth
-    doc.properties = {
-      documentPreferences:{
-        pageHeight: height,
-        pageWidth: width
-      }
-    };
-    // set height and width
-    pub.height = height;
-    pub.width = width;
+    return {width: pub.width, height: pub.height};
   }
+
+  if(arguments.length === 1) {
+      // only one argument set the first to the secound
+    height = width;
+  }
+  var doc = app.documents[0];
+    // set the documents pageHeiht and pageWidth
+  doc.properties = {
+    documentPreferences: {
+      pageHeight: height,
+      pageWidth: width
+    }
+  };
+    // set height and width
+  pub.height = height;
+  pub.width = width;
+
 
 };
 
@@ -1534,8 +1534,12 @@ pub.size = function(width, height) {
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
-    if(typeof saveOptions === "boolean" && saveOptions === false) saveOptions = SaveOptions.no;
-    if(typeof saveOptions === "boolean" && saveOptions === true) saveOptions = SaveOptions.yes;
+    if(typeof saveOptions === "boolean" && saveOptions === false) {
+      saveOptions = SaveOptions.no;
+    }
+    if(typeof saveOptions === "boolean" && saveOptions === true) {
+      saveOptions = SaveOptions.yes;
+    }
     doc.close(saveOptions, file);
     resetCurrDoc();
   }
@@ -1553,7 +1557,9 @@ pub.canvasMode = function (m) {
     return currCanvasMode;
   } else if (typeof m === "string") {
 
-    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
+      b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    }
 
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -1570,9 +1576,9 @@ pub.canvasMode = function (m) {
  * @cat Document
  * @subcat Page
  * @method pasteboard
- * @param  {Number} The desired horizontal pasteboard margin.
- * @param  {Number} The desired vertical pasteboard margin.
- * @return {array} The current horizontal, vertical pasteboard margins.
+ * @param  {Number} h The desired horizontal pasteboard margin.
+ * @param  {Number} v The desired vertical pasteboard margin.
+ * @return {Array} The current horizontal, vertical pasteboard margins.
  */
 pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
@@ -1618,8 +1624,9 @@ pub.page = function(page) {
     error("b.page(), bad type for b.page().");
   }
   updatePublicPageSizeVars();
-  if (currDoc.windows.length)
-    app.activeWindow.activePage = currPage; // focus in GUI  if not in MODEHIDDEN
+  if (currDoc.windows.length) {
+    app.activeWindow.activePage = currPage;
+  } // focus in GUI  if not in MODEHIDDEN
   return currentPage();
 };
 
@@ -1636,7 +1643,9 @@ pub.addPage = function(location) {
 
   checkNull(location);
 
-  if(arguments.length === 0) location = b.AT_END; // default
+  if(arguments.length === 0) {
+    location = b.AT_END;
+  } // default
 
   var nP;
   try {
@@ -1710,13 +1719,15 @@ pub.pageNumber = function (pageObj) {
 
   checkNull(pageObj);
 
-  if (typeof pageObj === "number") error("b.pageNumber(), cannot be called with a Number argument.");
+  if (typeof pageObj === "number") {
+    error("b.pageNumber(), cannot be called with a Number argument.");
+  }
 
   if (pageObj instanceof Page) {
     return parseInt(pageObj.name); // current number of given page
-  } else {
-    return parseInt(pub.page().name); // number of current page
   }
+  return parseInt(pub.page().name); // number of current page
+
 
 };
 
@@ -1738,7 +1749,7 @@ pub.previousPage = function () {
  * @cat Document
  * @subcat Page
  * @method pageCount
- * @return The amount of pages.
+ * @return {Number} The amount of pages.
  */
 pub.pageCount = function() {
   return currentDoc().pages.count();
@@ -1861,16 +1872,18 @@ pub.group = function (pItem, name) {
   checkNull(pItem);
   var group = null;
   if(pItem instanceof Array) {
-    if(pItem.length < 2) error("There must be at least two PageItems passed to b.group().");
+    if(pItem.length < 2) {
+      error("There must be at least two PageItems passed to b.group().");
+    }
     // creates a group from Page Items
     group = currentDoc().groups.add(pItem);
-    if(typeof name != "undefined") group.name = name;
-  }
-  else if(typeof pItem === "string") {
+    if(typeof name !== "undefined") {
+      group.name = name;
+    }
+  } else if(typeof pItem === "string") {
     // get the Group of the given name
     group = currentDoc().groups.item(pItem);
-  }
-  else {
+  } else {
     error("b.group(), not a valid argument.");
   }
 
@@ -1893,14 +1906,12 @@ pub.ungroup = function(pItem) {
   if(pItem instanceof Group) {
     ungroupedItems = b.items(pItem);
     pItem.ungroup();
-  }
-  else if(typeof pItem === "string") {
+  } else if(typeof pItem === "string") {
     // get the Group of the given name
     var group = currentDoc().groups.item(pItem);
     ungroupedItems = b.items(group);
     group.ungroup();
-  }
-  else {
+  } else {
     error("b.ungroup(), not a valid Group. Please select a valid Group.");
   }
 
@@ -1931,7 +1942,9 @@ pub.labels = function(label, cb) {
   if (arguments.length === 2 && cb instanceof Function) {
     return forEach(result, cb);
   }
-  if(result.length === 0) b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  if(result.length === 0) {
+    b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  }
   return result;
 };
 
@@ -1965,7 +1978,9 @@ pub.label = function(label) {
  * @return {Object} The first selected object
  */
 pub.selection = function() {
-  if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
+  if(app.selection.length === 0) {
+    error("b.selection(), selection is empty. Please select something.");
+  }
   return app.selection[0];
 };
 
@@ -1979,7 +1994,9 @@ pub.selection = function() {
  * @return {Object[]} Array of selected object(s).
  */
 pub.selections = function(cb) {
-  if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
+  if(app.selection.length === 0) {
+    error("b.selections(), selection is empty. Please select something.");
+  }
   if (arguments.length === 1 && cb instanceof Function) {
     return forEach(app.selection, cb);
   }
@@ -2005,7 +2022,9 @@ pub.nameOnPage = function(name) {
       break;
     }
   }
-  if(result === null) b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+  if(result === null) {
+    b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+  }
   return result;
 };
 
@@ -2020,7 +2039,9 @@ pub.nameOnPage = function(name) {
 var unitsCalledCounter = 0;
 pub.units = function (units) {
   checkNull(units);
-  if (arguments.length === 0) return currUnits;
+  if (arguments.length === 0) {
+    return currUnits;
+  }
 
   if (units === pub.CM ||
       units === pub.MM ||
@@ -2118,11 +2139,11 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
 
   if (arguments.length === 0) {
 
-    return {"top":pub.page(pageNumber).marginPreferences.top,
-            "right":pub.page(pageNumber).marginPreferences.right,
-            "bottom":pub.page(pageNumber).marginPreferences.bottom,
-            "left":pub.page(pageNumber).marginPreferences.left
-            };
+    return {top: pub.page(pageNumber).marginPreferences.top,
+      right: pub.page(pageNumber).marginPreferences.right,
+      bottom: pub.page(pageNumber).marginPreferences.bottom,
+      left: pub.page(pageNumber).marginPreferences.left
+    };
 
   } else if (arguments.length === 1) {
     right = bottom = left = top;
@@ -2155,11 +2176,11 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
 pub.bleeds = function(top, right, bottom, left) {
 
   if (arguments.length === 0) {
-    return {"top":currentDoc().documentPreferences.documentBleedTopOffset,
-            "right":currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
-            "bottom":currentDoc().documentPreferences.documentBleedBottomOffset,
-            "left":currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
-            };
+    return {top: currentDoc().documentPreferences.documentBleedTopOffset,
+      right: currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
+      bottom: currentDoc().documentPreferences.documentBleedBottomOffset,
+      left: currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
+    };
 
   } else if (arguments.length === 1) {
     right = bottom = left = top;
@@ -2184,32 +2205,35 @@ pub.bleeds = function(top, right, bottom, left) {
  */
 pub.inspect = function(obj, maxlevel, level, propname) {
   checkNull(obj);
-  if (!level) level = 0;
-  if (!maxlevel) maxlevel = 2;
-  if (level > maxlevel) return;
+  if (!level) {
+    level = 0;
+  }
+  if (!maxlevel) {
+    maxlevel = 2;
+  }
+  if (level > maxlevel) {
+    return;
+  }
 
   var constructorName = obj.constructor.name;
 
   var indent = "";
-  for (var i = 0; i < level; i++) indent = indent + "\t";
+  for (var i = 0; i < level; i++) {
+    indent += "\t";
+  }
 
   if (level === 0) {
     println(obj);
-  } else {
-    if (constructorName === "Boolean" ||
+  } else if (constructorName === "Boolean" ||
         constructorName === "Number" ||
         constructorName === "String") {
-      println(indent + propname + ": " + obj);
-    }
-    else if (constructorName === "Array") {
-      println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
-    }
-    else if (constructorName === "Color") {
-      println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
-    }
-    else {
-      println(indent + propname + ": " + constructorName);
-    }
+    println(indent + propname + ": " + obj);
+  } else if (constructorName === "Array") {
+    println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
+  } else if (constructorName === "Color") {
+    println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
+  } else {
+    println(indent + propname + ": " + constructorName);
   }
 
   if (constructorName === "Array") {
@@ -2223,8 +2247,7 @@ pub.inspect = function(obj, maxlevel, level, propname) {
           pub.inspect(obj[i], maxlevel, level + 1, i);
         }
       }
-    }
-    catch(e) {
+    } catch(e) {
       println(indent + "--> " + propname + " " + e);
     }
   }
@@ -2596,7 +2619,6 @@ function CSV() {
 
 // -- Conversion --
 
-/**  @class b */
 
 /**
  * Converts a byte, char, int, or color to a String containing the
@@ -2714,7 +2736,7 @@ pub.unhex = function(hex) {
  * @cat Data
  * @subcat String Functions
  * @param {String} s The String to trim
- * @param
+ * @return {String} The trimmed string
  */
  // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
 pub.trimWord = function(s) {
@@ -5184,12 +5206,12 @@ var Vector = pub.Vector = function() {
    * Constructor of Vector, can be two- or three-dimensional.
    *
    * @constructor
-   * @cat Data
+   * @cat Math
    * @subcat Vector
    * @method Vector
-   * @param {Number} x
-   * @param {Number} y
-   * @param {Number} [z]
+   * @param {Number} x The first vector.
+   * @param {Number} y The second vector.
+   * @param {Number} [z] Optional, the third vector.
    */
   function Vector(x, y, z) {
     this.x = x || 0;
@@ -5199,13 +5221,13 @@ var Vector = pub.Vector = function() {
   /**
    * Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
    * Is meant to be called "static" i.e. Vector.dist(v1, v2);
-   * @cat Data
+   * @cat Math
    * @subcat Vector
    * @method Vector.dist
    * @static
-   * @param {Vector} v1 The first vector
-   * @param {Vector} v2 The second vector
-   * @return {Number} The distance
+   * @param {Vector} v1 The first vector.
+   * @param {Vector} v2 The second vector.
+   * @return {Number} The distance.
    */
   Vector.dist = function(v1, v2) {
     return v1.dist(v2);
@@ -5215,12 +5237,12 @@ var Vector = pub.Vector = function() {
    * Static function. Calculates the dot product of two vectors.
    * Is meant to be called "static" i.e. Vector.dot(v1, v2);
    * @method Vector.dot
-   * @cat Data
+   * @cat Math
    * @subcat Vector
    * @static
-   * @param {Vector} v1 The first vector
-   * @param {Vector} v2 The second vector
-   * @return {Number} The dot product
+   * @param {Vector} v1 The first vector.
+   * @param {Vector} v2 The second vector.
+   * @return {Number} The dot product.
    */
   Vector.dot = function(v1, v2) {
     return v1.dot(v2);
@@ -5230,12 +5252,12 @@ var Vector = pub.Vector = function() {
    * Static function. Calculates the cross product of two vectors.
    * Is meant to be called "static" i.e. Vector.cross(v1, v2);
    * @method Vector.cross
-   * @cat Data
+   * @cat Math
    * @subcat Vector
    * @static
-   * @param {Vector} v1 The first vector
-   * @param {Vector} v2 The second vector
-   * @return {Number} The cross product
+   * @param {Vector} v1 The first vector.
+   * @param {Vector} v2 The second vector.
+   * @return {Number} The cross product.
    */
   Vector.cross = function(v1, v2) {
     return v1.cross(v2);
@@ -5245,12 +5267,12 @@ var Vector = pub.Vector = function() {
    * Static function. Calculates the angle between two vectors.
    * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
    * @method Vector.angleBetween
-   * @cat Data
+   * @cat Math
    * @subcat Vector
    * @static
-   * @param {Vector} v1 The first vector
-   * @param {Vector} v2 The second vector
-   * @return {Number} The angle
+   * @param {Vector} v1 The first vector.
+   * @param {Vector} v2 The second vector.
+   * @return {Number} The angle.
    */
   Vector.angleBetween = function(v1, v2) {
     return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
@@ -5261,11 +5283,11 @@ var Vector = pub.Vector = function() {
     /**
      * Sets the x, y, and z component of the vector using three separate variables, the data from a Vector, or the values from a float array.
      * @method Vector.set
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Number|Array|Vector} v Either a vector, array or x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
+     * @param {Number|Array|Vector} v Either a vector, array or x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
      */
     set: function(v, y, z) {
       if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
@@ -5278,9 +5300,9 @@ var Vector = pub.Vector = function() {
     /**
      * Gets a copy of the vector, returns a Vector object.
      * @method Vector.get
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @return {Vector} A copy of the vector
+     * @return {Vector} A copy of the vector.
      */
     get: function() {
       return new Vector(this.x, this.y, this.z);
@@ -5288,9 +5310,9 @@ var Vector = pub.Vector = function() {
     /**
      * Calculates the magnitude (length) of the vector and returns the result as a float
      * @method Vector.mag
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @return {Number} The length
+     * @return {Number} The length.
      */
     mag: function() {
       var x = this.x,
@@ -5301,11 +5323,11 @@ var Vector = pub.Vector = function() {
     /**
      * Adds x, y, and z components to a vector, adds one vector to another.
      * @method Vector.add
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Vector|Number} v Either a full vector or an x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
+     * @param {Vector|Number} v Either a full vector or an x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
      */
     add: function(v, y, z) {
       if (arguments.length === 1) {
@@ -5321,11 +5343,11 @@ var Vector = pub.Vector = function() {
     /**
      * Substract x, y, and z components or a full vector from this vector
      * @method Vector.sub
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Vector|Number} v Either a full vector or an x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
+     * @param {Vector|Number} v Either a full vector or an x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
      */
     sub: function(v, y, z) {
       if (arguments.length === 1) {
@@ -5341,11 +5363,11 @@ var Vector = pub.Vector = function() {
     /**
      * Multiplies this vector with x, y, and z components or another vector.
      * @method Vector.mult
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Vector|Number} v Either a full vector or an x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
+     * @param {Vector|Number} v Either a full vector or an x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
      */
     mult: function(v) {
       if (typeof v === "number") {
@@ -5361,11 +5383,11 @@ var Vector = pub.Vector = function() {
     /**
      * Divides this vector through x, y, and z components or another vector.
      * @method Vector.div
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Vector|Number} v Either a full vector or an x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
+     * @param {Vector|Number} v Either a full vector or an x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
      */
     div: function(v) {
       if (typeof v === "number") {
@@ -5381,12 +5403,12 @@ var Vector = pub.Vector = function() {
     /**
      * Calculates the distance from this vector to another as x, y, and z components or full vector.
      * @method Vector.dist
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Vector|Number} v Either a full vector or an x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
-     * @return {Number} The distance
+     * @param {Vector|Number} v Either a full vector or an x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
+     * @return {Number} The distance.
      */
     dist: function(v) {
       var dx = this.x - v.x,
@@ -5397,12 +5419,12 @@ var Vector = pub.Vector = function() {
     /**
      * Calculates the dot product from this vector to another as x, y, and z components or full vector.
      * @method Vector.dot
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Vector|Number} v Either a full vector or an x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
-     * @return {Number} The dot product
+     * @param {Vector|Number} v Either a full vector or an x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
+     * @return {Number} The dot product.
      */
     dot: function(v, y, z) {
       if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
@@ -5411,12 +5433,12 @@ var Vector = pub.Vector = function() {
     /**
      * Calculates the cross product from this vector to another as x, y, and z components or full vector.
      * @method Vector.cross
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @param {Vector|Number} v Either a full vector or an x component
-     * @param {Number} [y] The y component
-     * @param {Number} [z] The z component
-     * @return {Number} The cross product
+     * @param {Vector|Number} v Either a full vector or an x component.
+     * @param {Number} [y] Optional, the y component.
+     * @param {Number} [z] Optional, the z component.
+     * @return {Number} The cross product.
      */
     cross: function(v) {
       var x = this.x,
@@ -5426,7 +5448,7 @@ var Vector = pub.Vector = function() {
     },
     /**
      * Normalizes the length of this vector to 1.
-     * @cat Data
+     * @cat Math
      * @subcat Vector
      * @method Vector.normalize
      */
@@ -5437,7 +5459,7 @@ var Vector = pub.Vector = function() {
     /**
      * Normalizes the length of this vector to the given parameter.
      * @method Vector.limit
-     * @cat Data
+     * @cat Math
      * @subcat Vector
      * @param {Number} high The value to scale to.
      */
@@ -5450,9 +5472,9 @@ var Vector = pub.Vector = function() {
     /**
      * The 2D orientation (heading) of this vector in radian.
      * @method Vector.heading
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @return {Number} A radian angle value
+     * @return {Number} A radian angle value.
      */
     heading: function() {
       return -Math.atan2(-this.y, this.x);
@@ -5460,7 +5482,7 @@ var Vector = pub.Vector = function() {
     /**
      * Returns data about this vector as a string.
      * @method Vector.toString
-     * @cat Data
+     * @cat Math
      * @subcat Vector
      * @return {String} The x, y and z components as a string.
      */
@@ -5470,9 +5492,9 @@ var Vector = pub.Vector = function() {
     /**
      * Returns this vector as an array [x,y,z].
      * @method Vector.array
-     * @cat Data
+     * @cat Math
      * @subcat Vector
-     * @return {Array} [x,y,z]
+     * @return {Array} The x, y and z components as  an Array of [x,y,z].
      */
     array: function() {
       return [this.x, this.y, this.z];
@@ -5499,8 +5521,8 @@ var Vector = pub.Vector = function() {
  * @cat Math
  * @subcat Calculation
  * @method abs
- * @param {Number} val An arbitrary number
- * @return The absolute value of that number
+ * @param {Number} val A number.
+ * @return {Number} The absolute value of that number.
  */
 pub.abs = Math.abs;
 
@@ -5510,8 +5532,8 @@ pub.abs = Math.abs;
  * @cat Math
  * @subcat Calculation
  * @method ceil
- * @param {Number} val An arbitrary number
- * @return The next highest integer value
+ * @param {Number} val An arbitrary number.
+ * @return {Number} The next highest integer value.
  */
 pub.ceil = Math.ceil;
 
@@ -5521,10 +5543,10 @@ pub.ceil = Math.ceil;
  * @cat Math
  * @subcat Calculation
  * @method constrain
- * @param {Number} aNumber the value to constrain
- * @param {Number} aMin minimum limit
- * @param {Number} aMax maximum limit
- * @return The constrained value
+ * @param {Number} aNumber The value to constrain.
+ * @param {Number} aMin Minimum limit.
+ * @param {Number} aMax Maximum limit.
+ * @return {Number} The constrained value.
  */
 pub.constrain = function(aNumber, aMin, aMax) {
   if(arguments.length !== 3) error("b.constrain(), wrong argument count.");
@@ -5539,11 +5561,11 @@ pub.constrain = function(aNumber, aMin, aMax) {
  * @cat Math
  * @subcat Calculation
  * @method dist
- * @param {Number} x1 the x-coordinate of the first point
- * @param {Number} y1 the y-coordinate of the first point
- * @param {Number} x2 the x-coordinate of the second point
- * @param {Number} y2 the y-coordinate of the second point
- * @return {Number} The distance
+ * @param {Number} x1 The x-coordinate of the first point.
+ * @param {Number} y1 The y-coordinate of the first point.
+ * @param {Number} x2 The x-coordinate of the second point.
+ * @param {Number} y2 The y-coordinate of the second point.
+ * @return {Number} The distance.
  */
 pub.dist = function() {
   var dx, dy, dz;
@@ -5557,13 +5579,13 @@ pub.dist = function() {
 };
 
 /**
- * Returns Euler's number e (2.71828...) raised to the power of the value parameter.
+ * The Math.exp() function returns ex, where x is the argument, and e is Euler's number (also known as Napier's constant), the base of the natural logarithms.
  *
  * @cat Math
  * @subcat Calculation
  * @method exp
- * @param {Number} a value
- * @return {Number}
+ * @param {Number} x A number.
+ * @return {Number} A number representing ex.
  */
 pub.exp = Math.exp;
 
@@ -5573,8 +5595,8 @@ pub.exp = Math.exp;
  * @cat Math
  * @subcat Calculation
  * @method floor
- * @param {Number} a value
- * @return {Number}
+ * @param {Number} a A number.
+ * @return {Number} Integer number.
  */
 pub.floor = Math.floor;
 
@@ -5584,10 +5606,10 @@ pub.floor = Math.floor;
  * @cat Math
  * @subcat Calculation
  * @method lerp
- * @param {Number} value1 first value
- * @param {Number} value2 second value
- * @param {Number} amt between 0.0 and 1.0
- * @return {Number} The mapped value
+ * @param {Number} value1 First value.
+ * @param {Number} value2 Second value.
+ * @param {Number} amt Amount between 0.0 and 1.0.
+ * @return {Number} The mapped value.
  */
 pub.lerp = function(value1, value2, amt) {
   if(arguments.length !== 3) error("b.lerp(), wrong argument count.");
@@ -5600,8 +5622,8 @@ pub.lerp = function(value1, value2, amt) {
  * @cat Math
  * @subcat Calculation
  * @method log
- * @param {Number} number must be greater then 0.0
- * @return {Number}
+ * @param {Number} x A number, must be greater then 0.0.
+ * @return {Number} The natural logarithm.
  */
 pub.log = Math.log;
 
@@ -5611,10 +5633,10 @@ pub.log = Math.log;
  * @cat Math
  * @subcat Calculation
  * @method mag
- * @param {Number} a x-coordinate
- * @param {Number} b y-coordinate
- * @param {Number} [c] z-coordinate
- * @return {Number} the magnitude
+ * @param {Number} x Coordinate.
+ * @param {Number} y Coordinate.
+ * @param {Number} [z] Coordinate, optional.
+ * @return {Number} The magnitude.
  */
 pub.mag = function(a, b, c) {
   if(!(arguments.length === 2 || arguments.length === 3)) error("b.mag(), wrong argument count.");
@@ -5623,19 +5645,19 @@ pub.mag = function(a, b, c) {
 };
 
 /**
- * Re-maps a number from one range to another. In the example above, the number '25' is converted from a value in the range 0..100 into a value that ranges from the left edge (0) to the right edge (width) of the screen.
+ * Re-maps a number from one range to another.
  *
  * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
  *
  * @cat Math
  * @subcat Calculation
  * @method map
- * @param {Number} value the value to be mapped
- * @param {Number} istart start of the input range
- * @param {Number} istop end of the input range
- * @param {Number} ostart start of the output range
- * @param {Number} ostop end of the output range
- * @return {Number} the mapped value
+ * @param {Number} value The value to be mapped.
+ * @param {Number} istart The start of the input range.
+ * @param {Number} istop The end of the input range.
+ * @param {Number} ostart The start of the output range.
+ * @param {Number} ostop The end of the output range.
+ * @return {Number} The mapped value.
  */
 pub.map = function(value, istart, istop, ostart, ostop) {
   if(arguments.length !== 5) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
@@ -5648,10 +5670,10 @@ pub.map = function(value, istart, istop, ostart, ostop) {
  * @cat Math
  * @subcat Calculation
  * @method max
- * @param {Number|Array} param1 Either the first value or an array of Numbers
- * @param {Number} param2 Another value to be compared
- * @param {Number} param3 Another value to be compared
- * @return {Number} The highest value
+ * @param {Number|Array} a A value or an array of Numbers.
+ * @param {Number} [b] Another value to be compared.
+ * @param {Number} [c] Another value to be compared.
+ * @return {Number} The highest value.
  */
 pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
@@ -5669,10 +5691,10 @@ pub.max = function() {
  * @cat Math
  * @subcat Calculation
  * @method min
- * @param {Number|Array} param1 Either the first value or an array of Numbers
- * @param {Number} param2 Another value to be compared
- * @param {Number} param3 Another value to be compared
- * @return {Number} The lowest value
+ * @param {Number|Array} a A value or an array of Numbers.
+ * @param {Number} [b] Another value to be compared.
+ * @param {Number} [c] Another value to be compared.
+ * @return {Number} The lowest value.
  */
 pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
@@ -5694,10 +5716,10 @@ pub.min = function() {
  * @cat Math
  * @subcat Calculation
  * @method norm
- * @param {Number} aNumber The value to be normed
- * @param {Number} low The lowest value to be expected
- * @param {Number} low The highest value to be expected
- * @return {Number} The normalized value
+ * @param {Number} aNumber The value to be normed.
+ * @param {Number} low The lowest value to be expected.
+ * @param {Number} high The highest value to be expected.
+ * @return {Number} The normalized value.
  */
 pub.norm = function(aNumber, low, high) {
   if(arguments.length !== 3) error("b.norm, wrong argument count.");
@@ -5710,8 +5732,8 @@ pub.norm = function(aNumber, low, high) {
  * @cat Math
  * @subcat Calculation
  * @method pow
- * @param {Number} num base of the exponential expression
- * @param {Number} exponent power of which to raise the base
+ * @param {Number} num Base of the exponential expression.
+ * @param {Number} exponent Power of which to raise the base.
  * @return {Number} the result
  */
 pub.pow = Math.pow;
@@ -5722,8 +5744,8 @@ pub.pow = Math.pow;
  * @cat Math
  * @subcat Calculation
  * @method round
- * @param {Number} value The value to be rounded
- * @return {Number} The rounded value
+ * @param {Number} value The value to be rounded.
+ * @return {Number} The rounded value.
  */
 pub.round = Math.round;
 
@@ -5733,8 +5755,8 @@ pub.round = Math.round;
  * @cat Math
  * @subcat Calculation
  * @method sq
- * @param {Number} aNumber The value to be squared
- * @return {Number}
+ * @param {Number} aNumber The value to be squared.
+ * @return {Number} Squared number.
  */
 pub.sq = function(aNumber) {
   if(arguments.length !== 1) error("b.sq(), wrong argument count.");
@@ -5749,8 +5771,8 @@ pub.sq = function(aNumber) {
  * @cat Math
  * @subcat Trigonometry
  * @method sqrt
- * @param {Number} val The value to be calculated
- * @return {Number}
+ * @param {Number} val A value.
+ * @return {Number} Square root.
  */
 pub.sqrt = Math.sqrt;
 
@@ -5760,8 +5782,8 @@ pub.sqrt = Math.sqrt;
  * @cat Math
  * @subcat Trigonometry
  * @method acos
- * @param {Number} value the value whose arc cosine is to be returned
- * @return {Number}
+ * @param {Number} value The value whose arc cosine is to be returned.
+ * @return {Number} The arc cosine.
  */
 pub.acos = Math.acos;
 
@@ -5771,8 +5793,8 @@ pub.acos = Math.acos;
  * @cat Math
  * @subcat Trigonometry
  * @method asin
- * @param {Number} value the value whose arc sine is to be returned
- * @return {Number}
+ * @param {Number} value The value whose arc sine is to be returned.
+ * @return {Number} The arc sine.
  */
 pub.asin = Math.asin;
 
@@ -5782,8 +5804,8 @@ pub.asin = Math.asin;
  * @cat Math
  * @subcat Trigonometry
  * @method atan
- * @param {Number} value the value whose arc tangent is to be returned
- * @return {Number}
+ * @param {Number} value The value whose arc tangent is to be returned.
+ * @return {Number} The arc tangent.
  */
 pub.atan = Math.atan;
 
@@ -5793,9 +5815,9 @@ pub.atan = Math.atan;
  * @cat Math
  * @subcat Trigonometry
  * @method atan2
- * @param {Number} y the y coordinate
- * @param {Number} x the x coordinate
- * @return {Number}
+ * @param {Number} y The y coordinate.
+ * @param {Number} x The x coordinate.
+ * @return {Number} The atan2 value.
  */
 pub.atan2 = Math.atan2;
 
@@ -5805,8 +5827,8 @@ pub.atan2 = Math.atan2;
  * @cat Math
  * @subcat Trigonometry
  * @method cos
- * @param {Number} rad a value in radians
- * @return {Number}
+ * @param {Number} rad A value in radians.
+ * @return {Number} The cosine.
  */
 pub.cos = Math.cos;
 
@@ -5816,8 +5838,8 @@ pub.cos = Math.cos;
  * @cat Math
  * @subcat Trigonometry
  * @method degrees
- * @param {Number} aAngle an angle in radians
- * @return {Number} The given angle in degree
+ * @param {Number} aAngle An angle in radians.
+ * @return {Number} The given angle in degree.
  */
 pub.degrees = function(aAngle) {
   return aAngle * 180 / Math.PI;
@@ -5829,8 +5851,8 @@ pub.degrees = function(aAngle) {
  * @cat Math
  * @subcat Trigonometry
  * @method radians
- * @param {Number} aAngle an angle in degree
- * @return {Number} The given angle in radians
+ * @param {Number} aAngle An angle in degree.
+ * @return {Number} The given angle in radians.
  */
 pub.radians = function(aAngle) {
   return aAngle / 180 * Math.PI;
@@ -5842,8 +5864,8 @@ pub.radians = function(aAngle) {
  * @cat Math
  * @subcat Trigonometry
  * @method sin
- * @param {Number} rad a value in radians
- * @return {Number}
+ * @param {Number} rad A value in radians.
+ * @return {Number} The sine value.
  */
 pub.sin = Math.sin;
 
@@ -5853,8 +5875,8 @@ pub.sin = Math.sin;
  * @cat Math
  * @subcat Trigonometry
  * @method tan
- * @param {Number} rad a value in radians
- * @return {Number}
+ * @param {Number} rad A value in radians.
+ * @return {Number} The tangent value.
  */
 pub.tan = Math.tan;
 
@@ -5870,9 +5892,9 @@ var currentRandom = Math.random;
  * @cat Math
  * @subcat Random
  * @method random
- * @param {Number} [low] The low border of the range
- * @param {Number} [high] The high border of the range
- * @return {Number} A random number
+ * @param {Number} [low] The low border of the range.
+ * @param {Number} [high] The high border of the range.
+ * @return {Number} A random number.
  */
 pub.random = function() {
   if (arguments.length === 0) return currentRandom();
@@ -5900,14 +5922,33 @@ Marsaglia.createRandomized = function() {
   var now = new Date();
   return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295);
 };
-/* todo */
+/**
+ * Sets the seed value for random().
+ *
+ * By default, random() produces different results each time the program is run. Set the seed parameter to a constant to return the same pseudo-random numbers each time the software is run.
+ * @cat Math
+ * @subcat Random
+ * @method randomSeed
+ * @param  {Number} seed The seed value.
+ */
 pub.randomSeed = function(seed) {
   currentRandom = (new Marsaglia(seed)).nextDouble;
 };
-/* todo */
+/**
+ * Random Generator with Gaussian distribution.
+ * @constructor
+ * @cat Math
+ * @subcat Random
+ * @method Random
+ * @param {Number} seed The seed value.
+ */
 pub.Random = function(seed) {
   var haveNextNextGaussian = false,
     nextNextGaussian, random;
+  /**
+   * @method Random.nextGaussian
+   * @return {Number} The next Gaussian random value.
+   */
   this.nextGaussian = function() {
     if (haveNextNextGaussian) {
       haveNextNextGaussian = false;
@@ -5927,7 +5968,6 @@ pub.Random = function(seed) {
   random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble;
 };
 
-/* todo */
 function PerlinNoise(seed) {
   var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
   var i, j;
@@ -6016,10 +6056,10 @@ var noiseProfile = {
  * @cat Math
  * @subcat Random
  * @method noise
- * @param {Number} x Coordinate in x space
- * @param {Number} [y] Coordinate in y space
- * @param {Number} [z] Coordinate in z space
- * @return {Number} the noise value
+ * @param {Number} x Coordinate in x space.
+ * @param {Number} [y] Coordinate in y space.
+ * @param {Number} [z] Coordinate in z space.
+ * @return {Number} The noise value.
  */
 pub.noise = function(x, y, z) {
   if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
@@ -6052,9 +6092,9 @@ pub.noise = function(x, y, z) {
  *
  * @cat Math
  * @subcat Random
- * @method noiseDetail
- * @param {Number} octaves number of octaves to be used by the noise() function
- * @param {Number} fallout falloff factor for each octave
+ * @method noiseDetail.
+ * @param {Number} octaves Number of octaves to be used by the noise() function.
+ * @param {Number} fallout Falloff factor for each octave.
  */
 pub.noiseDetail = function(octaves, fallout) {
   noiseProfile.octaves = octaves;
@@ -6067,13 +6107,12 @@ pub.noiseDetail = function(octaves, fallout) {
  * @cat Math
  * @subcat Random
  * @method noiseSeed
- * @param {Number} seed
+ * @param {Number} seed Noise seed value.
  */
 pub.noiseSeed = function(seed) {
   noiseProfile.seed = seed;
   noiseProfile.generator = undef;
 };
-
 
 
 // ----------------------------------------
@@ -6091,8 +6130,8 @@ var precision = function(num, dec) {
  * @cat Document
  * @subcat Transformation
  * @method bounds
- * @param  {Text|Object} obj The object to calculate the geometric bounds
- * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight
+ * @param  {Text|Object} obj The object to calculate the geometric bounds.
+ * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
 pub.bounds = function (obj) {
   var x1, y1, x2, y2, w, h;
@@ -6161,9 +6200,9 @@ pub.bounds = function (obj) {
  * @cat Document
  * @subcat Transformation
  * @method itemX
- * @param {PageItem} pItem The PageItem to alter
- * @param {Number} [x] The new x position
- * @returns {Number} The current x position
+ * @param {PageItem} pItem The PageItem to alter.
+ * @param {Number} [x] The new x position, optional.
+ * @returns {Number} The current x position.
  */
 pub.itemX = function(pItem, x) {
   var off = 0;
@@ -6172,10 +6211,8 @@ pub.itemX = function(pItem, x) {
     if(typeof x === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-//        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) / 2;
       pItem.geometricBounds = [pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width];
     } else {
-//        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) / 2;
       return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
     }
   } else {
@@ -6189,9 +6226,9 @@ pub.itemX = function(pItem, x) {
  * @cat Document
  * @subcat Transformation
  * @method itemY
- * @param {PageItem} pItem The PageItem to alter
- * @param {Number} [y] The new y position
- * @returns {Number} The current y position
+ * @param {PageItem} pItem The PageItem to alter.
+ * @param {Number} [y] The new y position, optional.
+ * @returns {Number} The current y position.
  */
 pub.itemY = function(pItem, y) {
   var off = 0;
@@ -6200,19 +6237,15 @@ pub.itemY = function(pItem, y) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-//        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[3] - pItem.geometricBounds[1] ) / 2;
       b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
       pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
-//        if(currRectMode === b.CENTER) off = ( pItem.geometricBounds[2] - pItem.geometricBounds[0] ) / 2;
       return precision(pItem.geometricBounds[0], 5) + off;
     }
   } else {
     error("b.itemY(), pItem has to be a valid PageItem");
   }
 };
-
-
 
 
 /**
