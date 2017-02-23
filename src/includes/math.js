@@ -896,7 +896,7 @@ pub.noise = function(x, y, z) {
  *
  * @cat Math
  * @subcat Random
- * @method noiseDetail.
+ * @method noiseDetail
  * @param {Number} octaves Number of octaves to be used by the noise() function.
  * @param {Number} fallout Falloff factor for each octave.
  */
