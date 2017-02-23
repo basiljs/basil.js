@@ -12,8 +12,8 @@
  * @cat Document
  * @subcat Image
  * @method image
- * @param  {String|File} img The image file name in the document's data directory or a File instance
- * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in
+ * @param  {String|File} img The image file name in the document's data directory or a File instance.
+ * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in.
  * @param  {Number} [y] The y position on the current page. Ignored if x is not a number.
  * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if x is not a number.
  * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
@@ -95,7 +95,6 @@ pub.image = function(img, x, y, w, h) {
   frame.strokeTint = currStrokeTint;
   frame.strokeColor = currStrokeColor;
 
-
   return frame;
 };
 
@@ -106,11 +105,11 @@ pub.image = function(img, x, y, w, h) {
  * @cat Document
  * @subcat Image
  * @method transformImage
- * @param  {Graphic} img The image to transform
- * @param  {Number} x       New x
- * @param  {Number} y       New y
- * @param  {Number} width   New width
- * @param  {Number} height  New height
+ * @param  {Graphic} img The image to transform.
+ * @param  {Number} x The new x.
+ * @param  {Number} y The new y.
+ * @param  {Number} width The new width.
+ * @param  {Number} height The new height.
  */
 pub.transformImage = function(img, x, y, width, height) {
   if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
@@ -133,8 +132,8 @@ pub.transformImage = function(img, x, y, width, height) {
  * @cat Document
  * @subcat Image
  * @method imageMode
- * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER
- * @return {String} The current mode
+ * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER.
+ * @return {String} The current mode.
  */
 pub.imageMode = function(mode) {
   if (arguments.length === 0) return currImageMode;
