@@ -8,8 +8,8 @@
  *
  * @cat Document
  * @method doc
- * @param  {Document} [doc] The document to set the current document to
- * @return {Document} The current document instance
+ * @param  {Document} [doc] The document to set the current document to.
+ * @return {Document} The current document instance.
  */
 pub.doc = function(doc) {
   if (doc instanceof Document) {
@@ -25,8 +25,8 @@ pub.doc = function(doc) {
  *
  * @cat Document
  * @method size
- * @param  {Number} width The desired width of the current document
- * @param  {Number} [height] optional the desired height of the current document. If not provided the width will be used as the height.
+ * @param  {Number} width The desired width of the current document.
+ * @param  {Number} [height] Optional the desired height of the current document. If not provided the width will be used as the height.
  * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
  *
  */
@@ -37,14 +37,14 @@ pub.size = function(width, height) {
     return;
   }
   if (arguments.length === 0) {
-      // no arguments given
-      // return the curent values
-      // warning('b.size(width, height)', 'no arguments given');
+    // no arguments given
+    // return the curent values
+    // warning('b.size(width, height)', 'no arguments given');
     return {width: pub.width, height: pub.height};
   }
 
   if(arguments.length === 1) {
-      // only one argument set the first to the secound
+    // only one argument set the first to the secound
     height = width;
   }
   var doc = app.documents[0];
@@ -55,7 +55,7 @@ pub.size = function(width, height) {
       pageWidth: width
     }
   };
-    // set height and width
+  // set height and width
   pub.height = height;
   pub.width = width;
 
@@ -67,8 +67,8 @@ pub.size = function(width, height) {
  *
  * @cat Document
  * @method close
- * @param  {SaveOptions|Boolean} [saveOptions] The indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] Optional: The indesign file instance to save the document to
+ * @param  {Object|Boolean} [saveOptions] Optional, the Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param  {File} [file] Optional, the indesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -84,28 +84,29 @@ pub.close = function(saveOptions, file) {
   }
 };
 
+
 /**
  * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
  * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
- * @method canvasMode
  * @cat Document
  * @subcat Page
+ * @method canvasMode
+ * @param  {String} mode The canvas mode to set.
+ * @return {String} The current canvas mode.
  */
 pub.canvasMode = function (m) {
-  if(arguments.length == 0) {
+  if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-
     if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
       b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
-
     currCanvasMode = m;
     updatePublicPageSizeVars();
+    return currCanvasMode;
   } else {
     error("b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
-
 };
 
 
@@ -123,7 +124,7 @@ pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
-	                                                                                                                                                                                                          error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
+    error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
   }else if (typeof h === "number" && typeof v === "number") {
     currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
     return currDoc.pasteboardPreferences.pasteboardMargins;
@@ -139,7 +140,7 @@ pub.pasteboard = function (h, v) {
  * @subcat Page
  * @method page
  * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
- * @return {Page} The current page instance
+ * @return {Page} The current page instance.
  */
 pub.page = function(page) {
   if (page instanceof Page) {
@@ -165,7 +166,7 @@ pub.page = function(page) {
   updatePublicPageSizeVars();
   if (currDoc.windows.length) {
     app.activeWindow.activePage = currPage;
-  } // focus in GUI  if not in MODEHIDDEN
+  } // focus in GUI if not in MODEHIDDEN
   return currentPage();
 };
 
@@ -175,8 +176,8 @@ pub.page = function(page) {
  * @cat Document
  * @subcat Page
  * @method addPage
- * @param  {String} [location] The location placement mode
- * @return {Page} The new page
+ * @param  {String} [location] The location placement mode.
+ * @return {Page} The new page.
  */
 pub.addPage = function(location) {
 
@@ -210,7 +211,6 @@ pub.addPage = function(location) {
       default:
         throw new Error();
         break;
-
     }
 
     pub.page(nP);
@@ -219,8 +219,8 @@ pub.addPage = function(location) {
   } catch (e) {
     error("b.addPage(), invalid location argument passed to addPage()");
   }
-
 };
+
 
 /**
  * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
@@ -228,12 +228,10 @@ pub.addPage = function(location) {
  * @cat Document
  * @subcat Page
  * @method removePage
- * @param  {Page|Number} [page] Optional: The page to be removed as Page object or page number.
+ * @param  {Page|Number} [page] Optional, the page to be removed as Page object or page number.
  */
 pub.removePage = function (page) {
-
   checkNull(page);
-
   if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
     var p = pub.page(page); // get the page object, todo: add an internal method of page retrieval without setting it to current
     p.remove();
@@ -242,7 +240,6 @@ pub.removePage = function (page) {
   } else {
     error("b.removePage(), invalid call. Wrong parameter!");
   }
-
 };
 
 /**
@@ -251,36 +248,47 @@ pub.removePage = function (page) {
  * @cat Document
  * @subcat Page
  * @method pageNumber
- * @param  {Page} [pageObj] Optional: The page you want to know the number of.
+ * @param  {Page} [pageObj] Optional, the page you want to know the number of.
  * @return {Number} The page number within the document.
  */
 pub.pageNumber = function (pageObj) {
-
   checkNull(pageObj);
-
   if (typeof pageObj === "number") {
     error("b.pageNumber(), cannot be called with a Number argument.");
   }
-
   if (pageObj instanceof Page) {
     return parseInt(pageObj.name); // current number of given page
   }
   return parseInt(pub.page().name); // number of current page
-
-
 };
 
-// TODO: does not work?
+/**
+ * Set the next page of the document to be the active one. Returns new active page.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method nextPage
+ * @return {Page} The active page.
+ */
 pub.nextPage = function () {
   var p = pub.doc().pages.nextItem(currentPage());
   return pub.page(p);
 };
 
-// TODO: does not work?
+
+/**
+ * Set the previous page of the document to be the active one. Returns new active page.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method previousPage
+ * @return {Page} The active page.
+ */
 pub.previousPage = function () {
   var p = pub.doc().pages.previousItem(currentPage());
   return pub.page(p);
 };
+
 
 /**
  * The number of all pages in the current document.
@@ -294,10 +302,12 @@ pub.pageCount = function() {
   return currentDoc().pages.count();
 };
 
+
 /**
  * The number of all stories in the current document.
  *
- * @cat Story
+ * @cat Document
+ * @subcat Story
  * @method storyCount
  * @return {Number} count The amount of stories.
  */
@@ -308,9 +318,10 @@ pub.storyCount = function() {
 /**
  * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  *
- * @cat Story
+ * @cat Document
+ * @subcat Story
  * @method addToStory
- * @param {Story} story The story
+ * @param {Story} story The story.
  * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  */
@@ -369,14 +380,15 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
   };
 };
 
+
 /**
  * Returns the current layer if no argument is given. Sets active layer if layer object or name of existing layer is given. Newly creates layer and sets it to active if new name is given.
  *
  * @cat Document
  * @subcat Page
  * @method layer
- * @param  {Layer|String} [layer] The layer or layer name to set the current layer to
- * @return {Layer} The current layer instance
+ * @param  {Layer|String} [layer] Optional, the layer or layer name to set the current layer to.
+ * @return {Layer} The current layer instance.
  */
 pub.layer = function(layer) {
   checkNull(layer);
@@ -397,15 +409,16 @@ pub.layer = function(layer) {
   return currentLayer();
 };
 
+
 /**
  *  Returns the Group instance and sets it if argument Group is given.
  *
  *  @cat Document
  *  @subCat Page
  *  @method Group
- *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance
- *  @param {String} name (optional) The name of the Group, only when creating a Group from Page Item(s)
- *  @return {Group} the current Group instance
+ *  @param {Array} [pItem] Optional, the PageItems array (must be at least 2) or name of Group name instance.
+ *  @param {String} name Optional, the name of the Group, only when creating a Group from Page Item(s).
+ *  @return {Group} The current Group instance.
  */
 pub.group = function (pItem, name) {
   checkNull(pItem);
@@ -429,15 +442,16 @@ pub.group = function (pItem, name) {
   return group;
 };
 
+
 /**
  *  Returns an array of the items that were within the Group before b.ungroup() was called
  *
  *  @cat Document
  *  @subCat Page
  *  @method Group
- *  @param {Object|String} [pItem] The Group or name of Group name instance
- *  @param {String} name The name of the Group, only when creating a Group from Page Item(s)
- *  @return {Group} the Page Item(s) that were grouped
+ *  @param {Object|String} [pItem] The Group or name of Group name instance.
+ *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
+ *  @return {Group} The Page Item(s) that were grouped.
  */
 pub.ungroup = function(pItem) {
   checkNull(pItem);
@@ -453,9 +467,9 @@ pub.ungroup = function(pItem) {
   } else {
     error("b.ungroup(), not a valid Group. Please select a valid Group.");
   }
-
   return ungroupedItems;
 };
+
 
 /**
  * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
@@ -463,9 +477,9 @@ pub.ungroup = function(pItem) {
  * @cat Document
  * @subcat Multi-Getters
  * @method labels
- * @param  {String} label The label identifier
- * @param  {Function} [cb] Optional: The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount
- * @return {PageItem[]} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+ * @param  {String} label The label identifier.
+ * @param  {Function} [cb] Optional, the callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
+ * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
 pub.labels = function(label, cb) {
   checkNull(label);
@@ -487,14 +501,15 @@ pub.labels = function(label, cb) {
   return result;
 };
 
+
 /**
  * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method label
- * @param  {String} label The label identifier
- * @return {PageItem} The first PageItem of all the hits
+ * @param  {String} label The label identifier.
+ * @return {PageItem} The first PageItem with the given label.
  */
 pub.label = function(label) {
   checkNull(label);
@@ -508,13 +523,14 @@ pub.label = function(label) {
   b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
+
 /**
  * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method selection
- * @return {Object} The first selected object
+ * @return {Object} The first selected object.
  */
 pub.selection = function() {
   if(app.selection.length === 0) {
@@ -529,8 +545,8 @@ pub.selection = function() {
  * @cat Document
  * @subcat Multi-Getters
  * @method selections
- * @param  {Function} [cb] Optional: The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount
- * @return {Object[]} Array of selected object(s).
+ * @param  {Function} [cb] Optional, the callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
+ * @return {Array} Array of selected object(s).
  */
 pub.selections = function(cb) {
   if(app.selection.length === 0) {
@@ -548,7 +564,7 @@ pub.selections = function(cb) {
  * @cat Document
  * @subcat Multi-Getters
  * @method nameOnPage
- * @return {Object} The first object on the active page with the given name
+ * @return {Object} The first object on the active page with the given name.
  */
 pub.nameOnPage = function(name) {
   checkNull(name);
@@ -567,13 +583,14 @@ pub.nameOnPage = function(name) {
   return result;
 };
 
+
 /**
  * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
  *
  * @cat Document
  * @method units
- * @param  {Constant} [units] Supported units: PT, PX, CM, MM or IN
- * @return {Constant} Current unit setting
+ * @param  {String} [units] Optional, supported units: PT, PX, CM, MM or IN.
+ * @return {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
 pub.units = function (units) {
@@ -624,13 +641,14 @@ pub.units = function (units) {
   return currUnits;
 };
 
+
 /**
  * Creates a vertical guide line at the current spread and current layer.
  *
  * @cat Document
  * @method guideX
- * @param  {Number} x Position of the new guide
- * @return {Guide} New guide
+ * @param  {Number} x Position of the new guide line.
+ * @return {Guide} New guide line.
  */
 pub.guideX = function (x) {
   checkNull(x);
@@ -642,13 +660,14 @@ pub.guideX = function (x) {
   return guide;
 };
 
+
 /**
  * Creates a horizontal guide line at the current spread and current layer.
  *
  * @cat Document
  * @method guideY
- * @param  {Number} y Position of the new guide
- * @return {Guide} New guide
+ * @param  {Number} y Position of the new guide line.
+ * @return {Guide} New guide line.
  */
 pub.guideY = function (y) {
   checkNull(y);
@@ -660,35 +679,31 @@ pub.guideY = function (y) {
   return guide;
 };
 
+
 /**
  * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
  *
  * @cat Document
  * @subcat Page
  * @method margins
- * @param {Number} [top] Top margin or all if only one
- * @param {Number} [right] Right margin
- * @param {Number} [bottom] Bottom margin
- * @param {Number} [left] Left margin
- * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank
- * @return {Object} Current page margins with these properties: top, right, bottom, left
+ * @param {Number} [top] Optional, top margin or all if only one.
+ * @param {Number} [right] Optional, right margin.
+ * @param {Number} [bottom] Optional, bottom margin.
+ * @param {Number} [left] Optional, left margin.
+ * @param {Number} [pageNumber] Optional, sets margins to selected page, currentPage() if left blank.
+ * @return {Object} Current page margins with the properties: top, right, bottom, left.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
-
-
   if (arguments.length === 0) {
-
     return {top: pub.page(pageNumber).marginPreferences.top,
       right: pub.page(pageNumber).marginPreferences.right,
       bottom: pub.page(pageNumber).marginPreferences.bottom,
       left: pub.page(pageNumber).marginPreferences.left
     };
-
   } else if (arguments.length === 1) {
     right = bottom = left = top;
   }
-
-  if(pageNumber != undefined) {
+  if(pageNumber !== undefined) {
     pub.page(pageNumber).marginPreferences.top = top;
     pub.page(pageNumber).marginPreferences.right = right;
     pub.page(pageNumber).marginPreferences.bottom = bottom;
@@ -701,32 +716,31 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
   }
 };
 
+
 /**
  * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
  *
  * @cat Document
  * @subcat Page
  * @method bleeds
- * @param {Number} [top] Top bleed or all if only one
- * @param {Number} [right] Right bleed
- * @param {Number} [bottom] Bottom bleed
- * @param {Number} [left] Left bleed
+ * @param {Number} [top] Optional, top bleed or all if only one.
+ * @param {Number} [right] Optional, right bleed.
+ * @param {Number} [bottom] Optional, bottom bleed.
+ * @param {Number} [left] Optional, left bleed.
+ * @return {Object} Current document bleeds settings.
  */
 pub.bleeds = function(top, right, bottom, left) {
-
   if (arguments.length === 0) {
     return {top: currentDoc().documentPreferences.documentBleedTopOffset,
       right: currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
       bottom: currentDoc().documentPreferences.documentBleedBottomOffset,
       left: currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
     };
-
   } else if (arguments.length === 1) {
     right = bottom = left = top;
   }else{
     currentDoc().documentPreferences.documentBleedUniformSize = false;
   }
-
   currentDoc().documentPreferences.documentBleedTopOffset = top;
   currentDoc().documentPreferences.documentBleedOutsideOrRightOffset = right;
   currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
@@ -739,8 +753,8 @@ pub.bleeds = function(top, right, bottom, left) {
  *
  * @cat Output
  * @method inspect
- * @param  {Object} obj : the Object to inspect
- * @param  {Number} maxlevel Optional: recursion limit, default maxlevel = 2
+ * @param  {Object} obj The Object to be inspected.
+ * @param  {Number} maxlevel Optional, recursion limit, default maxlevel = 2.
  */
 pub.inspect = function(obj, maxlevel, level, propname) {
   checkNull(obj);
@@ -802,11 +816,12 @@ pub.inspect = function(obj, maxlevel, level, propname) {
  * @cat Environment
  * @subcat Date
  * @method year
- * @return {Number}
+ * @return {Number} The current year.
  */
 pub.year = function() {
   return (new Date()).getFullYear();
 };
+
 
 /**
  * The month() function returns the current month as a value from 1 - 12.
@@ -814,11 +829,12 @@ pub.year = function() {
  * @cat Environment
  * @subcat Date
  * @method month
- * @return {Number}
+ * @return {Number} The current month number.
  */
 pub.month = function() {
   return (new Date()).getMonth() + 1;
 };
+
 
 /**
  * The day() function returns the current day as a value from 1 - 31.
@@ -826,11 +842,12 @@ pub.month = function() {
  * @cat Environment
  * @subcat Date
  * @method day
- * @return {Number}
+ * @return {Number} The current day number.
  */
 pub.day = function() {
   return (new Date()).getDate();
 };
+
 
 /**
  * The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
@@ -838,12 +855,13 @@ pub.day = function() {
  * @cat Environment
  * @subcat Date
  * @method weekday
- * @return {String}
+ * @return {String} The current weekday name.
  */
 pub.weekday = function() {
   var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   return weekdays[(new Date()).getDay()];
 };
+
 
 /**
  * The hour() function returns the current hour as a value from 0 - 23.
@@ -851,11 +869,12 @@ pub.weekday = function() {
  * @cat Environment
  * @subcat Date
  * @method hour
- * @return {Number}
+ * @return {Number} The current hour.
  */
 pub.hour = function() {
   return (new Date()).getHours();
 };
+
 
 /**
  * The minute() function returns the current minute as a value from 0 - 59.
@@ -863,11 +882,12 @@ pub.hour = function() {
  * @cat Environment
  * @subcat Date
  * @method minute
- * @return {Number}
+ * @return {Number} The current minute.
  */
 pub.minute = function() {
   return (new Date()).getMinutes();
 };
+
 
 /**
  * The second() function returns the current second as a value from 0 - 59.
@@ -875,11 +895,12 @@ pub.minute = function() {
  * @cat Environment
  * @subcat Date
  * @method second
- * @return {Number}
+ * @return {Number} The current second.
  */
 pub.second = function() {
   return (new Date()).getSeconds();
 };
+
 
 /**
  * Returns the number of milliseconds (thousandths of a second) since starting an applet.
@@ -887,11 +908,12 @@ pub.second = function() {
  * @cat Environment
  * @subcat Date
  * @method millis
- * @return {Number}
+ * @return {Number} The current milli.
  */
 pub.millis = function() {
   return Date.now() - startTime;
 };
+
 
 /**
  * The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
@@ -899,11 +921,12 @@ pub.millis = function() {
  * @cat Environment
  * @subcat Date
  * @method millisecond
- * @return {Number}
+ * @return {Number} The current millisecond.
  */
 pub.millisecond = function() {
   return (new Date()).getMilliseconds();
 };
+
 
 /**
  * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
@@ -911,7 +934,7 @@ pub.millisecond = function() {
  * @cat Environment
  * @subcat Date
  * @method timestamp
- * @return {String}
+ * @return {String} The current time in YYYYMMDD_HHMMSS.
  */
 pub.timestamp = function() {
   var dt = new Date();
@@ -924,5 +947,3 @@ pub.timestamp = function() {
   dtf += pub.nf(dt.getSeconds(), 2);
   return dtf;
 };
-
-
