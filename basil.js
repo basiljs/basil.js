@@ -420,8 +420,14 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign externa
 // global functions
 
 
-/* todo */
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter
+/**
+ * @description The <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter()</a> method creates a new array with all elements that pass the test implemented by the provided function.
+ * @cat Data
+ * @subcat Array
+ * @method Array.filter
+ * @param  {Function} callback The Function is a predicate, to test each element of the array. Return true to keep the element, false otherwise.
+ * @return {Array} The new array with the elements that pass the test.
+ */
 if (!Array.prototype.filter) {
   Array.prototype.filter = function(fun) {
     if (this === null) throw new TypeError();
@@ -440,8 +446,14 @@ if (!Array.prototype.filter) {
   };
 }
 
-/* todo */
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
+/**
+ * @description The <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map">map()</a> method creates a new array with the results of calling a provided function on every element in this array.
+ * @cat Data
+ * @subcat Array
+ * @method Array.map
+ * @param  {Function} callback Function that produces an element of the new Array.
+ * @return {Array} The new array with each element being the result of the callback function.
+ */
 if (!Array.prototype.map) {
   Array.prototype.map = function(callback, thisArg) {
     var T, A, k;
@@ -475,8 +487,8 @@ if (!Array.prototype.map) {
 * Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
 *
 * @cat Data
-* @subcat Array Functions
-* @method forEach
+* @subcat Array
+* @method Array.forEach
 * @param {Array} collection The array to be processed.
 * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
 */
@@ -499,7 +511,7 @@ if (!glob.forEach) {
 pub.forEach = glob.forEach;
 
 /**
- * HashList is a data container that allows you to store information as key -> value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
+ * HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
  *
  * @constructor
  * @cat Data
@@ -526,13 +538,13 @@ glob.HashList = function () {
 
   /**
    *
-   * This removes a key -> value pair by its key.
+   * This removes a key - value pair by its key.
    *
    * @cat Data
    * @subcat HashList
    * @method HashList.remove
-   * @param {any} key The key to delete
-   * @return {any} The value before deletion
+   * @param {String} key The key to delete.
+   * @return {Object} The value before deletion.
    */
   that.remove = function(key) {
     var tmp_previous;
@@ -550,22 +562,22 @@ glob.HashList = function () {
    * @cat Data
    * @subcat HashList
    * @method HashList.get
-   * @param {any} key The key to look for
-   * @return {any} The value
+   * @param {String} key The key to look for.
+   * @return {Object} The value.
    */
   that.get = function(key) {
     return that.items[key];
   };
 
   /**
-   * This sets a key -> value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
+   * This sets a key - value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
    *
    * @cat Data
    * @subcat HashList
    * @method HashList.set
-   * @param {any} key The key to use
-   * @param {any} value The value to set
-   * @return {any} The value after setting
+   * @param {String} key The key to use.
+   * @param {Object|String|Number|Boolean} value The value to set.
+   * @return {Object} The value after setting.
    */
   that.set = function(key, value) {
 
@@ -586,8 +598,8 @@ glob.HashList = function () {
    * @cat Data
    * @subcat HashList
    * @method HashList.hasKey
-   * @param {any} key The key to check
-   * @return {Boolean}
+   * @param {String} key The key to check.
+   * @return {Boolean} Returns true or false.
    */
   that.hasKey = function(key) {
     checkKey(key);
@@ -595,13 +607,13 @@ glob.HashList = function () {
   };
 
   /**
-   * Checks if a certain value exists at least once in all of the key -> value pairs.
+   * Checks if a certain value exists at least once in all of the key - value pairs.
    *
    * @cat Data
    * @subcat HashList
    * @method HashList.hasValue
-   * @param {any} value
-   * @return {Boolean}
+   * @param {Object|String|Number|Boolean} value The value to check.
+   * @return {Boolean} Returns true or false.
    */
   that.hasValue = function(value) {
     var obj = that.items;
@@ -621,7 +633,7 @@ glob.HashList = function () {
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeysByValues
-   * @return {Array} An array with all the keys
+   * @return {Array} An array with all the keys.
    */
   that.getKeysByValues = function() {
     var obj = that.items;
@@ -640,7 +652,7 @@ glob.HashList = function () {
    * @cat Data
    * @subcat HashList
    * @method HashList.getSortedKeys
-   * @return {Array} An array with all the keys
+   * @return {Array} An array with all the keys sorted.
    */
   that.getSortedKeys = function () {
     return that.getKeys().sort(); // ["a", "b", "z"]
@@ -652,7 +664,7 @@ glob.HashList = function () {
    * @cat Data
    * @subcat HashList
    * @method HashList.getKeys
-   * @return {Array} An array with all the keys
+   * @return {Array} An array with all the keys.
    */
   that.getKeys = function () {
     var keys = [];
@@ -668,12 +680,12 @@ glob.HashList = function () {
   };
 
   /**
-   * Returns an array with all keys.
+   * Returns an array with all values.
    *
    * @cat Data
    * @subcat HashList
-   * @method HashList.getKeys
-   * @return {Array} An array with all the keys
+   * @method HashList.getValues
+   * @return {Array} An array with all the values.
    */
   that.getValues = function () {
 
@@ -688,7 +700,7 @@ glob.HashList = function () {
   };
 
   /**
-   * Deletes all the key -> value pairs in this HashList.
+   * Deletes all the key - value pairs in this HashList.
    *
    * @cat Data
    * @subcat HashList
@@ -700,7 +712,6 @@ glob.HashList = function () {
     }
     that.length = 0;
   };
-
   return that;
 };
 
@@ -6112,7 +6123,7 @@ pub.noise = function(x, y, z) {
  *
  * @cat Math
  * @subcat Random
- * @method noiseDetail.
+ * @method noiseDetail
  * @param {Number} octaves Number of octaves to be used by the noise() function.
  * @param {Number} fallout Falloff factor for each octave.
  */
