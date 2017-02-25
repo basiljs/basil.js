@@ -1,27 +1,75 @@
 // ----------------------------------------
 // Structure
 
+var forEachTextCollection = function(container, collection, cb) {
+  // var collection;
+  if(container instanceof Document) {
+    collection = container.stories.everyItem()[collection];
+  } else {
+    collection = container.textFrames.everyItem()[collection];
+  }
+
+  for (var i = 0; i < collection.length; i++) {
+    if(cb(collection[i], i) === false) {
+      return false;
+    }
+  }
+  return true;
+};
+
+
+var textCollection = function(collection, legalContainers, container, cb) {
+
+  checkNull(container);
+
+  if(!(container.hasOwnProperty("contents") || container instanceof Document || container instanceof Page)) {
+    error("b." + collection + "(), wrong object type. Use: " + legalContainers);
+  }
+
+  if(cb instanceof Function) {
+    // callback function is passed
+    if (container instanceof Document || container instanceof Page) {
+      return forEachTextCollection(container, collection, cb);
+    }
+    return forEach(container[collection], cb);
+
+  }
+    // no callback function is passed
+  if(container instanceof Document) {
+    return container.stories.everyItem()[collection];
+  } else if (container instanceof Page) {
+    return container.textFrames.everyItem()[collection];
+  }
+  return container[collection];
+
+
+};
 /**
- * Suspends the calling thread for a number of milliseconds.
+ * @description Suspends the calling thread for a number of milliseconds.
  * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
  *
  * @cat Environment
  * @method delay
- * @param  {Number} milliseconds  The delay time in milliseconds
+ * @param  {Number} milliseconds  The delay time in milliseconds.
  */
 pub.delay = function (milliseconds) {
   $.sleep(milliseconds);
 };
 
 /**
- * If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
+ * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method stories
  * @param  {Document} doc The document instance to iterate the stories in
- * @param  {Function} [cb]  Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount;
- * @return {Stories[]} Array of Stories.
+ * @param  {Function} [cb] The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount.
+ * @example
+ * b.stories(b.doc(), function(story, loopCount){
+ *   b.println("Number of words in each Story:");
+ *   b.println(story.words.length);
+ * });
+ * @return {Stories} A collection of Story objects.
  */
 pub.stories = function(doc, cb) {
 
@@ -31,20 +79,20 @@ pub.stories = function(doc, cb) {
     return doc.stories;
   } else if (cb instanceof Function) {
     return forEach(doc.stories, cb);
-  } else {
-    error("b.stories(), incorrect call. Wrong parameters!");
   }
+  error("b.stories(), incorrect call. Wrong parameters!");
+  return null;
 };
 
 /**
- * If no callback function is given it returns a Collection of paragraphs in the container otherwise calls the given callback function with each paragraph of the given document, page, story or textFrame.
+ * @description If no callback function is given it returns a Collection of paragraphs in the container otherwise calls the given callback function with each paragraph of the given document, page, story or textFrame.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method paragraphs
- * @param  {Document|Page|Story|TextFrame} container The document, story, page or textFrame instance to iterate the paragraphs in
- * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount
- * @return {Paragraphs[]} Array of Paragraphs.
+ * @param  {Document|Page|Story|TextFrame} container The document, story, page or textFrame instance to iterate the paragraphs in.
+ * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount.
+ * @return {Paragraphs} A collection of Paragraph objects.
  */
 pub.paragraphs = function(container, cb) {
 
@@ -54,7 +102,7 @@ pub.paragraphs = function(container, cb) {
 };
 
 // /**
-//  * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
+//  * @description If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
 //  *
 //  * cat Document
 //  * subcat Multi-Getters
@@ -97,15 +145,14 @@ pub.paragraphs = function(container, cb) {
 // };
 
 /**
- * If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
+ * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method lines
- * @param  {Document|Page|Story|TextFrame|Paragraph} container The document, page, story, textFrame or paragraph instance to
- *                                                   iterate the lines in
- * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount
- * @return {Lines[]} Array of lines.
+ * @param  {Document|Page|Story|TextFrame|Paragraph} container The document, page, story, textFrame or paragraph instance to iterate the lines in.
+ * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount.
+ * @return {Lines} A collection of Line objects.
  */
 pub.lines = function(container, cb) {
 
@@ -115,15 +162,14 @@ pub.lines = function(container, cb) {
 };
 
 /**
- * If no callback function is given it returns a Collection of words in the container otherwise calls the given callback function with each word of the given document, page, story, textFrame, paragraph or line.
+ * @description If no callback function is given it returns a Collection of words in the container otherwise calls the given callback function with each word of the given document, page, story, textFrame, paragraph or line.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method words
- * @param  {Document|Page|Story|TextFrame|Paragraph|Line} container The document, page, story, textFrame, paragraph or line instance
- *                                                        to iterate the words in
- * @param  {Function} [cb] Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount
- * @return {Words[]} Array of Words.
+ * @param  {Document|Page|Story|TextFrame|Paragraph|Line} container The document, page, story, textFrame, paragraph or line instance to iterate the words in.
+ * @param  {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount.
+ * @return {Words} A collection of Word objects.
  */
 pub.words = function(container, cb) {
 
@@ -133,15 +179,14 @@ pub.words = function(container, cb) {
 };
 
 /**
- * If no callback function is given it returns a Collection of characters in the container otherwise calls the given callback function with each character of the given document, page, story, textFrame, paragraph, line or word.
+ * @description If no callback function is given it returns a Collection of characters in the container otherwise calls the given callback function with each character of the given document, page, story, textFrame, paragraph, line or word.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method characters
- * @param  {Document|Page|Story|TextFrame|Paragraph|Line|Word} container The document, page, story, textFrame, paragraph, line or word instance to
- *                                                    iterate the characters in
+ * @param  {Document|Page|Story|TextFrame|Paragraph|Line|Word} container The document, page, story, textFrame, paragraph, line or word instance to  iterate the characters in.
  * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
- * @return {Characters} You can use it like an array.
+ * @return {Characters} A collection of Character objects.
  */
 pub.characters = function(container, cb) {
 
@@ -150,59 +195,16 @@ pub.characters = function(container, cb) {
 
 };
 
-var textCollection = function(collection, legalContainers, container, cb) {
-
-  checkNull(container);
-
-  if(!(container.hasOwnProperty("contents") || container instanceof Document || container instanceof Page)) {
-    error("b." + collection + "(), wrong object type. Use: " + legalContainers);
-  }
-
-  if(cb instanceof Function) {
-    // callback function is passed
-    if (container instanceof Document || container instanceof Page) {
-      return forEachTextCollection(container, collection, cb);
-    } else {
-      return forEach(container[collection], cb);
-    }
-  } else {
-    // no callback function is passed
-    if(container instanceof Document) {
-      return container.stories.everyItem()[collection];
-    } else if (container instanceof Page) {
-      return container.textFrames.everyItem()[collection];
-    } else {
-      return container[collection];
-    }
-  }
-}
-
-var forEachTextCollection = function(container, collection, cb) {
-  var collection;
-  if(container instanceof Document) {
-    collection = container.stories.everyItem()[collection];
-  } else {
-    collection = container.textFrames.everyItem()[collection];
-  }
-
-  for (var i = 0; i < collection.length; i++) {
-    if(cb(collection[i], i) === false) {
-      return false;
-    }
-  }
-  return true;
-};
-
 
 /**
- * If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
+ * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
  *
  * @cat Document
  * @subcat Multi-Getters
  * @method items
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
  * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
- * @return {PageItems[]} array or PageItems.
+ * @return {PageItems} A collection of PageItem objects.
  */
 pub.items = function(container, cb) {
 
@@ -216,18 +218,18 @@ pub.items = function(container, cb) {
     } else if(cb instanceof Function) {
       return forEach(container.allPageItems, cb);
     }
-  } else {
-    error("b.items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
   }
+  error("b.items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
+  return null;
 };
 
 
 /**
- * Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
+ * @description Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
  *
  * @cat Document
  * @method clear
- * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
+ * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in.
  */
 pub.clear = function(container) {
 
@@ -249,11 +251,11 @@ pub.clear = function(container) {
 };
 
 /**
- * Removes the provided Page, Layer, PageItem, Swatch, etc.
+ * @description Removes the provided Page, Layer, PageItem, Swatch, etc.
  *
  * @cat Document
  * @method remove
- * @param  {PageItem} obj The object to be removed
+ * @param  {PageItem} obj The object to be removed.
  */
 pub.remove = function(obj) {
 
