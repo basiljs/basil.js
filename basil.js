@@ -1308,7 +1308,7 @@ pub.paragraphs = function(container, cb) {
 };
 
 // /**
-//  * If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
+//  * @description If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
 //  *
 //  * cat Document
 //  * subcat Multi-Getters
@@ -1403,7 +1403,7 @@ pub.characters = function(container, cb) {
 
 
 /**
- * If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
+ * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
  *
  * @cat Document
  * @subcat Multi-Getters
@@ -1431,7 +1431,7 @@ pub.items = function(container, cb) {
 
 
 /**
- * Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
+ * @description Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
  *
  * @cat Document
  * @method clear
@@ -1457,7 +1457,7 @@ pub.clear = function(container) {
 };
 
 /**
- * Removes the provided Page, Layer, PageItem, Swatch, etc.
+ * @description Removes the provided Page, Layer, PageItem, Swatch, etc.
  *
  * @cat Document
  * @method remove
