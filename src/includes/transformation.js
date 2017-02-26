@@ -166,6 +166,7 @@ var Matrix2D = pub.Matrix2D = function() {
  */
 Matrix2D.prototype = {
   /**
+   * @method Matrix2D.set
    * @cat Document
    * @subcat Transformation
    * @description Set a Matrix.
@@ -186,6 +187,7 @@ Matrix2D.prototype = {
 
 /**
  * @description Get a Matrix.
+ * @method Matrix2D.get
  * @cat Document
  * @subcat Transformation
  * @todo More description.
@@ -200,6 +202,7 @@ Matrix2D.prototype = {
   },
 /**
  * @cat Document
+ * @method Matrix2D.reset
  * @subcat Transformation
  * @description Reset the Matrix.
  * @property {function} Matrix2D.reset Resets the Matrix.
@@ -209,6 +212,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description Slice the Matrix into an array.
+   * @method Matrix2D.array
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -222,6 +226,7 @@ Matrix2D.prototype = {
 
    * @description Slice the Matrix into an array.
    * @cat Document
+   * @method Matrix2D.adobeMatrix
    * @subcat Transformation
    * @todo More description.
    * @return {Array} Returns an Adobe Matrix.
@@ -243,6 +248,7 @@ Matrix2D.prototype = {
   /**
    * @description translate Needs more description.
    * @cat Document
+   * @method Matrix2D.translate
    * @subcat Transformation
    * @todo More description.
    * @param  {Number} tx …
@@ -254,6 +260,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invTranslate Needs more description.
+   * @method Matrix2D.invTranslate
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -265,6 +272,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description transpose Needs more description.
+   * @method Matrix2D.transpose
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -272,6 +280,7 @@ Matrix2D.prototype = {
   transpose: function() {},
   /**
    * @description mult Needs more description.
+   * @method Matrix2D.mult
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -306,6 +315,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description multX Needs more description.
+   * @method Matrix2D.multX
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -318,6 +328,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description multY Needs more description.
+   * @method Matrix2D.multY
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -338,6 +349,7 @@ Matrix2D.prototype = {
   },*/
   /**
    * @description determinant Needs more description.
+   * @method Matrix2D.determinant
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -348,6 +360,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invert Needs more description.
+   * @method Matrix2D.invert
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -374,6 +387,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description scale Needs more description.
+   * @method Matrix2D.scale
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -393,6 +407,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invScale Needs more description.
+   * @method Matrix2D.invScale
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -407,6 +422,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description apply Needs more description.
+   * @method Matrix2D.apply
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -431,6 +447,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description preApply Needs more description.
+   * @method Matrix2D.preApply
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -455,6 +472,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description rotate Needs more description.
+   * @method Matrix2D.rotate
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -474,6 +492,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description rotateZ Needs more description.
+   * @method Matrix2D.rotateZ
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -484,6 +503,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invRotateZ Needs more description.
+   * @method Matrix2D.invRotateZ
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -494,6 +514,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description print Needs more description.
+   * @method Matrix2D.print
    * @cat Document
    * @subcat Transformation
    * @todo More description.
