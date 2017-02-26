@@ -6120,11 +6120,12 @@ pub.noise = function(x, y, z) {
 
 /**
  * Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().
+ *
  * By changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.
  *
- * @method noiseDetail
  * @cat Math
  * @subcat Random
+ * @method noiseDetail
  * @param {Number} octaves Number of octaves to be used by the noise() function.
  * @param {Number} fallout Falloff factor for each octave.
  */
@@ -6447,6 +6448,7 @@ var Matrix2D = pub.Matrix2D = function() {
  */
 Matrix2D.prototype = {
   /**
+   * @method Matrix2D.set
    * @cat Document
    * @subcat Transformation
    * @description Set a Matrix.
@@ -6467,6 +6469,7 @@ Matrix2D.prototype = {
 
 /**
  * @description Get a Matrix.
+ * @method Matrix2D.get
  * @cat Document
  * @subcat Transformation
  * @todo More description.
@@ -6481,6 +6484,7 @@ Matrix2D.prototype = {
   },
 /**
  * @cat Document
+ * @method Matrix2D.reset
  * @subcat Transformation
  * @description Reset the Matrix.
  * @property {function} Matrix2D.reset Resets the Matrix.
@@ -6490,6 +6494,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description Slice the Matrix into an array.
+   * @method Matrix2D.array
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6503,6 +6508,7 @@ Matrix2D.prototype = {
 
    * @description Slice the Matrix into an array.
    * @cat Document
+   * @method Matrix2D.adobeMatrix
    * @subcat Transformation
    * @todo More description.
    * @return {Array} Returns an Adobe Matrix.
@@ -6524,6 +6530,7 @@ Matrix2D.prototype = {
   /**
    * @description translate Needs more description.
    * @cat Document
+   * @method Matrix2D.translate
    * @subcat Transformation
    * @todo More description.
    * @param  {Number} tx …
@@ -6535,6 +6542,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invTranslate Needs more description.
+   * @method Matrix2D.invTranslate
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6546,6 +6554,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description transpose Needs more description.
+   * @method Matrix2D.transpose
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6553,6 +6562,7 @@ Matrix2D.prototype = {
   transpose: function() {},
   /**
    * @description mult Needs more description.
+   * @method Matrix2D.mult
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6587,6 +6597,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description multX Needs more description.
+   * @method Matrix2D.multX
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6599,6 +6610,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description multY Needs more description.
+   * @method Matrix2D.multY
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6619,6 +6631,7 @@ Matrix2D.prototype = {
   },*/
   /**
    * @description determinant Needs more description.
+   * @method Matrix2D.determinant
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6629,6 +6642,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invert Needs more description.
+   * @method Matrix2D.invert
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6655,6 +6669,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description scale Needs more description.
+   * @method Matrix2D.scale
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6674,6 +6689,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invScale Needs more description.
+   * @method Matrix2D.invScale
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6688,6 +6704,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description apply Needs more description.
+   * @method Matrix2D.apply
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6712,6 +6729,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description preApply Needs more description.
+   * @method Matrix2D.preApply
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6736,6 +6754,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description rotate Needs more description.
+   * @method Matrix2D.rotate
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6755,6 +6774,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description rotateZ Needs more description.
+   * @method Matrix2D.rotateZ
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6765,6 +6785,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description invRotateZ Needs more description.
+   * @method Matrix2D.invRotateZ
    * @cat Document
    * @subcat Transformation
    * @todo More description.
@@ -6775,6 +6796,7 @@ Matrix2D.prototype = {
   },
   /**
    * @description print Needs more description.
+   * @method Matrix2D.print
    * @cat Document
    * @subcat Transformation
    * @todo More description.
