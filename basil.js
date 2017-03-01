@@ -6452,9 +6452,7 @@ Matrix2D.prototype = {
    * @cat Document
    * @subcat Transformation
    * @description Set a Matrix.
-   * @todo  More description.
-   * @type {function}
-   * @property {function} Matrix.set Sets the matrix.
+   * @todo More description.
    */
   set: function() {
     if (arguments.length === 6) {
@@ -6473,8 +6471,6 @@ Matrix2D.prototype = {
  * @cat Document
  * @subcat Transformation
  * @todo More description.
- * @type {function}
- * @property {function} Matrix2D.get Get the current Matrix.
  * @return {Matrix2D} The current Matrix.
  */
   get: function() {
@@ -6483,11 +6479,10 @@ Matrix2D.prototype = {
     return outgoing;
   },
 /**
- * @cat Document
- * @method Matrix2D.reset
- * @subcat Transformation
  * @description Reset the Matrix.
- * @property {function} Matrix2D.reset Resets the Matrix.
+ * @method Matrix2D.reset
+ * @cat Document
+ * @subcat Transformation
  */
   reset: function() {
     this.set([1, 0, 0, 0, 1, 0]);
@@ -6498,7 +6493,6 @@ Matrix2D.prototype = {
    * @cat Document
    * @subcat Transformation
    * @todo More description.
-   * [array description]
    * @return {Array} Returns an sliced array.
    */
   array: function array() {
