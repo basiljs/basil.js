@@ -2,7 +2,7 @@
 // Shape
 
 /**
- * Draws an ellipse (oval) in the display window. An ellipse with an equal <b>width</b> and <b>height</b> is a circle.
+ * Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
  * The first two parameters set the location, the third sets the width, and the fourth sets the height.
  *
  * @cat Document
@@ -102,11 +102,11 @@ pub.line = function(x1, y1, x2, y2) {
 };
 
 /**
- * Using the beginShape() and endShape() functions allow creating more complex forms.
+ * Using the beginShape() and endShape() functions allows to create more complex forms.
  * beginShape() begins recording vertices for a shape and endShape() stops recording.
  * After calling the beginShape() function, a series of vertex() commands must follow.
- * To stop drawing the shape, call endShape(). The value of the parameter tells whether the paths to
- * create from the provided vertices have to be closed or not (to connect the beginning and the end).
+ * To stop drawing the shape, call endShape(). The shapeMode parameter allows to close the shape
+ * (to connect the beginning and the end).
  *
  * @cat Document
  * @subcat Primitives
@@ -126,11 +126,11 @@ pub.beginShape = function(shapeMode) {
 
 /**
  * Shapes are constructed by connecting a series of vertices. vertex() is used to
- * specify the vertex coordinates lines and polygons. It is used exclusively within
+ * specify the vertex coordinates of lines and polygons. It is used exclusively between
  * the beginShape() and endShape() functions.
  *
- * Please use either vertex(x, y) or
- * for drawing bezier shapes vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight).
+ * Use either vertex(x, y) for drawing straight corners or
+ * vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight) for drawing bezier shapes.
  * You can also mix the two approaches.
  *
  * @cat Document
@@ -161,13 +161,10 @@ pub.vertex = function() {
 };
 
 /**
- * The arc() function draws an arc in the display window.
- * Arcs are drawn along the outer edge of an ellipse defined by the
- * <b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.
- * The origin or the arc's ellipse may be changed with the
- * <b>ellipseMode()</b> function.
- * The <b>start</b> and <b>stop</b> parameters specify the angles
- * at which to draw the arc.
+ * The arc() function draws an arc. Arcs are drawn along the outer edge of an ellipse
+ * defined by the <b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.
+ * The origin or the arc's ellipse may be changed with the <b>ellipseMode()</b> function.
+ * The <b>start</b> and <b>stop</b> parameters specify the angles at which to draw the arc.
  *
  * @cat Document
  * @subcat Primitives
@@ -297,8 +294,9 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
 }
 
 /**
- * addPath() is used to create multi component paths. Call addPath() to add the so far drawn vertices to a single path.
- * New vertices will then end up in a new path. endShape() will then return a multi path object. All component paths will account for
+ * addPath() is used to create multi component paths. Call addPath() to add
+ * the vertices drawn so far to a single path. New vertices will then end up in a new path and
+ * endShape() will return a multi path object. All component paths will account for
  * the setting (see b.CLOSE) given in beginShape(shapeMode).
  *
  * @cat Document
@@ -455,7 +453,7 @@ pub.rectMode = function (mode) {
 };
 
 /**
- * The origin of the ellipse is modified by the ellipseMode() function.
+ * The origin of new ellipses is modified by the ellipseMode() function.
  * The default configuration is ellipseMode(CENTER), which specifies the
  * location of the ellipse as the center of the shape. The RADIUS mode is
  * the same, but the width and height parameters to ellipse() specify the
@@ -480,8 +478,7 @@ pub.ellipseMode = function (mode) {
 };
 
 /**
- * Sets the width of the stroke used for lines and the border
- * around shapes.
+ * Sets the width of the stroke used for lines and the border around shapes.
  *
  * @cat Document
  * @subcat Attributes
@@ -570,7 +567,7 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
- * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
+ * Duplicates the given page after the current page or the given page item to the current page and layer. Use b.rectMode() to set center point.
  *
  * @cat Document
  * @subcat Transformation
