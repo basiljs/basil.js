@@ -8,11 +8,11 @@
  * @cat Document
  * @subcat Primitives
  * @method ellipse
- * @param  {Number} x Location X
- * @param  {Number} y Location Y
- * @param  {Number} w Width
- * @param  {Number} h Height
- * @return {Oval} New oval (n.b. in Adobe Scripting the corresponding type is Oval, not Ellipse)
+ * @param {Number} x X-coordinate of the ellipse.
+ * @param {Number} y Y-coordinate of the ellipse.
+ * @param {Number} w Width of the ellipse.
+ * @param {Number} h Height of the ellipse.
+ * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
   if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
@@ -70,11 +70,11 @@ pub.ellipse = function(x, y, w, h) {
  * @cat Document
  * @subcat Primitives
  * @method line
- * @param  {Number} x1 Point A x-value
- * @param  {Number} y1 Point A y-value
- * @param  {Number} x2 Point B x-value
- * @param  {Number} y2 Point B y-value
- * @return {GraphicLine} New GraphicLine
+ * @param {Number} x1 X-coordinate of Point 1.
+ * @param {Number} y1 Y-coordinate of Point 1.
+ * @param {Number} x2 X-coordinate of Point 2.
+ * @param {Number} y2 Y-coordinate of Point 2.
+ * @return {GraphicLine} New GraphicLine.
  */
 /*
  *  TODO: Vectors as arguments
@@ -111,7 +111,7 @@ pub.line = function(x1, y1, x2, y2) {
  * @cat Document
  * @subcat Primitives
  * @method beginShape
- * @param shapeMode Set b.CLOSE if the new Path should be auto-closed.
+ * @param {String} shapeMode Set tob.CLOSE if the new Path should be auto-closed.
  */
 pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
@@ -136,12 +136,12 @@ pub.beginShape = function(shapeMode) {
  * @cat Document
  * @subcat Primitives
  * @method vertex
- * @param  {Number} x position x-value
- * @param  {Number} y position y-value
- * @param  {Number} [xAnchorLeft] position xAnchorLeft-value
- * @param  {Number} [yAnchorLeft] position yAnchorLeft-value
- * @param  {Number} [xAnchorRight] position xAnchorRight-value
- * @param  {Number} [yAnchorRight] position yAnchorRight-value
+ * @param  {Number} x X-coordinate of the vertex.
+ * @param  {Number} y Y-coordinate of the vertex.
+ * @param  {Number} [xAnchorLeft] X-coordinate of the left-direction point.
+ * @param  {Number} [yAnchorLeft] Y-coordinate of the left-direction point.
+ * @param  {Number} [xAnchorRight] X-coordinate of the right-direction point.
+ * @param  {Number} [yAnchorRight] Y-coordinate of the right-direction point.
  */
 pub.vertex = function() {
   if (isArray(currVertexPoints)) {
@@ -172,15 +172,15 @@ pub.vertex = function() {
  * @cat Document
  * @subcat Primitives
  * @method arc
- * @param {Number} cx         x-coordinate of the arc's center
- * @param {Number} cy         y-coordinate of the arc's center
- * @param {Number} w          width of the arc's ellipse
- * @param {Number} h     height of the arc's ellipse
- * @param {Number} startAngle starting angle of the arc (radians)
- * @param {Number} endAngle   ending angle of the arc (radians)
- * @param {String} mode optional property defines rendering technique of arc, b.OPEN (default), b.CHORD, or b.PIE
+ * @param {Number} cx X-coordinate of the arc's center.
+ * @param {Number} cy Y-coordinate of the arc's center.
+ * @param {Number} w Width of the arc's ellipse.
+ * @param {Number} h Height of the arc's ellipse.
+ * @param {Number} startAngle Starting angle of the arc in radians.
+ * @param {Number} endAngle Ending angle of the arc in radians.
+ * @param {String} [mode] Mode to define the rendering technique of the arc: b.OPEN (default), b.CHORD, or b.PIE.
  *
- * @return {GraphicLine|Polygon} newShape (n.b. in Adobe Scripting the corresponding type is a Path Item)
+ * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
  * TODO(S)
  * - fix overlapping points bug
@@ -317,7 +317,7 @@ pub.addPath = function() {
  * @cat Document
  * @subcat Primitives
  * @method endShape
- * @return {GraphicLine|Polygon} newShape
+ * @return {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
 pub.endShape = function() {
   doAddPath();
@@ -370,11 +370,11 @@ function notCalledBeginShapeError () {
  * @cat Document
  * @subcat Primitives
  * @method rect
- * @param  {Number} x Position X
- * @param  {Number} y Position Y
- * @param  {Number} w Width
- * @param  {Number} h Height
- * @return {Rectangle} New rectangle
+ * @param  {Number} x X-coordinate of the rectangle.
+ * @param  {Number} y Y-coordinate of the rectangle.
+ * @param  {Number} w Width of the rectangle.
+ * @param  {Number} h Height of the rectangle.
+ * @return {Rectangle} The rectangle that was created.
  */
 pub.rect = function(x, y, w, h) {
   if (w === 0 || h === 0) {
@@ -441,7 +441,7 @@ pub.rect = function(x, y, w, h) {
  * @cat Document
  * @subcat Attributes
  * @method rectMode
- * @param {String} mode Either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS
+ * @param {String} mode The rectMode to switch to: either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS.
  *
  */
 pub.rectMode = function (mode) {
@@ -467,7 +467,7 @@ pub.rectMode = function (mode) {
  * @cat Document
  * @subcat Attributes
  * @method ellipseMode
- * @param {String} mode Either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS
+ * @param {String} mode The ellipse mode to switch to: either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS.
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
@@ -486,7 +486,7 @@ pub.ellipseMode = function (mode) {
  * @cat Document
  * @subcat Attributes
  * @method strokeWeight
- * @param {Number} weight The width of the stroke
+ * @param {Number} weight The width of the stroke in points.
  */
 pub.strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
@@ -503,9 +503,9 @@ pub.strokeWeight = function (weight) {
  *
  * @cat Typography
  * @method objectStyle
- * @param  {PageItem|String} pageItemOrName  A page item whose style to return or the name of the object style to return.
- * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
- * @return {ObjectStyle}  The object style instance.
+ * @param  {PageItem|String} itemOrName A page item whose style to return or the name of the object style to return.
+ * @param {Object} [props] An object of property name/value pairs to set the style's properties.
+ * @return {ObjectStyle} The object style instance.
  */
 pub.objectStyle = function(itemOrName, props) {
   var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
@@ -545,9 +545,9 @@ pub.objectStyle = function(itemOrName, props) {
  *
  * @cat Typography
  * @method applyObjectStyle
- * @param  {PageItem} item  The page item to apply the style to.
- * @param {ObjectStyle|String} style  An object style instance or the name of the object style to apply.
- * @return {PageItem}  The page item that the style was applied to.
+ * @param  {PageItem} item The page item to apply the style to.
+ * @param {ObjectStyle|String} style An object style instance or the name of the object style to apply.
+ * @return {PageItem} The page item that the style was applied to.
  */
 
 pub.applyObjectStyle = function(item, style) {
@@ -575,8 +575,8 @@ pub.applyObjectStyle = function(item, style) {
  * @cat Document
  * @subcat Transformation
  * @method duplicate
- * @param {PageItem|Page} item The item to duplicate
- * @returns {Object} Returns the new item
+ * @param {PageItem|Page} item The page item or page to duplicate.
+ * @returns {Object} The new page item or page.
  */
 pub.duplicate = function(item) {
 
