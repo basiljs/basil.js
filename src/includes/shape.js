@@ -111,7 +111,7 @@ pub.line = function(x1, y1, x2, y2) {
  * @cat Document
  * @subcat Primitives
  * @method beginShape
- * @param {String} shapeMode Set tob.CLOSE if the new Path should be auto-closed.
+ * @param {String} shapeMode Set to b.CLOSE if the new Path should be auto-closed.
  */
 pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
@@ -162,9 +162,9 @@ pub.vertex = function() {
 
 /**
  * The arc() function draws an arc. Arcs are drawn along the outer edge of an ellipse
- * defined by the <b>x</b>, <b>y</b>, <b>width</b> and <b>height</b> parameters.
- * The origin or the arc's ellipse may be changed with the <b>ellipseMode()</b> function.
- * The <b>start</b> and <b>stop</b> parameters specify the angles at which to draw the arc.
+ * defined by the x, y, width and height parameters.
+ * The origin or the arc's ellipse may be changed with the ellipseMode() function.
+ * The start and stop parameters specify the angles at which to draw the arc.
  *
  * @cat Document
  * @subcat Primitives
