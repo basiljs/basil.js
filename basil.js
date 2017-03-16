@@ -1500,7 +1500,7 @@ pub.doc = function(doc) {
  * @cat Document
  * @method size
  * @param  {Number} width The desired width of the current document.
- * @param  {Number} [height] Optional the desired height of the current document. If not provided the width will be used as the height.
+ * @param  {Number} [height] The desired height of the current document. If not provided the width will be used as the height.
  * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
  *
  */
@@ -1541,8 +1541,8 @@ pub.size = function(width, height) {
  *
  * @cat Document
  * @method close
- * @param  {Object|Boolean} [saveOptions] Optional, the Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] Optional, the indesign file instance to save the document to.
+ * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param  {File} [file] The indesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -1702,7 +1702,7 @@ pub.addPage = function(location) {
  * @cat Document
  * @subcat Page
  * @method removePage
- * @param  {Page|Number} [page] Optional, the page to be removed as Page object or page number.
+ * @param  {Page|Number} [page] The page to be removed as Page object or page number.
  */
 pub.removePage = function (page) {
   checkNull(page);
@@ -1722,7 +1722,7 @@ pub.removePage = function (page) {
  * @cat Document
  * @subcat Page
  * @method pageNumber
- * @param  {Page} [pageObj] Optional, the page you want to know the number of.
+ * @param  {Page} [pageObj] The page you want to know the number of.
  * @return {Number} The page number within the document.
  */
 pub.pageNumber = function (pageObj) {
@@ -1861,7 +1861,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
  * @cat Document
  * @subcat Page
  * @method layer
- * @param  {Layer|String} [layer] Optional, the layer or layer name to set the current layer to.
+ * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
  * @return {Layer} The current layer instance.
  */
 pub.layer = function(layer) {
@@ -1890,8 +1890,8 @@ pub.layer = function(layer) {
  *  @cat Document
  *  @subCat Page
  *  @method Group
- *  @param {Array} [pItem] Optional, the PageItems array (must be at least 2) or name of Group name instance.
- *  @param {String} name Optional, the name of the Group, only when creating a Group from Page Item(s).
+ *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance.
+ *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
  *  @return {Group} The current Group instance.
  */
 pub.group = function (pItem, name) {
@@ -1952,7 +1952,7 @@ pub.ungroup = function(pItem) {
  * @subcat Multi-Getters
  * @method labels
  * @param  {String} label The label identifier.
- * @param  {Function} [cb] Optional, the callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
+ * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
 pub.labels = function(label, cb) {
@@ -2019,7 +2019,7 @@ pub.selection = function() {
  * @cat Document
  * @subcat Multi-Getters
  * @method selections
- * @param  {Function} [cb] Optional, the callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
+ * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of selected object(s).
  */
 pub.selections = function(cb) {
@@ -2063,7 +2063,7 @@ pub.nameOnPage = function(name) {
  *
  * @cat Document
  * @method units
- * @param  {String} [units] Optional, supported units: PT, PX, CM, MM or IN.
+ * @param  {String} [units] Supported units: PT, PX, CM, MM or IN.
  * @return {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
@@ -2160,11 +2160,11 @@ pub.guideY = function (y) {
  * @cat Document
  * @subcat Page
  * @method margins
- * @param {Number} [top] Optional, top margin or all if only one.
- * @param {Number} [right] Optional, right margin.
- * @param {Number} [bottom] Optional, bottom margin.
- * @param {Number} [left] Optional, left margin.
- * @param {Number} [pageNumber] Optional, sets margins to selected page, currentPage() if left blank.
+ * @param {Number} [top] Top margin or all if only one.
+ * @param {Number} [right] Right margin.
+ * @param {Number} [bottom] Bottom margin.
+ * @param {Number} [left] Left margin.
+ * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
  * @return {Object} Current page margins with the properties: top, right, bottom, left.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
@@ -2197,10 +2197,10 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
  * @cat Document
  * @subcat Page
  * @method bleeds
- * @param {Number} [top] Optional, top bleed or all if only one.
- * @param {Number} [right] Optional, right bleed.
- * @param {Number} [bottom] Optional, bottom bleed.
- * @param {Number} [left] Optional, left bleed.
+ * @param {Number} [top] Top bleed or all if only one.
+ * @param {Number} [right] Right bleed.
+ * @param {Number} [bottom] Bottom bleed.
+ * @param {Number} [left] Left bleed.
  * @return {Object} Current document bleeds settings.
  */
 pub.bleeds = function(top, right, bottom, left) {
@@ -2228,7 +2228,7 @@ pub.bleeds = function(top, right, bottom, left) {
  * @cat Output
  * @method inspect
  * @param  {Object} obj The Object to be inspected.
- * @param  {Number} maxlevel Optional, recursion limit, default maxlevel = 2.
+ * @param  {Number} maxlevel Recursion limit, default maxlevel = 2.
  */
 pub.inspect = function(obj, maxlevel, level, propname) {
   checkNull(obj);
@@ -5241,7 +5241,7 @@ var Vector = pub.Vector = function() {
    * @method Vector
    * @param {Number} x The first vector.
    * @param {Number} y The second vector.
-   * @param {Number} [z] Optional, the third vector.
+   * @param {Number} [z] The third vector.
    */
   function Vector(x, y, z) {
     this.x = x || 0;
@@ -5316,8 +5316,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Number|Array|Vector} v Either a vector, array or x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     set: function(v, y, z) {
       if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
@@ -5356,8 +5356,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     add: function(v, y, z) {
       if (arguments.length === 1) {
@@ -5376,8 +5376,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     sub: function(v, y, z) {
       if (arguments.length === 1) {
@@ -5396,8 +5396,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     mult: function(v) {
       if (typeof v === "number") {
@@ -5416,8 +5416,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     div: function(v) {
       if (typeof v === "number") {
@@ -5436,8 +5436,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The distance.
      */
     dist: function(v) {
@@ -5452,8 +5452,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The dot product.
      */
     dot: function(v, y, z) {
@@ -5466,8 +5466,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The cross product.
      */
     cross: function(v) {

@@ -15,7 +15,7 @@ var Vector = pub.Vector = function() {
    * @method Vector
    * @param {Number} x The first vector.
    * @param {Number} y The second vector.
-   * @param {Number} [z] Optional, the third vector.
+   * @param {Number} [z] The third vector.
    */
   function Vector(x, y, z) {
     this.x = x || 0;
@@ -90,8 +90,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Number|Array|Vector} v Either a vector, array or x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     set: function(v, y, z) {
       if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
@@ -130,8 +130,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     add: function(v, y, z) {
       if (arguments.length === 1) {
@@ -150,8 +150,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     sub: function(v, y, z) {
       if (arguments.length === 1) {
@@ -170,8 +170,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     mult: function(v) {
       if (typeof v === "number") {
@@ -190,8 +190,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     div: function(v) {
       if (typeof v === "number") {
@@ -210,8 +210,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The distance.
      */
     dist: function(v) {
@@ -226,8 +226,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The dot product.
      */
     dot: function(v, y, z) {
@@ -240,8 +240,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The cross product.
      */
     cross: function(v) {
