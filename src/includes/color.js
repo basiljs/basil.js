@@ -186,9 +186,9 @@ pub.color = function() {
       if (newCol.isValid) {
         return newCol;
       } else {
-        newGrad = currentDoc().gradients.itemByName(a); // check gradient
-        if(newGrad.isValid){
-          return newGrad; 
+        newCol = currentDoc().gradients.itemByName(a); // check gradient
+        if(newCol.isValid){
+          return newCol; 
         }else{
           error("b.color(), a color with the provided name doesn't exist.");
         }
