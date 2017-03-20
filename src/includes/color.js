@@ -182,11 +182,16 @@ pub.color = function() {
   if (arguments.length === 1) {
     // get color by name
     if (typeof a === "string") {
-      newCol = currentDoc().colors.itemByName(a);
+      newCol = currentDoc().colors.itemByName(a); // check color
       if (newCol.isValid) {
         return newCol;
       } else {
-        error("b.color(), a color with the provided name doesn't exist.");
+        newGrad = currentDoc().gradients.itemByName(a); // check gradient
+        if(newGrad.isValid){
+          return newGrad; 
+        }else{
+          error("b.color(), a color with the provided name doesn't exist.");
+        }
       }
     } else if (typeof a === "number") {
       // GREY
