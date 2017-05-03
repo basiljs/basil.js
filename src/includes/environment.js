@@ -819,6 +819,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
       settings = {};
     }
 
+    // set settings object to given values or defaults
     settings.showProps = settings.hasOwnProperty("showProps") ? settings.showProps : true;
     settings.showValues = settings.hasOwnProperty("showValues") ? settings.showValues : true;
     settings.showMethods = settings.hasOwnProperty("showMethods") ? settings.showMethods : true;
@@ -832,6 +833,8 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
 
     if(obj.constructor.name === "Array") {
       if(obj.length > 0 && obj.reflect.properties.length < 3) {
+        // fixing InDesign's buggy implementation of certain arrays
+        // see: https://forums.adobe.com/message/9408120#9408120
         obj = Array.prototype.slice.call(obj, 0);
       }
       output += "[" + obj.join(", ") + "] (Array)";
@@ -841,6 +844,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
       output += obj + " (" + obj.constructor.name + ")";
     }
   } else {
+    // setting up tree structure indent
     if(branchArray.length < level) {
       branchArray.push(branchEnd);
     } else if (branchArray.length > level) {
@@ -867,6 +871,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
       usePropList = true;
       propArray = settings.propList.reverse();
     } else if (obj.constructor.name === "Array") {
+      // correct sorting for Array number properties (0, 1, 2 etc.)
       propArray = obj.reflect.properties.sort(function(a, b){return a-b}).reverse();
     } else {
       propArray = obj.reflect.properties.sort().reverse();
@@ -879,7 +884,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
       for (var i = propArray.length - 1; i >= 0; i--) {
         if(propArray[i] == "__proto__" || propArray[i] == "__count__" || propArray[i] == "__class__") {
           if(!i) {
-            output += "\n" + indent/* + "_X_"*/;
+            output += "\n" + indent;
           }
           continue;
         };
@@ -888,7 +893,11 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
 
           try {
             var propValue = obj[propArray[i]];
-            if (propValue === null || propValue === undefined) {
+            if (usePropList && !obj.hasOwnProperty(propArray[i]) && propArray[i] != "length") {
+              // in case a non-existing prop is passed via propList
+              // "length" needs special handling as it is not correctly recognized as a property
+              value = ": The inspected item has no such property.";
+            } else if (propValue === null || propValue === undefined) {
               value = ": " + propValue;
             } else if (propValue.constructor.name === "Array") {
               if(propValue.length > 0 && propValue.reflect.properties.length < 3) {
@@ -896,11 +905,13 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
               }
               value = ": Array (" + propValue.length + ")";
               if(propValue.length && level < settings.maxlevel - 1) {
+                // recursive inspecting of Array properties
                 value += pub.inspectNew(propValue, settings, level + 1, branchArray, !i);
               }
             } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
               value = ": " + propValue;
               if(level < settings.maxlevel - 1) {
+                // recursive inspecting of Object properties
                 value += pub.inspectNew(propValue, settings, level + 1, branchArray, !i);
               }
             } else {
@@ -912,8 +923,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
             } else if (e.number === 55) {
               value = ": Object does not support the property '" + propArray[i] + "'.";
             } else {
-              // other error messages
-              // (i.e. about non-available properties due to non-activated Preflight etc.)
+              // other InDesign specific error messages
               value = ": " + e.message;
             }
           }
@@ -922,11 +932,12 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
           value = "";
         }
 
-        output += "\n" + indent + "|-- " + propArray[i] + value/* + "_A_"*/;
+        output += "\n" + indent + "|-- " + propArray[i] + value;
 
 
         if(!i && !branchEnd && level !== 0) {
-          output += "\n" + indent/* + "_U_"*/;
+          // separation space when a sub-branch ends
+          output += "\n" + indent;
         }
       } // end for-loop
     } // end if(propArray.length > 1 || usePropList)
@@ -948,12 +959,13 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
   }
 
   if(level > 0) {
+    // return for recursive calls
     return output;
   } else {
+    // print for top level call
     println(output);
   }
 }
-
 
 
 // ----------------------------------------
