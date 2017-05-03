@@ -2223,12 +2223,31 @@ pub.bleeds = function(top, right, bottom, left) {
 
 
 /**
- * Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.
+ * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
+ * <code>showProps<code>: Show or hide properties. Default: <code>true<code>
+ * <code>showValues<code>: Show or hide values. Default: <code>true<code>
+ * <code>showMethods<code>: Show or hide methods. Default: <code>false<code>
+ * <code>maxLevel<code>: Chooses how many levels of properties should be inspected recursively. Default: <code>1<code>
+ * <code>propList<code>: Allows to pass an array of property names to show. If propList is not set all properties will be shown. Default: <code>[]<code> (no propList)
+ * If no settings object is set, the default values will be used.
  *
  * @cat Output
  * @method inspect
- * @param  {Object} obj The Object to be inspected.
- * @param  {Number} maxlevel Recursion limit, default maxlevel = 2.
+ * @param  {Object} obj An object or any other data item to be inspected.
+ * @param  {Object} settings A settings object to control the function's behavior.
+ *
+ * @example
+ * // inspecting a string
+ * b.inspect("foo");
+ *
+ * @example
+ * // inspecting the current page, its methods and an additional level of properties
+ * b.inspect(b.page(), {showMethods: true, maxLevel: 2})
+ *
+ * @example
+ * // inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"
+ * var myEllipse = b.ellipse(0, 0, 10, 10);
+ * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
 pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
@@ -2246,8 +2265,8 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
     // set settings object to given values or defaults
     settings.showProps = settings.hasOwnProperty("showProps") ? settings.showProps : true;
     settings.showValues = settings.hasOwnProperty("showValues") ? settings.showValues : true;
-    settings.showMethods = settings.hasOwnProperty("showMethods") ? settings.showMethods : true;
-    settings.maxlevel = settings.hasOwnProperty("maxlevel") ? settings.maxlevel : 1;
+    settings.showMethods = settings.hasOwnProperty("showMethods") ? settings.showMethods : false;
+    settings.maxLevel = settings.hasOwnProperty("maxLevel") ? settings.maxLevel : 1;
     settings.propList = settings.hasOwnProperty("propList") ? settings.propList : [];
 
     if(obj === null || obj === undefined) {
@@ -2328,13 +2347,13 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
                 propValue = Array.prototype.slice.call(propValue, 0);
               }
               value = ": Array (" + propValue.length + ")";
-              if(propValue.length && level < settings.maxlevel - 1) {
+              if(propValue.length && level < settings.maxLevel - 1) {
                 // recursive inspecting of Array properties
                 value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
               }
             } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
               value = ": " + propValue;
-              if(level < settings.maxlevel - 1) {
+              if(level < settings.maxLevel - 1) {
                 // recursive inspecting of Object properties
                 value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
               }

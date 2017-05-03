@@ -84,7 +84,7 @@ function draw() {
 
   var time = b.millis();
   for (var i = 10; i > 0; i--) {
-    b.inspectNew(testObject, {maxlevel: 2});
+    b.inspectNew(testObject, {maxLevel: 2});
   }
   var objLvl2TimeNew = b.millis() - time;
 
@@ -128,7 +128,7 @@ function draw() {
 
   var time = b.millis();
   for (var i = 10; i > 0; i--) {
-    b.inspectNew(testArray, {maxlevel: 2});
+    b.inspectNew(testArray, {maxLevel: 2});
   }
   var arrayLvl2TimeNew = b.millis() - time;
 
@@ -151,7 +151,7 @@ function draw() {
   var colorLvl2TimeOld = b.millis() - time;
 
   var time = b.millis();
-  b.inspectNew(testColor, {maxlevel: 2});
+  b.inspectNew(testColor, {maxLevel: 2});
   var colorLvl2TimeNew = b.millis() - time;
 
 
@@ -161,7 +161,7 @@ function draw() {
   var colorLvl3TimeOld = b.millis() - time;
 
   var time = b.millis();
-  b.inspectNew(testColor, {maxlevel: 3});
+  b.inspectNew(testColor, {maxLevel: 3});
   var colorLvl3TimeNew = b.millis() - time;
 
 
@@ -183,7 +183,7 @@ function draw() {
   var rectLvl2TimeOld = b.millis() - time;
 
   var time = b.millis();
-  b.inspectNew(testRect, {maxlevel: 2});
+  b.inspectNew(testRect, {maxLevel: 2});
   var rectLvl2TimeNew = b.millis() - time;
 
 
@@ -193,7 +193,7 @@ function draw() {
   var rectLvl3TimeOld = b.millis() - time;
 
   var time = b.millis();
-  b.inspectNew(testRect, {maxlevel: 3});
+  b.inspectNew(testRect, {maxLevel: 3});
   var rectLvl3TimeNew = b.millis() - time;
 
 
