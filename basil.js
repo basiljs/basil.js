@@ -2280,6 +2280,155 @@ pub.inspect = function(obj, maxlevel, level, propname) {
   }
 };
 
+pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
+
+  var output, indent;
+  output = indent = "";
+
+  if (!level) {
+    level = 0;
+    branchArray = [];
+
+    if(!settings) {
+      settings = {};
+    }
+
+    settings.showProps = settings.hasOwnProperty("showProps") ? settings.showProps : true;
+    settings.showValues = settings.hasOwnProperty("showValues") ? settings.showValues : true;
+    settings.showMethods = settings.hasOwnProperty("showMethods") ? settings.showMethods : true;
+    settings.maxlevel = settings.hasOwnProperty("maxlevel") ? settings.maxlevel : 1;
+    settings.propList = settings.hasOwnProperty("propList") ? settings.propList : [];
+
+    if(obj === null || obj === undefined) {
+      println(obj + "");
+      return;
+    }
+
+    if(obj.constructor.name === "Array") {
+      if(obj.length > 0 && obj.reflect.properties.length < 3) {
+        obj = Array.prototype.slice.call(obj, 0);
+      }
+      output += "[" + obj.join(", ") + "] (Array)";
+    } else if (obj.constructor.name === "String"){
+      output += "\"" + obj + "\" (String)";
+    } else {
+      output += obj + " (" + obj.constructor.name + ")";
+    }
+  } else {
+    if(branchArray.length < level) {
+      branchArray.push(branchEnd);
+    } else if (branchArray.length > level) {
+      branchArray.pop();
+    }
+    if(branchEnd) {
+      if(!(level === 1 && settings.showMethods)) {
+        branchArray[branchArray.length - 1] = true;
+      }
+    }
+    for (var i = 0; i < level; i++) {
+      if(branchArray[i]) {
+        indent += "    ";
+      } else {
+        indent += "|   ";
+      }
+    }
+  }
+
+  if(settings.showProps) {
+    var propArray, value, usePropList;
+
+    if(level === 0 && settings.propList.length > 0 && settings.propList.constructor.name === "Array") {
+      usePropList = true;
+      propArray = settings.propList.reverse();
+    } else if (obj.constructor.name === "Array") {
+      propArray = obj.reflect.properties.sort(function(a, b){return a-b}).reverse();
+    } else {
+      propArray = obj.reflect.properties.sort().reverse();
+    }
+
+    if(propArray.length > 1 || usePropList) {
+      output += "\n" + indent + "|" +
+                "\n" + indent + "|   PROPERTIES";
+
+      for (var i = propArray.length - 1; i >= 0; i--) {
+        if(propArray[i] == "__proto__" || propArray[i] == "__count__" || propArray[i] == "__class__") {
+          if(!i) {
+            output += "\n" + indent/* + "_X_"*/;
+          }
+          continue;
+        };
+
+        if(settings.showValues) {
+
+          try {
+            var propValue = obj[propArray[i]];
+            if (propValue === null || propValue === undefined) {
+              value = ": " + propValue;
+            } else if (propValue.constructor.name === "Array") {
+              if(propValue.length > 0 && propValue.reflect.properties.length < 3) {
+                propValue = Array.prototype.slice.call(propValue, 0);
+              }
+              value = ": Array (" + propValue.length + ")";
+              if(propValue.length && level < settings.maxlevel - 1) {
+                value += pub.inspectNew(propValue, settings, level + 1, branchArray, !i);
+              }
+            } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
+              value = ": " + propValue;
+              if(level < settings.maxlevel - 1) {
+                value += pub.inspectNew(propValue, settings, level + 1, branchArray, !i);
+              }
+            } else {
+              value = ": " + propValue.toString();
+            }
+          } catch (e) {
+            if(e.number === 30615) {
+              value = ": The property is not applicable in the current state.";
+            } else if (e.number === 55) {
+              value = ": Object does not support the property '" + propArray[i] + "'.";
+            } else {
+              // other error messages
+              // (i.e. about non-available properties due to non-activated Preflight etc.)
+              value = ": " + e.message;
+            }
+          }
+
+        } else {
+          value = "";
+        }
+
+        output += "\n" + indent + "|-- " + propArray[i] + value/* + "_A_"*/;
+
+
+        if(!i && !branchEnd && level !== 0) {
+          output += "\n" + indent/* + "_U_"*/;
+        }
+      } // end for-loop
+    } // end if(propArray.length > 1 || usePropList)
+  } // end if(settings.showProps)
+
+  if(level === 0 && settings.showMethods) {
+
+    var methodArray = settings.showMethods ? obj.reflect.methods.sort().reverse() : [];
+
+    if(methodArray.length) {
+      output += "\n|" +
+                "\n|   METHODS";
+    }
+
+    for (var i = methodArray.length - 1; i >= 0; i--) {
+      if(methodArray[i].name.charAt(0) === "=") continue;
+      output += "\n|-- " + methodArray[i] + "()";
+    }
+  }
+
+  if(level > 0) {
+    return output;
+  } else {
+    println(output);
+  }
+}
+
+
 
 // ----------------------------------------
 // Date
