@@ -756,57 +756,7 @@ pub.bleeds = function(top, right, bottom, left) {
  * @param  {Object} obj The Object to be inspected.
  * @param  {Number} maxlevel Recursion limit, default maxlevel = 2.
  */
-pub.inspect = function(obj, maxlevel, level, propname) {
-  checkNull(obj);
-  if (!level) {
-    level = 0;
-  }
-  if (!maxlevel) {
-    maxlevel = 2;
-  }
-  if (level > maxlevel) {
-    return;
-  }
-
-  var constructorName = obj.constructor.name;
-
-  var indent = "";
-  for (var i = 0; i < level; i++) {
-    indent += "\t";
-  }
-
-  if (level === 0) {
-    println(obj);
-  } else if (constructorName === "Boolean" ||
-        constructorName === "Number" ||
-        constructorName === "String") {
-    println(indent + propname + ": " + obj);
-  } else if (constructorName === "Array") {
-    println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
-  } else if (constructorName === "Color") {
-    println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
-  } else {
-    println(indent + propname + ": " + constructorName);
-  }
-
-  if (constructorName === "Array") {
-    for (var i = 0, len = obj.length; i < len; i++) {
-      pub.inspect(obj[i], maxlevel, level + 1, i);
-    }
-  } else if (typeof obj === "object") {
-    try {
-      for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-          pub.inspect(obj[i], maxlevel, level + 1, i);
-        }
-      }
-    } catch(e) {
-      println(indent + "--> " + propname + " " + e);
-    }
-  }
-};
-
-pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
+pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
   var output, indent;
   output = indent = "";
@@ -838,7 +788,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
         obj = Array.prototype.slice.call(obj, 0);
       }
       output += "[" + obj.join(", ") + "] (Array)";
-    } else if (obj.constructor.name === "String"){
+    } else if (obj.constructor.name === "String") {
       output += "\"" + obj + "\" (String)";
     } else {
       output += obj + " (" + obj.constructor.name + ")";
@@ -872,7 +822,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
       propArray = settings.propList.reverse();
     } else if (obj.constructor.name === "Array") {
       // correct sorting for Array number properties (0, 1, 2 etc.)
-      propArray = obj.reflect.properties.sort(function(a, b){return a-b}).reverse();
+      propArray = obj.reflect.properties.sort(function(a, b) {return a - b}).reverse();
     } else {
       propArray = obj.reflect.properties.sort().reverse();
     }
@@ -887,7 +837,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
             output += "\n" + indent;
           }
           continue;
-        };
+        }
 
         if(settings.showValues) {
 
@@ -906,13 +856,13 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
               value = ": Array (" + propValue.length + ")";
               if(propValue.length && level < settings.maxlevel - 1) {
                 // recursive inspecting of Array properties
-                value += pub.inspectNew(propValue, settings, level + 1, branchArray, !i);
+                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
               }
             } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
               value = ": " + propValue;
               if(level < settings.maxlevel - 1) {
                 // recursive inspecting of Object properties
-                value += pub.inspectNew(propValue, settings, level + 1, branchArray, !i);
+                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
               }
             } else {
               value = ": " + propValue.toString();
@@ -953,7 +903,7 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
     }
 
     for (var i = methodArray.length - 1; i >= 0; i--) {
-      if(methodArray[i].name.charAt(0) === "=") continue;
+      if(methodArray[i].name.charAt(0) === "=") {continue;}
       output += "\n|-- " + methodArray[i] + "()";
     }
   }
@@ -961,11 +911,11 @@ pub.inspectNew = function (obj, settings, level, branchArray, branchEnd) {
   if(level > 0) {
     // return for recursive calls
     return output;
-  } else {
-    // print for top level call
-    println(output);
   }
-}
+  // print for top level call
+  println(output);
+
+};
 
 
 // ----------------------------------------
