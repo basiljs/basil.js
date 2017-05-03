@@ -1500,7 +1500,7 @@ pub.doc = function(doc) {
  * @cat Document
  * @method size
  * @param  {Number} width The desired width of the current document.
- * @param  {Number} [height] Optional the desired height of the current document. If not provided the width will be used as the height.
+ * @param  {Number} [height] The desired height of the current document. If not provided the width will be used as the height.
  * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
  *
  */
@@ -1541,8 +1541,8 @@ pub.size = function(width, height) {
  *
  * @cat Document
  * @method close
- * @param  {Object|Boolean} [saveOptions] Optional, the Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] Optional, the indesign file instance to save the document to.
+ * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param  {File} [file] The indesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -1702,7 +1702,7 @@ pub.addPage = function(location) {
  * @cat Document
  * @subcat Page
  * @method removePage
- * @param  {Page|Number} [page] Optional, the page to be removed as Page object or page number.
+ * @param  {Page|Number} [page] The page to be removed as Page object or page number.
  */
 pub.removePage = function (page) {
   checkNull(page);
@@ -1722,7 +1722,7 @@ pub.removePage = function (page) {
  * @cat Document
  * @subcat Page
  * @method pageNumber
- * @param  {Page} [pageObj] Optional, the page you want to know the number of.
+ * @param  {Page} [pageObj] The page you want to know the number of.
  * @return {Number} The page number within the document.
  */
 pub.pageNumber = function (pageObj) {
@@ -1861,7 +1861,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
  * @cat Document
  * @subcat Page
  * @method layer
- * @param  {Layer|String} [layer] Optional, the layer or layer name to set the current layer to.
+ * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
  * @return {Layer} The current layer instance.
  */
 pub.layer = function(layer) {
@@ -1890,8 +1890,8 @@ pub.layer = function(layer) {
  *  @cat Document
  *  @subCat Page
  *  @method Group
- *  @param {Array} [pItem] Optional, the PageItems array (must be at least 2) or name of Group name instance.
- *  @param {String} name Optional, the name of the Group, only when creating a Group from Page Item(s).
+ *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance.
+ *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
  *  @return {Group} The current Group instance.
  */
 pub.group = function (pItem, name) {
@@ -1952,7 +1952,7 @@ pub.ungroup = function(pItem) {
  * @subcat Multi-Getters
  * @method labels
  * @param  {String} label The label identifier.
- * @param  {Function} [cb] Optional, the callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
+ * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
 pub.labels = function(label, cb) {
@@ -2019,7 +2019,7 @@ pub.selection = function() {
  * @cat Document
  * @subcat Multi-Getters
  * @method selections
- * @param  {Function} [cb] Optional, the callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
+ * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of selected object(s).
  */
 pub.selections = function(cb) {
@@ -2063,7 +2063,7 @@ pub.nameOnPage = function(name) {
  *
  * @cat Document
  * @method units
- * @param  {String} [units] Optional, supported units: PT, PX, CM, MM or IN.
+ * @param  {String} [units] Supported units: PT, PX, CM, MM or IN.
  * @return {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
@@ -2160,11 +2160,11 @@ pub.guideY = function (y) {
  * @cat Document
  * @subcat Page
  * @method margins
- * @param {Number} [top] Optional, top margin or all if only one.
- * @param {Number} [right] Optional, right margin.
- * @param {Number} [bottom] Optional, bottom margin.
- * @param {Number} [left] Optional, left margin.
- * @param {Number} [pageNumber] Optional, sets margins to selected page, currentPage() if left blank.
+ * @param {Number} [top] Top margin or all if only one.
+ * @param {Number} [right] Right margin.
+ * @param {Number} [bottom] Bottom margin.
+ * @param {Number} [left] Left margin.
+ * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
  * @return {Object} Current page margins with the properties: top, right, bottom, left.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
@@ -2197,10 +2197,10 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
  * @cat Document
  * @subcat Page
  * @method bleeds
- * @param {Number} [top] Optional, top bleed or all if only one.
- * @param {Number} [right] Optional, right bleed.
- * @param {Number} [bottom] Optional, bottom bleed.
- * @param {Number} [left] Optional, left bleed.
+ * @param {Number} [top] Top bleed or all if only one.
+ * @param {Number} [right] Right bleed.
+ * @param {Number} [bottom] Bottom bleed.
+ * @param {Number} [left] Left bleed.
  * @return {Object} Current document bleeds settings.
  */
 pub.bleeds = function(top, right, bottom, left) {
@@ -2228,7 +2228,7 @@ pub.bleeds = function(top, right, bottom, left) {
  * @cat Output
  * @method inspect
  * @param  {Object} obj The Object to be inspected.
- * @param  {Number} maxlevel Optional, recursion limit, default maxlevel = 2.
+ * @param  {Number} maxlevel Recursion limit, default maxlevel = 2.
  */
 pub.inspect = function(obj, maxlevel, level, propname) {
   checkNull(obj);
@@ -4278,7 +4278,8 @@ pub.duplicate = function(item) {
  * Sets the color or gradient used to fill shapes.
  * @cat Color
  * @method fill
- * @param  {Color|Gradient|Swatch|Numbers} fillColor  Accepts a color/gradient/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
+ * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @param  {String} [name] If created with numbers, a custom swatch name can be given.
  */
 pub.fill = function (fillColor) {
 
@@ -4287,7 +4288,11 @@ pub.fill = function (fillColor) {
     currFillColor = fillColor;
   } else {
     if (arguments.length === 1) {
-      currFillColor = pub.color(arguments[0]);
+      if (typeof arguments[0] === "string") {
+        currFillColor = pub.swatch(arguments[0]);
+      }else{
+        currFillColor = pub.color(arguments[0]);
+      }
     } else if (arguments.length === 2) {
       currFillColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
@@ -4298,9 +4303,10 @@ pub.fill = function (fillColor) {
       currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.fill(), wrong parameters. Use:\n"
-        + "R,G,B,[name] or\n"
-        + "C,M,Y,K,[name] or\n"
-        + "GREY,[name].\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
         + "Name is optional.");
     }
   }
@@ -4321,7 +4327,7 @@ pub.noFill = function () {
  * Sets the color or gradient used to draw lines and borders around shapes.
  * @cat Color
  * @method stroke
- * @param  {Color|Gradient|Swatch|Numbers} strokeColor  Accepts a color/gradient/swatch or a string with the name of a color. Or values: C,M,Y,K / R,G,B / Grey
+ * @param  {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  */
 pub.stroke = function (strokeColor) {
   checkNull(strokeColor);
@@ -4329,7 +4335,11 @@ pub.stroke = function (strokeColor) {
     currStrokeColor = strokeColor;
   } else {
     if (arguments.length === 1) {
-      currStrokeColor = pub.color(arguments[0]);
+      if (typeof arguments[0] === "string") {
+        currStrokeColor = pub.swatch(arguments[0]);
+      }else{
+        currStrokeColor = pub.color(arguments[0]);
+      }
     } else if (arguments.length === 2) {
       currStrokeColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
@@ -4340,17 +4350,18 @@ pub.stroke = function (strokeColor) {
       currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.stroke(), wrong parameters. Use:\n"
-        + "R,G,B,[name] or\n"
-        + "C,M,Y,K,[name] or\n"
-        + "GREY,[name].\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
         + "Name is optional.");
     }
   }
 };
 
 /**
- * Disables drawing the stroke (outline). If both noStroke() and noFill()
- * are called, nothing will be drawn to the screen.
+ * Disables drawing the stroke. If both noStroke() and noFill() are called,
+ * newly drawn shapes will be invisible.
  *
  * @cat Color
  * @method noStroke
@@ -4371,7 +4382,7 @@ pub.fillTint = function (tint) {
   if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
   } else {
-    error("b.fillTint, not supported type. Please make sure the strokeweight is a number or string");
+    error("b.fillTint(), unsupported type. Please make sure the fillTint is a number or string");
   }
 };
 
@@ -4380,23 +4391,23 @@ pub.fillTint = function (tint) {
  *
  * @cat Color
  * @method strokeTint
- * @param  {Number} tint Number from 0 to 100
+ * @param  {Number} tint Number from 0 to 100.
  */
 pub.strokeTint = function (tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currStrokeTint = tint;
   } else {
-    error("strokeTint(), not supported type. Please make sure the tint parameter is a number or string");
+    error("strokeTint(), unsupported type. Please make sure the strokeTint parameter is a number or string");
   }
 };
 
 /**
- * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RBG.
+ * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RGB.
  *
  * @cat Color
  * @method colorMode
- * @param  {Number} colorMode Either b.RGB or b.CMYK
+ * @param  {Number} colorMode b.RGB or b.CMYK.
  */
 pub.colorMode = function(colorMode) {
   checkNull(colorMode);
@@ -4406,16 +4417,16 @@ pub.colorMode = function(colorMode) {
   if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
   } else {
-    error("b.colorMode(), not supported colormode, use: b.RGB or b.CMYK");
+    error("b.colorMode(), unsupported colormode, use: b.RGB or b.CMYK");
   }
 };
 
 /**
- * Sets the gradient mode for creating new gradients with b.gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
+ * Sets the gradient mode for b.gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
  *
  * @cat Color
  * @method gradientMode
- * @param  {String} gradientMode Either b.LINEAR or b.RADIAL
+ * @param  {String} gradientMode b.LINEAR or b.RADIAL.
  */
 pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
@@ -4430,12 +4441,37 @@ pub.gradientMode = function(gradientMode) {
 };
 
 /**
- * Creates a new RGB or CMYK color and adds the new color to the document, or gets a color by name from the document. The default color mode is RGB.
+ * Gets a swatch by name.
+ *
+ * @cat Color
+ * @method swatch
+ * @param {String} swatchName Returns the swatch color/gradient for a given name by string.
+ */
+pub.swatch = function(){
+  var newSwatch;
+  var props = {};
+  if (arguments.length === 1) {
+    var a = arguments[0];
+    if (typeof a === "string") {
+      newSwatch = currentDoc().swatches.itemByName(a);
+      if(newSwatch.isValid){
+          return newSwatch; 
+        }else{
+          error("A swatch with the provided name doesn't exist.");
+        }
+    }else{
+      error("b.swatch() requires a string, the name of an existing swatch.");
+    }
+  }
+}
+
+/**
+ * Creates a new RGB / CMYK color and adds it to the document, or gets a color by name from the document. The default color mode is RGB.
  *
  * @cat Color
  * @method color
- * @param  {String|Numbers} Get color: the color name. Create new color: R,G,B,[name] or C,M,Y,K,[name] or Grey,name. Name is always optional
- * @return {Color} found or new color
+ * @param  {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
+ * @return {Color} Found or new color
  */
 pub.color = function() {
   var newCol;
@@ -4446,23 +4482,23 @@ pub.color = function() {
     d = arguments[3],
     e = arguments[4];
   var colorErrorMsg = "b.color(), wrong parameters. Use:\n"
+      + "GRAY,[name] or \n"
       + "R,G,B,[name] in b.colorMode(b.RGB) or\n"
-      + "C,M,Y,K,[name] in b.colorMode(b.CMYK) or\n"
-      + "GREY,[name].\n"
+      + "C,M,Y,K,[name] in b.colorMode(b.CMYK).\n"
       + "Name is optional.\n"
       + "NB: In InDesign colors don't have an alpha value, use b.opacity() to set alpha.";
 
   if (arguments.length === 1) {
     // get color by name
     if (typeof a === "string") {
-      newCol = currentDoc().colors.itemByName(a);
+      newCol = currentDoc().colors.itemByName(a); // check color
       if (newCol.isValid) {
         return newCol;
       } else {
         error("b.color(), a color with the provided name doesn't exist.");
       }
     } else if (typeof a === "number") {
-      // GREY
+      // GRAY
       if (currColorMode === pub.RGB) {
         a = pub.constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
@@ -4481,7 +4517,7 @@ pub.color = function() {
     }
 
   } else if (arguments.length === 2) {
-    // GREY + name
+    // GRAY + name
     if (currColorMode === pub.RGB) {
       a = pub.constrain(a, 0, 255);
       props.model = ColorModel.PROCESS;
@@ -4575,9 +4611,9 @@ pub.color = function() {
  *
  * @cat Color
  * @method gradient
- * @param  {Color|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
- * @param  {Color|Array|String} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
- * @param  {String} [name] Optional name of the gradient.
+ * @param {Color|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
+ * @param {Color|Array|String} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
+ * @param {String} [name] Optional name of the gradient.
  * @return {Gradient} Found or new gradient
  */
 pub.gradient = function() {
@@ -4686,8 +4722,8 @@ pub.gradient = function() {
  *
  * @cat Color
  * @method opacity
- * @param  {Object} obj The object to set opacity property
- * @param  {Number} opacity The opacity value form 0 to 100
+ * @param  {Object} obj The object to set opacity of.
+ * @param  {Number} opacity The opacity value from 0 to 100.
  */
 pub.opacity = function(obj, opacity) {
   checkNull(obj);
@@ -4703,7 +4739,7 @@ pub.opacity = function(obj, opacity) {
  *
  * @cat Color
  * @method blendMode
- * @param  {Object} obj The object to set blendMode property
+ * @param  {Object} obj The object to set blendMode of.
  * @param  {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
  *                           BlendMode.NORMAL <br />
  *                           BlendMode.MULTIPLY <br />
@@ -4732,15 +4768,15 @@ pub.blendMode = function(obj, blendMode) {
 };
 
 /**
- * Calculates a color or colors between two color at a specific increment.
- * The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc.
- * N.B.: Both color must be either CMYK or RGB.
+ * Calculates a color or colors between two colors at a specific increment.
+ * The amt parameter is the amount to interpolate between the two values where 0.0 equals the first color, 0.5 is half-way in between and 1.0 equals the second color.
+ * N.B.: Both colors must be either CMYK or RGB.
  *
  * @cat Color
  * @method lerpColor
- * @param  {Color} c1   Input color 1
- * @param  {Color} c2   Input color 2
- * @param  {Number} amt The Amount to interpolate between the two colors
+ * @param  {Color} c1   Input color 1.
+ * @param  {Color} c2   Input color 2.
+ * @param  {Number} amt The amount to interpolate between the two colors.
  * @return {Color} Interpolated color
  */
 pub.lerpColor = function (c1, c2, amt) {
@@ -4781,7 +4817,7 @@ pub.lerpColor = function (c1, c2, amt) {
       return pub.color(ROut, GOut, BOut);
 
     } else {
-      error("b.lerpColor(), both color must be either CMYK or RGB.");
+      error("b.lerpColor(), both colors must be either CMYK or RGB.");
     }
   } else {
     error("b.lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
@@ -5390,7 +5426,7 @@ var Vector = pub.Vector = function() {
    * @method Vector
    * @param {Number} x The first vector.
    * @param {Number} y The second vector.
-   * @param {Number} [z] Optional, the third vector.
+   * @param {Number} [z] The third vector.
    */
   function Vector(x, y, z) {
     this.x = x || 0;
@@ -5465,8 +5501,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Number|Array|Vector} v Either a vector, array or x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     set: function(v, y, z) {
       if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
@@ -5505,8 +5541,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     add: function(v, y, z) {
       if (arguments.length === 1) {
@@ -5525,8 +5561,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     sub: function(v, y, z) {
       if (arguments.length === 1) {
@@ -5545,8 +5581,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     mult: function(v) {
       if (typeof v === "number") {
@@ -5565,8 +5601,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      */
     div: function(v) {
       if (typeof v === "number") {
@@ -5585,8 +5621,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The distance.
      */
     dist: function(v) {
@@ -5601,8 +5637,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The dot product.
      */
     dot: function(v, y, z) {
@@ -5615,8 +5651,8 @@ var Vector = pub.Vector = function() {
      * @cat Math
      * @subcat Vector
      * @param {Vector|Number} v Either a full vector or an x component.
-     * @param {Number} [y] Optional, the y component.
-     * @param {Number} [z] Optional, the z component.
+     * @param {Number} [y] The y component.
+     * @param {Number} [z] The z component.
      * @return {Number} The cross product.
      */
     cross: function(v) {
