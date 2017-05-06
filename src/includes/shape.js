@@ -488,6 +488,10 @@ pub.ellipseMode = function (mode) {
 pub.strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
+    if(parseInt(weight, 10) === 0) {
+      currStrokeColor = currentDoc().swatches.firstItem();
+
+    }
   } else {
     error("b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string");
   }
