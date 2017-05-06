@@ -490,7 +490,6 @@ pub.strokeWeight = function (weight) {
     currStrokeWeight = weight;
     if(parseInt(weight, 10) === 0) {
       currStrokeColor = currentDoc().swatches.firstItem();
-
     }
   } else {
     error("b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string");
