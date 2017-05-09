@@ -2241,16 +2241,13 @@ pub.bleeds = function(top, right, bottom, left) {
  * @param  {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: <code>1</code>
  * @param  {Array} [settings.propList] Array of properties to show. Default: <code>[]</code> (no propList)
  *
- * @example
- * <caption>Inspecting a string</caption>
+ * @example <caption>Inspecting a string</caption>
  * b.inspect("foo");
  *
- * @example
- * <caption>Inspecting the current page, its methods and an additional level of properties</caption>
+ * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
  * b.inspect(b.page(), {showMethods: true, maxLevel: 2})
  *
- * @example
- * <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
+ * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
  * var myEllipse = b.ellipse(0, 0, 10, 10);
  * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
