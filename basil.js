@@ -2323,11 +2323,10 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
     }
 
     if(propArray.length > 1 || usePropList) {
-      output += "\n" + indent + "|" +
-                "\n" + indent + "|   PROPERTIES";
+      output += "\n" + indent + "|";
 
       for (var i = propArray.length - 1; i >= 0; i--) {
-        if(propArray[i] == "__proto__" || propArray[i] == "__count__" || propArray[i] == "__class__") {
+        if(propArray[i] == "__proto__" || propArray[i] == "__count__" || propArray[i] == "__class__"|| propArray[i] == "reflect") {
           if(!i) {
             output += "\n" + indent;
           }
