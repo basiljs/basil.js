@@ -2223,61 +2223,192 @@ pub.bleeds = function(top, right, bottom, left) {
 
 
 /**
- * Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.
+ * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
+ * <code>showProps</code>: Show or hide properties. Default: <code>true</code>
+ * <code>showValues</code>: Show or hide values. Default: <code>true</code>
+ * <code>showMethods</code>: Show or hide methods. Default: <code>false</code>
+ * <code>maxLevel</code>: Chooses how many levels of properties should be inspected recursively. Default: <code>1</code>
+ * <code>propList</code>: Allows to pass an array of property names to show. If propList is not set all properties will be shown. Default: <code>[]</code> (no propList)
+ * If no settings object is set, the default values will be used.
  *
  * @cat Output
  * @method inspect
- * @param  {Object} obj The Object to be inspected.
- * @param  {Number} maxlevel Recursion limit, default maxlevel = 2.
+ * @param  {Object} obj An object or any other data item to be inspected.
+ * @param  {Object} [settings] A settings object to control the function's behavior.
+ * @param  {Boolean} [settings.showProps] Show or hide properties. Default: <code>true</code>
+ * @param  {Boolean} [settings.showValues] Show or hide values. Default: <code>true</code>
+ * @param  {Boolean} [settings.showMethods] Show or hide methods. Default: <code>false</code>
+ * @param  {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: <code>1</code>
+ * @param  {Array} [settings.propList] Array of properties to show. Default: <code>[]</code> (no propList)
+ *
+ * @example <caption>Inspecting a string</caption>
+ * b.inspect("foo");
+ *
+ * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
+ * b.inspect(b.page(), {showMethods: true, maxLevel: 2})
+ *
+ * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
+ * var myEllipse = b.ellipse(0, 0, 10, 10);
+ * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
-pub.inspect = function(obj, maxlevel, level, propname) {
-  checkNull(obj);
+pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
+
+  var output, indent;
+  output = indent = "";
+
   if (!level) {
     level = 0;
-  }
-  if (!maxlevel) {
-    maxlevel = 2;
-  }
-  if (level > maxlevel) {
-    return;
-  }
+    branchArray = [];
 
-  var constructorName = obj.constructor.name;
-
-  var indent = "";
-  for (var i = 0; i < level; i++) {
-    indent += "\t";
-  }
-
-  if (level === 0) {
-    println(obj);
-  } else if (constructorName === "Boolean" ||
-        constructorName === "Number" ||
-        constructorName === "String") {
-    println(indent + propname + ": " + obj);
-  } else if (constructorName === "Array") {
-    println(indent + propname + ": " + constructorName + "(" + obj.length + ")");
-  } else if (constructorName === "Color") {
-    println(indent + propname + ": [" + obj.colorValue + "] " + constructorName);
-  } else {
-    println(indent + propname + ": " + constructorName);
-  }
-
-  if (constructorName === "Array") {
-    for (var i = 0, len = obj.length; i < len; i++) {
-      pub.inspect(obj[i], maxlevel, level + 1, i);
+    if(!settings) {
+      settings = {};
     }
-  } else if (typeof obj === "object") {
-    try {
-      for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-          pub.inspect(obj[i], maxlevel, level + 1, i);
-        }
+
+    // set settings object to given values or defaults
+    settings.showProps = settings.hasOwnProperty("showProps") ? settings.showProps : true;
+    settings.showValues = settings.hasOwnProperty("showValues") ? settings.showValues : true;
+    settings.showMethods = settings.hasOwnProperty("showMethods") ? settings.showMethods : false;
+    settings.maxLevel = settings.hasOwnProperty("maxLevel") ? settings.maxLevel : 1;
+    settings.propList = settings.hasOwnProperty("propList") ? settings.propList : [];
+
+    if(obj === null || obj === undefined) {
+      println(obj + "");
+      return;
+    }
+
+    if(obj.constructor.name === "Array") {
+      if(obj.length > 0 && obj.reflect.properties.length < 3) {
+        // fixing InDesign's buggy implementation of certain arrays
+        // see: https://forums.adobe.com/message/9408120#9408120
+        obj = Array.prototype.slice.call(obj, 0);
       }
-    } catch(e) {
-      println(indent + "--> " + propname + " " + e);
+      output += "[" + obj.join(", ") + "] (Array)";
+    } else if (obj.constructor.name === "String") {
+      output += "\"" + obj + "\" (String)";
+    } else {
+      output += obj + " (" + obj.constructor.name + ")";
+    }
+  } else {
+    // setting up tree structure indent
+    if(branchArray.length < level) {
+      branchArray.push(branchEnd);
+    } else if (branchArray.length > level) {
+      branchArray.pop();
+    }
+    if(branchEnd) {
+      if(!(level === 1 && settings.showMethods)) {
+        branchArray[branchArray.length - 1] = true;
+      }
+    }
+    for (var i = 0; i < level; i++) {
+      if(branchArray[i]) {
+        indent += "    ";
+      } else {
+        indent += "|   ";
+      }
     }
   }
+
+  if(settings.showProps) {
+    var propArray, value, usePropList;
+
+    if(level === 0 && settings.propList.length > 0 && settings.propList.constructor.name === "Array") {
+      usePropList = true;
+      propArray = settings.propList.reverse();
+    } else if (obj.constructor.name === "Array") {
+      // correct sorting for Array number properties (0, 1, 2 etc.)
+      propArray = obj.reflect.properties.sort(function(a, b) {return a - b}).reverse();
+    } else {
+      propArray = obj.reflect.properties.sort().reverse();
+    }
+
+    if(propArray.length > 1 || usePropList) {
+      output += "\n" + indent + "|";
+
+      for (var i = propArray.length - 1; i >= 0; i--) {
+        if(propArray[i] == "__proto__" || propArray[i] == "__count__" || propArray[i] == "__class__"|| propArray[i] == "reflect") {
+          if(!i) {
+            output += "\n" + indent;
+          }
+          continue;
+        }
+
+        if(settings.showValues) {
+
+          try {
+            var propValue = obj[propArray[i]];
+            if (usePropList && !obj.hasOwnProperty(propArray[i]) && propArray[i] != "length") {
+              // in case a non-existing prop is passed via propList
+              // "length" needs special handling as it is not correctly recognized as a property
+              value = ": The inspected item has no such property.";
+            } else if (propValue === null || propValue === undefined) {
+              value = ": " + propValue;
+            } else if (propValue.constructor.name === "Array") {
+              if(propValue.length > 0 && propValue.reflect.properties.length < 3) {
+                propValue = Array.prototype.slice.call(propValue, 0);
+              }
+              value = ": Array (" + propValue.length + ")";
+              if(propValue.length && level < settings.maxLevel - 1) {
+                // recursive inspecting of Array properties
+                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+              }
+            } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
+              value = ": " + propValue;
+              if(level < settings.maxLevel - 1) {
+                // recursive inspecting of Object properties
+                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+              }
+            } else {
+              value = ": " + propValue.toString();
+            }
+          } catch (e) {
+            if(e.number === 30615) {
+              value = ": The property is not applicable in the current state.";
+            } else if (e.number === 55) {
+              value = ": Object does not support the property '" + propArray[i] + "'.";
+            } else {
+              // other InDesign specific error messages
+              value = ": " + e.message;
+            }
+          }
+
+        } else {
+          value = "";
+        }
+
+        output += "\n" + indent + "|-- " + propArray[i] + value;
+
+
+        if(!i && !branchEnd && level !== 0) {
+          // separation space when a sub-branch ends
+          output += "\n" + indent;
+        }
+      } // end for-loop
+    } // end if(propArray.length > 1 || usePropList)
+  } // end if(settings.showProps)
+
+  if(level === 0 && settings.showMethods) {
+
+    var methodArray = settings.showMethods ? obj.reflect.methods.sort().reverse() : [];
+
+    if(methodArray.length) {
+      output += "\n|" +
+                "\n|   METHODS";
+    }
+
+    for (var i = methodArray.length - 1; i >= 0; i--) {
+      if(methodArray[i].name.charAt(0) === "=") {continue;}
+      output += "\n|-- " + methodArray[i] + "()";
+    }
+  }
+
+  if(level > 0) {
+    // return for recursive calls
+    return output;
+  }
+  // print for top level call
+  println(output);
+
 };
 
 
