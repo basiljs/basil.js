@@ -440,12 +440,12 @@ pub.splitTokens = function(str, tokens) {
   return ary;
 };
 
-/* todo */
+
 pub.match = function(str, regexp) {
   return str.match(regexp);
 };
 
-/* todo */
+
 pub.matchAll = function(aString, aRegExp) {
   var results = [],
     latest;
@@ -963,7 +963,6 @@ pub.saveString = function(file, string) {
   outputFile.close();
 };
 
-// TODO: make savePDF and savePNG D.R.Y.
 /**
  * Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.
  *
