@@ -147,7 +147,6 @@ var printMatrixHelper = function(elements) {
  * @description A matrix.
  * @cat Document
  * @subcat Transformation
- * @todo Add more description.
  */
 var Matrix2D = pub.Matrix2D = function() {
   if (arguments.length === 0) {
@@ -170,7 +169,6 @@ Matrix2D.prototype = {
    * @cat Document
    * @subcat Transformation
    * @description Set a Matrix.
-   * @todo More description.
    */
   set: function() {
     if (arguments.length === 6) {
@@ -188,7 +186,6 @@ Matrix2D.prototype = {
  * @method Matrix2D.get
  * @cat Document
  * @subcat Transformation
- * @todo More description.
  * @return {Matrix2D} The current Matrix.
  */
   get: function() {
@@ -210,7 +207,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.array
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @return {Array} Returns an sliced array.
    */
   array: function array() {
@@ -222,7 +218,6 @@ Matrix2D.prototype = {
    * @cat Document
    * @method Matrix2D.adobeMatrix
    * @subcat Transformation
-   * @todo More description.
    * @return {Array} Returns an Adobe Matrix.
    */
   adobeMatrix: function array() {
@@ -244,7 +239,6 @@ Matrix2D.prototype = {
    * @cat Document
    * @method Matrix2D.translate
    * @subcat Transformation
-   * @todo More description.
    * @param  {Number} tx …
    * @param  {Number} ty …
    */
@@ -257,7 +251,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.invTranslate
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @param  {Number} tx …
    * @param  {Number} ty …
    */
@@ -269,7 +262,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.transpose
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    */
   transpose: function() {},
   /**
@@ -277,7 +269,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.mult
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @param  {Vector|Array} source …
    * @param  {Vector|Array} [target] …
    * @return {Vector} A multiplied Vector.
@@ -312,7 +303,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.multX
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @param  {Number} x …
    * @param  {Number} y …
    * @return {Number} A mulitplied X value.
@@ -325,7 +315,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.multY
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @param  {Number} x …
    * @param  {Number} y …
    * @return {Number}   A multiplied Y value.
@@ -346,7 +335,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.determinant
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @return {Number} A determinant …
    */
   determinant: function() {
@@ -357,7 +345,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.invert
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @return {Boolean} …
    */
   invert: function() {
@@ -384,7 +371,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.scale
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @param  {Number} sx …
    * @param  {Number} sy …
    */
@@ -404,7 +390,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.invScale
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    * @param  {Number} sx …
    * @param  {Number} sy …
    */
@@ -419,7 +404,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.apply
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    */
   apply: function() {
     var source;
@@ -444,7 +428,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.preApply
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    */
   preApply: function() {
     var source;
@@ -469,8 +452,7 @@ Matrix2D.prototype = {
    * @method Matrix2D.rotate
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
-   * @param  {Number} angle …
+   * @param  {Number} angle
    */
   rotate: function(angle) {
     var c = Math.cos(angle);
@@ -489,8 +471,7 @@ Matrix2D.prototype = {
    * @method Matrix2D.rotateZ
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
-   * @param  {Number} angle …
+   * @param  {Number} angle
    */
   rotateZ: function(angle) {
     this.rotate(angle);
@@ -500,8 +481,7 @@ Matrix2D.prototype = {
    * @method Matrix2D.invRotateZ
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
-   * @param  {Number} angle …
+   * @param  {Number} angle
    */
   invRotateZ: function(angle) {
     this.rotateZ(angle - Math.PI);
@@ -511,7 +491,6 @@ Matrix2D.prototype = {
    * @method Matrix2D.print
    * @cat Document
    * @subcat Transformation
-   * @todo More description.
    */
   print: function() {
     var digits = printMatrixHelper(this.elements);
@@ -638,7 +617,6 @@ pub.rotate = function (angle) {
  * @cat Document
  * @subcat Transformation
  * @method scale
- * @todo  Can we make the argument comparison typesafe? != vs !==
  * @param {Number} scaleX The amount to scale the X axis.
  * @param {Number} scaleY The amount to scale the Y axis.
  */
