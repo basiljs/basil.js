@@ -106,7 +106,6 @@ glob.HashList = function () {
   that.length = 0;
   that.items = {};
 
-  // TODO: initial function removal in items?
   for (var key in that.items) {
     b.println(key);
   }

@@ -956,7 +956,7 @@ pub.bounds = function (obj) {
       warning("b.bounds(), not possible to get correct bounds, possible line break within textObj");
     }
 
-    // TODO: not sure if this 100% correct, check
+    // We not sure if this 100% correct, check
     // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
     var xHeight = y1 + descent;
 
