@@ -233,7 +233,7 @@ pub.addPage = function(location) {
 pub.removePage = function (page) {
   checkNull(page);
   if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
-    var p = pub.page(page); // get the page object, todo: add an internal method of page retrieval without setting it to current
+    var p = pub.page(page);
     p.remove();
     currPage = null; // reset!
     currentPage();
