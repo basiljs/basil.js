@@ -75,13 +75,11 @@ pub.ellipse = function(x, y, w, h) {
  * @param {Number} x2 X-coordinate of Point 2.
  * @param {Number} y2 Y-coordinate of Point 2.
  * @return {GraphicLine} New GraphicLine.
- */
-/*
- *  TODO: Vectors as arguments
+ *
  *  @example
- *    var vec1 = new b.Vector( x1, y1 );
- *    var vec2 = new b.Vector( x2, y2 );
- *    b.line( vec1, vec2 );
+ *  var vec1 = new b.Vector( x1, y1 );
+ *  var vec2 = new b.Vector( x2, y2 );
+ *  b.line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
