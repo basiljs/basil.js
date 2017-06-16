@@ -128,7 +128,7 @@ pub.beginShape = function(shapeMode) {
  * the beginShape() and endShape() functions.
  *
  * Use either vertex(x, y) for drawing straight corners or
- * vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight) for drawing bezier shapes.
+ * vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle) for drawing bezier shapes.
  * You can also mix the two approaches.
  *
  * @cat Document
@@ -136,10 +136,10 @@ pub.beginShape = function(shapeMode) {
  * @method vertex
  * @param  {Number} x X-coordinate of the vertex.
  * @param  {Number} y Y-coordinate of the vertex.
- * @param  {Number} [xAnchorLeft] X-coordinate of the left-direction point.
- * @param  {Number} [yAnchorLeft] Y-coordinate of the left-direction point.
- * @param  {Number} [xAnchorRight] X-coordinate of the right-direction point.
- * @param  {Number} [yAnchorRight] Y-coordinate of the right-direction point.
+ * @param  {Number} [xLeftHandle] X-coordinate of the left-direction point.
+ * @param  {Number} [yLeftHandle] Y-coordinate of the left-direction point.
+ * @param  {Number} [xRightHandle] X-coordinate of the right-direction point.
+ * @param  {Number} [yRightHandle] Y-coordinate of the right-direction point.
  */
 pub.vertex = function() {
   if (isArray(currVertexPoints)) {
@@ -151,7 +151,7 @@ pub.vertex = function() {
                               [arguments[0], arguments[1]],
                               [arguments[4], arguments[5]]]);
     } else {
-      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xAnchorLeft, yAnchorLeft, xAnchorRight, yAnchorRight)!");
+      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)!");
     }
   } else {
     notCalledBeginShapeError();
