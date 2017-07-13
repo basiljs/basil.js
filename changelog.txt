@@ -24,6 +24,7 @@ basil.js x.x.x DAY MONTH YEAR
 * Improved the speed of b.clear() considerably
 * b.isText() now correctly identifies collections of multiple text objects as text
   (Characters, Words, Lines etc.)
+* b.size() now can use existing page size presets as a parameter
 * Changed all include/includepath/targetengine statements from # to //@
   This allows linting with eslint of all files
 * Linted all the test files

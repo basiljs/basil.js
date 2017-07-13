@@ -21,44 +21,56 @@ pub.doc = function(doc) {
 /**
  * Sets the size of the current document, if arguments are given.
  * If only one argument is given, both the width and the height are set to this value.
+ * Alternatively a string can be given as the only argument to apply an existing page size preset ("A4", "Letter" etc.).
  * If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat Document
  * @method size
- * @param  {Number} width The desired width of the current document.
+ * @param  {Number|String} widthOrPageSize The desired width of the current document or the name of a page size preset.
  * @param  {Number} [height] The desired height of the current document. If not provided the width will be used as the height.
  * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
  *
  */
-pub.size = function(width, height) {
+pub.size = function(widthOrPageSize, height) {
   if(app.documents.length === 0) {
     // there are no documents
-    warning("b.size(width, height)", "You have no open document.");
+    warning("b.size()", "You have no open document.");
     return;
   }
   if (arguments.length === 0) {
     // no arguments given
-    // return the curent values
-    // warning('b.size(width, height)', 'no arguments given');
+    // return the current values
     return {width: pub.width, height: pub.height};
   }
 
-  if(arguments.length === 1) {
+  var doc = currentDoc();
+
+  if(arguments.length === 1 && typeof widthOrPageSize === "string") {
+
+    try {
+      doc.documentPreferences.pageSize = widthOrPageSize;
+    } catch (e) {
+      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+    }
+    pub.height = doc.documentPreferences.pageHeight;
+    pub.width = doc.documentPreferences.pageWidth;
+    return {width: pub.width, height: pub.height};
+  } else if(arguments.length === 1) {
     // only one argument set the first to the secound
-    height = width;
+    height = widthOrPageSize;
   }
-  var doc = app.documents[0];
-    // set the documents pageHeiht and pageWidth
+  // set the document's pageHeight and pageWidth
   doc.properties = {
     documentPreferences: {
       pageHeight: height,
-      pageWidth: width
+      pageWidth: widthOrPageSize
     }
   };
   // set height and width
   pub.height = height;
-  pub.width = width;
+  pub.width = widthOrPageSize;
 
+  return {width: pub.width, height: pub.height};
 
 };
 
