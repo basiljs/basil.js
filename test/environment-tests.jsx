@@ -21,17 +21,43 @@ b.test("EnvironmentTests", {
     b.close(SaveOptions.no);
   },
 
-  testSizeAllArgs: function(b) {
+  testSizeAllNumberArgs: function(b) {
     var doc = app.documents.add();
     b.size(100, 200);
     assert(doc.documentPreferences.pageWidth === 100);
     assert(doc.documentPreferences.pageHeight === 200);
   },
-  testSizeOneArg: function(b) {
+  testSizeAllPageSizePresetArgs: function(b) {
+    var doc = app.documents.add();
+    b.units(b.PX);
+    doc.documentPreferences.pageWidth = 1000;
+    doc.documentPreferences.pageHeight = 500;
+
+    b.size("800 x 600", b.PORTRAIT);
+    assert(doc.documentPreferences.pageHeight > doc.documentPreferences.pageWidth);
+    assert(doc.documentPreferences.pageWidth === 600);
+    assert(doc.documentPreferences.pageHeight === 800);
+
+    b.size("1024 x 768", b.LANDSCAPE);
+    assert(doc.documentPreferences.pageHeight < doc.documentPreferences.pageWidth);
+    assert(doc.documentPreferences.pageWidth === 1024);
+    assert(doc.documentPreferences.pageHeight === 768);
+  },
+  testSizeOneNumberArg: function(b) {
     var doc = app.documents.add();
     b.size(100);
     assert(doc.documentPreferences.pageWidth === 100);
     assert(doc.documentPreferences.pageHeight === 100);
+  },
+  testSizeOnePageSizePresetArg: function(b) {
+    var doc = app.documents.add();
+    b.units(b.PX);
+    doc.documentPreferences.pageWidth = 1000;
+    doc.documentPreferences.pageHeight = 500;
+
+    b.size("800 x 600");
+    assert(doc.documentPreferences.pageWidth === 800);
+    assert(doc.documentPreferences.pageHeight === 600);
   },
   testSizeNoArg: function(b) {
     var doc = app.documents.add();
