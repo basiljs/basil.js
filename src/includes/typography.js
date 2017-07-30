@@ -162,7 +162,7 @@ pub.textFont = function(fontName, fontStyle) {
   }
 
   if(app.fonts.itemByName(fontName).status !== FontStatus.INSTALLED) {
-    warning("b.textFont(), Font \"" + fontName + "\" not installed. Using current font instead.");
+    warning("b.textFont(), font \"" + fontName + "\" not installed. Using current font instead.");
   } else {
     currFont = fontName;
   }
