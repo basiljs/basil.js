@@ -152,12 +152,21 @@ var isValid = function (item) {
  * @return {String} currFont The name of the current font
  */
 pub.textFont = function(fontName, fontStyle) {
-  if (arguments.length === 1) {
+
+  if (arguments.length === 2) {
+    fontName = fontName + "\t" + fontStyle;
+  } else if (arguments.length === 1) {
+    fontName = fontName + "\tRegular";
+  } else {
+    error("b.textFont(), wrong parameters. Use: fontName, fontStyle. fontStyle is optional.");
+  }
+
+  if(app.fonts.itemByName(fontName).status !== FontStatus.INSTALLED) {
+    warning("b.textFont(), Font \"" + fontName + "\" not installed. Using current font instead.");
+  } else {
     currFont = fontName;
   }
-  if (arguments.length === 2) {
-    currFont = fontName + "\t" + fontStyle;
-  }
+
   return currFont;
 };
 
