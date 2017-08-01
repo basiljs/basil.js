@@ -281,6 +281,18 @@ pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do
 * @cat Environment
 * @subcat modes
 */
+var stackArray = $.stack.
+            replace(/[\n]toString\(\)[\n]$/,'').
+            replace(/[\[\]']+/g,'').
+            split(/[\n]/);
+pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1].replace(/.[^.]+$/,'') : stackArray[0].replace(/.[^.]+$/,'');
+
+/**
+* Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
+* @property MODESILENT {String}
+* @cat Environment
+* @subcat modes
+*/
 pub.MODESILENT = "ModeSilent";
 
 /**

@@ -196,7 +196,9 @@ var runDrawLoop = function() {
 
 var welcome = function() {
   clearConsole();
-  println("Using basil.js "
+  println("Running "
+      + pub.SCRIPTNAME
+      + " using basil.js "
       + pub.VERSION
       + " ...");
 };
