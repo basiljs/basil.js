@@ -248,7 +248,7 @@ var setCurrDoc = function(doc) {
 //  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
 //  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
 
-  currFont = currDoc.textDefaults.appliedFont.name;
+  currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
   currAlign = currDoc.textDefaults.justification;
   currLeading = currDoc.textDefaults.leading;

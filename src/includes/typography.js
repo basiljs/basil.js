@@ -147,17 +147,29 @@ var isValid = function (item) {
  *
  * @cat Typography
  * @method textFont
- * @param  {String} fontName The name of the font to set e.g. Helvetica
- * @param  {String} [fontStyle] The Font style e.g. Bold
- * @return {String} currFont The name of the current font
+ * @param  {String} [fontName] The name of the font to set e.g. Helvetica
+ * @param  {String} [fontStyle] The font style e.g. Bold
+ * @return {Font} The current font object
  */
 pub.textFont = function(fontName, fontStyle) {
-  if (arguments.length === 1) {
-    currFont = fontName;
-  }
+
   if (arguments.length === 2) {
-    currFont = fontName + "\t" + fontStyle;
+    fontName = fontName + "\t" + fontStyle;
+  } else if (arguments.length === 1) {
+    fontName = fontName + "\tRegular";
+  } else if (arguments.length === 0) {
+    return currFont;
+  } else {
+    error("b.textFont(), wrong parameters. To set font use: fontName, fontStyle. fontStyle is optional.");
   }
+
+  if(app.fonts.itemByName(fontName).status !== FontStatus.INSTALLED) {
+    warning("b.textFont(), font \"" + fontName.replace("\t", " ") + "\" not installed. "
+      + "Using current font \"" + currFont.fontFamily + " " + currFont.fontStyleName + "\" instead.");
+  } else {
+    currFont = app.fonts.itemByName(fontName);
+  }
+
   return currFont;
 };
 

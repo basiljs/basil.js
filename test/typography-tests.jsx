@@ -115,6 +115,25 @@ b.test("TypographyTests", {
     });
   },
 
+  testApplyingTextFonts: function(b) {
+    b.doc(this.doc);
+    var textFrame = b.text(b.LOREM, 0, 0, 100, 100);
+    var currentFont = textFrame.parentStory.appliedFont;
+
+    b.textFont("someNonInstalledFont");
+    var textFrameNonInstalled = b.text(b.LOREM, 100, 100, 100, 100);
+    assert(textFrameNonInstalled.parentStory.appliedFont === currentFont);
+
+    b.textFont("Helvetica");
+    var textFrameHelvetica = b.text(b.LOREM, 200, 200, 100, 100);
+    assert(textFrameHelvetica.parentStory.appliedFont.fontFamily === "Helvetica");
+
+    b.textFont("Helvetica", "Bold");
+    var textFrameHelveticaBold = b.text(b.LOREM, 300, 300, 100, 100);
+    assert(textFrameHelveticaBold.parentStory.appliedFont.fontFamily === "Helvetica");
+    assert(textFrameHelveticaBold.parentStory.appliedFont.fontStyleName === "Bold");
+  },
+
   testCreateEmptyStyles: function(b) {
     b.doc(this.doc);
 
