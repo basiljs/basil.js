@@ -919,7 +919,7 @@ var welcome = function() {
 };
 
 var currentDoc = function (mode) {
-  if (!currDoc) {
+  if (currDoc === null || !currDoc) {
     var stack = $.stack;
     if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
       warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
@@ -1034,24 +1034,25 @@ var resetCurrDoc = function() {
 };
 
 var currentLayer = function() {
-  if (!currLayer) {
+  if (currLayer === null || !currLayer) {
     currentDoc();
-    if (currDoc.windows.length)
+    if (currDoc.windows.length) {
       currLayer = app.activeDocument.activeLayer;
-    else
+    } else {
       currLayer = currDoc.layers[0];
-
+    }
   }
   return currLayer;
 };
 
 var currentPage = function() {
-  if (!currPage) {
+  if (currPage === null || !currPage) {
     currentDoc();
-    if (currDoc.windows.length)
+    if (currDoc.windows.length) {
       currPage = app.activeWindow.activePage;
-    else
-        currPage = currDoc.pages[0];
+    } else {
+      currPage = currDoc.pages[0];
+    }
   }
   return currPage;
 };
@@ -1456,6 +1457,29 @@ pub.clear = function(container) {
 };
 
 /**
+ * @description Reverts the document to its last saved state. If the current document is not saved yet, this function will close the document without saving it and reopen a fresh document so as to "revert" the unsaved document. This function is helpful during development stage to start from a new or default document each time the script is run.
+ *
+ * @cat Document
+ * @method revert
+ * @return {Document} The reverted document.
+ */
+pub.revert = function() {
+
+  if(currDoc.saved && currDoc.modified) {
+    var currFile = currDoc.fullName;
+    currDoc.close(SaveOptions.NO);
+    app.open(File(currFile));
+    resetCurrDoc();
+  } else if(!currDoc.saved) {
+    currDoc.close(SaveOptions.NO);
+    resetCurrDoc();
+    currentDoc();
+  }
+
+  return currDoc;
+};
+
+/**
  * @description Removes the provided Page, Layer, PageItem, Swatch, etc.
  *
  * @cat Document
@@ -1557,6 +1581,28 @@ pub.close = function(saveOptions, file) {
   }
 };
 
+/**
+ * @description Reverts the document to its last saved state. If the current document is not saved yet, this function will close the document without saving it and reopen a fresh document so as to "revert" the unsaved document. This function is helpful during development stage to start from a new or default document each time the script is run.
+ *
+ * @cat Document
+ * @method revert
+ * @return {Document} The reverted document.
+ */
+pub.revert = function() {
+
+  if(currDoc.saved && currDoc.modified) {
+    var currFile = currDoc.fullName;
+    currDoc.close(SaveOptions.NO);
+    app.open(File(currFile));
+    resetCurrDoc();
+  } else if(!currDoc.saved) {
+    currDoc.close(SaveOptions.NO);
+    resetCurrDoc();
+    currentDoc();
+  }
+
+  return currDoc;
+};
 
 /**
  * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.

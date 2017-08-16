@@ -202,7 +202,7 @@ var welcome = function() {
 };
 
 var currentDoc = function (mode) {
-  if (!currDoc) {
+  if (currDoc === null || !currDoc) {
     var stack = $.stack;
     if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
       warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
@@ -317,24 +317,25 @@ var resetCurrDoc = function() {
 };
 
 var currentLayer = function() {
-  if (!currLayer) {
+  if (currLayer === null || !currLayer) {
     currentDoc();
-    if (currDoc.windows.length)
+    if (currDoc.windows.length) {
       currLayer = app.activeDocument.activeLayer;
-    else
+    } else {
       currLayer = currDoc.layers[0];
-
+    }
   }
   return currLayer;
 };
 
 var currentPage = function() {
-  if (!currPage) {
+  if (currPage === null || !currPage) {
     currentDoc();
-    if (currDoc.windows.length)
+    if (currDoc.windows.length) {
       currPage = app.activeWindow.activePage;
-    else
-        currPage = currDoc.pages[0];
+    } else {
+      currPage = currDoc.pages[0];
+    }
   }
   return currPage;
 };
