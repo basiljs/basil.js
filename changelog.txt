@@ -12,6 +12,8 @@ basil.js x.x.x DAY MONTH YEAR
   returns a color or gradient of a given name
 + Added b.revert()
   reverts the document to a fresh state
++ Added b.SCRIPTNAME
+  holds the name of the current script
 
 * b.paragraphStyle(), b.characterStyle() and b.objectStyle() are expanded:
   They can now get an applied style from a text object/page item and can

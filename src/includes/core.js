@@ -175,7 +175,7 @@ var runSetup = function() {
     if (typeof glob.setup === "function") {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawOnce = function() {
@@ -183,7 +183,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === "function") {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawLoop = function() {
@@ -191,12 +191,14 @@ var runDrawLoop = function() {
     if (typeof glob.draw === "function") {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var welcome = function() {
   clearConsole();
-  println("Using basil.js "
+  println("Running "
+      + pub.SCRIPTNAME
+      + " using basil.js "
       + pub.VERSION
       + " ...");
 };

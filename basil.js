@@ -337,6 +337,17 @@ pub.AFTER = LocationOptions.AFTER;
 pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
 /**
+* The name of the current script.
+* @property SCRIPTNAME {String}
+* @cat Environment
+*/
+var stackArray = $.stack.
+            replace(/[\n]toString\(\)[\n]$/,'').
+            replace(/[\[\]']+/g,'').
+            split(/[\n]/);
+pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
+
+/**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
 * @property MODESILENT {String}
 * @cat Environment
@@ -892,7 +903,7 @@ var runSetup = function() {
     if (typeof glob.setup === "function") {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawOnce = function() {
@@ -900,7 +911,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === "function") {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawLoop = function() {
@@ -908,12 +919,14 @@ var runDrawLoop = function() {
     if (typeof glob.draw === "function") {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var welcome = function() {
   clearConsole();
-  println("Using basil.js "
+  println("Running "
+      + pub.SCRIPTNAME
+      + " using basil.js "
       + pub.VERSION
       + " ...");
 };
