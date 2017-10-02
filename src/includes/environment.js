@@ -84,6 +84,29 @@ pub.close = function(saveOptions, file) {
   }
 };
 
+/**
+ * @description Reverts the document to its last saved state. If the current document is not saved yet, this function will close the document without saving it and reopen a fresh document so as to "revert" the unsaved document. This function is helpful during development stage to start from a new or default document each time the script is run.
+ *
+ * @cat Document
+ * @method revert
+ * @return {Document} The reverted document.
+ */
+pub.revert = function() {
+
+  if(currDoc.saved && currDoc.modified) {
+    var currFile = currDoc.fullName;
+    currDoc.close(SaveOptions.NO);
+    app.open(File(currFile));
+    resetCurrDoc();
+  } else if(!currDoc.saved) {
+    currDoc.close(SaveOptions.NO);
+    resetCurrDoc();
+    app.documents.add();
+    currentDoc();
+  }
+
+  return currDoc;
+};
 
 /**
  * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.

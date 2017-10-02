@@ -313,6 +313,39 @@ b.test("EnvironmentTests", {
     });
     assert(counter === 1);
 
+  },
+
+  testRevertSavedDoc: function (b) {
+
+     var doc = app.documents.add();
+     var docCount = app.documents.length;
+
+     var testFile = File("~/Desktop/basil_testingRevert_temp.indd");
+     doc.save(testFile);
+
+     b.ellipse(20, 20, 20, 20);
+     b.revert();
+
+     assert(app.documents.length === docCount);
+     assert(app.activeDocument.name === "basil_testingRevert_temp.indd");
+     assert(app.activeDocument.modified === false);
+     assert(app.activeDocument.pageItems.length === 0);
+
+     // removing the temp document
+     testFile.remove();
+  },
+
+  testRevertUnsavedDoc: function (b) {
+
+     var doc = app.documents.add();
+     var docCount = app.documents.length;
+
+     b.ellipse(20, 20, 20, 20);
+     b.revert();
+
+     assert(app.documents.length === docCount);
+     assert(b.doc().pageItems.length === 0);
+
   }
 
 });

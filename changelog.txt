@@ -10,6 +10,8 @@ basil.js x.x.x DAY MONTH YEAR
   see examples/typography/styles.jsx
 + Added b.swatch()
   returns a color or gradient of a given name
++ Added b.revert()
+  reverts the document to a fresh state
 + Added b.SCRIPTNAME
   holds the name of the current script
 
