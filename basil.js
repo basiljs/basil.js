@@ -1588,6 +1588,7 @@ pub.revert = function() {
   } else if(!currDoc.saved) {
     currDoc.close(SaveOptions.NO);
     resetCurrDoc();
+    app.documents.add();
     currentDoc();
   }
 
