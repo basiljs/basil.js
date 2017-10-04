@@ -393,6 +393,11 @@ pub.rect = function(x, y, w, h) {
     rectBounds[1] = x - (w / 2);
     rectBounds[2] = (y + h) - (h / 2);
     rectBounds[3] = (x + w) - (w / 2);
+  } else if (currRectMode === pub.RADIUS) {
+    rectBounds[0] = y - h;
+    rectBounds[1] = x - w;
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
   }
 
   var newRect = currentPage().rectangles.add(currentLayer());
@@ -403,7 +408,7 @@ pub.rect = function(x, y, w, h) {
   newRect.fillTint = currFillTint;
   newRect.strokeColor = currStrokeColor;
 
-  if (currRectMode === pub.CENTER) {
+  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -440,11 +445,11 @@ pub.rect = function(x, y, w, h) {
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
     currRectMode = mode;
     return currRectMode;
   } else {
-    error("b.rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER.");
+    error("b.rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER, RADIUS.");
   }
 };
 
