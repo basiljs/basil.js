@@ -25,6 +25,8 @@ basil.js x.x.x DAY MONTH YEAR
   Options to show or hide properties, values and/or methods.
   Option to show only certain properties.
   Lots of minor fixes.
+* b.text() now respects the currently set rectangle mode
+* b.rectMode() now works with b.RADIUS
 * Improved the speed of b.clear() considerably
 * b.textFont() does no longer stop the script if a font is missing, but gives a console warning instead
 * b.isText() now correctly identifies collections of multiple text objects as text
