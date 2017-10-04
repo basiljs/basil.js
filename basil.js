@@ -3703,8 +3703,8 @@ pub.ellipse = function(x, y, w, h) {
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
-    ellipseBounds[2] = (y + h);
-    ellipseBounds[3] = (x + w);
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
   } else if (currEllipseMode === pub.CORNERS) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
@@ -3713,13 +3713,13 @@ pub.ellipse = function(x, y, w, h) {
   } else if (currEllipseMode === pub.CENTER) {
     ellipseBounds[0] = y - (h / 2);
     ellipseBounds[1] = x - (w / 2);
-    ellipseBounds[2] = (y + h) - (h / 2);
-    ellipseBounds[3] = (x + w) - (w / 2);
+    ellipseBounds[2] = y + (h / 2);
+    ellipseBounds[3] = x + (w / 2);
   } else if (currEllipseMode === pub.RADIUS) {
-    ellipseBounds[0] = y - (h);
-    ellipseBounds[1] = x - (w);
-    ellipseBounds[2] = y + (h);
-    ellipseBounds[3] = x + (w);
+    ellipseBounds[0] = y - h;
+    ellipseBounds[1] = x - w;
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
   }
 
   if(w === 0 || h === 0)
@@ -4064,8 +4064,8 @@ pub.rect = function(x, y, w, h) {
   if (currRectMode === pub.CORNER) {
     rectBounds[0] = y;
     rectBounds[1] = x;
-    rectBounds[2] = (y + h);
-    rectBounds[3] = (x + w);
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
   } else if (currRectMode === pub.CORNERS) {
     rectBounds[0] = y;
     rectBounds[1] = x;
@@ -4074,8 +4074,8 @@ pub.rect = function(x, y, w, h) {
   } else if (currRectMode === pub.CENTER) {
     rectBounds[0] = y - (h / 2);
     rectBounds[1] = x - (w / 2);
-    rectBounds[2] = (y + h) - (h / 2);
-    rectBounds[3] = (x + w) - (w / 2);
+    rectBounds[2] = y + (h / 2);
+    rectBounds[3] = x + (w / 2);
   } else if (currRectMode === pub.RADIUS) {
     rectBounds[0] = y - h;
     rectBounds[1] = x - w;
