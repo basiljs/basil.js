@@ -330,6 +330,22 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Used with b.size() to set the orientation of a given page size to portrait.
+ * @property PORTRAIT {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.PORTRAIT = PageOrientation.PORTRAIT;
+
+/**
+ * Used with b.size() to set the orientation of a given page size to landscape.
+ * @property LANDSCAPE {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.LANDSCAPE = PageOrientation.LANDSCAPE;
+
+/**
  * Returns a Lorem ipsum string that can be used for testing.
  * @property LOREM {String}
  * @cat Typography
@@ -1508,44 +1524,71 @@ pub.doc = function(doc) {
 /**
  * Sets the size of the current document, if arguments are given.
  * If only one argument is given, both the width and the height are set to this value.
+ * Alternatively, a string can be given as the first argument to apply an existing page size preset ("A4", "Letter" etc.).
+ * In this case, either b.PORTRAIT or b.LANDSCAPE can be used as a second argument to determine the orientation of the page.
  * If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat Document
  * @method size
- * @param  {Number} width The desired width of the current document.
- * @param  {Number} [height] The desired height of the current document. If not provided the width will be used as the height.
- * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
+ * @param  {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
+ * @param  {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
+ * @return {Object} Object containing the current <code>width</code> and <code>height</code> of the document.
  *
+ * @example <caption>Sets the document size to 70 x 100 units</caption>
+ * b.size(70, 100);
+ *
+ * @example <caption>Sets the document size to 70 x 70</caption>
+ * b.size(70);
+ *
+ * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
+ * b.size("A4");
+ *
+ * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
+ * b.size("A4", b.LANDSCAPE);
  */
-pub.size = function(width, height) {
+pub.size = function(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
-    warning("b.size(width, height)", "You have no open document.");
+    warning("b.size()", "You have no open document.");
     return;
   }
   if (arguments.length === 0) {
     // no arguments given
-    // return the curent values
-    // warning('b.size(width, height)', 'no arguments given');
+    // return the current values
     return {width: pub.width, height: pub.height};
   }
 
-  if(arguments.length === 1) {
+  var doc = currentDoc();
+
+  if(typeof widthOrPageSize === "string") {
+
+    try {
+      doc.documentPreferences.pageSize = widthOrPageSize;
+    } catch (e) {
+      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+    }
+    if(heightOrOrientation === b.PORTRAIT || heightOrOrientation === b.LANDSCAPE) {
+      doc.documentPreferences.pageOrientation = heightOrOrientation;
+    }
+    pub.height = doc.documentPreferences.pageHeight;
+    pub.width = doc.documentPreferences.pageWidth;
+    return {width: pub.width, height: pub.height};
+  } else if(arguments.length === 1) {
     // only one argument set the first to the secound
-    height = width;
+    heightOrOrientation = widthOrPageSize;
   }
-  var doc = app.documents[0];
-    // set the documents pageHeiht and pageWidth
+  // set the document's pageHeight and pageWidth
   doc.properties = {
     documentPreferences: {
-      pageHeight: height,
-      pageWidth: width
+      pageHeight: heightOrOrientation,
+      pageWidth: widthOrPageSize
     }
   };
   // set height and width
-  pub.height = height;
-  pub.width = width;
+  pub.height = heightOrOrientation;
+  pub.width = widthOrPageSize;
 
+  return {width: pub.width, height: pub.height};
 
 };
 

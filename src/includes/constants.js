@@ -269,6 +269,22 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Used with b.size() to set the orientation of a given page size to portrait.
+ * @property PORTRAIT {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.PORTRAIT = PageOrientation.PORTRAIT;
+
+/**
+ * Used with b.size() to set the orientation of a given page size to landscape.
+ * @property LANDSCAPE {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.LANDSCAPE = PageOrientation.LANDSCAPE;
+
+/**
  * Returns a Lorem ipsum string that can be used for testing.
  * @property LOREM {String}
  * @cat Typography
