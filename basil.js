@@ -1846,7 +1846,7 @@ pub.previousPage = function () {
 /**
  * Returns the number of all pages in the current document. If a number is given as an argument,
  * it will set the document's page count to the given number by either adding pages or removing
- * pages until the number is reached. If pages are added, the master page of document's last
+ * pages until the number is reached. If pages are added, the master page of the document's last
  * page will be applied to the new pages.
  *
  * @cat Document
