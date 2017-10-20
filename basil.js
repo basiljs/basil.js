@@ -1844,14 +1844,25 @@ pub.previousPage = function () {
 
 
 /**
- * The number of all pages in the current document.
+ * Returns the number of all pages in the current document. If a number is given as an argument,
+ * it will set the document's page count to the given number by either adding pages or removing
+ * pages until the number is reached. If pages are added, the master page of the document's last
+ * page will be applied to the new pages.
  *
  * @cat Document
  * @subcat Page
  * @method pageCount
+ * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pub.pageCount = function() {
+pub.pageCount = function(pageCount) {
+  if(arguments.length) {
+    if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
+      currentDoc().documentPreferences.pagesPerDocument = pageCount;
+    } else {
+      error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
+    }
+  }
   return currentDoc().pages.count();
 };
 
@@ -3315,6 +3326,20 @@ var isNumber = pub.isNumber = function(num) {
     return false;
   }
   return isFinite(num) && num.constructor.name === "Number";
+};
+
+
+/**
+ * Checks whether a var is an integer, returns true if this is the case.
+ *
+ * @cat Data
+ * @subcat Type-Check
+ * @method isInteger
+ * @param  {Object|String|Number|Boolean}  num The number to check.
+ * @return {Boolean} Returns true if the given argument is an integer.
+ */
+var isInteger = pub.isInteger = function(num) {
+  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**

@@ -683,6 +683,20 @@ var isNumber = pub.isNumber = function(num) {
   return isFinite(num) && num.constructor.name === "Number";
 };
 
+
+/**
+ * Checks whether a var is an integer, returns true if this is the case.
+ *
+ * @cat Data
+ * @subcat Type-Check
+ * @method isInteger
+ * @param  {Object|String|Number|Boolean}  num The number to check.
+ * @return {Boolean} Returns true if the given argument is an integer.
+ */
+var isInteger = pub.isInteger = function(num) {
+  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
+};
+
 /**
  * Checks whether a var is a string, returns true if this is the case
  *
