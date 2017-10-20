@@ -14,6 +14,8 @@ basil.js x.x.x DAY MONTH YEAR
   reverts the document to a fresh state
 + Added b.SCRIPTNAME
   holds the name of the current script
++ Added b.isInteger()
+  checks if a given variable is an integer
 
 * b.paragraphStyle(), b.characterStyle() and b.objectStyle() are expanded:
   They can now get an applied style from a text object/page item and can

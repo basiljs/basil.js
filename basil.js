@@ -1857,7 +1857,7 @@ pub.previousPage = function () {
  */
 pub.pageCount = function(pageCount) {
   if(arguments.length) {
-    if(pageCount.constructor.name === "Number" && pageCount % 1 === 0 && pageCount > 0 && pageCount < 10000) {
+    if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
     } else {
       error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
@@ -3326,6 +3326,20 @@ var isNumber = pub.isNumber = function(num) {
     return false;
   }
   return isFinite(num) && num.constructor.name === "Number";
+};
+
+
+/**
+ * Checks whether a var is an integer, returns true if this is the case.
+ *
+ * @cat Data
+ * @subcat Type-Check
+ * @method isInteger
+ * @param  {Object|String|Number|Boolean}  num The number to check.
+ * @return {Boolean} Returns true if the given argument is an integer.
+ */
+var isInteger = pub.isInteger = function(num) {
+  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**
