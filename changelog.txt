@@ -17,6 +17,7 @@ basil.js x.x.x DAY MONTH YEAR
 + Added b.isInteger()
   checks if a given variable is an integer
 
+* b.rect() now allows additional parameters to add rounded corners
 * b.paragraphStyle(), b.characterStyle() and b.objectStyle() are expanded:
   They can now get an applied style from a text object/page item and can
   make use of an optional object with property name/value pairs to set
