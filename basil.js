@@ -4118,6 +4118,8 @@ function notCalledBeginShapeError () {
 
 /**
  * Draws a rectangle on the page.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the b.rectMode() function.
+ * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
  * @cat Document
  * @subcat Primitives
@@ -4126,6 +4128,10 @@ function notCalledBeginShapeError () {
  * @param  {Number} y Y-coordinate of the rectangle.
  * @param  {Number} w Width of the rectangle.
  * @param  {Number} h Height of the rectangle.
+ * @param  {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
+ * @param  {Number} [tr] Radius of top right corner (optional).
+ * @param  {Number} [br] Radius of bottom right corner (optional).
+ * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
 pub.rect = function(x, y, w, h, tl, tr, br, bl) {
