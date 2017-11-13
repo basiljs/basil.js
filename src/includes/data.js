@@ -633,6 +633,9 @@ var isURL = pub.isURL = function(url) {
  * @return {Boolean} Returns either true or false
  */
 var endsWith = pub.endsWith = function(str, suffix) {
+  if(!isString(str) || !isString(suffix)) {
+    error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
+  }
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
@@ -647,6 +650,9 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @return {Boolean} Returns either true or false
  */
 var startsWith = pub.startsWith = function(str, prefix) {
+  if(!isString(str) || !isString(prefix)) {
+    error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
+  }
   return str.indexOf(prefix) === 0;
 };
 
