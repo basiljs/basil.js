@@ -370,12 +370,12 @@ function notCalledBeginShapeError () {
  * @param  {Number} h Height of the rectangle.
  * @return {Rectangle} The rectangle that was created.
  */
-pub.rect = function(x, y, w, h) {
+pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // indesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
-  if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+  if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
   if (currRectMode === pub.CORNER) {
@@ -411,6 +411,18 @@ pub.rect = function(x, y, w, h) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
                    currMatrix.adobeMatrix());
+  }
+
+  if(arguments.length > 4) {
+    newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
+    if(arguments.length === 8) {
+      newRect.topLeftCornerRadius = tl;
+      newRect.topRightCornerRadius = tr;
+      newRect.bottomRightCornerRadius = br;
+      newRect.bottomLeftCornerRadius = bl;
+    } else {
+      newRect.topLeftCornerRadius = newRect.topRightCornerRadius = newRect.bottomRightCornerRadius = newRect.bottomLeftCornerRadius = tl;
+    }
   }
   return newRect;
 };
