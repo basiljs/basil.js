@@ -420,14 +420,14 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   }
 
   if(arguments.length > 4) {
+    for(var i = 4; i < arguments.length;i++){
+      if(arguments[i] < 0 ){
+        error("b.rect(), needs positive values as arguments for the rounded corners.");
+        return;
+      }
+    }
     newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
     if(arguments.length === 8) {
-      for(var i = 4; i < arguments.length;i++){
-        if(arguments[i] < 0 ){
-          error("b.rect(), needs positive values as arguments for the rounded corners.");
-          return;
-        }
-      }
       newRect.topLeftCornerRadius = tl;
       newRect.topRightCornerRadius = tr;
       newRect.bottomRightCornerRadius = br;
