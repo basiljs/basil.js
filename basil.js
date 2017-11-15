@@ -4187,7 +4187,6 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
     for(var i = 4; i < arguments.length;i++){
       if(arguments[i] < 0 ){
         error("b.rect(), needs positive values as arguments for the rounded corners.");
-        // return;
       }
     }
     newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
