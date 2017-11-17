@@ -330,6 +330,22 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Used with b.size() to set the orientation of a given page size to portrait.
+ * @property PORTRAIT {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.PORTRAIT = PageOrientation.PORTRAIT;
+
+/**
+ * Used with b.size() to set the orientation of a given page size to landscape.
+ * @property LANDSCAPE {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.LANDSCAPE = PageOrientation.LANDSCAPE;
+
+/**
  * Returns a Lorem ipsum string that can be used for testing.
  * @property LOREM {String}
  * @cat Typography
@@ -1508,44 +1524,71 @@ pub.doc = function(doc) {
 /**
  * Sets the size of the current document, if arguments are given.
  * If only one argument is given, both the width and the height are set to this value.
+ * Alternatively, a string can be given as the first argument to apply an existing page size preset ("A4", "Letter" etc.).
+ * In this case, either b.PORTRAIT or b.LANDSCAPE can be used as a second argument to determine the orientation of the page.
  * If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat Document
  * @method size
- * @param  {Number} width The desired width of the current document.
- * @param  {Number} [height] The desired height of the current document. If not provided the width will be used as the height.
- * @return {Object} if no argument is given it returns an object containing the current width and height of the document.
+ * @param  {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
+ * @param  {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
+ * @return {Object} Object containing the current <code>width</code> and <code>height</code> of the document.
  *
+ * @example <caption>Sets the document size to 70 x 100 units</caption>
+ * b.size(70, 100);
+ *
+ * @example <caption>Sets the document size to 70 x 70</caption>
+ * b.size(70);
+ *
+ * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
+ * b.size("A4");
+ *
+ * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
+ * b.size("A4", b.LANDSCAPE);
  */
-pub.size = function(width, height) {
+pub.size = function(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
-    warning("b.size(width, height)", "You have no open document.");
+    warning("b.size()", "You have no open document.");
     return;
   }
   if (arguments.length === 0) {
     // no arguments given
-    // return the curent values
-    // warning('b.size(width, height)', 'no arguments given');
+    // return the current values
     return {width: pub.width, height: pub.height};
   }
 
-  if(arguments.length === 1) {
+  var doc = currentDoc();
+
+  if(typeof widthOrPageSize === "string") {
+
+    try {
+      doc.documentPreferences.pageSize = widthOrPageSize;
+    } catch (e) {
+      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+    }
+    if(heightOrOrientation === b.PORTRAIT || heightOrOrientation === b.LANDSCAPE) {
+      doc.documentPreferences.pageOrientation = heightOrOrientation;
+    }
+    pub.height = doc.documentPreferences.pageHeight;
+    pub.width = doc.documentPreferences.pageWidth;
+    return {width: pub.width, height: pub.height};
+  } else if(arguments.length === 1) {
     // only one argument set the first to the secound
-    height = width;
+    heightOrOrientation = widthOrPageSize;
   }
-  var doc = app.documents[0];
-    // set the documents pageHeiht and pageWidth
+  // set the document's pageHeight and pageWidth
   doc.properties = {
     documentPreferences: {
-      pageHeight: height,
-      pageWidth: width
+      pageHeight: heightOrOrientation,
+      pageWidth: widthOrPageSize
     }
   };
   // set height and width
-  pub.height = height;
-  pub.width = width;
+  pub.height = heightOrOrientation;
+  pub.width = widthOrPageSize;
 
+  return {width: pub.width, height: pub.height};
 
 };
 
@@ -1801,14 +1844,25 @@ pub.previousPage = function () {
 
 
 /**
- * The number of all pages in the current document.
+ * Returns the number of all pages in the current document. If a number is given as an argument,
+ * it will set the document's page count to the given number by either adding pages or removing
+ * pages until the number is reached. If pages are added, the master page of the document's last
+ * page will be applied to the new pages.
  *
  * @cat Document
  * @subcat Page
  * @method pageCount
+ * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pub.pageCount = function() {
+pub.pageCount = function(pageCount) {
+  if(arguments.length) {
+    if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
+      currentDoc().documentPreferences.pagesPerDocument = pageCount;
+    } else {
+      error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
+    }
+  }
   return currentDoc().pages.count();
 };
 
@@ -1921,32 +1975,36 @@ pub.layer = function(layer) {
 
 
 /**
- *  Returns the Group instance and sets it if argument Group is given.
+ *  Groups items to a new group. Returns the resulting group instance. If a string is given as the only
+ *  argument, the group by the given name will be returned.
  *
  *  @cat Document
  *  @subCat Page
- *  @method Group
- *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance.
- *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
- *  @return {Group} The current Group instance.
+ *  @method group
+ *  @param {Array} pItems An array of page items (must contain at least two items) or name of group instance.
+ *  @param {String} [name] The name of the group, only when creating a group from page items.
+ *  @return {Group} The group instance.
  */
-pub.group = function (pItem, name) {
-  checkNull(pItem);
-  var group = null;
-  if(pItem instanceof Array) {
-    if(pItem.length < 2) {
-      error("There must be at least two PageItems passed to b.group().");
+pub.group = function (pItems, name) {
+  checkNull(pItems);
+  var group;
+  if(pItems instanceof Array) {
+    if(pItems.length < 2) {
+      error("b.group(), the array passed to b.group() must at least contain two page items.");
     }
     // creates a group from Page Items
-    group = currentDoc().groups.add(pItem);
+    group = currentDoc().groups.add(pItems);
     if(typeof name !== "undefined") {
       group.name = name;
     }
-  } else if(typeof pItem === "string") {
+  } else if(typeof pItems === "string") {
     // get the Group of the given name
-    group = currentDoc().groups.item(pItem);
+    group = currentDoc().groups.item(pItems);
+    if (!group.isValid) {
+      error("b.group(), a group with the provided name doesn't exist.");
+    }
   } else {
-    error("b.group(), not a valid argument.");
+    error("b.group(), not a valid argument. Use an array of page items to group or a name of an existing group.");
   }
 
   return group;
@@ -1954,28 +2012,31 @@ pub.group = function (pItem, name) {
 
 
 /**
- *  Returns an array of the items that were within the Group before b.ungroup() was called
+ *  Ungroups an existing group. Returns an array of the items that were within the group before
+ *  b.ungroup() was called.
  *
  *  @cat Document
  *  @subCat Page
- *  @method Group
- *  @param {Object|String} [pItem] The Group or name of Group name instance.
- *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
- *  @return {Group} The Page Item(s) that were grouped.
+ *  @method group
+ *  @param {Group|String} group The group instance or name of the group to ungroup.
+ *  @return {Array} An array of the ungrouped page items.
  */
-pub.ungroup = function(pItem) {
-  checkNull(pItem);
+pub.ungroup = function(group) {
+  checkNull(group);
   var ungroupedItems = null;
-  if(pItem instanceof Group) {
-    ungroupedItems = b.items(pItem);
-    pItem.ungroup();
-  } else if(typeof pItem === "string") {
+  if(group instanceof Group) {
+    ungroupedItems = b.items(group);
+    group.ungroup();
+  } else if(typeof group === "string") {
     // get the Group of the given name
-    var group = currentDoc().groups.item(pItem);
+    group = currentDoc().groups.item(group);
+    if (!group.isValid) {
+      error("b.ungroup(), a group with the provided name doesn't exist.");
+    }
     ungroupedItems = b.items(group);
     group.ungroup();
   } else {
-    error("b.ungroup(), not a valid Group. Please select a valid Group.");
+    error("b.ungroup(), not a valid group. Please select a valid group.");
   }
   return ungroupedItems;
 };
@@ -3224,6 +3285,9 @@ var isURL = pub.isURL = function(url) {
  * @return {Boolean} Returns either true or false
  */
 var endsWith = pub.endsWith = function(str, suffix) {
+  if(!isString(str) || !isString(suffix)) {
+    error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
+  }
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
@@ -3238,6 +3302,9 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @return {Boolean} Returns either true or false
  */
 var startsWith = pub.startsWith = function(str, prefix) {
+  if(!isString(str) || !isString(prefix)) {
+    error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
+  }
   return str.indexOf(prefix) === 0;
 };
 
@@ -3272,6 +3339,20 @@ var isNumber = pub.isNumber = function(num) {
     return false;
   }
   return isFinite(num) && num.constructor.name === "Number";
+};
+
+
+/**
+ * Checks whether a var is an integer, returns true if this is the case.
+ *
+ * @cat Data
+ * @subcat Type-Check
+ * @method isInteger
+ * @param  {Object|String|Number|Boolean}  num The number to check.
+ * @return {Boolean} Returns true if the given argument is an integer.
+ */
+var isInteger = pub.isInteger = function(num) {
+  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**
@@ -4043,6 +4124,8 @@ function notCalledBeginShapeError () {
 
 /**
  * Draws a rectangle on the page.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the b.rectMode() function.
+ * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
  * @cat Document
  * @subcat Primitives
@@ -4051,14 +4134,18 @@ function notCalledBeginShapeError () {
  * @param  {Number} y Y-coordinate of the rectangle.
  * @param  {Number} w Width of the rectangle.
  * @param  {Number} h Height of the rectangle.
+ * @param  {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
+ * @param  {Number} [tr] Radius of top right corner (optional).
+ * @param  {Number} [br] Radius of bottom right corner (optional).
+ * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
-pub.rect = function(x, y, w, h) {
+pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // indesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
-  if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+  if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
   if (currRectMode === pub.CORNER) {
@@ -4099,6 +4186,23 @@ pub.rect = function(x, y, w, h) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
                    currMatrix.adobeMatrix());
+  }
+
+  if(arguments.length > 4) {
+    for(var i = 4; i < arguments.length;i++){
+      if(arguments[i] < 0 ){
+        error("b.rect(), needs positive values as arguments for the rounded corners.");
+      }
+    }
+    newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
+    if(arguments.length === 8) {
+      newRect.topLeftCornerRadius = tl;
+      newRect.topRightCornerRadius = tr;
+      newRect.bottomRightCornerRadius = br;
+      newRect.bottomLeftCornerRadius = bl;
+    } else {
+      newRect.topLeftCornerRadius = newRect.topRightCornerRadius = newRect.bottomRightCornerRadius = newRect.bottomLeftCornerRadius = tl;
+    }
   }
   return newRect;
 };
