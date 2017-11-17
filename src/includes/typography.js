@@ -26,9 +26,33 @@ pub.text = function(txt, x, y, w, h) {
   if (!(isString(txt) || isNumber(txt))) {
     warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
   }
+
+  var textBounds = [];
+  if (currRectMode === pub.CORNER) {
+    textBounds[0] = y;
+    textBounds[1] = x;
+    textBounds[2] = y + h;
+    textBounds[3] = x + w;
+  } else if (currRectMode === pub.CORNERS) {
+    textBounds[0] = y;
+    textBounds[1] = x;
+    textBounds[2] = h;
+    textBounds[3] = w;
+  } else if (currRectMode === pub.CENTER) {
+    textBounds[0] = y - (h / 2);
+    textBounds[1] = x - (w / 2);
+    textBounds[2] = y + (h / 2);
+    textBounds[3] = x + (w / 2);
+  } else if (currRectMode === pub.RADIUS) {
+    textBounds[0] = y - h;
+    textBounds[1] = x - w;
+    textBounds[2] = y + h;
+    textBounds[3] = x + w;
+  }
+
   var textFrame = currentPage().textFrames.add(currentLayer());
   textFrame.contents = txt.toString();
-  textFrame.geometricBounds = [y, x, (y + h), (x + w)];
+  textFrame.geometricBounds = textBounds;
   textFrame.textFramePreferences.verticalJustification = currYAlign;
 
   pub.typo(textFrame, {
@@ -42,7 +66,7 @@ pub.text = function(txt, x, y, w, h) {
   });
 
 
-  if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
+  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
