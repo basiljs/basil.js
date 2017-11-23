@@ -330,6 +330,38 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Used with b.arrange() to bring a page item to the front or to bring it in front of a given reference object.
+ * @property FRONT {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.FRONT = "front";
+
+/**
+ * Used with b.arrange() to send a page item to the back or to send it behind a given reference object.
+ * @property BACK {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.BACK = "back";
+
+/**
+ * Used with b.arrange() to bring a page item one level forward in its layer.
+ * @property FORWARD {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.FORWARD = "forward";
+
+/**
+ * Used with b.arrange() to send a page item one level backward in its layer.
+ * @property BACKWARD {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.BACKWARD = "backward";
+
+/**
  * Used with b.size() to set the orientation of a given page size to portrait.
  * @property PORTRAIT {String}
  * @cat Document
@@ -1960,6 +1992,36 @@ pub.layer = function(layer) {
     error("b.layer(), wrong arguments. Use layer object or string instead.");
   }
   return currentLayer();
+};
+
+
+/**
+ * arrange arrange.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method arrange
+ * @param {PageItem} pItem The page item to be moved to a new position.
+ * @param {String} positionOrDirection The position or direction to move the object. Can be <code>b.FRONT</code>, <code>b.BACK</code>, <code>b.FORWARD</code> or <code>b.BACKWARD</code>.
+ * @param {PageItem} [reference] A reference object to move the object behind or in front of.
+ * @return {PageItem} The newly arranged page item.
+ */
+pub.arrange = function(pItem, positionOrDirection, reference) {
+  checkNull(pItem);
+
+  if(positionOrDirection === pub.BACKWARD) {
+    pItem.sendBackward();
+  } else if (positionOrDirection === pub.FORWARD) {
+    pItem.bringForward();
+  } else if (positionOrDirection === pub.BACK) {
+    pItem.sendToBack(reference);
+  } else if (positionOrDirection === pub.FRONT) {
+    pItem.bringToFront(reference);
+  } else {
+    error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.")
+  }
+
+  return pItem;
 };
 
 

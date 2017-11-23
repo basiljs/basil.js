@@ -269,6 +269,38 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Used with b.arrange() to bring a page item to the front or to bring it in front of a given reference object.
+ * @property FRONT {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.FRONT = "front";
+
+/**
+ * Used with b.arrange() to send a page item to the back or to send it behind a given reference object.
+ * @property BACK {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.BACK = "back";
+
+/**
+ * Used with b.arrange() to bring a page item one level forward in its layer.
+ * @property FORWARD {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.FORWARD = "forward";
+
+/**
+ * Used with b.arrange() to send a page item one level backward in its layer.
+ * @property BACKWARD {String}
+ * @cat Document
+ * @subcat Page
+ */
+pub.BACKWARD = "backward";
+
+/**
  * Used with b.size() to set the orientation of a given page size to portrait.
  * @property PORTRAIT {String}
  * @cat Document

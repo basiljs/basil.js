@@ -461,6 +461,36 @@ pub.layer = function(layer) {
 
 
 /**
+ * arrange arrange.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method arrange
+ * @param {PageItem} pItem The page item to be moved to a new position.
+ * @param {String} positionOrDirection The position or direction to move the object. Can be <code>b.FRONT</code>, <code>b.BACK</code>, <code>b.FORWARD</code> or <code>b.BACKWARD</code>.
+ * @param {PageItem} [reference] A reference object to move the object behind or in front of.
+ * @return {PageItem} The newly arranged page item.
+ */
+pub.arrange = function(pItem, positionOrDirection, reference) {
+  checkNull(pItem);
+
+  if(positionOrDirection === pub.BACKWARD) {
+    pItem.sendBackward();
+  } else if (positionOrDirection === pub.FORWARD) {
+    pItem.bringForward();
+  } else if (positionOrDirection === pub.BACK) {
+    pItem.sendToBack(reference);
+  } else if (positionOrDirection === pub.FRONT) {
+    pItem.bringToFront(reference);
+  } else {
+    error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.")
+  }
+
+  return pItem;
+};
+
+
+/**
  *  Returns the Group instance and sets it if argument Group is given.
  *
  *  @cat Document
