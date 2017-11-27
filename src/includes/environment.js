@@ -472,6 +472,63 @@ pub.layer = function(layer) {
 
 
 /**
+ * Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>b.FORWARD</code> or <code>b.BACKWARD</code> the object is sent forward or back one step. The constants <code>b.FRONT</code> or <code>b.BACK</code> send the object to the very front or very back. Using <code>b.FRONT</code> or <code>b.BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
+ *
+ * @cat Document
+ * @subcat Page
+ * @method arrange
+ * @param {PageItem|Layer} pItemOrLayer The page item or layer to be moved to a new position.
+ * @param {String} positionOrDirection The position or direction to move the page item or layer. Can be <code>b.FRONT</code>, <code>b.BACK</code>, <code>b.FORWARD</code> or <code>b.BACKWARD</code>.
+ * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
+ * @return {PageItem|Layer} The newly arranged page item or layer.
+ */
+pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
+  checkNull(pItemOrLayer);
+
+  if(pItemOrLayer.hasOwnProperty("parentPage")) {
+    if(positionOrDirection === pub.BACKWARD) {
+      pItemOrLayer.sendBackward();
+    } else if (positionOrDirection === pub.FORWARD) {
+      pItemOrLayer.bringForward();
+    } else if (positionOrDirection === pub.BACK) {
+      pItemOrLayer.sendToBack(reference);
+    } else if (positionOrDirection === pub.FRONT) {
+      pItemOrLayer.bringToFront(reference);
+    } else {
+      error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
+    }
+  } else if (pItemOrLayer instanceof Layer) {
+    if(positionOrDirection === pub.BACKWARD) {
+      if(pItemOrLayer.index === currentDoc().layers.length - 1) return;
+      pItemOrLayer.move(LocationOptions.AFTER, currentDoc().layers[pItemOrLayer.index + 1]);
+    } else if (positionOrDirection === pub.FORWARD) {
+      if(pItemOrLayer.index === 0) return;
+      pItemOrLayer.move(LocationOptions.BEFORE, currentDoc().layers[pItemOrLayer.index - 1]);
+    } else if (positionOrDirection === pub.BACK) {
+      if(!(reference instanceof Layer)) {
+        pItemOrLayer.move(LocationOptions.AT_END);
+      } else {
+        pItemOrLayer.move(LocationOptions.AFTER, reference);
+      }
+    } else if (positionOrDirection === pub.FRONT) {
+      if(!(reference instanceof Layer)) {
+        pItemOrLayer.move(LocationOptions.AT_BEGINNING);
+      } else {
+        pItemOrLayer.move(LocationOptions.BEFORE, reference);
+      }
+    } else {
+      error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
+    }
+  } else {
+    error("b.arrange(), invalid first parameter. Use page item or layer.");
+  }
+
+  return pItemOrLayer;
+};
+
+
+/**
+ *  Returns the Group instance and sets it if argument Group is given.
  *  Groups items to a new group. Returns the resulting group instance. If a string is given as the only
  *  argument, the group by the given name will be returned.
  *
