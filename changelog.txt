@@ -8,6 +8,8 @@ basil.js x.x.x DAY MONTH YEAR
 + Added b.applyParagraphStyle(), b.applyCharacterStyle(), b.applyObjectStyle(),
   set the style of a text object/page item.
   see examples/typography/styles.jsx
++ Added b.arrange()
+  allows to arrange page items or layers in z-space
 + Added b.swatch()
   returns a color or gradient of a given name
 + Added b.revert()

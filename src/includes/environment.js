@@ -488,11 +488,11 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
     }
   } else if (pItemOrLayer instanceof Layer) {
     if(positionOrDirection === pub.BACKWARD) {
-      if(pItemOrLayer.index === b.doc().layers.length - 1) return;
-      pItemOrLayer.move(LocationOptions.AFTER, b.doc().layers[pItemOrLayer.index + 1]);
+      if(pItemOrLayer.index === currentDoc().layers.length - 1) return;
+      pItemOrLayer.move(LocationOptions.AFTER, currentDoc().layers[pItemOrLayer.index + 1]);
     } else if (positionOrDirection === pub.FORWARD) {
       if(pItemOrLayer.index === 0) return;
-      pItemOrLayer.move(LocationOptions.BEFORE, b.doc().layers[pItemOrLayer.index - 1]);
+      pItemOrLayer.move(LocationOptions.BEFORE, currentDoc().layers[pItemOrLayer.index - 1]);
     } else if (positionOrDirection === pub.BACK) {
       if(!(reference instanceof Layer)) {
         pItemOrLayer.move(LocationOptions.AT_END);
