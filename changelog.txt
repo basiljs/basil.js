@@ -16,7 +16,10 @@ basil.js x.x.x DAY MONTH YEAR
   reverts the document to a fresh state
 + Added b.SCRIPTNAME
   holds the name of the current script
++ Added b.isInteger()
+  checks if a given variable is an integer
 
+* b.rect() now allows additional parameters to add rounded corners
 * b.paragraphStyle(), b.characterStyle() and b.objectStyle() are expanded:
   They can now get an applied style from a text object/page item and can
   make use of an optional object with property name/value pairs to set
@@ -27,6 +30,9 @@ basil.js x.x.x DAY MONTH YEAR
   Options to show or hide properties, values and/or methods.
   Option to show only certain properties.
   Lots of minor fixes.
+* b.pageCount() can now also be used to set the doc's page count
+* b.text() now respects the currently set rectangle mode
+* b.rectMode() now works with b.RADIUS
 * Improved the speed of b.clear() considerably
 * b.textFont() does no longer stop the script if a font is missing, but gives a console warning instead
 * b.isText() now correctly identifies collections of multiple text objects as text

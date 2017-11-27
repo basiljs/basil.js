@@ -633,6 +633,9 @@ var isURL = pub.isURL = function(url) {
  * @return {Boolean} Returns either true or false
  */
 var endsWith = pub.endsWith = function(str, suffix) {
+  if(!isString(str) || !isString(suffix)) {
+    error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
+  }
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
@@ -647,6 +650,9 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @return {Boolean} Returns either true or false
  */
 var startsWith = pub.startsWith = function(str, prefix) {
+  if(!isString(str) || !isString(prefix)) {
+    error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
+  }
   return str.indexOf(prefix) === 0;
 };
 
@@ -681,6 +687,20 @@ var isNumber = pub.isNumber = function(num) {
     return false;
   }
   return isFinite(num) && num.constructor.name === "Number";
+};
+
+
+/**
+ * Checks whether a var is an integer, returns true if this is the case.
+ *
+ * @cat Data
+ * @subcat Type-Check
+ * @method isInteger
+ * @param  {Object|String|Number|Boolean}  num The number to check.
+ * @return {Boolean} Returns true if the given argument is an integer.
+ */
+var isInteger = pub.isInteger = function(num) {
+  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**

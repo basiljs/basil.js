@@ -20,8 +20,8 @@ pub.ellipse = function(x, y, w, h) {
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
-    ellipseBounds[2] = (y + h);
-    ellipseBounds[3] = (x + w);
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
   } else if (currEllipseMode === pub.CORNERS) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
@@ -30,13 +30,13 @@ pub.ellipse = function(x, y, w, h) {
   } else if (currEllipseMode === pub.CENTER) {
     ellipseBounds[0] = y - (h / 2);
     ellipseBounds[1] = x - (w / 2);
-    ellipseBounds[2] = (y + h) - (h / 2);
-    ellipseBounds[3] = (x + w) - (w / 2);
+    ellipseBounds[2] = y + (h / 2);
+    ellipseBounds[3] = x + (w / 2);
   } else if (currEllipseMode === pub.RADIUS) {
-    ellipseBounds[0] = y - (h);
-    ellipseBounds[1] = x - (w);
-    ellipseBounds[2] = y + (h);
-    ellipseBounds[3] = x + (w);
+    ellipseBounds[0] = y - h;
+    ellipseBounds[1] = x - w;
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
   }
 
   if(w === 0 || h === 0)
@@ -360,6 +360,8 @@ function notCalledBeginShapeError () {
 
 /**
  * Draws a rectangle on the page.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the b.rectMode() function.
+ * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
  * @cat Document
  * @subcat Primitives
@@ -368,21 +370,25 @@ function notCalledBeginShapeError () {
  * @param  {Number} y Y-coordinate of the rectangle.
  * @param  {Number} w Width of the rectangle.
  * @param  {Number} h Height of the rectangle.
+ * @param  {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
+ * @param  {Number} [tr] Radius of top right corner (optional).
+ * @param  {Number} [br] Radius of bottom right corner (optional).
+ * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
-pub.rect = function(x, y, w, h) {
+pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // indesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
-  if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+  if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
   if (currRectMode === pub.CORNER) {
     rectBounds[0] = y;
     rectBounds[1] = x;
-    rectBounds[2] = (y + h);
-    rectBounds[3] = (x + w);
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
   } else if (currRectMode === pub.CORNERS) {
     rectBounds[0] = y;
     rectBounds[1] = x;
@@ -391,8 +397,13 @@ pub.rect = function(x, y, w, h) {
   } else if (currRectMode === pub.CENTER) {
     rectBounds[0] = y - (h / 2);
     rectBounds[1] = x - (w / 2);
-    rectBounds[2] = (y + h) - (h / 2);
-    rectBounds[3] = (x + w) - (w / 2);
+    rectBounds[2] = y + (h / 2);
+    rectBounds[3] = x + (w / 2);
+  } else if (currRectMode === pub.RADIUS) {
+    rectBounds[0] = y - h;
+    rectBounds[1] = x - w;
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
   }
 
   var newRect = currentPage().rectangles.add(currentLayer());
@@ -403,7 +414,7 @@ pub.rect = function(x, y, w, h) {
   newRect.fillTint = currFillTint;
   newRect.strokeColor = currStrokeColor;
 
-  if (currRectMode === pub.CENTER) {
+  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -412,6 +423,23 @@ pub.rect = function(x, y, w, h) {
                    AnchorPoint.TOP_LEFT_ANCHOR,
                    currMatrix.adobeMatrix());
   }
+
+  if(arguments.length > 4) {
+    for(var i = 4; i < arguments.length;i++){
+      if(arguments[i] < 0 ){
+        error("b.rect(), needs positive values as arguments for the rounded corners.");
+      }
+    }
+    newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
+    if(arguments.length === 8) {
+      newRect.topLeftCornerRadius = tl;
+      newRect.topRightCornerRadius = tr;
+      newRect.bottomRightCornerRadius = br;
+      newRect.bottomLeftCornerRadius = bl;
+    } else {
+      newRect.topLeftCornerRadius = newRect.topRightCornerRadius = newRect.bottomRightCornerRadius = newRect.bottomLeftCornerRadius = tl;
+    }
+  }
   return newRect;
 };
 
@@ -419,18 +447,17 @@ pub.rect = function(x, y, w, h) {
 // -- Attributes --
 
 /**
- * Modifies the location from which rectangles draw. The default mode is
- * rectMode(CORNER), which specifies the location to be the upper left
- * corner of the shape and uses the third and fourth parameters of rect()
- * to specify the width and height. The syntax rectMode(CORNERS) uses the
- * first and second parameters of rect() to set the location of one corner
- * and uses the third and fourth parameters to set the opposite corner.
- * The syntax rectMode(CENTER) draws the image from its center point and
- * uses the third and forth parameters of rect() to specify the image's
- * width and height. The syntax rectMode(RADIUS) draws the image from its
- * center point and uses the third and forth parameters of rect() to specify
- * half of the image's width and height. The parameter must be written in
- * "ALL CAPS".
+ * Modifies the location from which rectangles or text frames draw. The default
+ * mode is b.rectMode(b.CORNER), which specifies the location to be the upper left
+ * corner of the shape and uses the <code>w</code> and <code>h</code> parameters to specify the
+ * width and height. The syntax b.rectMode(b.CORNERS) uses the <code>x</code> and <code>y</code>
+ * parameters of b.rect() or b.text() to set the location of one corner
+ * and uses the <code>w</code> and <code>h</code> parameters to set the opposite corner.
+ * The syntax b.rectMode(b.CENTER) draws the shape from its center point and
+ * uses the <code>w</code> and <code>h</code> parameters to specify the shape's
+ * width and height. The syntax b.rectMode(b.RADIUS) draws the shape from its
+ * center point and uses the <code>w</code> and <code>h</code> parameters to specify
+ * half of the shape's width and height.
  *
  * @cat Document
  * @subcat Attributes
@@ -440,23 +467,23 @@ pub.rect = function(x, y, w, h) {
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
     currRectMode = mode;
     return currRectMode;
   } else {
-    error("b.rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER.");
+    error("b.rectMode(), unsupported rectMode. Use: b.CORNER, b.CORNERS, b.CENTER, b.RADIUS.");
   }
 };
 
 /**
- * The origin of new ellipses is modified by the ellipseMode() function.
- * The default configuration is ellipseMode(CENTER), which specifies the
- * location of the ellipse as the center of the shape. The RADIUS mode is
- * the same, but the width and height parameters to ellipse() specify the
- * radius of the ellipse, rather than the diameter. The CORNER mode draws
- * the shape from the upper-left corner of its bounding box. The CORNERS
- * mode uses the four parameters to ellipse() to set two opposing corners
- * of the ellipse's bounding box. The parameter must be written in "ALL CAPS".
+ * The origin of new ellipses is modified by the b.ellipseMode() function.
+ * The default configuration is b.ellipseMode(b.CENTER), which specifies the
+ * location of the ellipse as the center of the shape. The b.RADIUS mode is
+ * the same, but the <code>w</code> and <code>h</code> parameters to b.ellipse() specify the
+ * radius of the ellipse, rather than the diameter. The b.CORNER mode draws
+ * the shape from the upper-left corner of its bounding box. The b.CORNERS
+ * mode uses the four parameters to b.ellipse() to set two opposing corners
+ * of the ellipse's bounding box.
  *
  * @cat Document
  * @subcat Attributes
@@ -469,7 +496,7 @@ pub.ellipseMode = function (mode) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
-    error("b.ellipseMode(), Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
+    error("b.ellipseMode(), unsupported ellipseMode. Use: b.CENTER, b.RADIUS, b.CORNER, b.CORNERS.");
   }
 };
 

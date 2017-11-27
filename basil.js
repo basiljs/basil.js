@@ -1876,14 +1876,25 @@ pub.previousPage = function () {
 
 
 /**
- * The number of all pages in the current document.
+ * Returns the number of all pages in the current document. If a number is given as an argument,
+ * it will set the document's page count to the given number by either adding pages or removing
+ * pages until the number is reached. If pages are added, the master page of the document's last
+ * page will be applied to the new pages.
  *
  * @cat Document
  * @subcat Page
  * @method pageCount
+ * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pub.pageCount = function() {
+pub.pageCount = function(pageCount) {
+  if(arguments.length) {
+    if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
+      currentDoc().documentPreferences.pagesPerDocument = pageCount;
+    } else {
+      error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
+    }
+  }
   return currentDoc().pages.count();
 };
 
@@ -2053,31 +2064,36 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
 
 /**
  *  Returns the Group instance and sets it if argument Group is given.
+ *  Groups items to a new group. Returns the resulting group instance. If a string is given as the only
+ *  argument, the group by the given name will be returned.
  *
  *  @cat Document
  *  @subCat Page
- *  @method Group
- *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance.
- *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
- *  @return {Group} The current Group instance.
+ *  @method group
+ *  @param {Array} pItems An array of page items (must contain at least two items) or name of group instance.
+ *  @param {String} [name] The name of the group, only when creating a group from page items.
+ *  @return {Group} The group instance.
  */
-pub.group = function (pItem, name) {
-  checkNull(pItem);
-  var group = null;
-  if(pItem instanceof Array) {
-    if(pItem.length < 2) {
-      error("There must be at least two PageItems passed to b.group().");
+pub.group = function (pItems, name) {
+  checkNull(pItems);
+  var group;
+  if(pItems instanceof Array) {
+    if(pItems.length < 2) {
+      error("b.group(), the array passed to b.group() must at least contain two page items.");
     }
     // creates a group from Page Items
-    group = currentDoc().groups.add(pItem);
+    group = currentDoc().groups.add(pItems);
     if(typeof name !== "undefined") {
       group.name = name;
     }
-  } else if(typeof pItem === "string") {
+  } else if(typeof pItems === "string") {
     // get the Group of the given name
-    group = currentDoc().groups.item(pItem);
+    group = currentDoc().groups.item(pItems);
+    if (!group.isValid) {
+      error("b.group(), a group with the provided name doesn't exist.");
+    }
   } else {
-    error("b.group(), not a valid argument.");
+    error("b.group(), not a valid argument. Use an array of page items to group or a name of an existing group.");
   }
 
   return group;
@@ -2085,28 +2101,31 @@ pub.group = function (pItem, name) {
 
 
 /**
- *  Returns an array of the items that were within the Group before b.ungroup() was called
+ *  Ungroups an existing group. Returns an array of the items that were within the group before
+ *  b.ungroup() was called.
  *
  *  @cat Document
  *  @subCat Page
- *  @method Group
- *  @param {Object|String} [pItem] The Group or name of Group name instance.
- *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
- *  @return {Group} The Page Item(s) that were grouped.
+ *  @method group
+ *  @param {Group|String} group The group instance or name of the group to ungroup.
+ *  @return {Array} An array of the ungrouped page items.
  */
-pub.ungroup = function(pItem) {
-  checkNull(pItem);
+pub.ungroup = function(group) {
+  checkNull(group);
   var ungroupedItems = null;
-  if(pItem instanceof Group) {
-    ungroupedItems = b.items(pItem);
-    pItem.ungroup();
-  } else if(typeof pItem === "string") {
+  if(group instanceof Group) {
+    ungroupedItems = b.items(group);
+    group.ungroup();
+  } else if(typeof group === "string") {
     // get the Group of the given name
-    var group = currentDoc().groups.item(pItem);
+    group = currentDoc().groups.item(group);
+    if (!group.isValid) {
+      error("b.ungroup(), a group with the provided name doesn't exist.");
+    }
     ungroupedItems = b.items(group);
     group.ungroup();
   } else {
-    error("b.ungroup(), not a valid Group. Please select a valid Group.");
+    error("b.ungroup(), not a valid group. Please select a valid group.");
   }
   return ungroupedItems;
 };
@@ -3355,6 +3374,9 @@ var isURL = pub.isURL = function(url) {
  * @return {Boolean} Returns either true or false
  */
 var endsWith = pub.endsWith = function(str, suffix) {
+  if(!isString(str) || !isString(suffix)) {
+    error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
+  }
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
@@ -3369,6 +3391,9 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @return {Boolean} Returns either true or false
  */
 var startsWith = pub.startsWith = function(str, prefix) {
+  if(!isString(str) || !isString(prefix)) {
+    error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
+  }
   return str.indexOf(prefix) === 0;
 };
 
@@ -3403,6 +3428,20 @@ var isNumber = pub.isNumber = function(num) {
     return false;
   }
   return isFinite(num) && num.constructor.name === "Number";
+};
+
+
+/**
+ * Checks whether a var is an integer, returns true if this is the case.
+ *
+ * @cat Data
+ * @subcat Type-Check
+ * @method isInteger
+ * @param  {Object|String|Number|Boolean}  num The number to check.
+ * @return {Boolean} Returns true if the given argument is an integer.
+ */
+var isInteger = pub.isInteger = function(num) {
+  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**
@@ -3834,8 +3873,8 @@ pub.ellipse = function(x, y, w, h) {
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
-    ellipseBounds[2] = (y + h);
-    ellipseBounds[3] = (x + w);
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
   } else if (currEllipseMode === pub.CORNERS) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
@@ -3844,13 +3883,13 @@ pub.ellipse = function(x, y, w, h) {
   } else if (currEllipseMode === pub.CENTER) {
     ellipseBounds[0] = y - (h / 2);
     ellipseBounds[1] = x - (w / 2);
-    ellipseBounds[2] = (y + h) - (h / 2);
-    ellipseBounds[3] = (x + w) - (w / 2);
+    ellipseBounds[2] = y + (h / 2);
+    ellipseBounds[3] = x + (w / 2);
   } else if (currEllipseMode === pub.RADIUS) {
-    ellipseBounds[0] = y - (h);
-    ellipseBounds[1] = x - (w);
-    ellipseBounds[2] = y + (h);
-    ellipseBounds[3] = x + (w);
+    ellipseBounds[0] = y - h;
+    ellipseBounds[1] = x - w;
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
   }
 
   if(w === 0 || h === 0)
@@ -4174,6 +4213,8 @@ function notCalledBeginShapeError () {
 
 /**
  * Draws a rectangle on the page.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the b.rectMode() function.
+ * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
  * @cat Document
  * @subcat Primitives
@@ -4182,21 +4223,25 @@ function notCalledBeginShapeError () {
  * @param  {Number} y Y-coordinate of the rectangle.
  * @param  {Number} w Width of the rectangle.
  * @param  {Number} h Height of the rectangle.
+ * @param  {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
+ * @param  {Number} [tr] Radius of top right corner (optional).
+ * @param  {Number} [br] Radius of bottom right corner (optional).
+ * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
-pub.rect = function(x, y, w, h) {
+pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // indesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
-  if (arguments.length !== 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+  if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
   if (currRectMode === pub.CORNER) {
     rectBounds[0] = y;
     rectBounds[1] = x;
-    rectBounds[2] = (y + h);
-    rectBounds[3] = (x + w);
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
   } else if (currRectMode === pub.CORNERS) {
     rectBounds[0] = y;
     rectBounds[1] = x;
@@ -4205,8 +4250,13 @@ pub.rect = function(x, y, w, h) {
   } else if (currRectMode === pub.CENTER) {
     rectBounds[0] = y - (h / 2);
     rectBounds[1] = x - (w / 2);
-    rectBounds[2] = (y + h) - (h / 2);
-    rectBounds[3] = (x + w) - (w / 2);
+    rectBounds[2] = y + (h / 2);
+    rectBounds[3] = x + (w / 2);
+  } else if (currRectMode === pub.RADIUS) {
+    rectBounds[0] = y - h;
+    rectBounds[1] = x - w;
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
   }
 
   var newRect = currentPage().rectangles.add(currentLayer());
@@ -4217,7 +4267,7 @@ pub.rect = function(x, y, w, h) {
   newRect.fillTint = currFillTint;
   newRect.strokeColor = currStrokeColor;
 
-  if (currRectMode === pub.CENTER) {
+  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -4226,6 +4276,23 @@ pub.rect = function(x, y, w, h) {
                    AnchorPoint.TOP_LEFT_ANCHOR,
                    currMatrix.adobeMatrix());
   }
+
+  if(arguments.length > 4) {
+    for(var i = 4; i < arguments.length;i++){
+      if(arguments[i] < 0 ){
+        error("b.rect(), needs positive values as arguments for the rounded corners.");
+      }
+    }
+    newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
+    if(arguments.length === 8) {
+      newRect.topLeftCornerRadius = tl;
+      newRect.topRightCornerRadius = tr;
+      newRect.bottomRightCornerRadius = br;
+      newRect.bottomLeftCornerRadius = bl;
+    } else {
+      newRect.topLeftCornerRadius = newRect.topRightCornerRadius = newRect.bottomRightCornerRadius = newRect.bottomLeftCornerRadius = tl;
+    }
+  }
   return newRect;
 };
 
@@ -4233,18 +4300,17 @@ pub.rect = function(x, y, w, h) {
 // -- Attributes --
 
 /**
- * Modifies the location from which rectangles draw. The default mode is
- * rectMode(CORNER), which specifies the location to be the upper left
- * corner of the shape and uses the third and fourth parameters of rect()
- * to specify the width and height. The syntax rectMode(CORNERS) uses the
- * first and second parameters of rect() to set the location of one corner
- * and uses the third and fourth parameters to set the opposite corner.
- * The syntax rectMode(CENTER) draws the image from its center point and
- * uses the third and forth parameters of rect() to specify the image's
- * width and height. The syntax rectMode(RADIUS) draws the image from its
- * center point and uses the third and forth parameters of rect() to specify
- * half of the image's width and height. The parameter must be written in
- * "ALL CAPS".
+ * Modifies the location from which rectangles or text frames draw. The default
+ * mode is b.rectMode(b.CORNER), which specifies the location to be the upper left
+ * corner of the shape and uses the <code>w</code> and <code>h</code> parameters to specify the
+ * width and height. The syntax b.rectMode(b.CORNERS) uses the <code>x</code> and <code>y</code>
+ * parameters of b.rect() or b.text() to set the location of one corner
+ * and uses the <code>w</code> and <code>h</code> parameters to set the opposite corner.
+ * The syntax b.rectMode(b.CENTER) draws the shape from its center point and
+ * uses the <code>w</code> and <code>h</code> parameters to specify the shape's
+ * width and height. The syntax b.rectMode(b.RADIUS) draws the shape from its
+ * center point and uses the <code>w</code> and <code>h</code> parameters to specify
+ * half of the shape's width and height.
  *
  * @cat Document
  * @subcat Attributes
@@ -4254,23 +4320,23 @@ pub.rect = function(x, y, w, h) {
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
     currRectMode = mode;
     return currRectMode;
   } else {
-    error("b.rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER.");
+    error("b.rectMode(), unsupported rectMode. Use: b.CORNER, b.CORNERS, b.CENTER, b.RADIUS.");
   }
 };
 
 /**
- * The origin of new ellipses is modified by the ellipseMode() function.
- * The default configuration is ellipseMode(CENTER), which specifies the
- * location of the ellipse as the center of the shape. The RADIUS mode is
- * the same, but the width and height parameters to ellipse() specify the
- * radius of the ellipse, rather than the diameter. The CORNER mode draws
- * the shape from the upper-left corner of its bounding box. The CORNERS
- * mode uses the four parameters to ellipse() to set two opposing corners
- * of the ellipse's bounding box. The parameter must be written in "ALL CAPS".
+ * The origin of new ellipses is modified by the b.ellipseMode() function.
+ * The default configuration is b.ellipseMode(b.CENTER), which specifies the
+ * location of the ellipse as the center of the shape. The b.RADIUS mode is
+ * the same, but the <code>w</code> and <code>h</code> parameters to b.ellipse() specify the
+ * radius of the ellipse, rather than the diameter. The b.CORNER mode draws
+ * the shape from the upper-left corner of its bounding box. The b.CORNERS
+ * mode uses the four parameters to b.ellipse() to set two opposing corners
+ * of the ellipse's bounding box.
  *
  * @cat Document
  * @subcat Attributes
@@ -4283,7 +4349,7 @@ pub.ellipseMode = function (mode) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
-    error("b.ellipseMode(), Unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
+    error("b.ellipseMode(), unsupported ellipseMode. Use: b.CENTER, b.RADIUS, b.CORNER, b.CORNERS.");
   }
 };
 
@@ -4996,9 +5062,33 @@ pub.text = function(txt, x, y, w, h) {
   if (!(isString(txt) || isNumber(txt))) {
     warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
   }
+
+  var textBounds = [];
+  if (currRectMode === pub.CORNER) {
+    textBounds[0] = y;
+    textBounds[1] = x;
+    textBounds[2] = y + h;
+    textBounds[3] = x + w;
+  } else if (currRectMode === pub.CORNERS) {
+    textBounds[0] = y;
+    textBounds[1] = x;
+    textBounds[2] = h;
+    textBounds[3] = w;
+  } else if (currRectMode === pub.CENTER) {
+    textBounds[0] = y - (h / 2);
+    textBounds[1] = x - (w / 2);
+    textBounds[2] = y + (h / 2);
+    textBounds[3] = x + (w / 2);
+  } else if (currRectMode === pub.RADIUS) {
+    textBounds[0] = y - h;
+    textBounds[1] = x - w;
+    textBounds[2] = y + h;
+    textBounds[3] = x + w;
+  }
+
   var textFrame = currentPage().textFrames.add(currentLayer());
   textFrame.contents = txt.toString();
-  textFrame.geometricBounds = [y, x, (y + h), (x + w)];
+  textFrame.geometricBounds = textBounds;
   textFrame.textFramePreferences.verticalJustification = currYAlign;
 
   pub.typo(textFrame, {
@@ -5012,7 +5102,7 @@ pub.text = function(txt, x, y, w, h) {
   });
 
 
-  if (currAlign === Justification.CENTER_ALIGN || currAlign === Justification.CENTER_JUSTIFIED) {
+  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());

@@ -341,14 +341,25 @@ pub.previousPage = function () {
 
 
 /**
- * The number of all pages in the current document.
+ * Returns the number of all pages in the current document. If a number is given as an argument,
+ * it will set the document's page count to the given number by either adding pages or removing
+ * pages until the number is reached. If pages are added, the master page of the document's last
+ * page will be applied to the new pages.
  *
  * @cat Document
  * @subcat Page
  * @method pageCount
+ * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pub.pageCount = function() {
+pub.pageCount = function(pageCount) {
+  if(arguments.length) {
+    if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
+      currentDoc().documentPreferences.pagesPerDocument = pageCount;
+    } else {
+      error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
+    }
+  }
   return currentDoc().pages.count();
 };
 
@@ -518,31 +529,36 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
 
 /**
  *  Returns the Group instance and sets it if argument Group is given.
+ *  Groups items to a new group. Returns the resulting group instance. If a string is given as the only
+ *  argument, the group by the given name will be returned.
  *
  *  @cat Document
  *  @subCat Page
- *  @method Group
- *  @param {Array} [pItem] The PageItems array (must be at least 2) or name of Group name instance.
- *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
- *  @return {Group} The current Group instance.
+ *  @method group
+ *  @param {Array} pItems An array of page items (must contain at least two items) or name of group instance.
+ *  @param {String} [name] The name of the group, only when creating a group from page items.
+ *  @return {Group} The group instance.
  */
-pub.group = function (pItem, name) {
-  checkNull(pItem);
-  var group = null;
-  if(pItem instanceof Array) {
-    if(pItem.length < 2) {
-      error("There must be at least two PageItems passed to b.group().");
+pub.group = function (pItems, name) {
+  checkNull(pItems);
+  var group;
+  if(pItems instanceof Array) {
+    if(pItems.length < 2) {
+      error("b.group(), the array passed to b.group() must at least contain two page items.");
     }
     // creates a group from Page Items
-    group = currentDoc().groups.add(pItem);
+    group = currentDoc().groups.add(pItems);
     if(typeof name !== "undefined") {
       group.name = name;
     }
-  } else if(typeof pItem === "string") {
+  } else if(typeof pItems === "string") {
     // get the Group of the given name
-    group = currentDoc().groups.item(pItem);
+    group = currentDoc().groups.item(pItems);
+    if (!group.isValid) {
+      error("b.group(), a group with the provided name doesn't exist.");
+    }
   } else {
-    error("b.group(), not a valid argument.");
+    error("b.group(), not a valid argument. Use an array of page items to group or a name of an existing group.");
   }
 
   return group;
@@ -550,28 +566,31 @@ pub.group = function (pItem, name) {
 
 
 /**
- *  Returns an array of the items that were within the Group before b.ungroup() was called
+ *  Ungroups an existing group. Returns an array of the items that were within the group before
+ *  b.ungroup() was called.
  *
  *  @cat Document
  *  @subCat Page
- *  @method Group
- *  @param {Object|String} [pItem] The Group or name of Group name instance.
- *  @param {String} name The name of the Group, only when creating a Group from Page Item(s).
- *  @return {Group} The Page Item(s) that were grouped.
+ *  @method group
+ *  @param {Group|String} group The group instance or name of the group to ungroup.
+ *  @return {Array} An array of the ungrouped page items.
  */
-pub.ungroup = function(pItem) {
-  checkNull(pItem);
+pub.ungroup = function(group) {
+  checkNull(group);
   var ungroupedItems = null;
-  if(pItem instanceof Group) {
-    ungroupedItems = b.items(pItem);
-    pItem.ungroup();
-  } else if(typeof pItem === "string") {
+  if(group instanceof Group) {
+    ungroupedItems = b.items(group);
+    group.ungroup();
+  } else if(typeof group === "string") {
     // get the Group of the given name
-    var group = currentDoc().groups.item(pItem);
+    group = currentDoc().groups.item(group);
+    if (!group.isValid) {
+      error("b.ungroup(), a group with the provided name doesn't exist.");
+    }
     ungroupedItems = b.items(group);
     group.ungroup();
   } else {
-    error("b.ungroup(), not a valid Group. Please select a valid Group.");
+    error("b.ungroup(), not a valid group. Please select a valid group.");
   }
   return ungroupedItems;
 };
