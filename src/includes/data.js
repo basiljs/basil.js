@@ -989,6 +989,9 @@ pub.saveString = function(file, string) {
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
 pub.savePDF = function(file, showOptions) {
+  if(!(isString(file) || file instanceof File)) {
+    error("b.savePDF(), wrong argument. Use File or a String describing a file path.");
+  }
   var outputFile = initExportFile(file);
   if (typeof showOptions !== "boolean") showOptions = false;
   currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
@@ -1003,6 +1006,9 @@ pub.savePDF = function(file, showOptions) {
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
 pub.savePNG = function(file, showOptions) {
+  if(!(isString(file) || file instanceof File)) {
+    error("b.savePNG(), wrong argument. Use File or a String describing a file path.");
+  }
   var outputFile = initExportFile(file);
   if (typeof showOptions !== "boolean") showOptions = false;
   currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
