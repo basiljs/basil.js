@@ -2106,7 +2106,7 @@ pub.group = function (pItems, name) {
  *
  *  @cat Document
  *  @subCat Page
- *  @method group
+ *  @method ungroup
  *  @param {Group|String} group The group instance or name of the group to ungroup.
  *  @return {Array} An array of the ungrouped page items.
  */
