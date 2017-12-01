@@ -3548,13 +3548,10 @@ var initExportFile = function(file, mustExist) {
  * @return {Folder} The folder of the the active document
  */
 var projectFolder = pub.projectFolder = function() {
-  var docPath = null;
-  try {
-    docPath = currentDoc().filePath;
-  } catch (e) {
+  if(!currentDoc().saved) {
     error("The current document must be saved before its project directory can be accessed.");
   }
-  return docPath;
+  return currentDoc().filePath;
 };
 
 
