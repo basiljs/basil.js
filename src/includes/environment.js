@@ -1074,14 +1074,13 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
  * @return {File} File.
  */
 pub.file = function(filePath) {
-  var file;
   if(! isString(filePath)) {
     error("b.file(), wrong argument. Use a string that describes a file path.");
   }
 
   // check if user is referring to a file in the data directory
   if(currentDoc().saved) {
-    file = new File(projectFolder() + "/data/" + filePath);
+    var file = new File(projectFolder() + "/data/" + filePath);
     if(file.exists) {
       return file;
     }
@@ -1093,6 +1092,27 @@ pub.file = function(filePath) {
   }
 
   return new File(filePath);
+};
+
+/**
+ * ToDo
+ *
+ * @cat Files
+ * @method folder
+ * @param {String} folderPath The path of the folder.
+ * @return {Folder} Folder.
+ */
+pub.folder = function(folderPath) {
+  if(! isString(folderPath)) {
+    error("b.folder(), wrong argument. Use a string that describes the path of a folder.");
+  }
+
+  // add leading slash to avoid errors on folder creation
+  if(folderPath[0] !== "~" && folderPath[0] !== "/") {
+    folderPath = "/" + folderPath;
+  }
+
+  return new Folder(folderPath);
 };
 
 // ----------------------------------------
