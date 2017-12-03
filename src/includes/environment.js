@@ -1062,6 +1062,38 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
 };
 
+// ----------------------------------------
+// Files & Folders
+
+/**
+ * ToDo
+ *
+ * @cat Files
+ * @method file
+ * @param {String} filePath The file path.
+ * @return {File} File.
+ */
+pub.file = function(filePath) {
+  var file;
+  if(! isString(filePath)) {
+    error("b.file(), wrong argument. Use a string that describes a file path.");
+  }
+
+  // check if user is referring to a file in the data directory
+  if(currentDoc().saved) {
+    file = new File(projectFolder() + "/data/" + filePath);
+    if(file.exists) {
+      return file;
+    }
+  }
+
+  // add leading slash to avoid errors on file creation
+  if(filePath[0] !== "~" && filePath[0] !== "/") {
+    filePath = "/" + filePath;
+  }
+
+  return new File(filePath);
+};
 
 // ----------------------------------------
 // Date

@@ -1239,6 +1239,15 @@ var findInStylesByName = function(allStylesCollection, name) {
   return null;
 };
 
+// internal helper to get the name of parent functions; helpful for more meaningful error messages
+// level describes how many levels above to find the function whose function name is returned
+var getParentFunctionName = function(level) {
+    var stackArray = $.stack.
+          replace(/\((.+?)\)/g, "").
+          split(/[\n]/);
+    return stackArray[stackArray.length - 2 - level];
+}
+
 var checkNull = pub.checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
@@ -2597,6 +2606,38 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
 };
 
+// ----------------------------------------
+// Files & Folders
+
+/**
+ * ToDo
+ *
+ * @cat Files
+ * @method file
+ * @param {String} filePath The file path.
+ * @return {File} File.
+ */
+pub.file = function(filePath) {
+  var file;
+  if(! isString(filePath)) {
+    error("b.file(), wrong argument. Use a string that describes a file path.");
+  }
+
+  // check if user is referring to a file in the data directory
+  if(currentDoc().saved) {
+    file = new File(projectFolder() + "/data/" + filePath);
+    if(file.exists) {
+      return file;
+    }
+  }
+
+  // add leading slash to avoid errors on file creation
+  if(filePath[0] !== "~" && filePath[0] !== "/") {
+    filePath = "/" + filePath;
+  }
+
+  return new File(filePath);
+};
 
 // ----------------------------------------
 // Date
@@ -3503,40 +3544,77 @@ var initDataFile = function(file, mustExist) {
   return result;
 };
 
-var initExportFile = function(file, mustExist) {
-  var result = null;
-  if (file instanceof File) {
-    result = file;
+var initExportFile = function(file) {
+  var result, tmpPath = null;
+  var isFile = file instanceof File;
+  var filePath = isFile ? file.absoluteURI : file;
+
+  // if parent folder already exists, the rest can be skipped
+  if(isFile && File(filePath).parent.exists) {
+    // remove file as in some circumstances file cannot be overwritten
+    // (if file is on top level outside user folder)
+    // also improves performance considerably
+    File(filePath).remove();
+    return File(filePath);
+  }
+
+  // clean up string path
+  if((!isFile) && filePath[0] !== "~") {
+    if(filePath[0] !== "/") {
+      filePath = "/" + filePath;
+    }
+    // check if file path is a relative URI ( /Users/username/examples/... )
+    // if so, turn it into an absolute URI ( ~/examples/...)
+    var userRelURI = Folder("~").relativeURI;
+    if(startsWith(filePath, userRelURI)) {
+      filePath = "~" + filePath.substring(userRelURI.length);
+    }
+  }
+
+  // clean up path and convert to array
+  var pathNormalized = filePath.split("/");
+  for (var i = 0; i < pathNormalized.length; i++) {
+    if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
+      pathNormalized.splice(i, 1);
+    }
+  }
+
+  if(filePath[0] === "~") {
+    tmpPath = "~";
+    pathNormalized.splice(0, 1);
+  } else if (isFile) {
+    // file objects that are outside the user folder
+    tmpPath = "";
   } else {
+    // string paths relative to the project folder
+    tmpPath = projectFolder().absoluteURI;
+  }
+  var fileName = pathNormalized[pathNormalized.length - 1];
 
-    // get rid of some special cases the user might specify
-    var pathNormalized = file.split("/");
-    for (var i = 0; i < pathNormalized.length; i++) {
-      if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
-        pathNormalized.splice(i, 1);
+  // does the path contain folders? if not, create them ...
+  if (pathNormalized.length > 1) {
+    var folders = pathNormalized.slice(0, -1);
+    for (var i = 0; i < folders.length; i++) {
+      tmpPath += "/" + folders[i];
+      var f = new Folder(tmpPath);
+      if (!f.exists) {
+        f.create();
+
+        if(!f.exists) {
+          // in some cases, folder creation does not throw an error, yet folder does not exist
+          error("b." + getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
+            "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+        }
       }
     }
-
-    var tmpPath = projectFolder().absoluteURI;
-    var fileName = pathNormalized[pathNormalized.length - 1];
-
-    // contains the path folders? if so create them ...
-    if (pathNormalized.length > 1) {
-      var folders = pathNormalized.slice(0, -1);
-      for (var i = 0; i < folders.length; i++) {
-        tmpPath += "/" + folders[i];
-        var f = new Folder(tmpPath);
-        if (!f.exists) f.create();
-      }
-    }
-
-    // result = new File(projectFolder().absoluteURI + '/' + file);
-    result = new File(tmpPath + "/" + fileName);
   }
-  if (mustExist && !result.exists) {
-    error("The file \"" + result + "\" does not exist.");
+
+  if(File(tmpPath + "/" + fileName).exists) {
+    // remove existing file to avoid save errors
+    File(tmpPath + "/" + fileName).remove();
   }
-  return result;
+
+  return File(tmpPath + "/" + fileName);
 };
 
 /**
@@ -3730,9 +3808,17 @@ pub.saveString = function(file, string) {
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
 pub.savePDF = function(file, showOptions) {
+  if(!(isString(file) || file instanceof File)) {
+    error("b.savePDF(), wrong argument. Use File or a String describing a file path.");
+  }
   var outputFile = initExportFile(file);
-  if (typeof showOptions !== "boolean") showOptions = false;
-  currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  if (showOptions !== true) showOptions = false;
+  try{
+    currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  } catch(e) {
+    error("b.savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+  }
 };
 
 /**
@@ -3744,9 +3830,17 @@ pub.savePDF = function(file, showOptions) {
  * @param {Boolean} [showOptions] Whether to show the export dialog
  */
 pub.savePNG = function(file, showOptions) {
+  if(!(isString(file) || file instanceof File)) {
+    error("b.savePNG(), wrong argument. Use File or a String describing a file path.");
+  }
   var outputFile = initExportFile(file);
-  if (typeof showOptions !== "boolean") showOptions = false;
-  currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  if (showOptions !== true) showOptions = false;
+  try{
+    currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  } catch(e) {
+    error("b.savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+  }
 };
 
 /**

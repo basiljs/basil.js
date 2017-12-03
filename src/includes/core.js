@@ -463,6 +463,15 @@ var findInStylesByName = function(allStylesCollection, name) {
   return null;
 };
 
+// internal helper to get the name of parent functions; helpful for more meaningful error messages
+// level describes how many levels above to find the function whose function name is returned
+var getParentFunctionName = function(level) {
+    var stackArray = $.stack.
+          replace(/\((.+?)\)/g, "").
+          split(/[\n]/);
+    return stackArray[stackArray.length - 2 - level];
+}
+
 var checkNull = pub.checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
