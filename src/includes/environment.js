@@ -1144,11 +1144,10 @@ pub.folder = function(folderPath) {
 pub.files = function(folder, settings, collectedFiles) {
   var topLevel;
   if (collectedFiles === undefined) {
-    topLevel = true;
-    collectedFiles = [];
-
-    if(folder === undefined) {
+    if(folder === undefined && currentDoc().saved) {
       folder = pub.folder();
+    } else if (folder === undefined) {
+      error("b.files(), missing first argument. Use folder or a string to describe a folder path.");
     }
     if(isString(folder)) {
       folder = pub.folder(folder);
@@ -1158,6 +1157,9 @@ pub.files = function(folder, settings, collectedFiles) {
     } else if (!folder.exists) {
       error("b.files(), the folder \"" + folder + "\" does not exist.");
     }
+
+    topLevel = true;
+    collectedFiles = [];
 
     if(!settings) {
       settings = {};
