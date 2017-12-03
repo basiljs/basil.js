@@ -2651,6 +2651,14 @@ pub.folder = function(folderPath) {
     error("b.folder(), wrong argument. Use a string that describes the path of a folder.");
   }
 
+  // check if user is referring to a folder in the data directory
+  if(currentDoc().saved) {
+    var folder = new Folder(projectFolder() + "/data/" + folderPath);
+    if(folder.exists) {
+      return folder;
+    }
+  }
+
   // add leading slash to avoid errors on folder creation
   if(folderPath[0] !== "~" && folderPath[0] !== "/") {
     folderPath = "/" + folderPath;
@@ -2658,6 +2666,76 @@ pub.folder = function(folderPath) {
 
   return new Folder(folderPath);
 };
+
+/**
+ * ToDo - returns all files from a folder
+ *
+ * @cat Files
+ * @method files
+ * @param {Folder|String} folder The folder that holds the files or a string describing the path to that folder.
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String|Array} [settings.fileTypes] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
+ * @param {Boolean} [settings.includeHidden] Includes hidden files. Default: <code>false</code>
+ * @param {Boolean} [settings.recursive] Get files recursively from subfolders. Default: <code>false</code>
+ */
+pub.files = function(folder, settings, collectedFiles) {
+  if(isString(folder)) {
+    folder = pub.folder(folder);
+  }
+  if(!(folder instanceof Folder)) {
+    error("b.files(), wrong first argument. Use folder or a string to describe a folder path.");
+  } else if (!folder.exists) {
+    error("b.files(), the folder \"" + folder + "\" does not exist.");
+  }
+
+  var topLevel;
+  if (collectedFiles === undefined) {
+    topLevel = true;
+    collectedFiles = [];
+  } else {
+    topLevel = false;
+  }
+
+  if(!settings) {
+    settings = {};
+  }
+
+  // set settings object to given values or defaults
+  settings.fileTypes = settings.hasOwnProperty("fileTypes") ? settings.fileTypes : "*";
+  settings.includeHidden = settings.hasOwnProperty("includeHidden") ? settings.includeHidden : false;
+  settings.recursive = settings.hasOwnProperty("recursive") ? settings.recursive : false;
+
+  if(settings.recursive) {
+    var folderItems = folder.getFiles();
+    for (var i = folderItems.length - 1; i >= 0; i--) {
+      if (folderItems[i] instanceof Folder) {
+        if(!settings.includeHidden && folderItems[i].displayName[0] === ".") continue;
+        collectedFiles = pub.files(folderItems[i], settings, collectedFiles);
+      }
+    }
+  }
+
+  if(!(settings.fileTypes instanceof Array)) {
+    settings.fileTypes = [settings.fileTypes];
+  }
+
+  for (var i = settings.fileTypes.length - 1; i >= 0; i--) {
+    var mask = "*." + settings.fileTypes[i];
+    var fileItems = folder.getFiles(mask);
+    // To-do: test, if it finds ".example" or "example" when used with no filter
+    for (var j = fileItems.length - 1; j >= 0; j--) {
+      b.println(fileItems[j].displayName);
+      // To-do: test if the following file actually works
+      if(!settings.includeHidden && fileItems[j].displayName[0] === ".") continue;
+      if(!(fileItems[j] instanceof File)) continue;
+      collectedFiles.push(fileItems[j]);
+    }
+  }
+
+
+  return topLevel ? collectedFiles.reverse() : collectedFiles;
+};
+
 
 // ----------------------------------------
 // Date
