@@ -348,12 +348,11 @@ pub.unhex = function(hex) {
  * @param {String} s The String to trim
  * @return {String} The trimmed string
  */
- // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
+ // from: https://stackoverflow.com/a/25575009/3399765
 pub.trimWord = function(s) {
-  s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi, "");
-  s = s.replace(/\s*/gi, "");
-//    s = s.replace(/[ ]{2,}/gi," ");
-  s = s.replace(/\n*/, "");
+  s = s.replace(/\s*/g, "")
+       .replace(/\n*/g, "")
+       .replace(/(^[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*)|([\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*$)/gi, "");
   return s;
 };
 
