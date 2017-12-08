@@ -31,6 +31,7 @@ basil.js x.x.x DAY MONTH YEAR
   Option to show only certain properties.
   Lots of minor fixes.
 * b.pageCount() can now also be used to set the doc's page count
+* b.println() and b.print() can now print multiple parameters to console
 * b.trimWord() now correctly trims all punctuation from word borders
 * b.text() now respects the currently set rectangle mode
 * b.rectMode() now works with b.RADIUS

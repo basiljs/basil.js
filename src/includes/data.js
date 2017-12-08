@@ -906,9 +906,10 @@ pub.loadStrings = function(file) {
  *
  * @cat Output
  * @method println
- * @param {String} msg The message to print
+ * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-var println = pub.println = function(msg) {
+var println = pub.println = function() {
+  var msg = Array.prototype.slice.call(arguments).join(" ");
   $.writeln(msg);
   if (progressPanel)
     progressPanel.writeMessage(msg + "\n");
@@ -919,9 +920,10 @@ var println = pub.println = function(msg) {
  *
  * @cat Output
  * @method print
- * @param {String} msg The message to print
+ * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-pub.print = function(msg) {
+pub.print = function() {
+  var msg = Array.prototype.slice.call(arguments).join(" ");
   $.write(msg);
   if (progressPanel)
     progressPanel.writeMessage(msg);
