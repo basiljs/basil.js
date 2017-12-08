@@ -3453,7 +3453,7 @@ var isInteger = pub.isInteger = function(num) {
  * @return {Boolean} returns true if this is the case
  */
 var isString = pub.isString = function(str) {
-  return str.constructor.name === "String";
+  return Object.prototype.toString.call(str) === "[object String]";
 };
 
 /**
