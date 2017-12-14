@@ -472,7 +472,7 @@ pub.layer = function(layer) {
 
 
 /**
- * Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>b.FORWARD</code> or <code>b.BACKWARD</code> the object is sent forward or back one step. The constants <code>b.FRONT</code> or <code>b.BACK</code> send the object to the very front or very back. Using <code>b.FRONT</code> or <code>b.BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
+ * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>b.FORWARD</code> or <code>b.BACKWARD</code> the object is sent forward or back one step. The constants <code>b.FRONT</code> or <code>b.BACK</code> send the object to the very front or very back. Using <code>b.FRONT</code> or <code>b.BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
  *
  * @cat Document
  * @subcat Page
