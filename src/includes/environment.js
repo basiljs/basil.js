@@ -1147,7 +1147,7 @@ pub.files = function(folder, settings, collectedFiles) {
     if(folder === undefined && currentDoc().saved) {
       folder = pub.folder();
     } else if (folder === undefined) {
-      error("b.files(), missing first argument. Use folder or a string to describe a folder path.");
+      error("b.files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
     }
     if(isString(folder)) {
       folder = pub.folder(folder);
@@ -1200,6 +1200,26 @@ pub.files = function(folder, settings, collectedFiles) {
   return topLevel ? collectedFiles.reverse() : collectedFiles;
 };
 
+/**
+ * ToDo
+ *
+ * @cat Files
+ * @method selectFile
+ * @param {String} [prompt] The prompt text at the top of the selection dialog.
+ * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
+ */
+pub.selectFile = function(prompt) {
+  var file;
+    b.println("CP1");
+    b.println(isString(prompt));
+    b.println("CP2");
+  if(isString(prompt)) {
+    file = File.openDialog(prompt);
+  } else {
+    file = File.openDialog();
+  }
+  return file;
+};
 
 // ----------------------------------------
 // Date
