@@ -1206,18 +1206,41 @@ pub.files = function(folder, settings, collectedFiles) {
  * @cat Files
  * @method selectFile
  * @param {String} [prompt] The prompt text at the top of the selection dialog.
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the selection dialog. Default: <code>""</code> (no prompt)
+ * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
  * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
  */
-pub.selectFile = function(prompt) {
-  var file;
-    b.println("CP1");
-    b.println(isString(prompt));
-    b.println("CP2");
-  if(isString(prompt)) {
-    file = File.openDialog(prompt);
-  } else {
-    file = File.openDialog();
+pub.selectFile = function(settings) {
+  if(!settings) {
+    settings = {};
   }
+
+  // set settings object to given values or defaults
+  settings.prompt = settings.hasOwnProperty("prompt") ? settings.prompt : "";
+  settings.filter = settings.hasOwnProperty("filter") ? settings.filter : [""];
+
+  if(!isString(settings.prompt)) {
+    settings.prompt = "";
+  }
+  if(!isString(settings.filter) && !isArray(settings.filter)) {
+    settings.filter = [""];
+  }
+  if(isString(settings.filter)) {
+    settings.filter = [settings.filter];
+  }
+
+
+  function filterFiles(file){
+    if (file instanceof Folder) { return true }
+    for (var i = settings.filter.length - 1; i >= 0; i--) {
+      if (isString(settings.filter[i]) && endsWith(file.name.toLowerCase(), settings.filter[i].toLowerCase())) { return true }
+    }
+    return false;
+  }
+  file = File.openDialog(settings.prompt, filterFiles);
+
+
   return file;
 };
 
