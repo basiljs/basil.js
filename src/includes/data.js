@@ -348,12 +348,11 @@ pub.unhex = function(hex) {
  * @param {String} s The String to trim
  * @return {String} The trimmed string
  */
- // from: http://www.qodo.co.uk/blog/javascript-trim-leading-and-trailing-spaces/
+ // from: https://stackoverflow.com/a/25575009/3399765
 pub.trimWord = function(s) {
-  s = s.replace(/(^[,.!?-]*)|([-,.!?]*$)/gi, "");
-  s = s.replace(/\s*/gi, "");
-//    s = s.replace(/[ ]{2,}/gi," ");
-  s = s.replace(/\n*/, "");
+  s = s.replace(/\s*/g, "")
+       .replace(/\n*/g, "")
+       .replace(/(^[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*)|([\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*$)/gi, "");
   return s;
 };
 
@@ -713,7 +712,7 @@ var isInteger = pub.isInteger = function(num) {
  * @return {Boolean} returns true if this is the case
  */
 var isString = pub.isString = function(str) {
-  return str.constructor.name === "String";
+  return Object.prototype.toString.call(str) === "[object String]";
 };
 
 /**
@@ -944,9 +943,10 @@ pub.loadStrings = function(file) {
  *
  * @cat Output
  * @method println
- * @param {String} msg The message to print
+ * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-var println = pub.println = function(msg) {
+var println = pub.println = function() {
+  var msg = Array.prototype.slice.call(arguments).join(" ");
   $.writeln(msg);
   if (progressPanel)
     progressPanel.writeMessage(msg + "\n");
@@ -957,9 +957,10 @@ var println = pub.println = function(msg) {
  *
  * @cat Output
  * @method print
- * @param {String} msg The message to print
+ * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-pub.print = function(msg) {
+pub.print = function() {
+  var msg = Array.prototype.slice.call(arguments).join(" ");
   $.write(msg);
   if (progressPanel)
     progressPanel.writeMessage(msg);
