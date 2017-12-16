@@ -2669,12 +2669,21 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 // Files & Folders
 
 /**
- * ToDo
+ * Returns a file object.
+ * Note that the resulting file object can either refer to an already existing file or if the file does not exist, it can create a preliminary "virtual" file that refers to a file that could be created later (i.e. by an export command).
  *
  * @cat Files
  * @method file
  * @param {String} filePath The file path.
  * @return {File} File at the given path.
+ *
+ * @example <caption>Get an image file from the desktop and place it in the document</caption>
+ * var myImage = b.file("~/Desktop/myImage.jpg");
+ * b.image(myImage, 0, 0);
+ *
+ * @example <caption>Create a file and export it to the desktop</caption>
+ * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
+ * b.savePDF(myExportFile);
  */
 pub.file = function(filePath) {
   if(! isString(filePath)) {
@@ -2698,12 +2707,20 @@ pub.file = function(filePath) {
 };
 
 /**
- * ToDo
+ * Returns a folder object.
+ * Note that the resulting folder object can either refer to an already existing folder or if the folder does not exist, it can create a preliminary "virtual" folder that refers to a folder that could be created later.
  *
  * @cat Files
  * @method folder
  * @param {String} [folderPath] The path of the folder.
  * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
+ *
+ * @example <caption>Get a folder from the desktop and load its files</caption>
+ * var myImageFolder = b.folder("~/Desktop/myImages/");
+ * var myImageFiles = b.files(myImageFolder);
+ *
+ * @example <caption>Get the data folder, if the document is already saved</caption>
+ * var myDataFolder = b.folder();
  */
 pub.folder = function(folderPath) {
   if(folderPath === undefined) {
@@ -2734,7 +2751,8 @@ pub.folder = function(folderPath) {
 };
 
 /**
- * ToDo - returns all files from a folder
+ * Gets all files of a folder and returns them in an array of file objects.
+ * The settings object can be used to restrict the search to certain file types only, to include hidden files and to include files in subfolders.
  *
  * @cat Files
  * @method files
@@ -2743,6 +2761,15 @@ pub.folder = function(folderPath) {
  * @param {String|Array} [settings.filter] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
  * @param {Boolean} [settings.hidden] Hidden files will be included. Default: <code>false</code>
  * @param {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: <code>false</code>
+ * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
+ *
+ * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
+ * var myImageFolder = b.folder("~/Desktop/myImages/");
+ * var myImageFiles = b.files(myImageFolder, {filter: ["jpeg", "jpg"]});
+ *
+ * @example <caption>If the document is saved, load all files from its data folder, including from its subfolders</caption>
+ * var myDataFolder = b.folder();
+ * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
  */
 pub.files = function(folder, settings, collectedFiles) {
   var topLevel;
@@ -2804,7 +2831,7 @@ pub.files = function(folder, settings, collectedFiles) {
 };
 
 /**
- * ToDo
+ * Opens a selection dialog that allows to select one file. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
  *
  * @cat Files
  * @method selectFile
@@ -2813,13 +2840,19 @@ pub.files = function(folder, settings, collectedFiles) {
  * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
  * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
  * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
+ *
+ * @example <caption>Open file selection dialog with a prompt text</caption>
+ * b.selectFile({prompt: "Please select a file."});
+ *
+ * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFile = function(settings) {
   return createSelectionDialog(settings);
 };
 
 /**
- * ToDo
+ * Opens a selection dialog that allows to select one or multiple files. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
  *
  * @cat Files
  * @method selectFiles
@@ -2828,6 +2861,12 @@ pub.selectFile = function(settings) {
  * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
  * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
  * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
+ *
+ * @example <caption>Open file selection dialog with a prompt text</caption>
+ * b.selectFiles({prompt: "Please select your files."});
+ *
+ * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFiles = function(settings) {
   if(!settings) {
@@ -2839,7 +2878,7 @@ pub.selectFiles = function(settings) {
 };
 
 /**
- * ToDo
+ * Opens a selection dialog that allows to select a folder. The settings object can be used to add a prompt text at the top of the dialog and to set the dialog's starting folder.
  *
  * @cat Files
  * @method selectFolder
@@ -2847,6 +2886,12 @@ pub.selectFiles = function(settings) {
  * @param {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: <code>""</code> (no prompt)
  * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
  * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
+ *
+ * @example <caption>Open folder selection dialog with a prompt text</caption>
+ * b.selectFolder({prompt: "Please select a folder."});
+ *
+ * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
+ * b.selectFolder({folder: "~/Desktop/"});
  */
 pub.selectFolder = function(settings) {
   if(!settings) {
@@ -2856,8 +2901,6 @@ pub.selectFolder = function(settings) {
 
   return createSelectionDialog(settings);
 };
-
-// internal helper function
 
 
 // ----------------------------------------
