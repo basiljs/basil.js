@@ -12,6 +12,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currDialogFolder = Folder("~");
 };
 
 
@@ -452,6 +453,63 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
+var createSelectionDialog = function(settings) {
+  var result;
+  if(!settings) {
+    settings = {};
+  }
+
+  // set settings object to given values or defaults
+  settings.prompt = settings.hasOwnProperty("prompt") ? settings.prompt : "";
+  settings.filter = settings.hasOwnProperty("filter") ? settings.filter : [""];
+  settings.folder = settings.hasOwnProperty("folder") ? settings.folder : currDialogFolder;
+  settings.multiFile = settings.hasOwnProperty("multiFile") ? true : false;
+  settings.folderSelect = settings.hasOwnProperty("folderSelect") ? true : false;
+
+  if(!isString(settings.prompt)) {
+    settings.prompt = "";
+  }
+  if(!isString(settings.filter) && !isArray(settings.filter)) {
+    settings.filter = [""];
+  }
+  if(isString(settings.filter)) {
+    settings.filter = [settings.filter];
+  }
+  if(isString(settings.folder)) {
+    settings.folder = pub.folder(settings.folder);
+  }
+  if(!(settings.folder instanceof Folder) || !settings.folder.exists) {
+    settings.folder = currDialogFolder;
+  }
+
+  if(settings.folderSelect) {
+    result = Folder(settings.folder).selectDlg(settings.prompt);
+  } else {
+    function filterFiles(file){
+      if (file instanceof Folder) { return true }
+      for (var i = settings.filter.length - 1; i >= 0; i--) {
+        if (isString(settings.filter[i]) && endsWith(file.name.toLowerCase(), settings.filter[i].toLowerCase())) { return true }
+      }
+      return false;
+    }
+
+    result = File(settings.folder).openDlg(settings.prompt, filterFiles, settings.multiFile);
+  }
+
+  if(result instanceof File) {
+    currDialogFolder = result.parent;
+  } else if (isArray(result)) {
+    currDialogFolder = result[0].parent;
+  } else if (result instanceof Folder) {
+    currDialogFolder = result;
+  }
+
+  if(result === null && settings.multiFile) {
+    result = [];
+  }
+
+  return result;
+}
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {
@@ -463,7 +521,7 @@ var findInStylesByName = function(allStylesCollection, name) {
   return null;
 };
 
-// internal helper to get the name of parent functions; helpful for more meaningful error messages
+// get the name of parent functions; helpful for more meaningful error messages
 // level describes how many levels above to find the function whose function name is returned
 var getParentFunctionName = function(level) {
     var stackArray = $.stack.

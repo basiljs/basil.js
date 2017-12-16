@@ -1071,7 +1071,7 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
  * @cat Files
  * @method file
  * @param {String} filePath The file path.
- * @return {File} File.
+ * @return {File} File at the given path.
  */
 pub.file = function(filePath) {
   if(! isString(filePath)) {
@@ -1100,7 +1100,7 @@ pub.file = function(filePath) {
  * @cat Files
  * @method folder
  * @param {String} [folderPath] The path of the folder.
- * @return {Folder} Folder.
+ * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
  */
 pub.folder = function(folderPath) {
   if(folderPath === undefined) {
@@ -1137,9 +1137,9 @@ pub.folder = function(folderPath) {
  * @method files
  * @param {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
  * @param {Object} [settings] A settings object to control the function's behavior.
- * @param {String|Array} [settings.fileTypes] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
- * @param {Boolean} [settings.includeHidden] Includes hidden files. Default: <code>false</code>
- * @param {Boolean} [settings.recursive] Get files recursively from subfolders. Default: <code>false</code>
+ * @param {String|Array} [settings.filter] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
+ * @param {Boolean} [settings.hidden] Hidden files will be included. Default: <code>false</code>
+ * @param {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: <code>false</code>
  */
 pub.files = function(folder, settings, collectedFiles) {
   var topLevel;
@@ -1166,12 +1166,12 @@ pub.files = function(folder, settings, collectedFiles) {
     }
 
     // set settings object to given values or defaults
-    settings.fileTypes = settings.hasOwnProperty("fileTypes") ? settings.fileTypes : "*";
-    settings.includeHidden = settings.hasOwnProperty("includeHidden") ? settings.includeHidden : false;
+    settings.filter = settings.hasOwnProperty("filter") ? settings.filter : "*";
+    settings.hidden = settings.hasOwnProperty("hidden") ? settings.hidden : false;
     settings.recursive = settings.hasOwnProperty("recursive") ? settings.recursive : false;
 
-    if(!(settings.fileTypes instanceof Array)) {
-      settings.fileTypes = [settings.fileTypes];
+    if(!(settings.filter instanceof Array)) {
+      settings.filter = [settings.filter];
     }
   } else {
     topLevel = false;
@@ -1181,17 +1181,17 @@ pub.files = function(folder, settings, collectedFiles) {
     var folderItems = folder.getFiles();
     for (var i = folderItems.length - 1; i >= 0; i--) {
       if (folderItems[i] instanceof Folder) {
-        if(!settings.includeHidden && folderItems[i].displayName[0] === ".") continue;
+        if(!settings.hidden && folderItems[i].displayName[0] === ".") continue;
         collectedFiles = pub.files(folderItems[i], settings, collectedFiles);
       }
     }
   }
 
-  for (var i = settings.fileTypes.length - 1; i >= 0; i--) {
-    var mask = "*." + settings.fileTypes[i];
+  for (var i = settings.filter.length - 1; i >= 0; i--) {
+    var mask = "*." + settings.filter[i];
     var fileItems = folder.getFiles(mask);
     for (var j = fileItems.length - 1; j >= 0; j--) {
-      if(!settings.includeHidden && fileItems[j].displayName[0] === ".") continue;
+      if(!settings.hidden && fileItems[j].displayName[0] === ".") continue;
       if(!(fileItems[j] instanceof File)) continue;
       collectedFiles.push(fileItems[j]);
     }
@@ -1205,44 +1205,57 @@ pub.files = function(folder, settings, collectedFiles) {
  *
  * @cat Files
  * @method selectFile
- * @param {String} [prompt] The prompt text at the top of the selection dialog.
  * @param {Object} [settings] A settings object to control the function's behavior.
- * @param {String} [settings.prompt] The prompt text at the top of the selection dialog. Default: <code>""</code> (no prompt)
+ * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
  * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
  * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
  */
 pub.selectFile = function(settings) {
+  return createSelectionDialog(settings);
+};
+
+/**
+ * ToDo
+ *
+ * @cat Files
+ * @method selectFiles
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
+ * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
+ */
+pub.selectFiles = function(settings) {
   if(!settings) {
     settings = {};
   }
+  settings.multiFile = true;
 
-  // set settings object to given values or defaults
-  settings.prompt = settings.hasOwnProperty("prompt") ? settings.prompt : "";
-  settings.filter = settings.hasOwnProperty("filter") ? settings.filter : [""];
-
-  if(!isString(settings.prompt)) {
-    settings.prompt = "";
-  }
-  if(!isString(settings.filter) && !isArray(settings.filter)) {
-    settings.filter = [""];
-  }
-  if(isString(settings.filter)) {
-    settings.filter = [settings.filter];
-  }
-
-
-  function filterFiles(file){
-    if (file instanceof Folder) { return true }
-    for (var i = settings.filter.length - 1; i >= 0; i--) {
-      if (isString(settings.filter[i]) && endsWith(file.name.toLowerCase(), settings.filter[i].toLowerCase())) { return true }
-    }
-    return false;
-  }
-  file = File.openDialog(settings.prompt, filterFiles);
-
-
-  return file;
+  return createSelectionDialog(settings);
 };
+
+/**
+ * ToDo
+ *
+ * @cat Files
+ * @method selectFolder
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: <code>""</code> (no prompt)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
+ */
+pub.selectFolder = function(settings) {
+  if(!settings) {
+    settings = {};
+  }
+  settings.folderSelect = true;
+
+  return createSelectionDialog(settings);
+};
+
+// internal helper function
+
 
 // ----------------------------------------
 // Date
