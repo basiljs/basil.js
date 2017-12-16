@@ -220,16 +220,30 @@ Matrix2D.prototype = {
    * @subcat Transformation
    * @return {Array} Returns an Adobe Matrix.
    */
-  adobeMatrix: function array() {
+  adobeMatrix: function array(x, y) {
+    // this seems to work: 
+    // it's important to know the position of the object around which it will be rotated and scaled.
 
-    var uVX = new UnitValue(this.elements[2], currUnits);
-    var uVY = new UnitValue(this.elements[5], currUnits);
+    // 1. making a copy of this matrix
+    var tmpMatrix = this.get();
+    //tmpMatrix.print();
+    
+    // 2. pre-applying a translation as if the object was starting from the origin 
+    tmpMatrix.preApply([1, 0, -x, 0, 1, -y]);
+    //tmpMatrix.print();
+
+    // 3. move to object to its given coordinates
+    tmpMatrix.apply([1, 0, x, 0, 1, y]);
+    //tmpMatrix.print();
+
+    var uVX = new UnitValue(tmpMatrix.elements[2], currUnits);
+    var uVY = new UnitValue(tmpMatrix.elements[5], currUnits);
 
     return [
-      this.elements[0],
-      this.elements[3],
-      this.elements[1],
-      this.elements[4],
+      tmpMatrix.elements[0],
+      tmpMatrix.elements[3],
+      tmpMatrix.elements[1],
+      tmpMatrix.elements[4],
       uVX.as("pt"),
       uVY.as("pt")
     ];
