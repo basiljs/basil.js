@@ -608,11 +608,11 @@ pub.duplicate = function(item) {
     if (currRectMode === pub.CENTER) {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
     } else {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                      AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix());
+                     currMatrix.adobeMatrix(x, y));
     }
 
     return newItem;

@@ -4453,17 +4453,20 @@ pub.duplicate = function(item) {
 
   if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
+    var x = item.geometricBounds[1];
+    var y = item.geometricBounds[0];
+
     var newItem = item.duplicate(currentPage());
     newItem.move(currentLayer());
 
-    if (currRectMode === pub.CENTER) {
+    if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
     } else {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                      AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix());
+                     currMatrix.adobeMatrix(x, y));
     }
 
     return newItem;
@@ -4663,7 +4666,7 @@ pub.swatch = function(){
     if (typeof a === "string") {
       newSwatch = currentDoc().swatches.itemByName(a);
       if(newSwatch.isValid){
-          return newSwatch; 
+          return newSwatch;
         }else{
           error("A swatch with the provided name doesn't exist.");
         }
@@ -5103,11 +5106,11 @@ pub.text = function(txt, x, y, w, h) {
   if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
   return textFrame;
@@ -5590,11 +5593,11 @@ pub.image = function(img, x, y, w, h) {
     frame.move(null, [-(width / 2), -(height / 2)]);
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
 
@@ -6929,14 +6932,14 @@ Matrix2D.prototype = {
    * @return {Array} Returns an Adobe Matrix.
    */
   adobeMatrix: function array(x, y) {
-    // this seems to work: 
+    // this seems to work:
     // it's important to know the position of the object around which it will be rotated and scaled.
 
     // 1. making a copy of this matrix
     var tmpMatrix = this.get();
     //tmpMatrix.print();
-    
-    // 2. pre-applying a translation as if the object was starting from the origin 
+
+    // 2. pre-applying a translation as if the object was starting from the origin
     tmpMatrix.preApply([1, 0, -x, 0, 1, -y]);
     //tmpMatrix.print();
 
