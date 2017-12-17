@@ -3808,6 +3808,11 @@ var initDataFile = function(file, mustExist) {
 };
 
 var initExportFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
   var result, tmpPath = null;
   var isFile = file instanceof File;
   var filePath = isFile ? file.absoluteURI : file;
@@ -3827,7 +3832,7 @@ var initExportFile = function(file) {
       filePath = "/" + filePath;
     }
     // check if file path is a relative URI ( /Users/username/examples/... )
-    // if so, turn it into an absolute URI ( ~/examples/...)
+    // if so, turn it into an absolute URI ( ~/examples/... )
     var userRelURI = Folder("~").relativeURI;
     if(startsWith(filePath, userRelURI)) {
       filePath = "~" + filePath.substring(userRelURI.length);
@@ -4037,15 +4042,20 @@ pub.printInfo = function() {
  * @cat Output
  * @method saveStrings
  * @param  {String|File} file The file name or a File instance
- * @param  {String[]} strings The string array to be written
+ * @param  {Array} strings The string array to be written
+ * @return {File} The file the strings were written to.
  */
 pub.saveStrings = function(file, strings) {
-  var outputFile = initDataFile(file);
+  if(!isString(string)) {
+    error("b.saveString(), invalid second argument. Use an array of strings.");
+  }
+  var outputFile = initExportFile(file);
   outputFile.open("w");
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
   outputFile.close();
+  return outputFile;
 };
 
 /**
@@ -4054,14 +4064,19 @@ pub.saveStrings = function(file, strings) {
  *
  * @cat Output
  * @method saveString
- * @param  {String|File} file The file name or a File instance
- * @param  {String} string The string to be written
+ * @param  {String|File} file The file name or a File instance.
+ * @param  {String} string The string to be written.
+ * @return {File} The file the string was written to.
  */
 pub.saveString = function(file, string) {
-  var outputFile = initDataFile(file);
+  if(!isString(string)) {
+    error("b.saveString(), invalid second argument. Use a string.");
+  }
+  var outputFile = initExportFile(file);
   outputFile.open("w");
   outputFile.write(string);
   outputFile.close();
+  return outputFile;
 };
 
 /**
@@ -4069,21 +4084,20 @@ pub.saveString = function(file, string) {
  *
  * @cat Output
  * @method savePDF
- * @param {String|File} file The file name or a File instance
- * @param {Boolean} [showOptions] Whether to show the export dialog
+ * @param  {String|File} file The file name or a File instance.
+ * @param  {Boolean} [showOptions] Whether to show the export dialog.
+ * @return {File} The exported PDF file.
  */
 pub.savePDF = function(file, showOptions) {
-  if(!(isString(file) || file instanceof File)) {
-    error("b.savePDF(), wrong argument. Use File or a String describing a file path.");
-  }
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
-    currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+    var myPDF = currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
   } catch(e) {
     error("b.savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
       "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
   }
+  return outputFile;
 };
 
 /**
@@ -4093,11 +4107,9 @@ pub.savePDF = function(file, showOptions) {
  * @method savePNG
  * @param {String|File} file The file name or a File instance
  * @param {Boolean} [showOptions] Whether to show the export dialog
+ * @return {File} The exported PNG file.
  */
 pub.savePNG = function(file, showOptions) {
-  if(!(isString(file) || file instanceof File)) {
-    error("b.savePNG(), wrong argument. Use File or a String describing a file path.");
-  }
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
@@ -4106,6 +4118,7 @@ pub.savePNG = function(file, showOptions) {
     error("b.savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
       "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
   }
+  return outputFile;
 };
 
 /**
