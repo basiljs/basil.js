@@ -3792,17 +3792,20 @@ var isText = pub.isText = function(obj) {
 };
 
 
-var initDataFile = function(file, mustExist) {
+var initDataFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
   var result = null;
   if (file instanceof File) {
     result = file;
   } else {
-    var folder = new Folder(projectFolder().absoluteURI + "/data");
-    folder.create(); // creates data folder if not existing, otherwise it just skips
-    result = new File(folder.absoluteURI + "/" + file);
+    result = new File(projectFolder().absoluteURI + "/data/" + file);
   }
-  if (mustExist && !result.exists) {
-    error("The file \"" + result + "\" does not exist.");
+  if (!result.exists) {
+    error("b." + getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
   }
   return result;
 };
@@ -3931,14 +3934,14 @@ pub.shellExecute = function(cmd) {
  * @cat Data
  * @subcat Input
  * @method loadString
- * @param  {String|File} fileOrString The text file name in the document's data directory or a File instance or an URL
+ * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {String}  String file or URL content.
  */
-pub.loadString = function(fileOrString) {
-  if (isURL(fileOrString)) {
-    return getURL(fileOrString);
+pub.loadString = function(file) {
+  if (isURL(file)) {
+    return getURL(file);
   } else {
-    var inputFile = initDataFile(fileOrString, true),
+    var inputFile = initDataFile(file),
       data = null;
     inputFile.open("r");
     data = inputFile.read();
@@ -3974,7 +3977,7 @@ pub.loadStrings = function(file) {
     var result = getURL(file);
     return result.match(/[^\r\n]+/g);
   } else {
-    var inputFile = initDataFile(file, true),
+    var inputFile = initDataFile(file),
       result = [];
     inputFile.open("r");
     while (!inputFile.eof) {
@@ -5898,7 +5901,7 @@ pub.placeholder = function (textFrame) {
  * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
 pub.image = function(img, x, y, w, h) {
-  var file = initDataFile(img, true),
+  var file = initDataFile(img),
     frame = null,
     fitOptions = null,
     width = null,
