@@ -3955,10 +3955,10 @@ var getURL = function(url) {
     if (Folder.fs === "Macintosh") {
       return pub.shellExecute("curl -m 15 -L '" + url + "'");
     } else {
-      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+      error("b." + getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
   } else {
-    error("The url " + url + " is not a valid one. Please double check!");
+    error("b." + getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
   }
 };
 
@@ -3970,7 +3970,7 @@ var getURL = function(url) {
  * @subcat Input
  * @method loadStrings
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
- * @return {String[]}  Array of the individual lines in the given File or URL
+ * @return {Array}  Array of the individual lines in the given File or URL
  */
 pub.loadStrings = function(file) {
   if (isURL(file)) {
