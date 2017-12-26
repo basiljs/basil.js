@@ -808,18 +808,24 @@ var init = function() {
  * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
  */
 pub.go = function (mode) {
-  if (!mode) {
-    mode = pub.DEFAULTMODE;
-  }
-  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
-  app.preflightOptions.preflightOff = true;
 
-  currentDoc(mode);
-  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
-    progressPanel = new Progress();
-  }
+  var execTime;
+  var userCancel = false;
+
+  // ADD HERE saving of user's InDesign settings
 
   try {
+    if (!mode) {
+      mode = pub.DEFAULTMODE;
+    }
+    app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
+    app.preflightOptions.preflightOff = true;
+
+    currentDoc(mode);
+    if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+      progressPanel = new Progress();
+    }
+
     if (typeof glob.setup === "function") {
       runSetup();
     }
@@ -828,30 +834,39 @@ pub.go = function (mode) {
       runDrawOnce();
     }
   } catch (e) {
-    alert(e);
-    exit();
+    execTime = executionDuration();
+
+    if(!e.userCancel) {
+      println("[Cancelled after " + execTime + "]");
+      alert(e);
+    } else {
+      println("[Cancelled by user after " + execTime + "]");
+    }
+
+  } finally {
+
+    if(!execTime) {
+      println("[Finished in " + executionDuration() + "]");
+    }
+
+    if(currDoc && !currDoc.windows.length) {
+      currDoc.windows.add(); // open the hidden doc
+    }
+    closeHiddenDocs();
+    if (progressPanel) {
+      progressPanel.closePanel();
+    }
+    if (addToStoryCache) {
+      addToStoryCache.close();
+    }
+
+    // ADD HERE resetting of user's InDesign settings
+
+    app.scriptPreferences.enableRedraw = true;
+    app.preflightOptions.preflightOff = false;
+    exit(); // quit program execution
   }
 
-  var executionDuration = pub.millis();
-  if (executionDuration < 1000) {
-    println("[Finished in " + executionDuration + "ms]");
-  } else {
-    println("[Finished in " + (executionDuration / 1000).toPrecision(3) + "s]");
-  }
-
-  if(currDoc && !currDoc.windows.length) {
-    currDoc.windows.add(); // open the hidden doc
-  }
-  closeHiddenDocs();
-  if (progressPanel) {
-    progressPanel.closePanel();
-  }
-  if (addToStoryCache) {
-    addToStoryCache.close();
-  }
-  app.scriptPreferences.enableRedraw = true;
-  app.preflightOptions.preflightOff = false;
-  exit(); // quit program execution
 };
 
 /**
@@ -986,11 +1001,15 @@ var currentDoc = function (mode) {
       warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
     }
     var doc = null;
-    if (app.documents.length) {
+    if (app.documents.length && app.windows.length) {
       doc = app.activeDocument;
       if (mode == b.MODEHIDDEN) {
-        if (doc.modified) {
-          doc.save();
+        if (!doc.saved) {
+          try {
+            doc.save();
+          } catch(e) {
+            throw {userCancel: true};
+          }
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
         }
         var docPath = doc.fullName;
@@ -1245,6 +1264,11 @@ var checkNull = pub.checkNull = function (obj) {
 };
 
 var isNull = checkNull; // legacy
+
+var executionDuration = function() {
+  var duration = pub.millis();
+  return duration < 1000 ? duration + "ms" : (duration / 1000).toPrecision(3) + "s";
+}
 
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
