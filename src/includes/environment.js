@@ -13,6 +13,8 @@
  */
 pub.doc = function(doc) {
   if (doc instanceof Document && doc !== currDoc) {
+    // reset the settings of the old doc, before activating the new doc
+    resetDocSettings();
     setCurrDoc(doc);
   }
   return currentDoc();
