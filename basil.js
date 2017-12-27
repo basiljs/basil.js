@@ -1265,6 +1265,14 @@ var checkNull = pub.checkNull = function (obj) {
 
 var isNull = checkNull; // legacy
 
+var isEnum = function(base, value) {
+  var props = base.reflect.properties;
+  for (var i = 0; i < props.length; i++) {
+    if (base[props[i].name] == value) return true;
+  }
+  return false;
+}
+
 var executionDuration = function() {
   var duration = pub.millis();
   return duration < 1000 ? duration + "ms" : (duration / 1000).toPrecision(3) + "s";
@@ -2283,41 +2291,35 @@ pub.units = function (units) {
     return currUnits;
   }
 
-  if (units === pub.CM ||
-      units === pub.MM ||
-      units === pub.PT ||
-      units === pub.PX ||
-      units === pub.IN) {
-    var unitType = null;
-    if (units === pub.CM) {
-      unitType = MeasurementUnits.centimeters;
-    } else if (units === pub.MM) {
-      unitType = MeasurementUnits.millimeters;
-    } else if (units === pub.PT) {
-      unitType = MeasurementUnits.points;
-    } else if (units === pub.PX) {
-      unitType = MeasurementUnits.pixels;
-    } else if (units === pub.IN) {
-      unitType = MeasurementUnits.inches;
-    }
-    var doc = currentDoc();
-
-      //* MeasurementUnits.agates
-      //* MeasurementUnits.picas
-      //* MeasurementUnits.points
-      //* MeasurementUnits.inches
-      //* MeasurementUnits.inchesDecimal
-      //* MeasurementUnits.millimeters
-      //* MeasurementUnits.centimeters
-      //* MeasurementUnits.ciceros
-    doc.viewPreferences.horizontalMeasurementUnits = unitType;
-    doc.viewPreferences.verticalMeasurementUnits = unitType;
-
-    currUnits = units;
-    updatePublicPageSizeVars();
+  if (units === pub.PT || units === 2054188905) {
+    units = pub.PT;
+    unitType = MeasurementUnits.points;
+  } else if(units === pub.MM || units === 2053991795) {
+    units = pub.MM;
+    unitType = MeasurementUnits.millimeters;
+  } else if(units === pub.CM || units === 2053336435) {
+    units = pub.CM;
+    unitType = MeasurementUnits.centimeters;
+  } else if(units === pub.IN || units === 2053729891) {
+    units = pub.IN;
+    unitType = MeasurementUnits.inches;
+  } else if(units === pub.PX || units === 2054187384) {
+    units = pub.PX;
+    unitType = MeasurementUnits.pixels;
+  } else if(isEnum(MeasurementUnits, units)) {
+    warning("The document's current units are not supported by basil.js. Units will be set to Points.");
+    units = pub.PT;
+    unitType = MeasurementUnits.points;
   } else {
-    error("b.unit(), not supported unit");
+    error("b.unit(), invalid unit. Use: b.PT, b.MM, b.CM, b.IN or b.PX.");
   }
+
+  currDoc.viewPreferences.horizontalMeasurementUnits = unitType;
+  currDoc.viewPreferences.verticalMeasurementUnits = unitType;
+  currUnits = units;
+
+  updatePublicPageSizeVars();
+
   if (unitsCalledCounter === 1) {
     warning("Please note that b.units() will reset the current transformation matrix.");
   }

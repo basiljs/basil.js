@@ -489,6 +489,14 @@ var checkNull = pub.checkNull = function (obj) {
 
 var isNull = checkNull; // legacy
 
+var isEnum = function(base, value) {
+  var props = base.reflect.properties;
+  for (var i = 0; i < props.length; i++) {
+    if (base[props[i].name] == value) return true;
+  }
+  return false;
+}
+
 var executionDuration = function() {
   var duration = pub.millis();
   return duration < 1000 ? duration + "ms" : (duration / 1000).toPrecision(3) + "s";
