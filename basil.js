@@ -1697,23 +1697,35 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 };
 
 /**
- * Closes the current document.
+ * Closes the current document. If no saveOptions argument is used, the user will be asked if they want to save or not.
  *
  * @cat Document
  * @method close
- * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The indesign file instance to save the document to.
+ * @param  {Object|Boolean} [saveOptions] The InDesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
-  var doc = currentDoc();
-  if (doc) {
-    if(typeof saveOptions === "boolean" && saveOptions === false) {
-      saveOptions = SaveOptions.no;
+  if (currDoc) {
+    if(saveOptions === false) {
+      saveOptions = SaveOptions.NO;
+    } else if(saveOptions === true) {
+      saveOptions = SaveOptions.YES;
+    } else if(saveOptions === undefined) {
+      saveOptions = SaveOptions.ASK;
+    } else {
+      if(!isEnum(SaveOptions, saveOptions)) {
+        error("b.close(), wrong saveOptions argument. Use True, False, InDesign SaveOptions constant or leave empty.");
+      }
     }
-    if(typeof saveOptions === "boolean" && saveOptions === true) {
-      saveOptions = SaveOptions.yes;
+
+    resetDocSettings();
+
+    try {
+      currDoc.close(saveOptions, file);
+    } catch (e) {
+      // the user has cancelled a save dialog, the doc will not be saved
+      currDoc.close(saveOptions.NO);
     }
-    doc.close(saveOptions, file);
     resetCurrDoc();
   }
 };
