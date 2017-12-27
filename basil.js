@@ -1619,7 +1619,7 @@ pub.remove = function(obj) {
  * @return {Document} The current document instance.
  */
 pub.doc = function(doc) {
-  if (doc instanceof Document) {
+  if (doc instanceof Document && doc !== currDoc) {
     setCurrDoc(doc);
   }
   return currentDoc();
