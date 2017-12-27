@@ -1734,7 +1734,7 @@ pub.revert = function() {
     resetCurrDoc();
   } else if(!currDoc.saved) {
     currDoc.close(SaveOptions.NO);
-    resetCurrDoc();
+    currDoc = null;
     app.documents.add();
     currentDoc();
   }
