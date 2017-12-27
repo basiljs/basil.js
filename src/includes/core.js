@@ -34,19 +34,24 @@ var init = function() {
 pub.go = function (mode) {
 
   var execTime;
-  var userCancel = false;
-
-  // ADD HERE saving of user's InDesign settings
+  appSettings = {
+    enableRedraw: app.scriptPreferences.enableRedraw,
+    preflightOff: app.preflightOptions.preflightOff
+  };
+  currDocSettings = {};
 
   try {
     if (!mode) {
       mode = pub.DEFAULTMODE;
     }
-    app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
+
+    // app settings
+    app.scriptPreferences.enableRedraw = (mode === pub.MODEVISIBLE || mode === pub.MODEHIDDEN);
     app.preflightOptions.preflightOff = true;
 
     currentDoc(mode);
-    if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+
+    if (mode === pub.MODEHIDDEN || mode === pub.MODESILENT) {
       progressPanel = new Progress();
     }
 
@@ -60,11 +65,11 @@ pub.go = function (mode) {
   } catch (e) {
     execTime = executionDuration();
 
-    if(!e.userCancel) {
+    if(e.userCancel) {
+      println("[Cancelled by user after " + execTime + "]");
+    } else {
       println("[Cancelled after " + execTime + "]");
       alert(e);
-    } else {
-      println("[Cancelled by user after " + execTime + "]");
     }
 
   } finally {
@@ -84,10 +89,8 @@ pub.go = function (mode) {
       addToStoryCache.close();
     }
 
-    // ADD HERE resetting of user's InDesign settings
+    resetUserSettings();
 
-    app.scriptPreferences.enableRedraw = true;
-    app.preflightOptions.preflightOff = false;
     exit(); // quit program execution
   }
 
@@ -219,7 +222,7 @@ var welcome = function() {
 };
 
 var currentDoc = function (mode) {
-  if (currDoc === null || !currDoc) {
+  if (!currDoc) {
     var stack = $.stack;
     if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
       warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
@@ -227,7 +230,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length && app.windows.length) {
       doc = app.activeDocument;
-      if (mode == b.MODEHIDDEN) {
+      if (mode === b.MODEHIDDEN) {
         if (!doc.saved) {
           try {
             doc.save();
@@ -240,9 +243,7 @@ var currentDoc = function (mode) {
         doc.close(); // Close the doc and reopen it without adding to the display list
         doc = app.open(File(docPath), false);
       }
-    }
-    else {
-      // println("new doc");
+    } else {
       doc = app.documents.add(mode != b.MODEHIDDEN);
     }
     setCurrDoc(doc);
@@ -263,19 +264,34 @@ var closeHiddenDocs = function () {
 var setCurrDoc = function(doc) {
   resetCurrDoc();
   currDoc = doc;
-  // -- setup document --
 
+  // save initial doc settings for later resetting
+  currDocSettings.rulerOrigin = currDoc.viewPreferences.rulerOrigin;
+  currDocSettings.hUnits = currDoc.viewPreferences.horizontalMeasurementUnits;
+  currDocSettings.vUnits = currDoc.viewPreferences.verticalMeasurementUnits;
+
+  currDocSettings.pStyle = currDoc.textDefaults.appliedParagraphStyle;
+  currDocSettings.cStyle = currDoc.textDefaults.appliedCharacterStyle;
+  currDocSettings.otxtStyle = currDoc.pageItemDefaults.appliedTextObjectStyle;
+  currDocSettings.ograStyle = currDoc.pageItemDefaults.appliedGraphicObjectStyle;
+  currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
+
+  // set document to default values
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
-//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
+  pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
+  currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
+  currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
+  currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
+  currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
+  currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+
+  currAlign = currDoc.textDefaults.justification;
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
-  currAlign = currDoc.textDefaults.justification;
-  currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
+  currLeading = currDoc.textDefaults.leading;
   currTracking = currDoc.textDefaults.tracking;
-  pub.units(pub.PT);
 
   updatePublicPageSizeVars();
 };
@@ -471,6 +487,28 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
+var resetUserSettings = function() {
+  // app settings
+  app.scriptPreferences.enableRedraw = appSettings.enableRedraw;
+  app.preflightOptions.preflightOff  = appSettings.preflightOff;
+
+  // doc settings
+  if(currDoc) {
+    resetDocSettings();
+  }
+}
+
+var resetDocSettings = function() {
+  currDoc.viewPreferences.rulerOrigin = currDocSettings.rulerOrigin;
+  currDoc.viewPreferences.horizontalMeasurementUnits = currDocSettings.hUnits;
+  currDoc.viewPreferences.verticalMeasurementUnits = currDocSettings.vUnits;
+
+  currDoc.textDefaults.appliedParagraphStyle = currDocSettings.pStyle;
+  currDoc.textDefaults.appliedCharacterStyle = currDocSettings.cStyle;
+  currDoc.pageItemDefaults.appliedTextObjectStyle = currDocSettings.otxtStyle;
+  currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDocSettings.ograStyle;
+  currDoc.pageItemDefaults.appliedGridObjectStyle = currDocSettings.ogriStyle;
+}
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {

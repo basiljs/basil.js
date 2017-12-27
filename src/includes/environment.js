@@ -740,6 +740,7 @@ pub.units = function (units) {
     units = pub.PX;
     unitType = MeasurementUnits.pixels;
   } else if(isEnum(MeasurementUnits, units)) {
+    // valid enumerator with invalid basil.js unit (from documents that are set to PICAS, CICEROS etc.)
     warning("The document's current units are not supported by basil.js. Units will be set to Points.");
     units = pub.PT;
     unitType = MeasurementUnits.points;

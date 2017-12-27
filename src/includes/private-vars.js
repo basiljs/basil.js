@@ -1,10 +1,12 @@
 // ----------------------------------------
 // private vars
 var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign external library file*/
+  appSettings = null,
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
   currDoc = null,
+  currDocSettings = null,
   currEllipseMode = null,
   currFillColor = null,
   currFillTint = null,
