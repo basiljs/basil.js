@@ -470,6 +470,14 @@ var checkNull = pub.checkNull = function (obj) {
 
 var isNull = checkNull; // legacy
 
+var isEnum = function(base, value) {
+  var props = base.reflect.properties;
+  for (var i = 0; i < props.length; i++) {
+    if (base[props[i].name] == value) return true;
+  }
+  return false;
+}
+
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
