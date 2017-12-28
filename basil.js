@@ -790,6 +790,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currDocSettings = {};
 };
 
 
@@ -816,7 +817,6 @@ pub.go = function (mode) {
     enableRedraw: app.scriptPreferences.enableRedraw,
     preflightOff: app.preflightOptions.preflightOff
   };
-  currDocSettings = {};
 
   try {
     if (!mode) {
@@ -1277,15 +1277,19 @@ var resetUserSettings = function() {
 }
 
 var resetDocSettings = function() {
-  currDoc.viewPreferences.rulerOrigin = currDocSettings.rulerOrigin;
-  currDoc.viewPreferences.horizontalMeasurementUnits = currDocSettings.hUnits;
-  currDoc.viewPreferences.verticalMeasurementUnits = currDocSettings.vUnits;
+  try {
+    currDoc.viewPreferences.rulerOrigin = currDocSettings.rulerOrigin;
+    currDoc.viewPreferences.horizontalMeasurementUnits = currDocSettings.hUnits;
+    currDoc.viewPreferences.verticalMeasurementUnits = currDocSettings.vUnits;
 
-  currDoc.textDefaults.appliedParagraphStyle = currDocSettings.pStyle;
-  currDoc.textDefaults.appliedCharacterStyle = currDocSettings.cStyle;
-  currDoc.pageItemDefaults.appliedTextObjectStyle = currDocSettings.otxtStyle;
-  currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDocSettings.ograStyle;
-  currDoc.pageItemDefaults.appliedGridObjectStyle = currDocSettings.ogriStyle;
+    currDoc.textDefaults.appliedParagraphStyle = currDocSettings.pStyle;
+    currDoc.textDefaults.appliedCharacterStyle = currDocSettings.cStyle;
+    currDoc.pageItemDefaults.appliedTextObjectStyle = currDocSettings.otxtStyle;
+    currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDocSettings.ograStyle;
+    currDoc.pageItemDefaults.appliedGridObjectStyle = currDocSettings.ogriStyle;
+  } catch (e) {
+    // Document was closed without basil.js
+  }
 }
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
@@ -1619,7 +1623,7 @@ pub.remove = function(obj) {
  * @return {Document} The current document instance.
  */
 pub.doc = function(doc) {
-  if (doc instanceof Document && doc !== currDoc) {
+  if (doc instanceof Document) {
     // reset the settings of the old doc, before activating the new doc
     resetDocSettings();
     setCurrDoc(doc);

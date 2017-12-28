@@ -9,6 +9,7 @@ if (typeof b.test === "undefined") {
 b.test("EnvironmentTests", {
 
   setUpTest: function(b) {
+    app.documents.everyItem().close(SaveOptions.NO);
   },
 
   tearDownTest: function(b) {
@@ -18,7 +19,7 @@ b.test("EnvironmentTests", {
   },
 
   tearDown: function(b) {
-    b.close(SaveOptions.no);
+    b.close(SaveOptions.NO);
   },
 
   testSizeAllNumberArgs: function(b) {
@@ -29,6 +30,7 @@ b.test("EnvironmentTests", {
   },
   testSizeAllPageSizePresetArgs: function(b) {
     var doc = app.documents.add();
+    b.doc(doc);
     b.units(b.PX);
     doc.documentPreferences.pageWidth = 1000;
     doc.documentPreferences.pageHeight = 500;
@@ -51,6 +53,7 @@ b.test("EnvironmentTests", {
   },
   testSizeOnePageSizePresetArg: function(b) {
     var doc = app.documents.add();
+    b.doc(doc);
     b.units(b.PX);
     doc.documentPreferences.pageWidth = 1000;
     doc.documentPreferences.pageHeight = 500;
@@ -96,7 +99,7 @@ b.test("EnvironmentTests", {
 
   testDocWithNotExistingDocumentThrowsError: function(b) {
     var doc = app.documents.add();
-    doc.close(SaveOptions.no);
+    doc.close(SaveOptions.NO);
 
     try {
       b.doc(doc);

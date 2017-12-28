@@ -22,8 +22,9 @@ b.test("TransformTests", {
   },
 
   testMoveX: function(b) {
-    b.rectMode(b.CORNER);
     var doc = b.doc();
+    b.rectMode(b.CORNER);
+    b.units(b.PT);
     // create box at 0,0
     var rect = b.rect(0, 0, 100, 100);
     assert(b.itemX(rect) === 0);
@@ -47,6 +48,7 @@ b.test("TransformTests", {
 
   testMoveY: function(b) {
     var doc = b.doc();
+    b.units(b.PT);
     // create box at 0,0
     var rect = b.rect(0, 0, 100, 100);
     assert(b.itemY(rect) === 0);
@@ -58,6 +60,7 @@ b.test("TransformTests", {
 
   testPosition: function(b) {
     var doc = b.doc();
+    b.units(b.PT);
     // create box at 0,0
     var rect = b.rect(0, 0, 100, 100);
     assert(b.itemPosition(rect).x === 0 && b.itemPosition(rect).y === 0);
@@ -69,6 +72,7 @@ b.test("TransformTests", {
 
   testWidth: function(b) {
     var doc = b.doc();
+    b.units(b.PT);
     // create box at 0,0
     var rect = b.rect(0, 0, 100, 100);
     assert(b.itemWidth(rect) === 100);
@@ -80,6 +84,7 @@ b.test("TransformTests", {
 
   testHeight: function(b) {
     var doc = b.doc();
+    b.units(b.PT);
     // create box at 0,0
     var rect = b.rect(0, 0, 100, 100);
     assert(b.itemHeight(rect) === 100);
@@ -91,6 +96,7 @@ b.test("TransformTests", {
 
   testSize: function(b) {
     var doc = b.doc();
+    b.units(b.PT);
     // create box at 0,0
     var rect = b.rect(0, 0, 100, 100);
     assert(b.itemSize(rect).width === 100 && b.itemSize(rect).height === 100);
