@@ -28,6 +28,46 @@ b.test("EnvironmentTests", {
     assert(doc.documentPreferences.pageWidth === 100);
     assert(doc.documentPreferences.pageHeight === 200);
   },
+  testUnits: function(b) {
+    var doc = app.documents.add();
+    b.doc(doc);
+    b.units(b.PT);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.POINTS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.POINTS);
+    b.units(b.PX);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.PIXELS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.PIXELS);
+    b.units(b.MM);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.MILLIMETERS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.MILLIMETERS);
+    b.units(b.CM);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.CENTIMETERS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.CENTIMETERS);
+    b.units(b.IN);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.INCHES);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.INCHES);
+    b.units(MeasurementUnits.POINTS);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.POINTS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.POINTS);
+    b.units(MeasurementUnits.PIXELS);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.PIXELS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.PIXELS);
+    b.units(MeasurementUnits.MILLIMETERS);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.MILLIMETERS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.MILLIMETERS);
+    b.units(MeasurementUnits.CENTIMETERS);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.CENTIMETERS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.CENTIMETERS);
+    b.units(MeasurementUnits.INCHES);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.INCHES);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.INCHES);
+    b.units(MeasurementUnits.CICEROS);
+    assert(doc.viewPreferences.horizontalMeasurementUnits === MeasurementUnits.POINTS);
+    assert(doc.viewPreferences.verticalMeasurementUnits === MeasurementUnits.POINTS);
+
+    var currentUnits = b.units();
+    assert(currentUnits === b.PT);
+  },
   testSizeAllPageSizePresetArgs: function(b) {
     var doc = app.documents.add();
     b.doc(doc);

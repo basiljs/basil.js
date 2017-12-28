@@ -510,7 +510,8 @@ var resetDocSettings = function() {
     currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDocSettings.ograStyle;
     currDoc.pageItemDefaults.appliedGridObjectStyle = currDocSettings.ogriStyle;
   } catch (e) {
-    // Document was closed without basil.js
+    // document was closed via non-basil methods
+    currDoc = null;
   }
 }
 
