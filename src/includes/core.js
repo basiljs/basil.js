@@ -1,3 +1,7 @@
+// ----------------------------------------
+// src/includes/core.js
+// ----------------------------------------
+
 // all initialisations should go here
 var init = function() {
   glob.b = pub;

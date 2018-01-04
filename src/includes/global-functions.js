@@ -1,6 +1,6 @@
 // ----------------------------------------
-// global functions
-
+// src/includes/global-functions.js
+// ----------------------------------------
 
 /**
  * @description The <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter()</a> method creates a new array with all elements that pass the test implemented by the provided function.

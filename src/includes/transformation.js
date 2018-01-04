@@ -1,3 +1,7 @@
+// ----------------------------------------
+// src/includes/transformation.js
+// ----------------------------------------
+
 /* global precision */
 /**
  * @description Scales the given PageItem to the given width. If width is not given as argument the current width is returned.

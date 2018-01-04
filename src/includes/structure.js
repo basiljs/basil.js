@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Structure
+// src/includes/structure.js
+// ----------------------------------------
 
 var forEachTextCollection = function(container, collection, cb) {
   // var collection;

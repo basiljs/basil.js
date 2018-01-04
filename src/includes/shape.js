@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Shape
+// src/includes/shape.js
+// ----------------------------------------
 
 /**
  * Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.

@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Environment
+// src/includes/environment.js
+// ----------------------------------------
 
 /**
  * Sets or possibly creates the current document and returns it.

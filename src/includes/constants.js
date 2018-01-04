@@ -1,3 +1,7 @@
+// ----------------------------------------
+// src/includes/constants.js
+// ----------------------------------------
+
 /**
  * Used with b.units() to set the coordinate system to points.
  * @property PT {String}

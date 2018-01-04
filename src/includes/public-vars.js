@@ -1,5 +1,6 @@
 // ----------------------------------------
-// public vars
+// src/includes/public-vars.js
+// ----------------------------------------
 
 /**
  * System variable which stores the width of the current page.

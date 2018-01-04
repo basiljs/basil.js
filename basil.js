@@ -59,6 +59,10 @@
    */
   pub.VERSION = "1.1.0";
 
+// ----------------------------------------
+// src/includes/constants.js
+// ----------------------------------------
+
 /**
  * Used with b.units() to set the coordinate system to points.
  * @property PT {String}
@@ -425,7 +429,8 @@ var ERROR_PREFIX = "\nBasil.js Error -> ",
   WARNING_PREFIX = "### Basil Warning -> ";
 
 // ----------------------------------------
-// public vars
+// src/includes/public-vars.js
+// ----------------------------------------
 
 /**
  * System variable which stores the width of the current page.
@@ -442,7 +447,9 @@ pub.width = null;
 pub.height = null;
 
 // ----------------------------------------
-// private vars
+// src/includes/private-vars.js
+// ----------------------------------------
+
 var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign external library file*/
   currAlign = null,
   currCanvasMode = null,
@@ -477,8 +484,8 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign externa
   startTime = null;
 
 // ----------------------------------------
-// global functions
-
+// src/includes/global-functions.js
+// ----------------------------------------
 
 /**
  * @description The <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter()</a> method creates a new array with all elements that pass the test implemented by the provided function.
@@ -774,6 +781,10 @@ glob.HashList = function () {
   return that;
 };
 
+
+// ----------------------------------------
+// src/includes/core.js
+// ----------------------------------------
 
 // all initialisations should go here
 var init = function() {
@@ -1334,7 +1345,8 @@ var clearConsole = function() {
 
 
 // ----------------------------------------
-// Structure
+// src/includes/structure.js
+// ----------------------------------------
 
 var forEachTextCollection = function(container, collection, cb) {
   // var collection;
@@ -1602,7 +1614,8 @@ pub.remove = function(obj) {
 };
 
 // ----------------------------------------
-// Environment
+// src/includes/environment.js
+// ----------------------------------------
 
 /**
  * Sets or possibly creates the current document and returns it.
@@ -3045,7 +3058,8 @@ pub.timestamp = function() {
 };
 
 // ----------------------------------------
-// Data
+// src/includes/data.js
+// ----------------------------------------
 
 pub.JSON = {
   /**
@@ -4224,7 +4238,8 @@ pub.download = function(url, file) {
 
 
 // ----------------------------------------
-// Shape
+// src/includes/shape.js
+// ----------------------------------------
 
 /**
  * Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
@@ -4854,7 +4869,8 @@ pub.duplicate = function(item) {
 };
 
 // ----------------------------------------
-// Color
+// src/includes/color.js
+// ----------------------------------------
 
 /**
  * Sets the color or gradient used to fill shapes.
@@ -5037,7 +5053,7 @@ pub.swatch = function(){
     if (typeof a === "string") {
       newSwatch = currentDoc().swatches.itemByName(a);
       if(newSwatch.isValid){
-          return newSwatch; 
+          return newSwatch;
         }else{
           error("A swatch with the provided name doesn't exist.");
         }
@@ -5407,7 +5423,8 @@ pub.lerpColor = function (c1, c2, amt) {
 };
 
 // ----------------------------------------
-// Typography
+// src/includes/typography.js
+// ----------------------------------------
 
 /**
  * Creates a text frame on the current layer on the current page in the current document.
@@ -5880,7 +5897,8 @@ pub.placeholder = function (textFrame) {
   }
 };
 // ----------------------------------------
-// Image
+// src/includes/image.js
+// ----------------------------------------
 
 /**
  * Adds an image to the document. If the image argument is given as a string the image file must be in the document's
@@ -6027,9 +6045,9 @@ pub.imageMode = function(mode) {
   return currImageMode;
 };
 
-
 // ----------------------------------------
-// Math
+// src/includes/math.js
+// ----------------------------------------
 
 var Vector = pub.Vector = function() {
 
@@ -7080,6 +7098,10 @@ pub.itemY = function(pItem, y) {
   }
 };
 
+// ----------------------------------------
+// src/includes/transformation.js
+// ----------------------------------------
+
 /* global precision */
 /**
  * @description Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
@@ -7724,6 +7746,10 @@ pub.translate = function (tx, ty) {
   }
   currMatrix.translate(tx, ty);
 };
+
+// ----------------------------------------
+// src/includes/ui.js
+// ----------------------------------------
 
 // Hey Ken, this is your new home...
 
