@@ -63,9 +63,9 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+      error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
-    if(heightOrOrientation === b.PORTRAIT || heightOrOrientation === b.LANDSCAPE) {
+    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
     pub.height = doc.documentPreferences.pageHeight;
@@ -149,8 +149,8 @@ pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
-      b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
+      error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -235,7 +235,7 @@ pub.addPage = function(location) {
   checkNull(location);
 
   if(arguments.length === 0) {
-    location = b.AT_END;
+    location = pub.AT_END;
   } // default
 
   var nP;
@@ -243,19 +243,19 @@ pub.addPage = function(location) {
 
     switch (location) {
 
-      case b.AT_END:
+      case pub.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AT_BEGINNING:
+      case pub.AT_BEGINNING:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AFTER:
+      case pub.AFTER:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
-      case b.BEFORE:
+      case pub.BEFORE:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
@@ -580,7 +580,7 @@ pub.ungroup = function(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else if(typeof group === "string") {
     // get the Group of the given name
@@ -588,7 +588,7 @@ pub.ungroup = function(group) {
     if (!group.isValid) {
       error("b.ungroup(), a group with the provided name doesn't exist.");
     }
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else {
     error("b.ungroup(), not a valid group. Please select a valid group.");
@@ -622,7 +622,7 @@ pub.labels = function(label, cb) {
     return forEach(result, cb);
   }
   if(result.length === 0) {
-    b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
   return result;
 };
@@ -646,7 +646,7 @@ pub.label = function(label) {
       return pageItem;
     }
   }
-  b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
 
@@ -704,7 +704,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   }
   return result;
 };

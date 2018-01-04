@@ -1036,12 +1036,12 @@ pub.itemX = function(pItem, x) {
  */
 pub.itemY = function(pItem, y) {
   var off = 0;
-  if(currRectMode !== b.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
+      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
       pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
       return precision(pItem.geometricBounds[0], 5) + off;

@@ -592,7 +592,7 @@ glob.HashList = function () {
   that.items = {};
 
   for (var key in that.items) {
-    b.println(key);
+    pub.println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
@@ -1001,7 +1001,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == b.MODEHIDDEN) {
+      if (mode == pub.MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -1013,7 +1013,7 @@ var currentDoc = function (mode) {
     }
     else {
       // println("new doc");
-      doc = app.documents.add(mode != b.MODEHIDDEN);
+      doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -1143,30 +1143,30 @@ var updatePublicPageSizeVars = function () {
     case pub.PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
       singlePageMode = true;
       break;
 
     case pub.MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
     case pub.BLEED:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        b.resetMatrix();
-        b.translate(0, -b.doc().documentPreferences.documentBleedTopOffset);
+        pub.resetMatrix();
+        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
@@ -1174,7 +1174,7 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -1192,10 +1192,10 @@ var updatePublicPageSizeVars = function () {
       break;
 
     case pub.FACING_BLEEDS:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -1212,8 +1212,8 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
@@ -1228,7 +1228,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
       break;
   }
 
@@ -1678,9 +1678,9 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+      error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
-    if(heightOrOrientation === b.PORTRAIT || heightOrOrientation === b.LANDSCAPE) {
+    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
     pub.height = doc.documentPreferences.pageHeight;
@@ -1764,8 +1764,8 @@ pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
-      b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
+      error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -1850,7 +1850,7 @@ pub.addPage = function(location) {
   checkNull(location);
 
   if(arguments.length === 0) {
-    location = b.AT_END;
+    location = pub.AT_END;
   } // default
 
   var nP;
@@ -1858,19 +1858,19 @@ pub.addPage = function(location) {
 
     switch (location) {
 
-      case b.AT_END:
+      case pub.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AT_BEGINNING:
+      case pub.AT_BEGINNING:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AFTER:
+      case pub.AFTER:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
-      case b.BEFORE:
+      case pub.BEFORE:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
@@ -2195,7 +2195,7 @@ pub.ungroup = function(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else if(typeof group === "string") {
     // get the Group of the given name
@@ -2203,7 +2203,7 @@ pub.ungroup = function(group) {
     if (!group.isValid) {
       error("b.ungroup(), a group with the provided name doesn't exist.");
     }
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else {
     error("b.ungroup(), not a valid group. Please select a valid group.");
@@ -2237,7 +2237,7 @@ pub.labels = function(label, cb) {
     return forEach(result, cb);
   }
   if(result.length === 0) {
-    b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
   return result;
 };
@@ -2261,7 +2261,7 @@ pub.label = function(label) {
       return pageItem;
     }
   }
-  b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
 
@@ -2319,7 +2319,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   }
   return result;
 };
@@ -4424,7 +4424,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   }
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
-  var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
   startAngle %= pub.TWO_PI + o;
   endAngle %= pub.TWO_PI + o;
   w /= 2;
@@ -7083,12 +7083,12 @@ pub.itemX = function(pItem, x) {
  */
 pub.itemY = function(pItem, y) {
   var off = 0;
-  if(currRectMode !== b.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
+      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
       pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
       return precision(pItem.geometricBounds[0], 5) + off;
@@ -7114,12 +7114,12 @@ pub.itemY = function(pItem, y) {
  * @returns {Number} The current width.
  */
 pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
-      b.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
+      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -7139,12 +7139,12 @@ pub.itemWidth = function(pItem, width) {
  * @returns {Number} The current height.
  */
 pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
-      b.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
+      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -7166,7 +7166,7 @@ pub.itemHeight = function(pItem, height) {
  */
 pub.itemPosition = function(pItem, x, y) {
 
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {

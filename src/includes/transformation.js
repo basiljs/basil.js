@@ -14,12 +14,12 @@
  * @returns {Number} The current width.
  */
 pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
-      b.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
+      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -39,12 +39,12 @@ pub.itemWidth = function(pItem, width) {
  * @returns {Number} The current height.
  */
 pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
-      b.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
+      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -66,7 +66,7 @@ pub.itemHeight = function(pItem, height) {
  */
 pub.itemPosition = function(pItem, x, y) {
 
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {

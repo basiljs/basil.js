@@ -185,7 +185,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   }
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
-  var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
   startAngle %= pub.TWO_PI + o;
   endAngle %= pub.TWO_PI + o;
   w /= 2;
