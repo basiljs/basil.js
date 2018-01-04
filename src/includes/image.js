@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Image
+// src/includes/image.js
+// ----------------------------------------
 
 /**
  * Adds an image to the document. If the image argument is given as a string the image file must be in the document's

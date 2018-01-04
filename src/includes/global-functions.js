@@ -1,6 +1,6 @@
 // ----------------------------------------
-// global functions
-
+// src/includes/global-functions.js
+// ----------------------------------------
 
 /**
  * @description The <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter()</a> method creates a new array with all elements that pass the test implemented by the provided function.
@@ -107,7 +107,7 @@ glob.HashList = function () {
   that.items = {};
 
   for (var key in that.items) {
-    b.println(key);
+    pub.println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"

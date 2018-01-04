@@ -1,3 +1,7 @@
+// ----------------------------------------
+// src/includes/core.js
+// ----------------------------------------
+
 // all initialisations should go here
 var init = function() {
   glob.b = pub;
@@ -213,7 +217,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == b.MODEHIDDEN) {
+      if (mode == pub.MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -224,8 +228,7 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      // println("new doc");
-      doc = app.documents.add(mode != b.MODEHIDDEN);
+      doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -248,8 +251,6 @@ var setCurrDoc = function(doc) {
   // -- setup document --
 
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
-//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
 
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
@@ -355,30 +356,30 @@ var updatePublicPageSizeVars = function () {
     case pub.PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
       singlePageMode = true;
       break;
 
     case pub.MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
     case pub.BLEED:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        b.resetMatrix();
-        b.translate(0, -b.doc().documentPreferences.documentBleedTopOffset);
+        pub.resetMatrix();
+        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
@@ -386,7 +387,7 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -404,10 +405,10 @@ var updatePublicPageSizeVars = function () {
       break;
 
     case pub.FACING_BLEEDS:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -424,8 +425,8 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
@@ -440,7 +441,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
       break;
   }
 

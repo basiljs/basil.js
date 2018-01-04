@@ -1,6 +1,8 @@
 // ----------------------------------------
-// private vars
-var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign external library file*/
+// src/includes/private-vars.js
+// ----------------------------------------
+
+var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign external library file*/
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,

@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Color
+// src/includes/color.js
+// ----------------------------------------
 
 /**
  * Sets the color or gradient used to fill shapes.
@@ -182,7 +183,7 @@ pub.swatch = function(){
     if (typeof a === "string") {
       newSwatch = currentDoc().swatches.itemByName(a);
       if(newSwatch.isValid){
-          return newSwatch; 
+          return newSwatch;
         }else{
           error("A swatch with the provided name doesn't exist.");
         }

@@ -59,6 +59,10 @@
    */
   pub.VERSION = "1.1.0";
 
+// ----------------------------------------
+// src/includes/constants.js
+// ----------------------------------------
+
 /**
  * Used with b.units() to set the coordinate system to points.
  * @property PT {String}
@@ -404,7 +408,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 pub.MODESILENT = "ModeSilent";
 
 /**
- * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
+ * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time - do not work in InDesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
  * @property MODEHIDDEN {String}
  * @cat Environment
  * @subcat modes
@@ -425,7 +429,8 @@ var ERROR_PREFIX = "\nBasil.js Error -> ",
   WARNING_PREFIX = "### Basil Warning -> ";
 
 // ----------------------------------------
-// public vars
+// src/includes/public-vars.js
+// ----------------------------------------
 
 /**
  * System variable which stores the width of the current page.
@@ -442,8 +447,10 @@ pub.width = null;
 pub.height = null;
 
 // ----------------------------------------
-// private vars
-var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign external library file*/
+// src/includes/private-vars.js
+// ----------------------------------------
+
+var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign external library file*/
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
@@ -477,8 +484,8 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign externa
   startTime = null;
 
 // ----------------------------------------
-// global functions
-
+// src/includes/global-functions.js
+// ----------------------------------------
 
 /**
  * @description The <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter()</a> method creates a new array with all elements that pass the test implemented by the provided function.
@@ -585,7 +592,7 @@ glob.HashList = function () {
   that.items = {};
 
   for (var key in that.items) {
-    b.println(key);
+    pub.println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
@@ -774,6 +781,10 @@ glob.HashList = function () {
   return that;
 };
 
+
+// ----------------------------------------
+// src/includes/core.js
+// ----------------------------------------
 
 // all initialisations should go here
 var init = function() {
@@ -990,7 +1001,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == b.MODEHIDDEN) {
+      if (mode == pub.MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -1001,8 +1012,7 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      // println("new doc");
-      doc = app.documents.add(mode != b.MODEHIDDEN);
+      doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -1025,8 +1035,6 @@ var setCurrDoc = function(doc) {
   // -- setup document --
 
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
-//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
 
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
@@ -1132,30 +1140,30 @@ var updatePublicPageSizeVars = function () {
     case pub.PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
       singlePageMode = true;
       break;
 
     case pub.MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
     case pub.BLEED:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        b.resetMatrix();
-        b.translate(0, -b.doc().documentPreferences.documentBleedTopOffset);
+        pub.resetMatrix();
+        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
@@ -1163,7 +1171,7 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -1181,10 +1189,10 @@ var updatePublicPageSizeVars = function () {
       break;
 
     case pub.FACING_BLEEDS:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -1201,8 +1209,8 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
@@ -1217,7 +1225,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
       break;
   }
 
@@ -1334,7 +1342,8 @@ var clearConsole = function() {
 
 
 // ----------------------------------------
-// Structure
+// src/includes/structure.js
+// ----------------------------------------
 
 var forEachTextCollection = function(container, collection, cb) {
   // var collection;
@@ -1435,49 +1444,6 @@ pub.paragraphs = function(container, cb) {
   return textCollection("paragraphs", legalContainers, container, cb);
 
 };
-
-// /**
-//  * @description If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
-//  *
-//  * cat Document
-//  * subcat Multi-Getters
-//  * method sentences
-//  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
-//  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
-//  * return {Array} An array of strings
-//  *
-//  */
-//  // FIXME
-// pub.sentences = function(item, cb) {
-
-//   checkNull(item);
-//   var err = false;
-//   try{
-//     item[0]; // check if list
-//     err = true; // access ok -> error
-//   } catch (expected) {};
-//   if(err) error("b.sentences(), Array/Collection has been passed to b.sentences(). Single object expected.");
-
-//   if(arguments.length >= 1 ) {
-//     var arr;
-//     try{
-//       str = item.contents;
-//       arr = str.match( /[^\.!\?]+[\.!\?]+/g );
-//     } catch (e){
-//       error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
-//     }
-
-//     if(arguments.length === 1) {
-//       return arr;
-//     } else if (cb instanceof Function) {
-//       forEach(arr,cb);
-//     } else {
-//       error("b.sentences(), the callback parameter is not a Function.");
-//     }
-
-//   }
-
-// };
 
 /**
  * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
@@ -1602,7 +1568,8 @@ pub.remove = function(obj) {
 };
 
 // ----------------------------------------
-// Environment
+// src/includes/environment.js
+// ----------------------------------------
 
 /**
  * Sets or possibly creates the current document and returns it.
@@ -1665,9 +1632,9 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+      error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
-    if(heightOrOrientation === b.PORTRAIT || heightOrOrientation === b.LANDSCAPE) {
+    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
     pub.height = doc.documentPreferences.pageHeight;
@@ -1698,7 +1665,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * @cat Document
  * @method close
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The indesign file instance to save the document to.
+ * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -1751,8 +1718,8 @@ pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
-      b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
+      error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -1837,7 +1804,7 @@ pub.addPage = function(location) {
   checkNull(location);
 
   if(arguments.length === 0) {
-    location = b.AT_END;
+    location = pub.AT_END;
   } // default
 
   var nP;
@@ -1845,19 +1812,19 @@ pub.addPage = function(location) {
 
     switch (location) {
 
-      case b.AT_END:
+      case pub.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AT_BEGINNING:
+      case pub.AT_BEGINNING:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AFTER:
+      case pub.AFTER:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
-      case b.BEFORE:
+      case pub.BEFORE:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
@@ -2004,7 +1971,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
     addToStoryCache.close();
     libFile.remove();
   }
-  // create an indesign library for caching the page items
+  // create an InDesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
@@ -2182,7 +2149,7 @@ pub.ungroup = function(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else if(typeof group === "string") {
     // get the Group of the given name
@@ -2190,7 +2157,7 @@ pub.ungroup = function(group) {
     if (!group.isValid) {
       error("b.ungroup(), a group with the provided name doesn't exist.");
     }
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else {
     error("b.ungroup(), not a valid group. Please select a valid group.");
@@ -2224,7 +2191,7 @@ pub.labels = function(label, cb) {
     return forEach(result, cb);
   }
   if(result.length === 0) {
-    b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
   return result;
 };
@@ -2248,7 +2215,7 @@ pub.label = function(label) {
       return pageItem;
     }
   }
-  b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
 
@@ -2306,7 +2273,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   }
   return result;
 };
@@ -2346,14 +2313,6 @@ pub.units = function (units) {
     }
     var doc = currentDoc();
 
-      //* MeasurementUnits.agates
-      //* MeasurementUnits.picas
-      //* MeasurementUnits.points
-      //* MeasurementUnits.inches
-      //* MeasurementUnits.inchesDecimal
-      //* MeasurementUnits.millimeters
-      //* MeasurementUnits.centimeters
-      //* MeasurementUnits.ciceros
     doc.viewPreferences.horizontalMeasurementUnits = unitType;
     doc.viewPreferences.verticalMeasurementUnits = unitType;
 
@@ -3045,7 +3004,8 @@ pub.timestamp = function() {
 };
 
 // ----------------------------------------
-// Data
+// src/includes/data.js
+// ----------------------------------------
 
 pub.JSON = {
   /**
@@ -3762,8 +3722,8 @@ var isString = pub.isString = function(str) {
 };
 
 /**
- * Checks whether a var is an indesign text object, returns true if this is the case
- * NB: a indesign TextFrame will return false as it is just a container holding text.
+ * Checks whether a var is an InDesign text object, returns true if this is the case
+ * NB: a InDesign TextFrame will return false as it is just a container holding text.
  * So you could say that isText() refers to all the things inside a TextFrame.
  *
  * @cat Document
@@ -4224,7 +4184,8 @@ pub.download = function(url, file) {
 
 
 // ----------------------------------------
-// Shape
+// src/includes/shape.js
+// ----------------------------------------
 
 /**
  * Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
@@ -4409,7 +4370,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   }
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
-  var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
   startAngle %= pub.TWO_PI + o;
   endAngle %= pub.TWO_PI + o;
   w /= 2;
@@ -4603,7 +4564,7 @@ function notCalledBeginShapeError () {
  */
 pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
-    // indesign doesn't draw a rectangle if width or height are set to 0
+    // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
   if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
@@ -4854,7 +4815,8 @@ pub.duplicate = function(item) {
 };
 
 // ----------------------------------------
-// Color
+// src/includes/color.js
+// ----------------------------------------
 
 /**
  * Sets the color or gradient used to fill shapes.
@@ -5037,7 +4999,7 @@ pub.swatch = function(){
     if (typeof a === "string") {
       newSwatch = currentDoc().swatches.itemByName(a);
       if(newSwatch.isValid){
-          return newSwatch; 
+          return newSwatch;
         }else{
           error("A swatch with the provided name doesn't exist.");
         }
@@ -5407,7 +5369,8 @@ pub.lerpColor = function (c1, c2, amt) {
 };
 
 // ----------------------------------------
-// Typography
+// src/includes/typography.js
+// ----------------------------------------
 
 /**
  * Creates a text frame on the current layer on the current page in the current document.
@@ -5650,7 +5613,7 @@ pub.textAlign = function(align, yAlign) {
  *
  * @cat Typography
  * @method textLeading
- * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
+ * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum
  *                                   value Leading.AUTO.
  * @return {Number|String}           The current leading.
  */
@@ -5880,7 +5843,8 @@ pub.placeholder = function (textFrame) {
   }
 };
 // ----------------------------------------
-// Image
+// src/includes/image.js
+// ----------------------------------------
 
 /**
  * Adds an image to the document. If the image argument is given as a string the image file must be in the document's
@@ -6027,9 +5991,9 @@ pub.imageMode = function(mode) {
   return currImageMode;
 };
 
-
 // ----------------------------------------
-// Math
+// src/includes/math.js
+// ----------------------------------------
 
 var Vector = pub.Vector = function() {
 
@@ -7065,12 +7029,12 @@ pub.itemX = function(pItem, x) {
  */
 pub.itemY = function(pItem, y) {
   var off = 0;
-  if(currRectMode !== b.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
+      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
       pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
       return precision(pItem.geometricBounds[0], 5) + off;
@@ -7079,6 +7043,10 @@ pub.itemY = function(pItem, y) {
     error("b.itemY(), pItem has to be a valid PageItem");
   }
 };
+
+// ----------------------------------------
+// src/includes/transformation.js
+// ----------------------------------------
 
 /* global precision */
 /**
@@ -7092,12 +7060,12 @@ pub.itemY = function(pItem, y) {
  * @returns {Number} The current width.
  */
 pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
-      b.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
+      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -7117,12 +7085,12 @@ pub.itemWidth = function(pItem, width) {
  * @returns {Number} The current height.
  */
 pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
-      b.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
+      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -7144,7 +7112,7 @@ pub.itemHeight = function(pItem, height) {
  */
 pub.itemPosition = function(pItem, x, y) {
 
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
@@ -7153,10 +7121,6 @@ pub.itemPosition = function(pItem, x, y) {
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
       var offX = 0;
       var offY = 0;
-      // if(currRectMode === b.CENTER) {
-      //   offX = width / 2;
-      //   offY = height / 2;
-      // }
       pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
     } else {
       return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
@@ -7187,15 +7151,7 @@ pub.itemSize = function(pItem, width, height) {
     var y = pItem.geometricBounds[0];
 
     if(typeof width === "number" && typeof height === "number") {
-      // if(currRectMode === b.CENTER) {
-      //   // current center, calc old width and height
-      //   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) / 2;
-      //   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) / 2;
-      //   pItem.geometricBounds = [ y - height / 2, x - width / 2, y + height / 2, x + width / 2];
-      // } else {
       pItem.geometricBounds = [y, x, y + height, x + width];
-      // }
-
     } else {
       return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
     }
@@ -7724,6 +7680,10 @@ pub.translate = function (tx, ty) {
   }
   currMatrix.translate(tx, ty);
 };
+
+// ----------------------------------------
+// src/includes/ui.js
+// ----------------------------------------
 
 // Hey Ken, this is your new home...
 
