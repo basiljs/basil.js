@@ -5,6 +5,12 @@
 ..-  --.- ..- -.... -..-- .-..-. -.-..---.-.-....--.-- -....-.... -..-- .-
 basil.js x.x.x DAY MONTH YEAR
 
++ Added b.file() and b.folder()
+  gets files and folders or creates them
++ Added b.files()
+  gets all files of a folder
++ Added b.selectFile(), b.selectFiles() and b.selectFolder()
+  opens a selection dialog to select files or folders
 + Added b.applyParagraphStyle(), b.applyCharacterStyle(), b.applyObjectStyle(),
   set the style of a text object/page item.
   see examples/typography/styles.jsx

@@ -59,6 +59,10 @@
    */
   pub.VERSION = "1.1.0";
 
+// ----------------------------------------
+// src/includes/constants.js
+// ----------------------------------------
+
 /**
  * Used with b.units() to set the coordinate system to points.
  * @property PT {String}
@@ -404,7 +408,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 pub.MODESILENT = "ModeSilent";
 
 /**
- * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
+ * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time - do not work in InDesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
  * @property MODEHIDDEN {String}
  * @cat Environment
  * @subcat modes
@@ -425,7 +429,8 @@ var ERROR_PREFIX = "\nBasil.js Error -> ",
   WARNING_PREFIX = "### Basil Warning -> ";
 
 // ----------------------------------------
-// public vars
+// src/includes/public-vars.js
+// ----------------------------------------
 
 /**
  * System variable which stores the width of the current page.
@@ -442,11 +447,14 @@ pub.width = null;
 pub.height = null;
 
 // ----------------------------------------
-// private vars
-var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign external library file*/
+// src/includes/private-vars.js
+// ----------------------------------------
+
+var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign external library file*/
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
+  currDialogFolder = null,
   currDoc = null,
   currEllipseMode = null,
   currFillColor = null,
@@ -476,8 +484,8 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign externa
   startTime = null;
 
 // ----------------------------------------
-// global functions
-
+// src/includes/global-functions.js
+// ----------------------------------------
 
 /**
  * @description The <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter()</a> method creates a new array with all elements that pass the test implemented by the provided function.
@@ -584,7 +592,7 @@ glob.HashList = function () {
   that.items = {};
 
   for (var key in that.items) {
-    b.println(key);
+    pub.println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
@@ -774,6 +782,10 @@ glob.HashList = function () {
 };
 
 
+// ----------------------------------------
+// src/includes/core.js
+// ----------------------------------------
+
 // all initialisations should go here
 var init = function() {
   glob.b = pub;
@@ -788,6 +800,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currDialogFolder = Folder("~");
 };
 
 
@@ -988,7 +1001,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == b.MODEHIDDEN) {
+      if (mode == pub.MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -999,8 +1012,7 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      // println("new doc");
-      doc = app.documents.add(mode != b.MODEHIDDEN);
+      doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -1023,8 +1035,6 @@ var setCurrDoc = function(doc) {
   // -- setup document --
 
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
-//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
 
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
@@ -1130,30 +1140,30 @@ var updatePublicPageSizeVars = function () {
     case pub.PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
       singlePageMode = true;
       break;
 
     case pub.MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
     case pub.BLEED:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        b.resetMatrix();
-        b.translate(0, -b.doc().documentPreferences.documentBleedTopOffset);
+        pub.resetMatrix();
+        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
@@ -1161,7 +1171,7 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -1179,10 +1189,10 @@ var updatePublicPageSizeVars = function () {
       break;
 
     case pub.FACING_BLEEDS:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -1199,8 +1209,8 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
@@ -1215,7 +1225,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
       break;
   }
 
@@ -1228,6 +1238,63 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
+var createSelectionDialog = function(settings) {
+  var result;
+  if(!settings) {
+    settings = {};
+  }
+
+  // set settings object to given values or defaults
+  settings.prompt = settings.hasOwnProperty("prompt") ? settings.prompt : "";
+  settings.filter = settings.hasOwnProperty("filter") ? settings.filter : [""];
+  settings.folder = settings.hasOwnProperty("folder") ? settings.folder : currDialogFolder;
+  settings.multiFile = settings.hasOwnProperty("multiFile") ? true : false;
+  settings.folderSelect = settings.hasOwnProperty("folderSelect") ? true : false;
+
+  if(!isString(settings.prompt)) {
+    settings.prompt = "";
+  }
+  if(!isString(settings.filter) && !isArray(settings.filter)) {
+    settings.filter = [""];
+  }
+  if(isString(settings.filter)) {
+    settings.filter = [settings.filter];
+  }
+  if(isString(settings.folder)) {
+    settings.folder = pub.folder(settings.folder);
+  }
+  if(!(settings.folder instanceof Folder) || !settings.folder.exists) {
+    settings.folder = currDialogFolder;
+  }
+
+  if(settings.folderSelect) {
+    result = Folder(settings.folder).selectDlg(settings.prompt);
+  } else {
+    function filterFiles(file){
+      if (file instanceof Folder) { return true }
+      for (var i = settings.filter.length - 1; i >= 0; i--) {
+        if (isString(settings.filter[i]) && endsWith(file.name.toLowerCase(), settings.filter[i].toLowerCase())) { return true }
+      }
+      return false;
+    }
+
+    result = File(settings.folder).openDlg(settings.prompt, filterFiles, settings.multiFile);
+  }
+
+  if(result instanceof File) {
+    currDialogFolder = result.parent;
+  } else if (isArray(result)) {
+    currDialogFolder = result[0].parent;
+  } else if (result instanceof Folder) {
+    currDialogFolder = result;
+  }
+
+  if(result === null && settings.multiFile) {
+    result = [];
+  }
+
+  return result;
+}
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {
@@ -1238,6 +1305,15 @@ var findInStylesByName = function(allStylesCollection, name) {
   }
   return null;
 };
+
+// get the name of parent functions; helpful for more meaningful error messages
+// level describes how many levels above to find the function whose function name is returned
+var getParentFunctionName = function(level) {
+    var stackArray = $.stack.
+          replace(/\((.+?)\)/g, "").
+          split(/[\n]/);
+    return stackArray[stackArray.length - 2 - level];
+}
 
 var checkNull = pub.checkNull = function (obj) {
 
@@ -1266,7 +1342,8 @@ var clearConsole = function() {
 
 
 // ----------------------------------------
-// Structure
+// src/includes/structure.js
+// ----------------------------------------
 
 var forEachTextCollection = function(container, collection, cb) {
   // var collection;
@@ -1367,49 +1444,6 @@ pub.paragraphs = function(container, cb) {
   return textCollection("paragraphs", legalContainers, container, cb);
 
 };
-
-// /**
-//  * @description If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
-//  *
-//  * cat Document
-//  * subcat Multi-Getters
-//  * method sentences
-//  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
-//  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
-//  * return {Array} An array of strings
-//  *
-//  */
-//  // FIXME
-// pub.sentences = function(item, cb) {
-
-//   checkNull(item);
-//   var err = false;
-//   try{
-//     item[0]; // check if list
-//     err = true; // access ok -> error
-//   } catch (expected) {};
-//   if(err) error("b.sentences(), Array/Collection has been passed to b.sentences(). Single object expected.");
-
-//   if(arguments.length >= 1 ) {
-//     var arr;
-//     try{
-//       str = item.contents;
-//       arr = str.match( /[^\.!\?]+[\.!\?]+/g );
-//     } catch (e){
-//       error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
-//     }
-
-//     if(arguments.length === 1) {
-//       return arr;
-//     } else if (cb instanceof Function) {
-//       forEach(arr,cb);
-//     } else {
-//       error("b.sentences(), the callback parameter is not a Function.");
-//     }
-
-//   }
-
-// };
 
 /**
  * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
@@ -1534,7 +1568,8 @@ pub.remove = function(obj) {
 };
 
 // ----------------------------------------
-// Environment
+// src/includes/environment.js
+// ----------------------------------------
 
 /**
  * Sets or possibly creates the current document and returns it.
@@ -1597,9 +1632,9 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+      error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
-    if(heightOrOrientation === b.PORTRAIT || heightOrOrientation === b.LANDSCAPE) {
+    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
     pub.height = doc.documentPreferences.pageHeight;
@@ -1630,7 +1665,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * @cat Document
  * @method close
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The indesign file instance to save the document to.
+ * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -1683,8 +1718,8 @@ pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
-      b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
+      error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -1769,7 +1804,7 @@ pub.addPage = function(location) {
   checkNull(location);
 
   if(arguments.length === 0) {
-    location = b.AT_END;
+    location = pub.AT_END;
   } // default
 
   var nP;
@@ -1777,19 +1812,19 @@ pub.addPage = function(location) {
 
     switch (location) {
 
-      case b.AT_END:
+      case pub.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AT_BEGINNING:
+      case pub.AT_BEGINNING:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AFTER:
+      case pub.AFTER:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
-      case b.BEFORE:
+      case pub.BEFORE:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
@@ -1936,7 +1971,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
     addToStoryCache.close();
     libFile.remove();
   }
-  // create an indesign library for caching the page items
+  // create an InDesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
@@ -2114,7 +2149,7 @@ pub.ungroup = function(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else if(typeof group === "string") {
     // get the Group of the given name
@@ -2122,7 +2157,7 @@ pub.ungroup = function(group) {
     if (!group.isValid) {
       error("b.ungroup(), a group with the provided name doesn't exist.");
     }
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else {
     error("b.ungroup(), not a valid group. Please select a valid group.");
@@ -2156,7 +2191,7 @@ pub.labels = function(label, cb) {
     return forEach(result, cb);
   }
   if(result.length === 0) {
-    b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
   return result;
 };
@@ -2180,7 +2215,7 @@ pub.label = function(label) {
       return pageItem;
     }
   }
-  b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
 
@@ -2238,7 +2273,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   }
   return result;
 };
@@ -2278,14 +2313,6 @@ pub.units = function (units) {
     }
     var doc = currentDoc();
 
-      //* MeasurementUnits.agates
-      //* MeasurementUnits.picas
-      //* MeasurementUnits.points
-      //* MeasurementUnits.inches
-      //* MeasurementUnits.inchesDecimal
-      //* MeasurementUnits.millimeters
-      //* MeasurementUnits.centimeters
-      //* MeasurementUnits.ciceros
     doc.viewPreferences.horizontalMeasurementUnits = unitType;
     doc.viewPreferences.verticalMeasurementUnits = unitType;
 
@@ -2597,6 +2624,243 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
 };
 
+// ----------------------------------------
+// Files & Folders
+
+/**
+ * Returns a file object.
+ * Note that the resulting file object can either refer to an already existing file or if the file does not exist, it can create a preliminary "virtual" file that refers to a file that could be created later (i.e. by an export command).
+ *
+ * @cat Files
+ * @method file
+ * @param {String} filePath The file path.
+ * @return {File} File at the given path.
+ *
+ * @example <caption>Get an image file from the desktop and place it in the document</caption>
+ * var myImage = b.file("~/Desktop/myImage.jpg");
+ * b.image(myImage, 0, 0);
+ *
+ * @example <caption>Create a file and export it to the desktop</caption>
+ * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
+ * b.savePDF(myExportFile);
+ */
+pub.file = function(filePath) {
+  if(! isString(filePath)) {
+    error("b.file(), wrong argument. Use a string that describes a file path.");
+  }
+
+  // check if user is referring to a file in the data directory
+  if(currentDoc().saved) {
+    var file = new File(projectFolder() + "/data/" + filePath);
+    if(file.exists) {
+      return file;
+    }
+  }
+
+  // add leading slash to avoid errors on file creation
+  if(filePath[0] !== "~" && filePath[0] !== "/") {
+    filePath = "/" + filePath;
+  }
+
+  return new File(filePath);
+};
+
+/**
+ * Returns a folder object.
+ * Note that the resulting folder object can either refer to an already existing folder or if the folder does not exist, it can create a preliminary "virtual" folder that refers to a folder that could be created later.
+ *
+ * @cat Files
+ * @method folder
+ * @param {String} [folderPath] The path of the folder.
+ * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
+ *
+ * @example <caption>Get a folder from the desktop and load its files</caption>
+ * var myImageFolder = b.folder("~/Desktop/myImages/");
+ * var myImageFiles = b.files(myImageFolder);
+ *
+ * @example <caption>Get the data folder, if the document is already saved</caption>
+ * var myDataFolder = b.folder();
+ */
+pub.folder = function(folderPath) {
+  if(folderPath === undefined) {
+    if(currentDoc().saved) {
+      return new Folder(projectFolder() + "/data/");
+    } else {
+      error("b.folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
+    }
+  }
+  if(! isString(folderPath)) {
+    error("b.folder(), wrong argument. Use a string that describes the path of a folder.");
+  }
+
+  // check if user is referring to a folder in the data directory
+  if(currentDoc().saved) {
+    var folder = new Folder(projectFolder() + "/data/" + folderPath);
+    if(folder.exists) {
+      return folder;
+    }
+  }
+
+  // add leading slash to avoid errors on folder creation
+  if(folderPath[0] !== "~" && folderPath[0] !== "/") {
+    folderPath = "/" + folderPath;
+  }
+
+  return new Folder(folderPath);
+};
+
+/**
+ * Gets all files of a folder and returns them in an array of file objects.
+ * The settings object can be used to restrict the search to certain file types only, to include hidden files and to include files in subfolders.
+ *
+ * @cat Files
+ * @method files
+ * @param {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String|Array} [settings.filter] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
+ * @param {Boolean} [settings.hidden] Hidden files will be included. Default: <code>false</code>
+ * @param {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: <code>false</code>
+ * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
+ *
+ * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
+ * var myImageFolder = b.folder("~/Desktop/myImages/");
+ * var myImageFiles = b.files(myImageFolder, {filter: ["jpeg", "jpg"]});
+ *
+ * @example <caption>If the document is saved, load all files from its data folder, including from its subfolders</caption>
+ * var myDataFolder = b.folder();
+ * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
+ */
+pub.files = function(folder, settings, collectedFiles) {
+  var topLevel;
+  if (collectedFiles === undefined) {
+    if(folder === undefined && currentDoc().saved) {
+      folder = pub.folder();
+    } else if (folder === undefined) {
+      error("b.files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
+    }
+    if(isString(folder)) {
+      folder = pub.folder(folder);
+    }
+    if(!(folder instanceof Folder)) {
+      error("b.files(), wrong first argument. Use folder or a string to describe a folder path.");
+    } else if (!folder.exists) {
+      error("b.files(), the folder \"" + folder + "\" does not exist.");
+    }
+
+    topLevel = true;
+    collectedFiles = [];
+
+    if(!settings) {
+      settings = {};
+    }
+
+    // set settings object to given values or defaults
+    settings.filter = settings.hasOwnProperty("filter") ? settings.filter : "*";
+    settings.hidden = settings.hasOwnProperty("hidden") ? settings.hidden : false;
+    settings.recursive = settings.hasOwnProperty("recursive") ? settings.recursive : false;
+
+    if(!(settings.filter instanceof Array)) {
+      settings.filter = [settings.filter];
+    }
+  } else {
+    topLevel = false;
+  }
+
+  if(settings.recursive) {
+    var folderItems = folder.getFiles();
+    for (var i = folderItems.length - 1; i >= 0; i--) {
+      if (folderItems[i] instanceof Folder) {
+        if(!settings.hidden && folderItems[i].displayName[0] === ".") continue;
+        collectedFiles = pub.files(folderItems[i], settings, collectedFiles);
+      }
+    }
+  }
+
+  for (var i = settings.filter.length - 1; i >= 0; i--) {
+    var mask = "*." + settings.filter[i];
+    var fileItems = folder.getFiles(mask);
+    for (var j = fileItems.length - 1; j >= 0; j--) {
+      if(!settings.hidden && fileItems[j].displayName[0] === ".") continue;
+      if(!(fileItems[j] instanceof File)) continue;
+      collectedFiles.push(fileItems[j]);
+    }
+  }
+
+  return topLevel ? collectedFiles.reverse() : collectedFiles;
+};
+
+/**
+ * Opens a selection dialog that allows to select one file. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ *
+ * @cat Files
+ * @method selectFile
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
+ * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
+ *
+ * @example <caption>Open file selection dialog with a prompt text</caption>
+ * b.selectFile({prompt: "Please select a file."});
+ *
+ * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ */
+pub.selectFile = function(settings) {
+  return createSelectionDialog(settings);
+};
+
+/**
+ * Opens a selection dialog that allows to select one or multiple files. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ *
+ * @cat Files
+ * @method selectFiles
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
+ * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
+ *
+ * @example <caption>Open file selection dialog with a prompt text</caption>
+ * b.selectFiles({prompt: "Please select your files."});
+ *
+ * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ */
+pub.selectFiles = function(settings) {
+  if(!settings) {
+    settings = {};
+  }
+  settings.multiFile = true;
+
+  return createSelectionDialog(settings);
+};
+
+/**
+ * Opens a selection dialog that allows to select a folder. The settings object can be used to add a prompt text at the top of the dialog and to set the dialog's starting folder.
+ *
+ * @cat Files
+ * @method selectFolder
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: <code>""</code> (no prompt)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
+ *
+ * @example <caption>Open folder selection dialog with a prompt text</caption>
+ * b.selectFolder({prompt: "Please select a folder."});
+ *
+ * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
+ * b.selectFolder({folder: "~/Desktop/"});
+ */
+pub.selectFolder = function(settings) {
+  if(!settings) {
+    settings = {};
+  }
+  settings.folderSelect = true;
+
+  return createSelectionDialog(settings);
+};
+
 
 // ----------------------------------------
 // Date
@@ -2740,7 +3004,8 @@ pub.timestamp = function() {
 };
 
 // ----------------------------------------
-// Data
+// src/includes/data.js
+// ----------------------------------------
 
 pub.JSON = {
   /**
@@ -3457,8 +3722,8 @@ var isString = pub.isString = function(str) {
 };
 
 /**
- * Checks whether a var is an indesign text object, returns true if this is the case
- * NB: a indesign TextFrame will return false as it is just a container holding text.
+ * Checks whether a var is an InDesign text object, returns true if this is the case
+ * NB: a InDesign TextFrame will return false as it is just a container holding text.
  * So you could say that isText() refers to all the things inside a TextFrame.
  *
  * @cat Document
@@ -3487,55 +3752,100 @@ var isText = pub.isText = function(obj) {
 };
 
 
-var initDataFile = function(file, mustExist) {
+var initDataFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
   var result = null;
   if (file instanceof File) {
     result = file;
   } else {
-    var folder = new Folder(projectFolder().absoluteURI + "/data");
-    folder.create(); // creates data folder if not existing, otherwise it just skips
-    result = new File(folder.absoluteURI + "/" + file);
+    result = new File(projectFolder().absoluteURI + "/data/" + file);
   }
-  if (mustExist && !result.exists) {
-    error("The file \"" + result + "\" does not exist.");
+  if (!result.exists) {
+    error("b." + getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
   }
   return result;
 };
 
-var initExportFile = function(file, mustExist) {
-  var result = null;
-  if (file instanceof File) {
-    result = file;
+var initExportFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
+  var result, tmpPath = null;
+  var isFile = file instanceof File;
+  var filePath = isFile ? file.absoluteURI : file;
+
+  // if parent folder already exists, the rest can be skipped
+  if(isFile && File(filePath).parent.exists) {
+    // remove file as in some circumstances file cannot be overwritten
+    // (if file is on top level outside user folder)
+    // also improves performance considerably
+    File(filePath).remove();
+    return File(filePath);
+  }
+
+  // clean up string path
+  if((!isFile) && filePath[0] !== "~") {
+    if(filePath[0] !== "/") {
+      filePath = "/" + filePath;
+    }
+    // check if file path is a relative URI ( /Users/username/examples/... )
+    // if so, turn it into an absolute URI ( ~/examples/... )
+    var userRelURI = Folder("~").relativeURI;
+    if(startsWith(filePath, userRelURI)) {
+      filePath = "~" + filePath.substring(userRelURI.length);
+    }
+  }
+
+  // clean up path and convert to array
+  var pathNormalized = filePath.split("/");
+  for (var i = 0; i < pathNormalized.length; i++) {
+    if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
+      pathNormalized.splice(i, 1);
+    }
+  }
+
+  if(filePath[0] === "~") {
+    tmpPath = "~";
+    pathNormalized.splice(0, 1);
+  } else if (isFile) {
+    // file objects that are outside the user folder
+    tmpPath = "";
   } else {
+    // string paths relative to the project folder
+    tmpPath = projectFolder().absoluteURI;
+  }
+  var fileName = pathNormalized[pathNormalized.length - 1];
 
-    // get rid of some special cases the user might specify
-    var pathNormalized = file.split("/");
-    for (var i = 0; i < pathNormalized.length; i++) {
-      if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
-        pathNormalized.splice(i, 1);
+  // does the path contain folders? if not, create them ...
+  if (pathNormalized.length > 1) {
+    var folders = pathNormalized.slice(0, -1);
+    for (var i = 0; i < folders.length; i++) {
+      tmpPath += "/" + folders[i];
+      var f = new Folder(tmpPath);
+      if (!f.exists) {
+        f.create();
+
+        if(!f.exists) {
+          // in some cases, folder creation does not throw an error, yet folder does not exist
+          error("b." + getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
+            "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+        }
       }
     }
-
-    var tmpPath = projectFolder().absoluteURI;
-    var fileName = pathNormalized[pathNormalized.length - 1];
-
-    // contains the path folders? if so create them ...
-    if (pathNormalized.length > 1) {
-      var folders = pathNormalized.slice(0, -1);
-      for (var i = 0; i < folders.length; i++) {
-        tmpPath += "/" + folders[i];
-        var f = new Folder(tmpPath);
-        if (!f.exists) f.create();
-      }
-    }
-
-    // result = new File(projectFolder().absoluteURI + '/' + file);
-    result = new File(tmpPath + "/" + fileName);
   }
-  if (mustExist && !result.exists) {
-    error("The file \"" + result + "\" does not exist.");
+
+  if(File(tmpPath + "/" + fileName).exists) {
+    // remove existing file to avoid save errors
+    File(tmpPath + "/" + fileName).remove();
   }
-  return result;
+
+  return File(tmpPath + "/" + fileName);
 };
 
 /**
@@ -3584,14 +3894,14 @@ pub.shellExecute = function(cmd) {
  * @cat Data
  * @subcat Input
  * @method loadString
- * @param  {String|File} fileOrString The text file name in the document's data directory or a File instance or an URL
+ * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {String}  String file or URL content.
  */
-pub.loadString = function(fileOrString) {
-  if (isURL(fileOrString)) {
-    return getURL(fileOrString);
+pub.loadString = function(file) {
+  if (isURL(file)) {
+    return getURL(file);
   } else {
-    var inputFile = initDataFile(fileOrString, true),
+    var inputFile = initDataFile(file),
       data = null;
     inputFile.open("r");
     data = inputFile.read();
@@ -3605,10 +3915,10 @@ var getURL = function(url) {
     if (Folder.fs === "Macintosh") {
       return pub.shellExecute("curl -m 15 -L '" + url + "'");
     } else {
-      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+      error("b." + getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
   } else {
-    error("The url " + url + " is not a valid one. Please double check!");
+    error("b." + getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
   }
 };
 
@@ -3620,14 +3930,14 @@ var getURL = function(url) {
  * @subcat Input
  * @method loadStrings
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
- * @return {String[]}  Array of the individual lines in the given File or URL
+ * @return {Array}  Array of the individual lines in the given File or URL
  */
 pub.loadStrings = function(file) {
   if (isURL(file)) {
     var result = getURL(file);
     return result.match(/[^\r\n]+/g);
   } else {
-    var inputFile = initDataFile(file, true),
+    var inputFile = initDataFile(file),
       result = [];
     inputFile.open("r");
     while (!inputFile.eof) {
@@ -3695,15 +4005,20 @@ pub.printInfo = function() {
  * @cat Output
  * @method saveStrings
  * @param  {String|File} file The file name or a File instance
- * @param  {String[]} strings The string array to be written
+ * @param  {Array} strings The string array to be written
+ * @return {File} The file the strings were written to.
  */
 pub.saveStrings = function(file, strings) {
-  var outputFile = initDataFile(file);
+  if(!isString(string)) {
+    error("b.saveString(), invalid second argument. Use an array of strings.");
+  }
+  var outputFile = initExportFile(file);
   outputFile.open("w");
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
   outputFile.close();
+  return outputFile;
 };
 
 /**
@@ -3712,14 +4027,19 @@ pub.saveStrings = function(file, strings) {
  *
  * @cat Output
  * @method saveString
- * @param  {String|File} file The file name or a File instance
- * @param  {String} string The string to be written
+ * @param  {String|File} file The file name or a File instance.
+ * @param  {String} string The string to be written.
+ * @return {File} The file the string was written to.
  */
 pub.saveString = function(file, string) {
-  var outputFile = initDataFile(file);
+  if(!isString(string)) {
+    error("b.saveString(), invalid second argument. Use a string.");
+  }
+  var outputFile = initExportFile(file);
   outputFile.open("w");
   outputFile.write(string);
   outputFile.close();
+  return outputFile;
 };
 
 /**
@@ -3727,13 +4047,20 @@ pub.saveString = function(file, string) {
  *
  * @cat Output
  * @method savePDF
- * @param {String|File} file The file name or a File instance
- * @param {Boolean} [showOptions] Whether to show the export dialog
+ * @param  {String|File} file The file name or a File instance.
+ * @param  {Boolean} [showOptions] Whether to show the export dialog.
+ * @return {File} The exported PDF file.
  */
 pub.savePDF = function(file, showOptions) {
   var outputFile = initExportFile(file);
-  if (typeof showOptions !== "boolean") showOptions = false;
-  currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  if (showOptions !== true) showOptions = false;
+  try{
+    var myPDF = currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  } catch(e) {
+    error("b.savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+  }
+  return outputFile;
 };
 
 /**
@@ -3743,11 +4070,18 @@ pub.savePDF = function(file, showOptions) {
  * @method savePNG
  * @param {String|File} file The file name or a File instance
  * @param {Boolean} [showOptions] Whether to show the export dialog
+ * @return {File} The exported PNG file.
  */
 pub.savePNG = function(file, showOptions) {
   var outputFile = initExportFile(file);
-  if (typeof showOptions !== "boolean") showOptions = false;
-  currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  if (showOptions !== true) showOptions = false;
+  try{
+    currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  } catch(e) {
+    error("b.savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+  }
+  return outputFile;
 };
 
 /**
@@ -3850,7 +4184,8 @@ pub.download = function(url, file) {
 
 
 // ----------------------------------------
-// Shape
+// src/includes/shape.js
+// ----------------------------------------
 
 /**
  * Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
@@ -4035,7 +4370,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   }
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
-  var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
   startAngle %= pub.TWO_PI + o;
   endAngle %= pub.TWO_PI + o;
   w /= 2;
@@ -4229,7 +4564,7 @@ function notCalledBeginShapeError () {
  */
 pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
-    // indesign doesn't draw a rectangle if width or height are set to 0
+    // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
   if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
@@ -4483,7 +4818,8 @@ pub.duplicate = function(item) {
 };
 
 // ----------------------------------------
-// Color
+// src/includes/color.js
+// ----------------------------------------
 
 /**
  * Sets the color or gradient used to fill shapes.
@@ -5036,7 +5372,8 @@ pub.lerpColor = function (c1, c2, amt) {
 };
 
 // ----------------------------------------
-// Typography
+// src/includes/typography.js
+// ----------------------------------------
 
 /**
  * Creates a text frame on the current layer on the current page in the current document.
@@ -5279,7 +5616,7 @@ pub.textAlign = function(align, yAlign) {
  *
  * @cat Typography
  * @method textLeading
- * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
+ * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum
  *                                   value Leading.AUTO.
  * @return {Number|String}           The current leading.
  */
@@ -5509,7 +5846,8 @@ pub.placeholder = function (textFrame) {
   }
 };
 // ----------------------------------------
-// Image
+// src/includes/image.js
+// ----------------------------------------
 
 /**
  * Adds an image to the document. If the image argument is given as a string the image file must be in the document's
@@ -5530,7 +5868,7 @@ pub.placeholder = function (textFrame) {
  * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
 pub.image = function(img, x, y, w, h) {
-  var file = initDataFile(img, true),
+  var file = initDataFile(img),
     frame = null,
     fitOptions = null,
     width = null,
@@ -5656,9 +5994,9 @@ pub.imageMode = function(mode) {
   return currImageMode;
 };
 
-
 // ----------------------------------------
-// Math
+// src/includes/math.js
+// ----------------------------------------
 
 var Vector = pub.Vector = function() {
 
@@ -6694,12 +7032,12 @@ pub.itemX = function(pItem, x) {
  */
 pub.itemY = function(pItem, y) {
   var off = 0;
-  if(currRectMode !== b.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      b.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
+      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
       pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
       return precision(pItem.geometricBounds[0], 5) + off;
@@ -6708,6 +7046,10 @@ pub.itemY = function(pItem, y) {
     error("b.itemY(), pItem has to be a valid PageItem");
   }
 };
+
+// ----------------------------------------
+// src/includes/transformation.js
+// ----------------------------------------
 
 /* global precision */
 /**
@@ -6721,12 +7063,12 @@ pub.itemY = function(pItem, y) {
  * @returns {Number} The current width.
  */
 pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
-      b.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
+      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -6746,12 +7088,12 @@ pub.itemWidth = function(pItem, width) {
  * @returns {Number} The current height.
  */
 pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
-      b.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
+      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -6773,7 +7115,7 @@ pub.itemHeight = function(pItem, height) {
  */
 pub.itemPosition = function(pItem, x, y) {
 
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
@@ -6782,10 +7124,6 @@ pub.itemPosition = function(pItem, x, y) {
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
       var offX = 0;
       var offY = 0;
-      // if(currRectMode === b.CENTER) {
-      //   offX = width / 2;
-      //   offY = height / 2;
-      // }
       pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
     } else {
       return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
@@ -6816,15 +7154,7 @@ pub.itemSize = function(pItem, width, height) {
     var y = pItem.geometricBounds[0];
 
     if(typeof width === "number" && typeof height === "number") {
-      // if(currRectMode === b.CENTER) {
-      //   // current center, calc old width and height
-      //   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) / 2;
-      //   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) / 2;
-      //   pItem.geometricBounds = [ y - height / 2, x - width / 2, y + height / 2, x + width / 2];
-      // } else {
       pItem.geometricBounds = [y, x, y + height, x + width];
-      // }
-
     } else {
       return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
     }
@@ -7367,6 +7697,10 @@ pub.translate = function (tx, ty) {
   }
   currMatrix.translate(tx, ty);
 };
+
+// ----------------------------------------
+// src/includes/ui.js
+// ----------------------------------------
 
 // Hey Ken, this is your new home...
 

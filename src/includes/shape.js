@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Shape
+// src/includes/shape.js
+// ----------------------------------------
 
 /**
  * Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
@@ -184,7 +185,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   }
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
-  var o = b.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
   startAngle %= pub.TWO_PI + o;
   endAngle %= pub.TWO_PI + o;
   w /= 2;
@@ -378,7 +379,7 @@ function notCalledBeginShapeError () {
  */
 pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
-    // indesign doesn't draw a rectangle if width or height are set to 0
+    // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
   if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");

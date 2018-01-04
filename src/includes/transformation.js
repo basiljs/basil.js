@@ -1,3 +1,7 @@
+// ----------------------------------------
+// src/includes/transformation.js
+// ----------------------------------------
+
 /* global precision */
 /**
  * @description Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
@@ -10,12 +14,12 @@
  * @returns {Number} The current width.
  */
 pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
-      b.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
+      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -35,12 +39,12 @@ pub.itemWidth = function(pItem, width) {
  * @returns {Number} The current height.
  */
 pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
-      b.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
+      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -62,7 +66,7 @@ pub.itemHeight = function(pItem, height) {
  */
 pub.itemPosition = function(pItem, x, y) {
 
-  if(currRectMode !== b.CORNER) {
+  if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
@@ -71,10 +75,6 @@ pub.itemPosition = function(pItem, x, y) {
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
       var offX = 0;
       var offY = 0;
-      // if(currRectMode === b.CENTER) {
-      //   offX = width / 2;
-      //   offY = height / 2;
-      // }
       pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
     } else {
       return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
@@ -105,15 +105,7 @@ pub.itemSize = function(pItem, width, height) {
     var y = pItem.geometricBounds[0];
 
     if(typeof width === "number" && typeof height === "number") {
-      // if(currRectMode === b.CENTER) {
-      //   // current center, calc old width and height
-      //   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) / 2;
-      //   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) / 2;
-      //   pItem.geometricBounds = [ y - height / 2, x - width / 2, y + height / 2, x + width / 2];
-      // } else {
       pItem.geometricBounds = [y, x, y + height, x + width];
-      // }
-
     } else {
       return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
     }

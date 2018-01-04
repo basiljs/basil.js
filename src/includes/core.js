@@ -1,3 +1,7 @@
+// ----------------------------------------
+// src/includes/core.js
+// ----------------------------------------
+
 // all initialisations should go here
 var init = function() {
   glob.b = pub;
@@ -12,6 +16,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currDialogFolder = Folder("~");
 };
 
 
@@ -212,7 +217,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == b.MODEHIDDEN) {
+      if (mode == pub.MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -223,8 +228,7 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      // println("new doc");
-      doc = app.documents.add(mode != b.MODEHIDDEN);
+      doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -247,8 +251,6 @@ var setCurrDoc = function(doc) {
   // -- setup document --
 
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
-//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
 
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
@@ -354,30 +356,30 @@ var updatePublicPageSizeVars = function () {
     case pub.PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
       singlePageMode = true;
       break;
 
     case pub.MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
     case pub.BLEED:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        b.resetMatrix();
-        b.translate(0, -b.doc().documentPreferences.documentBleedTopOffset);
+        pub.resetMatrix();
+        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
@@ -385,7 +387,7 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      b.resetMatrix();
+      pub.resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -403,10 +405,10 @@ var updatePublicPageSizeVars = function () {
       break;
 
     case pub.FACING_BLEEDS:
-      widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
-      b.resetMatrix();
-      b.translate(-b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset);
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
@@ -423,8 +425,8 @@ var updatePublicPageSizeVars = function () {
     case pub.FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      b.resetMatrix();
-      b.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
@@ -439,7 +441,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
       break;
   }
 
@@ -452,6 +454,63 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
+var createSelectionDialog = function(settings) {
+  var result;
+  if(!settings) {
+    settings = {};
+  }
+
+  // set settings object to given values or defaults
+  settings.prompt = settings.hasOwnProperty("prompt") ? settings.prompt : "";
+  settings.filter = settings.hasOwnProperty("filter") ? settings.filter : [""];
+  settings.folder = settings.hasOwnProperty("folder") ? settings.folder : currDialogFolder;
+  settings.multiFile = settings.hasOwnProperty("multiFile") ? true : false;
+  settings.folderSelect = settings.hasOwnProperty("folderSelect") ? true : false;
+
+  if(!isString(settings.prompt)) {
+    settings.prompt = "";
+  }
+  if(!isString(settings.filter) && !isArray(settings.filter)) {
+    settings.filter = [""];
+  }
+  if(isString(settings.filter)) {
+    settings.filter = [settings.filter];
+  }
+  if(isString(settings.folder)) {
+    settings.folder = pub.folder(settings.folder);
+  }
+  if(!(settings.folder instanceof Folder) || !settings.folder.exists) {
+    settings.folder = currDialogFolder;
+  }
+
+  if(settings.folderSelect) {
+    result = Folder(settings.folder).selectDlg(settings.prompt);
+  } else {
+    function filterFiles(file){
+      if (file instanceof Folder) { return true }
+      for (var i = settings.filter.length - 1; i >= 0; i--) {
+        if (isString(settings.filter[i]) && endsWith(file.name.toLowerCase(), settings.filter[i].toLowerCase())) { return true }
+      }
+      return false;
+    }
+
+    result = File(settings.folder).openDlg(settings.prompt, filterFiles, settings.multiFile);
+  }
+
+  if(result instanceof File) {
+    currDialogFolder = result.parent;
+  } else if (isArray(result)) {
+    currDialogFolder = result[0].parent;
+  } else if (result instanceof Folder) {
+    currDialogFolder = result;
+  }
+
+  if(result === null && settings.multiFile) {
+    result = [];
+  }
+
+  return result;
+}
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {
@@ -462,6 +521,15 @@ var findInStylesByName = function(allStylesCollection, name) {
   }
   return null;
 };
+
+// get the name of parent functions; helpful for more meaningful error messages
+// level describes how many levels above to find the function whose function name is returned
+var getParentFunctionName = function(level) {
+    var stackArray = $.stack.
+          replace(/\((.+?)\)/g, "").
+          split(/[\n]/);
+    return stackArray[stackArray.length - 2 - level];
+}
 
 var checkNull = pub.checkNull = function (obj) {
 

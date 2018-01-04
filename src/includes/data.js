@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Data
+// src/includes/data.js
+// ----------------------------------------
 
 pub.JSON = {
   /**
@@ -716,8 +717,8 @@ var isString = pub.isString = function(str) {
 };
 
 /**
- * Checks whether a var is an indesign text object, returns true if this is the case
- * NB: a indesign TextFrame will return false as it is just a container holding text.
+ * Checks whether a var is an InDesign text object, returns true if this is the case
+ * NB: a InDesign TextFrame will return false as it is just a container holding text.
  * So you could say that isText() refers to all the things inside a TextFrame.
  *
  * @cat Document
@@ -746,55 +747,100 @@ var isText = pub.isText = function(obj) {
 };
 
 
-var initDataFile = function(file, mustExist) {
+var initDataFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
   var result = null;
   if (file instanceof File) {
     result = file;
   } else {
-    var folder = new Folder(projectFolder().absoluteURI + "/data");
-    folder.create(); // creates data folder if not existing, otherwise it just skips
-    result = new File(folder.absoluteURI + "/" + file);
+    result = new File(projectFolder().absoluteURI + "/data/" + file);
   }
-  if (mustExist && !result.exists) {
-    error("The file \"" + result + "\" does not exist.");
+  if (!result.exists) {
+    error("b." + getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
   }
   return result;
 };
 
-var initExportFile = function(file, mustExist) {
-  var result = null;
-  if (file instanceof File) {
-    result = file;
+var initExportFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
+  var result, tmpPath = null;
+  var isFile = file instanceof File;
+  var filePath = isFile ? file.absoluteURI : file;
+
+  // if parent folder already exists, the rest can be skipped
+  if(isFile && File(filePath).parent.exists) {
+    // remove file as in some circumstances file cannot be overwritten
+    // (if file is on top level outside user folder)
+    // also improves performance considerably
+    File(filePath).remove();
+    return File(filePath);
+  }
+
+  // clean up string path
+  if((!isFile) && filePath[0] !== "~") {
+    if(filePath[0] !== "/") {
+      filePath = "/" + filePath;
+    }
+    // check if file path is a relative URI ( /Users/username/examples/... )
+    // if so, turn it into an absolute URI ( ~/examples/... )
+    var userRelURI = Folder("~").relativeURI;
+    if(startsWith(filePath, userRelURI)) {
+      filePath = "~" + filePath.substring(userRelURI.length);
+    }
+  }
+
+  // clean up path and convert to array
+  var pathNormalized = filePath.split("/");
+  for (var i = 0; i < pathNormalized.length; i++) {
+    if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
+      pathNormalized.splice(i, 1);
+    }
+  }
+
+  if(filePath[0] === "~") {
+    tmpPath = "~";
+    pathNormalized.splice(0, 1);
+  } else if (isFile) {
+    // file objects that are outside the user folder
+    tmpPath = "";
   } else {
+    // string paths relative to the project folder
+    tmpPath = projectFolder().absoluteURI;
+  }
+  var fileName = pathNormalized[pathNormalized.length - 1];
 
-    // get rid of some special cases the user might specify
-    var pathNormalized = file.split("/");
-    for (var i = 0; i < pathNormalized.length; i++) {
-      if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
-        pathNormalized.splice(i, 1);
+  // does the path contain folders? if not, create them ...
+  if (pathNormalized.length > 1) {
+    var folders = pathNormalized.slice(0, -1);
+    for (var i = 0; i < folders.length; i++) {
+      tmpPath += "/" + folders[i];
+      var f = new Folder(tmpPath);
+      if (!f.exists) {
+        f.create();
+
+        if(!f.exists) {
+          // in some cases, folder creation does not throw an error, yet folder does not exist
+          error("b." + getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
+            "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+        }
       }
     }
-
-    var tmpPath = projectFolder().absoluteURI;
-    var fileName = pathNormalized[pathNormalized.length - 1];
-
-    // contains the path folders? if so create them ...
-    if (pathNormalized.length > 1) {
-      var folders = pathNormalized.slice(0, -1);
-      for (var i = 0; i < folders.length; i++) {
-        tmpPath += "/" + folders[i];
-        var f = new Folder(tmpPath);
-        if (!f.exists) f.create();
-      }
-    }
-
-    // result = new File(projectFolder().absoluteURI + '/' + file);
-    result = new File(tmpPath + "/" + fileName);
   }
-  if (mustExist && !result.exists) {
-    error("The file \"" + result + "\" does not exist.");
+
+  if(File(tmpPath + "/" + fileName).exists) {
+    // remove existing file to avoid save errors
+    File(tmpPath + "/" + fileName).remove();
   }
-  return result;
+
+  return File(tmpPath + "/" + fileName);
 };
 
 /**
@@ -843,14 +889,14 @@ pub.shellExecute = function(cmd) {
  * @cat Data
  * @subcat Input
  * @method loadString
- * @param  {String|File} fileOrString The text file name in the document's data directory or a File instance or an URL
+ * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {String}  String file or URL content.
  */
-pub.loadString = function(fileOrString) {
-  if (isURL(fileOrString)) {
-    return getURL(fileOrString);
+pub.loadString = function(file) {
+  if (isURL(file)) {
+    return getURL(file);
   } else {
-    var inputFile = initDataFile(fileOrString, true),
+    var inputFile = initDataFile(file),
       data = null;
     inputFile.open("r");
     data = inputFile.read();
@@ -864,10 +910,10 @@ var getURL = function(url) {
     if (Folder.fs === "Macintosh") {
       return pub.shellExecute("curl -m 15 -L '" + url + "'");
     } else {
-      error("Loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+      error("b." + getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
   } else {
-    error("The url " + url + " is not a valid one. Please double check!");
+    error("b." + getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
   }
 };
 
@@ -879,14 +925,14 @@ var getURL = function(url) {
  * @subcat Input
  * @method loadStrings
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
- * @return {String[]}  Array of the individual lines in the given File or URL
+ * @return {Array}  Array of the individual lines in the given File or URL
  */
 pub.loadStrings = function(file) {
   if (isURL(file)) {
     var result = getURL(file);
     return result.match(/[^\r\n]+/g);
   } else {
-    var inputFile = initDataFile(file, true),
+    var inputFile = initDataFile(file),
       result = [];
     inputFile.open("r");
     while (!inputFile.eof) {
@@ -954,15 +1000,20 @@ pub.printInfo = function() {
  * @cat Output
  * @method saveStrings
  * @param  {String|File} file The file name or a File instance
- * @param  {String[]} strings The string array to be written
+ * @param  {Array} strings The string array to be written
+ * @return {File} The file the strings were written to.
  */
 pub.saveStrings = function(file, strings) {
-  var outputFile = initDataFile(file);
+  if(!isString(string)) {
+    error("b.saveString(), invalid second argument. Use an array of strings.");
+  }
+  var outputFile = initExportFile(file);
   outputFile.open("w");
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
   outputFile.close();
+  return outputFile;
 };
 
 /**
@@ -971,14 +1022,19 @@ pub.saveStrings = function(file, strings) {
  *
  * @cat Output
  * @method saveString
- * @param  {String|File} file The file name or a File instance
- * @param  {String} string The string to be written
+ * @param  {String|File} file The file name or a File instance.
+ * @param  {String} string The string to be written.
+ * @return {File} The file the string was written to.
  */
 pub.saveString = function(file, string) {
-  var outputFile = initDataFile(file);
+  if(!isString(string)) {
+    error("b.saveString(), invalid second argument. Use a string.");
+  }
+  var outputFile = initExportFile(file);
   outputFile.open("w");
   outputFile.write(string);
   outputFile.close();
+  return outputFile;
 };
 
 /**
@@ -986,13 +1042,20 @@ pub.saveString = function(file, string) {
  *
  * @cat Output
  * @method savePDF
- * @param {String|File} file The file name or a File instance
- * @param {Boolean} [showOptions] Whether to show the export dialog
+ * @param  {String|File} file The file name or a File instance.
+ * @param  {Boolean} [showOptions] Whether to show the export dialog.
+ * @return {File} The exported PDF file.
  */
 pub.savePDF = function(file, showOptions) {
   var outputFile = initExportFile(file);
-  if (typeof showOptions !== "boolean") showOptions = false;
-  currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  if (showOptions !== true) showOptions = false;
+  try{
+    var myPDF = currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
+  } catch(e) {
+    error("b.savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+  }
+  return outputFile;
 };
 
 /**
@@ -1002,11 +1065,18 @@ pub.savePDF = function(file, showOptions) {
  * @method savePNG
  * @param {String|File} file The file name or a File instance
  * @param {Boolean} [showOptions] Whether to show the export dialog
+ * @return {File} The exported PNG file.
  */
 pub.savePNG = function(file, showOptions) {
   var outputFile = initExportFile(file);
-  if (typeof showOptions !== "boolean") showOptions = false;
-  currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  if (showOptions !== true) showOptions = false;
+  try{
+    currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
+  } catch(e) {
+    error("b.savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+  }
+  return outputFile;
 };
 
 /**

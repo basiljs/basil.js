@@ -1,5 +1,6 @@
 // ----------------------------------------
-// Environment
+// src/includes/environment.js
+// ----------------------------------------
 
 /**
  * Sets or possibly creates the current document and returns it.
@@ -62,9 +63,9 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      b.error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+      error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
-    if(heightOrOrientation === b.PORTRAIT || heightOrOrientation === b.LANDSCAPE) {
+    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
     pub.height = doc.documentPreferences.pageHeight;
@@ -95,7 +96,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * @cat Document
  * @method close
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The indesign file instance to save the document to.
+ * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -148,8 +149,8 @@ pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-    if ((m === b.FACING_PAGES || m === b.FACING_MARGINS || m === b.FACING_BLEEDS) && !b.doc().documentPreferences.facingPages) {
-      b.error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
+      error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
     updatePublicPageSizeVars();
@@ -234,7 +235,7 @@ pub.addPage = function(location) {
   checkNull(location);
 
   if(arguments.length === 0) {
-    location = b.AT_END;
+    location = pub.AT_END;
   } // default
 
   var nP;
@@ -242,19 +243,19 @@ pub.addPage = function(location) {
 
     switch (location) {
 
-      case b.AT_END:
+      case pub.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AT_BEGINNING:
+      case pub.AT_BEGINNING:
         nP = currentDoc().pages.add(location);
         break;
 
-      case b.AFTER:
+      case pub.AFTER:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
-      case b.BEFORE:
+      case pub.BEFORE:
         nP = currentDoc().pages.add(location, pub.page());
         break;
 
@@ -401,7 +402,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
     addToStoryCache.close();
     libFile.remove();
   }
-  // create an indesign library for caching the page items
+  // create an InDesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
@@ -579,7 +580,7 @@ pub.ungroup = function(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else if(typeof group === "string") {
     // get the Group of the given name
@@ -587,7 +588,7 @@ pub.ungroup = function(group) {
     if (!group.isValid) {
       error("b.ungroup(), a group with the provided name doesn't exist.");
     }
-    ungroupedItems = b.items(group);
+    ungroupedItems = pub.items(group);
     group.ungroup();
   } else {
     error("b.ungroup(), not a valid group. Please select a valid group.");
@@ -621,7 +622,7 @@ pub.labels = function(label, cb) {
     return forEach(result, cb);
   }
   if(result.length === 0) {
-    b.error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
   return result;
 };
@@ -645,7 +646,7 @@ pub.label = function(label) {
       return pageItem;
     }
   }
-  b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
 
@@ -703,7 +704,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    b.error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   }
   return result;
 };
@@ -743,14 +744,6 @@ pub.units = function (units) {
     }
     var doc = currentDoc();
 
-      //* MeasurementUnits.agates
-      //* MeasurementUnits.picas
-      //* MeasurementUnits.points
-      //* MeasurementUnits.inches
-      //* MeasurementUnits.inchesDecimal
-      //* MeasurementUnits.millimeters
-      //* MeasurementUnits.centimeters
-      //* MeasurementUnits.ciceros
     doc.viewPreferences.horizontalMeasurementUnits = unitType;
     doc.viewPreferences.verticalMeasurementUnits = unitType;
 
@@ -1060,6 +1053,243 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
   // print for top level call
   println(output);
 
+};
+
+// ----------------------------------------
+// Files & Folders
+
+/**
+ * Returns a file object.
+ * Note that the resulting file object can either refer to an already existing file or if the file does not exist, it can create a preliminary "virtual" file that refers to a file that could be created later (i.e. by an export command).
+ *
+ * @cat Files
+ * @method file
+ * @param {String} filePath The file path.
+ * @return {File} File at the given path.
+ *
+ * @example <caption>Get an image file from the desktop and place it in the document</caption>
+ * var myImage = b.file("~/Desktop/myImage.jpg");
+ * b.image(myImage, 0, 0);
+ *
+ * @example <caption>Create a file and export it to the desktop</caption>
+ * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
+ * b.savePDF(myExportFile);
+ */
+pub.file = function(filePath) {
+  if(! isString(filePath)) {
+    error("b.file(), wrong argument. Use a string that describes a file path.");
+  }
+
+  // check if user is referring to a file in the data directory
+  if(currentDoc().saved) {
+    var file = new File(projectFolder() + "/data/" + filePath);
+    if(file.exists) {
+      return file;
+    }
+  }
+
+  // add leading slash to avoid errors on file creation
+  if(filePath[0] !== "~" && filePath[0] !== "/") {
+    filePath = "/" + filePath;
+  }
+
+  return new File(filePath);
+};
+
+/**
+ * Returns a folder object.
+ * Note that the resulting folder object can either refer to an already existing folder or if the folder does not exist, it can create a preliminary "virtual" folder that refers to a folder that could be created later.
+ *
+ * @cat Files
+ * @method folder
+ * @param {String} [folderPath] The path of the folder.
+ * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
+ *
+ * @example <caption>Get a folder from the desktop and load its files</caption>
+ * var myImageFolder = b.folder("~/Desktop/myImages/");
+ * var myImageFiles = b.files(myImageFolder);
+ *
+ * @example <caption>Get the data folder, if the document is already saved</caption>
+ * var myDataFolder = b.folder();
+ */
+pub.folder = function(folderPath) {
+  if(folderPath === undefined) {
+    if(currentDoc().saved) {
+      return new Folder(projectFolder() + "/data/");
+    } else {
+      error("b.folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
+    }
+  }
+  if(! isString(folderPath)) {
+    error("b.folder(), wrong argument. Use a string that describes the path of a folder.");
+  }
+
+  // check if user is referring to a folder in the data directory
+  if(currentDoc().saved) {
+    var folder = new Folder(projectFolder() + "/data/" + folderPath);
+    if(folder.exists) {
+      return folder;
+    }
+  }
+
+  // add leading slash to avoid errors on folder creation
+  if(folderPath[0] !== "~" && folderPath[0] !== "/") {
+    folderPath = "/" + folderPath;
+  }
+
+  return new Folder(folderPath);
+};
+
+/**
+ * Gets all files of a folder and returns them in an array of file objects.
+ * The settings object can be used to restrict the search to certain file types only, to include hidden files and to include files in subfolders.
+ *
+ * @cat Files
+ * @method files
+ * @param {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String|Array} [settings.filter] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
+ * @param {Boolean} [settings.hidden] Hidden files will be included. Default: <code>false</code>
+ * @param {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: <code>false</code>
+ * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
+ *
+ * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
+ * var myImageFolder = b.folder("~/Desktop/myImages/");
+ * var myImageFiles = b.files(myImageFolder, {filter: ["jpeg", "jpg"]});
+ *
+ * @example <caption>If the document is saved, load all files from its data folder, including from its subfolders</caption>
+ * var myDataFolder = b.folder();
+ * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
+ */
+pub.files = function(folder, settings, collectedFiles) {
+  var topLevel;
+  if (collectedFiles === undefined) {
+    if(folder === undefined && currentDoc().saved) {
+      folder = pub.folder();
+    } else if (folder === undefined) {
+      error("b.files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
+    }
+    if(isString(folder)) {
+      folder = pub.folder(folder);
+    }
+    if(!(folder instanceof Folder)) {
+      error("b.files(), wrong first argument. Use folder or a string to describe a folder path.");
+    } else if (!folder.exists) {
+      error("b.files(), the folder \"" + folder + "\" does not exist.");
+    }
+
+    topLevel = true;
+    collectedFiles = [];
+
+    if(!settings) {
+      settings = {};
+    }
+
+    // set settings object to given values or defaults
+    settings.filter = settings.hasOwnProperty("filter") ? settings.filter : "*";
+    settings.hidden = settings.hasOwnProperty("hidden") ? settings.hidden : false;
+    settings.recursive = settings.hasOwnProperty("recursive") ? settings.recursive : false;
+
+    if(!(settings.filter instanceof Array)) {
+      settings.filter = [settings.filter];
+    }
+  } else {
+    topLevel = false;
+  }
+
+  if(settings.recursive) {
+    var folderItems = folder.getFiles();
+    for (var i = folderItems.length - 1; i >= 0; i--) {
+      if (folderItems[i] instanceof Folder) {
+        if(!settings.hidden && folderItems[i].displayName[0] === ".") continue;
+        collectedFiles = pub.files(folderItems[i], settings, collectedFiles);
+      }
+    }
+  }
+
+  for (var i = settings.filter.length - 1; i >= 0; i--) {
+    var mask = "*." + settings.filter[i];
+    var fileItems = folder.getFiles(mask);
+    for (var j = fileItems.length - 1; j >= 0; j--) {
+      if(!settings.hidden && fileItems[j].displayName[0] === ".") continue;
+      if(!(fileItems[j] instanceof File)) continue;
+      collectedFiles.push(fileItems[j]);
+    }
+  }
+
+  return topLevel ? collectedFiles.reverse() : collectedFiles;
+};
+
+/**
+ * Opens a selection dialog that allows to select one file. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ *
+ * @cat Files
+ * @method selectFile
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
+ * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
+ *
+ * @example <caption>Open file selection dialog with a prompt text</caption>
+ * b.selectFile({prompt: "Please select a file."});
+ *
+ * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ */
+pub.selectFile = function(settings) {
+  return createSelectionDialog(settings);
+};
+
+/**
+ * Opens a selection dialog that allows to select one or multiple files. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ *
+ * @cat Files
+ * @method selectFiles
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
+ * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
+ *
+ * @example <caption>Open file selection dialog with a prompt text</caption>
+ * b.selectFiles({prompt: "Please select your files."});
+ *
+ * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ */
+pub.selectFiles = function(settings) {
+  if(!settings) {
+    settings = {};
+  }
+  settings.multiFile = true;
+
+  return createSelectionDialog(settings);
+};
+
+/**
+ * Opens a selection dialog that allows to select a folder. The settings object can be used to add a prompt text at the top of the dialog and to set the dialog's starting folder.
+ *
+ * @cat Files
+ * @method selectFolder
+ * @param {Object} [settings] A settings object to control the function's behavior.
+ * @param {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: <code>""</code> (no prompt)
+ * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
+ *
+ * @example <caption>Open folder selection dialog with a prompt text</caption>
+ * b.selectFolder({prompt: "Please select a folder."});
+ *
+ * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
+ * b.selectFolder({folder: "~/Desktop/"});
+ */
+pub.selectFolder = function(settings) {
+  if(!settings) {
+    settings = {};
+  }
+  settings.folderSelect = true;
+
+  return createSelectionDialog(settings);
 };
 
 
