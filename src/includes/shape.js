@@ -379,7 +379,7 @@ function notCalledBeginShapeError () {
  */
 pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
-    // indesign doesn't draw a rectangle if width or height are set to 0
+    // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
   if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");

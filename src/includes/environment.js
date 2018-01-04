@@ -96,7 +96,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * @cat Document
  * @method close
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The indesign file instance to save the document to.
+ * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -402,7 +402,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
     addToStoryCache.close();
     libFile.remove();
   }
-  // create an indesign library for caching the page items
+  // create an InDesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern

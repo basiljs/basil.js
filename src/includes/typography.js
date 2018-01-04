@@ -243,7 +243,7 @@ pub.textAlign = function(align, yAlign) {
  *
  * @cat Typography
  * @method textLeading
- * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
+ * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum
  *                                   value Leading.AUTO.
  * @return {Number|String}           The current leading.
  */

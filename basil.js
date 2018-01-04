@@ -408,7 +408,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 pub.MODESILENT = "ModeSilent";
 
 /**
- * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at indesign with no open document for quite some time - do not work in indesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
+ * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time - do not work in InDesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
  * @property MODEHIDDEN {String}
  * @cat Environment
  * @subcat modes
@@ -450,7 +450,7 @@ pub.height = null;
 // src/includes/private-vars.js
 // ----------------------------------------
 
-var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign external library file*/
+var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign external library file*/
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
@@ -1665,7 +1665,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * @cat Document
  * @method close
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The indesign file instance to save the document to.
+ * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   var doc = currentDoc();
@@ -1971,7 +1971,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
     addToStoryCache.close();
     libFile.remove();
   }
-  // create an indesign library for caching the page items
+  // create an InDesign library for caching the page items
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
@@ -3722,8 +3722,8 @@ var isString = pub.isString = function(str) {
 };
 
 /**
- * Checks whether a var is an indesign text object, returns true if this is the case
- * NB: a indesign TextFrame will return false as it is just a container holding text.
+ * Checks whether a var is an InDesign text object, returns true if this is the case
+ * NB: a InDesign TextFrame will return false as it is just a container holding text.
  * So you could say that isText() refers to all the things inside a TextFrame.
  *
  * @cat Document
@@ -4564,7 +4564,7 @@ function notCalledBeginShapeError () {
  */
 pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
-    // indesign doesn't draw a rectangle if width or height are set to 0
+    // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
   if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
@@ -5613,7 +5613,7 @@ pub.textAlign = function(align, yAlign) {
  *
  * @cat Typography
  * @method textLeading
- * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default Indesign enum
+ * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum
  *                                   value Leading.AUTO.
  * @return {Number|String}           The current leading.
  */
