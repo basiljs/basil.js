@@ -4,6 +4,7 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via indesign externa
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
+  currDialogFolder = null,
   currDoc = null,
   currEllipseMode = null,
   currFillColor = null,

@@ -20,7 +20,7 @@
  * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
 pub.image = function(img, x, y, w, h) {
-  var file = initDataFile(img, true),
+  var file = initDataFile(img),
     frame = null,
     fitOptions = null,
     width = null,
