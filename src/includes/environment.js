@@ -744,14 +744,6 @@ pub.units = function (units) {
     }
     var doc = currentDoc();
 
-      //* MeasurementUnits.agates
-      //* MeasurementUnits.picas
-      //* MeasurementUnits.points
-      //* MeasurementUnits.inches
-      //* MeasurementUnits.inchesDecimal
-      //* MeasurementUnits.millimeters
-      //* MeasurementUnits.centimeters
-      //* MeasurementUnits.ciceros
     doc.viewPreferences.horizontalMeasurementUnits = unitType;
     doc.viewPreferences.verticalMeasurementUnits = unitType;
 

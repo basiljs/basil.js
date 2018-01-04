@@ -228,7 +228,6 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      // println("new doc");
       doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
@@ -252,8 +251,6 @@ var setCurrDoc = function(doc) {
   // -- setup document --
 
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
-//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
 
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;

@@ -75,10 +75,6 @@ pub.itemPosition = function(pItem, x, y) {
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
       var offX = 0;
       var offY = 0;
-      // if(currRectMode === b.CENTER) {
-      //   offX = width / 2;
-      //   offY = height / 2;
-      // }
       pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
     } else {
       return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
@@ -109,15 +105,7 @@ pub.itemSize = function(pItem, width, height) {
     var y = pItem.geometricBounds[0];
 
     if(typeof width === "number" && typeof height === "number") {
-      // if(currRectMode === b.CENTER) {
-      //   // current center, calc old width and height
-      //   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) / 2;
-      //   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) / 2;
-      //   pItem.geometricBounds = [ y - height / 2, x - width / 2, y + height / 2, x + width / 2];
-      // } else {
       pItem.geometricBounds = [y, x, y + height, x + width];
-      // }
-
     } else {
       return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
     }

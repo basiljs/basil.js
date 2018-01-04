@@ -1012,7 +1012,6 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      // println("new doc");
       doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
@@ -1036,8 +1035,6 @@ var setCurrDoc = function(doc) {
   // -- setup document --
 
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
-//  currDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.millimeters;
-//  currDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.millimeters;
 
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
@@ -1447,49 +1444,6 @@ pub.paragraphs = function(container, cb) {
   return textCollection("paragraphs", legalContainers, container, cb);
 
 };
-
-// /**
-//  * @description If no callback function is given it returns a Collection of strings otherwise calls the given callback function with each sentences of the given document, story or text frame.
-//  *
-//  * cat Document
-//  * subcat Multi-Getters
-//  * method sentences
-//  * param  {Document|Story|TextFrame} item The story or text frame instance to iterate the sentences in
-//  * param  {Function} cb  Optional: The callback function to call with each sentence. When this function returns false the loop stops. Passed arguments: sentence, loopCount
-//  * return {Array} An array of strings
-//  *
-//  */
-//  // FIXME
-// pub.sentences = function(item, cb) {
-
-//   checkNull(item);
-//   var err = false;
-//   try{
-//     item[0]; // check if list
-//     err = true; // access ok -> error
-//   } catch (expected) {};
-//   if(err) error("b.sentences(), Array/Collection has been passed to b.sentences(). Single object expected.");
-
-//   if(arguments.length >= 1 ) {
-//     var arr;
-//     try{
-//       str = item.contents;
-//       arr = str.match( /[^\.!\?]+[\.!\?]+/g );
-//     } catch (e){
-//       error("b.sentences(), Object passed to b.sentences() does not have text or is incompatible.");
-//     }
-
-//     if(arguments.length === 1) {
-//       return arr;
-//     } else if (cb instanceof Function) {
-//       forEach(arr,cb);
-//     } else {
-//       error("b.sentences(), the callback parameter is not a Function.");
-//     }
-
-//   }
-
-// };
 
 /**
  * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
@@ -2359,14 +2313,6 @@ pub.units = function (units) {
     }
     var doc = currentDoc();
 
-      //* MeasurementUnits.agates
-      //* MeasurementUnits.picas
-      //* MeasurementUnits.points
-      //* MeasurementUnits.inches
-      //* MeasurementUnits.inchesDecimal
-      //* MeasurementUnits.millimeters
-      //* MeasurementUnits.centimeters
-      //* MeasurementUnits.ciceros
     doc.viewPreferences.horizontalMeasurementUnits = unitType;
     doc.viewPreferences.verticalMeasurementUnits = unitType;
 
@@ -7175,10 +7121,6 @@ pub.itemPosition = function(pItem, x, y) {
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
       var offX = 0;
       var offY = 0;
-      // if(currRectMode === b.CENTER) {
-      //   offX = width / 2;
-      //   offY = height / 2;
-      // }
       pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
     } else {
       return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
@@ -7209,15 +7151,7 @@ pub.itemSize = function(pItem, width, height) {
     var y = pItem.geometricBounds[0];
 
     if(typeof width === "number" && typeof height === "number") {
-      // if(currRectMode === b.CENTER) {
-      //   // current center, calc old width and height
-      //   x = x + (pItem.geometricBounds[3] - pItem.geometricBounds[1]) / 2;
-      //   y = y + (pItem.geometricBounds[2] - pItem.geometricBounds[0]) / 2;
-      //   pItem.geometricBounds = [ y - height / 2, x - width / 2, y + height / 2, x + width / 2];
-      // } else {
       pItem.geometricBounds = [y, x, y + height, x + width];
-      // }
-
     } else {
       return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
     }
