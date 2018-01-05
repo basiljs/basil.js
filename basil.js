@@ -45,17 +45,11 @@
 // @target "InDesign";
 
 /**
- * @class b
- * @static
- */
-var pub = {};
-
-/**
  * The basil version
  * @property VERSION {String}
  * @cat Environment
  */
-pub.VERSION = "1.1.0";
+const VERSION = "1.1.0";
 
 // ----------------------------------------
 // src/includes/constants.js
@@ -67,7 +61,7 @@ pub.VERSION = "1.1.0";
  * @cat Document
  * @subcat Units
  */
-pub.PT = "pt";
+const PT = "pt";
 
 /**
  * Used with b.units() to set the coordinate system to pixels.
@@ -75,7 +69,7 @@ pub.PT = "pt";
  * @cat Document
  * @subcat Units
  */
-pub.PX = "px";
+const PX = "px";
 
 /**
  * Used with b.units() to set the coordinate system to centimeters.
@@ -83,8 +77,7 @@ pub.PX = "px";
  * @cat Document
  * @subcat Units
  */
-
-pub.CM = "cm";
+const CM = "cm";
 
 /**
  * Used with b.units() to set the coordinate system to millimeters.
@@ -92,7 +85,7 @@ pub.CM = "cm";
  * @cat Document
  * @subcat Units
  */
-pub.MM = "mm";
+const MM = "mm";
 
 /**
  * Used with b.units() to set the coordinate system to inches.
@@ -100,35 +93,35 @@ pub.MM = "mm";
  * @cat Document
  * @subcat Units
  */
-pub.IN = "inch";
+const IN = "inch";
 
 /**
  * Used with b.colorMode() to set the color space.
  * @property RGB {String}
  * @cat Color
  */
-pub.RGB = "rgb";
+const RGB = "rgb";
 
 /**
  * Used with b.colorMode() to set the color space.
  * @property CMYK {String}
  * @cat Color
  */
-pub.CMYK = "cmyk";
+const CMYK = "cmyk";
 
 /**
  * Used with b.gradientMode() to set the gradient mode.
  * @property LINEAR {String}
  * @cat Color
  */
-pub.LINEAR = "linear";
+const LINEAR = "linear";
 
 /**
  * Used with b.gradientMode() to set the gradient mode.
  * @property RADIAL {String}
  * @cat Color
  */
-pub.RADIAL = "radial";
+const RADIAL = "radial";
 
 /**
  * Corner, used for drawing modes.
@@ -136,7 +129,7 @@ pub.RADIAL = "radial";
  * @cat Document
  * @subcat Primitives
  */
-pub.CORNER = "corner";
+const CORNER = "corner";
 
 /**
  * Corners, used for drawing modes.
@@ -144,7 +137,7 @@ pub.CORNER = "corner";
  * @cat Document
  * @subcat Primitives
  */
-pub.CORNERS = "corners";
+const CORNERS = "corners";
 
 /**
  * Center, used for drawing modes.
@@ -152,7 +145,7 @@ pub.CORNERS = "corners";
  * @cat Document
  * @subcat Primitives
  */
-pub.CENTER = "center";
+const CENTER = "center";
 
 /**
  * Radius, used for drawing modes.
@@ -160,7 +153,7 @@ pub.CENTER = "center";
  * @cat Document
  * @subcat Primitives
  */
-pub.RADIUS = "radius";
+const RADIUS = "radius";
 
 /**
  * Close, used for endShape() modes.
@@ -168,7 +161,7 @@ pub.RADIUS = "radius";
  * @cat Document
  * @subcat Primitives
  */
-pub.CLOSE = "close";
+const CLOSE = "close";
 
 /**
  * Open, used for arc() modes.
@@ -176,7 +169,7 @@ pub.CLOSE = "close";
  * @cat Document
  * @subcat Primitives
  */
-pub.OPEN = "open";
+const OPEN = "open";
 
 /**
  * Chord, used for arc() modes.
@@ -184,7 +177,7 @@ pub.OPEN = "open";
  * @cat Document
  * @subcat Primitives
  */
-pub.CHORD = "chord";
+const CHORD = "chord";
 
 /**
  * Pie, used for arc() modes.
@@ -192,7 +185,7 @@ pub.CHORD = "chord";
  * @cat Document
  * @subcat Primitives
  */
-pub.PIE = "pie";
+const PIE = "pie";
 
 /**
  * Two Pi
@@ -200,7 +193,7 @@ pub.PIE = "pie";
  * @cat Math
  * @subcat Constants
  */
-pub.TWO_PI = Math.PI * 2;
+const TWO_PI = Math.PI * 2;
 
 /**
  * Pi
@@ -208,7 +201,7 @@ pub.TWO_PI = Math.PI * 2;
  * @cat Math
  * @subcat Constants
  */
-pub.PI = Math.PI;
+const PI = Math.PI;
 
 /**
  * Half Pi
@@ -216,7 +209,7 @@ pub.PI = Math.PI;
  * @cat Math
  * @subcat Constants
  */
-pub.HALF_PI = Math.PI / 2;
+const HALF_PI = Math.PI / 2;
 
 /**
  * Quarter Pi
@@ -224,7 +217,7 @@ pub.HALF_PI = Math.PI / 2;
  * @cat Math
  * @subcat Constants
  */
-pub.QUARTER_PI = Math.PI / 4;
+const QUARTER_PI = Math.PI / 4;
 
 /**
  * Sin Cos Length
@@ -232,7 +225,7 @@ pub.QUARTER_PI = Math.PI / 4;
  * @cat Math
  * @subcat Constants
  */
-pub.SINCOS_LENGTH = 720;
+const SINCOS_LENGTH = 720;
 
 /**
  * Epsilon
@@ -240,7 +233,7 @@ pub.SINCOS_LENGTH = 720;
  * @cat Math
  * @subcat Constants
  */
-pub.EPSILON = 10e-12;
+const EPSILON = 10e-12;
 
 /**
  * Kappa
@@ -249,7 +242,7 @@ pub.EPSILON = 10e-12;
  * @subcat Constants
  */
 // Kappa, see: http://www.whizkidtech.redprince.net/bezier/circle/kappa/
-pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
+const KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
 
 /**
  * Used with b.canvasMode() to set the canvas to the full current page.
@@ -257,7 +250,7 @@ pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
  * @cat Document
  * @subcat Page
  */
-pub.PAGE = "page";
+const PAGE = "page";
 
 /**
  * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
@@ -265,7 +258,7 @@ pub.PAGE = "page";
  * @cat Document
  * @subcat Page
  */
-pub.MARGIN = "margin";
+const MARGIN = "margin";
 
 /**
  * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
@@ -273,7 +266,7 @@ pub.MARGIN = "margin";
  * @cat Document
  * @subcat Page
  */
-pub.BLEED = "bleed";
+const BLEED = "bleed";
 
 /**
  * Used with b.canvasMode() to set the canvas to use the current facing pages.
@@ -281,7 +274,7 @@ pub.BLEED = "bleed";
  * @cat Document
  * @subcat Page
  */
-pub.FACING_PAGES = "facing_pages";
+const FACING_PAGES = "facing_pages";
 
 /**
  * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
@@ -289,7 +282,7 @@ pub.FACING_PAGES = "facing_pages";
  * @cat Document
  * @subcat Page
  */
-pub.FACING_BLEEDS = "facing_bleeds";
+const FACING_BLEEDS = "facing_bleeds";
 
 /**
  * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
@@ -297,7 +290,7 @@ pub.FACING_BLEEDS = "facing_bleeds";
  * @cat Document
  * @subcat Page
  */
-pub.FACING_MARGINS = "facing_margins";
+const FACING_MARGINS = "facing_margins";
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -305,7 +298,7 @@ pub.FACING_MARGINS = "facing_margins";
  * @cat Document
  * @subcat Page
  */
-pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
+const AT_BEGINNING = LocationOptions.AT_BEGINNING;
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -313,7 +306,7 @@ pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
  * @cat Document
  * @subcat Page
  */
-pub.AT_END = LocationOptions.AT_END;
+const AT_END = LocationOptions.AT_END;
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -321,7 +314,7 @@ pub.AT_END = LocationOptions.AT_END;
  * @cat Document
  * @subcat Page
  */
-pub.BEFORE = LocationOptions.BEFORE;
+const BEFORE = LocationOptions.BEFORE;
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -329,7 +322,7 @@ pub.BEFORE = LocationOptions.BEFORE;
  * @cat Document
  * @subcat Page
  */
-pub.AFTER = LocationOptions.AFTER;
+const AFTER = LocationOptions.AFTER;
 
 /**
  * Used with b.arrange() to bring a page item to the front or to bring it in front of a given reference object.
@@ -337,7 +330,7 @@ pub.AFTER = LocationOptions.AFTER;
  * @cat Document
  * @subcat Page
  */
-pub.FRONT = "front";
+const FRONT = "front";
 
 /**
  * Used with b.arrange() to send a page item to the back or to send it behind a given reference object.
@@ -345,7 +338,7 @@ pub.FRONT = "front";
  * @cat Document
  * @subcat Page
  */
-pub.BACK = "back";
+const BACK = "back";
 
 /**
  * Used with b.arrange() to bring a page item one level forward in its layer.
@@ -353,7 +346,7 @@ pub.BACK = "back";
  * @cat Document
  * @subcat Page
  */
-pub.FORWARD = "forward";
+const FORWARD = "forward";
 
 /**
  * Used with b.arrange() to send a page item one level backward in its layer.
@@ -361,7 +354,7 @@ pub.FORWARD = "forward";
  * @cat Document
  * @subcat Page
  */
-pub.BACKWARD = "backward";
+const BACKWARD = "backward";
 
 /**
  * Used with b.size() to set the orientation of a given page size to portrait.
@@ -369,7 +362,7 @@ pub.BACKWARD = "backward";
  * @cat Document
  * @subcat Page
  */
-pub.PORTRAIT = PageOrientation.PORTRAIT;
+const PORTRAIT = PageOrientation.PORTRAIT;
 
 /**
  * Used with b.size() to set the orientation of a given page size to landscape.
@@ -377,14 +370,14 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
  * @cat Document
  * @subcat Page
  */
-pub.LANDSCAPE = PageOrientation.LANDSCAPE;
+const LANDSCAPE = PageOrientation.LANDSCAPE;
 
 /**
  * Returns a Lorem ipsum string that can be used for testing.
  * @property LOREM {String}
  * @cat Typography
  */
-pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+const LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
 /**
 * The name of the current script.
@@ -395,7 +388,7 @@ var stackArray = $.stack.
             replace(/[\n]toString\(\)[\n]$/,'').
             replace(/[\[\]']+/g,'').
             split(/[\n]/);
-pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
+const SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
 
 /**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
@@ -403,7 +396,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 * @cat Environment
 * @subcat modes
 */
-pub.MODESILENT = "ModeSilent";
+const MODESILENT = "ModeSilent";
 
 /**
  * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time - do not work in InDesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
@@ -411,7 +404,7 @@ pub.MODESILENT = "ModeSilent";
  * @cat Environment
  * @subcat modes
  */
-pub.MODEHIDDEN = "ModeHidden";
+const MODEHIDDEN = "ModeHidden";
 
 /**
  * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
@@ -419,11 +412,11 @@ pub.MODEHIDDEN = "ModeHidden";
  * @cat Environment
  * @subcat modes
  */
-pub.MODEVISIBLE = "ModeVisible";
-pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
+const MODEVISIBLE = "ModeVisible";
+const DEFAULTMODE = const MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
 
 
-var ERROR_PREFIX = "\nBasil.js Error -> ",
+const ERROR_PREFIX = "\nBasil.js Error -> ",
   WARNING_PREFIX = "### Basil Warning -> ";
 
 // ----------------------------------------
@@ -435,14 +428,14 @@ var ERROR_PREFIX = "\nBasil.js Error -> ",
  * @property {Number} width Width of the current page.
  * @cat Environment
  */
-pub.width = null;
+var width = null;
 
 /**
  * System variable which stores the height of the current page.
  * @property {Number} height Height of the current page.
  * @cat Environment
  */
-pub.height = null;
+var height = null;
 
 // ----------------------------------------
 // src/includes/private-vars.js
@@ -587,7 +580,7 @@ HashList = function () {
   that.items = {};
 
   for (var key in that.items) {
-    pub.println(key);
+    println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
@@ -791,9 +784,9 @@ var init = function() {
   currStrokeWeight = 1;
   currStrokeTint = 100;
   currFillTint = 100;
-  currCanvasMode = pub.PAGE;
-  currColorMode = pub.RGB;
-  currGradientMode = pub.LINEAR;
+  currCanvasMode = PAGE;
+  currColorMode = RGB;
+  currGradientMode = LINEAR;
   currDialogFolder = Folder("~");
 };
 
@@ -814,15 +807,15 @@ var init = function() {
  * @method go
  * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
  */
-pub.go = function (mode) {
+go = function (mode) {
   if (!mode) {
-    mode = pub.DEFAULTMODE;
+    mode = DEFAULTMODE;
   }
-  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
+  app.scriptPreferences.enableRedraw = (mode == MODEVISIBLE || mode == MODEHIDDEN);
   app.preflightOptions.preflightOff = true;
 
   currentDoc(mode);
-  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+  if (mode == MODEHIDDEN || mode == MODESILENT) {
     progressPanel = new Progress();
   }
 
@@ -839,7 +832,7 @@ pub.go = function (mode) {
     exit();
   }
 
-  var executionDuration = pub.millis();
+  var executionDuration = millis();
   if (executionDuration < 1000) {
     println("[Finished in " + executionDuration + "ms]");
   } else {
@@ -874,7 +867,7 @@ pub.go = function (mode) {
  * @method loop
  * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
  */
-pub.loop = function(framerate) {
+loop = function(framerate) {
   // before running the loop we need to check if
   // the stop script exists
     // the Script looks for the lib folder next to itself
@@ -940,7 +933,7 @@ pub.loop = function(framerate) {
  * @cat Environment
  * @method noLoop
  */
-pub.noLoop = function() {
+noLoop = function() {
   var allIdleTasks = app.idleTasks;
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
@@ -958,7 +951,7 @@ var runSetup = function() {
     if (typeof $.global.setup === "function") {
       $.global.setup();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
 var runDrawOnce = function() {
@@ -966,7 +959,7 @@ var runDrawOnce = function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
 var runDrawLoop = function() {
@@ -974,15 +967,15 @@ var runDrawLoop = function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
 var welcome = function() {
   clearConsole();
   println("Running "
-      + pub.SCRIPTNAME
+      + SCRIPTNAME
       + " using basil.js "
-      + pub.VERSION
+      + VERSION
       + " ...");
 };
 
@@ -995,7 +988,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == pub.MODEHIDDEN) {
+      if (mode == MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -1006,7 +999,7 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      doc = app.documents.add(mode != pub.MODEHIDDEN);
+      doc = app.documents.add(mode != MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -1036,7 +1029,7 @@ var setCurrDoc = function(doc) {
   currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
-  pub.units(pub.PT);
+  units(PT);
 
   updatePublicPageSizeVars();
 };
@@ -1054,7 +1047,7 @@ var Progress = function () {
       }
       this.panel.statusbar = this.panel.add("edittext", [0, 0, 400, 300], "", {multiline: true, scrolling: false, readonly: true});
     }
-    this.panel.statusbar.text = "Using basil.js " + pub.VERSION + " ... \nEntering background render mode ...";
+    this.panel.statusbar.text = "Using basil.js " + VERSION + " ... \nEntering background render mode ...";
     this.panel.show();
   };
   this.closePanel = function () {
@@ -1089,13 +1082,13 @@ var resetCurrDoc = function() {
   currFillColor = "Black";
   noneSwatchColor = "None";
   currStrokeColor = "Black";
-  currRectMode = pub.CORNER;
-  currEllipseMode = pub.CENTER;
+  currRectMode = CORNER;
+  currEllipseMode = CENTER;
   currYAlign = VerticalJustification.TOP_ALIGN;
   currFont = null;
-  currImageMode = pub.CORNER;
+  currImageMode = CORNER;
 
-  pub.resetMatrix();
+  resetMatrix();
 };
 
 var currentLayer = function() {
@@ -1129,91 +1122,91 @@ var updatePublicPageSizeVars = function () {
 
   var widthOffset = heightOffset = 0;
 
-  switch(pub.canvasMode()) {
+  switch(canvasMode()) {
 
-    case pub.PAGE:
+    case PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      pub.resetMatrix();
+      resetMatrix();
       singlePageMode = true;
       break;
 
-    case pub.MARGIN:
+    case MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      resetMatrix();
+      translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
-    case pub.BLEED:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+    case BLEED:
+      widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset + doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = doc().documentPreferences.documentBleedBottomOffset + doc().documentPreferences.documentBleedTopOffset;
+      resetMatrix();
+      translate(-doc().documentPreferences.documentBleedInsideOrLeftOffset, -doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.resetMatrix();
-        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
+        resetMatrix();
+        translate(0, -doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
 
-    case pub.FACING_PAGES:
+    case FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      pub.resetMatrix();
+      resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
+      width = w * 2;
 
       if(currentPage().name === "1") {
-        pub.width = w;
+        width = w;
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w, 0);
+        translate(-w, 0);
       }
 
 
-      pub.height = h;
+      height = h;
       break;
 
-    case pub.FACING_BLEEDS:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
+    case FACING_BLEEDS:
+      widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset + doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = doc().documentPreferences.documentBleedBottomOffset + doc().documentPreferences.documentBleedTopOffset;
+      resetMatrix();
+      translate(-doc().documentPreferences.documentBleedInsideOrLeftOffset, -doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      width = w * 2;
+      height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w + widthOffset / 2, 0);
+        translate(-w + widthOffset / 2, 0);
       }
 
       break;
 
-    case pub.FACING_MARGINS:
+    case FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      resetMatrix();
+      translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      width = w * 2;
+      height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w - widthOffset / 2, 0);
+        translate(-w - widthOffset / 2, 0);
       }
 
       return; // early exit
@@ -1227,8 +1220,8 @@ var updatePublicPageSizeVars = function () {
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
     var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-    pub.width = w;
-    pub.height = h;
+    width = w;
+    height = h;
   }
 };
 
@@ -1255,7 +1248,7 @@ var createSelectionDialog = function(settings) {
     settings.filter = [settings.filter];
   }
   if(isString(settings.folder)) {
-    settings.folder = pub.folder(settings.folder);
+    settings.folder = folder(settings.folder);
   }
   if(!(settings.folder instanceof Folder) || !settings.folder.exists) {
     settings.folder = currDialogFolder;
@@ -1309,19 +1302,19 @@ var getParentFunctionName = function(level) {
     return stackArray[stackArray.length - 2 - level];
 }
 
-var checkNull = pub.checkNull = function (obj) {
+var checkNull = checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
 var isNull = checkNull; // legacy
 
-var error = pub.error = function(msg) {
+var error = error = function(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-var warning = pub.warning = function(msg) {
+var warning = warning = function(msg) {
   println(WARNING_PREFIX + msg);
 };
 
@@ -1390,7 +1383,7 @@ var textCollection = function(collection, legalContainers, container, cb) {
  * @method delay
  * @param  {Number} milliseconds  The delay time in milliseconds.
  */
-pub.delay = function (milliseconds) {
+delay = function (milliseconds) {
   $.sleep(milliseconds);
 };
 
@@ -1409,7 +1402,7 @@ pub.delay = function (milliseconds) {
  * });
  * @return {Stories} A collection of Story objects.
  */
-pub.stories = function(doc, cb) {
+stories = function(doc, cb) {
 
   checkNull(doc);
 
@@ -1432,7 +1425,7 @@ pub.stories = function(doc, cb) {
  * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount.
  * @return {Paragraphs} A collection of Paragraph objects.
  */
-pub.paragraphs = function(container, cb) {
+paragraphs = function(container, cb) {
 
   var legalContainers = "Document, Story, Page or TextFrame.";
   return textCollection("paragraphs", legalContainers, container, cb);
@@ -1449,7 +1442,7 @@ pub.paragraphs = function(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount.
  * @return {Lines} A collection of Line objects.
  */
-pub.lines = function(container, cb) {
+lines = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
   return textCollection("lines", legalContainers, container, cb);
@@ -1466,7 +1459,7 @@ pub.lines = function(container, cb) {
  * @param  {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount.
  * @return {Words} A collection of Word objects.
  */
-pub.words = function(container, cb) {
+words = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
   return textCollection("words", legalContainers, container, cb);
@@ -1483,7 +1476,7 @@ pub.words = function(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
  * @return {Characters} A collection of Character objects.
  */
-pub.characters = function(container, cb) {
+characters = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
   return textCollection("characters", legalContainers, container, cb);
@@ -1501,7 +1494,7 @@ pub.characters = function(container, cb) {
  * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {PageItems} A collection of PageItem objects.
  */
-pub.items = function(container, cb) {
+items = function(container, cb) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -1526,7 +1519,7 @@ pub.items = function(container, cb) {
  * @method clear
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in.
  */
-pub.clear = function(container) {
+clear = function(container) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -1552,7 +1545,7 @@ pub.clear = function(container) {
  * @method remove
  * @param  {PageItem} obj The object to be removed.
  */
-pub.remove = function(obj) {
+remove = function(obj) {
 
   if(obj.hasOwnProperty("remove")) {
     obj.remove();
@@ -1575,7 +1568,7 @@ pub.remove = function(obj) {
  * @param  {Document} [doc] The document to set the current document to.
  * @return {Document} The current document instance.
  */
-pub.doc = function(doc) {
+doc = function(doc) {
   if (doc instanceof Document) {
     setCurrDoc(doc);
   }
@@ -1607,7 +1600,7 @@ pub.doc = function(doc) {
  * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
  * b.size("A4", b.LANDSCAPE);
  */
-pub.size = function(widthOrPageSize, heightOrOrientation) {
+size = function(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
     warning("b.size()", "You have no open document.");
@@ -1616,7 +1609,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
   if (arguments.length === 0) {
     // no arguments given
     // return the current values
-    return {width: pub.width, height: pub.height};
+    return {width: width, height: height};
   }
 
   var doc = currentDoc();
@@ -1628,12 +1621,12 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     } catch (e) {
       error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
-    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
+    if(heightOrOrientation === PORTRAIT || heightOrOrientation === LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
-    pub.height = doc.documentPreferences.pageHeight;
-    pub.width = doc.documentPreferences.pageWidth;
-    return {width: pub.width, height: pub.height};
+    height = doc.documentPreferences.pageHeight;
+    width = doc.documentPreferences.pageWidth;
+    return {width: width, height: height};
   } else if(arguments.length === 1) {
     // only one argument set the first to the secound
     heightOrOrientation = widthOrPageSize;
@@ -1646,10 +1639,10 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     }
   };
   // set height and width
-  pub.height = heightOrOrientation;
-  pub.width = widthOrPageSize;
+  height = heightOrOrientation;
+  width = widthOrPageSize;
 
-  return {width: pub.width, height: pub.height};
+  return {width: width, height: height};
 
 };
 
@@ -1661,7 +1654,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
  * @param  {File} [file] The InDesign file instance to save the document to.
  */
-pub.close = function(saveOptions, file) {
+close = function(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
     if(typeof saveOptions === "boolean" && saveOptions === false) {
@@ -1682,7 +1675,7 @@ pub.close = function(saveOptions, file) {
  * @method revert
  * @return {Document} The reverted document.
  */
-pub.revert = function() {
+revert = function() {
 
   if(currDoc.saved && currDoc.modified) {
     var currFile = currDoc.fullName;
@@ -1708,11 +1701,11 @@ pub.revert = function() {
  * @param  {String} mode The canvas mode to set.
  * @return {String} The current canvas mode.
  */
-pub.canvasMode = function (m) {
+canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
+    if ((m === FACING_PAGES || m === FACING_MARGINS || m === FACING_BLEEDS) && !doc().documentPreferences.facingPages) {
       error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
@@ -1734,7 +1727,7 @@ pub.canvasMode = function (m) {
  * @param  {Number} v The desired vertical pasteboard margin.
  * @return {Array} The current horizontal, vertical pasteboard margins.
  */
-pub.pasteboard = function (h, v) {
+pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
@@ -1756,7 +1749,7 @@ pub.pasteboard = function (h, v) {
  * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
  * @return {Page} The current page instance.
  */
-pub.page = function(page) {
+page = function(page) {
   if (page instanceof Page) {
     currPage = page;
   } else if (typeof page !== "undefined" && page.hasOwnProperty("parentPage")) {
@@ -1793,12 +1786,12 @@ pub.page = function(page) {
  * @param  {String} [location] The location placement mode.
  * @return {Page} The new page.
  */
-pub.addPage = function(location) {
+addPage = function(location) {
 
   checkNull(location);
 
   if(arguments.length === 0) {
-    location = pub.AT_END;
+    location = AT_END;
   } // default
 
   var nP;
@@ -1806,20 +1799,20 @@ pub.addPage = function(location) {
 
     switch (location) {
 
-      case pub.AT_END:
+      case AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
-      case pub.AT_BEGINNING:
+      case AT_BEGINNING:
         nP = currentDoc().pages.add(location);
         break;
 
-      case pub.AFTER:
-        nP = currentDoc().pages.add(location, pub.page());
+      case AFTER:
+        nP = currentDoc().pages.add(location, page());
         break;
 
-      case pub.BEFORE:
-        nP = currentDoc().pages.add(location, pub.page());
+      case BEFORE:
+        nP = currentDoc().pages.add(location, page());
         break;
 
       default:
@@ -1827,7 +1820,7 @@ pub.addPage = function(location) {
         break;
     }
 
-    pub.page(nP);
+    page(nP);
     return nP;
 
   } catch (e) {
@@ -1844,10 +1837,10 @@ pub.addPage = function(location) {
  * @method removePage
  * @param  {Page|Number} [page] The page to be removed as Page object or page number.
  */
-pub.removePage = function (page) {
+removePage = function (page) {
   checkNull(page);
   if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
-    var p = pub.page(page);
+    var p = page(page);
     p.remove();
     currPage = null; // reset!
     currentPage();
@@ -1865,7 +1858,7 @@ pub.removePage = function (page) {
  * @param  {Page} [pageObj] The page you want to know the number of.
  * @return {Number} The page number within the document.
  */
-pub.pageNumber = function (pageObj) {
+pageNumber = function (pageObj) {
   checkNull(pageObj);
   if (typeof pageObj === "number") {
     error("b.pageNumber(), cannot be called with a Number argument.");
@@ -1873,7 +1866,7 @@ pub.pageNumber = function (pageObj) {
   if (pageObj instanceof Page) {
     return parseInt(pageObj.name); // current number of given page
   }
-  return parseInt(pub.page().name); // number of current page
+  return parseInt(page().name); // number of current page
 };
 
 /**
@@ -1884,9 +1877,9 @@ pub.pageNumber = function (pageObj) {
  * @method nextPage
  * @return {Page} The active page.
  */
-pub.nextPage = function () {
-  var p = pub.doc().pages.nextItem(currentPage());
-  return pub.page(p);
+nextPage = function () {
+  var p = doc().pages.nextItem(currentPage());
+  return page(p);
 };
 
 
@@ -1898,9 +1891,9 @@ pub.nextPage = function () {
  * @method previousPage
  * @return {Page} The active page.
  */
-pub.previousPage = function () {
-  var p = pub.doc().pages.previousItem(currentPage());
-  return pub.page(p);
+previousPage = function () {
+  var p = doc().pages.previousItem(currentPage());
+  return page(p);
 };
 
 
@@ -1916,9 +1909,9 @@ pub.previousPage = function () {
  * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pub.pageCount = function(pageCount) {
+pageCount = function(pageCount) {
   if(arguments.length) {
-    if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
+    if(isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
     } else {
       error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
@@ -1936,7 +1929,7 @@ pub.pageCount = function(pageCount) {
  * @method storyCount
  * @return {Number} count The amount of stories.
  */
-pub.storyCount = function() {
+storyCount = function() {
   return currentDoc().stories.count();
 };
 
@@ -1950,7 +1943,7 @@ pub.storyCount = function() {
  * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  */
-pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+addToStory = function(story, itemOrString, insertionPointorMode) {
 
   checkNull(story);
   checkNull(itemOrString);
@@ -1969,13 +1962,13 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
-  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+  addToStory = function(story, itemOrString, insertionPointorMode) {
     if (story instanceof Story && arguments.length >= 2) {
       // add string
       if (isString(itemOrString)) {
         if (insertionPointorMode instanceof InsertionPoint) {
           insertionPointorMode.contents = itemOrString;
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+        } else if (insertionPointorMode === AT_BEGINNING) {
           story.insertionPoints.firstItem().contents = itemOrString;
         } else {
           story.insertionPoints.lastItem().contents = itemOrString;
@@ -1989,7 +1982,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
         var insertionPoint = null;
         if (insertionPointorMode instanceof InsertionPoint) {
           insertionPoint = insertionPointorMode;
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+        } else if (insertionPointorMode === AT_BEGINNING) {
           insertionPoint = story.insertionPoints.firstItem();
         } else {
           insertionPoint = story.insertionPoints.lastItem();
@@ -2015,7 +2008,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
  * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
  * @return {Layer} The current layer instance.
  */
-pub.layer = function(layer) {
+layer = function(layer) {
   checkNull(layer);
   if (layer instanceof Layer) {
     currLayer = layer;
@@ -2046,35 +2039,35 @@ pub.layer = function(layer) {
  * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
  * @return {PageItem|Layer} The newly arranged page item or layer.
  */
-pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
+arrange = function(pItemOrLayer, positionOrDirection, reference) {
   checkNull(pItemOrLayer);
 
   if(pItemOrLayer.hasOwnProperty("parentPage")) {
-    if(positionOrDirection === pub.BACKWARD) {
+    if(positionOrDirection === BACKWARD) {
       pItemOrLayer.sendBackward();
-    } else if (positionOrDirection === pub.FORWARD) {
+    } else if (positionOrDirection === FORWARD) {
       pItemOrLayer.bringForward();
-    } else if (positionOrDirection === pub.BACK) {
+    } else if (positionOrDirection === BACK) {
       pItemOrLayer.sendToBack(reference);
-    } else if (positionOrDirection === pub.FRONT) {
+    } else if (positionOrDirection === FRONT) {
       pItemOrLayer.bringToFront(reference);
     } else {
       error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
     }
   } else if (pItemOrLayer instanceof Layer) {
-    if(positionOrDirection === pub.BACKWARD) {
+    if(positionOrDirection === BACKWARD) {
       if(pItemOrLayer.index === currentDoc().layers.length - 1) return;
       pItemOrLayer.move(LocationOptions.AFTER, currentDoc().layers[pItemOrLayer.index + 1]);
-    } else if (positionOrDirection === pub.FORWARD) {
+    } else if (positionOrDirection === FORWARD) {
       if(pItemOrLayer.index === 0) return;
       pItemOrLayer.move(LocationOptions.BEFORE, currentDoc().layers[pItemOrLayer.index - 1]);
-    } else if (positionOrDirection === pub.BACK) {
+    } else if (positionOrDirection === BACK) {
       if(!(reference instanceof Layer)) {
         pItemOrLayer.move(LocationOptions.AT_END);
       } else {
         pItemOrLayer.move(LocationOptions.AFTER, reference);
       }
-    } else if (positionOrDirection === pub.FRONT) {
+    } else if (positionOrDirection === FRONT) {
       if(!(reference instanceof Layer)) {
         pItemOrLayer.move(LocationOptions.AT_BEGINNING);
       } else {
@@ -2103,7 +2096,7 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
  *  @param {String} [name] The name of the group, only when creating a group from page items.
  *  @return {Group} The group instance.
  */
-pub.group = function (pItems, name) {
+group = function (pItems, name) {
   checkNull(pItems);
   var group;
   if(pItems instanceof Array) {
@@ -2139,11 +2132,11 @@ pub.group = function (pItems, name) {
  *  @param {Group|String} group The group instance or name of the group to ungroup.
  *  @return {Array} An array of the ungrouped page items.
  */
-pub.ungroup = function(group) {
+ungroup = function(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
-    ungroupedItems = pub.items(group);
+    ungroupedItems = items(group);
     group.ungroup();
   } else if(typeof group === "string") {
     // get the Group of the given name
@@ -2151,7 +2144,7 @@ pub.ungroup = function(group) {
     if (!group.isValid) {
       error("b.ungroup(), a group with the provided name doesn't exist.");
     }
-    ungroupedItems = pub.items(group);
+    ungroupedItems = items(group);
     group.ungroup();
   } else {
     error("b.ungroup(), not a valid group. Please select a valid group.");
@@ -2170,7 +2163,7 @@ pub.ungroup = function(group) {
  * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
-pub.labels = function(label, cb) {
+labels = function(label, cb) {
   checkNull(label);
   var result = [];
   var doc = currentDoc();
@@ -2200,7 +2193,7 @@ pub.labels = function(label, cb) {
  * @param  {String} label The label identifier.
  * @return {PageItem} The first PageItem with the given label.
  */
-pub.label = function(label) {
+label = function(label) {
   checkNull(label);
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
@@ -2221,7 +2214,7 @@ pub.label = function(label) {
  * @method selection
  * @return {Object} The first selected object.
  */
-pub.selection = function() {
+selection = function() {
   if(app.selection.length === 0) {
     error("b.selection(), selection is empty. Please select something.");
   }
@@ -2237,7 +2230,7 @@ pub.selection = function() {
  * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of selected object(s).
  */
-pub.selections = function(cb) {
+selections = function(cb) {
   if(app.selection.length === 0) {
     error("b.selections(), selection is empty. Please select something.");
   }
@@ -2255,7 +2248,7 @@ pub.selections = function(cb) {
  * @method nameOnPage
  * @return {Object} The first object on the active page with the given name.
  */
-pub.nameOnPage = function(name) {
+nameOnPage = function(name) {
   checkNull(name);
   var result = null;
   var page = currentPage();
@@ -2267,7 +2260,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pageNumber());
   }
   return result;
 };
@@ -2282,27 +2275,27 @@ pub.nameOnPage = function(name) {
  * @return {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
-pub.units = function (units) {
+units = function (units) {
   checkNull(units);
   if (arguments.length === 0) {
     return currUnits;
   }
 
-  if (units === pub.CM ||
-      units === pub.MM ||
-      units === pub.PT ||
-      units === pub.PX ||
-      units === pub.IN) {
+  if (units === CM ||
+      units === MM ||
+      units === PT ||
+      units === PX ||
+      units === IN) {
     var unitType = null;
-    if (units === pub.CM) {
+    if (units === CM) {
       unitType = MeasurementUnits.centimeters;
-    } else if (units === pub.MM) {
+    } else if (units === MM) {
       unitType = MeasurementUnits.millimeters;
-    } else if (units === pub.PT) {
+    } else if (units === PT) {
       unitType = MeasurementUnits.points;
-    } else if (units === pub.PX) {
+    } else if (units === PX) {
       unitType = MeasurementUnits.pixels;
-    } else if (units === pub.IN) {
+    } else if (units === IN) {
       unitType = MeasurementUnits.inches;
     }
     var doc = currentDoc();
@@ -2331,7 +2324,7 @@ pub.units = function (units) {
  * @param  {Number} x Position of the new guide line.
  * @return {Guide} New guide line.
  */
-pub.guideX = function (x) {
+guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -2350,7 +2343,7 @@ pub.guideX = function (x) {
  * @param  {Number} y Position of the new guide line.
  * @return {Guide} New guide line.
  */
-pub.guideY = function (y) {
+guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -2374,21 +2367,21 @@ pub.guideY = function (y) {
  * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
  * @return {Object} Current page margins with the properties: top, right, bottom, left.
  */
-pub.margins = function(top, right, bottom, left, pageNumber) {
+margins = function(top, right, bottom, left, pageNumber) {
   if (arguments.length === 0) {
-    return {top: pub.page(pageNumber).marginPreferences.top,
-      right: pub.page(pageNumber).marginPreferences.right,
-      bottom: pub.page(pageNumber).marginPreferences.bottom,
-      left: pub.page(pageNumber).marginPreferences.left
+    return {top: page(pageNumber).marginPreferences.top,
+      right: page(pageNumber).marginPreferences.right,
+      bottom: page(pageNumber).marginPreferences.bottom,
+      left: page(pageNumber).marginPreferences.left
     };
   } else if (arguments.length === 1) {
     right = bottom = left = top;
   }
   if(pageNumber !== undefined) {
-    pub.page(pageNumber).marginPreferences.top = top;
-    pub.page(pageNumber).marginPreferences.right = right;
-    pub.page(pageNumber).marginPreferences.bottom = bottom;
-    pub.page(pageNumber).marginPreferences.left = left;
+    page(pageNumber).marginPreferences.top = top;
+    page(pageNumber).marginPreferences.right = right;
+    page(pageNumber).marginPreferences.bottom = bottom;
+    page(pageNumber).marginPreferences.left = left;
   }else{
     currentPage().marginPreferences.top = top;
     currentPage().marginPreferences.right = right;
@@ -2410,7 +2403,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
  * @param {Number} [left] Left bleed.
  * @return {Object} Current document bleeds settings.
  */
-pub.bleeds = function(top, right, bottom, left) {
+bleeds = function(top, right, bottom, left) {
   if (arguments.length === 0) {
     return {top: currentDoc().documentPreferences.documentBleedTopOffset,
       right: currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
@@ -2458,7 +2451,7 @@ pub.bleeds = function(top, right, bottom, left) {
  * var myEllipse = b.ellipse(0, 0, 10, 10);
  * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
-pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
+inspect = function (obj, settings, level, branchArray, branchEnd) {
 
   var output, indent;
   output = indent = "";
@@ -2557,13 +2550,13 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
               value = ": Array (" + propValue.length + ")";
               if(propValue.length && level < settings.maxLevel - 1) {
                 // recursive inspecting of Array properties
-                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+                value += inspect(propValue, settings, level + 1, branchArray, !i);
               }
             } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
               value = ": " + propValue;
               if(level < settings.maxLevel - 1) {
                 // recursive inspecting of Object properties
-                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+                value += inspect(propValue, settings, level + 1, branchArray, !i);
               }
             } else {
               value = ": " + propValue.toString();
@@ -2638,7 +2631,7 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
  * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
  * b.savePDF(myExportFile);
  */
-pub.file = function(filePath) {
+file = function(filePath) {
   if(! isString(filePath)) {
     error("b.file(), wrong argument. Use a string that describes a file path.");
   }
@@ -2675,7 +2668,7 @@ pub.file = function(filePath) {
  * @example <caption>Get the data folder, if the document is already saved</caption>
  * var myDataFolder = b.folder();
  */
-pub.folder = function(folderPath) {
+folder = function(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
       return new Folder(projectFolder() + "/data/");
@@ -2724,16 +2717,16 @@ pub.folder = function(folderPath) {
  * var myDataFolder = b.folder();
  * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
  */
-pub.files = function(folder, settings, collectedFiles) {
+files = function(folder, settings, collectedFiles) {
   var topLevel;
   if (collectedFiles === undefined) {
     if(folder === undefined && currentDoc().saved) {
-      folder = pub.folder();
+      folder = folder();
     } else if (folder === undefined) {
       error("b.files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
     }
     if(isString(folder)) {
-      folder = pub.folder(folder);
+      folder = folder(folder);
     }
     if(!(folder instanceof Folder)) {
       error("b.files(), wrong first argument. Use folder or a string to describe a folder path.");
@@ -2765,7 +2758,7 @@ pub.files = function(folder, settings, collectedFiles) {
     for (var i = folderItems.length - 1; i >= 0; i--) {
       if (folderItems[i] instanceof Folder) {
         if(!settings.hidden && folderItems[i].displayName[0] === ".") continue;
-        collectedFiles = pub.files(folderItems[i], settings, collectedFiles);
+        collectedFiles = files(folderItems[i], settings, collectedFiles);
       }
     }
   }
@@ -2800,7 +2793,7 @@ pub.files = function(folder, settings, collectedFiles) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-pub.selectFile = function(settings) {
+selectFile = function(settings) {
   return createSelectionDialog(settings);
 };
 
@@ -2821,7 +2814,7 @@ pub.selectFile = function(settings) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-pub.selectFiles = function(settings) {
+selectFiles = function(settings) {
   if(!settings) {
     settings = {};
   }
@@ -2846,7 +2839,7 @@ pub.selectFiles = function(settings) {
  * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
  * b.selectFolder({folder: "~/Desktop/"});
  */
-pub.selectFolder = function(settings) {
+selectFolder = function(settings) {
   if(!settings) {
     settings = {};
   }
@@ -2867,7 +2860,7 @@ pub.selectFolder = function(settings) {
  * @method year
  * @return {Number} The current year.
  */
-pub.year = function() {
+year = function() {
   return (new Date()).getFullYear();
 };
 
@@ -2880,7 +2873,7 @@ pub.year = function() {
  * @method month
  * @return {Number} The current month number.
  */
-pub.month = function() {
+month = function() {
   return (new Date()).getMonth() + 1;
 };
 
@@ -2893,7 +2886,7 @@ pub.month = function() {
  * @method day
  * @return {Number} The current day number.
  */
-pub.day = function() {
+day = function() {
   return (new Date()).getDate();
 };
 
@@ -2906,7 +2899,7 @@ pub.day = function() {
  * @method weekday
  * @return {String} The current weekday name.
  */
-pub.weekday = function() {
+weekday = function() {
   var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   return weekdays[(new Date()).getDay()];
 };
@@ -2920,7 +2913,7 @@ pub.weekday = function() {
  * @method hour
  * @return {Number} The current hour.
  */
-pub.hour = function() {
+hour = function() {
   return (new Date()).getHours();
 };
 
@@ -2933,7 +2926,7 @@ pub.hour = function() {
  * @method minute
  * @return {Number} The current minute.
  */
-pub.minute = function() {
+minute = function() {
   return (new Date()).getMinutes();
 };
 
@@ -2946,7 +2939,7 @@ pub.minute = function() {
  * @method second
  * @return {Number} The current second.
  */
-pub.second = function() {
+second = function() {
   return (new Date()).getSeconds();
 };
 
@@ -2959,7 +2952,7 @@ pub.second = function() {
  * @method millis
  * @return {Number} The current milli.
  */
-pub.millis = function() {
+millis = function() {
   return Date.now() - startTime;
 };
 
@@ -2972,7 +2965,7 @@ pub.millis = function() {
  * @method millisecond
  * @return {Number} The current millisecond.
  */
-pub.millisecond = function() {
+millisecond = function() {
   return (new Date()).getMilliseconds();
 };
 
@@ -2985,15 +2978,15 @@ pub.millisecond = function() {
  * @method timestamp
  * @return {String} The current time in YYYYMMDD_HHMMSS.
  */
-pub.timestamp = function() {
+timestamp = function() {
   var dt = new Date();
   var dtf = dt.getFullYear();
-  dtf += pub.nf(dt.getMonth() + 1, 2);
-  dtf += pub.nf(dt.getDate(), 2);
+  dtf += nf(dt.getMonth() + 1, 2);
+  dtf += nf(dt.getDate(), 2);
   dtf += "_";
-  dtf += pub.nf(dt.getHours(), 2);
-  dtf += pub.nf(dt.getMinutes(), 2);
-  dtf += pub.nf(dt.getSeconds(), 2);
+  dtf += nf(dt.getHours(), 2);
+  dtf += nf(dt.getMinutes(), 2);
+  dtf += nf(dt.getSeconds(), 2);
   return dtf;
 };
 
@@ -3001,7 +2994,7 @@ pub.timestamp = function() {
 // src/includes/data.js
 // ----------------------------------------
 
-pub.JSON = {
+JSON = {
   /**
    * Function parses and validates a string as JSON-object. Usage:
    * var obj = b.JSON.decode(str);
@@ -3058,7 +3051,7 @@ pub.JSON = {
         v = obj[n];
         t = typeof (v);
         if (obj.hasOwnProperty(n)) {
-          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
+          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = JSON.encode(v);
           json.push((arr ? "" : "\"" + n + "\":") + String(v));
         }
       }
@@ -3069,7 +3062,7 @@ pub.JSON = {
 
 // Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock won't mind.
 // https://github.com/mbostock/d3/tree/master/src/dsv
-pub.CSV = new CSV();
+CSV = new CSV();
 function CSV() {
   var reParse = null,
     reFormat = null,
@@ -3245,7 +3238,7 @@ function CSV() {
  * @return {String} A formatted string
  */
  // From: http://processingjs.org/reference/binary_/
-pub.binary = function(num, numBits) {
+binary = function(num, numBits) {
   var bit;
   if (numBits > 0) bit = numBits;
   else if (num instanceof Char) {
@@ -3272,7 +3265,7 @@ pub.binary = function(num, numBits) {
  * @return {Number} The integer representation
  */
  // From: http://processingjs.org/reference/unbinary_/
-pub.unbinary = function(binaryString) {
+unbinary = function(binaryString) {
   var i = binaryString.length - 1,
     mask = 1,
     result = 0;
@@ -3305,7 +3298,7 @@ var decimalToHex = function(d, padding) {
  * @param {Number} [len] The length of the hex number to be created, default: 8
  * @return {String} The hex representation as a string
  */
-pub.hex = function(value, len) {
+hex = function(value, len) {
   if (arguments.length === 1) len = 8;
   return decimalToHex(value, len);
 };
@@ -3325,7 +3318,7 @@ var unhexScalar = function(hex) {
  * @param {String} hex The hex representation
  * @return {Number} The number
  */
-pub.unhex = function(hex) {
+unhex = function(hex) {
   if (hex instanceof Array) {
     var arr = [];
     for (var i = 0; i < hex.length; i++) arr.push(unhexScalar(hex[i]));
@@ -3349,7 +3342,7 @@ pub.unhex = function(hex) {
  * @return {String} The trimmed string
  */
  // from: https://stackoverflow.com/a/25575009/3399765
-pub.trimWord = function(s) {
+trimWord = function(s) {
   s = s.replace(/\s*/g, "")
        .replace(/\n*/g, "")
        .replace(/(^[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*)|([\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*$)/gi, "");
@@ -3370,7 +3363,7 @@ pub.trimWord = function(s) {
  * @return {String} The joined string
  */
  // http://processingjs.org/reference/join_/
-pub.join = function(array, separator) {
+join = function(array, separator) {
   return array.join(separator);
 };
 
@@ -3396,7 +3389,7 @@ pub.join = function(array, separator) {
  * @return {Array} Array of strings
  */
  // http://processingjs.org/reference/split_/
-pub.split = function(str, delim) {
+split = function(str, delim) {
   return str.split(delim);
 };
 
@@ -3419,7 +3412,7 @@ pub.split = function(str, delim) {
  * @return {Array} Array of strings
  */
  // From: http://processingjs.org/reference/splitTokens_/
-pub.splitTokens = function(str, tokens) {
+splitTokens = function(str, tokens) {
   if (arguments.length === 1) tokens = "\n\t\r\u000c ";
   tokens = "[" + tokens + "]";
   var ary = [];
@@ -3440,12 +3433,12 @@ pub.splitTokens = function(str, tokens) {
 };
 
 
-pub.match = function(str, regexp) {
+match = function(str, regexp) {
   return str.match(regexp);
 };
 
 
-pub.matchAll = function(aString, aRegExp) {
+matchAll = function(aString, aRegExp) {
   var results = [],
     latest;
   var regexp = new RegExp(aRegExp, "g");
@@ -3521,7 +3514,7 @@ function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nf_/
-pub.nf = function(value, leftDigits, rightDigits) {
+nf = function(value, leftDigits, rightDigits) {
   return nfCore(value, "", "-", leftDigits, rightDigits);
 };
 
@@ -3542,7 +3535,7 @@ pub.nf = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfs_/
-pub.nfs = function(value, leftDigits, rightDigits) {
+nfs = function(value, leftDigits, rightDigits) {
   return nfCore(value, " ", "-", leftDigits, rightDigits);
 };
 
@@ -3562,7 +3555,7 @@ pub.nfs = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfp_/
-pub.nfp = function(value, leftDigits, rightDigits) {
+nfp = function(value, leftDigits, rightDigits) {
   return nfCore(value, "+", "-", leftDigits, rightDigits);
 };
 
@@ -3581,7 +3574,7 @@ pub.nfp = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfc_/
-pub.nfc = function(value, leftDigits, rightDigits) {
+nfc = function(value, leftDigits, rightDigits) {
   return nfCore(value, "", "-", leftDigits, rightDigits, ",");
 };
 
@@ -3598,7 +3591,7 @@ pub.nfc = function(value, leftDigits, rightDigits) {
  * @return {String|Array} Returns the input in a trimmed way
  */
  // From: http://processingjs.org/reference/trim_/
-pub.trim = function(str) {
+trim = function(str) {
   if (str instanceof Array) {
     var arr = [];
     for (var i = 0; i < str.length; i++) arr.push(str[i].replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, ""));
@@ -3616,7 +3609,7 @@ pub.trim = function(str) {
  * @param {String} url An url string to be checked
  * @return {Boolean} Returns either true or false
  */
-var isURL = pub.isURL = function(url) {
+var isURL = isURL = function(url) {
   var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
   return pattern.test(url);
 };
@@ -3631,7 +3624,7 @@ var isURL = pub.isURL = function(url) {
  * @param {String} suffix The string to look for
  * @return {Boolean} Returns either true or false
  */
-var endsWith = pub.endsWith = function(str, suffix) {
+var endsWith = endsWith = function(str, suffix) {
   if(!isString(str) || !isString(suffix)) {
     error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
   }
@@ -3648,7 +3641,7 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @param {String} prefix The string to look for
  * @return {Boolean} Returns either true or false
  */
-var startsWith = pub.startsWith = function(str, prefix) {
+var startsWith = startsWith = function(str, prefix) {
   if(!isString(str) || !isString(prefix)) {
     error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
   }
@@ -3665,7 +3658,7 @@ var startsWith = pub.startsWith = function(str, prefix) {
  * @param  {Object|String|Number|Boolean} obj The object to check
  * @return {Boolean} returns true if this is the case
  */
-var isArray = pub.isArray = function(obj) {
+var isArray = isArray = function(obj) {
   return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
@@ -3678,7 +3671,7 @@ var isArray = pub.isArray = function(obj) {
  * @param  {Object|String|Number|Boolean}  num The number to check
  * @return {Boolean} returns true if this is the case
  */
-var isNumber = pub.isNumber = function(num) {
+var isNumber = isNumber = function(num) {
   if (num === null) {
     return false;
   }
@@ -3698,7 +3691,7 @@ var isNumber = pub.isNumber = function(num) {
  * @param  {Object|String|Number|Boolean}  num The number to check.
  * @return {Boolean} Returns true if the given argument is an integer.
  */
-var isInteger = pub.isInteger = function(num) {
+var isInteger = isInteger = function(num) {
   return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
@@ -3711,7 +3704,7 @@ var isInteger = pub.isInteger = function(num) {
  * @param  {Object|String|Number|Boolean} str The string to check
  * @return {Boolean} returns true if this is the case
  */
-var isString = pub.isString = function(str) {
+var isString = isString = function(str) {
   return Object.prototype.toString.call(str) === "[object String]";
 };
 
@@ -3726,7 +3719,7 @@ var isString = pub.isString = function(str) {
  * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
  * @return {Boolean} returns true if this is the case
  */
-var isText = pub.isText = function(obj) {
+var isText = isText = function(obj) {
 
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
@@ -3850,7 +3843,7 @@ var initExportFile = function(file) {
  * @method projectFolder
  * @return {Folder} The folder of the the active document
  */
-var projectFolder = pub.projectFolder = function() {
+var projectFolder = projectFolder = function() {
   if(!currentDoc().saved) {
     error("The current document must be saved before its project directory can be accessed.");
   }
@@ -3869,7 +3862,7 @@ var projectFolder = pub.projectFolder = function() {
  * @param  {String} cmd The shell command to execute
  * @return {String}
  */
-pub.shellExecute = function(cmd) {
+shellExecute = function(cmd) {
   if (Folder.fs === "Macintosh") {
     try {
       return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
@@ -3891,7 +3884,7 @@ pub.shellExecute = function(cmd) {
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {String}  String file or URL content.
  */
-pub.loadString = function(file) {
+loadString = function(file) {
   if (isURL(file)) {
     return getURL(file);
   } else {
@@ -3907,7 +3900,7 @@ pub.loadString = function(file) {
 var getURL = function(url) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
-      return pub.shellExecute("curl -m 15 -L '" + url + "'");
+      return shellExecute("curl -m 15 -L '" + url + "'");
     } else {
       error("b." + getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
@@ -3926,7 +3919,7 @@ var getURL = function(url) {
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {Array}  Array of the individual lines in the given File or URL
  */
-pub.loadStrings = function(file) {
+loadStrings = function(file) {
   if (isURL(file)) {
     var result = getURL(file);
     return result.match(/[^\r\n]+/g);
@@ -3953,7 +3946,7 @@ pub.loadStrings = function(file) {
  * @method println
  * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-var println = pub.println = function() {
+var println = println = function() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
   $.writeln(msg);
   if (progressPanel)
@@ -3967,7 +3960,7 @@ var println = pub.println = function() {
  * @method print
  * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-pub.print = function() {
+print = function() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
   $.write(msg);
   if (progressPanel)
@@ -3980,15 +3973,15 @@ pub.print = function() {
  * @cat Output
  * @method printInfo
  */
-pub.printInfo = function() {
+printInfo = function() {
 
-  pub.println("###");
-  pub.println("OS: " + $.os);
-  pub.println("ExtendScript Build: " + $.build);
-  pub.println("ExtendScript Version:" + $.version);
-  pub.println("Engine: " + $.engineName);
-  pub.println("memCache: " + $.memCache + " bytes");
-  pub.println("###");
+  println("###");
+  println("OS: " + $.os);
+  println("ExtendScript Build: " + $.build);
+  println("ExtendScript Version:" + $.version);
+  println("Engine: " + $.engineName);
+  println("memCache: " + $.memCache + " bytes");
+  println("###");
 
 };
 
@@ -4002,7 +3995,7 @@ pub.printInfo = function() {
  * @param  {Array} strings The string array to be written
  * @return {File} The file the strings were written to.
  */
-pub.saveStrings = function(file, strings) {
+saveStrings = function(file, strings) {
   if(!isString(string)) {
     error("b.saveString(), invalid second argument. Use an array of strings.");
   }
@@ -4025,7 +4018,7 @@ pub.saveStrings = function(file, strings) {
  * @param  {String} string The string to be written.
  * @return {File} The file the string was written to.
  */
-pub.saveString = function(file, string) {
+saveString = function(file, string) {
   if(!isString(string)) {
     error("b.saveString(), invalid second argument. Use a string.");
   }
@@ -4045,7 +4038,7 @@ pub.saveString = function(file, string) {
  * @param  {Boolean} [showOptions] Whether to show the export dialog.
  * @return {File} The exported PDF file.
  */
-pub.savePDF = function(file, showOptions) {
+savePDF = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
@@ -4066,7 +4059,7 @@ pub.savePDF = function(file, showOptions) {
  * @param {Boolean} [showOptions] Whether to show the export dialog
  * @return {File} The exported PNG file.
  */
-pub.savePNG = function(file, showOptions) {
+savePNG = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
@@ -4086,7 +4079,7 @@ pub.savePNG = function(file, showOptions) {
  * @param {String} url The download url
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
-pub.download = function(url, file) {
+download = function(url, file) {
   var projPath = projectFolder().fsName.replace(" ", "\\ ");
   // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
   // This is more portable then a fixed location
@@ -4168,7 +4161,7 @@ pub.download = function(url, file) {
     }
 
     println(cmd);
-    pub.shellExecute(cmd);
+    shellExecute(cmd);
 
   } else {
     error("The url " + url + " is not a valid one. Please double check!");
@@ -4194,25 +4187,25 @@ pub.download = function(url, file) {
  * @param {Number} h Height of the ellipse.
  * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
-pub.ellipse = function(x, y, w, h) {
+ellipse = function(x, y, w, h) {
   if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
-  if (currEllipseMode === pub.CORNER) {
+  if (currEllipseMode === CORNER) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
     ellipseBounds[2] = y + h;
     ellipseBounds[3] = x + w;
-  } else if (currEllipseMode === pub.CORNERS) {
+  } else if (currEllipseMode === CORNERS) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
     ellipseBounds[2] = h;
     ellipseBounds[3] = w;
-  } else if (currEllipseMode === pub.CENTER) {
+  } else if (currEllipseMode === CENTER) {
     ellipseBounds[0] = y - (h / 2);
     ellipseBounds[1] = x - (w / 2);
     ellipseBounds[2] = y + (h / 2);
     ellipseBounds[3] = x + (w / 2);
-  } else if (currEllipseMode === pub.RADIUS) {
+  } else if (currEllipseMode === RADIUS) {
     ellipseBounds[0] = y - h;
     ellipseBounds[1] = x - w;
     ellipseBounds[2] = y + h;
@@ -4232,7 +4225,7 @@ pub.ellipse = function(x, y, w, h) {
   newOval.strokeColor = currStrokeColor;
   newOval.geometricBounds = ellipseBounds;
 
-  if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
+  if (currEllipseMode === CENTER || currEllipseMode === RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -4261,7 +4254,7 @@ pub.ellipse = function(x, y, w, h) {
  *  var vec2 = new b.Vector( x2, y2 );
  *  b.line( vec1, vec2 );
  */
-pub.line = function(x1, y1, x2, y2) {
+line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
     error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   }
@@ -4291,7 +4284,7 @@ pub.line = function(x1, y1, x2, y2) {
  * @method beginShape
  * @param {String} shapeMode Set to b.CLOSE if the new Path should be auto-closed.
  */
-pub.beginShape = function(shapeMode) {
+beginShape = function(shapeMode) {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
@@ -4321,7 +4314,7 @@ pub.beginShape = function(shapeMode) {
  * @param  {Number} [xRightHandle] X-coordinate of the right-direction point.
  * @param  {Number} [yRightHandle] Y-coordinate of the right-direction point.
  */
-pub.vertex = function() {
+vertex = function() {
   if (isArray(currVertexPoints)) {
     if (arguments.length === 2) {
       currVertexPoints.push([arguments[0], arguments[1]]);
@@ -4358,52 +4351,52 @@ pub.vertex = function() {
  * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
  */
-pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
+arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
     return false;
   }
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
-  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
-  startAngle %= pub.TWO_PI + o;
-  endAngle %= pub.TWO_PI + o;
+  var o = radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  startAngle %= TWO_PI + o;
+  endAngle %= TWO_PI + o;
   w /= 2;
   h /= 2;
 
-  if (currEllipseMode === pub.CORNER) {
+  if (currEllipseMode === CORNER) {
     cx = (cx - w);
     cy = (cy + h);
   }
-  else if (currEllipseMode === pub.CORNERS) {
+  else if (currEllipseMode === CORNERS) {
     // cx = (cx-w);
     // cy = (cy-h);
     // w -= cx;
     // h -= cy;
   }
-  else if (currEllipseMode === pub.RADIUS) {
+  else if (currEllipseMode === RADIUS) {
     w *= 2;
     h *= 2;
   }
 
-  var delta = pub.abs(endAngle - startAngle);
+  var delta = abs(endAngle - startAngle);
   var direction = (startAngle < endAngle) ? 1 : -1;
   var thetaStart = startAngle;
 
-  if(mode == pub.CHORD) {
-    pub.beginShape(pub.CLOSE);
+  if(mode == CHORD) {
+    beginShape(CLOSE);
   }
-  else if(mode == pub.PIE) {
-    pub.beginShape(pub.CLOSE);
-    pub.vertex(cx, cy);
+  else if(mode == PIE) {
+    beginShape(CLOSE);
+    vertex(cx, cy);
   }
   else {
-    pub.beginShape();
+    beginShape();
   }
-  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON;) {
-    var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
+  for (var theta = min(TWO_PI, delta); theta > EPSILON;) {
+    var thetaEnd = thetaStart + direction * min(theta, HALF_PI);
     var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
 
-    pub.vertex(
+    vertex(
       cx + points.startx,
       cy + points.starty,
       cx + points.startx,
@@ -4411,7 +4404,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
       cx + points.handle1x,
       cy + points.handle1y
     );
-    pub.vertex(
+    vertex(
       cx + points.endx,
       cy + points.endy,
       cx + points.handle2x,
@@ -4420,10 +4413,10 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
       cy + points.endy
     );
 
-    theta -= pub.abs(thetaEnd - thetaStart);
+    theta -= abs(thetaEnd - thetaStart);
     thetaStart = thetaEnd;
   }
-  return pub.endShape();
+  return endShape();
 };
 
 /*
@@ -4443,8 +4436,8 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var theta = (endAngle - startAngle);
 
-  var x0 = pub.cos(theta / 2.0);
-  var y0 = pub.sin(theta / 2.0);
+  var x0 = cos(theta / 2.0);
+  var y0 = sin(theta / 2.0);
   var x3 = x0;
   var y3 = 0 - y0;
   var x1 = (4.0 - x0) / 3.0;
@@ -4453,8 +4446,8 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var y2 = 0 - y1;
 
   var bezAng = startAngle + theta / 2.0;
-  var cBezAng = pub.cos(bezAng);
-  var sBezAng = pub.sin(bezAng);
+  var cBezAng = cos(bezAng);
+  var sBezAng = sin(bezAng);
 
   return {
     startx:   w * (cBezAng * x0 - sBezAng * y0),
@@ -4479,7 +4472,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
  * @subcat Primitives
  * @method addPath
  */
-pub.addPath = function() {
+addPath = function() {
   doAddPath();
   currPathPointer++;
 };
@@ -4493,7 +4486,7 @@ pub.addPath = function() {
  * @method endShape
  * @return {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
-pub.endShape = function() {
+endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -4520,7 +4513,7 @@ function doAddPath() {
 }
 
 function addPolygon() {
-  if (currShapeMode === pub.CLOSE) {
+  if (currShapeMode === CLOSE) {
     currPolygon = currentPage().polygons.add(currentLayer());
   } else {
     currPolygon = currentPage().graphicLines.add(currentLayer());
@@ -4556,7 +4549,7 @@ function notCalledBeginShapeError () {
  * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
-pub.rect = function(x, y, w, h, tl, tr, br, bl) {
+rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
@@ -4564,22 +4557,22 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
-  if (currRectMode === pub.CORNER) {
+  if (currRectMode === CORNER) {
     rectBounds[0] = y;
     rectBounds[1] = x;
     rectBounds[2] = y + h;
     rectBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
+  } else if (currRectMode === CORNERS) {
     rectBounds[0] = y;
     rectBounds[1] = x;
     rectBounds[2] = h;
     rectBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
+  } else if (currRectMode === CENTER) {
     rectBounds[0] = y - (h / 2);
     rectBounds[1] = x - (w / 2);
     rectBounds[2] = y + (h / 2);
     rectBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
+  } else if (currRectMode === RADIUS) {
     rectBounds[0] = y - h;
     rectBounds[1] = x - w;
     rectBounds[2] = y + h;
@@ -4594,7 +4587,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   newRect.fillTint = currFillTint;
   newRect.strokeColor = currStrokeColor;
 
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+  if (currRectMode === CENTER || currRectMode === RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -4645,9 +4638,9 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
  * @param {String} mode The rectMode to switch to: either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS.
  *
  */
-pub.rectMode = function (mode) {
+rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
+  if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currRectMode = mode;
     return currRectMode;
   } else {
@@ -4670,9 +4663,9 @@ pub.rectMode = function (mode) {
  * @method ellipseMode
  * @param {String} mode The ellipse mode to switch to: either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS.
  */
-pub.ellipseMode = function (mode) {
+ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
+  if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
@@ -4688,7 +4681,7 @@ pub.ellipseMode = function (mode) {
  * @method strokeWeight
  * @param {Number} weight The width of the stroke in points.
  */
-pub.strokeWeight = function (weight) {
+strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
@@ -4707,7 +4700,7 @@ pub.strokeWeight = function (weight) {
  * @param {Object} [props] An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle} The object style instance.
  */
-pub.objectStyle = function(itemOrName, props) {
+objectStyle = function(itemOrName, props) {
   var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -4750,7 +4743,7 @@ pub.objectStyle = function(itemOrName, props) {
  * @return {PageItem} The page item that the style was applied to.
  */
 
-pub.applyObjectStyle = function(item, style) {
+applyObjectStyle = function(item, style) {
 
   if(isString(style)) {
     var name = style;
@@ -4778,14 +4771,14 @@ pub.applyObjectStyle = function(item, style) {
  * @param {PageItem|Page} item The page item or page to duplicate.
  * @returns {Object} The new page item or page.
  */
-pub.duplicate = function(item) {
+duplicate = function(item) {
 
   if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
     var newItem = item.duplicate(currentPage());
     newItem.move(currentLayer());
 
-    if (currRectMode === pub.CENTER) {
+    if (currRectMode === CENTER) {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -4799,7 +4792,7 @@ pub.duplicate = function(item) {
 
   } else if(item instanceof Page) {
 
-    var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
+    var newPage = item.duplicate(LocationOptions.AFTER, page());
     return newPage;
 
   } else {
@@ -4819,7 +4812,7 @@ pub.duplicate = function(item) {
  * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  * @param  {String} [name] If created with numbers, a custom swatch name can be given.
  */
-pub.fill = function (fillColor) {
+fill = function (fillColor) {
 
   checkNull(fillColor);
   if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
@@ -4827,18 +4820,18 @@ pub.fill = function (fillColor) {
   } else {
     if (arguments.length === 1) {
       if (typeof arguments[0] === "string") {
-        currFillColor = pub.swatch(arguments[0]);
+        currFillColor = swatch(arguments[0]);
       }else{
-        currFillColor = pub.color(arguments[0]);
+        currFillColor = color(arguments[0]);
       }
     } else if (arguments.length === 2) {
-      currFillColor = pub.color(arguments[0], arguments[1]);
+      currFillColor = color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
+      currFillColor = color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+      currFillColor = color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+      currFillColor = color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.fill(), wrong parameters. Use:\n"
         + "Swatch name or\n"
@@ -4857,7 +4850,7 @@ pub.fill = function (fillColor) {
  * @cat Color
  * @method noFill
  */
-pub.noFill = function () {
+noFill = function () {
   currFillColor = noneSwatchColor;
 };
 
@@ -4867,25 +4860,25 @@ pub.noFill = function () {
  * @method stroke
  * @param  {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  */
-pub.stroke = function (strokeColor) {
+stroke = function (strokeColor) {
   checkNull(strokeColor);
   if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
     currStrokeColor = strokeColor;
   } else {
     if (arguments.length === 1) {
       if (typeof arguments[0] === "string") {
-        currStrokeColor = pub.swatch(arguments[0]);
+        currStrokeColor = swatch(arguments[0]);
       }else{
-        currStrokeColor = pub.color(arguments[0]);
+        currStrokeColor = color(arguments[0]);
       }
     } else if (arguments.length === 2) {
-      currStrokeColor = pub.color(arguments[0], arguments[1]);
+      currStrokeColor = color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
+      currStrokeColor = color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+      currStrokeColor = color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+      currStrokeColor = color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.stroke(), wrong parameters. Use:\n"
         + "Swatch name or\n"
@@ -4904,7 +4897,7 @@ pub.stroke = function (strokeColor) {
  * @cat Color
  * @method noStroke
  */
-pub.noStroke = function () {
+noStroke = function () {
   currStrokeColor = noneSwatchColor;
 };
 
@@ -4915,7 +4908,7 @@ pub.noStroke = function () {
  * @method fillTint
  * @param  {Number} tint Number from 0 to 100
  */
-pub.fillTint = function (tint) {
+fillTint = function (tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
@@ -4931,7 +4924,7 @@ pub.fillTint = function (tint) {
  * @method strokeTint
  * @param  {Number} tint Number from 0 to 100.
  */
-pub.strokeTint = function (tint) {
+strokeTint = function (tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currStrokeTint = tint;
@@ -4947,12 +4940,12 @@ pub.strokeTint = function (tint) {
  * @method colorMode
  * @param  {Number} colorMode b.RGB or b.CMYK.
  */
-pub.colorMode = function(colorMode) {
+colorMode = function(colorMode) {
   checkNull(colorMode);
   if (arguments.length === 0) {
     return currColorMode;
   }
-  if (colorMode === pub.RGB || colorMode === pub.CMYK) {
+  if (colorMode === RGB || colorMode === CMYK) {
     currColorMode = colorMode;
   } else {
     error("b.colorMode(), unsupported colormode, use: b.RGB or b.CMYK");
@@ -4966,12 +4959,12 @@ pub.colorMode = function(colorMode) {
  * @method gradientMode
  * @param  {String} gradientMode b.LINEAR or b.RADIAL.
  */
-pub.gradientMode = function(gradientMode) {
+gradientMode = function(gradientMode) {
   checkNull(gradientMode);
   if (arguments.length === 0) {
     return currGradientMode;
   }
-  if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
+  if (gradientMode === LINEAR || gradientMode === RADIAL) {
     currGradientMode = gradientMode;
   } else {
     error("b.gradientMode(), unsupported gradient mode, use: b.LINEAR or b.RADIAL");
@@ -4985,7 +4978,7 @@ pub.gradientMode = function(gradientMode) {
  * @method swatch
  * @param {String} swatchName Returns the swatch color/gradient for a given name by string.
  */
-pub.swatch = function(){
+swatch = function(){
   var newSwatch;
   var props = {};
   if (arguments.length === 1) {
@@ -5011,7 +5004,7 @@ pub.swatch = function(){
  * @param  {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
  * @return {Color} Found or new color
  */
-pub.color = function() {
+color = function() {
   var newCol;
   var props = {};
   var a = arguments[0],
@@ -5037,14 +5030,14 @@ pub.color = function() {
       }
     } else if (typeof a === "number") {
       // GRAY
-      if (currColorMode === pub.RGB) {
-        a = pub.constrain(a, 0, 255);
+      if (currColorMode === RGB) {
+        a = constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
         props.colorValue = [a, a, a];
         props.name = "R=" + a + " G=" + a + " B=" + a;
       } else {
-        a = pub.constrain(a, 0, 100);
+        a = constrain(a, 0, 100);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
         props.colorValue = [0, 0, 0, a];
@@ -5056,14 +5049,14 @@ pub.color = function() {
 
   } else if (arguments.length === 2) {
     // GRAY + name
-    if (currColorMode === pub.RGB) {
-      a = pub.constrain(a, 0, 255);
+    if (currColorMode === RGB) {
+      a = constrain(a, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
       props.colorValue = [a, a, a];
       props.name = b;
     } else {
-      a = pub.constrain(a, 0, 100);
+      a = constrain(a, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [0, 0, 0, a];
@@ -5072,10 +5065,10 @@ pub.color = function() {
 
   } else if (arguments.length === 3) {
     // R G B
-    if (currColorMode === pub.RGB) {
-      a = pub.constrain(a, 0, 255);
-      b = pub.constrain(b, 0, 255);
-      c = pub.constrain(c, 0, 255);
+    if (currColorMode === RGB) {
+      a = constrain(a, 0, 255);
+      b = constrain(b, 0, 255);
+      c = constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
       props.colorValue = [a, b, c];
@@ -5087,10 +5080,10 @@ pub.color = function() {
 
   } else if (arguments.length === 4 && typeof d === "string") {
     // R G B + name
-    if (currColorMode === pub.RGB) {
-      a = pub.constrain(a, 0, 255);
-      b = pub.constrain(b, 0, 255);
-      c = pub.constrain(c, 0, 255);
+    if (currColorMode === RGB) {
+      a = constrain(a, 0, 255);
+      b = constrain(b, 0, 255);
+      c = constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
       props.colorValue = [a, b, c];
@@ -5101,11 +5094,11 @@ pub.color = function() {
 
   } else if (arguments.length === 4 && typeof d === "number") {
     // C M Y K
-    if (currColorMode === pub.CMYK) {
-      a = pub.constrain(a, 0, 100);
-      b = pub.constrain(b, 0, 100);
-      c = pub.constrain(c, 0, 100);
-      d = pub.constrain(d, 0, 100);
+    if (currColorMode === CMYK) {
+      a = constrain(a, 0, 100);
+      b = constrain(b, 0, 100);
+      c = constrain(c, 0, 100);
+      d = constrain(d, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [a, b, c, d];
@@ -5114,12 +5107,12 @@ pub.color = function() {
       error(colorErrorMsg);
     }
 
-  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === pub.CMYK) {
+  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === CMYK) {
     // C M Y K + name
-    a = pub.constrain(a, 0, 100);
-    b = pub.constrain(b, 0, 100);
-    c = pub.constrain(c, 0, 100);
-    d = pub.constrain(d, 0, 100);
+    a = constrain(a, 0, 100);
+    b = constrain(b, 0, 100);
+    c = constrain(c, 0, 100);
+    d = constrain(d, 0, 100);
     props.model = ColorModel.PROCESS;
     props.space = ColorSpace.CMYK;
     props.colorValue = [a, b, c, d];
@@ -5154,7 +5147,7 @@ pub.color = function() {
  * @param {String} [name] Optional name of the gradient.
  * @return {Gradient} Found or new gradient
  */
-pub.gradient = function() {
+gradient = function() {
   var newGrad;
   // var props = {};
   var a = arguments[0],
@@ -5190,7 +5183,7 @@ pub.gradient = function() {
     }
     newGrad.gradientStops[0].stopColor = a;
     newGrad.gradientStops[1].stopColor = b;
-    if(currGradientMode === pub.LINEAR) {
+    if(currGradientMode === LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
       newGrad.type = GradientType.RADIAL;
@@ -5239,12 +5232,12 @@ pub.gradient = function() {
         if(!(typeof b[i] === "number")) {
           error("b.gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
         }
-        newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
+        newGrad.gradientStops[i].location = constrain(b[i], 0, 100);
       } else {
-        newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
+        newGrad.gradientStops[i].location = map(i, 0, a.length - 1, 0, 100);
       }
     }
-    if(currGradientMode === pub.LINEAR) {
+    if(currGradientMode === LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
       newGrad.type = GradientType.RADIAL;
@@ -5263,7 +5256,7 @@ pub.gradient = function() {
  * @param  {Object} obj The object to set opacity of.
  * @param  {Number} opacity The opacity value from 0 to 100.
  */
-pub.opacity = function(obj, opacity) {
+opacity = function(obj, opacity) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
@@ -5296,7 +5289,7 @@ pub.opacity = function(obj, opacity) {
  *                           BlendMode.COLOR <br />
  *                           BlendMode.LUMINOSITY <br />
  */
-pub.blendMode = function(obj, blendMode) {
+blendMode = function(obj, blendMode) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
@@ -5317,7 +5310,7 @@ pub.blendMode = function(obj, blendMode) {
  * @param  {Number} amt The amount to interpolate between the two colors.
  * @return {Color} Interpolated color
  */
-pub.lerpColor = function (c1, c2, amt) {
+lerpColor = function (c1, c2, amt) {
   checkNull(c1);
   checkNull(c2);
   if ((c1 instanceof Color || c1 instanceof Swatch) &&
@@ -5334,11 +5327,11 @@ pub.lerpColor = function (c1, c2, amt) {
       var Y2 = c2.colorValue[2];
       var K2 = c2.colorValue[3];
 
-      var COut = Math.round(pub.lerp(C1, C2, amt));
-      var MOut = Math.round(pub.lerp(M1, M2, amt));
-      var YOut = Math.round(pub.lerp(Y1, Y2, amt));
-      var KOut = Math.round(pub.lerp(K1, K2, amt));
-      return pub.color(COut, MOut, YOut, KOut);
+      var COut = Math.round(lerp(C1, C2, amt));
+      var MOut = Math.round(lerp(M1, M2, amt));
+      var YOut = Math.round(lerp(Y1, Y2, amt));
+      var KOut = Math.round(lerp(K1, K2, amt));
+      return color(COut, MOut, YOut, KOut);
 
     } else if (c1.space === ColorSpace.RGB && c2.space === ColorSpace.RGB) {
       var R1 = c1.colorValue[0];
@@ -5349,10 +5342,10 @@ pub.lerpColor = function (c1, c2, amt) {
       var G2 = c2.colorValue[1];
       var B2 = c2.colorValue[2];
 
-      var ROut = Math.round(pub.lerp(R1, R2, amt));
-      var GOut = Math.round(pub.lerp(G1, G2, amt));
-      var BOut = Math.round(pub.lerp(B1, B2, amt));
-      return pub.color(ROut, GOut, BOut);
+      var ROut = Math.round(lerp(R1, R2, amt));
+      var GOut = Math.round(lerp(G1, G2, amt));
+      var BOut = Math.round(lerp(B1, B2, amt));
+      return color(ROut, GOut, BOut);
 
     } else {
       error("b.lerpColor(), both colors must be either CMYK or RGB.");
@@ -5384,7 +5377,7 @@ pub.lerpColor = function (c1, c2, amt) {
  * @param  {Number} h   height of text frame
  * @return {TextFrame}  The created text frame instance
  */
-pub.text = function(txt, x, y, w, h) {
+text = function(txt, x, y, w, h) {
   if (arguments.length !== 5) {
     error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
   }
@@ -5393,22 +5386,22 @@ pub.text = function(txt, x, y, w, h) {
   }
 
   var textBounds = [];
-  if (currRectMode === pub.CORNER) {
+  if (currRectMode === CORNER) {
     textBounds[0] = y;
     textBounds[1] = x;
     textBounds[2] = y + h;
     textBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
+  } else if (currRectMode === CORNERS) {
     textBounds[0] = y;
     textBounds[1] = x;
     textBounds[2] = h;
     textBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
+  } else if (currRectMode === CENTER) {
     textBounds[0] = y - (h / 2);
     textBounds[1] = x - (w / 2);
     textBounds[2] = y + (h / 2);
     textBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
+  } else if (currRectMode === RADIUS) {
     textBounds[0] = y - h;
     textBounds[1] = x - w;
     textBounds[2] = y + h;
@@ -5420,7 +5413,7 @@ pub.text = function(txt, x, y, w, h) {
   textFrame.geometricBounds = textBounds;
   textFrame.textFramePreferences.verticalJustification = currYAlign;
 
-  pub.typo(textFrame, {
+  typo(textFrame, {
     appliedFont: currFont,
     pointSize: currFontSize,
     fillColor: currFillColor,
@@ -5431,7 +5424,7 @@ pub.text = function(txt, x, y, w, h) {
   });
 
 
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+  if (currRectMode === CENTER || currRectMode === RADIUS) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -5461,7 +5454,7 @@ pub.text = function(txt, x, y, w, h) {
  * @return {String[]|Number[]|Object[]}  The property value(s) if the function acts as getter or the items the property
  *                                       was assigned to.
  */
-pub.typo = function(item, property, value) {
+typo = function(item, property, value) {
   var result = [],
     actsAsGetter = typeof property === "string" && (value === undef || value === null),
     getOrSetProperties = function(textItem) {
@@ -5498,7 +5491,7 @@ pub.typo = function(item, property, value) {
       item instanceof Page ||
       item instanceof Layer) {
     forEach(item.textFrames, function(textFrame) {
-      pub.typo(textFrame, property, value);
+      typo(textFrame, property, value);
     });
   } else if (item instanceof Story ||
              item instanceof TextFrame) {
@@ -5540,7 +5533,7 @@ var isValid = function (item) {
  * @param  {String} [fontStyle] The font style e.g. Bold
  * @return {Font} The current font object
  */
-pub.textFont = function(fontName, fontStyle) {
+textFont = function(fontName, fontStyle) {
 
   if (arguments.length === 2) {
     fontName = fontName + "\t" + fontStyle;
@@ -5570,7 +5563,7 @@ pub.textFont = function(fontName, fontStyle) {
  * @param  {Number} [pointSize] The size in points to set.
  * @return {Number}             The current point size.
  */
-pub.textSize = function(pointSize) {
+textSize = function(pointSize) {
   if (arguments.length === 1) {
     currFontSize = pointSize;
   }
@@ -5597,7 +5590,7 @@ pub.textSize = function(pointSize) {
  *                           VerticalJustification.JUSTIFY_ALIGN <br />
  *                           VerticalJustification.TOP_ALIGN <br />
  */
-pub.textAlign = function(align, yAlign) {
+textAlign = function(align, yAlign) {
   currAlign = align;
   if (arguments.length === 2) currYAlign = yAlign;
 };
@@ -5611,7 +5604,7 @@ pub.textAlign = function(align, yAlign) {
  *                                   value Leading.AUTO.
  * @return {Number|String}           The current leading.
  */
-pub.textLeading = function(leading) {
+textLeading = function(leading) {
   if (arguments.length === 1) {
     currLeading = leading;
   }
@@ -5626,7 +5619,7 @@ pub.textLeading = function(leading) {
  * @param  {Number} [kerning] The value to set.
  * @return {Number}           The current kerning.
  */
-pub.textKerning = function(kerning) {
+textKerning = function(kerning) {
   if (arguments.length === 1) {
     currKerning = kerning;
   }
@@ -5641,7 +5634,7 @@ pub.textKerning = function(kerning) {
  * @param  {Number} [tracking] The value to set.
  * @return {Number}            The current tracking.
  */
-pub.textTracking = function(tracking) {
+textTracking = function(tracking) {
   if (arguments.length === 1) {
     currTracking = tracking;
   }
@@ -5659,7 +5652,7 @@ pub.textTracking = function(tracking) {
  * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {CharacterStyle}  The character style instance.
  */
-pub.characterStyle = function(textOrName, props) {
+characterStyle = function(textOrName, props) {
   var styleErrorMsg = "b.characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -5702,7 +5695,7 @@ pub.characterStyle = function(textOrName, props) {
  * @return {Text}  The text that the style was applied to.
  */
 
-pub.applyCharacterStyle = function(text, style) {
+applyCharacterStyle = function(text, style) {
 
   if(isString(style)) {
     var name = style;
@@ -5712,7 +5705,7 @@ pub.applyCharacterStyle = function(text, style) {
     }
   }
 
-  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
+  if(!(isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
     error("b.applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
   }
 
@@ -5736,7 +5729,7 @@ pub.applyCharacterStyle = function(text, style) {
  * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ParagraphStyle}  The paragraph style instance.
  */
-pub.paragraphStyle = function(textOrName, props) {
+paragraphStyle = function(textOrName, props) {
   var styleErrorMsg = "b.paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -5779,7 +5772,7 @@ pub.paragraphStyle = function(textOrName, props) {
  * @return {Text}  The text that the style was applied to.
  */
 
-pub.applyParagraphStyle = function(text, style) {
+applyParagraphStyle = function(text, style) {
 
   if(isString(style)) {
     var name = style;
@@ -5789,7 +5782,7 @@ pub.applyParagraphStyle = function(text, style) {
     }
   }
 
-  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
+  if(!(isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
     error("b.applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
   }
 
@@ -5810,7 +5803,7 @@ pub.applyParagraphStyle = function(text, style) {
  * @param  {TextFrame} textFrameA
  * @param  {TextFrame} textFrameB
  */
-pub.linkTextFrames = function (textFrameA, textFrameB) {
+linkTextFrames = function (textFrameA, textFrameB) {
   if (textFrameA instanceof TextFrame && textFrameB instanceof TextFrame) {
     textFrameA.nextTextFrame = textFrameB;
   } else {
@@ -5826,7 +5819,7 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
  * @param  {TextFrame} textFrame
  * @return {Text} The inserted placeholder text.
  */
-pub.placeholder = function (textFrame) {
+placeholder = function (textFrame) {
   if (textFrame instanceof TextFrame) {
     var startIx = textFrame.parentStory.insertionPoints[-1].index;
     textFrame.contents = TextFrameContents.PLACEHOLDER_TEXT;
@@ -5858,7 +5851,7 @@ pub.placeholder = function (textFrame) {
  * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
  * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
-pub.image = function(img, x, y, w, h) {
+image = function(img, x, y, w, h) {
   var file = initDataFile(img),
     frame = null,
     fitOptions = null,
@@ -5879,7 +5872,7 @@ pub.image = function(img, x, y, w, h) {
   } else if (typeof x === "number" && typeof y === "number") {
     width = 1;
     height = 1;
-    if (currImageMode === pub.CORNERS) {
+    if (currImageMode === CORNERS) {
       if (typeof w === "number" && typeof h === "number") {
         width = w - x;
         height = h - y;
@@ -5915,7 +5908,7 @@ pub.image = function(img, x, y, w, h) {
     frame.fit(fitOptions);
   }
 
-  if (currImageMode === pub.CENTER) {
+  if (currImageMode === CENTER) {
     var bounds = frame.geometricBounds;
     width = bounds[3] - bounds[1];
     height = bounds[2] - bounds[0];
@@ -5950,11 +5943,11 @@ pub.image = function(img, x, y, w, h) {
  * @param  {Number} width The new width.
  * @param  {Number} height The new height.
  */
-pub.transformImage = function(img, x, y, width, height) {
+transformImage = function(img, x, y, width, height) {
   if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
     // [y1, x1, y2, x2]
     img.geometricBounds = [y, x, y + height, x + width];
-    if (currImageMode === pub.CENTER) {
+    if (currImageMode === CENTER) {
       img.move(null, [-(width / 2), -(height / 2)]);
     }
     img.fit(FitOptions.CENTER_CONTENT);
@@ -5974,10 +5967,10 @@ pub.transformImage = function(img, x, y, width, height) {
  * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER.
  * @return {String} The current mode.
  */
-pub.imageMode = function(mode) {
+imageMode = function(mode) {
   if (arguments.length === 0) return currImageMode;
 
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
+  if (mode === CORNER || mode === CORNERS || mode === CENTER) {
     currImageMode = mode;
   } else {
     error("b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
@@ -5989,7 +5982,7 @@ pub.imageMode = function(mode) {
 // src/includes/math.js
 // ----------------------------------------
 
-var Vector = pub.Vector = function() {
+var Vector = function() {
 
   /**
    * A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the Vector class.
@@ -6315,7 +6308,7 @@ var Vector = pub.Vector = function() {
  * @param {Number} val A number.
  * @return {Number} The absolute value of that number.
  */
-pub.abs = Math.abs;
+abs = Math.abs;
 
 /**
  * Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.
@@ -6326,7 +6319,7 @@ pub.abs = Math.abs;
  * @param {Number} val An arbitrary number.
  * @return {Number} The next highest integer value.
  */
-pub.ceil = Math.ceil;
+ceil = Math.ceil;
 
 /**
  * Constrains a value to not exceed a maximum and minimum value.
@@ -6339,7 +6332,7 @@ pub.ceil = Math.ceil;
  * @param {Number} aMax Maximum limit.
  * @return {Number} The constrained value.
  */
-pub.constrain = function(aNumber, aMin, aMax) {
+constrain = function(aNumber, aMin, aMax) {
   if(arguments.length !== 3) error("b.constrain(), wrong argument count.");
   if(aNumber <= aMin) return aMin;
   if(aNumber >= aMax) return aMax;
@@ -6358,7 +6351,7 @@ pub.constrain = function(aNumber, aMin, aMax) {
  * @param {Number} y2 The y-coordinate of the second point.
  * @return {Number} The distance.
  */
-pub.dist = function() {
+dist = function() {
   var dx, dy, dz;
   if (arguments.length === 4) {
     dx = arguments[0] - arguments[2];
@@ -6378,7 +6371,7 @@ pub.dist = function() {
  * @param {Number} x A number.
  * @return {Number} A number representing ex.
  */
-pub.exp = Math.exp;
+exp = Math.exp;
 
 /**
  * Calculates the closest int value that is less than or equal to the value of the parameter.
@@ -6389,7 +6382,7 @@ pub.exp = Math.exp;
  * @param {Number} a A number.
  * @return {Number} Integer number.
  */
-pub.floor = Math.floor;
+floor = Math.floor;
 
 /**
  * Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
@@ -6402,7 +6395,7 @@ pub.floor = Math.floor;
  * @param {Number} amt Amount between 0.0 and 1.0.
  * @return {Number} The mapped value.
  */
-pub.lerp = function(value1, value2, amt) {
+lerp = function(value1, value2, amt) {
   if(arguments.length !== 3) error("b.lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
@@ -6416,7 +6409,7 @@ pub.lerp = function(value1, value2, amt) {
  * @param {Number} x A number, must be greater then 0.0.
  * @return {Number} The natural logarithm.
  */
-pub.log = Math.log;
+log = Math.log;
 
 /**
  * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
@@ -6429,7 +6422,7 @@ pub.log = Math.log;
  * @param {Number} [z] Coordinate, optional.
  * @return {Number} The magnitude.
  */
-pub.mag = function(a, b, c) {
+mag = function(a, b, c) {
   if(!(arguments.length === 2 || arguments.length === 3)) error("b.mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
@@ -6450,7 +6443,7 @@ pub.mag = function(a, b, c) {
  * @param {Number} ostop The end of the output range.
  * @return {Number} The mapped value.
  */
-pub.map = function(value, istart, istop, ostart, ostop) {
+map = function(value, istart, istop, ostart, ostop) {
   if(arguments.length !== 5) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
@@ -6466,7 +6459,7 @@ pub.map = function(value, istart, istop, ostart, ostop) {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The highest value.
  */
-pub.max = function() {
+max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
@@ -6487,7 +6480,7 @@ pub.max = function() {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The lowest value.
  */
-pub.min = function() {
+min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
@@ -6512,7 +6505,7 @@ pub.min = function() {
  * @param {Number} high The highest value to be expected.
  * @return {Number} The normalized value.
  */
-pub.norm = function(aNumber, low, high) {
+norm = function(aNumber, low, high) {
   if(arguments.length !== 3) error("b.norm, wrong argument count.");
   return (aNumber - low) / (high - low);
 };
@@ -6527,7 +6520,7 @@ pub.norm = function(aNumber, low, high) {
  * @param {Number} exponent Power of which to raise the base.
  * @return {Number} the result
  */
-pub.pow = Math.pow;
+pow = Math.pow;
 
 /**
  * Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.
@@ -6538,7 +6531,7 @@ pub.pow = Math.pow;
  * @param {Number} value The value to be rounded.
  * @return {Number} The rounded value.
  */
-pub.round = Math.round;
+round = Math.round;
 
 /**
  * Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.
@@ -6549,7 +6542,7 @@ pub.round = Math.round;
  * @param {Number} aNumber The value to be squared.
  * @return {Number} Squared number.
  */
-pub.sq = function(aNumber) {
+sq = function(aNumber) {
   if(arguments.length !== 1) error("b.sq(), wrong argument count.");
   return aNumber * aNumber;
 };
@@ -6565,7 +6558,7 @@ pub.sq = function(aNumber) {
  * @param {Number} val A value.
  * @return {Number} Square root.
  */
-pub.sqrt = Math.sqrt;
+sqrt = Math.sqrt;
 
 /**
  * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6576,7 +6569,7 @@ pub.sqrt = Math.sqrt;
  * @param {Number} value The value whose arc cosine is to be returned.
  * @return {Number} The arc cosine.
  */
-pub.acos = Math.acos;
+acos = Math.acos;
 
 /**
  * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6587,7 +6580,7 @@ pub.acos = Math.acos;
  * @param {Number} value The value whose arc sine is to be returned.
  * @return {Number} The arc sine.
  */
-pub.asin = Math.asin;
+asin = Math.asin;
 
 /**
  * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6598,7 +6591,7 @@ pub.asin = Math.asin;
  * @param {Number} value The value whose arc tangent is to be returned.
  * @return {Number} The arc tangent.
  */
-pub.atan = Math.atan;
+atan = Math.atan;
 
 /**
  * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
@@ -6610,7 +6603,7 @@ pub.atan = Math.atan;
  * @param {Number} x The x coordinate.
  * @return {Number} The atan2 value.
  */
-pub.atan2 = Math.atan2;
+atan2 = Math.atan2;
 
 /**
  * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
@@ -6621,7 +6614,7 @@ pub.atan2 = Math.atan2;
  * @param {Number} rad A value in radians.
  * @return {Number} The cosine.
  */
-pub.cos = Math.cos;
+cos = Math.cos;
 
 /**
  * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
@@ -6632,7 +6625,7 @@ pub.cos = Math.cos;
  * @param {Number} aAngle An angle in radians.
  * @return {Number} The given angle in degree.
  */
-pub.degrees = function(aAngle) {
+degrees = function(aAngle) {
   return aAngle * 180 / Math.PI;
 };
 
@@ -6645,7 +6638,7 @@ pub.degrees = function(aAngle) {
  * @param {Number} aAngle An angle in degree.
  * @return {Number} The given angle in radians.
  */
-pub.radians = function(aAngle) {
+radians = function(aAngle) {
   return aAngle / 180 * Math.PI;
 };
 
@@ -6658,7 +6651,7 @@ pub.radians = function(aAngle) {
  * @param {Number} rad A value in radians.
  * @return {Number} The sine value.
  */
-pub.sin = Math.sin;
+sin = Math.sin;
 
 /**
  * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
@@ -6669,7 +6662,7 @@ pub.sin = Math.sin;
  * @param {Number} rad A value in radians.
  * @return {Number} The tangent value.
  */
-pub.tan = Math.tan;
+tan = Math.tan;
 
 // -- Random --
 
@@ -6687,7 +6680,7 @@ var currentRandom = Math.random;
  * @param {Number} [high] The high border of the range.
  * @return {Number} A random number.
  */
-pub.random = function() {
+random = function() {
   if (arguments.length === 0) return currentRandom();
   if (arguments.length === 1) return currentRandom() * arguments[0];
   var aMin = arguments[0],
@@ -6722,7 +6715,7 @@ Marsaglia.createRandomized = function() {
  * @method randomSeed
  * @param  {Number} seed The seed value.
  */
-pub.randomSeed = function(seed) {
+randomSeed = function(seed) {
   currentRandom = (new Marsaglia(seed)).nextDouble;
 };
 /**
@@ -6733,7 +6726,7 @@ pub.randomSeed = function(seed) {
  * @method Random
  * @param {Number} seed The seed value.
  */
-pub.Random = function(seed) {
+Random = function(seed) {
   var haveNextNextGaussian = false,
     nextNextGaussian, random;
   /**
@@ -6852,7 +6845,7 @@ var noiseProfile = {
  * @param {Number} [z] Coordinate in z space.
  * @return {Number} The noise value.
  */
-pub.noise = function(x, y, z) {
+noise = function(x, y, z) {
   if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
   var generator = noiseProfile.generator;
   var effect = 1,
@@ -6887,7 +6880,7 @@ pub.noise = function(x, y, z) {
  * @param {Number} octaves Number of octaves to be used by the noise() function.
  * @param {Number} fallout Falloff factor for each octave.
  */
-pub.noiseDetail = function(octaves, fallout) {
+noiseDetail = function(octaves, fallout) {
   noiseProfile.octaves = octaves;
   if (fallout !== undefined) noiseProfile.fallout = fallout;
 };
@@ -6900,7 +6893,7 @@ pub.noiseDetail = function(octaves, fallout) {
  * @method noiseSeed
  * @param {Number} seed Noise seed value.
  */
-pub.noiseSeed = function(seed) {
+noiseSeed = function(seed) {
   noiseProfile.seed = seed;
   noiseProfile.generator = undefined;
 };
@@ -6924,7 +6917,7 @@ var precision = function(num, dec) {
  * @param  {Text|Object} obj The object to calculate the geometric bounds.
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
-pub.bounds = function (obj) {
+bounds = function (obj) {
   var x1, y1, x2, y2, w, h;
 
   if (isText(obj)) {
@@ -6995,9 +6988,9 @@ pub.bounds = function (obj) {
  * @param {Number} [x] The new x position, optional.
  * @returns {Number} The current x position.
  */
-pub.itemX = function(pItem, x) {
+itemX = function(pItem, x) {
   var off = 0;
-  if(currRectMode !== b.CORNER) pub.warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== b.CORNER) warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
@@ -7021,14 +7014,14 @@ pub.itemX = function(pItem, x) {
  * @param {Number} [y] The new y position, optional.
  * @returns {Number} The current y position.
  */
-pub.itemY = function(pItem, y) {
+itemY = function(pItem, y) {
   var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== CORNER) warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefine && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
+      itemPosition(pItem, pItem.geometricBounds[1] - off, y);
       pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
     } else {
       return precision(pItem.geometricBounds[0], 5) + off;
@@ -7053,13 +7046,13 @@ pub.itemY = function(pItem, y) {
  * @param {Number} [width] The new width.
  * @returns {Number} The current width.
  */
-pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
+itemWidth = function(pItem, width) {
+  if(currRectMode !== CORNER) {
+    warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
-      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
+      itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -7078,13 +7071,13 @@ pub.itemWidth = function(pItem, width) {
  * @param {Number} [height] The new height.
  * @returns {Number} The current height.
  */
-pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
+itemHeight = function(pItem, height) {
+  if(currRectMode !== CORNER) {
+    warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
-      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
+      itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -7104,10 +7097,10 @@ pub.itemHeight = function(pItem, height) {
  * @param {Number} [y] The new y coordinate.
  * @returns {Object} Returns an object with the fields x and y.
  */
-pub.itemPosition = function(pItem, x, y) {
+itemPosition = function(pItem, x, y) {
 
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== CORNER) {
+    warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number" && typeof y === "number") {
@@ -7135,9 +7128,9 @@ pub.itemPosition = function(pItem, x, y) {
  * @param {Number} [height] The new height.
  * @returns {Object} Returns an object with the fields width and height.
  */
-pub.itemSize = function(pItem, width, height) {
+itemSize = function(pItem, width, height) {
   if(currRectMode !== b.CORNER) {
-    pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
 
@@ -7180,7 +7173,7 @@ var printMatrixHelper = function(elements) {
  * @cat Document
  * @subcat Transformation
  */
-var Matrix2D = pub.Matrix2D = function() {
+var Matrix2D = Matrix2D = function() {
   if (arguments.length === 0) {
     this.reset();
   } else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -7526,8 +7519,8 @@ Matrix2D.prototype = {
    */
   print: function() {
     var digits = printMatrixHelper(this.elements);
-    var output = "" + pub.nfs(this.elements[0], digits, 4) + " " + pub.nfs(this.elements[1], digits, 4) + " " + pub.nfs(this.elements[2], digits, 4) + "\n" + pub.nfs(this.elements[3], digits, 4) + " " + pub.nfs(this.elements[4], digits, 4) + " " + pub.nfs(this.elements[5], digits, 4) + "\n\n";
-    pub.println(output);
+    var output = "" + nfs(this.elements[0], digits, 4) + " " + nfs(this.elements[1], digits, 4) + " " + nfs(this.elements[2], digits, 4) + "\n" + nfs(this.elements[3], digits, 4) + " " + nfs(this.elements[4], digits, 4) + " " + nfs(this.elements[5], digits, 4) + "\n\n";
+    println(output);
   }
 };
 
@@ -7540,7 +7533,7 @@ Matrix2D.prototype = {
  * @param {Matrix2D} [matrix] The matrix to be set as new current matrix.
  * @returns {Matrix2D} Returns the current matrix.
  */
-pub.matrix = function(matrix) {
+matrix = function(matrix) {
 
   if(matrix instanceof Matrix2D) {
     currMatrix = matrix;
@@ -7557,7 +7550,7 @@ pub.matrix = function(matrix) {
  * @param {PageItem} obj The item to be transformed.
  * @param {Matrix2D} matrix The matrix to be applied.
  */
-pub.transform = function(obj, matrix) {
+transform = function(obj, matrix) {
 
   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -7574,7 +7567,7 @@ pub.transform = function(obj, matrix) {
  * @method applyMatrix
  * @param {Matrix2D} matrix The matrix to be applied.
  */
-pub.applyMatrix = function (matrix) {
+applyMatrix = function (matrix) {
   currMatrix.apply(matrix);
 };
 
@@ -7585,7 +7578,7 @@ pub.applyMatrix = function (matrix) {
  * @subcat Transformation
  * @method popMatrix
  */
-pub.popMatrix = function () {
+popMatrix = function () {
   if (matrixStack.length > 0) {
     currMatrix.set(matrixStack.pop());
   } else {
@@ -7600,7 +7593,7 @@ pub.popMatrix = function () {
  * @subcat Transformation
  * @method printMatrix
  */
-pub.printMatrix = function () {
+printMatrix = function () {
   currMatrix.print();
 };
 
@@ -7611,7 +7604,7 @@ pub.printMatrix = function () {
  * @subcat Transformation
  * @method pushMatrix
  */
-pub.pushMatrix = function () {
+pushMatrix = function () {
   matrixStack.push(currMatrix.array());
 };
 
@@ -7622,7 +7615,7 @@ pub.pushMatrix = function () {
  * @subcat Transformation
  * @method resetMatrix
  */
-pub.resetMatrix = function () {
+resetMatrix = function () {
   matrixStack = [];
   currMatrix = new Matrix2D();
 };
@@ -7635,7 +7628,7 @@ pub.resetMatrix = function () {
  * @method rotate
  * @param {Number} angle The angle specified in radians
  */
-pub.rotate = function (angle) {
+rotate = function (angle) {
   if(typeof arguments[0] === "undefined") {
     error("Please provide an angle for rotation.");
   }
@@ -7652,7 +7645,7 @@ pub.rotate = function (angle) {
  * @param {Number} scaleX The amount to scale the X axis.
  * @param {Number} scaleY The amount to scale the Y axis.
  */
-pub.scale = function (scaleX, scaleY) {
+scale = function (scaleX, scaleY) {
   if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) {
     error("Please provide valid x and/or y factors for scaling.");
   }
@@ -7668,7 +7661,7 @@ pub.scale = function (scaleX, scaleY) {
  * @param {Number} tx The amount of offset on the X axis.
  * @param {Number} ty The amount of offset on the Y axis.
  */
-pub.translate = function (tx, ty) {
+translate = function (tx, ty) {
   if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") {
     error("Please provide x and y coordinates for translation.");
   }

@@ -20,7 +20,7 @@
  * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
  * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
-pub.image = function(img, x, y, w, h) {
+image = function(img, x, y, w, h) {
   var file = initDataFile(img),
     frame = null,
     fitOptions = null,
@@ -41,7 +41,7 @@ pub.image = function(img, x, y, w, h) {
   } else if (typeof x === "number" && typeof y === "number") {
     width = 1;
     height = 1;
-    if (currImageMode === pub.CORNERS) {
+    if (currImageMode === CORNERS) {
       if (typeof w === "number" && typeof h === "number") {
         width = w - x;
         height = h - y;
@@ -77,7 +77,7 @@ pub.image = function(img, x, y, w, h) {
     frame.fit(fitOptions);
   }
 
-  if (currImageMode === pub.CENTER) {
+  if (currImageMode === CENTER) {
     var bounds = frame.geometricBounds;
     width = bounds[3] - bounds[1];
     height = bounds[2] - bounds[0];
@@ -112,11 +112,11 @@ pub.image = function(img, x, y, w, h) {
  * @param  {Number} width The new width.
  * @param  {Number} height The new height.
  */
-pub.transformImage = function(img, x, y, width, height) {
+transformImage = function(img, x, y, width, height) {
   if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
     // [y1, x1, y2, x2]
     img.geometricBounds = [y, x, y + height, x + width];
-    if (currImageMode === pub.CENTER) {
+    if (currImageMode === CENTER) {
       img.move(null, [-(width / 2), -(height / 2)]);
     }
     img.fit(FitOptions.CENTER_CONTENT);
@@ -136,10 +136,10 @@ pub.transformImage = function(img, x, y, width, height) {
  * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER.
  * @return {String} The current mode.
  */
-pub.imageMode = function(mode) {
+imageMode = function(mode) {
   if (arguments.length === 0) return currImageMode;
 
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
+  if (mode === CORNER || mode === CORNERS || mode === CENTER) {
     currImageMode = mode;
   } else {
     error("b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");

@@ -2,7 +2,7 @@
 // src/includes/data.js
 // ----------------------------------------
 
-pub.JSON = {
+JSON = {
   /**
    * Function parses and validates a string as JSON-object. Usage:
    * var obj = b.JSON.decode(str);
@@ -59,7 +59,7 @@ pub.JSON = {
         v = obj[n];
         t = typeof (v);
         if (obj.hasOwnProperty(n)) {
-          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
+          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = JSON.encode(v);
           json.push((arr ? "" : "\"" + n + "\":") + String(v));
         }
       }
@@ -70,7 +70,7 @@ pub.JSON = {
 
 // Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock won't mind.
 // https://github.com/mbostock/d3/tree/master/src/dsv
-pub.CSV = new CSV();
+CSV = new CSV();
 function CSV() {
   var reParse = null,
     reFormat = null,
@@ -246,7 +246,7 @@ function CSV() {
  * @return {String} A formatted string
  */
  // From: http://processingjs.org/reference/binary_/
-pub.binary = function(num, numBits) {
+binary = function(num, numBits) {
   var bit;
   if (numBits > 0) bit = numBits;
   else if (num instanceof Char) {
@@ -273,7 +273,7 @@ pub.binary = function(num, numBits) {
  * @return {Number} The integer representation
  */
  // From: http://processingjs.org/reference/unbinary_/
-pub.unbinary = function(binaryString) {
+unbinary = function(binaryString) {
   var i = binaryString.length - 1,
     mask = 1,
     result = 0;
@@ -306,7 +306,7 @@ var decimalToHex = function(d, padding) {
  * @param {Number} [len] The length of the hex number to be created, default: 8
  * @return {String} The hex representation as a string
  */
-pub.hex = function(value, len) {
+hex = function(value, len) {
   if (arguments.length === 1) len = 8;
   return decimalToHex(value, len);
 };
@@ -326,7 +326,7 @@ var unhexScalar = function(hex) {
  * @param {String} hex The hex representation
  * @return {Number} The number
  */
-pub.unhex = function(hex) {
+unhex = function(hex) {
   if (hex instanceof Array) {
     var arr = [];
     for (var i = 0; i < hex.length; i++) arr.push(unhexScalar(hex[i]));
@@ -350,7 +350,7 @@ pub.unhex = function(hex) {
  * @return {String} The trimmed string
  */
  // from: https://stackoverflow.com/a/25575009/3399765
-pub.trimWord = function(s) {
+trimWord = function(s) {
   s = s.replace(/\s*/g, "")
        .replace(/\n*/g, "")
        .replace(/(^[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*)|([\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*$)/gi, "");
@@ -371,7 +371,7 @@ pub.trimWord = function(s) {
  * @return {String} The joined string
  */
  // http://processingjs.org/reference/join_/
-pub.join = function(array, separator) {
+join = function(array, separator) {
   return array.join(separator);
 };
 
@@ -397,7 +397,7 @@ pub.join = function(array, separator) {
  * @return {Array} Array of strings
  */
  // http://processingjs.org/reference/split_/
-pub.split = function(str, delim) {
+split = function(str, delim) {
   return str.split(delim);
 };
 
@@ -420,7 +420,7 @@ pub.split = function(str, delim) {
  * @return {Array} Array of strings
  */
  // From: http://processingjs.org/reference/splitTokens_/
-pub.splitTokens = function(str, tokens) {
+splitTokens = function(str, tokens) {
   if (arguments.length === 1) tokens = "\n\t\r\u000c ";
   tokens = "[" + tokens + "]";
   var ary = [];
@@ -441,12 +441,12 @@ pub.splitTokens = function(str, tokens) {
 };
 
 
-pub.match = function(str, regexp) {
+match = function(str, regexp) {
   return str.match(regexp);
 };
 
 
-pub.matchAll = function(aString, aRegExp) {
+matchAll = function(aString, aRegExp) {
   var results = [],
     latest;
   var regexp = new RegExp(aRegExp, "g");
@@ -522,7 +522,7 @@ function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nf_/
-pub.nf = function(value, leftDigits, rightDigits) {
+nf = function(value, leftDigits, rightDigits) {
   return nfCore(value, "", "-", leftDigits, rightDigits);
 };
 
@@ -543,7 +543,7 @@ pub.nf = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfs_/
-pub.nfs = function(value, leftDigits, rightDigits) {
+nfs = function(value, leftDigits, rightDigits) {
   return nfCore(value, " ", "-", leftDigits, rightDigits);
 };
 
@@ -563,7 +563,7 @@ pub.nfs = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfp_/
-pub.nfp = function(value, leftDigits, rightDigits) {
+nfp = function(value, leftDigits, rightDigits) {
   return nfCore(value, "+", "-", leftDigits, rightDigits);
 };
 
@@ -582,7 +582,7 @@ pub.nfp = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfc_/
-pub.nfc = function(value, leftDigits, rightDigits) {
+nfc = function(value, leftDigits, rightDigits) {
   return nfCore(value, "", "-", leftDigits, rightDigits, ",");
 };
 
@@ -599,7 +599,7 @@ pub.nfc = function(value, leftDigits, rightDigits) {
  * @return {String|Array} Returns the input in a trimmed way
  */
  // From: http://processingjs.org/reference/trim_/
-pub.trim = function(str) {
+trim = function(str) {
   if (str instanceof Array) {
     var arr = [];
     for (var i = 0; i < str.length; i++) arr.push(str[i].replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, ""));
@@ -617,7 +617,7 @@ pub.trim = function(str) {
  * @param {String} url An url string to be checked
  * @return {Boolean} Returns either true or false
  */
-var isURL = pub.isURL = function(url) {
+var isURL = isURL = function(url) {
   var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
   return pattern.test(url);
 };
@@ -632,7 +632,7 @@ var isURL = pub.isURL = function(url) {
  * @param {String} suffix The string to look for
  * @return {Boolean} Returns either true or false
  */
-var endsWith = pub.endsWith = function(str, suffix) {
+var endsWith = endsWith = function(str, suffix) {
   if(!isString(str) || !isString(suffix)) {
     error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
   }
@@ -649,7 +649,7 @@ var endsWith = pub.endsWith = function(str, suffix) {
  * @param {String} prefix The string to look for
  * @return {Boolean} Returns either true or false
  */
-var startsWith = pub.startsWith = function(str, prefix) {
+var startsWith = startsWith = function(str, prefix) {
   if(!isString(str) || !isString(prefix)) {
     error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
   }
@@ -666,7 +666,7 @@ var startsWith = pub.startsWith = function(str, prefix) {
  * @param  {Object|String|Number|Boolean} obj The object to check
  * @return {Boolean} returns true if this is the case
  */
-var isArray = pub.isArray = function(obj) {
+var isArray = isArray = function(obj) {
   return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
@@ -679,7 +679,7 @@ var isArray = pub.isArray = function(obj) {
  * @param  {Object|String|Number|Boolean}  num The number to check
  * @return {Boolean} returns true if this is the case
  */
-var isNumber = pub.isNumber = function(num) {
+var isNumber = isNumber = function(num) {
   if (num === null) {
     return false;
   }
@@ -699,7 +699,7 @@ var isNumber = pub.isNumber = function(num) {
  * @param  {Object|String|Number|Boolean}  num The number to check.
  * @return {Boolean} Returns true if the given argument is an integer.
  */
-var isInteger = pub.isInteger = function(num) {
+var isInteger = isInteger = function(num) {
   return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
@@ -712,7 +712,7 @@ var isInteger = pub.isInteger = function(num) {
  * @param  {Object|String|Number|Boolean} str The string to check
  * @return {Boolean} returns true if this is the case
  */
-var isString = pub.isString = function(str) {
+var isString = isString = function(str) {
   return Object.prototype.toString.call(str) === "[object String]";
 };
 
@@ -727,7 +727,7 @@ var isString = pub.isString = function(str) {
  * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
  * @return {Boolean} returns true if this is the case
  */
-var isText = pub.isText = function(obj) {
+var isText = isText = function(obj) {
 
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
@@ -851,7 +851,7 @@ var initExportFile = function(file) {
  * @method projectFolder
  * @return {Folder} The folder of the the active document
  */
-var projectFolder = pub.projectFolder = function() {
+var projectFolder = projectFolder = function() {
   if(!currentDoc().saved) {
     error("The current document must be saved before its project directory can be accessed.");
   }
@@ -870,7 +870,7 @@ var projectFolder = pub.projectFolder = function() {
  * @param  {String} cmd The shell command to execute
  * @return {String}
  */
-pub.shellExecute = function(cmd) {
+shellExecute = function(cmd) {
   if (Folder.fs === "Macintosh") {
     try {
       return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
@@ -892,7 +892,7 @@ pub.shellExecute = function(cmd) {
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {String}  String file or URL content.
  */
-pub.loadString = function(file) {
+loadString = function(file) {
   if (isURL(file)) {
     return getURL(file);
   } else {
@@ -908,7 +908,7 @@ pub.loadString = function(file) {
 var getURL = function(url) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
-      return pub.shellExecute("curl -m 15 -L '" + url + "'");
+      return shellExecute("curl -m 15 -L '" + url + "'");
     } else {
       error("b." + getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
@@ -927,7 +927,7 @@ var getURL = function(url) {
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {Array}  Array of the individual lines in the given File or URL
  */
-pub.loadStrings = function(file) {
+loadStrings = function(file) {
   if (isURL(file)) {
     var result = getURL(file);
     return result.match(/[^\r\n]+/g);
@@ -954,7 +954,7 @@ pub.loadStrings = function(file) {
  * @method println
  * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-var println = pub.println = function() {
+var println = println = function() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
   $.writeln(msg);
   if (progressPanel)
@@ -968,7 +968,7 @@ var println = pub.println = function() {
  * @method print
  * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-pub.print = function() {
+print = function() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
   $.write(msg);
   if (progressPanel)
@@ -981,15 +981,15 @@ pub.print = function() {
  * @cat Output
  * @method printInfo
  */
-pub.printInfo = function() {
+printInfo = function() {
 
-  pub.println("###");
-  pub.println("OS: " + $.os);
-  pub.println("ExtendScript Build: " + $.build);
-  pub.println("ExtendScript Version:" + $.version);
-  pub.println("Engine: " + $.engineName);
-  pub.println("memCache: " + $.memCache + " bytes");
-  pub.println("###");
+  println("###");
+  println("OS: " + $.os);
+  println("ExtendScript Build: " + $.build);
+  println("ExtendScript Version:" + $.version);
+  println("Engine: " + $.engineName);
+  println("memCache: " + $.memCache + " bytes");
+  println("###");
 
 };
 
@@ -1003,7 +1003,7 @@ pub.printInfo = function() {
  * @param  {Array} strings The string array to be written
  * @return {File} The file the strings were written to.
  */
-pub.saveStrings = function(file, strings) {
+saveStrings = function(file, strings) {
   if(!isString(string)) {
     error("b.saveString(), invalid second argument. Use an array of strings.");
   }
@@ -1026,7 +1026,7 @@ pub.saveStrings = function(file, strings) {
  * @param  {String} string The string to be written.
  * @return {File} The file the string was written to.
  */
-pub.saveString = function(file, string) {
+saveString = function(file, string) {
   if(!isString(string)) {
     error("b.saveString(), invalid second argument. Use a string.");
   }
@@ -1046,7 +1046,7 @@ pub.saveString = function(file, string) {
  * @param  {Boolean} [showOptions] Whether to show the export dialog.
  * @return {File} The exported PDF file.
  */
-pub.savePDF = function(file, showOptions) {
+savePDF = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
@@ -1067,7 +1067,7 @@ pub.savePDF = function(file, showOptions) {
  * @param {Boolean} [showOptions] Whether to show the export dialog
  * @return {File} The exported PNG file.
  */
-pub.savePNG = function(file, showOptions) {
+savePNG = function(file, showOptions) {
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
@@ -1087,7 +1087,7 @@ pub.savePNG = function(file, showOptions) {
  * @param {String} url The download url
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
-pub.download = function(url, file) {
+download = function(url, file) {
   var projPath = projectFolder().fsName.replace(" ", "\\ ");
   // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
   // This is more portable then a fixed location
@@ -1169,7 +1169,7 @@ pub.download = function(url, file) {
     }
 
     println(cmd);
-    pub.shellExecute(cmd);
+    shellExecute(cmd);
 
   } else {
     error("The url " + url + " is not a valid one. Please double check!");

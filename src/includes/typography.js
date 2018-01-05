@@ -20,7 +20,7 @@
  * @param  {Number} h   height of text frame
  * @return {TextFrame}  The created text frame instance
  */
-pub.text = function(txt, x, y, w, h) {
+text = function(txt, x, y, w, h) {
   if (arguments.length !== 5) {
     error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
   }
@@ -29,22 +29,22 @@ pub.text = function(txt, x, y, w, h) {
   }
 
   var textBounds = [];
-  if (currRectMode === pub.CORNER) {
+  if (currRectMode === CORNER) {
     textBounds[0] = y;
     textBounds[1] = x;
     textBounds[2] = y + h;
     textBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
+  } else if (currRectMode === CORNERS) {
     textBounds[0] = y;
     textBounds[1] = x;
     textBounds[2] = h;
     textBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
+  } else if (currRectMode === CENTER) {
     textBounds[0] = y - (h / 2);
     textBounds[1] = x - (w / 2);
     textBounds[2] = y + (h / 2);
     textBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
+  } else if (currRectMode === RADIUS) {
     textBounds[0] = y - h;
     textBounds[1] = x - w;
     textBounds[2] = y + h;
@@ -56,7 +56,7 @@ pub.text = function(txt, x, y, w, h) {
   textFrame.geometricBounds = textBounds;
   textFrame.textFramePreferences.verticalJustification = currYAlign;
 
-  pub.typo(textFrame, {
+  typo(textFrame, {
     appliedFont: currFont,
     pointSize: currFontSize,
     fillColor: currFillColor,
@@ -67,7 +67,7 @@ pub.text = function(txt, x, y, w, h) {
   });
 
 
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+  if (currRectMode === CENTER || currRectMode === RADIUS) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -97,7 +97,7 @@ pub.text = function(txt, x, y, w, h) {
  * @return {String[]|Number[]|Object[]}  The property value(s) if the function acts as getter or the items the property
  *                                       was assigned to.
  */
-pub.typo = function(item, property, value) {
+typo = function(item, property, value) {
   var result = [],
     actsAsGetter = typeof property === "string" && (value === undef || value === null),
     getOrSetProperties = function(textItem) {
@@ -134,7 +134,7 @@ pub.typo = function(item, property, value) {
       item instanceof Page ||
       item instanceof Layer) {
     forEach(item.textFrames, function(textFrame) {
-      pub.typo(textFrame, property, value);
+      typo(textFrame, property, value);
     });
   } else if (item instanceof Story ||
              item instanceof TextFrame) {
@@ -176,7 +176,7 @@ var isValid = function (item) {
  * @param  {String} [fontStyle] The font style e.g. Bold
  * @return {Font} The current font object
  */
-pub.textFont = function(fontName, fontStyle) {
+textFont = function(fontName, fontStyle) {
 
   if (arguments.length === 2) {
     fontName = fontName + "\t" + fontStyle;
@@ -206,7 +206,7 @@ pub.textFont = function(fontName, fontStyle) {
  * @param  {Number} [pointSize] The size in points to set.
  * @return {Number}             The current point size.
  */
-pub.textSize = function(pointSize) {
+textSize = function(pointSize) {
   if (arguments.length === 1) {
     currFontSize = pointSize;
   }
@@ -233,7 +233,7 @@ pub.textSize = function(pointSize) {
  *                           VerticalJustification.JUSTIFY_ALIGN <br />
  *                           VerticalJustification.TOP_ALIGN <br />
  */
-pub.textAlign = function(align, yAlign) {
+textAlign = function(align, yAlign) {
   currAlign = align;
   if (arguments.length === 2) currYAlign = yAlign;
 };
@@ -247,7 +247,7 @@ pub.textAlign = function(align, yAlign) {
  *                                   value Leading.AUTO.
  * @return {Number|String}           The current leading.
  */
-pub.textLeading = function(leading) {
+textLeading = function(leading) {
   if (arguments.length === 1) {
     currLeading = leading;
   }
@@ -262,7 +262,7 @@ pub.textLeading = function(leading) {
  * @param  {Number} [kerning] The value to set.
  * @return {Number}           The current kerning.
  */
-pub.textKerning = function(kerning) {
+textKerning = function(kerning) {
   if (arguments.length === 1) {
     currKerning = kerning;
   }
@@ -277,7 +277,7 @@ pub.textKerning = function(kerning) {
  * @param  {Number} [tracking] The value to set.
  * @return {Number}            The current tracking.
  */
-pub.textTracking = function(tracking) {
+textTracking = function(tracking) {
   if (arguments.length === 1) {
     currTracking = tracking;
   }
@@ -295,7 +295,7 @@ pub.textTracking = function(tracking) {
  * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {CharacterStyle}  The character style instance.
  */
-pub.characterStyle = function(textOrName, props) {
+characterStyle = function(textOrName, props) {
   var styleErrorMsg = "b.characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -338,7 +338,7 @@ pub.characterStyle = function(textOrName, props) {
  * @return {Text}  The text that the style was applied to.
  */
 
-pub.applyCharacterStyle = function(text, style) {
+applyCharacterStyle = function(text, style) {
 
   if(isString(style)) {
     var name = style;
@@ -348,7 +348,7 @@ pub.applyCharacterStyle = function(text, style) {
     }
   }
 
-  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
+  if(!(isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
     error("b.applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
   }
 
@@ -372,7 +372,7 @@ pub.applyCharacterStyle = function(text, style) {
  * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ParagraphStyle}  The paragraph style instance.
  */
-pub.paragraphStyle = function(textOrName, props) {
+paragraphStyle = function(textOrName, props) {
   var styleErrorMsg = "b.paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -415,7 +415,7 @@ pub.paragraphStyle = function(textOrName, props) {
  * @return {Text}  The text that the style was applied to.
  */
 
-pub.applyParagraphStyle = function(text, style) {
+applyParagraphStyle = function(text, style) {
 
   if(isString(style)) {
     var name = style;
@@ -425,7 +425,7 @@ pub.applyParagraphStyle = function(text, style) {
     }
   }
 
-  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
+  if(!(isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
     error("b.applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
   }
 
@@ -446,7 +446,7 @@ pub.applyParagraphStyle = function(text, style) {
  * @param  {TextFrame} textFrameA
  * @param  {TextFrame} textFrameB
  */
-pub.linkTextFrames = function (textFrameA, textFrameB) {
+linkTextFrames = function (textFrameA, textFrameB) {
   if (textFrameA instanceof TextFrame && textFrameB instanceof TextFrame) {
     textFrameA.nextTextFrame = textFrameB;
   } else {
@@ -462,7 +462,7 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
  * @param  {TextFrame} textFrame
  * @return {Text} The inserted placeholder text.
  */
-pub.placeholder = function (textFrame) {
+placeholder = function (textFrame) {
   if (textFrame instanceof TextFrame) {
     var startIx = textFrame.parentStory.insertionPoints[-1].index;
     textFrame.contents = TextFrameContents.PLACEHOLDER_TEXT;

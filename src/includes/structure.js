@@ -53,7 +53,7 @@ var textCollection = function(collection, legalContainers, container, cb) {
  * @method delay
  * @param  {Number} milliseconds  The delay time in milliseconds.
  */
-pub.delay = function (milliseconds) {
+delay = function (milliseconds) {
   $.sleep(milliseconds);
 };
 
@@ -72,7 +72,7 @@ pub.delay = function (milliseconds) {
  * });
  * @return {Stories} A collection of Story objects.
  */
-pub.stories = function(doc, cb) {
+stories = function(doc, cb) {
 
   checkNull(doc);
 
@@ -95,7 +95,7 @@ pub.stories = function(doc, cb) {
  * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount.
  * @return {Paragraphs} A collection of Paragraph objects.
  */
-pub.paragraphs = function(container, cb) {
+paragraphs = function(container, cb) {
 
   var legalContainers = "Document, Story, Page or TextFrame.";
   return textCollection("paragraphs", legalContainers, container, cb);
@@ -112,7 +112,7 @@ pub.paragraphs = function(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount.
  * @return {Lines} A collection of Line objects.
  */
-pub.lines = function(container, cb) {
+lines = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
   return textCollection("lines", legalContainers, container, cb);
@@ -129,7 +129,7 @@ pub.lines = function(container, cb) {
  * @param  {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount.
  * @return {Words} A collection of Word objects.
  */
-pub.words = function(container, cb) {
+words = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
   return textCollection("words", legalContainers, container, cb);
@@ -146,7 +146,7 @@ pub.words = function(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
  * @return {Characters} A collection of Character objects.
  */
-pub.characters = function(container, cb) {
+characters = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
   return textCollection("characters", legalContainers, container, cb);
@@ -164,7 +164,7 @@ pub.characters = function(container, cb) {
  * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {PageItems} A collection of PageItem objects.
  */
-pub.items = function(container, cb) {
+items = function(container, cb) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -189,7 +189,7 @@ pub.items = function(container, cb) {
  * @method clear
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in.
  */
-pub.clear = function(container) {
+clear = function(container) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -215,7 +215,7 @@ pub.clear = function(container) {
  * @method remove
  * @param  {PageItem} obj The object to be removed.
  */
-pub.remove = function(obj) {
+remove = function(obj) {
 
   if(obj.hasOwnProperty("remove")) {
     obj.remove();

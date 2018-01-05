@@ -13,13 +13,13 @@
  * @param {Number} [width] The new width.
  * @returns {Number} The current width.
  */
-pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
+itemWidth = function(pItem, width) {
+  if(currRectMode !== CORNER) {
+    warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
-      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
+      itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
@@ -38,13 +38,13 @@ pub.itemWidth = function(pItem, width) {
  * @param {Number} [height] The new height.
  * @returns {Number} The current height.
  */
-pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
+itemHeight = function(pItem, height) {
+  if(currRectMode !== CORNER) {
+    warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
-      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
+      itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
@@ -64,10 +64,10 @@ pub.itemHeight = function(pItem, height) {
  * @param {Number} [y] The new y coordinate.
  * @returns {Object} Returns an object with the fields x and y.
  */
-pub.itemPosition = function(pItem, x, y) {
+itemPosition = function(pItem, x, y) {
 
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== CORNER) {
+    warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number" && typeof y === "number") {
@@ -95,9 +95,9 @@ pub.itemPosition = function(pItem, x, y) {
  * @param {Number} [height] The new height.
  * @returns {Object} Returns an object with the fields width and height.
  */
-pub.itemSize = function(pItem, width, height) {
+itemSize = function(pItem, width, height) {
   if(currRectMode !== b.CORNER) {
-    pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
   if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
 
@@ -140,7 +140,7 @@ var printMatrixHelper = function(elements) {
  * @cat Document
  * @subcat Transformation
  */
-var Matrix2D = pub.Matrix2D = function() {
+var Matrix2D = Matrix2D = function() {
   if (arguments.length === 0) {
     this.reset();
   } else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -486,8 +486,8 @@ Matrix2D.prototype = {
    */
   print: function() {
     var digits = printMatrixHelper(this.elements);
-    var output = "" + pub.nfs(this.elements[0], digits, 4) + " " + pub.nfs(this.elements[1], digits, 4) + " " + pub.nfs(this.elements[2], digits, 4) + "\n" + pub.nfs(this.elements[3], digits, 4) + " " + pub.nfs(this.elements[4], digits, 4) + " " + pub.nfs(this.elements[5], digits, 4) + "\n\n";
-    pub.println(output);
+    var output = "" + nfs(this.elements[0], digits, 4) + " " + nfs(this.elements[1], digits, 4) + " " + nfs(this.elements[2], digits, 4) + "\n" + nfs(this.elements[3], digits, 4) + " " + nfs(this.elements[4], digits, 4) + " " + nfs(this.elements[5], digits, 4) + "\n\n";
+    println(output);
   }
 };
 
@@ -500,7 +500,7 @@ Matrix2D.prototype = {
  * @param {Matrix2D} [matrix] The matrix to be set as new current matrix.
  * @returns {Matrix2D} Returns the current matrix.
  */
-pub.matrix = function(matrix) {
+matrix = function(matrix) {
 
   if(matrix instanceof Matrix2D) {
     currMatrix = matrix;
@@ -517,7 +517,7 @@ pub.matrix = function(matrix) {
  * @param {PageItem} obj The item to be transformed.
  * @param {Matrix2D} matrix The matrix to be applied.
  */
-pub.transform = function(obj, matrix) {
+transform = function(obj, matrix) {
 
   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -534,7 +534,7 @@ pub.transform = function(obj, matrix) {
  * @method applyMatrix
  * @param {Matrix2D} matrix The matrix to be applied.
  */
-pub.applyMatrix = function (matrix) {
+applyMatrix = function (matrix) {
   currMatrix.apply(matrix);
 };
 
@@ -545,7 +545,7 @@ pub.applyMatrix = function (matrix) {
  * @subcat Transformation
  * @method popMatrix
  */
-pub.popMatrix = function () {
+popMatrix = function () {
   if (matrixStack.length > 0) {
     currMatrix.set(matrixStack.pop());
   } else {
@@ -560,7 +560,7 @@ pub.popMatrix = function () {
  * @subcat Transformation
  * @method printMatrix
  */
-pub.printMatrix = function () {
+printMatrix = function () {
   currMatrix.print();
 };
 
@@ -571,7 +571,7 @@ pub.printMatrix = function () {
  * @subcat Transformation
  * @method pushMatrix
  */
-pub.pushMatrix = function () {
+pushMatrix = function () {
   matrixStack.push(currMatrix.array());
 };
 
@@ -582,7 +582,7 @@ pub.pushMatrix = function () {
  * @subcat Transformation
  * @method resetMatrix
  */
-pub.resetMatrix = function () {
+resetMatrix = function () {
   matrixStack = [];
   currMatrix = new Matrix2D();
 };
@@ -595,7 +595,7 @@ pub.resetMatrix = function () {
  * @method rotate
  * @param {Number} angle The angle specified in radians
  */
-pub.rotate = function (angle) {
+rotate = function (angle) {
   if(typeof arguments[0] === "undefined") {
     error("Please provide an angle for rotation.");
   }
@@ -612,7 +612,7 @@ pub.rotate = function (angle) {
  * @param {Number} scaleX The amount to scale the X axis.
  * @param {Number} scaleY The amount to scale the Y axis.
  */
-pub.scale = function (scaleX, scaleY) {
+scale = function (scaleX, scaleY) {
   if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) {
     error("Please provide valid x and/or y factors for scaling.");
   }
@@ -628,7 +628,7 @@ pub.scale = function (scaleX, scaleY) {
  * @param {Number} tx The amount of offset on the X axis.
  * @param {Number} ty The amount of offset on the Y axis.
  */
-pub.translate = function (tx, ty) {
+translate = function (tx, ty) {
   if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") {
     error("Please provide x and y coordinates for translation.");
   }

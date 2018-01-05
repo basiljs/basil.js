@@ -104,7 +104,7 @@ HashList = function () {
   that.items = {};
 
   for (var key in that.items) {
-    pub.println(key);
+    println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"

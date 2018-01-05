@@ -15,25 +15,25 @@
  * @param {Number} h Height of the ellipse.
  * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
-pub.ellipse = function(x, y, w, h) {
+ellipse = function(x, y, w, h) {
   if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
-  if (currEllipseMode === pub.CORNER) {
+  if (currEllipseMode === CORNER) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
     ellipseBounds[2] = y + h;
     ellipseBounds[3] = x + w;
-  } else if (currEllipseMode === pub.CORNERS) {
+  } else if (currEllipseMode === CORNERS) {
     ellipseBounds[0] = y;
     ellipseBounds[1] = x;
     ellipseBounds[2] = h;
     ellipseBounds[3] = w;
-  } else if (currEllipseMode === pub.CENTER) {
+  } else if (currEllipseMode === CENTER) {
     ellipseBounds[0] = y - (h / 2);
     ellipseBounds[1] = x - (w / 2);
     ellipseBounds[2] = y + (h / 2);
     ellipseBounds[3] = x + (w / 2);
-  } else if (currEllipseMode === pub.RADIUS) {
+  } else if (currEllipseMode === RADIUS) {
     ellipseBounds[0] = y - h;
     ellipseBounds[1] = x - w;
     ellipseBounds[2] = y + h;
@@ -53,7 +53,7 @@ pub.ellipse = function(x, y, w, h) {
   newOval.strokeColor = currStrokeColor;
   newOval.geometricBounds = ellipseBounds;
 
-  if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
+  if (currEllipseMode === CENTER || currEllipseMode === RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -82,7 +82,7 @@ pub.ellipse = function(x, y, w, h) {
  *  var vec2 = new b.Vector( x2, y2 );
  *  b.line( vec1, vec2 );
  */
-pub.line = function(x1, y1, x2, y2) {
+line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
     error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   }
@@ -112,7 +112,7 @@ pub.line = function(x1, y1, x2, y2) {
  * @method beginShape
  * @param {String} shapeMode Set to b.CLOSE if the new Path should be auto-closed.
  */
-pub.beginShape = function(shapeMode) {
+beginShape = function(shapeMode) {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
@@ -142,7 +142,7 @@ pub.beginShape = function(shapeMode) {
  * @param  {Number} [xRightHandle] X-coordinate of the right-direction point.
  * @param  {Number} [yRightHandle] Y-coordinate of the right-direction point.
  */
-pub.vertex = function() {
+vertex = function() {
   if (isArray(currVertexPoints)) {
     if (arguments.length === 2) {
       currVertexPoints.push([arguments[0], arguments[1]]);
@@ -179,52 +179,52 @@ pub.vertex = function() {
  * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
  */
-pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
+arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
     return false;
   }
   if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
-  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
-  startAngle %= pub.TWO_PI + o;
-  endAngle %= pub.TWO_PI + o;
+  var o = radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  startAngle %= TWO_PI + o;
+  endAngle %= TWO_PI + o;
   w /= 2;
   h /= 2;
 
-  if (currEllipseMode === pub.CORNER) {
+  if (currEllipseMode === CORNER) {
     cx = (cx - w);
     cy = (cy + h);
   }
-  else if (currEllipseMode === pub.CORNERS) {
+  else if (currEllipseMode === CORNERS) {
     // cx = (cx-w);
     // cy = (cy-h);
     // w -= cx;
     // h -= cy;
   }
-  else if (currEllipseMode === pub.RADIUS) {
+  else if (currEllipseMode === RADIUS) {
     w *= 2;
     h *= 2;
   }
 
-  var delta = pub.abs(endAngle - startAngle);
+  var delta = abs(endAngle - startAngle);
   var direction = (startAngle < endAngle) ? 1 : -1;
   var thetaStart = startAngle;
 
-  if(mode == pub.CHORD) {
-    pub.beginShape(pub.CLOSE);
+  if(mode == CHORD) {
+    beginShape(CLOSE);
   }
-  else if(mode == pub.PIE) {
-    pub.beginShape(pub.CLOSE);
-    pub.vertex(cx, cy);
+  else if(mode == PIE) {
+    beginShape(CLOSE);
+    vertex(cx, cy);
   }
   else {
-    pub.beginShape();
+    beginShape();
   }
-  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON;) {
-    var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
+  for (var theta = min(TWO_PI, delta); theta > EPSILON;) {
+    var thetaEnd = thetaStart + direction * min(theta, HALF_PI);
     var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
 
-    pub.vertex(
+    vertex(
       cx + points.startx,
       cy + points.starty,
       cx + points.startx,
@@ -232,7 +232,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
       cx + points.handle1x,
       cy + points.handle1y
     );
-    pub.vertex(
+    vertex(
       cx + points.endx,
       cy + points.endy,
       cx + points.handle2x,
@@ -241,10 +241,10 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
       cy + points.endy
     );
 
-    theta -= pub.abs(thetaEnd - thetaStart);
+    theta -= abs(thetaEnd - thetaStart);
     thetaStart = thetaEnd;
   }
-  return pub.endShape();
+  return endShape();
 };
 
 /*
@@ -264,8 +264,8 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var theta = (endAngle - startAngle);
 
-  var x0 = pub.cos(theta / 2.0);
-  var y0 = pub.sin(theta / 2.0);
+  var x0 = cos(theta / 2.0);
+  var y0 = sin(theta / 2.0);
   var x3 = x0;
   var y3 = 0 - y0;
   var x1 = (4.0 - x0) / 3.0;
@@ -274,8 +274,8 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var y2 = 0 - y1;
 
   var bezAng = startAngle + theta / 2.0;
-  var cBezAng = pub.cos(bezAng);
-  var sBezAng = pub.sin(bezAng);
+  var cBezAng = cos(bezAng);
+  var sBezAng = sin(bezAng);
 
   return {
     startx:   w * (cBezAng * x0 - sBezAng * y0),
@@ -300,7 +300,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
  * @subcat Primitives
  * @method addPath
  */
-pub.addPath = function() {
+addPath = function() {
   doAddPath();
   currPathPointer++;
 };
@@ -314,7 +314,7 @@ pub.addPath = function() {
  * @method endShape
  * @return {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
-pub.endShape = function() {
+endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -341,7 +341,7 @@ function doAddPath() {
 }
 
 function addPolygon() {
-  if (currShapeMode === pub.CLOSE) {
+  if (currShapeMode === CLOSE) {
     currPolygon = currentPage().polygons.add(currentLayer());
   } else {
     currPolygon = currentPage().graphicLines.add(currentLayer());
@@ -377,7 +377,7 @@ function notCalledBeginShapeError () {
  * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
-pub.rect = function(x, y, w, h, tl, tr, br, bl) {
+rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
@@ -385,22 +385,22 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
-  if (currRectMode === pub.CORNER) {
+  if (currRectMode === CORNER) {
     rectBounds[0] = y;
     rectBounds[1] = x;
     rectBounds[2] = y + h;
     rectBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
+  } else if (currRectMode === CORNERS) {
     rectBounds[0] = y;
     rectBounds[1] = x;
     rectBounds[2] = h;
     rectBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
+  } else if (currRectMode === CENTER) {
     rectBounds[0] = y - (h / 2);
     rectBounds[1] = x - (w / 2);
     rectBounds[2] = y + (h / 2);
     rectBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
+  } else if (currRectMode === RADIUS) {
     rectBounds[0] = y - h;
     rectBounds[1] = x - w;
     rectBounds[2] = y + h;
@@ -415,7 +415,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   newRect.fillTint = currFillTint;
   newRect.strokeColor = currStrokeColor;
 
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+  if (currRectMode === CENTER || currRectMode === RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -466,9 +466,9 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
  * @param {String} mode The rectMode to switch to: either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS.
  *
  */
-pub.rectMode = function (mode) {
+rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
+  if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currRectMode = mode;
     return currRectMode;
   } else {
@@ -491,9 +491,9 @@ pub.rectMode = function (mode) {
  * @method ellipseMode
  * @param {String} mode The ellipse mode to switch to: either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS.
  */
-pub.ellipseMode = function (mode) {
+ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
+  if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
@@ -509,7 +509,7 @@ pub.ellipseMode = function (mode) {
  * @method strokeWeight
  * @param {Number} weight The width of the stroke in points.
  */
-pub.strokeWeight = function (weight) {
+strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
@@ -528,7 +528,7 @@ pub.strokeWeight = function (weight) {
  * @param {Object} [props] An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle} The object style instance.
  */
-pub.objectStyle = function(itemOrName, props) {
+objectStyle = function(itemOrName, props) {
   var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -571,7 +571,7 @@ pub.objectStyle = function(itemOrName, props) {
  * @return {PageItem} The page item that the style was applied to.
  */
 
-pub.applyObjectStyle = function(item, style) {
+applyObjectStyle = function(item, style) {
 
   if(isString(style)) {
     var name = style;
@@ -599,14 +599,14 @@ pub.applyObjectStyle = function(item, style) {
  * @param {PageItem|Page} item The page item or page to duplicate.
  * @returns {Object} The new page item or page.
  */
-pub.duplicate = function(item) {
+duplicate = function(item) {
 
   if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
     var newItem = item.duplicate(currentPage());
     newItem.move(currentLayer());
 
-    if (currRectMode === pub.CENTER) {
+    if (currRectMode === CENTER) {
       newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
                        currMatrix.adobeMatrix());
@@ -620,7 +620,7 @@ pub.duplicate = function(item) {
 
   } else if(item instanceof Page) {
 
-    var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
+    var newPage = item.duplicate(LocationOptions.AFTER, page());
     return newPage;
 
   } else {

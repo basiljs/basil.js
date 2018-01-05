@@ -12,7 +12,7 @@
  * @param  {Document} [doc] The document to set the current document to.
  * @return {Document} The current document instance.
  */
-pub.doc = function(doc) {
+doc = function(doc) {
   if (doc instanceof Document) {
     setCurrDoc(doc);
   }
@@ -44,7 +44,7 @@ pub.doc = function(doc) {
  * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
  * b.size("A4", b.LANDSCAPE);
  */
-pub.size = function(widthOrPageSize, heightOrOrientation) {
+size = function(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
     warning("b.size()", "You have no open document.");
@@ -53,7 +53,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
   if (arguments.length === 0) {
     // no arguments given
     // return the current values
-    return {width: pub.width, height: pub.height};
+    return {width: width, height: height};
   }
 
   var doc = currentDoc();
@@ -65,12 +65,12 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     } catch (e) {
       error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
-    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
+    if(heightOrOrientation === PORTRAIT || heightOrOrientation === LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
-    pub.height = doc.documentPreferences.pageHeight;
-    pub.width = doc.documentPreferences.pageWidth;
-    return {width: pub.width, height: pub.height};
+    height = doc.documentPreferences.pageHeight;
+    width = doc.documentPreferences.pageWidth;
+    return {width: width, height: height};
   } else if(arguments.length === 1) {
     // only one argument set the first to the secound
     heightOrOrientation = widthOrPageSize;
@@ -83,10 +83,10 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     }
   };
   // set height and width
-  pub.height = heightOrOrientation;
-  pub.width = widthOrPageSize;
+  height = heightOrOrientation;
+  width = widthOrPageSize;
 
-  return {width: pub.width, height: pub.height};
+  return {width: width, height: height};
 
 };
 
@@ -98,7 +98,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
  * @param  {File} [file] The InDesign file instance to save the document to.
  */
-pub.close = function(saveOptions, file) {
+close = function(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
     if(typeof saveOptions === "boolean" && saveOptions === false) {
@@ -119,7 +119,7 @@ pub.close = function(saveOptions, file) {
  * @method revert
  * @return {Document} The reverted document.
  */
-pub.revert = function() {
+revert = function() {
 
   if(currDoc.saved && currDoc.modified) {
     var currFile = currDoc.fullName;
@@ -145,11 +145,11 @@ pub.revert = function() {
  * @param  {String} mode The canvas mode to set.
  * @return {String} The current canvas mode.
  */
-pub.canvasMode = function (m) {
+canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
-    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
+    if ((m === FACING_PAGES || m === FACING_MARGINS || m === FACING_BLEEDS) && !doc().documentPreferences.facingPages) {
       error("b.canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
@@ -171,7 +171,7 @@ pub.canvasMode = function (m) {
  * @param  {Number} v The desired vertical pasteboard margin.
  * @return {Array} The current horizontal, vertical pasteboard margins.
  */
-pub.pasteboard = function (h, v) {
+pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
@@ -193,7 +193,7 @@ pub.pasteboard = function (h, v) {
  * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
  * @return {Page} The current page instance.
  */
-pub.page = function(page) {
+page = function(page) {
   if (page instanceof Page) {
     currPage = page;
   } else if (typeof page !== "undefined" && page.hasOwnProperty("parentPage")) {
@@ -230,12 +230,12 @@ pub.page = function(page) {
  * @param  {String} [location] The location placement mode.
  * @return {Page} The new page.
  */
-pub.addPage = function(location) {
+addPage = function(location) {
 
   checkNull(location);
 
   if(arguments.length === 0) {
-    location = pub.AT_END;
+    location = AT_END;
   } // default
 
   var nP;
@@ -243,20 +243,20 @@ pub.addPage = function(location) {
 
     switch (location) {
 
-      case pub.AT_END:
+      case AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
-      case pub.AT_BEGINNING:
+      case AT_BEGINNING:
         nP = currentDoc().pages.add(location);
         break;
 
-      case pub.AFTER:
-        nP = currentDoc().pages.add(location, pub.page());
+      case AFTER:
+        nP = currentDoc().pages.add(location, page());
         break;
 
-      case pub.BEFORE:
-        nP = currentDoc().pages.add(location, pub.page());
+      case BEFORE:
+        nP = currentDoc().pages.add(location, page());
         break;
 
       default:
@@ -264,7 +264,7 @@ pub.addPage = function(location) {
         break;
     }
 
-    pub.page(nP);
+    page(nP);
     return nP;
 
   } catch (e) {
@@ -281,10 +281,10 @@ pub.addPage = function(location) {
  * @method removePage
  * @param  {Page|Number} [page] The page to be removed as Page object or page number.
  */
-pub.removePage = function (page) {
+removePage = function (page) {
   checkNull(page);
   if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
-    var p = pub.page(page);
+    var p = page(page);
     p.remove();
     currPage = null; // reset!
     currentPage();
@@ -302,7 +302,7 @@ pub.removePage = function (page) {
  * @param  {Page} [pageObj] The page you want to know the number of.
  * @return {Number} The page number within the document.
  */
-pub.pageNumber = function (pageObj) {
+pageNumber = function (pageObj) {
   checkNull(pageObj);
   if (typeof pageObj === "number") {
     error("b.pageNumber(), cannot be called with a Number argument.");
@@ -310,7 +310,7 @@ pub.pageNumber = function (pageObj) {
   if (pageObj instanceof Page) {
     return parseInt(pageObj.name); // current number of given page
   }
-  return parseInt(pub.page().name); // number of current page
+  return parseInt(page().name); // number of current page
 };
 
 /**
@@ -321,9 +321,9 @@ pub.pageNumber = function (pageObj) {
  * @method nextPage
  * @return {Page} The active page.
  */
-pub.nextPage = function () {
-  var p = pub.doc().pages.nextItem(currentPage());
-  return pub.page(p);
+nextPage = function () {
+  var p = doc().pages.nextItem(currentPage());
+  return page(p);
 };
 
 
@@ -335,9 +335,9 @@ pub.nextPage = function () {
  * @method previousPage
  * @return {Page} The active page.
  */
-pub.previousPage = function () {
-  var p = pub.doc().pages.previousItem(currentPage());
-  return pub.page(p);
+previousPage = function () {
+  var p = doc().pages.previousItem(currentPage());
+  return page(p);
 };
 
 
@@ -353,9 +353,9 @@ pub.previousPage = function () {
  * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pub.pageCount = function(pageCount) {
+pageCount = function(pageCount) {
   if(arguments.length) {
-    if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
+    if(isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
     } else {
       error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
@@ -373,7 +373,7 @@ pub.pageCount = function(pageCount) {
  * @method storyCount
  * @return {Number} count The amount of stories.
  */
-pub.storyCount = function() {
+storyCount = function() {
   return currentDoc().stories.count();
 };
 
@@ -387,7 +387,7 @@ pub.storyCount = function() {
  * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  */
-pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+addToStory = function(story, itemOrString, insertionPointorMode) {
 
   checkNull(story);
   checkNull(itemOrString);
@@ -406,13 +406,13 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
   addToStoryCache = app.libraries.add(libFile);
 
   // self-overwrite, see self-defining-functions pattern
-  pub.addToStory = function(story, itemOrString, insertionPointorMode) {
+  addToStory = function(story, itemOrString, insertionPointorMode) {
     if (story instanceof Story && arguments.length >= 2) {
       // add string
       if (isString(itemOrString)) {
         if (insertionPointorMode instanceof InsertionPoint) {
           insertionPointorMode.contents = itemOrString;
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+        } else if (insertionPointorMode === AT_BEGINNING) {
           story.insertionPoints.firstItem().contents = itemOrString;
         } else {
           story.insertionPoints.lastItem().contents = itemOrString;
@@ -426,7 +426,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
         var insertionPoint = null;
         if (insertionPointorMode instanceof InsertionPoint) {
           insertionPoint = insertionPointorMode;
-        } else if (insertionPointorMode === pub.AT_BEGINNING) {
+        } else if (insertionPointorMode === AT_BEGINNING) {
           insertionPoint = story.insertionPoints.firstItem();
         } else {
           insertionPoint = story.insertionPoints.lastItem();
@@ -452,7 +452,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
  * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
  * @return {Layer} The current layer instance.
  */
-pub.layer = function(layer) {
+layer = function(layer) {
   checkNull(layer);
   if (layer instanceof Layer) {
     currLayer = layer;
@@ -483,35 +483,35 @@ pub.layer = function(layer) {
  * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
  * @return {PageItem|Layer} The newly arranged page item or layer.
  */
-pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
+arrange = function(pItemOrLayer, positionOrDirection, reference) {
   checkNull(pItemOrLayer);
 
   if(pItemOrLayer.hasOwnProperty("parentPage")) {
-    if(positionOrDirection === pub.BACKWARD) {
+    if(positionOrDirection === BACKWARD) {
       pItemOrLayer.sendBackward();
-    } else if (positionOrDirection === pub.FORWARD) {
+    } else if (positionOrDirection === FORWARD) {
       pItemOrLayer.bringForward();
-    } else if (positionOrDirection === pub.BACK) {
+    } else if (positionOrDirection === BACK) {
       pItemOrLayer.sendToBack(reference);
-    } else if (positionOrDirection === pub.FRONT) {
+    } else if (positionOrDirection === FRONT) {
       pItemOrLayer.bringToFront(reference);
     } else {
       error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
     }
   } else if (pItemOrLayer instanceof Layer) {
-    if(positionOrDirection === pub.BACKWARD) {
+    if(positionOrDirection === BACKWARD) {
       if(pItemOrLayer.index === currentDoc().layers.length - 1) return;
       pItemOrLayer.move(LocationOptions.AFTER, currentDoc().layers[pItemOrLayer.index + 1]);
-    } else if (positionOrDirection === pub.FORWARD) {
+    } else if (positionOrDirection === FORWARD) {
       if(pItemOrLayer.index === 0) return;
       pItemOrLayer.move(LocationOptions.BEFORE, currentDoc().layers[pItemOrLayer.index - 1]);
-    } else if (positionOrDirection === pub.BACK) {
+    } else if (positionOrDirection === BACK) {
       if(!(reference instanceof Layer)) {
         pItemOrLayer.move(LocationOptions.AT_END);
       } else {
         pItemOrLayer.move(LocationOptions.AFTER, reference);
       }
-    } else if (positionOrDirection === pub.FRONT) {
+    } else if (positionOrDirection === FRONT) {
       if(!(reference instanceof Layer)) {
         pItemOrLayer.move(LocationOptions.AT_BEGINNING);
       } else {
@@ -540,7 +540,7 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
  *  @param {String} [name] The name of the group, only when creating a group from page items.
  *  @return {Group} The group instance.
  */
-pub.group = function (pItems, name) {
+group = function (pItems, name) {
   checkNull(pItems);
   var group;
   if(pItems instanceof Array) {
@@ -576,11 +576,11 @@ pub.group = function (pItems, name) {
  *  @param {Group|String} group The group instance or name of the group to ungroup.
  *  @return {Array} An array of the ungrouped page items.
  */
-pub.ungroup = function(group) {
+ungroup = function(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
-    ungroupedItems = pub.items(group);
+    ungroupedItems = items(group);
     group.ungroup();
   } else if(typeof group === "string") {
     // get the Group of the given name
@@ -588,7 +588,7 @@ pub.ungroup = function(group) {
     if (!group.isValid) {
       error("b.ungroup(), a group with the provided name doesn't exist.");
     }
-    ungroupedItems = pub.items(group);
+    ungroupedItems = items(group);
     group.ungroup();
   } else {
     error("b.ungroup(), not a valid group. Please select a valid group.");
@@ -607,7 +607,7 @@ pub.ungroup = function(group) {
  * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
-pub.labels = function(label, cb) {
+labels = function(label, cb) {
   checkNull(label);
   var result = [];
   var doc = currentDoc();
@@ -637,7 +637,7 @@ pub.labels = function(label, cb) {
  * @param  {String} label The label identifier.
  * @return {PageItem} The first PageItem with the given label.
  */
-pub.label = function(label) {
+label = function(label) {
   checkNull(label);
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
@@ -658,7 +658,7 @@ pub.label = function(label) {
  * @method selection
  * @return {Object} The first selected object.
  */
-pub.selection = function() {
+selection = function() {
   if(app.selection.length === 0) {
     error("b.selection(), selection is empty. Please select something.");
   }
@@ -674,7 +674,7 @@ pub.selection = function() {
  * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of selected object(s).
  */
-pub.selections = function(cb) {
+selections = function(cb) {
   if(app.selection.length === 0) {
     error("b.selections(), selection is empty. Please select something.");
   }
@@ -692,7 +692,7 @@ pub.selections = function(cb) {
  * @method nameOnPage
  * @return {Object} The first object on the active page with the given name.
  */
-pub.nameOnPage = function(name) {
+nameOnPage = function(name) {
   checkNull(name);
   var result = null;
   var page = currentPage();
@@ -704,7 +704,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pageNumber());
   }
   return result;
 };
@@ -719,27 +719,27 @@ pub.nameOnPage = function(name) {
  * @return {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
-pub.units = function (units) {
+units = function (units) {
   checkNull(units);
   if (arguments.length === 0) {
     return currUnits;
   }
 
-  if (units === pub.CM ||
-      units === pub.MM ||
-      units === pub.PT ||
-      units === pub.PX ||
-      units === pub.IN) {
+  if (units === CM ||
+      units === MM ||
+      units === PT ||
+      units === PX ||
+      units === IN) {
     var unitType = null;
-    if (units === pub.CM) {
+    if (units === CM) {
       unitType = MeasurementUnits.centimeters;
-    } else if (units === pub.MM) {
+    } else if (units === MM) {
       unitType = MeasurementUnits.millimeters;
-    } else if (units === pub.PT) {
+    } else if (units === PT) {
       unitType = MeasurementUnits.points;
-    } else if (units === pub.PX) {
+    } else if (units === PX) {
       unitType = MeasurementUnits.pixels;
-    } else if (units === pub.IN) {
+    } else if (units === IN) {
       unitType = MeasurementUnits.inches;
     }
     var doc = currentDoc();
@@ -768,7 +768,7 @@ pub.units = function (units) {
  * @param  {Number} x Position of the new guide line.
  * @return {Guide} New guide line.
  */
-pub.guideX = function (x) {
+guideX = function (x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -787,7 +787,7 @@ pub.guideX = function (x) {
  * @param  {Number} y Position of the new guide line.
  * @return {Guide} New guide line.
  */
-pub.guideY = function (y) {
+guideY = function (y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -811,21 +811,21 @@ pub.guideY = function (y) {
  * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
  * @return {Object} Current page margins with the properties: top, right, bottom, left.
  */
-pub.margins = function(top, right, bottom, left, pageNumber) {
+margins = function(top, right, bottom, left, pageNumber) {
   if (arguments.length === 0) {
-    return {top: pub.page(pageNumber).marginPreferences.top,
-      right: pub.page(pageNumber).marginPreferences.right,
-      bottom: pub.page(pageNumber).marginPreferences.bottom,
-      left: pub.page(pageNumber).marginPreferences.left
+    return {top: page(pageNumber).marginPreferences.top,
+      right: page(pageNumber).marginPreferences.right,
+      bottom: page(pageNumber).marginPreferences.bottom,
+      left: page(pageNumber).marginPreferences.left
     };
   } else if (arguments.length === 1) {
     right = bottom = left = top;
   }
   if(pageNumber !== undefined) {
-    pub.page(pageNumber).marginPreferences.top = top;
-    pub.page(pageNumber).marginPreferences.right = right;
-    pub.page(pageNumber).marginPreferences.bottom = bottom;
-    pub.page(pageNumber).marginPreferences.left = left;
+    page(pageNumber).marginPreferences.top = top;
+    page(pageNumber).marginPreferences.right = right;
+    page(pageNumber).marginPreferences.bottom = bottom;
+    page(pageNumber).marginPreferences.left = left;
   }else{
     currentPage().marginPreferences.top = top;
     currentPage().marginPreferences.right = right;
@@ -847,7 +847,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
  * @param {Number} [left] Left bleed.
  * @return {Object} Current document bleeds settings.
  */
-pub.bleeds = function(top, right, bottom, left) {
+bleeds = function(top, right, bottom, left) {
   if (arguments.length === 0) {
     return {top: currentDoc().documentPreferences.documentBleedTopOffset,
       right: currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
@@ -895,7 +895,7 @@ pub.bleeds = function(top, right, bottom, left) {
  * var myEllipse = b.ellipse(0, 0, 10, 10);
  * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
-pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
+inspect = function (obj, settings, level, branchArray, branchEnd) {
 
   var output, indent;
   output = indent = "";
@@ -994,13 +994,13 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
               value = ": Array (" + propValue.length + ")";
               if(propValue.length && level < settings.maxLevel - 1) {
                 // recursive inspecting of Array properties
-                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+                value += inspect(propValue, settings, level + 1, branchArray, !i);
               }
             } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
               value = ": " + propValue;
               if(level < settings.maxLevel - 1) {
                 // recursive inspecting of Object properties
-                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+                value += inspect(propValue, settings, level + 1, branchArray, !i);
               }
             } else {
               value = ": " + propValue.toString();
@@ -1075,7 +1075,7 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
  * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
  * b.savePDF(myExportFile);
  */
-pub.file = function(filePath) {
+file = function(filePath) {
   if(! isString(filePath)) {
     error("b.file(), wrong argument. Use a string that describes a file path.");
   }
@@ -1112,7 +1112,7 @@ pub.file = function(filePath) {
  * @example <caption>Get the data folder, if the document is already saved</caption>
  * var myDataFolder = b.folder();
  */
-pub.folder = function(folderPath) {
+folder = function(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
       return new Folder(projectFolder() + "/data/");
@@ -1161,16 +1161,16 @@ pub.folder = function(folderPath) {
  * var myDataFolder = b.folder();
  * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
  */
-pub.files = function(folder, settings, collectedFiles) {
+files = function(folder, settings, collectedFiles) {
   var topLevel;
   if (collectedFiles === undefined) {
     if(folder === undefined && currentDoc().saved) {
-      folder = pub.folder();
+      folder = folder();
     } else if (folder === undefined) {
       error("b.files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
     }
     if(isString(folder)) {
-      folder = pub.folder(folder);
+      folder = folder(folder);
     }
     if(!(folder instanceof Folder)) {
       error("b.files(), wrong first argument. Use folder or a string to describe a folder path.");
@@ -1202,7 +1202,7 @@ pub.files = function(folder, settings, collectedFiles) {
     for (var i = folderItems.length - 1; i >= 0; i--) {
       if (folderItems[i] instanceof Folder) {
         if(!settings.hidden && folderItems[i].displayName[0] === ".") continue;
-        collectedFiles = pub.files(folderItems[i], settings, collectedFiles);
+        collectedFiles = files(folderItems[i], settings, collectedFiles);
       }
     }
   }
@@ -1237,7 +1237,7 @@ pub.files = function(folder, settings, collectedFiles) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-pub.selectFile = function(settings) {
+selectFile = function(settings) {
   return createSelectionDialog(settings);
 };
 
@@ -1258,7 +1258,7 @@ pub.selectFile = function(settings) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-pub.selectFiles = function(settings) {
+selectFiles = function(settings) {
   if(!settings) {
     settings = {};
   }
@@ -1283,7 +1283,7 @@ pub.selectFiles = function(settings) {
  * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
  * b.selectFolder({folder: "~/Desktop/"});
  */
-pub.selectFolder = function(settings) {
+selectFolder = function(settings) {
   if(!settings) {
     settings = {};
   }
@@ -1304,7 +1304,7 @@ pub.selectFolder = function(settings) {
  * @method year
  * @return {Number} The current year.
  */
-pub.year = function() {
+year = function() {
   return (new Date()).getFullYear();
 };
 
@@ -1317,7 +1317,7 @@ pub.year = function() {
  * @method month
  * @return {Number} The current month number.
  */
-pub.month = function() {
+month = function() {
   return (new Date()).getMonth() + 1;
 };
 
@@ -1330,7 +1330,7 @@ pub.month = function() {
  * @method day
  * @return {Number} The current day number.
  */
-pub.day = function() {
+day = function() {
   return (new Date()).getDate();
 };
 
@@ -1343,7 +1343,7 @@ pub.day = function() {
  * @method weekday
  * @return {String} The current weekday name.
  */
-pub.weekday = function() {
+weekday = function() {
   var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   return weekdays[(new Date()).getDay()];
 };
@@ -1357,7 +1357,7 @@ pub.weekday = function() {
  * @method hour
  * @return {Number} The current hour.
  */
-pub.hour = function() {
+hour = function() {
   return (new Date()).getHours();
 };
 
@@ -1370,7 +1370,7 @@ pub.hour = function() {
  * @method minute
  * @return {Number} The current minute.
  */
-pub.minute = function() {
+minute = function() {
   return (new Date()).getMinutes();
 };
 
@@ -1383,7 +1383,7 @@ pub.minute = function() {
  * @method second
  * @return {Number} The current second.
  */
-pub.second = function() {
+second = function() {
   return (new Date()).getSeconds();
 };
 
@@ -1396,7 +1396,7 @@ pub.second = function() {
  * @method millis
  * @return {Number} The current milli.
  */
-pub.millis = function() {
+millis = function() {
   return Date.now() - startTime;
 };
 
@@ -1409,7 +1409,7 @@ pub.millis = function() {
  * @method millisecond
  * @return {Number} The current millisecond.
  */
-pub.millisecond = function() {
+millisecond = function() {
   return (new Date()).getMilliseconds();
 };
 
@@ -1422,14 +1422,14 @@ pub.millisecond = function() {
  * @method timestamp
  * @return {String} The current time in YYYYMMDD_HHMMSS.
  */
-pub.timestamp = function() {
+timestamp = function() {
   var dt = new Date();
   var dtf = dt.getFullYear();
-  dtf += pub.nf(dt.getMonth() + 1, 2);
-  dtf += pub.nf(dt.getDate(), 2);
+  dtf += nf(dt.getMonth() + 1, 2);
+  dtf += nf(dt.getDate(), 2);
   dtf += "_";
-  dtf += pub.nf(dt.getHours(), 2);
-  dtf += pub.nf(dt.getMinutes(), 2);
-  dtf += pub.nf(dt.getSeconds(), 2);
+  dtf += nf(dt.getHours(), 2);
+  dtf += nf(dt.getMinutes(), 2);
+  dtf += nf(dt.getSeconds(), 2);
   return dtf;
 };

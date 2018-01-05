@@ -8,7 +8,7 @@
  * @cat Document
  * @subcat Units
  */
-pub.PT = "pt";
+const PT = "pt";
 
 /**
  * Used with b.units() to set the coordinate system to pixels.
@@ -16,7 +16,7 @@ pub.PT = "pt";
  * @cat Document
  * @subcat Units
  */
-pub.PX = "px";
+const PX = "px";
 
 /**
  * Used with b.units() to set the coordinate system to centimeters.
@@ -24,8 +24,7 @@ pub.PX = "px";
  * @cat Document
  * @subcat Units
  */
-
-pub.CM = "cm";
+const CM = "cm";
 
 /**
  * Used with b.units() to set the coordinate system to millimeters.
@@ -33,7 +32,7 @@ pub.CM = "cm";
  * @cat Document
  * @subcat Units
  */
-pub.MM = "mm";
+const MM = "mm";
 
 /**
  * Used with b.units() to set the coordinate system to inches.
@@ -41,35 +40,35 @@ pub.MM = "mm";
  * @cat Document
  * @subcat Units
  */
-pub.IN = "inch";
+const IN = "inch";
 
 /**
  * Used with b.colorMode() to set the color space.
  * @property RGB {String}
  * @cat Color
  */
-pub.RGB = "rgb";
+const RGB = "rgb";
 
 /**
  * Used with b.colorMode() to set the color space.
  * @property CMYK {String}
  * @cat Color
  */
-pub.CMYK = "cmyk";
+const CMYK = "cmyk";
 
 /**
  * Used with b.gradientMode() to set the gradient mode.
  * @property LINEAR {String}
  * @cat Color
  */
-pub.LINEAR = "linear";
+const LINEAR = "linear";
 
 /**
  * Used with b.gradientMode() to set the gradient mode.
  * @property RADIAL {String}
  * @cat Color
  */
-pub.RADIAL = "radial";
+const RADIAL = "radial";
 
 /**
  * Corner, used for drawing modes.
@@ -77,7 +76,7 @@ pub.RADIAL = "radial";
  * @cat Document
  * @subcat Primitives
  */
-pub.CORNER = "corner";
+const CORNER = "corner";
 
 /**
  * Corners, used for drawing modes.
@@ -85,7 +84,7 @@ pub.CORNER = "corner";
  * @cat Document
  * @subcat Primitives
  */
-pub.CORNERS = "corners";
+const CORNERS = "corners";
 
 /**
  * Center, used for drawing modes.
@@ -93,7 +92,7 @@ pub.CORNERS = "corners";
  * @cat Document
  * @subcat Primitives
  */
-pub.CENTER = "center";
+const CENTER = "center";
 
 /**
  * Radius, used for drawing modes.
@@ -101,7 +100,7 @@ pub.CENTER = "center";
  * @cat Document
  * @subcat Primitives
  */
-pub.RADIUS = "radius";
+const RADIUS = "radius";
 
 /**
  * Close, used for endShape() modes.
@@ -109,7 +108,7 @@ pub.RADIUS = "radius";
  * @cat Document
  * @subcat Primitives
  */
-pub.CLOSE = "close";
+const CLOSE = "close";
 
 /**
  * Open, used for arc() modes.
@@ -117,7 +116,7 @@ pub.CLOSE = "close";
  * @cat Document
  * @subcat Primitives
  */
-pub.OPEN = "open";
+const OPEN = "open";
 
 /**
  * Chord, used for arc() modes.
@@ -125,7 +124,7 @@ pub.OPEN = "open";
  * @cat Document
  * @subcat Primitives
  */
-pub.CHORD = "chord";
+const CHORD = "chord";
 
 /**
  * Pie, used for arc() modes.
@@ -133,7 +132,7 @@ pub.CHORD = "chord";
  * @cat Document
  * @subcat Primitives
  */
-pub.PIE = "pie";
+const PIE = "pie";
 
 /**
  * Two Pi
@@ -141,7 +140,7 @@ pub.PIE = "pie";
  * @cat Math
  * @subcat Constants
  */
-pub.TWO_PI = Math.PI * 2;
+const TWO_PI = Math.PI * 2;
 
 /**
  * Pi
@@ -149,7 +148,7 @@ pub.TWO_PI = Math.PI * 2;
  * @cat Math
  * @subcat Constants
  */
-pub.PI = Math.PI;
+const PI = Math.PI;
 
 /**
  * Half Pi
@@ -157,7 +156,7 @@ pub.PI = Math.PI;
  * @cat Math
  * @subcat Constants
  */
-pub.HALF_PI = Math.PI / 2;
+const HALF_PI = Math.PI / 2;
 
 /**
  * Quarter Pi
@@ -165,7 +164,7 @@ pub.HALF_PI = Math.PI / 2;
  * @cat Math
  * @subcat Constants
  */
-pub.QUARTER_PI = Math.PI / 4;
+const QUARTER_PI = Math.PI / 4;
 
 /**
  * Sin Cos Length
@@ -173,7 +172,7 @@ pub.QUARTER_PI = Math.PI / 4;
  * @cat Math
  * @subcat Constants
  */
-pub.SINCOS_LENGTH = 720;
+const SINCOS_LENGTH = 720;
 
 /**
  * Epsilon
@@ -181,7 +180,7 @@ pub.SINCOS_LENGTH = 720;
  * @cat Math
  * @subcat Constants
  */
-pub.EPSILON = 10e-12;
+const EPSILON = 10e-12;
 
 /**
  * Kappa
@@ -190,7 +189,7 @@ pub.EPSILON = 10e-12;
  * @subcat Constants
  */
 // Kappa, see: http://www.whizkidtech.redprince.net/bezier/circle/kappa/
-pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
+const KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
 
 /**
  * Used with b.canvasMode() to set the canvas to the full current page.
@@ -198,7 +197,7 @@ pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
  * @cat Document
  * @subcat Page
  */
-pub.PAGE = "page";
+const PAGE = "page";
 
 /**
  * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
@@ -206,7 +205,7 @@ pub.PAGE = "page";
  * @cat Document
  * @subcat Page
  */
-pub.MARGIN = "margin";
+const MARGIN = "margin";
 
 /**
  * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
@@ -214,7 +213,7 @@ pub.MARGIN = "margin";
  * @cat Document
  * @subcat Page
  */
-pub.BLEED = "bleed";
+const BLEED = "bleed";
 
 /**
  * Used with b.canvasMode() to set the canvas to use the current facing pages.
@@ -222,7 +221,7 @@ pub.BLEED = "bleed";
  * @cat Document
  * @subcat Page
  */
-pub.FACING_PAGES = "facing_pages";
+const FACING_PAGES = "facing_pages";
 
 /**
  * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
@@ -230,7 +229,7 @@ pub.FACING_PAGES = "facing_pages";
  * @cat Document
  * @subcat Page
  */
-pub.FACING_BLEEDS = "facing_bleeds";
+const FACING_BLEEDS = "facing_bleeds";
 
 /**
  * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
@@ -238,7 +237,7 @@ pub.FACING_BLEEDS = "facing_bleeds";
  * @cat Document
  * @subcat Page
  */
-pub.FACING_MARGINS = "facing_margins";
+const FACING_MARGINS = "facing_margins";
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -246,7 +245,7 @@ pub.FACING_MARGINS = "facing_margins";
  * @cat Document
  * @subcat Page
  */
-pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
+const AT_BEGINNING = LocationOptions.AT_BEGINNING;
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -254,7 +253,7 @@ pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
  * @cat Document
  * @subcat Page
  */
-pub.AT_END = LocationOptions.AT_END;
+const AT_END = LocationOptions.AT_END;
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -262,7 +261,7 @@ pub.AT_END = LocationOptions.AT_END;
  * @cat Document
  * @subcat Page
  */
-pub.BEFORE = LocationOptions.BEFORE;
+const BEFORE = LocationOptions.BEFORE;
 
 /**
  * Used with b.addPage() to set the position of the new page in the book.
@@ -270,7 +269,7 @@ pub.BEFORE = LocationOptions.BEFORE;
  * @cat Document
  * @subcat Page
  */
-pub.AFTER = LocationOptions.AFTER;
+const AFTER = LocationOptions.AFTER;
 
 /**
  * Used with b.arrange() to bring a page item to the front or to bring it in front of a given reference object.
@@ -278,7 +277,7 @@ pub.AFTER = LocationOptions.AFTER;
  * @cat Document
  * @subcat Page
  */
-pub.FRONT = "front";
+const FRONT = "front";
 
 /**
  * Used with b.arrange() to send a page item to the back or to send it behind a given reference object.
@@ -286,7 +285,7 @@ pub.FRONT = "front";
  * @cat Document
  * @subcat Page
  */
-pub.BACK = "back";
+const BACK = "back";
 
 /**
  * Used with b.arrange() to bring a page item one level forward in its layer.
@@ -294,7 +293,7 @@ pub.BACK = "back";
  * @cat Document
  * @subcat Page
  */
-pub.FORWARD = "forward";
+const FORWARD = "forward";
 
 /**
  * Used with b.arrange() to send a page item one level backward in its layer.
@@ -302,7 +301,7 @@ pub.FORWARD = "forward";
  * @cat Document
  * @subcat Page
  */
-pub.BACKWARD = "backward";
+const BACKWARD = "backward";
 
 /**
  * Used with b.size() to set the orientation of a given page size to portrait.
@@ -310,7 +309,7 @@ pub.BACKWARD = "backward";
  * @cat Document
  * @subcat Page
  */
-pub.PORTRAIT = PageOrientation.PORTRAIT;
+const PORTRAIT = PageOrientation.PORTRAIT;
 
 /**
  * Used with b.size() to set the orientation of a given page size to landscape.
@@ -318,14 +317,14 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
  * @cat Document
  * @subcat Page
  */
-pub.LANDSCAPE = PageOrientation.LANDSCAPE;
+const LANDSCAPE = PageOrientation.LANDSCAPE;
 
 /**
  * Returns a Lorem ipsum string that can be used for testing.
  * @property LOREM {String}
  * @cat Typography
  */
-pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+const LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
 /**
 * The name of the current script.
@@ -336,7 +335,7 @@ var stackArray = $.stack.
             replace(/[\n]toString\(\)[\n]$/,'').
             replace(/[\[\]']+/g,'').
             split(/[\n]/);
-pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
+const SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
 
 /**
 * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
@@ -344,7 +343,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 * @cat Environment
 * @subcat modes
 */
-pub.MODESILENT = "ModeSilent";
+const MODESILENT = "ModeSilent";
 
 /**
  * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time - do not work in InDesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
@@ -352,7 +351,7 @@ pub.MODESILENT = "ModeSilent";
  * @cat Environment
  * @subcat modes
  */
-pub.MODEHIDDEN = "ModeHidden";
+const MODEHIDDEN = "ModeHidden";
 
 /**
  * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
@@ -360,9 +359,9 @@ pub.MODEHIDDEN = "ModeHidden";
  * @cat Environment
  * @subcat modes
  */
-pub.MODEVISIBLE = "ModeVisible";
-pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
+const MODEVISIBLE = "ModeVisible";
+const DEFAULTMODE = const MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
 
 
-var ERROR_PREFIX = "\nBasil.js Error -> ",
+const ERROR_PREFIX = "\nBasil.js Error -> ",
   WARNING_PREFIX = "### Basil Warning -> ";

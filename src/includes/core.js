@@ -12,9 +12,9 @@ var init = function() {
   currStrokeWeight = 1;
   currStrokeTint = 100;
   currFillTint = 100;
-  currCanvasMode = pub.PAGE;
-  currColorMode = pub.RGB;
-  currGradientMode = pub.LINEAR;
+  currCanvasMode = PAGE;
+  currColorMode = RGB;
+  currGradientMode = LINEAR;
   currDialogFolder = Folder("~");
 };
 
@@ -35,15 +35,15 @@ var init = function() {
  * @method go
  * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
  */
-pub.go = function (mode) {
+go = function (mode) {
   if (!mode) {
-    mode = pub.DEFAULTMODE;
+    mode = DEFAULTMODE;
   }
-  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
+  app.scriptPreferences.enableRedraw = (mode == MODEVISIBLE || mode == MODEHIDDEN);
   app.preflightOptions.preflightOff = true;
 
   currentDoc(mode);
-  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+  if (mode == MODEHIDDEN || mode == MODESILENT) {
     progressPanel = new Progress();
   }
 
@@ -60,7 +60,7 @@ pub.go = function (mode) {
     exit();
   }
 
-  var executionDuration = pub.millis();
+  var executionDuration = millis();
   if (executionDuration < 1000) {
     println("[Finished in " + executionDuration + "ms]");
   } else {
@@ -95,7 +95,7 @@ pub.go = function (mode) {
  * @method loop
  * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
  */
-pub.loop = function(framerate) {
+loop = function(framerate) {
   // before running the loop we need to check if
   // the stop script exists
     // the Script looks for the lib folder next to itself
@@ -161,7 +161,7 @@ pub.loop = function(framerate) {
  * @cat Environment
  * @method noLoop
  */
-pub.noLoop = function() {
+noLoop = function() {
   var allIdleTasks = app.idleTasks;
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
@@ -179,7 +179,7 @@ var runSetup = function() {
     if (typeof $.global.setup === "function") {
       $.global.setup();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
 var runDrawOnce = function() {
@@ -187,7 +187,7 @@ var runDrawOnce = function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
 var runDrawLoop = function() {
@@ -195,15 +195,15 @@ var runDrawLoop = function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
 var welcome = function() {
   clearConsole();
   println("Running "
-      + pub.SCRIPTNAME
+      + SCRIPTNAME
       + " using basil.js "
-      + pub.VERSION
+      + VERSION
       + " ...");
 };
 
@@ -216,7 +216,7 @@ var currentDoc = function (mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == pub.MODEHIDDEN) {
+      if (mode == MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -227,7 +227,7 @@ var currentDoc = function (mode) {
       }
     }
     else {
-      doc = app.documents.add(mode != pub.MODEHIDDEN);
+      doc = app.documents.add(mode != MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -257,7 +257,7 @@ var setCurrDoc = function(doc) {
   currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
-  pub.units(pub.PT);
+  units(PT);
 
   updatePublicPageSizeVars();
 };
@@ -275,7 +275,7 @@ var Progress = function () {
       }
       this.panel.statusbar = this.panel.add("edittext", [0, 0, 400, 300], "", {multiline: true, scrolling: false, readonly: true});
     }
-    this.panel.statusbar.text = "Using basil.js " + pub.VERSION + " ... \nEntering background render mode ...";
+    this.panel.statusbar.text = "Using basil.js " + VERSION + " ... \nEntering background render mode ...";
     this.panel.show();
   };
   this.closePanel = function () {
@@ -310,13 +310,13 @@ var resetCurrDoc = function() {
   currFillColor = "Black";
   noneSwatchColor = "None";
   currStrokeColor = "Black";
-  currRectMode = pub.CORNER;
-  currEllipseMode = pub.CENTER;
+  currRectMode = CORNER;
+  currEllipseMode = CENTER;
   currYAlign = VerticalJustification.TOP_ALIGN;
   currFont = null;
-  currImageMode = pub.CORNER;
+  currImageMode = CORNER;
 
-  pub.resetMatrix();
+  resetMatrix();
 };
 
 var currentLayer = function() {
@@ -350,91 +350,91 @@ var updatePublicPageSizeVars = function () {
 
   var widthOffset = heightOffset = 0;
 
-  switch(pub.canvasMode()) {
+  switch(canvasMode()) {
 
-    case pub.PAGE:
+    case PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      pub.resetMatrix();
+      resetMatrix();
       singlePageMode = true;
       break;
 
-    case pub.MARGIN:
+    case MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      resetMatrix();
+      translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
-    case pub.BLEED:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+    case BLEED:
+      widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset + doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = doc().documentPreferences.documentBleedBottomOffset + doc().documentPreferences.documentBleedTopOffset;
+      resetMatrix();
+      translate(-doc().documentPreferences.documentBleedInsideOrLeftOffset, -doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.resetMatrix();
-        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
+        resetMatrix();
+        translate(0, -doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
 
-    case pub.FACING_PAGES:
+    case FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      pub.resetMatrix();
+      resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
+      width = w * 2;
 
       if(currentPage().name === "1") {
-        pub.width = w;
+        width = w;
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w, 0);
+        translate(-w, 0);
       }
 
 
-      pub.height = h;
+      height = h;
       break;
 
-    case pub.FACING_BLEEDS:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
+    case FACING_BLEEDS:
+      widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset + doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = doc().documentPreferences.documentBleedBottomOffset + doc().documentPreferences.documentBleedTopOffset;
+      resetMatrix();
+      translate(-doc().documentPreferences.documentBleedInsideOrLeftOffset, -doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      width = w * 2;
+      height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w + widthOffset / 2, 0);
+        translate(-w + widthOffset / 2, 0);
       }
 
       break;
 
-    case pub.FACING_MARGINS:
+    case FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      resetMatrix();
+      translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      width = w * 2;
+      height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w - widthOffset / 2, 0);
+        translate(-w - widthOffset / 2, 0);
       }
 
       return; // early exit
@@ -448,8 +448,8 @@ var updatePublicPageSizeVars = function () {
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
     var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-    pub.width = w;
-    pub.height = h;
+    width = w;
+    height = h;
   }
 };
 
@@ -476,7 +476,7 @@ var createSelectionDialog = function(settings) {
     settings.filter = [settings.filter];
   }
   if(isString(settings.folder)) {
-    settings.folder = pub.folder(settings.folder);
+    settings.folder = folder(settings.folder);
   }
   if(!(settings.folder instanceof Folder) || !settings.folder.exists) {
     settings.folder = currDialogFolder;
@@ -530,19 +530,19 @@ var getParentFunctionName = function(level) {
     return stackArray[stackArray.length - 2 - level];
 }
 
-var checkNull = pub.checkNull = function (obj) {
+var checkNull = checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
 var isNull = checkNull; // legacy
 
-var error = pub.error = function(msg) {
+var error = error = function(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-var warning = pub.warning = function(msg) {
+var warning = warning = function(msg) {
   println(WARNING_PREFIX + msg);
 };
 
