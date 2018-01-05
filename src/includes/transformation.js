@@ -2,6 +2,80 @@
 // src/includes/transformation.js
 // ----------------------------------------
 
+/**
+ * @description TODO
+ *
+ * @cat Document
+ * @subcat Transformation
+ * @method transform
+ * @param {PageItem} pItem The PageItem to transform.
+ * @param {String} type The type of transformation.
+ * @param {Number|Array} value The value(s) of the transformation.
+ * @returns {Number} The current width.
+ */
+pub.transform = function(pItem, type, value) {
+  println("CP0");
+  if(!pItem || !pItem.hasOwnProperty("geometricBounds") || !isString(type)) {
+    error("b.transform(), invalid parameters. Use: page item, type, value.");
+  }
+      println("CP1");
+
+  // TODO
+  // x, y, Position, Size, Shear
+
+  var tm = app.transformationMatrices.add();
+  var bounds = pItem.geometricBounds;
+  var w = Math.abs(bounds[3] - bounds[1]);
+  var h = Math.abs(bounds[2] - bounds[0]);
+
+  if(type === "width") {
+    println("CPwidth");
+    if(isNumber(value)) {
+      tm = tm.scaleMatrix(value / w, 1);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+    } else {
+      return w;
+    }
+  } else if (type === "height") {
+    println("CPheight");
+    if(isNumber(value)) {
+      tm = tm.scaleMatrix(1, value / h);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.bottomRightAnchor, tm);
+    } else {
+      return h;
+    }
+  } else if (type === "size") {
+    println("CPsize");
+    if(isArray(value)) {
+      tm = tm.scaleMatrix(value[0] / w, value[1] / h);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.bottomRightAnchor, tm);
+    } else {
+      return {width: w, height: h};
+    }
+  } else if (type === "rotation") {
+    if(isNumber(value)) {
+      tm = tm.rotateMatrix(-pItem.rotationAngle - value);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+    } else {
+      return -pItem.rotationAngle;
+    }
+  } else if (type === "scale") {
+    if(isNumber(value)) {
+      tm = tm.scaleMatrix(value, value);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+    } else if(isArray(value)) {
+      tm = tm.scaleMatrix(value[0], value[1]);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+    }
+    // TODO figure out what to return with scale
+    // maybe the global "Adjust scaling percentage" option needs to be turned on in the beginning of the script
+  } else if (type === "position") {
+
+  }
+
+}
+
+
 /* global precision */
 /**
  * @description Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
@@ -213,14 +287,14 @@ Matrix2D.prototype = {
    * @return {Array} Returns an Adobe Matrix.
    */
   adobeMatrix: function array(x, y) {
-    // this seems to work: 
+    // this seems to work:
     // it's important to know the position of the object around which it will be rotated and scaled.
 
     // 1. making a copy of this matrix
     var tmpMatrix = this.get();
     //tmpMatrix.print();
-    
-    // 2. pre-applying a translation as if the object was starting from the origin 
+
+    // 2. pre-applying a translation as if the object was starting from the origin
     tmpMatrix.preApply([1, 0, -x, 0, 1, -y]);
     //tmpMatrix.print();
 
@@ -531,14 +605,14 @@ pub.matrix = function(matrix) {
  * @param {PageItem} obj The item to be transformed.
  * @param {Matrix2D} matrix The matrix to be applied.
  */
-pub.transform = function(obj, matrix) {
+// pub.transform = function(obj, matrix) {
 
-  obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   matrix.adobeMatrix()
-  );
+//   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+//                    AnchorPoint.TOP_LEFT_ANCHOR,
+//                    matrix.adobeMatrix()
+//   );
 
-};
+// };
 
 /**
  *@description Multiplies the current matrix by the one specified through the parameters.
