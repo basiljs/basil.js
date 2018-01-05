@@ -44,20 +44,18 @@
 /* globals init */
 // @target "InDesign";
 
-(function(glob, app, undef) {
+/**
+ * @class b
+ * @static
+ */
+var pub = {};
 
-  /**
-   * @class b
-   * @static
-   */
-  var pub = {};
-
-  /**
-   * The basil version
-   * @property VERSION {String}
-   * @cat Environment
-   */
-  pub.VERSION = "1.1.0";
+/**
+ * The basil version
+ * @property VERSION {String}
+ * @cat Environment
+ */
+pub.VERSION = "1.1.0";
 
 // ----------------------------------------
 // src/includes/constants.js
@@ -559,23 +557,20 @@ if (!Array.prototype.map) {
 * @param {Array} collection The array to be processed.
 * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
 */
-if (!glob.forEach) {
-  glob.forEach = function(collection, cb) {
-    for (var i = 0, len = collection.length; i < len; i++) {
+forEach = function(collection, cb) {
+  for (var i = 0, len = collection.length; i < len; i++) {
 
-      if(!isValid(collection[i])) {
-        warning("forEach(), invalid object processed.");
-        continue;
-      }
-
-      if(cb(collection[i], i) === false) {
-        return false;
-      }
+    if(!isValid(collection[i])) {
+      warning("forEach(), invalid object processed.");
+      continue;
     }
-    return true;
-  };
-}
-pub.forEach = glob.forEach;
+
+    if(cb(collection[i], i) === false) {
+      return false;
+    }
+  }
+  return true;
+};
 
 /**
  * HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
@@ -586,7 +581,7 @@ pub.forEach = glob.forEach;
  * @method HashList
  */
 // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
-glob.HashList = function () {
+HashList = function () {
   var that = {};
   that.length = 0;
   that.items = {};
@@ -788,7 +783,6 @@ glob.HashList = function () {
 
 // all initialisations should go here
 var init = function() {
-  glob.b = pub;
 
   welcome();
 
@@ -833,11 +827,11 @@ pub.go = function (mode) {
   }
 
   try {
-    if (typeof glob.setup === "function") {
+    if (typeof $.global.setup === "function") {
       runSetup();
     }
 
-    if (typeof glob.draw === "function") {
+    if (typeof $.global.draw === "function") {
       runDrawOnce();
     }
   } catch (e) {
@@ -908,7 +902,7 @@ pub.loop = function(framerate) {
       }
       var libFolder = Folder(currentBasilFolderPath + "/lib");
       var stopScript = new File(libFolder.fsName + "/stop.jsx");
-      stopScript.open("w", undef, undef);
+      stopScript.open("w", undefined, undefined);
     // set encoding and linefeeds
       stopScript.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
       stopScript.encoding = "UTF-8";
@@ -961,26 +955,26 @@ pub.noLoop = function() {
 
 var runSetup = function() {
   app.doScript(function() {
-    if (typeof glob.setup === "function") {
-      glob.setup();
+    if (typeof $.global.setup === "function") {
+      $.global.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawOnce = function() {
   app.doScript(function() {
-    if (typeof glob.draw === "function") {
-      glob.draw();
+    if (typeof $.global.draw === "function") {
+      $.global.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawLoop = function() {
   app.doScript(function() {
-    if (typeof glob.draw === "function") {
-      glob.draw();
+    if (typeof $.global.draw === "function") {
+      $.global.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var welcome = function() {
@@ -6762,11 +6756,11 @@ pub.Random = function(seed) {
     haveNextNextGaussian = true;
     return v1 * multiplier;
   };
-  random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble;
+  random = seed === undefined ? Math.random : (new Marsaglia(seed)).nextDouble;
 };
 
 function PerlinNoise(seed) {
-  var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
+  var rnd = seed !== undefined ? new Marsaglia(seed) : Marsaglia.createRandomized();
   var i, j;
   var perm = [];
   for (i = 0; i < 256; ++i) perm[i] = i;
@@ -6835,10 +6829,10 @@ function PerlinNoise(seed) {
   };
 }
 var noiseProfile = {
-  generator: undef,
+  generator: undefined,
   octaves: 4,
   fallout: 0.5,
-  seed: undef
+  seed: undefined
 };
 
 /**
@@ -6859,7 +6853,7 @@ var noiseProfile = {
  * @return {Number} The noise value.
  */
 pub.noise = function(x, y, z) {
-  if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
+  if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
   var generator = noiseProfile.generator;
   var effect = 1,
     k = 1,
@@ -6895,7 +6889,7 @@ pub.noise = function(x, y, z) {
  */
 pub.noiseDetail = function(octaves, fallout) {
   noiseProfile.octaves = octaves;
-  if (fallout !== undef) noiseProfile.fallout = fallout;
+  if (fallout !== undefined) noiseProfile.fallout = fallout;
 };
 
 /**
@@ -6908,7 +6902,7 @@ pub.noiseDetail = function(octaves, fallout) {
  */
 pub.noiseSeed = function(seed) {
   noiseProfile.seed = seed;
-  noiseProfile.generator = undef;
+  noiseProfile.generator = undefined;
 };
 
 
@@ -7004,7 +6998,7 @@ pub.bounds = function (obj) {
 pub.itemX = function(pItem, x) {
   var off = 0;
   if(currRectMode !== b.CORNER) pub.warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
@@ -7030,7 +7024,7 @@ pub.itemX = function(pItem, x) {
 pub.itemY = function(pItem, y) {
   var off = 0;
   if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefine && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
@@ -7063,7 +7057,7 @@ pub.itemWidth = function(pItem, width) {
   if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
       pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
@@ -7088,7 +7082,7 @@ pub.itemHeight = function(pItem, height) {
   if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
       pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
@@ -7115,7 +7109,7 @@ pub.itemPosition = function(pItem, x, y) {
   if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
-  if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number" && typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
@@ -7687,7 +7681,4 @@ pub.translate = function (tx, ty) {
 
 // Hey Ken, this is your new home...
 
-  init();
-
-})(this, app);
-
+init();

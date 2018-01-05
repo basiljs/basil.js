@@ -4,7 +4,6 @@
 
 // all initialisations should go here
 var init = function() {
-  glob.b = pub;
 
   welcome();
 
@@ -49,11 +48,11 @@ pub.go = function (mode) {
   }
 
   try {
-    if (typeof glob.setup === "function") {
+    if (typeof $.global.setup === "function") {
       runSetup();
     }
 
-    if (typeof glob.draw === "function") {
+    if (typeof $.global.draw === "function") {
       runDrawOnce();
     }
   } catch (e) {
@@ -124,7 +123,7 @@ pub.loop = function(framerate) {
       }
       var libFolder = Folder(currentBasilFolderPath + "/lib");
       var stopScript = new File(libFolder.fsName + "/stop.jsx");
-      stopScript.open("w", undef, undef);
+      stopScript.open("w", undefined, undefined);
     // set encoding and linefeeds
       stopScript.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
       stopScript.encoding = "UTF-8";
@@ -177,26 +176,26 @@ pub.noLoop = function() {
 
 var runSetup = function() {
   app.doScript(function() {
-    if (typeof glob.setup === "function") {
-      glob.setup();
+    if (typeof $.global.setup === "function") {
+      $.global.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawOnce = function() {
   app.doScript(function() {
-    if (typeof glob.draw === "function") {
-      glob.draw();
+    if (typeof $.global.draw === "function") {
+      $.global.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var runDrawLoop = function() {
   app.doScript(function() {
-    if (typeof glob.draw === "function") {
-      glob.draw();
+    if (typeof $.global.draw === "function") {
+      $.global.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
 var welcome = function() {

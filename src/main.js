@@ -43,40 +43,35 @@
 /* globals init */
 // @target "InDesign";
 
-(function(glob, app, undef) {
+/**
+ * @class b
+ * @static
+ */
+var pub = {};
 
-  /**
-   * @class b
-   * @static
-   */
-  var pub = {};
+/**
+ * The basil version
+ * @property VERSION {String}
+ * @cat Environment
+ */
+pub.VERSION = "1.1.0";
 
-  /**
-   * The basil version
-   * @property VERSION {String}
-   * @cat Environment
-   */
-  pub.VERSION = "1.1.0";
+// @include "includes/constants.js";
+// @include "includes/public-vars.js";
+// @include "includes/private-vars.js";
+// @include "includes/global-functions.js";
 
-  // @include "includes/constants.js";
-  // @include "includes/public-vars.js";
-  // @include "includes/private-vars.js";
-  // @include "includes/global-functions.js";
+// @include "includes/core.js";
 
-  // @include "includes/core.js";
+// @include "includes/structure.js";
+// @include "includes/environment.js";
+// @include "includes/data.js";
+// @include "includes/shape.js";
+// @include "includes/color.js";
+// @include "includes/typography.js";
+// @include "includes/image.js";
+// @include "includes/math.js";
+// @include "includes/transformation.js";
+// @include "includes/ui.js";
 
-  // @include "includes/structure.js";
-  // @include "includes/environment.js";
-  // @include "includes/data.js";
-  // @include "includes/shape.js";
-  // @include "includes/color.js";
-  // @include "includes/typography.js";
-  // @include "includes/image.js";
-  // @include "includes/math.js";
-  // @include "includes/transformation.js";
-  // @include "includes/ui.js";
-
-  init();
-
-})(this, app);
-
+init();

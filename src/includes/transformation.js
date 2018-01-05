@@ -17,7 +17,7 @@ pub.itemWidth = function(pItem, width) {
   if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
       pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
@@ -42,7 +42,7 @@ pub.itemHeight = function(pItem, height) {
   if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
       pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
@@ -69,7 +69,7 @@ pub.itemPosition = function(pItem, x, y) {
   if(currRectMode !== pub.CORNER) {
     pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
-  if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number" && typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];

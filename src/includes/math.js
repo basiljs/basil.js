@@ -769,11 +769,11 @@ pub.Random = function(seed) {
     haveNextNextGaussian = true;
     return v1 * multiplier;
   };
-  random = seed === undef ? Math.random : (new Marsaglia(seed)).nextDouble;
+  random = seed === undefined ? Math.random : (new Marsaglia(seed)).nextDouble;
 };
 
 function PerlinNoise(seed) {
-  var rnd = seed !== undef ? new Marsaglia(seed) : Marsaglia.createRandomized();
+  var rnd = seed !== undefined ? new Marsaglia(seed) : Marsaglia.createRandomized();
   var i, j;
   var perm = [];
   for (i = 0; i < 256; ++i) perm[i] = i;
@@ -842,10 +842,10 @@ function PerlinNoise(seed) {
   };
 }
 var noiseProfile = {
-  generator: undef,
+  generator: undefined,
   octaves: 4,
   fallout: 0.5,
-  seed: undef
+  seed: undefined
 };
 
 /**
@@ -866,7 +866,7 @@ var noiseProfile = {
  * @return {Number} The noise value.
  */
 pub.noise = function(x, y, z) {
-  if (noiseProfile.generator === undef) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
+  if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
   var generator = noiseProfile.generator;
   var effect = 1,
     k = 1,
@@ -902,7 +902,7 @@ pub.noise = function(x, y, z) {
  */
 pub.noiseDetail = function(octaves, fallout) {
   noiseProfile.octaves = octaves;
-  if (fallout !== undef) noiseProfile.fallout = fallout;
+  if (fallout !== undefined) noiseProfile.fallout = fallout;
 };
 
 /**
@@ -915,7 +915,7 @@ pub.noiseDetail = function(octaves, fallout) {
  */
 pub.noiseSeed = function(seed) {
   noiseProfile.seed = seed;
-  noiseProfile.generator = undef;
+  noiseProfile.generator = undefined;
 };
 
 
@@ -1011,7 +1011,7 @@ pub.bounds = function (obj) {
 pub.itemX = function(pItem, x) {
   var off = 0;
   if(currRectMode !== b.CORNER) pub.warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
@@ -1037,7 +1037,7 @@ pub.itemX = function(pItem, x) {
 pub.itemY = function(pItem, y) {
   var off = 0;
   if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefine && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
