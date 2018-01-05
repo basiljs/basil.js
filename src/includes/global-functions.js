@@ -74,7 +74,7 @@ if (!Array.prototype.map) {
 * @param {Array} collection The array to be processed.
 * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
 */
-forEach = function(collection, cb) {
+function forEach(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
 
     if(!isValid(collection[i])) {
@@ -98,7 +98,7 @@ forEach = function(collection, cb) {
  * @method HashList
  */
 // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
-HashList = function () {
+function HashList() {
   var that = {};
   that.length = 0;
   that.items = {};

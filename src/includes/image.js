@@ -20,7 +20,7 @@
  * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
  * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
-image = function(img, x, y, w, h) {
+function image(img, x, y, w, h) {
   var file = initDataFile(img),
     frame = null,
     fitOptions = null,
@@ -112,7 +112,7 @@ image = function(img, x, y, w, h) {
  * @param  {Number} width The new width.
  * @param  {Number} height The new height.
  */
-transformImage = function(img, x, y, width, height) {
+function transformImage(img, x, y, width, height) {
   if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
     // [y1, x1, y2, x2]
     img.geometricBounds = [y, x, y + height, x + width];
@@ -136,7 +136,7 @@ transformImage = function(img, x, y, width, height) {
  * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER.
  * @return {String} The current mode.
  */
-imageMode = function(mode) {
+function imageMode(mode) {
   if (arguments.length === 0) return currImageMode;
 
   if (mode === CORNER || mode === CORNERS || mode === CENTER) {

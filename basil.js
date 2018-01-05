@@ -413,7 +413,7 @@ const MODEHIDDEN = "ModeHidden";
  * @subcat modes
  */
 const MODEVISIBLE = "ModeVisible";
-const DEFAULTMODE = const MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
+const DEFAULTMODE = MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
 
 
 const ERROR_PREFIX = "\nBasil.js Error -> ",
@@ -550,7 +550,7 @@ if (!Array.prototype.map) {
 * @param {Array} collection The array to be processed.
 * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
 */
-forEach = function(collection, cb) {
+function forEach(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
 
     if(!isValid(collection[i])) {
@@ -574,7 +574,7 @@ forEach = function(collection, cb) {
  * @method HashList
  */
 // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
-HashList = function () {
+function HashList() {
   var that = {};
   that.length = 0;
   that.items = {};
@@ -775,7 +775,7 @@ HashList = function () {
 // ----------------------------------------
 
 // all initialisations should go here
-var init = function() {
+function init() {
 
   welcome();
 
@@ -807,7 +807,7 @@ var init = function() {
  * @method go
  * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
  */
-go = function (mode) {
+function go(mode) {
   if (!mode) {
     mode = DEFAULTMODE;
   }
@@ -867,7 +867,7 @@ go = function (mode) {
  * @method loop
  * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
  */
-loop = function(framerate) {
+function loop(framerate) {
   // before running the loop we need to check if
   // the stop script exists
     // the Script looks for the lib folder next to itself
@@ -933,7 +933,7 @@ loop = function(framerate) {
  * @cat Environment
  * @method noLoop
  */
-noLoop = function() {
+function noLoop() {
   var allIdleTasks = app.idleTasks;
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
@@ -946,7 +946,7 @@ noLoop = function() {
 // all private from here
 
 
-var runSetup = function() {
+function runSetup() {
   app.doScript(function() {
     if (typeof $.global.setup === "function") {
       $.global.setup();
@@ -954,7 +954,7 @@ var runSetup = function() {
   }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
-var runDrawOnce = function() {
+function runDrawOnce() {
   app.doScript(function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
@@ -962,7 +962,7 @@ var runDrawOnce = function() {
   }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
-var runDrawLoop = function() {
+function runDrawLoop() {
   app.doScript(function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
@@ -970,7 +970,7 @@ var runDrawLoop = function() {
   }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
-var welcome = function() {
+function welcome() {
   clearConsole();
   println("Running "
       + SCRIPTNAME
@@ -979,7 +979,7 @@ var welcome = function() {
       + " ...");
 };
 
-var currentDoc = function (mode) {
+function currentDoc(mode) {
   if (currDoc === null || !currDoc) {
     var stack = $.stack;
     if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
@@ -1006,7 +1006,7 @@ var currentDoc = function (mode) {
   return currDoc;
 };
 
-var closeHiddenDocs = function () {
+function closeHiddenDocs() {
     // in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
   for (var i = app.documents.length - 1; i >= 0; i -= 1) {
     var d = app.documents[i];
@@ -1016,7 +1016,7 @@ var closeHiddenDocs = function () {
   }
 };
 
-var setCurrDoc = function(doc) {
+function setCurrDoc(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
@@ -1036,7 +1036,7 @@ var setCurrDoc = function(doc) {
 
 var progressPanel = null;
 
-var Progress = function () {
+function Progress() {
   this.init = function () {
     this.panel = Window.find("window", "processing...");
     if (this.panel === null) {
@@ -1074,7 +1074,7 @@ var Progress = function () {
   this.init();
 };
 
-var resetCurrDoc = function() {
+function resetCurrDoc() {
   // resets doc and doc specific vars
   currDoc = null;
   currPage = null;
@@ -1091,7 +1091,7 @@ var resetCurrDoc = function() {
   resetMatrix();
 };
 
-var currentLayer = function() {
+function currentLayer() {
   if (currLayer === null || !currLayer) {
     currentDoc();
     if (currDoc.windows.length) {
@@ -1103,7 +1103,7 @@ var currentLayer = function() {
   return currLayer;
 };
 
-var currentPage = function() {
+function currentPage() {
   if (currPage === null || !currPage) {
     currentDoc();
     if (currDoc.windows.length) {
@@ -1115,7 +1115,7 @@ var currentPage = function() {
   return currPage;
 };
 
-var updatePublicPageSizeVars = function () {
+function updatePublicPageSizeVars() {
   var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
   var facingPages = currDoc.documentPreferences.facingPages;
   var singlePageMode = false;
@@ -1225,7 +1225,7 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
-var createSelectionDialog = function(settings) {
+function createSelectionDialog(settings) {
   var result;
   if(!settings) {
     settings = {};
@@ -1284,7 +1284,7 @@ var createSelectionDialog = function(settings) {
 }
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
-var findInStylesByName = function(allStylesCollection, name) {
+function findInStylesByName(allStylesCollection, name) {
   for (var i = 0; i < allStylesCollection.length; i++) {
     if (allStylesCollection[i].name === name) {
       return allStylesCollection[i];
@@ -1295,30 +1295,28 @@ var findInStylesByName = function(allStylesCollection, name) {
 
 // get the name of parent functions; helpful for more meaningful error messages
 // level describes how many levels above to find the function whose function name is returned
-var getParentFunctionName = function(level) {
+function getParentFunctionName(level) {
     var stackArray = $.stack.
           replace(/\((.+?)\)/g, "").
           split(/[\n]/);
     return stackArray[stackArray.length - 2 - level];
 }
 
-var checkNull = checkNull = function (obj) {
+function checkNull(obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
-var isNull = checkNull; // legacy
-
-var error = error = function(msg) {
+function error(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-var warning = warning = function(msg) {
+function warning (msg) {
   println(WARNING_PREFIX + msg);
 };
 
-var clearConsole = function() {
+function clearConsole() {
   var bt = new BridgeTalk();
   bt.target = "estoolkit";
   bt.body = "app.clc()"; // works just with cs6
@@ -1332,7 +1330,7 @@ var clearConsole = function() {
 // src/includes/structure.js
 // ----------------------------------------
 
-var forEachTextCollection = function(container, collection, cb) {
+function forEachTextCollection(container, collection, cb) {
   // var collection;
   if(container instanceof Document) {
     collection = container.stories.everyItem()[collection];
@@ -1349,7 +1347,7 @@ var forEachTextCollection = function(container, collection, cb) {
 };
 
 
-var textCollection = function(collection, legalContainers, container, cb) {
+function textCollection(collection, legalContainers, container, cb) {
 
   checkNull(container);
 
@@ -1383,7 +1381,7 @@ var textCollection = function(collection, legalContainers, container, cb) {
  * @method delay
  * @param  {Number} milliseconds  The delay time in milliseconds.
  */
-delay = function (milliseconds) {
+function delay(milliseconds) {
   $.sleep(milliseconds);
 };
 
@@ -1402,7 +1400,7 @@ delay = function (milliseconds) {
  * });
  * @return {Stories} A collection of Story objects.
  */
-stories = function(doc, cb) {
+function stories(doc, cb) {
 
   checkNull(doc);
 
@@ -1425,7 +1423,7 @@ stories = function(doc, cb) {
  * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount.
  * @return {Paragraphs} A collection of Paragraph objects.
  */
-paragraphs = function(container, cb) {
+function paragraphs(container, cb) {
 
   var legalContainers = "Document, Story, Page or TextFrame.";
   return textCollection("paragraphs", legalContainers, container, cb);
@@ -1442,7 +1440,7 @@ paragraphs = function(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount.
  * @return {Lines} A collection of Line objects.
  */
-lines = function(container, cb) {
+function lines(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
   return textCollection("lines", legalContainers, container, cb);
@@ -1459,7 +1457,7 @@ lines = function(container, cb) {
  * @param  {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount.
  * @return {Words} A collection of Word objects.
  */
-words = function(container, cb) {
+function words(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
   return textCollection("words", legalContainers, container, cb);
@@ -1476,7 +1474,7 @@ words = function(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
  * @return {Characters} A collection of Character objects.
  */
-characters = function(container, cb) {
+function characters(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
   return textCollection("characters", legalContainers, container, cb);
@@ -1494,7 +1492,7 @@ characters = function(container, cb) {
  * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {PageItems} A collection of PageItem objects.
  */
-items = function(container, cb) {
+function items(container, cb) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -1519,7 +1517,7 @@ items = function(container, cb) {
  * @method clear
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in.
  */
-clear = function(container) {
+function clear(container) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -1545,7 +1543,7 @@ clear = function(container) {
  * @method remove
  * @param  {PageItem} obj The object to be removed.
  */
-remove = function(obj) {
+function remove(obj) {
 
   if(obj.hasOwnProperty("remove")) {
     obj.remove();
@@ -1568,7 +1566,7 @@ remove = function(obj) {
  * @param  {Document} [doc] The document to set the current document to.
  * @return {Document} The current document instance.
  */
-doc = function(doc) {
+function doc(doc) {
   if (doc instanceof Document) {
     setCurrDoc(doc);
   }
@@ -1600,7 +1598,7 @@ doc = function(doc) {
  * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
  * b.size("A4", b.LANDSCAPE);
  */
-size = function(widthOrPageSize, heightOrOrientation) {
+function size(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
     warning("b.size()", "You have no open document.");
@@ -1654,7 +1652,7 @@ size = function(widthOrPageSize, heightOrOrientation) {
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
  * @param  {File} [file] The InDesign file instance to save the document to.
  */
-close = function(saveOptions, file) {
+function close(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
     if(typeof saveOptions === "boolean" && saveOptions === false) {
@@ -1675,7 +1673,7 @@ close = function(saveOptions, file) {
  * @method revert
  * @return {Document} The reverted document.
  */
-revert = function() {
+function revert() {
 
   if(currDoc.saved && currDoc.modified) {
     var currFile = currDoc.fullName;
@@ -1701,7 +1699,7 @@ revert = function() {
  * @param  {String} mode The canvas mode to set.
  * @return {String} The current canvas mode.
  */
-canvasMode = function (m) {
+function canvasMode(m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
@@ -1727,7 +1725,7 @@ canvasMode = function (m) {
  * @param  {Number} v The desired vertical pasteboard margin.
  * @return {Array} The current horizontal, vertical pasteboard margins.
  */
-pasteboard = function (h, v) {
+function pasteboard(h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
@@ -1749,7 +1747,7 @@ pasteboard = function (h, v) {
  * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
  * @return {Page} The current page instance.
  */
-page = function(page) {
+function page(page) {
   if (page instanceof Page) {
     currPage = page;
   } else if (typeof page !== "undefined" && page.hasOwnProperty("parentPage")) {
@@ -1786,7 +1784,7 @@ page = function(page) {
  * @param  {String} [location] The location placement mode.
  * @return {Page} The new page.
  */
-addPage = function(location) {
+function addPage(location) {
 
   checkNull(location);
 
@@ -1837,7 +1835,7 @@ addPage = function(location) {
  * @method removePage
  * @param  {Page|Number} [page] The page to be removed as Page object or page number.
  */
-removePage = function (page) {
+function removePage(page) {
   checkNull(page);
   if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
     var p = page(page);
@@ -1858,7 +1856,7 @@ removePage = function (page) {
  * @param  {Page} [pageObj] The page you want to know the number of.
  * @return {Number} The page number within the document.
  */
-pageNumber = function (pageObj) {
+function pageNumber(pageObj) {
   checkNull(pageObj);
   if (typeof pageObj === "number") {
     error("b.pageNumber(), cannot be called with a Number argument.");
@@ -1877,7 +1875,7 @@ pageNumber = function (pageObj) {
  * @method nextPage
  * @return {Page} The active page.
  */
-nextPage = function () {
+function nextPage() {
   var p = doc().pages.nextItem(currentPage());
   return page(p);
 };
@@ -1891,7 +1889,7 @@ nextPage = function () {
  * @method previousPage
  * @return {Page} The active page.
  */
-previousPage = function () {
+function previousPage() {
   var p = doc().pages.previousItem(currentPage());
   return page(p);
 };
@@ -1909,7 +1907,7 @@ previousPage = function () {
  * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pageCount = function(pageCount) {
+function pageCount(pageCount) {
   if(arguments.length) {
     if(isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
@@ -1929,7 +1927,7 @@ pageCount = function(pageCount) {
  * @method storyCount
  * @return {Number} count The amount of stories.
  */
-storyCount = function() {
+function storyCount() {
   return currentDoc().stories.count();
 };
 
@@ -1943,7 +1941,7 @@ storyCount = function() {
  * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  */
-addToStory = function(story, itemOrString, insertionPointorMode) {
+function addToStory(story, itemOrString, insertionPointorMode) {
 
   checkNull(story);
   checkNull(itemOrString);
@@ -2008,7 +2006,7 @@ addToStory = function(story, itemOrString, insertionPointorMode) {
  * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
  * @return {Layer} The current layer instance.
  */
-layer = function(layer) {
+function layer(layer) {
   checkNull(layer);
   if (layer instanceof Layer) {
     currLayer = layer;
@@ -2039,7 +2037,7 @@ layer = function(layer) {
  * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
  * @return {PageItem|Layer} The newly arranged page item or layer.
  */
-arrange = function(pItemOrLayer, positionOrDirection, reference) {
+function arrange(pItemOrLayer, positionOrDirection, reference) {
   checkNull(pItemOrLayer);
 
   if(pItemOrLayer.hasOwnProperty("parentPage")) {
@@ -2096,7 +2094,7 @@ arrange = function(pItemOrLayer, positionOrDirection, reference) {
  *  @param {String} [name] The name of the group, only when creating a group from page items.
  *  @return {Group} The group instance.
  */
-group = function (pItems, name) {
+function group(pItems, name) {
   checkNull(pItems);
   var group;
   if(pItems instanceof Array) {
@@ -2132,7 +2130,7 @@ group = function (pItems, name) {
  *  @param {Group|String} group The group instance or name of the group to ungroup.
  *  @return {Array} An array of the ungrouped page items.
  */
-ungroup = function(group) {
+function ungroup(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
@@ -2163,7 +2161,7 @@ ungroup = function(group) {
  * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
-labels = function(label, cb) {
+function labels(label, cb) {
   checkNull(label);
   var result = [];
   var doc = currentDoc();
@@ -2193,7 +2191,7 @@ labels = function(label, cb) {
  * @param  {String} label The label identifier.
  * @return {PageItem} The first PageItem with the given label.
  */
-label = function(label) {
+function label(label) {
   checkNull(label);
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
@@ -2214,7 +2212,7 @@ label = function(label) {
  * @method selection
  * @return {Object} The first selected object.
  */
-selection = function() {
+function selection() {
   if(app.selection.length === 0) {
     error("b.selection(), selection is empty. Please select something.");
   }
@@ -2230,7 +2228,7 @@ selection = function() {
  * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of selected object(s).
  */
-selections = function(cb) {
+function selections(cb) {
   if(app.selection.length === 0) {
     error("b.selections(), selection is empty. Please select something.");
   }
@@ -2248,7 +2246,7 @@ selections = function(cb) {
  * @method nameOnPage
  * @return {Object} The first object on the active page with the given name.
  */
-nameOnPage = function(name) {
+function nameOnPage(name) {
   checkNull(name);
   var result = null;
   var page = currentPage();
@@ -2275,7 +2273,7 @@ nameOnPage = function(name) {
  * @return {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
-units = function (units) {
+function units(units) {
   checkNull(units);
   if (arguments.length === 0) {
     return currUnits;
@@ -2324,7 +2322,7 @@ units = function (units) {
  * @param  {Number} x Position of the new guide line.
  * @return {Guide} New guide line.
  */
-guideX = function (x) {
+function guideX(x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -2343,7 +2341,7 @@ guideX = function (x) {
  * @param  {Number} y Position of the new guide line.
  * @return {Guide} New guide line.
  */
-guideY = function (y) {
+function guideY(y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -2367,7 +2365,7 @@ guideY = function (y) {
  * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
  * @return {Object} Current page margins with the properties: top, right, bottom, left.
  */
-margins = function(top, right, bottom, left, pageNumber) {
+function margins(top, right, bottom, left, pageNumber) {
   if (arguments.length === 0) {
     return {top: page(pageNumber).marginPreferences.top,
       right: page(pageNumber).marginPreferences.right,
@@ -2403,7 +2401,7 @@ margins = function(top, right, bottom, left, pageNumber) {
  * @param {Number} [left] Left bleed.
  * @return {Object} Current document bleeds settings.
  */
-bleeds = function(top, right, bottom, left) {
+function bleeds(top, right, bottom, left) {
   if (arguments.length === 0) {
     return {top: currentDoc().documentPreferences.documentBleedTopOffset,
       right: currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
@@ -2451,7 +2449,7 @@ bleeds = function(top, right, bottom, left) {
  * var myEllipse = b.ellipse(0, 0, 10, 10);
  * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
-inspect = function (obj, settings, level, branchArray, branchEnd) {
+function inspect(obj, settings, level, branchArray, branchEnd) {
 
   var output, indent;
   output = indent = "";
@@ -2631,7 +2629,7 @@ inspect = function (obj, settings, level, branchArray, branchEnd) {
  * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
  * b.savePDF(myExportFile);
  */
-file = function(filePath) {
+function file(filePath) {
   if(! isString(filePath)) {
     error("b.file(), wrong argument. Use a string that describes a file path.");
   }
@@ -2668,7 +2666,7 @@ file = function(filePath) {
  * @example <caption>Get the data folder, if the document is already saved</caption>
  * var myDataFolder = b.folder();
  */
-folder = function(folderPath) {
+function folder(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
       return new Folder(projectFolder() + "/data/");
@@ -2717,7 +2715,7 @@ folder = function(folderPath) {
  * var myDataFolder = b.folder();
  * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
  */
-files = function(folder, settings, collectedFiles) {
+function files(folder, settings, collectedFiles) {
   var topLevel;
   if (collectedFiles === undefined) {
     if(folder === undefined && currentDoc().saved) {
@@ -2793,7 +2791,7 @@ files = function(folder, settings, collectedFiles) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-selectFile = function(settings) {
+function selectFile(settings) {
   return createSelectionDialog(settings);
 };
 
@@ -2814,7 +2812,7 @@ selectFile = function(settings) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-selectFiles = function(settings) {
+function selectFiles(settings) {
   if(!settings) {
     settings = {};
   }
@@ -2839,7 +2837,7 @@ selectFiles = function(settings) {
  * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
  * b.selectFolder({folder: "~/Desktop/"});
  */
-selectFolder = function(settings) {
+function selectFolder(settings) {
   if(!settings) {
     settings = {};
   }
@@ -2860,7 +2858,7 @@ selectFolder = function(settings) {
  * @method year
  * @return {Number} The current year.
  */
-year = function() {
+function year() {
   return (new Date()).getFullYear();
 };
 
@@ -2873,7 +2871,7 @@ year = function() {
  * @method month
  * @return {Number} The current month number.
  */
-month = function() {
+function month() {
   return (new Date()).getMonth() + 1;
 };
 
@@ -2886,7 +2884,7 @@ month = function() {
  * @method day
  * @return {Number} The current day number.
  */
-day = function() {
+function day() {
   return (new Date()).getDate();
 };
 
@@ -2899,7 +2897,7 @@ day = function() {
  * @method weekday
  * @return {String} The current weekday name.
  */
-weekday = function() {
+function weekday() {
   var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   return weekdays[(new Date()).getDay()];
 };
@@ -2913,7 +2911,7 @@ weekday = function() {
  * @method hour
  * @return {Number} The current hour.
  */
-hour = function() {
+function hour() {
   return (new Date()).getHours();
 };
 
@@ -2926,7 +2924,7 @@ hour = function() {
  * @method minute
  * @return {Number} The current minute.
  */
-minute = function() {
+function minute() {
   return (new Date()).getMinutes();
 };
 
@@ -2939,7 +2937,7 @@ minute = function() {
  * @method second
  * @return {Number} The current second.
  */
-second = function() {
+function second() {
   return (new Date()).getSeconds();
 };
 
@@ -2952,7 +2950,7 @@ second = function() {
  * @method millis
  * @return {Number} The current milli.
  */
-millis = function() {
+function millis() {
   return Date.now() - startTime;
 };
 
@@ -2965,7 +2963,7 @@ millis = function() {
  * @method millisecond
  * @return {Number} The current millisecond.
  */
-millisecond = function() {
+function millisecond() {
   return (new Date()).getMilliseconds();
 };
 
@@ -2978,7 +2976,7 @@ millisecond = function() {
  * @method timestamp
  * @return {String} The current time in YYYYMMDD_HHMMSS.
  */
-timestamp = function() {
+function timestamp() {
   var dt = new Date();
   var dtf = dt.getFullYear();
   dtf += nf(dt.getMonth() + 1, 2);
@@ -2994,7 +2992,7 @@ timestamp = function() {
 // src/includes/data.js
 // ----------------------------------------
 
-JSON = {
+var JSON = {
   /**
    * Function parses and validates a string as JSON-object. Usage:
    * var obj = b.JSON.decode(str);
@@ -3062,7 +3060,7 @@ JSON = {
 
 // Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock won't mind.
 // https://github.com/mbostock/d3/tree/master/src/dsv
-CSV = new CSV();
+var CSV = new CSV();
 function CSV() {
   var reParse = null,
     reFormat = null,
@@ -3238,7 +3236,7 @@ function CSV() {
  * @return {String} A formatted string
  */
  // From: http://processingjs.org/reference/binary_/
-binary = function(num, numBits) {
+function binary(num, numBits) {
   var bit;
   if (numBits > 0) bit = numBits;
   else if (num instanceof Char) {
@@ -3265,7 +3263,7 @@ binary = function(num, numBits) {
  * @return {Number} The integer representation
  */
  // From: http://processingjs.org/reference/unbinary_/
-unbinary = function(binaryString) {
+function unbinary(binaryString) {
   var i = binaryString.length - 1,
     mask = 1,
     result = 0;
@@ -3279,7 +3277,7 @@ unbinary = function(binaryString) {
 };
 
 
-var decimalToHex = function(d, padding) {
+function decimalToHex(d, padding) {
   padding = padding === undef || padding === null ? padding = 8 : padding;
   if (d < 0) d = 4294967295 + d + 1;
   var hex = Number(d).toString(16).toUpperCase();
@@ -3298,12 +3296,12 @@ var decimalToHex = function(d, padding) {
  * @param {Number} [len] The length of the hex number to be created, default: 8
  * @return {String} The hex representation as a string
  */
-hex = function(value, len) {
+function hex(value, len) {
   if (arguments.length === 1) len = 8;
   return decimalToHex(value, len);
 };
 
-var unhexScalar = function(hex) {
+function unhexScalar(hex) {
   var value = parseInt("0x" + hex, 16);
   if (value > 2147483647) value -= 4294967296;
   return value;
@@ -3318,7 +3316,7 @@ var unhexScalar = function(hex) {
  * @param {String} hex The hex representation
  * @return {Number} The number
  */
-unhex = function(hex) {
+function unhex(hex) {
   if (hex instanceof Array) {
     var arr = [];
     for (var i = 0; i < hex.length; i++) arr.push(unhexScalar(hex[i]));
@@ -3342,7 +3340,7 @@ unhex = function(hex) {
  * @return {String} The trimmed string
  */
  // from: https://stackoverflow.com/a/25575009/3399765
-trimWord = function(s) {
+function trimWord(s) {
   s = s.replace(/\s*/g, "")
        .replace(/\n*/g, "")
        .replace(/(^[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*)|([\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*$)/gi, "");
@@ -3363,7 +3361,7 @@ trimWord = function(s) {
  * @return {String} The joined string
  */
  // http://processingjs.org/reference/join_/
-join = function(array, separator) {
+function join(array, separator) {
   return array.join(separator);
 };
 
@@ -3389,7 +3387,7 @@ join = function(array, separator) {
  * @return {Array} Array of strings
  */
  // http://processingjs.org/reference/split_/
-split = function(str, delim) {
+function split(str, delim) {
   return str.split(delim);
 };
 
@@ -3412,7 +3410,7 @@ split = function(str, delim) {
  * @return {Array} Array of strings
  */
  // From: http://processingjs.org/reference/splitTokens_/
-splitTokens = function(str, tokens) {
+function splitTokens(str, tokens) {
   if (arguments.length === 1) tokens = "\n\t\r\u000c ";
   tokens = "[" + tokens + "]";
   var ary = [];
@@ -3433,12 +3431,12 @@ splitTokens = function(str, tokens) {
 };
 
 
-match = function(str, regexp) {
+function match(str, regexp) {
   return str.match(regexp);
 };
 
 
-matchAll = function(aString, aRegExp) {
+function matchAll(aString, aRegExp) {
   var results = [],
     latest;
   var regexp = new RegExp(aRegExp, "g");
@@ -3514,7 +3512,7 @@ function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nf_/
-nf = function(value, leftDigits, rightDigits) {
+function nf(value, leftDigits, rightDigits) {
   return nfCore(value, "", "-", leftDigits, rightDigits);
 };
 
@@ -3535,7 +3533,7 @@ nf = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfs_/
-nfs = function(value, leftDigits, rightDigits) {
+function nfs(value, leftDigits, rightDigits) {
   return nfCore(value, " ", "-", leftDigits, rightDigits);
 };
 
@@ -3555,7 +3553,7 @@ nfs = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfp_/
-nfp = function(value, leftDigits, rightDigits) {
+function nfp(value, leftDigits, rightDigits) {
   return nfCore(value, "+", "-", leftDigits, rightDigits);
 };
 
@@ -3574,7 +3572,7 @@ nfp = function(value, leftDigits, rightDigits) {
  * @return {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfc_/
-nfc = function(value, leftDigits, rightDigits) {
+function nfc(value, leftDigits, rightDigits) {
   return nfCore(value, "", "-", leftDigits, rightDigits, ",");
 };
 
@@ -3591,7 +3589,7 @@ nfc = function(value, leftDigits, rightDigits) {
  * @return {String|Array} Returns the input in a trimmed way
  */
  // From: http://processingjs.org/reference/trim_/
-trim = function(str) {
+function trim(str) {
   if (str instanceof Array) {
     var arr = [];
     for (var i = 0; i < str.length; i++) arr.push(str[i].replace(/^\s*/, "").replace(/\s*$/, "").replace(/\r*$/, ""));
@@ -3609,7 +3607,7 @@ trim = function(str) {
  * @param {String} url An url string to be checked
  * @return {Boolean} Returns either true or false
  */
-var isURL = isURL = function(url) {
+function isURL(url) {
   var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
   return pattern.test(url);
 };
@@ -3624,7 +3622,7 @@ var isURL = isURL = function(url) {
  * @param {String} suffix The string to look for
  * @return {Boolean} Returns either true or false
  */
-var endsWith = endsWith = function(str, suffix) {
+function endsWith(str, suffix) {
   if(!isString(str) || !isString(suffix)) {
     error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
   }
@@ -3641,7 +3639,7 @@ var endsWith = endsWith = function(str, suffix) {
  * @param {String} prefix The string to look for
  * @return {Boolean} Returns either true or false
  */
-var startsWith = startsWith = function(str, prefix) {
+function startsWith(str, prefix) {
   if(!isString(str) || !isString(prefix)) {
     error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
   }
@@ -3658,7 +3656,7 @@ var startsWith = startsWith = function(str, prefix) {
  * @param  {Object|String|Number|Boolean} obj The object to check
  * @return {Boolean} returns true if this is the case
  */
-var isArray = isArray = function(obj) {
+function isArray(obj) {
   return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
@@ -3671,7 +3669,7 @@ var isArray = isArray = function(obj) {
  * @param  {Object|String|Number|Boolean}  num The number to check
  * @return {Boolean} returns true if this is the case
  */
-var isNumber = isNumber = function(num) {
+function isNumber(num) {
   if (num === null) {
     return false;
   }
@@ -3691,7 +3689,7 @@ var isNumber = isNumber = function(num) {
  * @param  {Object|String|Number|Boolean}  num The number to check.
  * @return {Boolean} Returns true if the given argument is an integer.
  */
-var isInteger = isInteger = function(num) {
+function isInteger(num) {
   return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
@@ -3704,7 +3702,7 @@ var isInteger = isInteger = function(num) {
  * @param  {Object|String|Number|Boolean} str The string to check
  * @return {Boolean} returns true if this is the case
  */
-var isString = isString = function(str) {
+function isString(str) {
   return Object.prototype.toString.call(str) === "[object String]";
 };
 
@@ -3719,7 +3717,7 @@ var isString = isString = function(str) {
  * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
  * @return {Boolean} returns true if this is the case
  */
-var isText = isText = function(obj) {
+function isText(obj) {
 
   return obj instanceof Character ||
          obj instanceof InsertionPoint ||
@@ -3739,7 +3737,7 @@ var isText = isText = function(obj) {
 };
 
 
-var initDataFile = function(file) {
+function initDataFile(file) {
 
   if(!(isString(file) || file instanceof File)) {
     error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
@@ -3757,7 +3755,7 @@ var initDataFile = function(file) {
   return result;
 };
 
-var initExportFile = function(file) {
+function initExportFile(file) {
 
   if(!(isString(file) || file instanceof File)) {
     error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
@@ -3843,7 +3841,7 @@ var initExportFile = function(file) {
  * @method projectFolder
  * @return {Folder} The folder of the the active document
  */
-var projectFolder = projectFolder = function() {
+function projectFolder() {
   if(!currentDoc().saved) {
     error("The current document must be saved before its project directory can be accessed.");
   }
@@ -3862,7 +3860,7 @@ var projectFolder = projectFolder = function() {
  * @param  {String} cmd The shell command to execute
  * @return {String}
  */
-shellExecute = function(cmd) {
+function shellExecute(cmd) {
   if (Folder.fs === "Macintosh") {
     try {
       return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
@@ -3884,7 +3882,7 @@ shellExecute = function(cmd) {
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {String}  String file or URL content.
  */
-loadString = function(file) {
+function loadString(file) {
   if (isURL(file)) {
     return getURL(file);
   } else {
@@ -3897,7 +3895,7 @@ loadString = function(file) {
   }
 };
 
-var getURL = function(url) {
+function getURL(url) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
       return shellExecute("curl -m 15 -L '" + url + "'");
@@ -3919,7 +3917,7 @@ var getURL = function(url) {
  * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
  * @return {Array}  Array of the individual lines in the given File or URL
  */
-loadStrings = function(file) {
+function loadStrings(file) {
   if (isURL(file)) {
     var result = getURL(file);
     return result.match(/[^\r\n]+/g);
@@ -3946,7 +3944,7 @@ loadStrings = function(file) {
  * @method println
  * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-var println = println = function() {
+function println() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
   $.writeln(msg);
   if (progressPanel)
@@ -3960,7 +3958,7 @@ var println = println = function() {
  * @method print
  * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
-print = function() {
+function print() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
   $.write(msg);
   if (progressPanel)
@@ -3973,7 +3971,7 @@ print = function() {
  * @cat Output
  * @method printInfo
  */
-printInfo = function() {
+function printInfo() {
 
   println("###");
   println("OS: " + $.os);
@@ -3995,7 +3993,7 @@ printInfo = function() {
  * @param  {Array} strings The string array to be written
  * @return {File} The file the strings were written to.
  */
-saveStrings = function(file, strings) {
+function saveStrings(file, strings) {
   if(!isString(string)) {
     error("b.saveString(), invalid second argument. Use an array of strings.");
   }
@@ -4018,7 +4016,7 @@ saveStrings = function(file, strings) {
  * @param  {String} string The string to be written.
  * @return {File} The file the string was written to.
  */
-saveString = function(file, string) {
+function saveString(file, string) {
   if(!isString(string)) {
     error("b.saveString(), invalid second argument. Use a string.");
   }
@@ -4038,7 +4036,7 @@ saveString = function(file, string) {
  * @param  {Boolean} [showOptions] Whether to show the export dialog.
  * @return {File} The exported PDF file.
  */
-savePDF = function(file, showOptions) {
+function savePDF(file, showOptions) {
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
@@ -4059,7 +4057,7 @@ savePDF = function(file, showOptions) {
  * @param {Boolean} [showOptions] Whether to show the export dialog
  * @return {File} The exported PNG file.
  */
-savePNG = function(file, showOptions) {
+function savePNG(file, showOptions) {
   var outputFile = initExportFile(file);
   if (showOptions !== true) showOptions = false;
   try{
@@ -4079,7 +4077,7 @@ savePNG = function(file, showOptions) {
  * @param {String} url The download url
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
-download = function(url, file) {
+function download(url, file) {
   var projPath = projectFolder().fsName.replace(" ", "\\ ");
   // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
   // This is more portable then a fixed location
@@ -4187,7 +4185,7 @@ download = function(url, file) {
  * @param {Number} h Height of the ellipse.
  * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
-ellipse = function(x, y, w, h) {
+function ellipse(x, y, w, h) {
   if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
   if (currEllipseMode === CORNER) {
@@ -4254,7 +4252,7 @@ ellipse = function(x, y, w, h) {
  *  var vec2 = new b.Vector( x2, y2 );
  *  b.line( vec1, vec2 );
  */
-line = function(x1, y1, x2, y2) {
+function line(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
     error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   }
@@ -4284,7 +4282,7 @@ line = function(x1, y1, x2, y2) {
  * @method beginShape
  * @param {String} shapeMode Set to b.CLOSE if the new Path should be auto-closed.
  */
-beginShape = function(shapeMode) {
+function beginShape(shapeMode) {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
@@ -4314,7 +4312,7 @@ beginShape = function(shapeMode) {
  * @param  {Number} [xRightHandle] X-coordinate of the right-direction point.
  * @param  {Number} [yRightHandle] Y-coordinate of the right-direction point.
  */
-vertex = function() {
+function vertex() {
   if (isArray(currVertexPoints)) {
     if (arguments.length === 2) {
       currVertexPoints.push([arguments[0], arguments[1]]);
@@ -4351,7 +4349,7 @@ vertex = function() {
  * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
  */
-arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
+function arc(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
     return false;
   }
@@ -4472,7 +4470,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
  * @subcat Primitives
  * @method addPath
  */
-addPath = function() {
+function addPath() {
   doAddPath();
   currPathPointer++;
 };
@@ -4486,7 +4484,7 @@ addPath = function() {
  * @method endShape
  * @return {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
-endShape = function() {
+function endShape() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -4549,7 +4547,7 @@ function notCalledBeginShapeError () {
  * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
-rect = function(x, y, w, h, tl, tr, br, bl) {
+function rect(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
@@ -4638,7 +4636,7 @@ rect = function(x, y, w, h, tl, tr, br, bl) {
  * @param {String} mode The rectMode to switch to: either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS.
  *
  */
-rectMode = function (mode) {
+function rectMode(mode) {
   if (arguments.length === 0) return currRectMode;
   if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currRectMode = mode;
@@ -4663,7 +4661,7 @@ rectMode = function (mode) {
  * @method ellipseMode
  * @param {String} mode The ellipse mode to switch to: either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS.
  */
-ellipseMode = function (mode) {
+function ellipseMode(mode) {
   if (arguments.length === 0) return currEllipseMode;
   if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currEllipseMode = mode;
@@ -4681,7 +4679,7 @@ ellipseMode = function (mode) {
  * @method strokeWeight
  * @param {Number} weight The width of the stroke in points.
  */
-strokeWeight = function (weight) {
+function strokeWeight(weight) {
   if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
@@ -4700,7 +4698,7 @@ strokeWeight = function (weight) {
  * @param {Object} [props] An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle} The object style instance.
  */
-objectStyle = function(itemOrName, props) {
+function objectStyle(itemOrName, props) {
   var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -4743,7 +4741,7 @@ objectStyle = function(itemOrName, props) {
  * @return {PageItem} The page item that the style was applied to.
  */
 
-applyObjectStyle = function(item, style) {
+function applyObjectStyle(item, style) {
 
   if(isString(style)) {
     var name = style;
@@ -4771,7 +4769,7 @@ applyObjectStyle = function(item, style) {
  * @param {PageItem|Page} item The page item or page to duplicate.
  * @returns {Object} The new page item or page.
  */
-duplicate = function(item) {
+function duplicate(item) {
 
   if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
@@ -4812,7 +4810,7 @@ duplicate = function(item) {
  * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  * @param  {String} [name] If created with numbers, a custom swatch name can be given.
  */
-fill = function (fillColor) {
+function fill(fillColor) {
 
   checkNull(fillColor);
   if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
@@ -4850,7 +4848,7 @@ fill = function (fillColor) {
  * @cat Color
  * @method noFill
  */
-noFill = function () {
+function noFill() {
   currFillColor = noneSwatchColor;
 };
 
@@ -4860,7 +4858,7 @@ noFill = function () {
  * @method stroke
  * @param  {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  */
-stroke = function (strokeColor) {
+function stroke(strokeColor) {
   checkNull(strokeColor);
   if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
     currStrokeColor = strokeColor;
@@ -4897,7 +4895,7 @@ stroke = function (strokeColor) {
  * @cat Color
  * @method noStroke
  */
-noStroke = function () {
+function noStroke() {
   currStrokeColor = noneSwatchColor;
 };
 
@@ -4908,7 +4906,7 @@ noStroke = function () {
  * @method fillTint
  * @param  {Number} tint Number from 0 to 100
  */
-fillTint = function (tint) {
+function fillTint(tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
@@ -4924,7 +4922,7 @@ fillTint = function (tint) {
  * @method strokeTint
  * @param  {Number} tint Number from 0 to 100.
  */
-strokeTint = function (tint) {
+function strokeTint(tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currStrokeTint = tint;
@@ -4940,7 +4938,7 @@ strokeTint = function (tint) {
  * @method colorMode
  * @param  {Number} colorMode b.RGB or b.CMYK.
  */
-colorMode = function(colorMode) {
+function colorMode(colorMode) {
   checkNull(colorMode);
   if (arguments.length === 0) {
     return currColorMode;
@@ -4959,7 +4957,7 @@ colorMode = function(colorMode) {
  * @method gradientMode
  * @param  {String} gradientMode b.LINEAR or b.RADIAL.
  */
-gradientMode = function(gradientMode) {
+function gradientMode(gradientMode) {
   checkNull(gradientMode);
   if (arguments.length === 0) {
     return currGradientMode;
@@ -4978,7 +4976,7 @@ gradientMode = function(gradientMode) {
  * @method swatch
  * @param {String} swatchName Returns the swatch color/gradient for a given name by string.
  */
-swatch = function(){
+function swatch(){
   var newSwatch;
   var props = {};
   if (arguments.length === 1) {
@@ -5004,7 +5002,7 @@ swatch = function(){
  * @param  {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
  * @return {Color} Found or new color
  */
-color = function() {
+function color() {
   var newCol;
   var props = {};
   var a = arguments[0],
@@ -5147,7 +5145,7 @@ color = function() {
  * @param {String} [name] Optional name of the gradient.
  * @return {Gradient} Found or new gradient
  */
-gradient = function() {
+function gradient() {
   var newGrad;
   // var props = {};
   var a = arguments[0],
@@ -5256,7 +5254,7 @@ gradient = function() {
  * @param  {Object} obj The object to set opacity of.
  * @param  {Number} opacity The opacity value from 0 to 100.
  */
-opacity = function(obj, opacity) {
+function opacity(obj, opacity) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
@@ -5289,7 +5287,7 @@ opacity = function(obj, opacity) {
  *                           BlendMode.COLOR <br />
  *                           BlendMode.LUMINOSITY <br />
  */
-blendMode = function(obj, blendMode) {
+function blendMode(obj, blendMode) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
@@ -5310,7 +5308,7 @@ blendMode = function(obj, blendMode) {
  * @param  {Number} amt The amount to interpolate between the two colors.
  * @return {Color} Interpolated color
  */
-lerpColor = function (c1, c2, amt) {
+function lerpColor(c1, c2, amt) {
   checkNull(c1);
   checkNull(c2);
   if ((c1 instanceof Color || c1 instanceof Swatch) &&
@@ -5377,7 +5375,7 @@ lerpColor = function (c1, c2, amt) {
  * @param  {Number} h   height of text frame
  * @return {TextFrame}  The created text frame instance
  */
-text = function(txt, x, y, w, h) {
+function text(txt, x, y, w, h) {
   if (arguments.length !== 5) {
     error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
   }
@@ -5454,7 +5452,7 @@ text = function(txt, x, y, w, h) {
  * @return {String[]|Number[]|Object[]}  The property value(s) if the function acts as getter or the items the property
  *                                       was assigned to.
  */
-typo = function(item, property, value) {
+function typo(item, property, value) {
   var result = [],
     actsAsGetter = typeof property === "string" && (value === undef || value === null),
     getOrSetProperties = function(textItem) {
@@ -5508,7 +5506,7 @@ typo = function(item, property, value) {
   return result;
 };
 
-var isValid = function (item) {
+function isValid(item) {
 
   checkNull(item);
 
@@ -5533,7 +5531,7 @@ var isValid = function (item) {
  * @param  {String} [fontStyle] The font style e.g. Bold
  * @return {Font} The current font object
  */
-textFont = function(fontName, fontStyle) {
+function textFont(fontName, fontStyle) {
 
   if (arguments.length === 2) {
     fontName = fontName + "\t" + fontStyle;
@@ -5563,7 +5561,7 @@ textFont = function(fontName, fontStyle) {
  * @param  {Number} [pointSize] The size in points to set.
  * @return {Number}             The current point size.
  */
-textSize = function(pointSize) {
+function textSize(pointSize) {
   if (arguments.length === 1) {
     currFontSize = pointSize;
   }
@@ -5590,7 +5588,7 @@ textSize = function(pointSize) {
  *                           VerticalJustification.JUSTIFY_ALIGN <br />
  *                           VerticalJustification.TOP_ALIGN <br />
  */
-textAlign = function(align, yAlign) {
+function textAlign(align, yAlign) {
   currAlign = align;
   if (arguments.length === 2) currYAlign = yAlign;
 };
@@ -5604,7 +5602,7 @@ textAlign = function(align, yAlign) {
  *                                   value Leading.AUTO.
  * @return {Number|String}           The current leading.
  */
-textLeading = function(leading) {
+function textLeading(leading) {
   if (arguments.length === 1) {
     currLeading = leading;
   }
@@ -5619,7 +5617,7 @@ textLeading = function(leading) {
  * @param  {Number} [kerning] The value to set.
  * @return {Number}           The current kerning.
  */
-textKerning = function(kerning) {
+function textKerning(kerning) {
   if (arguments.length === 1) {
     currKerning = kerning;
   }
@@ -5634,7 +5632,7 @@ textKerning = function(kerning) {
  * @param  {Number} [tracking] The value to set.
  * @return {Number}            The current tracking.
  */
-textTracking = function(tracking) {
+function textTracking(tracking) {
   if (arguments.length === 1) {
     currTracking = tracking;
   }
@@ -5652,7 +5650,7 @@ textTracking = function(tracking) {
  * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {CharacterStyle}  The character style instance.
  */
-characterStyle = function(textOrName, props) {
+function characterStyle(textOrName, props) {
   var styleErrorMsg = "b.characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -5695,7 +5693,7 @@ characterStyle = function(textOrName, props) {
  * @return {Text}  The text that the style was applied to.
  */
 
-applyCharacterStyle = function(text, style) {
+function applyCharacterStyle(text, style) {
 
   if(isString(style)) {
     var name = style;
@@ -5729,7 +5727,7 @@ applyCharacterStyle = function(text, style) {
  * @param {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
  * @return {ParagraphStyle}  The paragraph style instance.
  */
-paragraphStyle = function(textOrName, props) {
+function paragraphStyle(textOrName, props) {
   var styleErrorMsg = "b.paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -5772,7 +5770,7 @@ paragraphStyle = function(textOrName, props) {
  * @return {Text}  The text that the style was applied to.
  */
 
-applyParagraphStyle = function(text, style) {
+function applyParagraphStyle(text, style) {
 
   if(isString(style)) {
     var name = style;
@@ -5803,7 +5801,7 @@ applyParagraphStyle = function(text, style) {
  * @param  {TextFrame} textFrameA
  * @param  {TextFrame} textFrameB
  */
-linkTextFrames = function (textFrameA, textFrameB) {
+function linkTextFrames(textFrameA, textFrameB) {
   if (textFrameA instanceof TextFrame && textFrameB instanceof TextFrame) {
     textFrameA.nextTextFrame = textFrameB;
   } else {
@@ -5819,7 +5817,7 @@ linkTextFrames = function (textFrameA, textFrameB) {
  * @param  {TextFrame} textFrame
  * @return {Text} The inserted placeholder text.
  */
-placeholder = function (textFrame) {
+function placeholder(textFrame) {
   if (textFrame instanceof TextFrame) {
     var startIx = textFrame.parentStory.insertionPoints[-1].index;
     textFrame.contents = TextFrameContents.PLACEHOLDER_TEXT;
@@ -5851,7 +5849,7 @@ placeholder = function (textFrame) {
  * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
  * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
-image = function(img, x, y, w, h) {
+function image(img, x, y, w, h) {
   var file = initDataFile(img),
     frame = null,
     fitOptions = null,
@@ -5943,7 +5941,7 @@ image = function(img, x, y, w, h) {
  * @param  {Number} width The new width.
  * @param  {Number} height The new height.
  */
-transformImage = function(img, x, y, width, height) {
+function transformImage(img, x, y, width, height) {
   if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
     // [y1, x1, y2, x2]
     img.geometricBounds = [y, x, y + height, x + width];
@@ -5967,7 +5965,7 @@ transformImage = function(img, x, y, width, height) {
  * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER.
  * @return {String} The current mode.
  */
-imageMode = function(mode) {
+function imageMode(mode) {
   if (arguments.length === 0) return currImageMode;
 
   if (mode === CORNER || mode === CORNERS || mode === CENTER) {
@@ -6308,7 +6306,7 @@ var Vector = function() {
  * @param {Number} val A number.
  * @return {Number} The absolute value of that number.
  */
-abs = Math.abs;
+var abs = Math.abs;
 
 /**
  * Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.
@@ -6319,7 +6317,7 @@ abs = Math.abs;
  * @param {Number} val An arbitrary number.
  * @return {Number} The next highest integer value.
  */
-ceil = Math.ceil;
+var ceil = Math.ceil;
 
 /**
  * Constrains a value to not exceed a maximum and minimum value.
@@ -6332,7 +6330,7 @@ ceil = Math.ceil;
  * @param {Number} aMax Maximum limit.
  * @return {Number} The constrained value.
  */
-constrain = function(aNumber, aMin, aMax) {
+function constrain(aNumber, aMin, aMax) {
   if(arguments.length !== 3) error("b.constrain(), wrong argument count.");
   if(aNumber <= aMin) return aMin;
   if(aNumber >= aMax) return aMax;
@@ -6351,7 +6349,7 @@ constrain = function(aNumber, aMin, aMax) {
  * @param {Number} y2 The y-coordinate of the second point.
  * @return {Number} The distance.
  */
-dist = function() {
+function dist() {
   var dx, dy, dz;
   if (arguments.length === 4) {
     dx = arguments[0] - arguments[2];
@@ -6371,7 +6369,7 @@ dist = function() {
  * @param {Number} x A number.
  * @return {Number} A number representing ex.
  */
-exp = Math.exp;
+var exp = Math.exp;
 
 /**
  * Calculates the closest int value that is less than or equal to the value of the parameter.
@@ -6382,7 +6380,7 @@ exp = Math.exp;
  * @param {Number} a A number.
  * @return {Number} Integer number.
  */
-floor = Math.floor;
+var floor = Math.floor;
 
 /**
  * Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
@@ -6395,7 +6393,7 @@ floor = Math.floor;
  * @param {Number} amt Amount between 0.0 and 1.0.
  * @return {Number} The mapped value.
  */
-lerp = function(value1, value2, amt) {
+function lerp(value1, value2, amt) {
   if(arguments.length !== 3) error("b.lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
@@ -6409,7 +6407,7 @@ lerp = function(value1, value2, amt) {
  * @param {Number} x A number, must be greater then 0.0.
  * @return {Number} The natural logarithm.
  */
-log = Math.log;
+var log = Math.log;
 
 /**
  * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
@@ -6422,7 +6420,7 @@ log = Math.log;
  * @param {Number} [z] Coordinate, optional.
  * @return {Number} The magnitude.
  */
-mag = function(a, b, c) {
+function mag(a, b, c) {
   if(!(arguments.length === 2 || arguments.length === 3)) error("b.mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
@@ -6443,7 +6441,7 @@ mag = function(a, b, c) {
  * @param {Number} ostop The end of the output range.
  * @return {Number} The mapped value.
  */
-map = function(value, istart, istop, ostart, ostop) {
+function map(value, istart, istop, ostart, ostop) {
   if(arguments.length !== 5) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
@@ -6459,7 +6457,7 @@ map = function(value, istart, istop, ostart, ostop) {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The highest value.
  */
-max = function() {
+function max() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
@@ -6480,7 +6478,7 @@ max = function() {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The lowest value.
  */
-min = function() {
+function min() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
@@ -6505,7 +6503,7 @@ min = function() {
  * @param {Number} high The highest value to be expected.
  * @return {Number} The normalized value.
  */
-norm = function(aNumber, low, high) {
+function norm(aNumber, low, high) {
   if(arguments.length !== 3) error("b.norm, wrong argument count.");
   return (aNumber - low) / (high - low);
 };
@@ -6520,7 +6518,7 @@ norm = function(aNumber, low, high) {
  * @param {Number} exponent Power of which to raise the base.
  * @return {Number} the result
  */
-pow = Math.pow;
+var pow = Math.pow;
 
 /**
  * Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.
@@ -6531,7 +6529,7 @@ pow = Math.pow;
  * @param {Number} value The value to be rounded.
  * @return {Number} The rounded value.
  */
-round = Math.round;
+var round = Math.round;
 
 /**
  * Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.
@@ -6542,7 +6540,7 @@ round = Math.round;
  * @param {Number} aNumber The value to be squared.
  * @return {Number} Squared number.
  */
-sq = function(aNumber) {
+function sq(aNumber) {
   if(arguments.length !== 1) error("b.sq(), wrong argument count.");
   return aNumber * aNumber;
 };
@@ -6558,7 +6556,7 @@ sq = function(aNumber) {
  * @param {Number} val A value.
  * @return {Number} Square root.
  */
-sqrt = Math.sqrt;
+var sqrt = Math.sqrt;
 
 /**
  * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6569,7 +6567,7 @@ sqrt = Math.sqrt;
  * @param {Number} value The value whose arc cosine is to be returned.
  * @return {Number} The arc cosine.
  */
-acos = Math.acos;
+var acos = Math.acos;
 
 /**
  * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6580,7 +6578,7 @@ acos = Math.acos;
  * @param {Number} value The value whose arc sine is to be returned.
  * @return {Number} The arc sine.
  */
-asin = Math.asin;
+var asin = Math.asin;
 
 /**
  * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6591,7 +6589,7 @@ asin = Math.asin;
  * @param {Number} value The value whose arc tangent is to be returned.
  * @return {Number} The arc tangent.
  */
-atan = Math.atan;
+var atan = Math.atan;
 
 /**
  * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
@@ -6603,7 +6601,7 @@ atan = Math.atan;
  * @param {Number} x The x coordinate.
  * @return {Number} The atan2 value.
  */
-atan2 = Math.atan2;
+var atan2 = Math.atan2;
 
 /**
  * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
@@ -6614,7 +6612,7 @@ atan2 = Math.atan2;
  * @param {Number} rad A value in radians.
  * @return {Number} The cosine.
  */
-cos = Math.cos;
+var cos = Math.cos;
 
 /**
  * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
@@ -6625,7 +6623,7 @@ cos = Math.cos;
  * @param {Number} aAngle An angle in radians.
  * @return {Number} The given angle in degree.
  */
-degrees = function(aAngle) {
+function degrees(aAngle) {
   return aAngle * 180 / Math.PI;
 };
 
@@ -6638,7 +6636,7 @@ degrees = function(aAngle) {
  * @param {Number} aAngle An angle in degree.
  * @return {Number} The given angle in radians.
  */
-radians = function(aAngle) {
+function radians(aAngle) {
   return aAngle / 180 * Math.PI;
 };
 
@@ -6651,7 +6649,7 @@ radians = function(aAngle) {
  * @param {Number} rad A value in radians.
  * @return {Number} The sine value.
  */
-sin = Math.sin;
+var sin = Math.sin;
 
 /**
  * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
@@ -6662,7 +6660,7 @@ sin = Math.sin;
  * @param {Number} rad A value in radians.
  * @return {Number} The tangent value.
  */
-tan = Math.tan;
+var tan = Math.tan;
 
 // -- Random --
 
@@ -6680,7 +6678,7 @@ var currentRandom = Math.random;
  * @param {Number} [high] The high border of the range.
  * @return {Number} A random number.
  */
-random = function() {
+function random() {
   if (arguments.length === 0) return currentRandom();
   if (arguments.length === 1) return currentRandom() * arguments[0];
   var aMin = arguments[0],
@@ -6715,7 +6713,7 @@ Marsaglia.createRandomized = function() {
  * @method randomSeed
  * @param  {Number} seed The seed value.
  */
-randomSeed = function(seed) {
+function randomSeed(seed) {
   currentRandom = (new Marsaglia(seed)).nextDouble;
 };
 /**
@@ -6726,7 +6724,7 @@ randomSeed = function(seed) {
  * @method Random
  * @param {Number} seed The seed value.
  */
-Random = function(seed) {
+function Random(seed) {
   var haveNextNextGaussian = false,
     nextNextGaussian, random;
   /**
@@ -6845,7 +6843,7 @@ var noiseProfile = {
  * @param {Number} [z] Coordinate in z space.
  * @return {Number} The noise value.
  */
-noise = function(x, y, z) {
+function noise(x, y, z) {
   if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
   var generator = noiseProfile.generator;
   var effect = 1,
@@ -6880,7 +6878,7 @@ noise = function(x, y, z) {
  * @param {Number} octaves Number of octaves to be used by the noise() function.
  * @param {Number} fallout Falloff factor for each octave.
  */
-noiseDetail = function(octaves, fallout) {
+function noiseDetail(octaves, fallout) {
   noiseProfile.octaves = octaves;
   if (fallout !== undefined) noiseProfile.fallout = fallout;
 };
@@ -6893,7 +6891,7 @@ noiseDetail = function(octaves, fallout) {
  * @method noiseSeed
  * @param {Number} seed Noise seed value.
  */
-noiseSeed = function(seed) {
+function noiseSeed(seed) {
   noiseProfile.seed = seed;
   noiseProfile.generator = undefined;
 };
@@ -6903,7 +6901,7 @@ noiseSeed = function(seed) {
 // Transform
 // geometricBounds hint: [y1, x1, y2, x2]
 
-var precision = function(num, dec) {
+function precision(num, dec) {
   return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
 };
 
@@ -6917,7 +6915,7 @@ var precision = function(num, dec) {
  * @param  {Text|Object} obj The object to calculate the geometric bounds.
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
-bounds = function (obj) {
+function bounds(obj) {
   var x1, y1, x2, y2, w, h;
 
   if (isText(obj)) {
@@ -6988,7 +6986,7 @@ bounds = function (obj) {
  * @param {Number} [x] The new x position, optional.
  * @returns {Number} The current x position.
  */
-itemX = function(pItem, x) {
+function itemX(pItem, x) {
   var off = 0;
   if(currRectMode !== b.CORNER) warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
@@ -7014,7 +7012,7 @@ itemX = function(pItem, x) {
  * @param {Number} [y] The new y position, optional.
  * @returns {Number} The current y position.
  */
-itemY = function(pItem, y) {
+function itemY(pItem, y) {
   var off = 0;
   if(currRectMode !== CORNER) warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefine && pItem.hasOwnProperty("geometricBounds")) {
@@ -7046,7 +7044,7 @@ itemY = function(pItem, y) {
  * @param {Number} [width] The new width.
  * @returns {Number} The current width.
  */
-itemWidth = function(pItem, width) {
+function itemWidth(pItem, width) {
   if(currRectMode !== CORNER) {
     warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
@@ -7071,7 +7069,7 @@ itemWidth = function(pItem, width) {
  * @param {Number} [height] The new height.
  * @returns {Number} The current height.
  */
-itemHeight = function(pItem, height) {
+function itemHeight(pItem, height) {
   if(currRectMode !== CORNER) {
     warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
@@ -7097,7 +7095,7 @@ itemHeight = function(pItem, height) {
  * @param {Number} [y] The new y coordinate.
  * @returns {Object} Returns an object with the fields x and y.
  */
-itemPosition = function(pItem, x, y) {
+function itemPosition(pItem, x, y) {
 
   if(currRectMode !== CORNER) {
     warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
@@ -7128,7 +7126,7 @@ itemPosition = function(pItem, x, y) {
  * @param {Number} [height] The new height.
  * @returns {Object} Returns an object with the fields width and height.
  */
-itemSize = function(pItem, width, height) {
+function itemSize(pItem, width, height) {
   if(currRectMode !== b.CORNER) {
     warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
   }
@@ -7149,7 +7147,7 @@ itemSize = function(pItem, width, height) {
 };
 
 
-var printMatrixHelper = function(elements) {
+function printMatrixHelper(elements) {
   var big = 0;
   for (var i = 0; i < elements.length; i++) {
     if (i !== 0) {
@@ -7173,7 +7171,7 @@ var printMatrixHelper = function(elements) {
  * @cat Document
  * @subcat Transformation
  */
-var Matrix2D = Matrix2D = function() {
+function Matrix2D() {
   if (arguments.length === 0) {
     this.reset();
   } else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -7533,7 +7531,7 @@ Matrix2D.prototype = {
  * @param {Matrix2D} [matrix] The matrix to be set as new current matrix.
  * @returns {Matrix2D} Returns the current matrix.
  */
-matrix = function(matrix) {
+function matrix(matrix) {
 
   if(matrix instanceof Matrix2D) {
     currMatrix = matrix;
@@ -7550,7 +7548,7 @@ matrix = function(matrix) {
  * @param {PageItem} obj The item to be transformed.
  * @param {Matrix2D} matrix The matrix to be applied.
  */
-transform = function(obj, matrix) {
+function transform(obj, matrix) {
 
   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -7567,7 +7565,7 @@ transform = function(obj, matrix) {
  * @method applyMatrix
  * @param {Matrix2D} matrix The matrix to be applied.
  */
-applyMatrix = function (matrix) {
+function applyMatrix(matrix) {
   currMatrix.apply(matrix);
 };
 
@@ -7578,7 +7576,7 @@ applyMatrix = function (matrix) {
  * @subcat Transformation
  * @method popMatrix
  */
-popMatrix = function () {
+function popMatrix() {
   if (matrixStack.length > 0) {
     currMatrix.set(matrixStack.pop());
   } else {
@@ -7593,7 +7591,7 @@ popMatrix = function () {
  * @subcat Transformation
  * @method printMatrix
  */
-printMatrix = function () {
+function printMatrix() {
   currMatrix.print();
 };
 
@@ -7604,7 +7602,7 @@ printMatrix = function () {
  * @subcat Transformation
  * @method pushMatrix
  */
-pushMatrix = function () {
+function pushMatrix() {
   matrixStack.push(currMatrix.array());
 };
 
@@ -7615,7 +7613,7 @@ pushMatrix = function () {
  * @subcat Transformation
  * @method resetMatrix
  */
-resetMatrix = function () {
+function resetMatrix() {
   matrixStack = [];
   currMatrix = new Matrix2D();
 };
@@ -7628,7 +7626,7 @@ resetMatrix = function () {
  * @method rotate
  * @param {Number} angle The angle specified in radians
  */
-rotate = function (angle) {
+function rotate(angle) {
   if(typeof arguments[0] === "undefined") {
     error("Please provide an angle for rotation.");
   }
@@ -7645,7 +7643,7 @@ rotate = function (angle) {
  * @param {Number} scaleX The amount to scale the X axis.
  * @param {Number} scaleY The amount to scale the Y axis.
  */
-scale = function (scaleX, scaleY) {
+function scale(scaleX, scaleY) {
   if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) {
     error("Please provide valid x and/or y factors for scaling.");
   }
@@ -7661,7 +7659,7 @@ scale = function (scaleX, scaleY) {
  * @param {Number} tx The amount of offset on the X axis.
  * @param {Number} ty The amount of offset on the Y axis.
  */
-translate = function (tx, ty) {
+function translate(tx, ty) {
   if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") {
     error("Please provide x and y coordinates for translation.");
   }

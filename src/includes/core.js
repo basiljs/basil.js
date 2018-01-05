@@ -3,7 +3,7 @@
 // ----------------------------------------
 
 // all initialisations should go here
-var init = function() {
+function init() {
 
   welcome();
 
@@ -35,7 +35,7 @@ var init = function() {
  * @method go
  * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
  */
-go = function (mode) {
+function go(mode) {
   if (!mode) {
     mode = DEFAULTMODE;
   }
@@ -95,7 +95,7 @@ go = function (mode) {
  * @method loop
  * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
  */
-loop = function(framerate) {
+function loop(framerate) {
   // before running the loop we need to check if
   // the stop script exists
     // the Script looks for the lib folder next to itself
@@ -161,7 +161,7 @@ loop = function(framerate) {
  * @cat Environment
  * @method noLoop
  */
-noLoop = function() {
+function noLoop() {
   var allIdleTasks = app.idleTasks;
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
@@ -174,7 +174,7 @@ noLoop = function() {
 // all private from here
 
 
-var runSetup = function() {
+function runSetup() {
   app.doScript(function() {
     if (typeof $.global.setup === "function") {
       $.global.setup();
@@ -182,7 +182,7 @@ var runSetup = function() {
   }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
-var runDrawOnce = function() {
+function runDrawOnce() {
   app.doScript(function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
@@ -190,7 +190,7 @@ var runDrawOnce = function() {
   }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
-var runDrawLoop = function() {
+function runDrawLoop() {
   app.doScript(function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
@@ -198,7 +198,7 @@ var runDrawLoop = function() {
   }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
 };
 
-var welcome = function() {
+function welcome() {
   clearConsole();
   println("Running "
       + SCRIPTNAME
@@ -207,7 +207,7 @@ var welcome = function() {
       + " ...");
 };
 
-var currentDoc = function (mode) {
+function currentDoc(mode) {
   if (currDoc === null || !currDoc) {
     var stack = $.stack;
     if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
@@ -234,7 +234,7 @@ var currentDoc = function (mode) {
   return currDoc;
 };
 
-var closeHiddenDocs = function () {
+function closeHiddenDocs() {
     // in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
   for (var i = app.documents.length - 1; i >= 0; i -= 1) {
     var d = app.documents[i];
@@ -244,7 +244,7 @@ var closeHiddenDocs = function () {
   }
 };
 
-var setCurrDoc = function(doc) {
+function setCurrDoc(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
@@ -264,7 +264,7 @@ var setCurrDoc = function(doc) {
 
 var progressPanel = null;
 
-var Progress = function () {
+function Progress() {
   this.init = function () {
     this.panel = Window.find("window", "processing...");
     if (this.panel === null) {
@@ -302,7 +302,7 @@ var Progress = function () {
   this.init();
 };
 
-var resetCurrDoc = function() {
+function resetCurrDoc() {
   // resets doc and doc specific vars
   currDoc = null;
   currPage = null;
@@ -319,7 +319,7 @@ var resetCurrDoc = function() {
   resetMatrix();
 };
 
-var currentLayer = function() {
+function currentLayer() {
   if (currLayer === null || !currLayer) {
     currentDoc();
     if (currDoc.windows.length) {
@@ -331,7 +331,7 @@ var currentLayer = function() {
   return currLayer;
 };
 
-var currentPage = function() {
+function currentPage() {
   if (currPage === null || !currPage) {
     currentDoc();
     if (currDoc.windows.length) {
@@ -343,7 +343,7 @@ var currentPage = function() {
   return currPage;
 };
 
-var updatePublicPageSizeVars = function () {
+function updatePublicPageSizeVars() {
   var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
   var facingPages = currDoc.documentPreferences.facingPages;
   var singlePageMode = false;
@@ -453,7 +453,7 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
-var createSelectionDialog = function(settings) {
+function createSelectionDialog(settings) {
   var result;
   if(!settings) {
     settings = {};
@@ -512,7 +512,7 @@ var createSelectionDialog = function(settings) {
 }
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
-var findInStylesByName = function(allStylesCollection, name) {
+function findInStylesByName(allStylesCollection, name) {
   for (var i = 0; i < allStylesCollection.length; i++) {
     if (allStylesCollection[i].name === name) {
       return allStylesCollection[i];
@@ -523,30 +523,28 @@ var findInStylesByName = function(allStylesCollection, name) {
 
 // get the name of parent functions; helpful for more meaningful error messages
 // level describes how many levels above to find the function whose function name is returned
-var getParentFunctionName = function(level) {
+function getParentFunctionName(level) {
     var stackArray = $.stack.
           replace(/\((.+?)\)/g, "").
           split(/[\n]/);
     return stackArray[stackArray.length - 2 - level];
 }
 
-var checkNull = checkNull = function (obj) {
+function checkNull(obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
-var isNull = checkNull; // legacy
-
-var error = error = function(msg) {
+function error(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-var warning = warning = function(msg) {
+function warning (msg) {
   println(WARNING_PREFIX + msg);
 };
 
-var clearConsole = function() {
+function clearConsole() {
   var bt = new BridgeTalk();
   bt.target = "estoolkit";
   bt.body = "app.clc()"; // works just with cs6

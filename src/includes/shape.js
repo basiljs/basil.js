@@ -15,7 +15,7 @@
  * @param {Number} h Height of the ellipse.
  * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
-ellipse = function(x, y, w, h) {
+function ellipse(x, y, w, h) {
   if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
   if (currEllipseMode === CORNER) {
@@ -82,7 +82,7 @@ ellipse = function(x, y, w, h) {
  *  var vec2 = new b.Vector( x2, y2 );
  *  b.line( vec1, vec2 );
  */
-line = function(x1, y1, x2, y2) {
+function line(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
     error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   }
@@ -112,7 +112,7 @@ line = function(x1, y1, x2, y2) {
  * @method beginShape
  * @param {String} shapeMode Set to b.CLOSE if the new Path should be auto-closed.
  */
-beginShape = function(shapeMode) {
+function beginShape(shapeMode) {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
@@ -142,7 +142,7 @@ beginShape = function(shapeMode) {
  * @param  {Number} [xRightHandle] X-coordinate of the right-direction point.
  * @param  {Number} [yRightHandle] Y-coordinate of the right-direction point.
  */
-vertex = function() {
+function vertex() {
   if (isArray(currVertexPoints)) {
     if (arguments.length === 2) {
       currVertexPoints.push([arguments[0], arguments[1]]);
@@ -179,7 +179,7 @@ vertex = function() {
  * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
  */
-arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
+function arc(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
     return false;
   }
@@ -300,7 +300,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
  * @subcat Primitives
  * @method addPath
  */
-addPath = function() {
+function addPath() {
   doAddPath();
   currPathPointer++;
 };
@@ -314,7 +314,7 @@ addPath = function() {
  * @method endShape
  * @return {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
-endShape = function() {
+function endShape() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -377,7 +377,7 @@ function notCalledBeginShapeError () {
  * @param  {Number} [bl] Radius of bottom left corner (optional).
  * @return {Rectangle} The rectangle that was created.
  */
-rect = function(x, y, w, h, tl, tr, br, bl) {
+function rect(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
     // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
@@ -466,7 +466,7 @@ rect = function(x, y, w, h, tl, tr, br, bl) {
  * @param {String} mode The rectMode to switch to: either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS.
  *
  */
-rectMode = function (mode) {
+function rectMode(mode) {
   if (arguments.length === 0) return currRectMode;
   if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currRectMode = mode;
@@ -491,7 +491,7 @@ rectMode = function (mode) {
  * @method ellipseMode
  * @param {String} mode The ellipse mode to switch to: either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS.
  */
-ellipseMode = function (mode) {
+function ellipseMode(mode) {
   if (arguments.length === 0) return currEllipseMode;
   if (mode === CORNER || mode === CORNERS || mode === CENTER || mode === RADIUS) {
     currEllipseMode = mode;
@@ -509,7 +509,7 @@ ellipseMode = function (mode) {
  * @method strokeWeight
  * @param {Number} weight The width of the stroke in points.
  */
-strokeWeight = function (weight) {
+function strokeWeight(weight) {
   if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
@@ -528,7 +528,7 @@ strokeWeight = function (weight) {
  * @param {Object} [props] An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle} The object style instance.
  */
-objectStyle = function(itemOrName, props) {
+function objectStyle(itemOrName, props) {
   var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
@@ -571,7 +571,7 @@ objectStyle = function(itemOrName, props) {
  * @return {PageItem} The page item that the style was applied to.
  */
 
-applyObjectStyle = function(item, style) {
+function applyObjectStyle(item, style) {
 
   if(isString(style)) {
     var name = style;
@@ -599,7 +599,7 @@ applyObjectStyle = function(item, style) {
  * @param {PageItem|Page} item The page item or page to duplicate.
  * @returns {Object} The new page item or page.
  */
-duplicate = function(item) {
+function duplicate(item) {
 
   if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 

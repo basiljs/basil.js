@@ -328,7 +328,7 @@ var Vector = function() {
  * @param {Number} val A number.
  * @return {Number} The absolute value of that number.
  */
-abs = Math.abs;
+var abs = Math.abs;
 
 /**
  * Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.
@@ -339,7 +339,7 @@ abs = Math.abs;
  * @param {Number} val An arbitrary number.
  * @return {Number} The next highest integer value.
  */
-ceil = Math.ceil;
+var ceil = Math.ceil;
 
 /**
  * Constrains a value to not exceed a maximum and minimum value.
@@ -352,7 +352,7 @@ ceil = Math.ceil;
  * @param {Number} aMax Maximum limit.
  * @return {Number} The constrained value.
  */
-constrain = function(aNumber, aMin, aMax) {
+function constrain(aNumber, aMin, aMax) {
   if(arguments.length !== 3) error("b.constrain(), wrong argument count.");
   if(aNumber <= aMin) return aMin;
   if(aNumber >= aMax) return aMax;
@@ -371,7 +371,7 @@ constrain = function(aNumber, aMin, aMax) {
  * @param {Number} y2 The y-coordinate of the second point.
  * @return {Number} The distance.
  */
-dist = function() {
+function dist() {
   var dx, dy, dz;
   if (arguments.length === 4) {
     dx = arguments[0] - arguments[2];
@@ -391,7 +391,7 @@ dist = function() {
  * @param {Number} x A number.
  * @return {Number} A number representing ex.
  */
-exp = Math.exp;
+var exp = Math.exp;
 
 /**
  * Calculates the closest int value that is less than or equal to the value of the parameter.
@@ -402,7 +402,7 @@ exp = Math.exp;
  * @param {Number} a A number.
  * @return {Number} Integer number.
  */
-floor = Math.floor;
+var floor = Math.floor;
 
 /**
  * Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
@@ -415,7 +415,7 @@ floor = Math.floor;
  * @param {Number} amt Amount between 0.0 and 1.0.
  * @return {Number} The mapped value.
  */
-lerp = function(value1, value2, amt) {
+function lerp(value1, value2, amt) {
   if(arguments.length !== 3) error("b.lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
@@ -429,7 +429,7 @@ lerp = function(value1, value2, amt) {
  * @param {Number} x A number, must be greater then 0.0.
  * @return {Number} The natural logarithm.
  */
-log = Math.log;
+var log = Math.log;
 
 /**
  * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
@@ -442,7 +442,7 @@ log = Math.log;
  * @param {Number} [z] Coordinate, optional.
  * @return {Number} The magnitude.
  */
-mag = function(a, b, c) {
+function mag(a, b, c) {
   if(!(arguments.length === 2 || arguments.length === 3)) error("b.mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
@@ -463,7 +463,7 @@ mag = function(a, b, c) {
  * @param {Number} ostop The end of the output range.
  * @return {Number} The mapped value.
  */
-map = function(value, istart, istop, ostart, ostop) {
+function map(value, istart, istop, ostart, ostop) {
   if(arguments.length !== 5) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
@@ -479,7 +479,7 @@ map = function(value, istart, istop, ostart, ostop) {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The highest value.
  */
-max = function() {
+function max() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
@@ -500,7 +500,7 @@ max = function() {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The lowest value.
  */
-min = function() {
+function min() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
@@ -525,7 +525,7 @@ min = function() {
  * @param {Number} high The highest value to be expected.
  * @return {Number} The normalized value.
  */
-norm = function(aNumber, low, high) {
+function norm(aNumber, low, high) {
   if(arguments.length !== 3) error("b.norm, wrong argument count.");
   return (aNumber - low) / (high - low);
 };
@@ -540,7 +540,7 @@ norm = function(aNumber, low, high) {
  * @param {Number} exponent Power of which to raise the base.
  * @return {Number} the result
  */
-pow = Math.pow;
+var pow = Math.pow;
 
 /**
  * Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.
@@ -551,7 +551,7 @@ pow = Math.pow;
  * @param {Number} value The value to be rounded.
  * @return {Number} The rounded value.
  */
-round = Math.round;
+var round = Math.round;
 
 /**
  * Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.
@@ -562,7 +562,7 @@ round = Math.round;
  * @param {Number} aNumber The value to be squared.
  * @return {Number} Squared number.
  */
-sq = function(aNumber) {
+function sq(aNumber) {
   if(arguments.length !== 1) error("b.sq(), wrong argument count.");
   return aNumber * aNumber;
 };
@@ -578,7 +578,7 @@ sq = function(aNumber) {
  * @param {Number} val A value.
  * @return {Number} Square root.
  */
-sqrt = Math.sqrt;
+var sqrt = Math.sqrt;
 
 /**
  * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -589,7 +589,7 @@ sqrt = Math.sqrt;
  * @param {Number} value The value whose arc cosine is to be returned.
  * @return {Number} The arc cosine.
  */
-acos = Math.acos;
+var acos = Math.acos;
 
 /**
  * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -600,7 +600,7 @@ acos = Math.acos;
  * @param {Number} value The value whose arc sine is to be returned.
  * @return {Number} The arc sine.
  */
-asin = Math.asin;
+var asin = Math.asin;
 
 /**
  * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -611,7 +611,7 @@ asin = Math.asin;
  * @param {Number} value The value whose arc tangent is to be returned.
  * @return {Number} The arc tangent.
  */
-atan = Math.atan;
+var atan = Math.atan;
 
 /**
  * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
@@ -623,7 +623,7 @@ atan = Math.atan;
  * @param {Number} x The x coordinate.
  * @return {Number} The atan2 value.
  */
-atan2 = Math.atan2;
+var atan2 = Math.atan2;
 
 /**
  * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
@@ -634,7 +634,7 @@ atan2 = Math.atan2;
  * @param {Number} rad A value in radians.
  * @return {Number} The cosine.
  */
-cos = Math.cos;
+var cos = Math.cos;
 
 /**
  * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
@@ -645,7 +645,7 @@ cos = Math.cos;
  * @param {Number} aAngle An angle in radians.
  * @return {Number} The given angle in degree.
  */
-degrees = function(aAngle) {
+function degrees(aAngle) {
   return aAngle * 180 / Math.PI;
 };
 
@@ -658,7 +658,7 @@ degrees = function(aAngle) {
  * @param {Number} aAngle An angle in degree.
  * @return {Number} The given angle in radians.
  */
-radians = function(aAngle) {
+function radians(aAngle) {
   return aAngle / 180 * Math.PI;
 };
 
@@ -671,7 +671,7 @@ radians = function(aAngle) {
  * @param {Number} rad A value in radians.
  * @return {Number} The sine value.
  */
-sin = Math.sin;
+var sin = Math.sin;
 
 /**
  * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
@@ -682,7 +682,7 @@ sin = Math.sin;
  * @param {Number} rad A value in radians.
  * @return {Number} The tangent value.
  */
-tan = Math.tan;
+var tan = Math.tan;
 
 // -- Random --
 
@@ -700,7 +700,7 @@ var currentRandom = Math.random;
  * @param {Number} [high] The high border of the range.
  * @return {Number} A random number.
  */
-random = function() {
+function random() {
   if (arguments.length === 0) return currentRandom();
   if (arguments.length === 1) return currentRandom() * arguments[0];
   var aMin = arguments[0],
@@ -735,7 +735,7 @@ Marsaglia.createRandomized = function() {
  * @method randomSeed
  * @param  {Number} seed The seed value.
  */
-randomSeed = function(seed) {
+function randomSeed(seed) {
   currentRandom = (new Marsaglia(seed)).nextDouble;
 };
 /**
@@ -746,7 +746,7 @@ randomSeed = function(seed) {
  * @method Random
  * @param {Number} seed The seed value.
  */
-Random = function(seed) {
+function Random(seed) {
   var haveNextNextGaussian = false,
     nextNextGaussian, random;
   /**
@@ -865,7 +865,7 @@ var noiseProfile = {
  * @param {Number} [z] Coordinate in z space.
  * @return {Number} The noise value.
  */
-noise = function(x, y, z) {
+function noise(x, y, z) {
   if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
   var generator = noiseProfile.generator;
   var effect = 1,
@@ -900,7 +900,7 @@ noise = function(x, y, z) {
  * @param {Number} octaves Number of octaves to be used by the noise() function.
  * @param {Number} fallout Falloff factor for each octave.
  */
-noiseDetail = function(octaves, fallout) {
+function noiseDetail(octaves, fallout) {
   noiseProfile.octaves = octaves;
   if (fallout !== undefined) noiseProfile.fallout = fallout;
 };
@@ -913,7 +913,7 @@ noiseDetail = function(octaves, fallout) {
  * @method noiseSeed
  * @param {Number} seed Noise seed value.
  */
-noiseSeed = function(seed) {
+function noiseSeed(seed) {
   noiseProfile.seed = seed;
   noiseProfile.generator = undefined;
 };
@@ -923,7 +923,7 @@ noiseSeed = function(seed) {
 // Transform
 // geometricBounds hint: [y1, x1, y2, x2]
 
-var precision = function(num, dec) {
+function precision(num, dec) {
   return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
 };
 
@@ -937,7 +937,7 @@ var precision = function(num, dec) {
  * @param  {Text|Object} obj The object to calculate the geometric bounds.
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
-bounds = function (obj) {
+function bounds(obj) {
   var x1, y1, x2, y2, w, h;
 
   if (isText(obj)) {
@@ -1008,7 +1008,7 @@ bounds = function (obj) {
  * @param {Number} [x] The new x position, optional.
  * @returns {Number} The current x position.
  */
-itemX = function(pItem, x) {
+function itemX(pItem, x) {
   var off = 0;
   if(currRectMode !== b.CORNER) warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
@@ -1034,7 +1034,7 @@ itemX = function(pItem, x) {
  * @param {Number} [y] The new y position, optional.
  * @returns {Number} The current y position.
  */
-itemY = function(pItem, y) {
+function itemY(pItem, y) {
   var off = 0;
   if(currRectMode !== CORNER) warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefine && pItem.hasOwnProperty("geometricBounds")) {

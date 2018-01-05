@@ -9,7 +9,7 @@
  * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  * @param  {String} [name] If created with numbers, a custom swatch name can be given.
  */
-fill = function (fillColor) {
+function fill(fillColor) {
 
   checkNull(fillColor);
   if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
@@ -47,7 +47,7 @@ fill = function (fillColor) {
  * @cat Color
  * @method noFill
  */
-noFill = function () {
+function noFill() {
   currFillColor = noneSwatchColor;
 };
 
@@ -57,7 +57,7 @@ noFill = function () {
  * @method stroke
  * @param  {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  */
-stroke = function (strokeColor) {
+function stroke(strokeColor) {
   checkNull(strokeColor);
   if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
     currStrokeColor = strokeColor;
@@ -94,7 +94,7 @@ stroke = function (strokeColor) {
  * @cat Color
  * @method noStroke
  */
-noStroke = function () {
+function noStroke() {
   currStrokeColor = noneSwatchColor;
 };
 
@@ -105,7 +105,7 @@ noStroke = function () {
  * @method fillTint
  * @param  {Number} tint Number from 0 to 100
  */
-fillTint = function (tint) {
+function fillTint(tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
@@ -121,7 +121,7 @@ fillTint = function (tint) {
  * @method strokeTint
  * @param  {Number} tint Number from 0 to 100.
  */
-strokeTint = function (tint) {
+function strokeTint(tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currStrokeTint = tint;
@@ -137,7 +137,7 @@ strokeTint = function (tint) {
  * @method colorMode
  * @param  {Number} colorMode b.RGB or b.CMYK.
  */
-colorMode = function(colorMode) {
+function colorMode(colorMode) {
   checkNull(colorMode);
   if (arguments.length === 0) {
     return currColorMode;
@@ -156,7 +156,7 @@ colorMode = function(colorMode) {
  * @method gradientMode
  * @param  {String} gradientMode b.LINEAR or b.RADIAL.
  */
-gradientMode = function(gradientMode) {
+function gradientMode(gradientMode) {
   checkNull(gradientMode);
   if (arguments.length === 0) {
     return currGradientMode;
@@ -175,7 +175,7 @@ gradientMode = function(gradientMode) {
  * @method swatch
  * @param {String} swatchName Returns the swatch color/gradient for a given name by string.
  */
-swatch = function(){
+function swatch(){
   var newSwatch;
   var props = {};
   if (arguments.length === 1) {
@@ -201,7 +201,7 @@ swatch = function(){
  * @param  {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
  * @return {Color} Found or new color
  */
-color = function() {
+function color() {
   var newCol;
   var props = {};
   var a = arguments[0],
@@ -344,7 +344,7 @@ color = function() {
  * @param {String} [name] Optional name of the gradient.
  * @return {Gradient} Found or new gradient
  */
-gradient = function() {
+function gradient() {
   var newGrad;
   // var props = {};
   var a = arguments[0],
@@ -453,7 +453,7 @@ gradient = function() {
  * @param  {Object} obj The object to set opacity of.
  * @param  {Number} opacity The opacity value from 0 to 100.
  */
-opacity = function(obj, opacity) {
+function opacity(obj, opacity) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
@@ -486,7 +486,7 @@ opacity = function(obj, opacity) {
  *                           BlendMode.COLOR <br />
  *                           BlendMode.LUMINOSITY <br />
  */
-blendMode = function(obj, blendMode) {
+function blendMode(obj, blendMode) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
@@ -507,7 +507,7 @@ blendMode = function(obj, blendMode) {
  * @param  {Number} amt The amount to interpolate between the two colors.
  * @return {Color} Interpolated color
  */
-lerpColor = function (c1, c2, amt) {
+function lerpColor(c1, c2, amt) {
   checkNull(c1);
   checkNull(c2);
   if ((c1 instanceof Color || c1 instanceof Swatch) &&

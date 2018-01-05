@@ -12,7 +12,7 @@
  * @param  {Document} [doc] The document to set the current document to.
  * @return {Document} The current document instance.
  */
-doc = function(doc) {
+function doc(doc) {
   if (doc instanceof Document) {
     setCurrDoc(doc);
   }
@@ -44,7 +44,7 @@ doc = function(doc) {
  * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
  * b.size("A4", b.LANDSCAPE);
  */
-size = function(widthOrPageSize, heightOrOrientation) {
+function size(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
     warning("b.size()", "You have no open document.");
@@ -98,7 +98,7 @@ size = function(widthOrPageSize, heightOrOrientation) {
  * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
  * @param  {File} [file] The InDesign file instance to save the document to.
  */
-close = function(saveOptions, file) {
+function close(saveOptions, file) {
   var doc = currentDoc();
   if (doc) {
     if(typeof saveOptions === "boolean" && saveOptions === false) {
@@ -119,7 +119,7 @@ close = function(saveOptions, file) {
  * @method revert
  * @return {Document} The reverted document.
  */
-revert = function() {
+function revert() {
 
   if(currDoc.saved && currDoc.modified) {
     var currFile = currDoc.fullName;
@@ -145,7 +145,7 @@ revert = function() {
  * @param  {String} mode The canvas mode to set.
  * @return {String} The current canvas mode.
  */
-canvasMode = function (m) {
+function canvasMode(m) {
   if(arguments.length === 0) {
     return currCanvasMode;
   } else if (typeof m === "string") {
@@ -171,7 +171,7 @@ canvasMode = function (m) {
  * @param  {Number} v The desired vertical pasteboard margin.
  * @return {Array} The current horizontal, vertical pasteboard margins.
  */
-pasteboard = function (h, v) {
+function pasteboard(h, v) {
   if(arguments.length == 0) {
     return currDoc.pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
@@ -193,7 +193,7 @@ pasteboard = function (h, v) {
  * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
  * @return {Page} The current page instance.
  */
-page = function(page) {
+function page(page) {
   if (page instanceof Page) {
     currPage = page;
   } else if (typeof page !== "undefined" && page.hasOwnProperty("parentPage")) {
@@ -230,7 +230,7 @@ page = function(page) {
  * @param  {String} [location] The location placement mode.
  * @return {Page} The new page.
  */
-addPage = function(location) {
+function addPage(location) {
 
   checkNull(location);
 
@@ -281,7 +281,7 @@ addPage = function(location) {
  * @method removePage
  * @param  {Page|Number} [page] The page to be removed as Page object or page number.
  */
-removePage = function (page) {
+function removePage(page) {
   checkNull(page);
   if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
     var p = page(page);
@@ -302,7 +302,7 @@ removePage = function (page) {
  * @param  {Page} [pageObj] The page you want to know the number of.
  * @return {Number} The page number within the document.
  */
-pageNumber = function (pageObj) {
+function pageNumber(pageObj) {
   checkNull(pageObj);
   if (typeof pageObj === "number") {
     error("b.pageNumber(), cannot be called with a Number argument.");
@@ -321,7 +321,7 @@ pageNumber = function (pageObj) {
  * @method nextPage
  * @return {Page} The active page.
  */
-nextPage = function () {
+function nextPage() {
   var p = doc().pages.nextItem(currentPage());
   return page(p);
 };
@@ -335,7 +335,7 @@ nextPage = function () {
  * @method previousPage
  * @return {Page} The active page.
  */
-previousPage = function () {
+function previousPage() {
   var p = doc().pages.previousItem(currentPage());
   return page(p);
 };
@@ -353,7 +353,7 @@ previousPage = function () {
  * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
  * @return {Number} The amount of pages.
  */
-pageCount = function(pageCount) {
+function pageCount(pageCount) {
   if(arguments.length) {
     if(isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
@@ -373,7 +373,7 @@ pageCount = function(pageCount) {
  * @method storyCount
  * @return {Number} count The amount of stories.
  */
-storyCount = function() {
+function storyCount() {
   return currentDoc().stories.count();
 };
 
@@ -387,7 +387,7 @@ storyCount = function() {
  * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
  * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
  */
-addToStory = function(story, itemOrString, insertionPointorMode) {
+function addToStory(story, itemOrString, insertionPointorMode) {
 
   checkNull(story);
   checkNull(itemOrString);
@@ -452,7 +452,7 @@ addToStory = function(story, itemOrString, insertionPointorMode) {
  * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
  * @return {Layer} The current layer instance.
  */
-layer = function(layer) {
+function layer(layer) {
   checkNull(layer);
   if (layer instanceof Layer) {
     currLayer = layer;
@@ -483,7 +483,7 @@ layer = function(layer) {
  * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
  * @return {PageItem|Layer} The newly arranged page item or layer.
  */
-arrange = function(pItemOrLayer, positionOrDirection, reference) {
+function arrange(pItemOrLayer, positionOrDirection, reference) {
   checkNull(pItemOrLayer);
 
   if(pItemOrLayer.hasOwnProperty("parentPage")) {
@@ -540,7 +540,7 @@ arrange = function(pItemOrLayer, positionOrDirection, reference) {
  *  @param {String} [name] The name of the group, only when creating a group from page items.
  *  @return {Group} The group instance.
  */
-group = function (pItems, name) {
+function group(pItems, name) {
   checkNull(pItems);
   var group;
   if(pItems instanceof Array) {
@@ -576,7 +576,7 @@ group = function (pItems, name) {
  *  @param {Group|String} group The group instance or name of the group to ungroup.
  *  @return {Array} An array of the ungrouped page items.
  */
-ungroup = function(group) {
+function ungroup(group) {
   checkNull(group);
   var ungroupedItems = null;
   if(group instanceof Group) {
@@ -607,7 +607,7 @@ ungroup = function(group) {
  * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
  */
-labels = function(label, cb) {
+function labels(label, cb) {
   checkNull(label);
   var result = [];
   var doc = currentDoc();
@@ -637,7 +637,7 @@ labels = function(label, cb) {
  * @param  {String} label The label identifier.
  * @return {PageItem} The first PageItem with the given label.
  */
-label = function(label) {
+function label(label) {
   checkNull(label);
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
@@ -658,7 +658,7 @@ label = function(label) {
  * @method selection
  * @return {Object} The first selected object.
  */
-selection = function() {
+function selection() {
   if(app.selection.length === 0) {
     error("b.selection(), selection is empty. Please select something.");
   }
@@ -674,7 +674,7 @@ selection = function() {
  * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {Array} Array of selected object(s).
  */
-selections = function(cb) {
+function selections(cb) {
   if(app.selection.length === 0) {
     error("b.selections(), selection is empty. Please select something.");
   }
@@ -692,7 +692,7 @@ selections = function(cb) {
  * @method nameOnPage
  * @return {Object} The first object on the active page with the given name.
  */
-nameOnPage = function(name) {
+function nameOnPage(name) {
   checkNull(name);
   var result = null;
   var page = currentPage();
@@ -719,7 +719,7 @@ nameOnPage = function(name) {
  * @return {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
-units = function (units) {
+function units(units) {
   checkNull(units);
   if (arguments.length === 0) {
     return currUnits;
@@ -768,7 +768,7 @@ units = function (units) {
  * @param  {Number} x Position of the new guide line.
  * @return {Guide} New guide line.
  */
-guideX = function (x) {
+function guideX(x) {
   checkNull(x);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -787,7 +787,7 @@ guideX = function (x) {
  * @param  {Number} y Position of the new guide line.
  * @return {Guide} New guide line.
  */
-guideY = function (y) {
+function guideY(y) {
   checkNull(y);
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
@@ -811,7 +811,7 @@ guideY = function (y) {
  * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
  * @return {Object} Current page margins with the properties: top, right, bottom, left.
  */
-margins = function(top, right, bottom, left, pageNumber) {
+function margins(top, right, bottom, left, pageNumber) {
   if (arguments.length === 0) {
     return {top: page(pageNumber).marginPreferences.top,
       right: page(pageNumber).marginPreferences.right,
@@ -847,7 +847,7 @@ margins = function(top, right, bottom, left, pageNumber) {
  * @param {Number} [left] Left bleed.
  * @return {Object} Current document bleeds settings.
  */
-bleeds = function(top, right, bottom, left) {
+function bleeds(top, right, bottom, left) {
   if (arguments.length === 0) {
     return {top: currentDoc().documentPreferences.documentBleedTopOffset,
       right: currentDoc().documentPreferences.documentBleedOutsideOrRightOffset,
@@ -895,7 +895,7 @@ bleeds = function(top, right, bottom, left) {
  * var myEllipse = b.ellipse(0, 0, 10, 10);
  * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
-inspect = function (obj, settings, level, branchArray, branchEnd) {
+function inspect(obj, settings, level, branchArray, branchEnd) {
 
   var output, indent;
   output = indent = "";
@@ -1075,7 +1075,7 @@ inspect = function (obj, settings, level, branchArray, branchEnd) {
  * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
  * b.savePDF(myExportFile);
  */
-file = function(filePath) {
+function file(filePath) {
   if(! isString(filePath)) {
     error("b.file(), wrong argument. Use a string that describes a file path.");
   }
@@ -1112,7 +1112,7 @@ file = function(filePath) {
  * @example <caption>Get the data folder, if the document is already saved</caption>
  * var myDataFolder = b.folder();
  */
-folder = function(folderPath) {
+function folder(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
       return new Folder(projectFolder() + "/data/");
@@ -1161,7 +1161,7 @@ folder = function(folderPath) {
  * var myDataFolder = b.folder();
  * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
  */
-files = function(folder, settings, collectedFiles) {
+function files(folder, settings, collectedFiles) {
   var topLevel;
   if (collectedFiles === undefined) {
     if(folder === undefined && currentDoc().saved) {
@@ -1237,7 +1237,7 @@ files = function(folder, settings, collectedFiles) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-selectFile = function(settings) {
+function selectFile(settings) {
   return createSelectionDialog(settings);
 };
 
@@ -1258,7 +1258,7 @@ selectFile = function(settings) {
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
  * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
-selectFiles = function(settings) {
+function selectFiles(settings) {
   if(!settings) {
     settings = {};
   }
@@ -1283,7 +1283,7 @@ selectFiles = function(settings) {
  * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
  * b.selectFolder({folder: "~/Desktop/"});
  */
-selectFolder = function(settings) {
+function selectFolder(settings) {
   if(!settings) {
     settings = {};
   }
@@ -1304,7 +1304,7 @@ selectFolder = function(settings) {
  * @method year
  * @return {Number} The current year.
  */
-year = function() {
+function year() {
   return (new Date()).getFullYear();
 };
 
@@ -1317,7 +1317,7 @@ year = function() {
  * @method month
  * @return {Number} The current month number.
  */
-month = function() {
+function month() {
   return (new Date()).getMonth() + 1;
 };
 
@@ -1330,7 +1330,7 @@ month = function() {
  * @method day
  * @return {Number} The current day number.
  */
-day = function() {
+function day() {
   return (new Date()).getDate();
 };
 
@@ -1343,7 +1343,7 @@ day = function() {
  * @method weekday
  * @return {String} The current weekday name.
  */
-weekday = function() {
+function weekday() {
   var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
   return weekdays[(new Date()).getDay()];
 };
@@ -1357,7 +1357,7 @@ weekday = function() {
  * @method hour
  * @return {Number} The current hour.
  */
-hour = function() {
+function hour() {
   return (new Date()).getHours();
 };
 
@@ -1370,7 +1370,7 @@ hour = function() {
  * @method minute
  * @return {Number} The current minute.
  */
-minute = function() {
+function minute() {
   return (new Date()).getMinutes();
 };
 
@@ -1383,7 +1383,7 @@ minute = function() {
  * @method second
  * @return {Number} The current second.
  */
-second = function() {
+function second() {
   return (new Date()).getSeconds();
 };
 
@@ -1396,7 +1396,7 @@ second = function() {
  * @method millis
  * @return {Number} The current milli.
  */
-millis = function() {
+function millis() {
   return Date.now() - startTime;
 };
 
@@ -1409,7 +1409,7 @@ millis = function() {
  * @method millisecond
  * @return {Number} The current millisecond.
  */
-millisecond = function() {
+function millisecond() {
   return (new Date()).getMilliseconds();
 };
 
@@ -1422,7 +1422,7 @@ millisecond = function() {
  * @method timestamp
  * @return {String} The current time in YYYYMMDD_HHMMSS.
  */
-timestamp = function() {
+function timestamp() {
   var dt = new Date();
   var dtf = dt.getFullYear();
   dtf += nf(dt.getMonth() + 1, 2);

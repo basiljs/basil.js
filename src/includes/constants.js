@@ -360,7 +360,7 @@ const MODEHIDDEN = "ModeHidden";
  * @subcat modes
  */
 const MODEVISIBLE = "ModeVisible";
-const DEFAULTMODE = const MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
+const DEFAULTMODE = MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
 
 
 const ERROR_PREFIX = "\nBasil.js Error -> ",
