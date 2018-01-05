@@ -16,38 +16,29 @@ function init() {
   currColorMode = RGB;
   currGradientMode = LINEAR;
   currDialogFolder = Folder("~");
-};
+  currMode = DEFAULTMODE;  // temporary, implement properly later
 
-
-// ----------------------------------------
-// execution
-
-/**
- * Run the sketch! Has to be called in every sketch a the very end of the code.
- * You may add performance setting options when calling b.go():<br /><br />
- *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
- * b.go(b.MODESILENT) <br />
- * b.go(b.MODEHIDDEN)<br /><br />
- *
- * Currently there is no performance optimization in b.loop()<br />
- * @cat Environment
- * @method go
- * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
- */
-function go(mode) {
-  if (!mode) {
-    mode = DEFAULTMODE;
-  }
-  app.scriptPreferences.enableRedraw = (mode == MODEVISIBLE || mode == MODEHIDDEN);
-  app.preflightOptions.preflightOff = true;
-
-  currentDoc(mode);
-  if (mode == MODEHIDDEN || mode == MODESILENT) {
-    progressPanel = new Progress();
-  }
+  var execTime;  // re-enable later
+  appSettings = {
+    enableRedraw: app.scriptPreferences.enableRedraw,
+    preflightOff: app.preflightOptions.preflightOff
+  };
 
   try {
+    if (!currMode) {
+      currMode = DEFAULTMODE;
+    }
+
+    // app settings
+    app.scriptPreferences.enableRedraw = (currMode === MODEVISIBLE || currMode === MODEHIDDEN);
+    app.preflightOptions.preflightOff = true;
+
+    currentDoc(currMode);
+
+    if (currMode === MODEHIDDEN || currMode === MODESILENT) {
+      progressPanel = new Progress();
+    }
+
     if (typeof $.global.setup === "function") {
       runSetup();
     }
@@ -56,31 +47,42 @@ function go(mode) {
       runDrawOnce();
     }
   } catch (e) {
-    alert(e);
-    exit();
+    execTime = executionDuration();
+
+    if(e.userCancel) {
+      println("[Cancelled by user after " + execTime + "]");
+    } else {
+      println("[Cancelled after " + execTime + "]");
+      alert(e);
+    }
+
+  } finally {
+
+    if(!execTime) {
+      println("[Finished in " + executionDuration() + "]");
+    }
+
+    if(currDoc && !currDoc.windows.length) {
+      currDoc.windows.add(); // open the hidden doc
+    }
+    closeHiddenDocs();
+    if (progressPanel) {
+      progressPanel.closePanel();
+    }
+    if (addToStoryCache) {
+      addToStoryCache.close();
+    }
+
+    // resetUserSettings();    // re-enable later
+
+    exit(); // quit program execution
   }
 
-  var executionDuration = millis();
-  if (executionDuration < 1000) {
-    println("[Finished in " + executionDuration + "ms]");
-  } else {
-    println("[Finished in " + (executionDuration / 1000).toPrecision(3) + "s]");
-  }
-
-  if(currDoc && !currDoc.windows.length) {
-    currDoc.windows.add(); // open the hidden doc
-  }
-  closeHiddenDocs();
-  if (progressPanel) {
-    progressPanel.closePanel();
-  }
-  if (addToStoryCache) {
-    addToStoryCache.close();
-  }
-  app.scriptPreferences.enableRedraw = true;
-  app.preflightOptions.preflightOff = false;
-  exit(); // quit program execution
 };
+
+
+// ----------------------------------------
+// execution
 
 /**
  * EXPERIMENTAL!
@@ -534,6 +536,11 @@ function checkNull(obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
+
+function executionDuration() {
+  var duration = pub.millis();
+  return duration < 1000 ? duration + "ms" : (duration / 1000).toPrecision(3) + "s";
+}
 
 function error(msg) {
   println(ERROR_PREFIX + msg);
