@@ -9,7 +9,7 @@
  * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  * @param  {String} [name] If created with numbers, a custom swatch name can be given.
  */
-function fill(fillColor) {
+pub.fill = function (fillColor) {
 
   checkNull(fillColor);
   if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
@@ -17,18 +17,18 @@ function fill(fillColor) {
   } else {
     if (arguments.length === 1) {
       if (typeof arguments[0] === "string") {
-        currFillColor = swatch(arguments[0]);
+        currFillColor = pub.swatch(arguments[0]);
       }else{
-        currFillColor = color(arguments[0]);
+        currFillColor = pub.color(arguments[0]);
       }
     } else if (arguments.length === 2) {
-      currFillColor = color(arguments[0], arguments[1]);
+      currFillColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currFillColor = color(arguments[0], arguments[1], arguments[2]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currFillColor = color(arguments[0], arguments[1], arguments[2], arguments[3]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currFillColor = color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.fill(), wrong parameters. Use:\n"
         + "Swatch name or\n"
@@ -47,7 +47,7 @@ function fill(fillColor) {
  * @cat Color
  * @method noFill
  */
-function noFill() {
+pub.noFill = function () {
   currFillColor = noneSwatchColor;
 };
 
@@ -57,25 +57,25 @@ function noFill() {
  * @method stroke
  * @param  {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  */
-function stroke(strokeColor) {
+pub.stroke = function (strokeColor) {
   checkNull(strokeColor);
   if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
     currStrokeColor = strokeColor;
   } else {
     if (arguments.length === 1) {
       if (typeof arguments[0] === "string") {
-        currStrokeColor = swatch(arguments[0]);
+        currStrokeColor = pub.swatch(arguments[0]);
       }else{
-        currStrokeColor = color(arguments[0]);
+        currStrokeColor = pub.color(arguments[0]);
       }
     } else if (arguments.length === 2) {
-      currStrokeColor = color(arguments[0], arguments[1]);
+      currStrokeColor = pub.color(arguments[0], arguments[1]);
     } else if (arguments.length === 3) {
-      currStrokeColor = color(arguments[0], arguments[1], arguments[2]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
     } else if (arguments.length === 4) {
-      currStrokeColor = color(arguments[0], arguments[1], arguments[2], arguments[3]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
     } else if (arguments.length === 5) {
-      currStrokeColor = color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
       error("b.stroke(), wrong parameters. Use:\n"
         + "Swatch name or\n"
@@ -94,7 +94,7 @@ function stroke(strokeColor) {
  * @cat Color
  * @method noStroke
  */
-function noStroke() {
+pub.noStroke = function () {
   currStrokeColor = noneSwatchColor;
 };
 
@@ -105,7 +105,7 @@ function noStroke() {
  * @method fillTint
  * @param  {Number} tint Number from 0 to 100
  */
-function fillTint(tint) {
+pub.fillTint = function (tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
@@ -121,7 +121,7 @@ function fillTint(tint) {
  * @method strokeTint
  * @param  {Number} tint Number from 0 to 100.
  */
-function strokeTint(tint) {
+pub.strokeTint = function (tint) {
   checkNull(tint);
   if (typeof tint === "string" || typeof tint === "number") {
     currStrokeTint = tint;
@@ -137,12 +137,12 @@ function strokeTint(tint) {
  * @method colorMode
  * @param  {Number} colorMode b.RGB or b.CMYK.
  */
-function colorMode(colorMode) {
+pub.colorMode = function(colorMode) {
   checkNull(colorMode);
   if (arguments.length === 0) {
     return currColorMode;
   }
-  if (colorMode === RGB || colorMode === CMYK) {
+  if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
   } else {
     error("b.colorMode(), unsupported colormode, use: b.RGB or b.CMYK");
@@ -156,12 +156,12 @@ function colorMode(colorMode) {
  * @method gradientMode
  * @param  {String} gradientMode b.LINEAR or b.RADIAL.
  */
-function gradientMode(gradientMode) {
+pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
   if (arguments.length === 0) {
     return currGradientMode;
   }
-  if (gradientMode === LINEAR || gradientMode === RADIAL) {
+  if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
     currGradientMode = gradientMode;
   } else {
     error("b.gradientMode(), unsupported gradient mode, use: b.LINEAR or b.RADIAL");
@@ -175,7 +175,7 @@ function gradientMode(gradientMode) {
  * @method swatch
  * @param {String} swatchName Returns the swatch color/gradient for a given name by string.
  */
-function swatch(){
+pub.swatch = function(){
   var newSwatch;
   var props = {};
   if (arguments.length === 1) {
@@ -201,7 +201,7 @@ function swatch(){
  * @param  {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
  * @return {Color} Found or new color
  */
-function color() {
+pub.color = function() {
   var newCol;
   var props = {};
   var a = arguments[0],
@@ -227,14 +227,14 @@ function color() {
       }
     } else if (typeof a === "number") {
       // GRAY
-      if (currColorMode === RGB) {
-        a = constrain(a, 0, 255);
+      if (currColorMode === pub.RGB) {
+        a = pub.constrain(a, 0, 255);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.RGB;
         props.colorValue = [a, a, a];
         props.name = "R=" + a + " G=" + a + " B=" + a;
       } else {
-        a = constrain(a, 0, 100);
+        a = pub.constrain(a, 0, 100);
         props.model = ColorModel.PROCESS;
         props.space = ColorSpace.CMYK;
         props.colorValue = [0, 0, 0, a];
@@ -246,14 +246,14 @@ function color() {
 
   } else if (arguments.length === 2) {
     // GRAY + name
-    if (currColorMode === RGB) {
-      a = constrain(a, 0, 255);
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
       props.colorValue = [a, a, a];
       props.name = b;
     } else {
-      a = constrain(a, 0, 100);
+      a = pub.constrain(a, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [0, 0, 0, a];
@@ -262,10 +262,10 @@ function color() {
 
   } else if (arguments.length === 3) {
     // R G B
-    if (currColorMode === RGB) {
-      a = constrain(a, 0, 255);
-      b = constrain(b, 0, 255);
-      c = constrain(c, 0, 255);
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
+      b = pub.constrain(b, 0, 255);
+      c = pub.constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
       props.colorValue = [a, b, c];
@@ -277,10 +277,10 @@ function color() {
 
   } else if (arguments.length === 4 && typeof d === "string") {
     // R G B + name
-    if (currColorMode === RGB) {
-      a = constrain(a, 0, 255);
-      b = constrain(b, 0, 255);
-      c = constrain(c, 0, 255);
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
+      b = pub.constrain(b, 0, 255);
+      c = pub.constrain(c, 0, 255);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.RGB;
       props.colorValue = [a, b, c];
@@ -291,11 +291,11 @@ function color() {
 
   } else if (arguments.length === 4 && typeof d === "number") {
     // C M Y K
-    if (currColorMode === CMYK) {
-      a = constrain(a, 0, 100);
-      b = constrain(b, 0, 100);
-      c = constrain(c, 0, 100);
-      d = constrain(d, 0, 100);
+    if (currColorMode === pub.CMYK) {
+      a = pub.constrain(a, 0, 100);
+      b = pub.constrain(b, 0, 100);
+      c = pub.constrain(c, 0, 100);
+      d = pub.constrain(d, 0, 100);
       props.model = ColorModel.PROCESS;
       props.space = ColorSpace.CMYK;
       props.colorValue = [a, b, c, d];
@@ -304,12 +304,12 @@ function color() {
       error(colorErrorMsg);
     }
 
-  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === CMYK) {
+  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === pub.CMYK) {
     // C M Y K + name
-    a = constrain(a, 0, 100);
-    b = constrain(b, 0, 100);
-    c = constrain(c, 0, 100);
-    d = constrain(d, 0, 100);
+    a = pub.constrain(a, 0, 100);
+    b = pub.constrain(b, 0, 100);
+    c = pub.constrain(c, 0, 100);
+    d = pub.constrain(d, 0, 100);
     props.model = ColorModel.PROCESS;
     props.space = ColorSpace.CMYK;
     props.colorValue = [a, b, c, d];
@@ -344,7 +344,7 @@ function color() {
  * @param {String} [name] Optional name of the gradient.
  * @return {Gradient} Found or new gradient
  */
-function gradient() {
+pub.gradient = function() {
   var newGrad;
   // var props = {};
   var a = arguments[0],
@@ -380,7 +380,7 @@ function gradient() {
     }
     newGrad.gradientStops[0].stopColor = a;
     newGrad.gradientStops[1].stopColor = b;
-    if(currGradientMode === LINEAR) {
+    if(currGradientMode === pub.LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
       newGrad.type = GradientType.RADIAL;
@@ -429,12 +429,12 @@ function gradient() {
         if(!(typeof b[i] === "number")) {
           error("b.gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
         }
-        newGrad.gradientStops[i].location = constrain(b[i], 0, 100);
+        newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
       } else {
-        newGrad.gradientStops[i].location = map(i, 0, a.length - 1, 0, 100);
+        newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
       }
     }
-    if(currGradientMode === LINEAR) {
+    if(currGradientMode === pub.LINEAR) {
       newGrad.type = GradientType.LINEAR;
     } else {
       newGrad.type = GradientType.RADIAL;
@@ -453,7 +453,7 @@ function gradient() {
  * @param  {Object} obj The object to set opacity of.
  * @param  {Number} opacity The opacity value from 0 to 100.
  */
-function opacity(obj, opacity) {
+pub.opacity = function(obj, opacity) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
@@ -486,7 +486,7 @@ function opacity(obj, opacity) {
  *                           BlendMode.COLOR <br />
  *                           BlendMode.LUMINOSITY <br />
  */
-function blendMode(obj, blendMode) {
+pub.blendMode = function(obj, blendMode) {
   checkNull(obj);
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
@@ -507,7 +507,7 @@ function blendMode(obj, blendMode) {
  * @param  {Number} amt The amount to interpolate between the two colors.
  * @return {Color} Interpolated color
  */
-function lerpColor(c1, c2, amt) {
+pub.lerpColor = function (c1, c2, amt) {
   checkNull(c1);
   checkNull(c2);
   if ((c1 instanceof Color || c1 instanceof Swatch) &&
@@ -524,11 +524,11 @@ function lerpColor(c1, c2, amt) {
       var Y2 = c2.colorValue[2];
       var K2 = c2.colorValue[3];
 
-      var COut = Math.round(lerp(C1, C2, amt));
-      var MOut = Math.round(lerp(M1, M2, amt));
-      var YOut = Math.round(lerp(Y1, Y2, amt));
-      var KOut = Math.round(lerp(K1, K2, amt));
-      return color(COut, MOut, YOut, KOut);
+      var COut = Math.round(pub.lerp(C1, C2, amt));
+      var MOut = Math.round(pub.lerp(M1, M2, amt));
+      var YOut = Math.round(pub.lerp(Y1, Y2, amt));
+      var KOut = Math.round(pub.lerp(K1, K2, amt));
+      return pub.color(COut, MOut, YOut, KOut);
 
     } else if (c1.space === ColorSpace.RGB && c2.space === ColorSpace.RGB) {
       var R1 = c1.colorValue[0];
@@ -539,10 +539,10 @@ function lerpColor(c1, c2, amt) {
       var G2 = c2.colorValue[1];
       var B2 = c2.colorValue[2];
 
-      var ROut = Math.round(lerp(R1, R2, amt));
-      var GOut = Math.round(lerp(G1, G2, amt));
-      var BOut = Math.round(lerp(B1, B2, amt));
-      return color(ROut, GOut, BOut);
+      var ROut = Math.round(pub.lerp(R1, R2, amt));
+      var GOut = Math.round(pub.lerp(G1, G2, amt));
+      var BOut = Math.round(pub.lerp(B1, B2, amt));
+      return pub.color(ROut, GOut, BOut);
 
     } else {
       error("b.lerpColor(), both colors must be either CMYK or RGB.");

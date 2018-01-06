@@ -74,7 +74,7 @@ if (!Array.prototype.map) {
 * @param {Array} collection The array to be processed.
 * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
 */
-function forEach(collection, cb) {
+forEach = function(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
 
     if(!isValid(collection[i])) {
@@ -98,13 +98,13 @@ function forEach(collection, cb) {
  * @method HashList
  */
 // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
-function HashList() {
+HashList = function () {
   var that = {};
   that.length = 0;
   that.items = {};
 
   for (var key in that.items) {
-    println(key);
+    pub.println(key);
   }
 
   // Please note: this is removing Object fields, but has to be done to have an empty "bucket"

@@ -2,7 +2,7 @@
 // src/includes/structure.js
 // ----------------------------------------
 
-function forEachTextCollection(container, collection, cb) {
+var forEachTextCollection = function(container, collection, cb) {
   // var collection;
   if(container instanceof Document) {
     collection = container.stories.everyItem()[collection];
@@ -19,7 +19,7 @@ function forEachTextCollection(container, collection, cb) {
 };
 
 
-function textCollection(collection, legalContainers, container, cb) {
+var textCollection = function(collection, legalContainers, container, cb) {
 
   checkNull(container);
 
@@ -53,7 +53,7 @@ function textCollection(collection, legalContainers, container, cb) {
  * @method delay
  * @param  {Number} milliseconds  The delay time in milliseconds.
  */
-function delay(milliseconds) {
+pub.delay = function (milliseconds) {
   $.sleep(milliseconds);
 };
 
@@ -72,7 +72,7 @@ function delay(milliseconds) {
  * });
  * @return {Stories} A collection of Story objects.
  */
-function stories(doc, cb) {
+pub.stories = function(doc, cb) {
 
   checkNull(doc);
 
@@ -95,7 +95,7 @@ function stories(doc, cb) {
  * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount.
  * @return {Paragraphs} A collection of Paragraph objects.
  */
-function paragraphs(container, cb) {
+pub.paragraphs = function(container, cb) {
 
   var legalContainers = "Document, Story, Page or TextFrame.";
   return textCollection("paragraphs", legalContainers, container, cb);
@@ -112,7 +112,7 @@ function paragraphs(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount.
  * @return {Lines} A collection of Line objects.
  */
-function lines(container, cb) {
+pub.lines = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
   return textCollection("lines", legalContainers, container, cb);
@@ -129,7 +129,7 @@ function lines(container, cb) {
  * @param  {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount.
  * @return {Words} A collection of Word objects.
  */
-function words(container, cb) {
+pub.words = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
   return textCollection("words", legalContainers, container, cb);
@@ -146,7 +146,7 @@ function words(container, cb) {
  * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
  * @return {Characters} A collection of Character objects.
  */
-function characters(container, cb) {
+pub.characters = function(container, cb) {
 
   var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
   return textCollection("characters", legalContainers, container, cb);
@@ -164,7 +164,7 @@ function characters(container, cb) {
  * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
  * @return {PageItems} A collection of PageItem objects.
  */
-function items(container, cb) {
+pub.items = function(container, cb) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -189,7 +189,7 @@ function items(container, cb) {
  * @method clear
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in.
  */
-function clear(container) {
+pub.clear = function(container) {
 
   if (container instanceof Document
     || container instanceof Page
@@ -215,7 +215,7 @@ function clear(container) {
  * @method remove
  * @param  {PageItem} obj The object to be removed.
  */
-function remove(obj) {
+pub.remove = function(obj) {
 
   if(obj.hasOwnProperty("remove")) {
     obj.remove();

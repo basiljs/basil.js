@@ -44,11 +44,17 @@
 // @target "InDesign";
 
 /**
+ * @class b
+ * @static
+ */
+var pub = {};
+
+/**
  * The basil version
  * @property VERSION {String}
  * @cat Environment
  */
-const VERSION = "1.1.0";
+pub.VERSION = "1.1.0";
 
 // @include "includes/constants.js";
 // @include "includes/public-vars.js";

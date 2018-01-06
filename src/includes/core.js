@@ -3,7 +3,7 @@
 // ----------------------------------------
 
 // all initialisations should go here
-function init() {
+var init = function() {
 
   welcome();
 
@@ -12,33 +12,42 @@ function init() {
   currStrokeWeight = 1;
   currStrokeTint = 100;
   currFillTint = 100;
-  currCanvasMode = PAGE;
-  currColorMode = RGB;
-  currGradientMode = LINEAR;
+  currCanvasMode = pub.PAGE;
+  currColorMode = pub.RGB;
+  currGradientMode = pub.LINEAR;
   currDialogFolder = Folder("~");
-  currMode = DEFAULTMODE;  // temporary, implement properly later
+};
 
-  var execTime;  // re-enable later
-  appSettings = {
-    enableRedraw: app.scriptPreferences.enableRedraw,
-    preflightOff: app.preflightOptions.preflightOff
-  };
+
+// ----------------------------------------
+// execution
+
+/**
+ * Run the sketch! Has to be called in every sketch a the very end of the code.
+ * You may add performance setting options when calling b.go():<br /><br />
+ *
+ * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
+ * b.go(b.MODESILENT) <br />
+ * b.go(b.MODEHIDDEN)<br /><br />
+ *
+ * Currently there is no performance optimization in b.loop()<br />
+ * @cat Environment
+ * @method go
+ * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
+ */
+pub.go = function (mode) {
+  if (!mode) {
+    mode = pub.DEFAULTMODE;
+  }
+  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
+  app.preflightOptions.preflightOff = true;
+
+  currentDoc(mode);
+  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+    progressPanel = new Progress();
+  }
 
   try {
-    if (!currMode) {
-      currMode = DEFAULTMODE;
-    }
-
-    // app settings
-    app.scriptPreferences.enableRedraw = (currMode === MODEVISIBLE || currMode === MODEHIDDEN);
-    app.preflightOptions.preflightOff = true;
-
-    currentDoc(currMode);
-
-    if (currMode === MODEHIDDEN || currMode === MODESILENT) {
-      progressPanel = new Progress();
-    }
-
     if (typeof $.global.setup === "function") {
       runSetup();
     }
@@ -47,42 +56,31 @@ function init() {
       runDrawOnce();
     }
   } catch (e) {
-    execTime = executionDuration();
-
-    if(e.userCancel) {
-      println("[Cancelled by user after " + execTime + "]");
-    } else {
-      println("[Cancelled after " + execTime + "]");
-      alert(e);
-    }
-
-  } finally {
-
-    if(!execTime) {
-      println("[Finished in " + executionDuration() + "]");
-    }
-
-    if(currDoc && !currDoc.windows.length) {
-      currDoc.windows.add(); // open the hidden doc
-    }
-    closeHiddenDocs();
-    if (progressPanel) {
-      progressPanel.closePanel();
-    }
-    if (addToStoryCache) {
-      addToStoryCache.close();
-    }
-
-    // resetUserSettings();    // re-enable later
-
-    exit(); // quit program execution
+    alert(e);
+    exit();
   }
 
+  var executionDuration = pub.millis();
+  if (executionDuration < 1000) {
+    println("[Finished in " + executionDuration + "ms]");
+  } else {
+    println("[Finished in " + (executionDuration / 1000).toPrecision(3) + "s]");
+  }
+
+  if(currDoc && !currDoc.windows.length) {
+    currDoc.windows.add(); // open the hidden doc
+  }
+  closeHiddenDocs();
+  if (progressPanel) {
+    progressPanel.closePanel();
+  }
+  if (addToStoryCache) {
+    addToStoryCache.close();
+  }
+  app.scriptPreferences.enableRedraw = true;
+  app.preflightOptions.preflightOff = false;
+  exit(); // quit program execution
 };
-
-
-// ----------------------------------------
-// execution
 
 /**
  * EXPERIMENTAL!
@@ -97,7 +95,7 @@ function init() {
  * @method loop
  * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
  */
-function loop(framerate) {
+pub.loop = function(framerate) {
   // before running the loop we need to check if
   // the stop script exists
     // the Script looks for the lib folder next to itself
@@ -163,7 +161,7 @@ function loop(framerate) {
  * @cat Environment
  * @method noLoop
  */
-function noLoop() {
+pub.noLoop = function() {
   var allIdleTasks = app.idleTasks;
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
@@ -176,40 +174,40 @@ function noLoop() {
 // all private from here
 
 
-function runSetup() {
+var runSetup = function() {
   app.doScript(function() {
     if (typeof $.global.setup === "function") {
       $.global.setup();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
-function runDrawOnce() {
+var runDrawOnce = function() {
   app.doScript(function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
-function runDrawLoop() {
+var runDrawLoop = function() {
   app.doScript(function() {
     if (typeof $.global.draw === "function") {
       $.global.draw();
     }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, SCRIPTNAME);
+  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 };
 
-function welcome() {
+var welcome = function() {
   clearConsole();
   println("Running "
-      + SCRIPTNAME
+      + pub.SCRIPTNAME
       + " using basil.js "
-      + VERSION
+      + pub.VERSION
       + " ...");
 };
 
-function currentDoc(mode) {
+var currentDoc = function (mode) {
   if (currDoc === null || !currDoc) {
     var stack = $.stack;
     if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
@@ -218,7 +216,7 @@ function currentDoc(mode) {
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
-      if (mode == MODEHIDDEN) {
+      if (mode == pub.MODEHIDDEN) {
         if (doc.modified) {
           doc.save();
           warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
@@ -229,14 +227,14 @@ function currentDoc(mode) {
       }
     }
     else {
-      doc = app.documents.add(mode != MODEHIDDEN);
+      doc = app.documents.add(mode != pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
   return currDoc;
 };
 
-function closeHiddenDocs() {
+var closeHiddenDocs = function () {
     // in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
   for (var i = app.documents.length - 1; i >= 0; i -= 1) {
     var d = app.documents[i];
@@ -246,7 +244,7 @@ function closeHiddenDocs() {
   }
 };
 
-function setCurrDoc(doc) {
+var setCurrDoc = function(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
@@ -259,14 +257,14 @@ function setCurrDoc(doc) {
   currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
-  units(PT);
+  pub.units(pub.PT);
 
   updatePublicPageSizeVars();
 };
 
 var progressPanel = null;
 
-function Progress() {
+var Progress = function () {
   this.init = function () {
     this.panel = Window.find("window", "processing...");
     if (this.panel === null) {
@@ -277,7 +275,7 @@ function Progress() {
       }
       this.panel.statusbar = this.panel.add("edittext", [0, 0, 400, 300], "", {multiline: true, scrolling: false, readonly: true});
     }
-    this.panel.statusbar.text = "Using basil.js " + VERSION + " ... \nEntering background render mode ...";
+    this.panel.statusbar.text = "Using basil.js " + pub.VERSION + " ... \nEntering background render mode ...";
     this.panel.show();
   };
   this.closePanel = function () {
@@ -304,7 +302,7 @@ function Progress() {
   this.init();
 };
 
-function resetCurrDoc() {
+var resetCurrDoc = function() {
   // resets doc and doc specific vars
   currDoc = null;
   currPage = null;
@@ -312,16 +310,16 @@ function resetCurrDoc() {
   currFillColor = "Black";
   noneSwatchColor = "None";
   currStrokeColor = "Black";
-  currRectMode = CORNER;
-  currEllipseMode = CENTER;
+  currRectMode = pub.CORNER;
+  currEllipseMode = pub.CENTER;
   currYAlign = VerticalJustification.TOP_ALIGN;
   currFont = null;
-  currImageMode = CORNER;
+  currImageMode = pub.CORNER;
 
-  resetMatrix();
+  pub.resetMatrix();
 };
 
-function currentLayer() {
+var currentLayer = function() {
   if (currLayer === null || !currLayer) {
     currentDoc();
     if (currDoc.windows.length) {
@@ -333,7 +331,7 @@ function currentLayer() {
   return currLayer;
 };
 
-function currentPage() {
+var currentPage = function() {
   if (currPage === null || !currPage) {
     currentDoc();
     if (currDoc.windows.length) {
@@ -345,98 +343,98 @@ function currentPage() {
   return currPage;
 };
 
-function updatePublicPageSizeVars() {
+var updatePublicPageSizeVars = function () {
   var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
   var facingPages = currDoc.documentPreferences.facingPages;
   var singlePageMode = false;
 
   var widthOffset = heightOffset = 0;
 
-  switch(canvasMode()) {
+  switch(pub.canvasMode()) {
 
-    case PAGE:
+    case pub.PAGE:
       widthOffset = 0;
       heightOffset = 0;
-      resetMatrix();
+      pub.resetMatrix();
       singlePageMode = true;
       break;
 
-    case MARGIN:
+    case pub.MARGIN:
       widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
       heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      resetMatrix();
-      translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
       singlePageMode = true;
       break;
 
-    case BLEED:
-      widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset + doc().documentPreferences.documentBleedOutsideOrRightOffset;
+    case pub.BLEED:
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
       if(facingPages) {
-        widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset;
+        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = doc().documentPreferences.documentBleedBottomOffset + doc().documentPreferences.documentBleedTopOffset;
-      resetMatrix();
-      translate(-doc().documentPreferences.documentBleedInsideOrLeftOffset, -doc().documentPreferences.documentBleedTopOffset);
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        resetMatrix();
-        translate(0, -doc().documentPreferences.documentBleedTopOffset);
+        pub.resetMatrix();
+        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
       }
       singlePageMode = true;
       break;
 
-    case FACING_PAGES:
+    case pub.FACING_PAGES:
       widthOffset = 0;
       heightOffset = 0;
-      resetMatrix();
+      pub.resetMatrix();
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      width = w * 2;
+      pub.width = w * 2;
 
       if(currentPage().name === "1") {
-        width = w;
+        pub.width = w;
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
-        translate(-w, 0);
+        pub.translate(-w, 0);
       }
 
 
-      height = h;
+      pub.height = h;
       break;
 
-    case FACING_BLEEDS:
-      widthOffset = doc().documentPreferences.documentBleedInsideOrLeftOffset + doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = doc().documentPreferences.documentBleedBottomOffset + doc().documentPreferences.documentBleedTopOffset;
-      resetMatrix();
-      translate(-doc().documentPreferences.documentBleedInsideOrLeftOffset, -doc().documentPreferences.documentBleedTopOffset);
+    case pub.FACING_BLEEDS:
+      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
+      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
+      pub.resetMatrix();
+      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      width = w * 2;
-      height = h;
+      pub.width = w * 2;
+      pub.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        translate(-w + widthOffset / 2, 0);
+        pub.translate(-w + widthOffset / 2, 0);
       }
 
       break;
 
-    case FACING_MARGINS:
+    case pub.FACING_MARGINS:
       widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
       heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      resetMatrix();
-      translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
+      pub.resetMatrix();
+      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
-      width = w * 2;
-      height = h;
+      pub.width = w * 2;
+      pub.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        translate(-w - widthOffset / 2, 0);
+        pub.translate(-w - widthOffset / 2, 0);
       }
 
       return; // early exit
@@ -450,12 +448,12 @@ function updatePublicPageSizeVars() {
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
     var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-    width = w;
-    height = h;
+    pub.width = w;
+    pub.height = h;
   }
 };
 
-function createSelectionDialog(settings) {
+var createSelectionDialog = function(settings) {
   var result;
   if(!settings) {
     settings = {};
@@ -478,7 +476,7 @@ function createSelectionDialog(settings) {
     settings.filter = [settings.filter];
   }
   if(isString(settings.folder)) {
-    settings.folder = folder(settings.folder);
+    settings.folder = pub.folder(settings.folder);
   }
   if(!(settings.folder instanceof Folder) || !settings.folder.exists) {
     settings.folder = currDialogFolder;
@@ -514,7 +512,7 @@ function createSelectionDialog(settings) {
 }
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
-function findInStylesByName(allStylesCollection, name) {
+var findInStylesByName = function(allStylesCollection, name) {
   for (var i = 0; i < allStylesCollection.length; i++) {
     if (allStylesCollection[i].name === name) {
       return allStylesCollection[i];
@@ -525,33 +523,30 @@ function findInStylesByName(allStylesCollection, name) {
 
 // get the name of parent functions; helpful for more meaningful error messages
 // level describes how many levels above to find the function whose function name is returned
-function getParentFunctionName(level) {
+var getParentFunctionName = function(level) {
     var stackArray = $.stack.
           replace(/\((.+?)\)/g, "").
           split(/[\n]/);
     return stackArray[stackArray.length - 2 - level];
 }
 
-function checkNull(obj) {
+var checkNull = pub.checkNull = function (obj) {
 
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
-function executionDuration() {
-  var duration = pub.millis();
-  return duration < 1000 ? duration + "ms" : (duration / 1000).toPrecision(3) + "s";
-}
+var isNull = checkNull; // legacy
 
-function error(msg) {
+var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-function warning (msg) {
+var warning = pub.warning = function(msg) {
   println(WARNING_PREFIX + msg);
 };
 
-function clearConsole() {
+var clearConsole = function() {
   var bt = new BridgeTalk();
   bt.target = "estoolkit";
   bt.body = "app.clc()"; // works just with cs6

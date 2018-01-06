@@ -7,11 +7,11 @@
  * @property {Number} width Width of the current page.
  * @cat Environment
  */
-var width = null;
+pub.width = null;
 
 /**
  * System variable which stores the height of the current page.
  * @property {Number} height Height of the current page.
  * @cat Environment
  */
-var height = null;
+pub.height = null;
