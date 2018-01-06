@@ -549,19 +549,16 @@ var getParentFunctionName = function(level) {
     return stackArray[stackArray.length - 2 - level];
 }
 
-var checkNull = pub.checkNull = function (obj) {
-
+var checkNull = function (obj) {
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
-var isNull = checkNull; // legacy
-
-var error = pub.error = function(msg) {
+var error = function(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-var warning = pub.warning = function(msg) {
+var warning = function(msg) {
   println(WARNING_PREFIX + msg);
 };
 

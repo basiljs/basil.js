@@ -757,7 +757,7 @@ var initDataFile = function(file) {
   if (file instanceof File) {
     result = file;
   } else {
-    result = new File(projectFolder().absoluteURI + "/data/" + file);
+    result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
   }
   if (!result.exists) {
     error("b." + getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
@@ -813,7 +813,7 @@ var initExportFile = function(file) {
     tmpPath = "";
   } else {
     // string paths relative to the project folder
-    tmpPath = projectFolder().absoluteURI;
+    tmpPath = pub.projectFolder().absoluteURI;
   }
   var fileName = pathNormalized[pathNormalized.length - 1];
 
@@ -851,7 +851,7 @@ var initExportFile = function(file) {
  * @method projectFolder
  * @return {Folder} The folder of the the active document
  */
-var projectFolder = pub.projectFolder = function() {
+pub.projectFolder = function() {
   if(!currentDoc().saved) {
     error("The current document must be saved before its project directory can be accessed.");
   }
@@ -1088,7 +1088,7 @@ pub.savePNG = function(file, showOptions) {
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
 pub.download = function(url, file) {
-  var projPath = projectFolder().fsName.replace(" ", "\\ ");
+  var projPath = pub.projectFolder().fsName.replace(" ", "\\ ");
   // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
   // This is more portable then a fixed location
   // the Script looks for the lib folder next to itself

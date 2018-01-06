@@ -990,11 +990,13 @@ var welcome = function() {
 };
 
 var populateGlobal = function() {
+  // inject all functions of pub into global space
+  // to make them available to the user
   for(var key in pub) {
     if(pub.hasOwnProperty(key)) {
       if($.global.hasOwnProperty(key)) {
         // the user created a function or variable
-        // with the same name as a basil has.
+        // with the same name as a basil has
         var pubFuncVar = pub[key] instanceof Function ? "function \"" : "variable \"";
         var globFuncVar = $.global[key] instanceof Function ? "function" : "variable";
         error("basil had problems creating the global " + pubFuncVar + key + "\", possibly because your code is already using that name as a " + globFuncVar + ". You may want to rename your " + globFuncVar + " to something else.");
@@ -1332,12 +1334,12 @@ var checkNull = function (obj) {
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
-var error = pub.error = function(msg) {
+var error = function(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-var warning = pub.warning = function(msg) {
+var warning = function(msg) {
   println(WARNING_PREFIX + msg);
 };
 
@@ -2661,7 +2663,7 @@ pub.file = function(filePath) {
 
   // check if user is referring to a file in the data directory
   if(currentDoc().saved) {
-    var file = new File(projectFolder() + "/data/" + filePath);
+    var file = new File(pub.projectFolder() + "/data/" + filePath);
     if(file.exists) {
       return file;
     }
@@ -2694,7 +2696,7 @@ pub.file = function(filePath) {
 pub.folder = function(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
-      return new Folder(projectFolder() + "/data/");
+      return new Folder(pub.projectFolder() + "/data/");
     } else {
       error("b.folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
     }
@@ -2705,7 +2707,7 @@ pub.folder = function(folderPath) {
 
   // check if user is referring to a folder in the data directory
   if(currentDoc().saved) {
-    var folder = new Folder(projectFolder() + "/data/" + folderPath);
+    var folder = new Folder(pub.projectFolder() + "/data/" + folderPath);
     if(folder.exists) {
       return folder;
     }
@@ -3772,7 +3774,7 @@ var initDataFile = function(file) {
   if (file instanceof File) {
     result = file;
   } else {
-    result = new File(projectFolder().absoluteURI + "/data/" + file);
+    result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
   }
   if (!result.exists) {
     error("b." + getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
@@ -3828,7 +3830,7 @@ var initExportFile = function(file) {
     tmpPath = "";
   } else {
     // string paths relative to the project folder
-    tmpPath = projectFolder().absoluteURI;
+    tmpPath = pub.projectFolder().absoluteURI;
   }
   var fileName = pathNormalized[pathNormalized.length - 1];
 
@@ -3866,7 +3868,7 @@ var initExportFile = function(file) {
  * @method projectFolder
  * @return {Folder} The folder of the the active document
  */
-var projectFolder = pub.projectFolder = function() {
+pub.projectFolder = function() {
   if(!currentDoc().saved) {
     error("The current document must be saved before its project directory can be accessed.");
   }
@@ -4103,7 +4105,7 @@ pub.savePNG = function(file, showOptions) {
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
 pub.download = function(url, file) {
-  var projPath = projectFolder().fsName.replace(" ", "\\ ");
+  var projPath = pub.projectFolder().fsName.replace(" ", "\\ ");
   // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
   // This is more portable then a fixed location
   // the Script looks for the lib folder next to itself

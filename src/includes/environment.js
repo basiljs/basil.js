@@ -1082,7 +1082,7 @@ pub.file = function(filePath) {
 
   // check if user is referring to a file in the data directory
   if(currentDoc().saved) {
-    var file = new File(projectFolder() + "/data/" + filePath);
+    var file = new File(pub.projectFolder() + "/data/" + filePath);
     if(file.exists) {
       return file;
     }
@@ -1115,7 +1115,7 @@ pub.file = function(filePath) {
 pub.folder = function(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
-      return new Folder(projectFolder() + "/data/");
+      return new Folder(pub.projectFolder() + "/data/");
     } else {
       error("b.folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
     }
@@ -1126,7 +1126,7 @@ pub.folder = function(folderPath) {
 
   // check if user is referring to a folder in the data directory
   if(currentDoc().saved) {
-    var folder = new Folder(projectFolder() + "/data/" + folderPath);
+    var folder = new Folder(pub.projectFolder() + "/data/" + folderPath);
     if(folder.exists) {
       return folder;
     }
