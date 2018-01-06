@@ -68,8 +68,8 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
-    pub.height = doc.documentPreferences.pageHeight;
-    pub.width = doc.documentPreferences.pageWidth;
+    pub.width = $.global.width = doc.documentPreferences.pageWidth;
+    pub.height = $.global.height = doc.documentPreferences.pageHeight;
     return {width: pub.width, height: pub.height};
   } else if(arguments.length === 1) {
     // only one argument set the first to the secound
@@ -83,8 +83,8 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     }
   };
   // set height and width
-  pub.height = heightOrOrientation;
-  pub.width = widthOrPageSize;
+  pub.width = $.global.width = widthOrPageSize;
+  pub.height = $.global.height = heightOrOrientation;
 
   return {width: pub.width, height: pub.height};
 

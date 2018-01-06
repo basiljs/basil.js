@@ -43,6 +43,8 @@
 /* globals init */
 // @target "InDesign";
 
+(function() {
+
 /**
  * @class b
  * @static
@@ -75,3 +77,5 @@ pub.VERSION = "1.1.0";
 // @include "includes/ui.js";
 
 init();
+
+})();

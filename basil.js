@@ -44,6 +44,8 @@
 /* globals init */
 // @target "InDesign";
 
+(function() {
+
 /**
  * @class b
  * @static
@@ -785,6 +787,7 @@ HashList = function () {
 var init = function() {
 
   welcome();
+  populateGlobal();
 
   // -- init internal state vars --
   startTime = Date.now();
@@ -986,6 +989,22 @@ var welcome = function() {
       + " ...");
 };
 
+var populateGlobal = function() {
+  for(var key in pub) {
+    if(pub.hasOwnProperty(key)) {
+      if($.global.hasOwnProperty(key)) {
+        // the user created a function or variable
+        // with the same name as a basil has.
+        var pubFuncVar = pub[key] instanceof Function ? "function \"" : "variable \"";
+        var globFuncVar = $.global[key] instanceof Function ? "function" : "variable";
+        error("basil had problems creating the global " + pubFuncVar + key + "\", possibly because your code is already using that name as a " + globFuncVar + ". You may want to rename your " + globFuncVar + " to something else.");
+      } else {
+        $.global[key] = pub[key];
+      }
+    }
+  }
+}
+
 var currentDoc = function (mode) {
   if (currDoc === null || !currDoc) {
     var stack = $.stack;
@@ -1170,16 +1189,16 @@ var updatePublicPageSizeVars = function () {
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
+      pub.width = $.global.width = w * 2;
 
       if(currentPage().name === "1") {
-        pub.width = w;
+        pub.width = $.global.width = w;
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
         pub.translate(-w, 0);
       }
 
 
-      pub.height = h;
+      pub.height = $.global.height = h;
       break;
 
     case pub.FACING_BLEEDS:
@@ -1191,8 +1210,8 @@ var updatePublicPageSizeVars = function () {
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      pub.width = $.global.width = w * 2;
+      pub.height = $.global.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
         pub.translate(-w + widthOffset / 2, 0);
@@ -1209,8 +1228,8 @@ var updatePublicPageSizeVars = function () {
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      pub.width = $.global.width = w * 2;
+      pub.height = $.global.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
         pub.translate(-w - widthOffset / 2, 0);
@@ -1227,8 +1246,8 @@ var updatePublicPageSizeVars = function () {
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
     var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-    pub.width = w;
-    pub.height = h;
+    pub.width = $.global.width = w;
+    pub.height = $.global.height = h;
   }
 };
 
@@ -1309,12 +1328,9 @@ var getParentFunctionName = function(level) {
     return stackArray[stackArray.length - 2 - level];
 }
 
-var checkNull = pub.checkNull = function (obj) {
-
+var checkNull = function (obj) {
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
-
-var isNull = checkNull; // legacy
 
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
@@ -1631,8 +1647,8 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
     }
-    pub.height = doc.documentPreferences.pageHeight;
-    pub.width = doc.documentPreferences.pageWidth;
+    pub.width = $.global.width = doc.documentPreferences.pageWidth;
+    pub.height = $.global.height = doc.documentPreferences.pageHeight;
     return {width: pub.width, height: pub.height};
   } else if(arguments.length === 1) {
     // only one argument set the first to the secound
@@ -1646,8 +1662,8 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     }
   };
   // set height and width
-  pub.height = heightOrOrientation;
-  pub.width = widthOrPageSize;
+  pub.width = $.global.width = widthOrPageSize;
+  pub.height = $.global.height = heightOrOrientation;
 
   return {width: pub.width, height: pub.height};
 
@@ -7682,3 +7698,5 @@ pub.translate = function (tx, ty) {
 // Hey Ken, this is your new home...
 
 init();
+
+})();
