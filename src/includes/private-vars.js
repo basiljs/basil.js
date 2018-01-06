@@ -19,6 +19,7 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currLayer = null,
   currLeading = null,
   currMatrix = null,
+  currMode = null,
   currPage = null,
   currPathPointer = null,
   currPolygon = null,

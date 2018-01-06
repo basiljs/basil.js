@@ -467,6 +467,7 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currLayer = null,
   currLeading = null,
   currMatrix = null,
+  currMode = null,
   currPage = null,
   currPathPointer = null,
   currPolygon = null,
@@ -798,6 +799,64 @@ var init = function() {
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
   currDialogFolder = Folder("~");
+  currMode = pub.DEFAULTMODE;  // TODO: need to be able to set a different mode initially
+
+  var execTime;
+  appSettings = {
+    enableRedraw: app.scriptPreferences.enableRedraw,
+    preflightOff: app.preflightOptions.preflightOff
+  };
+
+  try {
+
+    // app settings
+    app.scriptPreferences.enableRedraw = (currMode === pub.MODEVISIBLE || currMode === pub.MODEHIDDEN);
+    app.preflightOptions.preflightOff = true;
+
+    currentDoc(currMode);
+
+    if (currMode === pub.MODEHIDDEN || currMode === pub.MODESILENT) {
+      progressPanel = new Progress();
+    }
+
+    if (typeof $.global.setup === "function") {
+      runSetup();
+    }
+
+    if (typeof $.global.draw === "function") {
+      runDrawOnce();
+    }
+  } catch (e) {
+    execTime = executionDuration();
+
+    if(e.userCancel) {
+      println("[Cancelled by user after " + execTime + "]");
+    } else {
+      println("[Cancelled after " + execTime + "]");
+      alert(e);
+    }
+
+  } finally {
+
+    if(!execTime) {
+      println("[Finished in " + executionDuration() + "]");
+    }
+
+    if(currDoc && !currDoc.windows.length) {
+      currDoc.windows.add(); // open the hidden doc
+    }
+    closeHiddenDocs();
+    if (progressPanel) {
+      progressPanel.closePanel();
+    }
+    if (addToStoryCache) {
+      addToStoryCache.close();
+    }
+
+    // resetUserSettings();   // TODO: bring back later
+
+  }
+  exit(); // quit program execution
 };
 
 
@@ -1009,10 +1068,6 @@ var populateGlobal = function() {
 
 var currentDoc = function (mode) {
   if (currDoc === null || !currDoc) {
-    var stack = $.stack;
-    if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
-      warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
-    }
     var doc = null;
     if (app.documents.length) {
       doc = app.activeDocument;
@@ -1333,6 +1388,11 @@ var getParentFunctionName = function(level) {
 var checkNull = function (obj) {
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
+
+var executionDuration = function() {
+  var duration = pub.millis();
+  return duration < 1000 ? duration + "ms" : (duration / 1000).toPrecision(3) + "s";
+}
 
 var error = function(msg) {
   println(ERROR_PREFIX + msg);
