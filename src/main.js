@@ -43,12 +43,21 @@
 /* globals init */
 // @target "InDesign";
 
+if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
+  // load global vars of the user script
+  var f = app.activeScript;
+  f.open("r");
+  var data = f.read();
+  f.close();
+
+  var userScript = data.
+    replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").
+    replace(/function\s+setup[\s\S]*/g, "");
+  app.doScript(userScript);
+}
+
 (function() {
 
-/**
- * @class b
- * @static
- */
 var pub = {};
 
 /**

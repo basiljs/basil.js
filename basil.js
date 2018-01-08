@@ -44,12 +44,21 @@
 /* globals init */
 // @target "InDesign";
 
+if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
+  // load global vars of the user script
+  var f = app.activeScript;
+  f.open("r");
+  var data = f.read();
+  f.close();
+
+  var userScript = data.
+    replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").// FILE NOT FOUND by extendscript-bundlr
+    replace(/function\s+setup[\s\S]*/g, "");
+  app.doScript(userScript);
+}
+
 (function() {
 
-/**
- * @class b
- * @static
- */
 var pub = {};
 
 /**
@@ -801,13 +810,37 @@ var init = function() {
   currDialogFolder = Folder("~");
   currMode = pub.DEFAULTMODE;  // TODO: need to be able to set a different mode initially
 
-  var execTime;
+  // needs to be reassigned, as it can still have a previous script name in global
+  // when switching between scripts using the loop target engine
+  $.global.SCRIPTNAME = pub.SCRIPTNAME;
+
   appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
     preflightOff: app.preflightOptions.preflightOff
   };
 
+  app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+
+  exit(); // quit program execution
+};
+
+
+// ----------------------------------------
+// execution
+
+var runScript = function() {
+
+  var execTime;
+
   try {
+
+    if($.global.loop instanceof Function) {
+      if ($.engineName !== "loop") {
+        error("function loop(), no target engine! To use basil's loop function, add the code line\n\n #targetengine \"loop\";\n\n at the very top of your script.");
+      } else {
+        prepareLoop();
+      }
+    }
 
     // app settings
     app.scriptPreferences.enableRedraw = (currMode === pub.MODEVISIBLE || currMode === pub.MODEHIDDEN);
@@ -819,13 +852,29 @@ var init = function() {
       progressPanel = new Progress();
     }
 
-    if (typeof $.global.setup === "function") {
-      runSetup();
+    if ($.global.setup instanceof Function) {
+      if($.global.draw instanceof Function) {
+        error("function setup() cannot be used along with function draw(). When using function draw(), all functions and variables should be moved into it.");
+      } else {
+        setup();
+      }
     }
 
-    if (typeof $.global.draw === "function") {
-      runDrawOnce();
+    if ($.global.draw instanceof Function) {
+      draw();
+    } else if ($.global.loop instanceof Function) {
+      // TODO implement something like pub.frameRate()
+      var sleep = null;
+      if (arguments.length === 0) sleep = Math.round(1000 / 25);
+      else sleep = Math.round(1000 / framerate);
+
+      var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
+      idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
+        loop();
+      }, false);
+      println("Run the script lib/stop.jsx to end the draw loop and clean up!");
     }
+
   } catch (e) {
     execTime = executionDuration();
 
@@ -854,103 +903,25 @@ var init = function() {
     }
 
     // resetUserSettings();   // TODO: bring back later
-
-  }
-  exit(); // quit program execution
-};
-
-
-// ----------------------------------------
-// execution
-
-/**
- * Run the sketch! Has to be called in every sketch a the very end of the code.
- * You may add performance setting options when calling b.go():<br /><br />
- *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
- * b.go(b.MODESILENT) <br />
- * b.go(b.MODEHIDDEN)<br /><br />
- *
- * Currently there is no performance optimization in b.loop()<br />
- * @cat Environment
- * @method go
- * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
- */
-pub.go = function (mode) {
-  if (!mode) {
-    mode = pub.DEFAULTMODE;
-  }
-  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
-  app.preflightOptions.preflightOff = true;
-
-  currentDoc(mode);
-  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
-    progressPanel = new Progress();
   }
 
-  try {
-    if (typeof $.global.setup === "function") {
-      runSetup();
-    }
+}
 
-    if (typeof $.global.draw === "function") {
-      runDrawOnce();
-    }
-  } catch (e) {
-    alert(e);
-    exit();
-  }
+var prepareLoop = function() {
+  // TODO rework this to use the new pub.file() and pub.folder() functions
 
-  var executionDuration = pub.millis();
-  if (executionDuration < 1000) {
-    println("[Finished in " + executionDuration + "ms]");
-  } else {
-    println("[Finished in " + (executionDuration / 1000).toPrecision(3) + "s]");
-  }
-
-  if(currDoc && !currDoc.windows.length) {
-    currDoc.windows.add(); // open the hidden doc
-  }
-  closeHiddenDocs();
-  if (progressPanel) {
-    progressPanel.closePanel();
-  }
-  if (addToStoryCache) {
-    addToStoryCache.close();
-  }
-  app.scriptPreferences.enableRedraw = true;
-  app.preflightOptions.preflightOff = false;
-  exit(); // quit program execution
-};
-
-/**
- * EXPERIMENTAL!
- *
- * Causes basil to continuously execute the code within draw() when InDesign is idle.
- * #targetengine "loop"; must be at the very top in the script file.
- * If noLoop() is called, the code in draw() stops executing.
- * It is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!
- * The framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.
- *
- * @cat Environment
- * @method loop
- * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
- */
-pub.loop = function(framerate) {
   // before running the loop we need to check if
   // the stop script exists
-    // the Script looks for the lib folder next to itself
+  // the script looks for the lib folder next to itself
   var currentBasilFolderPath = File($.fileName).parent.fsName;
   var scriptPath = currentBasilFolderPath + "/lib/stop.jsx";
+
   if(File(scriptPath).exists !== true) {
-    // the script is not there. lets create it
+    // the script is not there, let's create it
     var scriptContent = [
-      "//@targetengine \"loop\"",
-      "//@include \"../basil.js\";",
+      "#targetengine \"loop\"",
       "b.noLoop();",
-      "if (typeof cleanUp === \"function\") {",
-      "cleanUp();",
-      "}",
+      "if (cleanUp instanceof Function) cleanUp(true);",
       "cleanUp = null;"
     ];
     if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
@@ -975,69 +946,28 @@ pub.loop = function(framerate) {
     // the script is there
     // awesome
   }
-  var sleep = null;
-  if (arguments.length === 0) sleep = Math.round(1000 / 25);
-  else sleep = Math.round(1000 / framerate);
-
-  if ($.engineName !== "loop") {
-    error("b.loop(), Add #targetengine \"loop\"; at the very top of your script.");
-  }
-
-  currentDoc();
-  runSetup();
-
-  var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
-  idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
-    runDrawLoop();
-  }, false);
-  println("Run the script lib/stop.jsx to end the draw loop and clean up!");
-//    println("loop()");
-};
+}
 
 /**
- * EXPERIMENTAL!
- *
- * Stops basil from continuously executing the code within draw().
+ * Stops basil from continuously executing the code within loop().
  *
  * @cat Environment
  * @method noLoop
  */
-pub.noLoop = function() {
+pub.noLoop = function(printFinished) {
   var allIdleTasks = app.idleTasks;
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
   }
-  println("noLoop()");
+  println("Basil.js -> Stopped looping.\n");
+  if(printFinished) {
+    "[Finished in " + executionDuration() + "]");
+  };
 };
 
 
 // ----------------------------------------
 // all private from here
-
-
-var runSetup = function() {
-  app.doScript(function() {
-    if (typeof $.global.setup === "function") {
-      $.global.setup();
-    }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
-};
-
-var runDrawOnce = function() {
-  app.doScript(function() {
-    if (typeof $.global.draw === "function") {
-      $.global.draw();
-    }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
-};
-
-var runDrawLoop = function() {
-  app.doScript(function() {
-    if (typeof $.global.draw === "function") {
-      $.global.draw();
-    }
-  }, ScriptLanguage.javascript, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
-};
 
 var welcome = function() {
   clearConsole();
@@ -1051,6 +981,12 @@ var welcome = function() {
 var populateGlobal = function() {
   // inject all functions of pub into global space
   // to make them available to the user
+
+  if($.engineName === "loop" && $.global.VERSION) {
+    // the global space is still populated from a previous run of the script
+    return;
+  }
+
   for(var key in pub) {
     if(pub.hasOwnProperty(key)) {
       if($.global.hasOwnProperty(key)) {
