@@ -173,12 +173,12 @@ pub.canvasMode = function (m) {
  */
 pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
-    return currDoc.pasteboardPreferences.pasteboardMargins;
+    return currentDoc().pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
     error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
   }else if (typeof h === "number" && typeof v === "number") {
-    currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
-    return currDoc.pasteboardPreferences.pasteboardMargins;
+    currentDoc().pasteboardPreferences.pasteboardMargins = [h, v];
+    return currentDoc().pasteboardPreferences.pasteboardMargins;
   }else {
     error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
   }
@@ -215,7 +215,7 @@ pub.page = function(page) {
     error("b.page(), bad type for b.page().");
   }
   updatePublicPageSizeVars();
-  if (currDoc.windows.length) {
+  if (currentDoc().windows.length) {
     app.activeWindow.activePage = currPage;
   } // focus in GUI if not in MODEHIDDEN
   return currentPage();

@@ -491,6 +491,7 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currYAlign = null,
   matrixStack = null,
   noneSwatchColor = null,
+  progressPanel = null,
   startTime = null;
 
 // ----------------------------------------
@@ -808,7 +809,7 @@ var init = function() {
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
   currDialogFolder = Folder("~");
-  currMode = pub.DEFAULTMODE;  // TODO: need to be able to set a different mode initially
+  currMode = pub.MODEVISIBLE;
 
   // needs to be reassigned, as it can still have a previous script name in global
   // when switching between scripts using the loop target engine
@@ -836,28 +837,20 @@ var runScript = function() {
 
     if($.global.loop instanceof Function) {
       if ($.engineName !== "loop") {
-        error("function loop(), no target engine! To use basil's loop function, add the code line\n\n #targetengine \"loop\";\n\n at the very top of your script.");
+        error("function loop(), no target engine! To use basil's loop function, add the code line\n\n#targetengine \"loop\";\n\nat the very top of your script.");
       } else {
         prepareLoop();
       }
     }
 
     // app settings
-    app.scriptPreferences.enableRedraw = (currMode === pub.MODEVISIBLE || currMode === pub.MODEHIDDEN);
+    app.scriptPreferences.enableRedraw = true;
     app.preflightOptions.preflightOff = true;
 
-    currentDoc(currMode);
-
-    if (currMode === pub.MODEHIDDEN || currMode === pub.MODESILENT) {
-      progressPanel = new Progress();
-    }
+    currentDoc();
 
     if ($.global.setup instanceof Function) {
-      if($.global.draw instanceof Function) {
-        error("function setup() cannot be used along with function draw(). When using function draw(), all functions and variables should be moved into it.");
-      } else {
-        setup();
-      }
+      setup();
     }
 
     if ($.global.draw instanceof Function) {
@@ -961,8 +954,73 @@ pub.noLoop = function(printFinished) {
   }
   println("Basil.js -> Stopped looping.\n");
   if(printFinished) {
-    "[Finished in " + executionDuration() + "]");
+    println("[Finished in " + executionDuration() + "]");
   };
+};
+
+/**
+ * Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, <code>drawMode</code> should be placed in the beginning of the script. In basil there are three different performance modes:
+ * <code>MODEVISIBLE</code> is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
+ * <code>MODEHIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * <code>MODESILENT</code> processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to <code>MODEVISIBLE</code>.
+ *
+ * @cat Environment
+ * @method drawMode
+ * @param  {String} mode The performance mode to switch to.
+ */
+pub.drawMode = function(mode) {
+
+  if(!(mode === pub.MODEVISIBLE || mode === pub.MODEHIDDEN || mode === pub.MODESILENT)) {
+    error("drawMode(), invalid argument. Please use MODEVISIBLE, MODEHIDDEN or MODESILENT.");
+  }
+
+  app.scriptPreferences.enableRedraw = (mode === pub.MODEVISIBLE || mode === pub.MODEHIDDEN);
+
+  if(!currDoc) {
+    // initiate new document in given mode
+    currentDoc(mode);
+  } else {
+
+    if (!currDoc.saved && !currDoc.modified && pub.MODEHIDDEN) {
+      // unsaved, unmodified doc at the beginning of the script that needs to be hidden
+      // -> will be closed without saving, new document will be opened without showing
+      currDoc.close(SaveOptions.NO);
+      currDoc = app.documents.add(false);
+      setCurrDoc(currDoc);
+    } else if (mode === pub.MODEHIDDEN && currMode !== pub.MODEHIDDEN) {
+      // existing document needs to be hidden
+      if (!currDoc.saved && currDoc.modified) {
+        try {
+          currDoc.save();
+        } catch(e) {
+          throw {userCancel: true};
+        }
+        warning("Document was not saved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+      } else if (currDoc.modified) {
+        currDoc.save(File(currDoc.fullName));
+        warning("Document was modified and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+      }
+      var docPath = currDoc.fullName;
+      currDoc.close(); // close the doc and reopen it without adding to the display list
+      currDoc = app.open(File(docPath), false);
+
+      setCurrDoc(currDoc);
+    } else if (mode !== pub.MODEHIDDEN && currMode === pub.MODEHIDDEN) {
+      // existing document needs to be unhidden
+      currDoc.windows.add();
+    }
+  }
+
+  if (!progressPanel && (mode === pub.MODEHIDDEN || mode === pub.MODESILENT)) {
+    // turn on progress panel
+    progressPanel = new Progress();
+  } else if (progressPanel && mode === pub.MODEVISIBLE) {
+    // turn off progress panel
+    progressPanel.closePanel();
+    progressPanel = null;
+  }
+
+  currMode = mode;
 };
 
 
@@ -1002,23 +1060,29 @@ var populateGlobal = function() {
   }
 }
 
-var currentDoc = function (mode) {
-  if (currDoc === null || !currDoc) {
+var currentDoc = function(mode) {
+  if (!currDoc) {
     var doc = null;
-    if (app.documents.length) {
+    if (app.documents.length && app.windows.length) {
       doc = app.activeDocument;
-      if (mode == pub.MODEHIDDEN) {
-        if (doc.modified) {
-          doc.save();
-          warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+      if (mode === pub.MODEHIDDEN) {
+        if (!doc.saved) {
+          try {
+            doc.save();
+          } catch(e) {
+            throw {userCancel: true};
+          }
+          warning("Document was not saved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+        } else if (doc.modified) {
+          doc.save(File(doc.fullName));
+          warning("Document was modified and has now been saved to your hard drive in order to enter MODEHIDDEN.");
         }
         var docPath = doc.fullName;
         doc.close(); // Close the doc and reopen it without adding to the display list
         doc = app.open(File(docPath), false);
       }
-    }
-    else {
-      doc = app.documents.add(mode != pub.MODEHIDDEN);
+    } else {
+      doc = app.documents.add(mode !== pub.MODEHIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -1048,12 +1112,13 @@ var setCurrDoc = function(doc) {
   currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
   currTracking = currDoc.textDefaults.tracking;
-  pub.units(pub.PT);
+  // IMPORTANT this needs to be changed to be set to the default units
+  // Otherwise a new document is already modified and could not properly
+  // moved into MODEHIDDEN at the beginning of a script (because it would want to be saved)
+  pub.units(pub.MM);
 
   updatePublicPageSizeVars();
 };
-
-var progressPanel = null;
 
 var Progress = function () {
   this.init = function () {
@@ -1750,12 +1815,12 @@ pub.canvasMode = function (m) {
  */
 pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
-    return currDoc.pasteboardPreferences.pasteboardMargins;
+    return currentDoc().pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
     error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
   }else if (typeof h === "number" && typeof v === "number") {
-    currDoc.pasteboardPreferences.pasteboardMargins = [h, v];
-    return currDoc.pasteboardPreferences.pasteboardMargins;
+    currentDoc().pasteboardPreferences.pasteboardMargins = [h, v];
+    return currentDoc().pasteboardPreferences.pasteboardMargins;
   }else {
     error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
   }
@@ -1792,7 +1857,7 @@ pub.page = function(page) {
     error("b.page(), bad type for b.page().");
   }
   updatePublicPageSizeVars();
-  if (currDoc.windows.length) {
+  if (currentDoc().windows.length) {
     app.activeWindow.activePage = currPage;
   } // focus in GUI if not in MODEHIDDEN
   return currentPage();

@@ -34,4 +34,5 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currYAlign = null,
   matrixStack = null,
   noneSwatchColor = null,
+  progressPanel = null,
   startTime = null;
