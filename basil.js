@@ -409,29 +409,28 @@ var stackArray = $.stack.
 pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
 
 /**
-* Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
-* @property MODESILENT {String}
+* Used with <code>mode()</code> to set performance mode. Disables screen redraw during processing.
+* @property SILENT {String}
 * @cat Environment
 * @subcat modes
 */
-pub.MODESILENT = "ModeSilent";
+pub.SILENT = "silent";
 
 /**
- * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time - do not work in InDesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
- * @property MODEHIDDEN {String}
+ * Used with <code>mode()</code> to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to <code>VISIBLE</code>. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * @property HIDDEN {String}
  * @cat Environment
  * @subcat modes
  */
-pub.MODEHIDDEN = "ModeHidden";
+pub.HIDDEN = "hidden";
 
 /**
- * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
- * @property MODEVISIBLE {String}
+ * Default mode. Used with <code>mode()</code> to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
+ * @property VISIBLE {String}
  * @cat Environment
  * @subcat modes
  */
-pub.MODEVISIBLE = "ModeVisible";
-pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
+pub.VISIBLE = "visible";
 
 
 var ERROR_PREFIX = "\nBasil.js Error -> ",
@@ -809,7 +808,7 @@ var init = function() {
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
   currDialogFolder = Folder("~");
-  currMode = pub.MODEVISIBLE;
+  currMode = pub.VISIBLE;
 
   // needs to be reassigned, as it can still have a previous script name in global
   // when switching between scripts using the loop target engine
@@ -837,7 +836,7 @@ var runScript = function() {
 
     if($.global.loop instanceof Function) {
       if ($.engineName !== "loop") {
-        error("function loop(), no target engine! To use basil's loop function, add the code line\n\n#targetengine \"loop\";\n\nat the very top of your script.");
+        error("function loop(), no target engine! To use basil's loop function, add the code line\n\n #targetengine \"loop\";\n\n at the very top of your script.");
       } else {
         prepareLoop();
       }
@@ -959,35 +958,35 @@ pub.noLoop = function(printFinished) {
 };
 
 /**
- * Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, <code>drawMode</code> should be placed in the beginning of the script. In basil there are three different performance modes:
- * <code>MODEVISIBLE</code> is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
- * <code>MODEHIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
- * <code>MODESILENT</code> processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to <code>MODEVISIBLE</code>.
+ * Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, <code>mode()</code> should be placed in the beginning of the script. In basil there are three different performance modes:
+ * <code>VISIBLE</code> is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
+ * <code>HIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * <code>SILENT</code> processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to <code>VISIBLE</code>.
  *
  * @cat Environment
- * @method drawMode
+ * @method mode
  * @param  {String} mode The performance mode to switch to.
  */
-pub.drawMode = function(mode) {
+pub.mode = function(mode) {
 
-  if(!(mode === pub.MODEVISIBLE || mode === pub.MODEHIDDEN || mode === pub.MODESILENT)) {
-    error("drawMode(), invalid argument. Please use MODEVISIBLE, MODEHIDDEN or MODESILENT.");
+  if(!(mode === pub.VISIBLE || mode === pub.HIDDEN || mode === pub.SILENT)) {
+    error("mode(), invalid argument. Please use VISIBLE, HIDDEN or SILENT.");
   }
 
-  app.scriptPreferences.enableRedraw = (mode === pub.MODEVISIBLE || mode === pub.MODEHIDDEN);
+  app.scriptPreferences.enableRedraw = (mode === pub.VISIBLE || mode === pub.HIDDEN);
 
   if(!currDoc) {
     // initiate new document in given mode
     currentDoc(mode);
   } else {
 
-    if (!currDoc.saved && !currDoc.modified && pub.MODEHIDDEN) {
+    if (!currDoc.saved && !currDoc.modified && pub.HIDDEN) {
       // unsaved, unmodified doc at the beginning of the script that needs to be hidden
       // -> will be closed without saving, new document will be opened without showing
       currDoc.close(SaveOptions.NO);
       currDoc = app.documents.add(false);
       setCurrDoc(currDoc);
-    } else if (mode === pub.MODEHIDDEN && currMode !== pub.MODEHIDDEN) {
+    } else if (mode === pub.HIDDEN && currMode !== pub.HIDDEN) {
       // existing document needs to be hidden
       if (!currDoc.saved && currDoc.modified) {
         try {
@@ -995,26 +994,26 @@ pub.drawMode = function(mode) {
         } catch(e) {
           throw {userCancel: true};
         }
-        warning("Document was not saved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+        warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
       } else if (currDoc.modified) {
         currDoc.save(File(currDoc.fullName));
-        warning("Document was modified and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+        warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
       }
       var docPath = currDoc.fullName;
       currDoc.close(); // close the doc and reopen it without adding to the display list
       currDoc = app.open(File(docPath), false);
 
       setCurrDoc(currDoc);
-    } else if (mode !== pub.MODEHIDDEN && currMode === pub.MODEHIDDEN) {
+    } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
       // existing document needs to be unhidden
       currDoc.windows.add();
     }
   }
 
-  if (!progressPanel && (mode === pub.MODEHIDDEN || mode === pub.MODESILENT)) {
+  if (!progressPanel && (mode === pub.HIDDEN || mode === pub.SILENT)) {
     // turn on progress panel
     progressPanel = new Progress();
-  } else if (progressPanel && mode === pub.MODEVISIBLE) {
+  } else if (progressPanel && mode === pub.VISIBLE) {
     // turn off progress panel
     progressPanel.closePanel();
     progressPanel = null;
@@ -1065,24 +1064,24 @@ var currentDoc = function(mode) {
     var doc = null;
     if (app.documents.length && app.windows.length) {
       doc = app.activeDocument;
-      if (mode === pub.MODEHIDDEN) {
+      if (mode === pub.HIDDEN) {
         if (!doc.saved) {
           try {
             doc.save();
           } catch(e) {
             throw {userCancel: true};
           }
-          warning("Document was not saved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+          warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
         } else if (doc.modified) {
           doc.save(File(doc.fullName));
-          warning("Document was modified and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+          warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
         }
         var docPath = doc.fullName;
         doc.close(); // Close the doc and reopen it without adding to the display list
         doc = app.open(File(docPath), false);
       }
     } else {
-      doc = app.documents.add(mode !== pub.MODEHIDDEN);
+      doc = app.documents.add(mode !== pub.HIDDEN);
     }
     setCurrDoc(doc);
   }
@@ -1090,7 +1089,7 @@ var currentDoc = function(mode) {
 };
 
 var closeHiddenDocs = function () {
-    // in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+    // in Case we break the Script during execution in HIDDEN we might have documents open that are not on the display list. Close them.
   for (var i = app.documents.length - 1; i >= 0; i -= 1) {
     var d = app.documents[i];
     if (!d.windows.length) {
@@ -1114,7 +1113,7 @@ var setCurrDoc = function(doc) {
   currTracking = currDoc.textDefaults.tracking;
   // IMPORTANT this needs to be changed to be set to the default units
   // Otherwise a new document is already modified and could not properly
-  // moved into MODEHIDDEN at the beginning of a script (because it would want to be saved)
+  // moved into HIDDEN at the beginning of a script (because it would want to be saved)
   pub.units(pub.MM);
 
   updatePublicPageSizeVars();
@@ -1859,7 +1858,7 @@ pub.page = function(page) {
   updatePublicPageSizeVars();
   if (currentDoc().windows.length) {
     app.activeWindow.activePage = currPage;
-  } // focus in GUI if not in MODEHIDDEN
+  } // focus in GUI if not in HIDDEN
   return currentPage();
 };
 

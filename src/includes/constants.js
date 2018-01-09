@@ -339,29 +339,28 @@ var stackArray = $.stack.
 pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
 
 /**
-* Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
-* @property MODESILENT {String}
+* Used with <code>mode()</code> to set performance mode. Disables screen redraw during processing.
+* @property SILENT {String}
 * @cat Environment
 * @subcat modes
 */
-pub.MODESILENT = "ModeSilent";
+pub.SILENT = "silent";
 
 /**
- * Used with b.go() to set Performance Mode. Processes Document in background mode. Document will not be visible until the script is done. If you are firing on a open document you'll need to save it before calling b.go(). The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time - do not work in InDesign during this time. You may want to use b.println("yourMessage") in your script and look at the Console in estk to get information about the process.
- * @property MODEHIDDEN {String}
+ * Used with <code>mode()</code> to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to <code>VISIBLE</code>. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * @property HIDDEN {String}
  * @cat Environment
  * @subcat modes
  */
-pub.MODEHIDDEN = "ModeHidden";
+pub.HIDDEN = "hidden";
 
 /**
- * Default mode. Used with b.go() to set Performance Mode. Processes Document with Screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time. This mode was also the default in Versions prior to 0.22
- * @property MODEVISIBLE {String}
+ * Default mode. Used with <code>mode()</code> to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
+ * @property VISIBLE {String}
  * @cat Environment
  * @subcat modes
  */
-pub.MODEVISIBLE = "ModeVisible";
-pub.DEFAULTMODE = pub.MODEVISIBLE; // FIXME, DEFAULTMODE shouldn't be public, move init to init()
+pub.VISIBLE = "visible";
 
 
 var ERROR_PREFIX = "\nBasil.js Error -> ",

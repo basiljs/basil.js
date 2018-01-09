@@ -217,7 +217,7 @@ pub.page = function(page) {
   updatePublicPageSizeVars();
   if (currentDoc().windows.length) {
     app.activeWindow.activePage = currPage;
-  } // focus in GUI if not in MODEHIDDEN
+  } // focus in GUI if not in HIDDEN
   return currentPage();
 };
 
