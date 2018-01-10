@@ -44,8 +44,38 @@
 /* globals init */
 // @target "InDesign";
 
-clearGlobalSpace();
-loadUserGlobals();
+
+// clearing global space if it is still populated from previous run of a loop script
+// to ensure basil methods work properly
+if($.engineName === "loop" && $.global.basilGlobal) {
+  for (var i = basilGlobal.length - 1; i >= 0; i--) {
+    if($.global.hasOwnProperty(basilGlobal[i])) {
+      try{
+          delete $.global[basilGlobal[i]];
+      } catch(e) {
+      // could not delete
+      }
+    }
+  }
+  delete $.global.basilGlobal;
+}
+
+// load global vars of the user script
+if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
+  $.writeln("Loading global variables.");
+  var f = app.activeScript;
+  f.open("r");
+  var data = f.read();
+  f.close();
+
+  var userScript = data.
+    replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").// FILE NOT FOUND by extendscript-bundlr
+    replace(/function\s+setup[\s\S]*/g, "");
+  app.doScript(userScript);
+} else if ($.global.setup instanceof Function) {
+  $.writeln("### Basil Warning -> basil could not load global variables. If you need to use global variables outside of setup() and loop(), execute your script from the Extend Script Toolkit. If you are using draw(), there is no need to use setup(). Move all your global variables into draw() instead.");
+}
+
 
 (function() {
 
@@ -802,9 +832,6 @@ var init = function() {
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
 
-  // needs to be reassigned, as it can still have a previous script name in global
-  // when switching between scripts using the loop target engine
-
   var appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
     preflightOff: app.preflightOptions.preflightOff
@@ -846,7 +873,6 @@ var runScript = function() {
     if ($.global.draw instanceof Function) {
       draw();
     } else if ($.global.loop instanceof Function) {
-      // TODO implement something like pub.frameRate()
       var sleep = null;
       if (arguments.length === 0) sleep = Math.round(1000 / currFrameRate);
       else sleep = Math.round(1000 / framerate);
@@ -855,7 +881,7 @@ var runScript = function() {
       currIdleTask.addEventListener(IdleEvent.ON_IDLE, function() {
         loop();
       }, false);
-      println("Run the script lib/stop.jsx to end the draw loop and clean up!");
+      println("Run the script lib/stop.jsx to end the loop, clean up and quit the script!");
     }
 
   } catch (e) {
@@ -909,27 +935,8 @@ var prepareLoop = function() {
       "  cleanUp = null;",
       "}"
     ];
-    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
-      // the lib folder also does not exist
-      var res = Folder(currentBasilFolderPath + "/lib").create();
-      if(res === false) {
-        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
-        return;
-      }else{
-        // the folder is there
-      }
-      var libFolder = Folder(currentBasilFolderPath + "/lib");
-      var stopScript = new File(libFolder.fsName + "/stop.jsx");
-      stopScript.open("w", undefined, undefined);
-    // set encoding and linefeeds
-      stopScript.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
-      stopScript.encoding = "UTF-8";
-      stopScript.write(scriptContent.join("\n"));
-      stopScript.close();
-    }
-  }else{
-    // the script is there
-    // awesome
+    var stopScriptFile = pub.file(scriptPath);
+    pub.saveStrings(stopScriptFile, scriptContent);
   }
   currFrameRate = 25;
 }
@@ -4096,11 +4103,13 @@ pub.printInfo = function() {
  * @return {File} The file the strings were written to.
  */
 pub.saveStrings = function(file, strings) {
-  if(!isString(string)) {
-    error("b.saveString(), invalid second argument. Use an array of strings.");
+  if(!isArray(strings)) {
+    error("b.saveStrings(), invalid second argument. Use an array of strings.");
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
@@ -4124,6 +4133,8 @@ pub.saveString = function(file, string) {
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
   outputFile.write(string);
   outputFile.close();
   return outputFile;
@@ -7777,37 +7788,3 @@ pub.translate = function (tx, ty) {
 init();
 
 })();
-
-function loadUserGlobals() {
-  // load global vars of the user script
-  if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
-    var f = app.activeScript;
-    f.open("r");
-    var data = f.read();
-    f.close();
-
-    var userScript = data.
-      replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").// FILE NOT FOUND by extendscript-bundlr
-      replace(/function\s+setup[\s\S]*/g, "");
-    app.doScript(userScript);
-  } else if ($.global.setup instanceof Function) {
-    $.writeln("### Basil Warning -> basil could not load global variables. If you need to use global variables outside of setup() and loop(), execute your script from the Extend Script Toolkit. If you are using draw(), there is no need to use setup(). Move all your global variables into draw() instead.");
-  }
-}
-
-function clearGlobalSpace() {
-  // clearing global space if it is still populated from previous run of a loop script
-  // to ensure basil methods work properly
-  if($.engineName === "loop" && $.global.basilGlobal) {
-    for (var i = basilGlobal.length - 1; i >= 0; i--) {
-      if($.global.hasOwnProperty(basilGlobal[i])) {
-        try{
-            delete $.global[basilGlobal[i]];
-        } catch(e) {
-        // could not delete
-        }
-      }
-    }
-    delete $.global.basilGlobal;
-  }
-}

@@ -1004,11 +1004,13 @@ pub.printInfo = function() {
  * @return {File} The file the strings were written to.
  */
 pub.saveStrings = function(file, strings) {
-  if(!isString(string)) {
-    error("b.saveString(), invalid second argument. Use an array of strings.");
+  if(!isArray(strings)) {
+    error("b.saveStrings(), invalid second argument. Use an array of strings.");
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
@@ -1032,6 +1034,8 @@ pub.saveString = function(file, string) {
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
   outputFile.write(string);
   outputFile.close();
   return outputFile;

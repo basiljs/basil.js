@@ -19,9 +19,6 @@ var init = function() {
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
 
-  // needs to be reassigned, as it can still have a previous script name in global
-  // when switching between scripts using the loop target engine
-
   var appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
     preflightOff: app.preflightOptions.preflightOff
@@ -63,7 +60,6 @@ var runScript = function() {
     if ($.global.draw instanceof Function) {
       draw();
     } else if ($.global.loop instanceof Function) {
-      // TODO implement something like pub.frameRate()
       var sleep = null;
       if (arguments.length === 0) sleep = Math.round(1000 / currFrameRate);
       else sleep = Math.round(1000 / framerate);
@@ -72,7 +68,7 @@ var runScript = function() {
       currIdleTask.addEventListener(IdleEvent.ON_IDLE, function() {
         loop();
       }, false);
-      println("Run the script lib/stop.jsx to end the draw loop and clean up!");
+      println("Run the script lib/stop.jsx to end the loop, clean up and quit the script!");
     }
 
   } catch (e) {
@@ -126,27 +122,8 @@ var prepareLoop = function() {
       "  cleanUp = null;",
       "}"
     ];
-    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
-      // the lib folder also does not exist
-      var res = Folder(currentBasilFolderPath + "/lib").create();
-      if(res === false) {
-        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
-        return;
-      }else{
-        // the folder is there
-      }
-      var libFolder = Folder(currentBasilFolderPath + "/lib");
-      var stopScript = new File(libFolder.fsName + "/stop.jsx");
-      stopScript.open("w", undefined, undefined);
-    // set encoding and linefeeds
-      stopScript.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
-      stopScript.encoding = "UTF-8";
-      stopScript.write(scriptContent.join("\n"));
-      stopScript.close();
-    }
-  }else{
-    // the script is there
-    // awesome
+    var stopScriptFile = pub.file(scriptPath);
+    pub.saveStrings(stopScriptFile, scriptContent);
   }
   currFrameRate = 25;
 }
