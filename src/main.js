@@ -43,18 +43,8 @@
 /* globals init */
 // @target "InDesign";
 
-if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
-  // load global vars of the user script
-  var f = app.activeScript;
-  f.open("r");
-  var data = f.read();
-  f.close();
-
-  var userScript = data.
-    replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").
-    replace(/function\s+setup[\s\S]*/g, "");
-  app.doScript(userScript);
-}
+clearGlobalSpace();
+loadUserGlobals();
 
 (function() {
 
@@ -88,3 +78,37 @@ pub.VERSION = "1.1.0";
 init();
 
 })();
+
+function loadUserGlobals() {
+  // load global vars of the user script
+  if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
+    var f = app.activeScript;
+    f.open("r");
+    var data = f.read();
+    f.close();
+
+    var userScript = data.
+      replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").
+      replace(/function\s+setup[\s\S]*/g, "");
+    app.doScript(userScript);
+  } else if ($.global.setup instanceof Function) {
+    $.writeln("### Basil Warning -> basil could not load global variables. If you need to use global variables outside of setup() and loop(), execute your script from the Extend Script Toolkit. If you are using draw(), there is no need to use setup(). Move all your global variables into draw() instead.");
+  }
+}
+
+function clearGlobalSpace() {
+  // clearing global space if it is still populated from previous run of a loop script
+  // to ensure basil methods work properly
+  if($.engineName === "loop" && $.global.basilGlobal) {
+    for (var i = basilGlobal.length - 1; i >= 0; i--) {
+      if($.global.hasOwnProperty(basilGlobal[i])) {
+        try{
+            delete $.global[basilGlobal[i]];
+        } catch(e) {
+        // could not delete
+        }
+      }
+    }
+    delete $.global.basilGlobal;
+  }
+}

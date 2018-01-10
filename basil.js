@@ -44,18 +44,8 @@
 /* globals init */
 // @target "InDesign";
 
-if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
-  // load global vars of the user script
-  var f = app.activeScript;
-  f.open("r");
-  var data = f.read();
-  f.close();
-
-  var userScript = data.
-    replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").// FILE NOT FOUND by extendscript-bundlr
-    replace(/function\s+setup[\s\S]*/g, "");
-  app.doScript(userScript);
-}
+clearGlobalSpace();
+loadUserGlobals();
 
 (function() {
 
@@ -488,6 +478,8 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currUnits = null,
   currVertexPoints = null,
   currYAlign = null,
+  currFrameRate = null,
+  currIdleTask = null,
   matrixStack = null,
   noneSwatchColor = null,
   progressPanel = null,
@@ -812,9 +804,8 @@ var init = function() {
 
   // needs to be reassigned, as it can still have a previous script name in global
   // when switching between scripts using the loop target engine
-  $.global.SCRIPTNAME = pub.SCRIPTNAME;
 
-  appSettings = {
+  var appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
     preflightOff: app.preflightOptions.preflightOff
   };
@@ -857,11 +848,11 @@ var runScript = function() {
     } else if ($.global.loop instanceof Function) {
       // TODO implement something like pub.frameRate()
       var sleep = null;
-      if (arguments.length === 0) sleep = Math.round(1000 / 25);
+      if (arguments.length === 0) sleep = Math.round(1000 / currFrameRate);
       else sleep = Math.round(1000 / framerate);
 
-      var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
-      idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
+      currIdleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
+      currIdleTask.addEventListener(IdleEvent.ON_IDLE, function() {
         loop();
       }, false);
       println("Run the script lib/stop.jsx to end the draw loop and clean up!");
@@ -912,9 +903,11 @@ var prepareLoop = function() {
     // the script is not there, let's create it
     var scriptContent = [
       "#targetengine \"loop\"",
-      "b.noLoop();",
-      "if (cleanUp instanceof Function) cleanUp(true);",
-      "cleanUp = null;"
+      "noLoop(true);",
+      "if (typeof cleanUp === \"function\") {",
+      "  cleanUp();",
+      "  cleanUp = null;",
+      "}"
     ];
     if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
       // the lib folder also does not exist
@@ -938,10 +931,33 @@ var prepareLoop = function() {
     // the script is there
     // awesome
   }
+  currFrameRate = 25;
 }
 
 /**
- * Stops basil from continuously executing the code within loop().
+ * Sets the framerate per second to determine how often loop() is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within setup() is recommended. The default rate is 25 frames per second. Calling frameRate() with no arguments returns the currently set framerate.
+ *
+ * @cat Environment
+ * @method frameRate
+ * @param {Number} [fps] Frames per second.
+ * @return {Number} Currently set frame rate.
+ */
+pub.frameRate = function(fps) {
+  if(arguments.length) {
+    if(!isNumber(fps) || fps <= 0) {
+      error("frameRate(), invalid argument. Use a number greater than 0.")
+    }
+
+    currFrameRate = fps;
+    if(currIdleTask) {
+      currIdleTask.sleep = Math.ceil(1000 / fps);
+    }
+  }
+  return currFrameRate;
+};
+
+/**
+ * Stops basil from continuously executing the code within loop() and quits the script.
  *
  * @cat Environment
  * @method noLoop
@@ -951,10 +967,11 @@ pub.noLoop = function(printFinished) {
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
   }
-  println("Basil.js -> Stopped looping.\n");
+  println("Basil.js -> Stopped looping.");
   if(printFinished) {
     println("[Finished in " + executionDuration() + "]");
   };
+  // TODO reset app and doc settings
 };
 
 /**
@@ -970,7 +987,7 @@ pub.noLoop = function(printFinished) {
 pub.mode = function(mode) {
 
   if(!(mode === pub.VISIBLE || mode === pub.HIDDEN || mode === pub.SILENT)) {
-    error("mode(), invalid argument. Please use VISIBLE, HIDDEN or SILENT.");
+    error("mode(), invalid argument. Use VISIBLE, HIDDEN or SILENT.");
   }
 
   app.scriptPreferences.enableRedraw = (mode === pub.VISIBLE || mode === pub.HIDDEN);
@@ -982,7 +999,7 @@ pub.mode = function(mode) {
 
     if (!currDoc.saved && !currDoc.modified && pub.HIDDEN) {
       // unsaved, unmodified doc at the beginning of the script that needs to be hidden
-      // -> will be closed without saving, new document will be opened without showing
+      // -> will be closed without saving, fresh hidden document will be opened
       currDoc.close(SaveOptions.NO);
       currDoc = app.documents.add(false);
       setCurrDoc(currDoc);
@@ -1039,11 +1056,7 @@ var populateGlobal = function() {
   // inject all functions of pub into global space
   // to make them available to the user
 
-  if($.engineName === "loop" && $.global.VERSION) {
-    // the global space is still populated from a previous run of the script
-    return;
-  }
-
+  $.global.basilGlobal = [];
   for(var key in pub) {
     if(pub.hasOwnProperty(key)) {
       if($.global.hasOwnProperty(key)) {
@@ -1054,6 +1067,7 @@ var populateGlobal = function() {
         error("basil had problems creating the global " + pubFuncVar + key + "\", possibly because your code is already using that name as a " + globFuncVar + ". You may want to rename your " + globFuncVar + " to something else.");
       } else {
         $.global[key] = pub[key];
+        $.global.basilGlobal.push(key);
       }
     }
   }
@@ -1203,7 +1217,8 @@ var updatePublicPageSizeVars = function () {
   var facingPages = currDoc.documentPreferences.facingPages;
   var singlePageMode = false;
 
-  var widthOffset = heightOffset = 0;
+  var widthOffset = 0;
+  var heightOffset = 0;
 
   switch(pub.canvasMode()) {
 
@@ -7762,3 +7777,37 @@ pub.translate = function (tx, ty) {
 init();
 
 })();
+
+function loadUserGlobals() {
+  // load global vars of the user script
+  if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
+    var f = app.activeScript;
+    f.open("r");
+    var data = f.read();
+    f.close();
+
+    var userScript = data.
+      replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").// FILE NOT FOUND by extendscript-bundlr
+      replace(/function\s+setup[\s\S]*/g, "");
+    app.doScript(userScript);
+  } else if ($.global.setup instanceof Function) {
+    $.writeln("### Basil Warning -> basil could not load global variables. If you need to use global variables outside of setup() and loop(), execute your script from the Extend Script Toolkit. If you are using draw(), there is no need to use setup(). Move all your global variables into draw() instead.");
+  }
+}
+
+function clearGlobalSpace() {
+  // clearing global space if it is still populated from previous run of a loop script
+  // to ensure basil methods work properly
+  if($.engineName === "loop" && $.global.basilGlobal) {
+    for (var i = basilGlobal.length - 1; i >= 0; i--) {
+      if($.global.hasOwnProperty(basilGlobal[i])) {
+        try{
+            delete $.global[basilGlobal[i]];
+        } catch(e) {
+        // could not delete
+        }
+      }
+    }
+    delete $.global.basilGlobal;
+  }
+}
