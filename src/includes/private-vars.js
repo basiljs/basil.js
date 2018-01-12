@@ -3,11 +3,13 @@
 // ----------------------------------------
 
 var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign external library file*/
+  appSettings = null,
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
   currDialogFolder = null,
   currDoc = null,
+  currDocSettings = null,
   currEllipseMode = null,
   currFillColor = null,
   currFillTint = null,

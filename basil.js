@@ -51,9 +51,9 @@ if($.engineName === "loop" && $.global.basilGlobal) {
   for (var i = basilGlobal.length - 1; i >= 0; i--) {
     if($.global.hasOwnProperty(basilGlobal[i])) {
       try{
-          delete $.global[basilGlobal[i]];
+        delete $.global[basilGlobal[i]];
       } catch(e) {
-      // could not delete
+        // could not delete
       }
     }
   }
@@ -479,11 +479,13 @@ pub.height = null;
 // ----------------------------------------
 
 var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign external library file*/
+  appSettings = null,
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
   currDialogFolder = null,
   currDoc = null,
+  currDocSettings = null,
   currEllipseMode = null,
   currFillColor = null,
   currFillTint = null,
@@ -829,10 +831,11 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
 
-  var appSettings = {
+  appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
     preflightOff: app.preflightOptions.preflightOff
   };
@@ -911,9 +914,10 @@ var runScript = function() {
       addToStoryCache.close();
     }
 
-    // resetUserSettings();   // TODO: bring back later
+    resetUserSettings();  // TODO: check if this works
   }
 
+  exit(); // quit program execution   // TODO: test if this quits loops too early
 }
 
 var prepareLoop = function() {
@@ -1124,18 +1128,33 @@ var setCurrDoc = function(doc) {
   currDoc = doc;
   // -- setup document --
 
-  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+  // save initial doc settings for later resetting
+  currDocSettings.rulerOrigin = currDoc.viewPreferences.rulerOrigin;
+  currDocSettings.hUnits = currDoc.viewPreferences.horizontalMeasurementUnits;
+  currDocSettings.vUnits = currDoc.viewPreferences.verticalMeasurementUnits;
 
+  currDocSettings.pStyle = currDoc.textDefaults.appliedParagraphStyle;
+  currDocSettings.cStyle = currDoc.textDefaults.appliedCharacterStyle;
+  currDocSettings.otxtStyle = currDoc.pageItemDefaults.appliedTextObjectStyle;
+  currDocSettings.ograStyle = currDoc.pageItemDefaults.appliedGraphicObjectStyle;
+  currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
+
+  // set document to default values
+  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+  pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
+
+  currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
+  currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
+  currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
+  currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
+  currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+
+  currAlign = currDoc.textDefaults.justification;
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
-  currAlign = currDoc.textDefaults.justification;
-  currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
+  currLeading = currDoc.textDefaults.leading;
   currTracking = currDoc.textDefaults.tracking;
-  // IMPORTANT this needs to be changed to be set to the default units
-  // Otherwise a new document is already modified and could not properly
-  // moved into HIDDEN at the beginning of a script (because it would want to be saved)
-  pub.units(pub.MM);
 
   updatePublicPageSizeVars();
 };
@@ -1330,6 +1349,34 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
+var resetUserSettings = function() {
+  // app settings
+  app.scriptPreferences.enableRedraw = appSettings.enableRedraw;
+  app.preflightOptions.preflightOff  = appSettings.preflightOff;
+
+  // doc settings
+  if(currDoc) {
+    resetDocSettings();
+  }
+}
+
+var resetDocSettings = function() {
+  try {
+    currDoc.viewPreferences.rulerOrigin = currDocSettings.rulerOrigin;
+    currDoc.viewPreferences.horizontalMeasurementUnits = currDocSettings.hUnits;
+    currDoc.viewPreferences.verticalMeasurementUnits = currDocSettings.vUnits;
+
+    currDoc.textDefaults.appliedParagraphStyle = currDocSettings.pStyle;
+    currDoc.textDefaults.appliedCharacterStyle = currDocSettings.cStyle;
+    currDoc.pageItemDefaults.appliedTextObjectStyle = currDocSettings.otxtStyle;
+    currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDocSettings.ograStyle;
+    currDoc.pageItemDefaults.appliedGridObjectStyle = currDocSettings.ogriStyle;
+  } catch (e) {
+    // document was closed via non-basil methods
+    currDoc = null;
+  }
+}
+
 var createSelectionDialog = function(settings) {
   var result;
   if(!settings) {
@@ -1410,6 +1457,14 @@ var getParentFunctionName = function(level) {
 var checkNull = function (obj) {
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
+
+var isEnum = function(base, value) {
+  var props = base.reflect.properties;
+  for (var i = 0; i < props.length; i++) {
+    if (base[props[i].name] == value) return true;
+  }
+  return false;
+}
 
 var executionDuration = function() {
   var duration = pub.millis();
@@ -1677,6 +1732,8 @@ pub.remove = function(obj) {
  */
 pub.doc = function(doc) {
   if (doc instanceof Document) {
+    // reset the settings of the old doc, before activating the new doc
+    resetDocSettings();
     setCurrDoc(doc);
   }
   return currentDoc();
@@ -1754,23 +1811,35 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 };
 
 /**
- * Closes the current document.
+ * Closes the current document. If no saveOptions argument is used, the user will be asked if they want to save or not.
  *
  * @cat Document
  * @method close
- * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param  {Object|Boolean} [saveOptions] The InDesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
  * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
-  var doc = currentDoc();
-  if (doc) {
-    if(typeof saveOptions === "boolean" && saveOptions === false) {
-      saveOptions = SaveOptions.no;
+  if (currDoc) {
+    if(saveOptions === false) {
+      saveOptions = SaveOptions.NO;
+    } else if(saveOptions === true) {
+      saveOptions = SaveOptions.YES;
+    } else if(saveOptions === undefined) {
+      saveOptions = SaveOptions.ASK;
+    } else {
+      if(!isEnum(SaveOptions, saveOptions)) {
+        error("b.close(), wrong saveOptions argument. Use True, False, InDesign SaveOptions constant or leave empty.");
+      }
     }
-    if(typeof saveOptions === "boolean" && saveOptions === true) {
-      saveOptions = SaveOptions.yes;
+
+    resetDocSettings();
+
+    try {
+      currDoc.close(saveOptions, file);
+    } catch (e) {
+      // the user has cancelled a save dialog, the doc will not be saved
+      currDoc.close(saveOptions.NO);
     }
-    doc.close(saveOptions, file);
     resetCurrDoc();
   }
 };
@@ -1791,7 +1860,7 @@ pub.revert = function() {
     resetCurrDoc();
   } else if(!currDoc.saved) {
     currDoc.close(SaveOptions.NO);
-    resetCurrDoc();
+    currDoc = null;
     app.documents.add();
     currentDoc();
   }
@@ -2374,7 +2443,7 @@ pub.nameOnPage = function(name) {
 
 
 /**
- * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
+ * Sets the units of the document (like right clicking the rulers). By default basil uses the units of the user's document or the user's default units.
  *
  * @cat Document
  * @method units
@@ -2388,40 +2457,42 @@ pub.units = function (units) {
     return currUnits;
   }
 
-  if (units === pub.CM ||
-      units === pub.MM ||
-      units === pub.PT ||
-      units === pub.PX ||
-      units === pub.IN) {
-    var unitType = null;
-    if (units === pub.CM) {
-      unitType = MeasurementUnits.centimeters;
-    } else if (units === pub.MM) {
-      unitType = MeasurementUnits.millimeters;
-    } else if (units === pub.PT) {
-      unitType = MeasurementUnits.points;
-    } else if (units === pub.PX) {
-      unitType = MeasurementUnits.pixels;
-    } else if (units === pub.IN) {
-      unitType = MeasurementUnits.inches;
-    }
-    var doc = currentDoc();
-
-    doc.viewPreferences.horizontalMeasurementUnits = unitType;
-    doc.viewPreferences.verticalMeasurementUnits = unitType;
-
-    currUnits = units;
-    updatePublicPageSizeVars();
+  if (units === pub.PT || units === 2054188905) {
+    units = pub.PT;
+    unitType = MeasurementUnits.points;
+  } else if(units === pub.MM || units === 2053991795) {
+    units = pub.MM;
+    unitType = MeasurementUnits.millimeters;
+  } else if(units === pub.CM || units === 2053336435) {
+    units = pub.CM;
+    unitType = MeasurementUnits.centimeters;
+  } else if(units === pub.IN || units === 2053729891) {
+    units = pub.IN;
+    unitType = MeasurementUnits.inches;
+  } else if(units === pub.PX || units === 2054187384) {
+    units = pub.PX;
+    unitType = MeasurementUnits.pixels;
+  } else if(isEnum(MeasurementUnits, units)) {
+    // valid enumerator with invalid basil.js unit (from documents that are set to PICAS, CICEROS etc.)
+    warning("The document's current units are not supported by basil.js. Units will be set to Points.");
+    units = pub.PT;
+    unitType = MeasurementUnits.points;
   } else {
-    error("b.unit(), not supported unit");
+    error("b.unit(), invalid unit. Use: b.PT, b.MM, b.CM, b.IN or b.PX.");
   }
+
+  currDoc.viewPreferences.horizontalMeasurementUnits = unitType;
+  currDoc.viewPreferences.verticalMeasurementUnits = unitType;
+  currUnits = units;
+
+  updatePublicPageSizeVars();
+
   if (unitsCalledCounter === 1) {
     warning("Please note that b.units() will reset the current transformation matrix.");
   }
   unitsCalledCounter++;
   return currUnits;
 };
-
 
 /**
  * Creates a vertical guide line at the current spread and current layer.

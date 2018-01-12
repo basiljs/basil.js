@@ -16,10 +16,11 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
 
-  var appSettings = {
+  appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
     preflightOff: app.preflightOptions.preflightOff
   };
@@ -98,9 +99,10 @@ var runScript = function() {
       addToStoryCache.close();
     }
 
-    // resetUserSettings();   // TODO: bring back later
+    resetUserSettings();  // TODO: check if this works
   }
 
+  exit(); // quit program execution   // TODO: test if this quits loops too early
 }
 
 var prepareLoop = function() {
@@ -311,18 +313,33 @@ var setCurrDoc = function(doc) {
   currDoc = doc;
   // -- setup document --
 
-  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+  // save initial doc settings for later resetting
+  currDocSettings.rulerOrigin = currDoc.viewPreferences.rulerOrigin;
+  currDocSettings.hUnits = currDoc.viewPreferences.horizontalMeasurementUnits;
+  currDocSettings.vUnits = currDoc.viewPreferences.verticalMeasurementUnits;
 
+  currDocSettings.pStyle = currDoc.textDefaults.appliedParagraphStyle;
+  currDocSettings.cStyle = currDoc.textDefaults.appliedCharacterStyle;
+  currDocSettings.otxtStyle = currDoc.pageItemDefaults.appliedTextObjectStyle;
+  currDocSettings.ograStyle = currDoc.pageItemDefaults.appliedGraphicObjectStyle;
+  currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
+
+  // set document to default values
+  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+  pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
+
+  currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
+  currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
+  currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
+  currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
+  currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+
+  currAlign = currDoc.textDefaults.justification;
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
-  currAlign = currDoc.textDefaults.justification;
-  currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
+  currLeading = currDoc.textDefaults.leading;
   currTracking = currDoc.textDefaults.tracking;
-  // IMPORTANT this needs to be changed to be set to the default units
-  // Otherwise a new document is already modified and could not properly
-  // moved into HIDDEN at the beginning of a script (because it would want to be saved)
-  pub.units(pub.MM);
 
   updatePublicPageSizeVars();
 };
@@ -517,6 +534,34 @@ var updatePublicPageSizeVars = function () {
   }
 };
 
+var resetUserSettings = function() {
+  // app settings
+  app.scriptPreferences.enableRedraw = appSettings.enableRedraw;
+  app.preflightOptions.preflightOff  = appSettings.preflightOff;
+
+  // doc settings
+  if(currDoc) {
+    resetDocSettings();
+  }
+}
+
+var resetDocSettings = function() {
+  try {
+    currDoc.viewPreferences.rulerOrigin = currDocSettings.rulerOrigin;
+    currDoc.viewPreferences.horizontalMeasurementUnits = currDocSettings.hUnits;
+    currDoc.viewPreferences.verticalMeasurementUnits = currDocSettings.vUnits;
+
+    currDoc.textDefaults.appliedParagraphStyle = currDocSettings.pStyle;
+    currDoc.textDefaults.appliedCharacterStyle = currDocSettings.cStyle;
+    currDoc.pageItemDefaults.appliedTextObjectStyle = currDocSettings.otxtStyle;
+    currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDocSettings.ograStyle;
+    currDoc.pageItemDefaults.appliedGridObjectStyle = currDocSettings.ogriStyle;
+  } catch (e) {
+    // document was closed via non-basil methods
+    currDoc = null;
+  }
+}
+
 var createSelectionDialog = function(settings) {
   var result;
   if(!settings) {
@@ -597,6 +642,14 @@ var getParentFunctionName = function(level) {
 var checkNull = function (obj) {
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
+
+var isEnum = function(base, value) {
+  var props = base.reflect.properties;
+  for (var i = 0; i < props.length; i++) {
+    if (base[props[i].name] == value) return true;
+  }
+  return false;
+}
 
 var executionDuration = function() {
   var duration = pub.millis();

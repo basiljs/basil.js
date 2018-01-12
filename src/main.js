@@ -50,9 +50,9 @@ if($.engineName === "loop" && $.global.basilGlobal) {
   for (var i = basilGlobal.length - 1; i >= 0; i--) {
     if($.global.hasOwnProperty(basilGlobal[i])) {
       try{
-          delete $.global[basilGlobal[i]];
+        delete $.global[basilGlobal[i]];
       } catch(e) {
-      // could not delete
+        // could not delete
       }
     }
   }

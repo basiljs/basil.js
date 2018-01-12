@@ -14,6 +14,8 @@
  */
 pub.doc = function(doc) {
   if (doc instanceof Document) {
+    // reset the settings of the old doc, before activating the new doc
+    resetDocSettings();
     setCurrDoc(doc);
   }
   return currentDoc();
@@ -91,23 +93,35 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 };
 
 /**
- * Closes the current document.
+ * Closes the current document. If no saveOptions argument is used, the user will be asked if they want to save or not.
  *
  * @cat Document
  * @method close
- * @param  {Object|Boolean} [saveOptions] The Indesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param  {Object|Boolean} [saveOptions] The InDesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
  * @param  {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
-  var doc = currentDoc();
-  if (doc) {
-    if(typeof saveOptions === "boolean" && saveOptions === false) {
-      saveOptions = SaveOptions.no;
+  if (currDoc) {
+    if(saveOptions === false) {
+      saveOptions = SaveOptions.NO;
+    } else if(saveOptions === true) {
+      saveOptions = SaveOptions.YES;
+    } else if(saveOptions === undefined) {
+      saveOptions = SaveOptions.ASK;
+    } else {
+      if(!isEnum(SaveOptions, saveOptions)) {
+        error("b.close(), wrong saveOptions argument. Use True, False, InDesign SaveOptions constant or leave empty.");
+      }
     }
-    if(typeof saveOptions === "boolean" && saveOptions === true) {
-      saveOptions = SaveOptions.yes;
+
+    resetDocSettings();
+
+    try {
+      currDoc.close(saveOptions, file);
+    } catch (e) {
+      // the user has cancelled a save dialog, the doc will not be saved
+      currDoc.close(saveOptions.NO);
     }
-    doc.close(saveOptions, file);
     resetCurrDoc();
   }
 };
@@ -128,7 +142,7 @@ pub.revert = function() {
     resetCurrDoc();
   } else if(!currDoc.saved) {
     currDoc.close(SaveOptions.NO);
-    resetCurrDoc();
+    currDoc = null;
     app.documents.add();
     currentDoc();
   }
@@ -711,7 +725,7 @@ pub.nameOnPage = function(name) {
 
 
 /**
- * Sets the units of the document (like right clicking the rulers). The default units of basil.js are PT.
+ * Sets the units of the document (like right clicking the rulers). By default basil uses the units of the user's document or the user's default units.
  *
  * @cat Document
  * @method units
@@ -725,40 +739,42 @@ pub.units = function (units) {
     return currUnits;
   }
 
-  if (units === pub.CM ||
-      units === pub.MM ||
-      units === pub.PT ||
-      units === pub.PX ||
-      units === pub.IN) {
-    var unitType = null;
-    if (units === pub.CM) {
-      unitType = MeasurementUnits.centimeters;
-    } else if (units === pub.MM) {
-      unitType = MeasurementUnits.millimeters;
-    } else if (units === pub.PT) {
-      unitType = MeasurementUnits.points;
-    } else if (units === pub.PX) {
-      unitType = MeasurementUnits.pixels;
-    } else if (units === pub.IN) {
-      unitType = MeasurementUnits.inches;
-    }
-    var doc = currentDoc();
-
-    doc.viewPreferences.horizontalMeasurementUnits = unitType;
-    doc.viewPreferences.verticalMeasurementUnits = unitType;
-
-    currUnits = units;
-    updatePublicPageSizeVars();
+  if (units === pub.PT || units === 2054188905) {
+    units = pub.PT;
+    unitType = MeasurementUnits.points;
+  } else if(units === pub.MM || units === 2053991795) {
+    units = pub.MM;
+    unitType = MeasurementUnits.millimeters;
+  } else if(units === pub.CM || units === 2053336435) {
+    units = pub.CM;
+    unitType = MeasurementUnits.centimeters;
+  } else if(units === pub.IN || units === 2053729891) {
+    units = pub.IN;
+    unitType = MeasurementUnits.inches;
+  } else if(units === pub.PX || units === 2054187384) {
+    units = pub.PX;
+    unitType = MeasurementUnits.pixels;
+  } else if(isEnum(MeasurementUnits, units)) {
+    // valid enumerator with invalid basil.js unit (from documents that are set to PICAS, CICEROS etc.)
+    warning("The document's current units are not supported by basil.js. Units will be set to Points.");
+    units = pub.PT;
+    unitType = MeasurementUnits.points;
   } else {
-    error("b.unit(), not supported unit");
+    error("b.unit(), invalid unit. Use: b.PT, b.MM, b.CM, b.IN or b.PX.");
   }
+
+  currDoc.viewPreferences.horizontalMeasurementUnits = unitType;
+  currDoc.viewPreferences.verticalMeasurementUnits = unitType;
+  currUnits = units;
+
+  updatePublicPageSizeVars();
+
   if (unitsCalledCounter === 1) {
     warning("Please note that b.units() will reset the current transformation matrix.");
   }
   unitsCalledCounter++;
   return currUnits;
 };
-
 
 /**
  * Creates a vertical guide line at the current spread and current layer.
