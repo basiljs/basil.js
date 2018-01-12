@@ -914,10 +914,11 @@ var runScript = function() {
       addToStoryCache.close();
     }
 
-    resetUserSettings();  // TODO: check if this works
+    if (!($.global.loop instanceof Function) || $.global.draw instanceof Function) {
+      resetUserSettings();
+    }
   }
 
-  exit(); // quit program execution   // TODO: test if this quits loops too early
 }
 
 var prepareLoop = function() {
@@ -982,7 +983,7 @@ pub.noLoop = function(printFinished) {
   if(printFinished) {
     println("[Finished in " + executionDuration() + "]");
   };
-  // TODO reset app and doc settings
+  resetUserSettings();
 };
 
 /**
