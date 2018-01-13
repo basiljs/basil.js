@@ -22,10 +22,10 @@
  */
 pub.text = function(txt, x, y, w, h) {
   if (arguments.length !== 5) {
-    error("b.text(), not enough parameters to draw a text! Use: b.text(txt, x, y, w, h)");
+    error("text(), not enough parameters to draw a text! Use: text(txt, x, y, w, h)");
   }
   if (!(isString(txt) || isNumber(txt))) {
-    warning("b.text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: b.text(txt, x, y, w, h)");
+    warning("text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: text(txt, x, y, w, h)");
   }
 
   var textBounds = [];
@@ -122,10 +122,10 @@ pub.typo = function(item, property, value) {
       textItem[prop] = val;
     };
 
-  if(typeof item === "string") error("b.typo() cannot work on strings. Please pass a Text object to modify.");
+  if(typeof item === "string") error("typo() cannot work on strings. Please pass a Text object to modify.");
 
   if(!isValid(item)) {
-    warning("b.typo(), invalid object passed");
+    warning("typo(), invalid object passed");
     return;
   }
 
@@ -185,11 +185,11 @@ pub.textFont = function(fontName, fontStyle) {
   } else if (arguments.length === 0) {
     return currFont;
   } else {
-    error("b.textFont(), wrong parameters. To set font use: fontName, fontStyle. fontStyle is optional.");
+    error("textFont(), wrong parameters. To set font use: fontName, fontStyle. fontStyle is optional.");
   }
 
   if(app.fonts.itemByName(fontName).status !== FontStatus.INSTALLED) {
-    warning("b.textFont(), font \"" + fontName.replace("\t", " ") + "\" not installed. "
+    warning("textFont(), font \"" + fontName.replace("\t", " ") + "\" not installed. "
       + "Using current font \"" + currFont.fontFamily + " " + currFont.fontStyleName + "\" instead.");
   } else {
     currFont = app.fonts.itemByName(fontName);
@@ -296,7 +296,7 @@ pub.textTracking = function(tracking) {
  * @return {CharacterStyle}  The character style instance.
  */
 pub.characterStyle = function(textOrName, props) {
-  var styleErrorMsg = "b.characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
+  var styleErrorMsg = "characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
     error(styleErrorMsg);
@@ -320,7 +320,7 @@ pub.characterStyle = function(textOrName, props) {
     try {
       style.properties = props;
     } catch (e) {
-      error("b.characterStyle(), wrong props parameter. Use object of property name/value pairs.");
+      error("characterStyle(), wrong props parameter. Use object of property name/value pairs.");
     }
   }
 
@@ -344,12 +344,12 @@ pub.applyCharacterStyle = function(text, style) {
     var name = style;
     style = findInStylesByName(currentDoc().allCharacterStyles, name);
     if(!style) {
-      error("b.applyCharacterStyle(), a character style named \"" + name + "\" does not exist.");
+      error("applyCharacterStyle(), a character style named \"" + name + "\" does not exist.");
     }
   }
 
   if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
-    error("b.applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
+    error("applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
   }
 
   if(text instanceof TextFrame) {
@@ -373,7 +373,7 @@ pub.applyCharacterStyle = function(text, style) {
  * @return {ParagraphStyle}  The paragraph style instance.
  */
 pub.paragraphStyle = function(textOrName, props) {
-  var styleErrorMsg = "b.paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
+  var styleErrorMsg = "paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
     error(styleErrorMsg);
@@ -397,7 +397,7 @@ pub.paragraphStyle = function(textOrName, props) {
     try {
       style.properties = props;
     } catch (e) {
-      error("b.paragraphStyle(), wrong props parameter. Use object of property name/value pairs.");
+      error("paragraphStyle(), wrong props parameter. Use object of property name/value pairs.");
     }
   }
 
@@ -421,12 +421,12 @@ pub.applyParagraphStyle = function(text, style) {
     var name = style;
     style = findInStylesByName(currentDoc().allParagraphStyles, name);
     if(!style) {
-      error("b.applyParagraphStyle(), a paragraph style named \"" + name + "\" does not exist.");
+      error("applyParagraphStyle(), a paragraph style named \"" + name + "\" does not exist.");
     }
   }
 
   if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
-    error("b.applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
+    error("applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
   }
 
   if(text instanceof TextFrame) {
