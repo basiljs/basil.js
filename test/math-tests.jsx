@@ -1,52 +1,52 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("MathTests", {
-  testRandomWithNoArgs: function(b) {
-    var rand = b.random();
+basilTest("MathTests", {
+  testRandomWithNoArgs: function() {
+    var rand = random();
 
     assert(rand > 0 && rand < 1);
   },
 
-  testRandomWithOneArg: function(b) {
-    var rand = b.random(5);
+  testRandomWithOneArg: function() {
+    var rand = random(5);
 
     assert(rand > 0 && rand < 5);
   },
 
-  testRandomWithTwoArgs: function(b) {
-    var rand = b.random(-5, 10.2);
+  testRandomWithTwoArgs: function() {
+    var rand = random(-5, 10.2);
 
     assert(rand > -5 && rand < 10.2);
   },
 
-  testRandomWithMoreThanTwoArgsIgnoresLastArgs: function(b) {
-    var rand = b.random(-5, 10.2, 2, 54, 34.5, 324);
+  testRandomWithMoreThanTwoArgsIgnoresLastArgs: function() {
+    var rand = random(-5, 10.2, 2, 54, 34.5, 324);
 
     assert(rand > -5 && rand < 10.2);
   },
 
-  testConstrain: function(b) {
+  testConstrain: function() {
 
-    assert(b.constrain(100, 0, 200) === 100);
-    assert(b.constrain(200, 0, 200) === 200);
-    assert(b.constrain(0, 0, 200) === 0);
-    assert(b.constrain(201, 0, 200) === 200);
-    assert(b.constrain(2000000000000000000000, 0, 200) === 200);
-    assert(b.constrain(-1, 0, 200) === 0);
-    assert(b.constrain(-100000000000000000000, 0, 200) === 0);
-    assert(b.constrain(-0.12387918263, 0, 200) === 0);
-    assert(b.constrain(200234.123123123123, 0, 200) === 200);
+    assert(constrain(100, 0, 200) === 100);
+    assert(constrain(200, 0, 200) === 200);
+    assert(constrain(0, 0, 200) === 0);
+    assert(constrain(201, 0, 200) === 200);
+    assert(constrain(2000000000000000000000, 0, 200) === 200);
+    assert(constrain(-1, 0, 200) === 0);
+    assert(constrain(-100000000000000000000, 0, 200) === 0);
+    assert(constrain(-0.12387918263, 0, 200) === 0);
+    assert(constrain(200234.123123123123, 0, 200) === 200);
 
   }
 
 });
 
 // print collected test results
-b.test.result();
-
+basilTest.result();

@@ -60,8 +60,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 
   var doc = currentDoc();
 
-  if(typeof widthOrPageSize === "string") {
-
+  if(isString(widthOrPageSize)) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
@@ -138,8 +137,9 @@ pub.revert = function() {
   if(currDoc.saved && currDoc.modified) {
     var currFile = currDoc.fullName;
     currDoc.close(SaveOptions.NO);
+    currDoc = null;
     app.open(File(currFile));
-    resetCurrDoc();
+    currentDoc();
   } else if(!currDoc.saved) {
     currDoc.close(SaveOptions.NO);
     currDoc = null;
@@ -762,8 +762,8 @@ pub.units = function (units) {
     error("units(), invalid unit. Use: PT, MM, CM, IN or PX.");
   }
 
-  currDoc.viewPreferences.horizontalMeasurementUnits = unitType;
-  currDoc.viewPreferences.verticalMeasurementUnits = unitType;
+  currentDoc().viewPreferences.horizontalMeasurementUnits = unitType;
+  currentDoc().viewPreferences.verticalMeasurementUnits = unitType;
   currUnits = units;
 
   updatePublicPageSizeVars();

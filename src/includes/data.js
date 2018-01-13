@@ -288,7 +288,7 @@ pub.unbinary = function(binaryString) {
 
 
 var decimalToHex = function(d, padding) {
-  padding = padding === undef || padding === null ? padding = 8 : padding;
+  padding = padding === undefined || padding === null ? padding = 8 : padding;
   if (d < 0) d = 4294967295 + d + 1;
   var hex = Number(d).toString(16).toUpperCase();
   while (hex.length < padding) hex = "0" + hex;
@@ -436,7 +436,7 @@ pub.splitTokens = function(str, tokens) {
     pos = str.search(tokens);
   }
   if (str.length > 0) ary[index] = str;
-  if (ary.length === 0) ary = undef;
+  if (ary.length === 0) ary = undefined;
   return ary;
 };
 
@@ -460,7 +460,7 @@ pub.matchAll = function(aString, aRegExp) {
 function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
   var sign = value < 0 ? minus : plus;
   var autoDetectDecimals = rightDigits === 0;
-  var rightDigitsOfDefault = rightDigits === undef || rightDigits < 0 ? 0 : rightDigits;
+  var rightDigitsOfDefault = rightDigits === undefined || rightDigits < 0 ? 0 : rightDigits;
   var absValue = Math.abs(value);
   if (autoDetectDecimals) {
     rightDigitsOfDefault = 1;
@@ -483,7 +483,7 @@ function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
     buffer = "" + number % 10 + buffer;
     number = Math.floor(number / 10);
   }
-  if (group !== undef) {
+  if (group !== undefined) {
     var i = buffer.length - 3 - rightDigitsOfDefault;
     while (i > 0) {
       buffer = buffer.substring(0, i) + group + buffer.substring(i);
@@ -1133,7 +1133,7 @@ pub.download = function(url, file) {
     var libFolder = Folder(currentBasilFolderPath + "/lib");
     // now create the script file
     var downloadScript = new File(libFolder.fsName + "/download.sh");
-    downloadScript.open("w", undef, undef);
+    downloadScript.open("w", undefined, undefined);
     // set encoding and linefeeds
     downloadScript.lineFeed = "Unix";
     downloadScript.encoding = "UTF-8";

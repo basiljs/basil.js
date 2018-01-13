@@ -1,33 +1,33 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("EnvironmentTests", {
+basilTest("EnvironmentTests", {
 
-  setUpTest: function(b) {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testSplitJoin: function(b) {
-    var doc = b.doc();
+  testSplitJoin: function() {
+    var myDoc = doc();
     var str = "hello world how are you, my dear?";
-    assert(b.join(b.split(str, " "), " ") === str);
+    assert(join(split(str, " "), " ") === str);
   }
 });
 
 // print collected test results
-b.test.result();
-
+basilTest.result();

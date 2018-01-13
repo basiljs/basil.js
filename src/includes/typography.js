@@ -99,7 +99,7 @@ pub.text = function(txt, x, y, w, h) {
  */
 pub.typo = function(item, property, value) {
   var result = [],
-    actsAsGetter = typeof property === "string" && (value === undef || value === null),
+    actsAsGetter = typeof property === "string" && (value === undefined || value === null),
     getOrSetProperties = function(textItem) {
       if (actsAsGetter) {
         result.push(textItem[property]);

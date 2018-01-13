@@ -1,38 +1,39 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("ConversionTests", {
+basilTest("ConversionTests", {
 
-  setUpTest: function(b) {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testHexUnhex: function(b) {
-    var doc = b.doc();
+  testHexUnhex: function() {
+    var myDoc = doc();
+
     var i = 1234;
     var j = 762387452;
     var k = -2034856;
 
-    assert(b.unhex(b.hex(i)) === i
-      && b.unhex(b.hex(j)) === j
-      && b.unhex(b.hex(k)) === k);
+    assert(unhex(hex(i)) === i
+      && unhex(hex(j)) === j
+      && unhex(hex(k)) === k);
   }
 });
 
 // print collected test results
-b.test.result();
-
+basilTest.result();

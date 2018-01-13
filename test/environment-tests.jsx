@@ -1,290 +1,289 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("EnvironmentTests", {
+basilTest("EnvironmentTests", {
 
-  setUpTest: function(b) {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testSizeAllNumberArgs: function(b) {
-    var doc = app.documents.add();
-    b.size(100, 200);
-    assert(doc.documentPreferences.pageWidth === 100);
-    assert(doc.documentPreferences.pageHeight === 200);
-  },
-  testSizeAllPageSizePresetArgs: function(b) {
-    var doc = app.documents.add();
-    b.units(b.PX);
-    doc.documentPreferences.pageWidth = 1000;
-    doc.documentPreferences.pageHeight = 500;
+  testSizeAllNumberArgs: function() {
+    var myDoc = doc();
+    size(100, 200);
 
-    b.size("800 x 600", b.PORTRAIT);
-    assert(doc.documentPreferences.pageHeight > doc.documentPreferences.pageWidth);
-    assert(doc.documentPreferences.pageWidth === 600);
-    assert(doc.documentPreferences.pageHeight === 800);
+    assert(myDoc.documentPreferences.pageWidth === 100);
+    assert(myDoc.documentPreferences.pageHeight === 200);
+  },
+  testSizeAllPageSizePresetArgs: function() {
+    var myDoc = doc();
+    myDoc.documentPreferences.pageWidth = 1000;
+    myDoc.documentPreferences.pageHeight = 500;
 
-    b.size("1024 x 768", b.LANDSCAPE);
-    assert(doc.documentPreferences.pageHeight < doc.documentPreferences.pageWidth);
-    assert(doc.documentPreferences.pageWidth === 1024);
-    assert(doc.documentPreferences.pageHeight === 768);
-  },
-  testSizeOneNumberArg: function(b) {
-    var doc = app.documents.add();
-    b.size(100);
-    assert(doc.documentPreferences.pageWidth === 100);
-    assert(doc.documentPreferences.pageHeight === 100);
-  },
-  testSizeOnePageSizePresetArg: function(b) {
-    var doc = app.documents.add();
-    b.units(b.PX);
-    doc.documentPreferences.pageWidth = 1000;
-    doc.documentPreferences.pageHeight = 500;
+    units(PX);
+    size("800 x 600", PORTRAIT);
+    assert(myDoc.documentPreferences.pageHeight > myDoc.documentPreferences.pageWidth);
+    assert(myDoc.documentPreferences.pageWidth === 600);
+    assert(myDoc.documentPreferences.pageHeight === 800);
 
-    b.size("800 x 600");
-    assert(doc.documentPreferences.pageWidth === 800);
-    assert(doc.documentPreferences.pageHeight === 600);
+    size("1024 x 768", LANDSCAPE);
+    assert(myDoc.documentPreferences.pageHeight < myDoc.documentPreferences.pageWidth);
+    assert(myDoc.documentPreferences.pageWidth === 1024);
+    assert(myDoc.documentPreferences.pageHeight === 768);
   },
-  testSizeNoArg: function(b) {
-    var doc = app.documents.add();
-    var result = b.size();
+  testSizeOneNumberArg: function() {
+    var myDoc = doc();
+    size(100);
+    assert(myDoc.documentPreferences.pageWidth === 100);
+    assert(myDoc.documentPreferences.pageHeight === 100);
+  },
+  testSizeOnePageSizePresetArg: function() {
+    var myDoc = doc();
+    myDoc.documentPreferences.pageWidth = 1000;
+    myDoc.documentPreferences.pageHeight = 500;
+
+    units(PX);
+    size("800 x 600");
+    assert(myDoc.documentPreferences.pageWidth === 800);
+    assert(myDoc.documentPreferences.pageHeight === 600);
+  },
+  testSizeNoArg: function() {
+    var myDoc = doc();
+    var result = size();
     assert(result instanceof Object);
     assert(result.hasOwnProperty("height") === true);
     assert(result.hasOwnProperty("width") === true);
-    assert(result.height === b.height);
-    assert(result.width === b.width);
+    assert(result.height === height);
+    assert(result.width === width);
 
   },
-  testDocCreatesDocument: function(b) {
-    var doc = b.doc();
+  testDocCreatesDocument: function() {
+    var myDoc = doc();
 
-    assert(doc instanceof Document);
+    assert(myDoc instanceof Document);
     assert(app.documents.length === 1);
   },
 
-  testDocSetsDocumentByInstance: function(b) {
-    var doc = app.documents.add();
+  testDocSetsDocumentByInstance: function() {
+    var myDoc = doc();
 
-    var currDoc = b.doc(doc);
+    var currDoc = doc(myDoc);
 
-    assert(doc === currDoc);
+    assert(myDoc === currDoc);
     assert(app.documents.length === 1);
   },
 
-  testDocWithNonDocumentInstance: function(b) {
-    var doc = app.documents.add();
+  testDocWithNonDocumentInstance: function() {
+    var myDoc = doc();
 
-    var currDoc = b.doc({});
+    var currDoc = doc({});
 
-    assert(doc === currDoc);
+    assert(myDoc === currDoc);
     assert(app.documents.length === 1);
   },
 
-  testDocWithNotExistingDocumentThrowsError: function(b) {
-    var doc = app.documents.add();
-    doc.close(SaveOptions.no);
+  testDocWithNotExistingDocumentThrowsError: function() {
+    var myDoc = doc();
+    myDoc.close(SaveOptions.no);
 
     try {
-      b.doc(doc);
+      doc(myDoc);
       assert(false);
     } catch (expected) {} // eslint-disable-line no-empty
   },
 
-  testPageSetsPageByInstance: function(b) {
-    var doc = app.documents.add();
-    doc.pages.add();
-    var secondPage = doc.pages.add();
-    b.doc(doc);
+  testPageSetsPageByInstance: function() {
+    var myDoc = doc();
+    myDoc.pages.add();
+    var secondPage = myDoc.pages.add();
+    doc(myDoc);
 
-    var page = b.page(secondPage);
+    var myPage = page(secondPage);
 
-    assert(page instanceof Page);
-    assert(secondPage === page);
+    assert(myPage instanceof Page);
+    assert(secondPage === myPage);
   },
 
-  testPageSetsPageByIndex: function(b) {
-    var doc = app.documents.add();
-    doc.pages.add();
-    var secondPage = doc.pages.add();
-    b.doc(doc);
+  testPageSetsPageByIndex: function() {
+    var myDoc = doc();
+    myDoc.pages.add();
+    var secondPage = myDoc.pages.add();
+    doc(myDoc);
 
-    var page = b.page(3);
+    var myPage = page(3);
 
-    assert(page instanceof Page);
-    assert(secondPage === page);
+    assert(myPage instanceof Page);
+    assert(secondPage === myPage);
   },
 
-  testPageWithNotExistingPageIndexThrowsError: function(b) {
-    b.doc(app.documents.add());
+  testPageWithNotExistingPageIndexThrowsError: function() {
+    doc(doc());
 
     try {
-      b.page(500);
+      page(500);
       assert(false);
     } catch (expected) {} // eslint-disable-line no-empty
   },
 
-  testPageManagement: function(b) {
+  testPageManagement: function() {
 
-    b.doc();
+    doc();
 
-    assert(b.pageNumber() === 1);
-    assert(b.pageCount() === 1);
-    b.addPage();
-    assert(b.pageNumber() === 2);
-    assert(b.pageCount() === 2);
-    b.addPage(b.AT_BEGINNING);
-    assert(b.pageNumber() === 1);
-    assert(b.pageCount() === 3);
-    b.page(2);
-    assert(b.pageNumber() === 2);
-    b.addPage(b.BEFORE);
-    assert(b.pageNumber() === 2);
-    assert(b.pageCount() === 4);
-    b.addPage(b.AFTER);
-    assert(b.pageNumber() === 3);
-    assert(b.pageCount() === 5);
+    assert(pageNumber() === 1);
+    assert(pageCount() === 1);
+    addPage();
+    assert(pageNumber() === 2);
+    assert(pageCount() === 2);
+    addPage(AT_BEGINNING);
+    assert(pageNumber() === 1);
+    assert(pageCount() === 3);
+    page(2);
+    assert(pageNumber() === 2);
+    addPage(BEFORE);
+    assert(pageNumber() === 2);
+    assert(pageCount() === 4);
+    addPage(AFTER);
+    assert(pageNumber() === 3);
+    assert(pageCount() === 5);
 
-    b.removePage();
+    removePage();
     // this behaves differently according to the facing pages mode
-    if(b.doc().documentPreferences.facingPages) {
-      assert(b.pageNumber() === 2);
+    if(doc().documentPreferences.facingPages) {
+      assert(pageNumber() === 2);
     } else {
-      assert(b.pageNumber() === 3);
+      assert(pageNumber() === 3);
     }
-    assert(b.pageCount() === 4);
+    assert(pageCount() === 4);
 
-    b.removePage(1);
-    assert(b.pageNumber() === 1);   // new number 1
-    assert(b.pageCount() === 3);
+    removePage(1);
+    assert(pageNumber() === 1);   // new number 1
+    assert(pageCount() === 3);
 
-    b.removePage(b.pageCount());
-    assert(b.pageNumber() === 2);
-    assert(b.pageCount() === 2);
+    removePage(pageCount());
+    assert(pageNumber() === 2);
+    assert(pageCount() === 2);
 
-    b.addPage();
-    assert(b.pageNumber() === 3);
-    assert(b.pageCount() === 3);
+    addPage();
+    assert(pageNumber() === 3);
+    assert(pageCount() === 3);
+  },
+
+  testLayerSetsLayerByInstance: function() {
+    var myDoc = doc();
+    var addedLayer = myDoc.layers.add({name: "foo"});
+    doc(myDoc);
+
+    var myLayer = layer(addedLayer);
+
+    assert(myLayer instanceof Layer);
+    assert(addedLayer === myLayer);
+  },
+
+  testLayerSetsLayerByName: function() {
+    var myDoc = doc();
+    var addedLayer = myDoc.layers.add({name: "foo"});
+    doc(myDoc);
+
+    var myLayer = layer("foo");
+
+    assert(myLayer instanceof Layer);
+    assert(addedLayer === myLayer);
+  },
+
+  testLayerWithNotExistingLayerNameAddsLayer: function() {
+    var myDoc = doc();
+    doc(myDoc);
+
+    var myLayer = layer("foo");
+
+    assert(myLayer instanceof Layer);
+    assert(myDoc.layers.item("foo") === myLayer);
+  },
+
+  testClear: function() {
+
+    doc();
+    layer("fancy");
+    ellipse(20, 20, 20, 20);
+    assert(doc().allPageItems.length === 1);
+    clear(layer("fancy"));
+    assert(doc().allPageItems.length === 0);
+    ellipse(20, 20, 20, 20);
+    assert(doc().allPageItems.length === 1);
+    clear(page());
+    assert(doc().allPageItems.length === 0);
+    ellipse(20, 20, 20, 20);
+    assert(doc().allPageItems.length === 1);
+    clear(doc());
+    assert(doc().allPageItems.length === 0);
 
   },
 
-  testLayerSetsLayerByInstance: function(b) {
-    var doc = app.documents.add();
-    var addedLayer = doc.layers.add({name: "foo"});
-    b.doc(doc);
+  testRemove: function() {
 
-    var layer = b.layer(addedLayer);
-
-    assert(layer instanceof Layer);
-    assert(addedLayer === layer);
-  },
-
-  testLayerSetsLayerByName: function(b) {
-    var doc = app.documents.add();
-    var addedLayer = doc.layers.add({name: "foo"});
-    b.doc(doc);
-
-    var layer = b.layer("foo");
-
-    assert(layer instanceof Layer);
-    assert(addedLayer === layer);
-  },
-
-  testLayerWithNotExistingLayerNameAddsLayer: function(b) {
-    var doc = app.documents.add();
-    b.doc(doc);
-
-    var layer = b.layer("foo");
-
-    assert(layer instanceof Layer);
-    assert(doc.layers.item("foo") === layer);
-  },
-
-  testClear: function(b) {
-
-    b.doc();
-    b.layer("fancy");
-    b.ellipse(20, 20, 20, 20);
-    assert(b.doc().allPageItems.length === 1);
-    b.clear(b.layer("fancy"));
-    assert(b.doc().allPageItems.length === 0);
-    b.ellipse(20, 20, 20, 20);
-    assert(b.doc().allPageItems.length === 1);
-    b.clear(b.page());
-    assert(b.doc().allPageItems.length === 0);
-    b.ellipse(20, 20, 20, 20);
-    assert(b.doc().allPageItems.length === 1);
-    b.clear(b.doc());
-    assert(b.doc().allPageItems.length === 0);
-
-//    b.clearSwatches();
-
-  },
-
-  testRemove: function(b) {
-
-    b.doc();
-    var obj = b.ellipse(20, 20, 20, 20);
+    doc();
+    var obj = ellipse(20, 20, 20, 20);
     assert(obj.isValid);
-    b.remove(obj);
+    remove(obj);
     assert(!obj.isValid);
 
-    obj = b.color(255, 255, 255);
+    obj = color(255, 255, 255);
     assert(obj.isValid);
-    b.remove(obj);
+    remove(obj);
     assert(!obj.isValid);
 
-    obj = b.layer("fancy");
+    obj = layer("fancy");
     assert(obj.isValid);
-    b.remove(obj);
+    remove(obj);
     assert(!obj.isValid);
 
-    obj = b.addPage();
+    obj = addPage();
     assert(obj.isValid);
-    b.remove(obj);
+    remove(obj);
     assert(!obj.isValid);
 
   },
 
-  testForEachItems: function(b) {
+  testForEachItems: function() {
 
-    b.doc();
-    b.page();
-    b.layer("fancy");
+    doc();
+    page();
+    layer("fancy");
 
-    b.ellipse(20, 20, 20, 20);
-    b.ellipse(40, 70, 20, 20);
+    ellipse(20, 20, 20, 20);
+    ellipse(40, 70, 20, 20);
     var result2, result3;
 
     var result1 = result2 = result3 = 0;
 
     // process all items on a layer
-    b.items(b.layer("fancy"), function(item, n) {
+    items(layer("fancy"), function(item, n) {
       result1++;
     }
     );
 
     // process all items on a page
-    b.items(b.page(), function(item, n) {
+    items(page(), function(item, n) {
       result2++;
     }
     );
 
     // process all items in document
-    b.items(b.doc(), function(item, n) {
+    items(doc(), function(item, n) {
       result3++;
     }
     );
@@ -292,90 +291,89 @@ b.test("EnvironmentTests", {
     assert(result1 === 2 && result2 === 2 && result3 === 2);
   },
 
-  testCollectionGetters: function (b) {
+  testCollectionGetters: function () {
 
-    b.doc();
-    b.page();
-    var obj = b.text("Hello Basil!", 0, 0, 100, 100);
+    doc();
+    page();
+    var obj = text("Hello Basil!", 0, 0, 100, 100);
 
 // process all items on a layer
-    var arr = b.characters(obj);
+    var arr = characters(obj);
     assert(arr instanceof Characters);
     var counter = 0;
-    b.characters(obj, function() {
+    characters(obj, function() {
       counter++;
     });
     assert(counter === 12);
 
-    arr = b.words(obj);
+    arr = words(obj);
     assert(arr instanceof Words);
     counter = 0;
-    b.words(obj, function() {
+    words(obj, function() {
       counter++;
     });
     assert(counter === 2);
 
-    arr = b.lines(obj);
+    arr = lines(obj);
     assert(arr instanceof Lines);
     counter = 0;
-    b.lines(obj, function() {
+    lines(obj, function() {
       counter++;
     });
     assert(counter === 1);
 
-    arr = b.paragraphs(obj);
+    arr = paragraphs(obj);
     assert(arr instanceof Paragraphs);
     counter = 0;
-    b.paragraphs(obj, function() {
+    paragraphs(obj, function() {
       counter++;
     });
     assert(counter === 1);
 
-    arr = b.stories(b.doc());
+    arr = stories(doc());
     assert(arr instanceof Stories);
     counter = 0;
-    b.stories(b.doc(), function() {
+    stories(doc(), function() {
       counter++;
     });
     assert(counter === 1);
 
   },
 
-  testRevertSavedDoc: function (b) {
+  testRevertSavedDoc: function () {
 
-     var doc = app.documents.add();
+     var myDoc = doc();
      var docCount = app.documents.length;
 
      var testFile = File("~/Desktop/basil_testingRevert_temp.indd");
-     doc.save(testFile);
+     myDoc.save(testFile);
 
-     b.ellipse(20, 20, 20, 20);
-     b.revert();
+     ellipse(20, 20, 20, 20);
+     revert();
 
      assert(app.documents.length === docCount);
-     assert(app.activeDocument.name === "basil_testingRevert_temp.indd");
-     assert(app.activeDocument.modified === false);
-     assert(app.activeDocument.pageItems.length === 0);
+     assert(doc().name === "basil_testingRevert_temp.indd");
+     assert(doc().pageItems.length === 0);
 
+     close(SaveOptions.NO);
      // removing the temp document
      testFile.remove();
   },
 
-  testRevertUnsavedDoc: function (b) {
+  testRevertUnsavedDoc: function () {
 
-     var doc = app.documents.add();
+     var myDoc = doc();
      var docCount = app.documents.length;
 
-     b.ellipse(20, 20, 20, 20);
-     b.revert();
+     ellipse(20, 20, 20, 20);
+     revert();
 
      assert(app.documents.length === docCount);
-     assert(b.doc().pageItems.length === 0);
+     assert(doc().pageItems.length === 0);
 
   }
 
 });
 
 // print collected test results
-b.test.result();
-
+basilTest.result();

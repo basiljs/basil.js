@@ -1,41 +1,42 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("ColorTests", {
-  setUpTest: function(b) {
+basilTest("ColorTests", {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testDefaultColors: function(b) {
-    var doc = b.doc();
-    var rect = b.rect(0, 0, 100, 100);
-    var black = b.color("Black");
+  testDefaultColors: function() {
+    var myDoc = doc();
+    var myRect = rect(0, 0, 100, 100);
+    var black = color("Black");
 
     assert(black instanceof Color);
-    assert(rect.fillColor.colorValue.toString() === black.colorValue.toString());
-    assert(rect.strokeColor.colorValue.toString() === black.colorValue.toString());
+    assert(myRect.fillColor.colorValue.toString() === black.colorValue.toString());
+    assert(myRect.strokeColor.colorValue.toString() === black.colorValue.toString());
   },
 
-  testCreateRGBColor: function(b) {
-    var doc = b.doc();
-    b.colorMode(b.RGB);
-    var red = b.color(255, 2, 3);
-    var green = b.color(0, 255, 0, "green");
-    var rgbGrey = b.color(128);
+  testCreateRGBColor: function() {
+    var myDoc = doc();
+    colorMode(RGB);
+    var red = color(255, 2, 3);
+    var green = color(0, 255, 0, "green");
+    var rgbGrey = color(128);
 
     assert(red instanceof Color);
     assert(green instanceof Color);
@@ -45,7 +46,7 @@ b.test("ColorTests", {
     assert(green.space === ColorSpace.RGB);
     assert(rgbGrey.space === ColorSpace.RGB);
 
-    assert(b.color("green") === green);
+    assert(color("green") === green);
 
     assert(red.colorValue.length === 3);
     assert(red.colorValue[0] === 255);
@@ -53,12 +54,12 @@ b.test("ColorTests", {
     assert(red.colorValue[2] === 3);
   },
 
-  testCreateCMYKColor: function(b) {
-    var doc = b.doc();
-    b.colorMode(b.CMYK);
-    var magenta = b.color(1, 100, 3, 4);
-    var yellow = b.color(0, 0, 100, 0, "yellow");
-    var cmykGrey = b.color(80, "light grey");
+  testCreateCMYKColor: function() {
+    var myDoc = doc();
+    colorMode(CMYK);
+    var magenta = color(1, 100, 3, 4);
+    var yellow = color(0, 0, 100, 0, "yellow");
+    var cmykGrey = color(80, "light grey");
 
     assert(magenta instanceof Color);
     assert(yellow instanceof Color);
@@ -68,7 +69,7 @@ b.test("ColorTests", {
     assert(yellow.space === ColorSpace.CMYK);
     assert(cmykGrey.space === ColorSpace.CMYK);
 
-    assert(b.color("yellow") === yellow);
+    assert(color("yellow") === yellow);
 
     assert(magenta.colorValue.length === 4);
     assert(magenta.colorValue[0] === 1);
@@ -77,28 +78,28 @@ b.test("ColorTests", {
     assert(magenta.colorValue[3] === 4);
   },
 
-  testIsColorAddedToSwatches: function(b) {
-    var doc = b.doc();
-    b.colorMode(b.RGB);
-    var swatchCountStart = doc.swatches.length;
-    var red = b.color(56, 2, 3);
-    var green = b.color(0, 255, 0, "a color with a name");
-    var rgbGrey = b.color(50);
-    var swatchCountEnd = doc.swatches.length;
+  testIsColorAddedToSwatches: function() {
+    var myDoc = doc();
+    colorMode(RGB);
+    var swatchCountStart = myDoc.swatches.length;
+    var red = color(56, 2, 3);
+    var green = color(0, 255, 0, "a color with a name");
+    var rgbGrey = color(50);
+    var swatchCountEnd = myDoc.swatches.length;
 
     assert((swatchCountStart + 3) === swatchCountEnd);
   },
 
-  testAddColorToSwatchesAndGetIt: function(b) {
-    var doc = b.doc();
-    b.colorMode(b.RGB);
-    var red = b.color(56, 2, 3, "red");
-    var green = b.color(1, 255, 3, "green");
-    var grey = b.color(50, "grey");
-    var greenSwatch = doc.swatches.item("green");
+  testAddColorToSwatchesAndGetIt: function() {
+    var myDoc = doc();
+    colorMode(RGB);
+    var red = color(56, 2, 3, "red");
+    var green = color(1, 255, 3, "green");
+    var grey = color(50, "grey");
+    var greenSwatch = myDoc.swatches.item("green");
 
-    assert(b.color("green") === green);
-    assert(b.color("green") === greenSwatch);
+    assert(color("green") === green);
+    assert(color("green") === greenSwatch);
     assert(greenSwatch === green);
     assert(greenSwatch.colorValue.length === 3);
     assert(greenSwatch.colorValue[0] === 1);
@@ -106,18 +107,18 @@ b.test("ColorTests", {
     assert(greenSwatch.colorValue[2] === 3);
   },
 
-  testCreateGradient: function(b) {
-    var doc = b.doc();
-    var red = b.color(255, 0, 0);
-    var green = b.color(0, 255, 0);
-    var blue = b.color(0, 0, 255);
+  testCreateGradient: function() {
+    var myDoc = doc();
+    var red = color(255, 0, 0);
+    var green = color(0, 255, 0);
+    var blue = color(0, 0, 255);
 
-    var redBlue = b.gradient(red, blue);
-    var multiStop = b.gradient([red, green, blue, red, green]);
-    var stopPositions = b.gradient([red, green, blue], [5, 80, 97]);
-    var switchedStops = b.gradient([red, blue], [80, 20]);
-    b.gradientMode(b.RADIAL);
-    var radial = b.gradient(red, blue, "radial");
+    var redBlue = gradient(red, blue);
+    var multiStop = gradient([red, green, blue, red, green]);
+    var stopPositions = gradient([red, green, blue], [5, 80, 97]);
+    var switchedStops = gradient([red, blue], [80, 20]);
+    gradientMode(RADIAL);
+    var radial = gradient(red, blue, "radial");
 
     assert(redBlue instanceof Gradient);
     assert(multiStop instanceof Gradient);
@@ -127,7 +128,7 @@ b.test("ColorTests", {
     assert(redBlue.type === GradientType.LINEAR);
     assert(radial.type === GradientType.RADIAL);
 
-    assert(b.gradient("radial") === radial);
+    assert(gradient("radial") === radial);
 
     assert(redBlue.gradientStops.length === 2);
     assert(multiStop.gradientStops.length === 5);
@@ -153,18 +154,18 @@ b.test("ColorTests", {
     assert(switchedStops.gradientStops.lastItem().stopColor === red);
   },
 
-  testIsGradientAddedToSwatches: function(b) {
-    var doc = b.doc();
-    var black = b.color(0);
-    var white = b.color(255);
-    var swatchCountStart = doc.swatches.length;
-    var bw = b.gradient(black, white, "Black to White");
-    var wb = b.gradient(white, black, "White to Black");
-    var bwb = b.gradient([black, white, black]);
-    var swatchCountEnd = doc.swatches.length;
+  testIsGradientAddedToSwatches: function() {
+    var myDoc = doc();
+    var black = color(0);
+    var white = color(255);
+    var swatchCountStart = myDoc.swatches.length;
+    var bw = gradient(black, white, "Black to White");
+    var wb = gradient(white, black, "White to Black");
+    var bwb = gradient([black, white, black]);
+    var swatchCountEnd = myDoc.swatches.length;
 
     assert((swatchCountStart + 3) === swatchCountEnd);
   }
 });
 
-b.test.result();
+basilTest.result();

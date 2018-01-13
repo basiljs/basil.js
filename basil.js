@@ -842,6 +842,10 @@ var init = function() {
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 
+  if($.global.hasOwnProperty("basilTest")) {
+    return;
+  }
+
   exit(); // quit program execution
 };
 
@@ -1106,7 +1110,11 @@ var currentDoc = function(mode) {
     } else {
       doc = app.documents.add(mode !== pub.HIDDEN);
     }
-    setCurrDoc(doc);
+    if(!doc.saved && !doc.modified) {
+      setCurrDoc(doc, true);
+    } else {
+      setCurrDoc(doc);
+    }
   }
   return currDoc;
 };
@@ -1121,11 +1129,10 @@ var closeHiddenDocs = function () {
   }
 };
 
-var setCurrDoc = function(doc) {
+var setCurrDoc = function(doc, skipStyles) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
-
   // save initial doc settings for later resetting
   currDocSettings.rulerOrigin = currDoc.viewPreferences.rulerOrigin;
   currDocSettings.hUnits = currDoc.viewPreferences.horizontalMeasurementUnits;
@@ -1141,11 +1148,15 @@ var setCurrDoc = function(doc) {
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
-  currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
-  currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
-  currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
-  currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
-  currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+  if(!skipStyles) {
+    // in a fresh, unsaved document, those styles should not be set
+    // in order not to modify the doc and be able to enter mode(HIDDEN) without saving
+    currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
+    currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
+    currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
+    currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
+    currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+  }
 
   currAlign = currDoc.textDefaults.justification;
   currFont = currDoc.textDefaults.appliedFont;
@@ -1153,7 +1164,6 @@ var setCurrDoc = function(doc) {
   currKerning = 0;
   currLeading = currDoc.textDefaults.leading;
   currTracking = currDoc.textDefaults.tracking;
-
   updatePublicPageSizeVars();
 };
 
@@ -1776,8 +1786,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 
   var doc = currentDoc();
 
-  if(typeof widthOrPageSize === "string") {
-
+  if(isString(widthOrPageSize)) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
@@ -1854,8 +1863,9 @@ pub.revert = function() {
   if(currDoc.saved && currDoc.modified) {
     var currFile = currDoc.fullName;
     currDoc.close(SaveOptions.NO);
+    currDoc = null;
     app.open(File(currFile));
-    resetCurrDoc();
+    currentDoc();
   } else if(!currDoc.saved) {
     currDoc.close(SaveOptions.NO);
     currDoc = null;
@@ -2478,8 +2488,8 @@ pub.units = function (units) {
     error("units(), invalid unit. Use: PT, MM, CM, IN or PX.");
   }
 
-  currDoc.viewPreferences.horizontalMeasurementUnits = unitType;
-  currDoc.viewPreferences.verticalMeasurementUnits = unitType;
+  currentDoc().viewPreferences.horizontalMeasurementUnits = unitType;
+  currentDoc().viewPreferences.verticalMeasurementUnits = unitType;
   currUnits = units;
 
   updatePublicPageSizeVars();
@@ -3455,7 +3465,7 @@ pub.unbinary = function(binaryString) {
 
 
 var decimalToHex = function(d, padding) {
-  padding = padding === undef || padding === null ? padding = 8 : padding;
+  padding = padding === undefined || padding === null ? padding = 8 : padding;
   if (d < 0) d = 4294967295 + d + 1;
   var hex = Number(d).toString(16).toUpperCase();
   while (hex.length < padding) hex = "0" + hex;
@@ -3603,7 +3613,7 @@ pub.splitTokens = function(str, tokens) {
     pos = str.search(tokens);
   }
   if (str.length > 0) ary[index] = str;
-  if (ary.length === 0) ary = undef;
+  if (ary.length === 0) ary = undefined;
   return ary;
 };
 
@@ -3627,7 +3637,7 @@ pub.matchAll = function(aString, aRegExp) {
 function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
   var sign = value < 0 ? minus : plus;
   var autoDetectDecimals = rightDigits === 0;
-  var rightDigitsOfDefault = rightDigits === undef || rightDigits < 0 ? 0 : rightDigits;
+  var rightDigitsOfDefault = rightDigits === undefined || rightDigits < 0 ? 0 : rightDigits;
   var absValue = Math.abs(value);
   if (autoDetectDecimals) {
     rightDigitsOfDefault = 1;
@@ -3650,7 +3660,7 @@ function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
     buffer = "" + number % 10 + buffer;
     number = Math.floor(number / 10);
   }
-  if (group !== undef) {
+  if (group !== undefined) {
     var i = buffer.length - 3 - rightDigitsOfDefault;
     while (i > 0) {
       buffer = buffer.substring(0, i) + group + buffer.substring(i);
@@ -4300,7 +4310,7 @@ pub.download = function(url, file) {
     var libFolder = Folder(currentBasilFolderPath + "/lib");
     // now create the script file
     var downloadScript = new File(libFolder.fsName + "/download.sh");
-    downloadScript.open("w", undef, undef);
+    downloadScript.open("w", undefined, undefined);
     // set encoding and linefeeds
     downloadScript.lineFeed = "Unix";
     downloadScript.encoding = "UTF-8";
@@ -5635,7 +5645,7 @@ pub.text = function(txt, x, y, w, h) {
  */
 pub.typo = function(item, property, value) {
   var result = [],
-    actsAsGetter = typeof property === "string" && (value === undef || value === null),
+    actsAsGetter = typeof property === "string" && (value === undefined || value === null),
     getOrSetProperties = function(textItem) {
       if (actsAsGetter) {
         result.push(textItem[property]);
@@ -7196,7 +7206,7 @@ pub.itemX = function(pItem, x) {
 pub.itemY = function(pItem, y) {
   var off = 0;
   if(currRectMode !== pub.CORNER) pub.warning("itemY(), please note that only CORNER positioning is fully supported. Use with care.");
-  if(pItem !== undefine && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];

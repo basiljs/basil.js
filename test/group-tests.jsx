@@ -1,38 +1,39 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("GroupTests", {
-  setUpTest: function(b) {
+basilTest("GroupTests", {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testCreateGroup: function(b) {
+  testCreateGroup: function() {
 
-    b.doc();
+    doc();
 
     // create array of objects
     var arr = [];
 
-    arr.push(b.ellipse(20, 20, 20, 20));
-    arr.push(b.rect(60, 20, 20, 20));
-    arr.push(b.rect(100, 20, 20, 20));
+    arr.push(ellipse(20, 20, 20, 20));
+    arr.push(rect(60, 20, 20, 20));
+    arr.push(rect(100, 20, 20, 20));
 
     // group them and modify group
-    var circles = b.group(arr, "rects");
+    var circles = group(arr, "rects");
 
     assert(circles instanceof Group);
     assert(circles.pageItems.length === 3);
@@ -40,7 +41,7 @@ b.test("GroupTests", {
     // get the bounds of our Group
 
     // ungroup our selected items
-    var items = b.ungroup("rects");
+    var items = ungroup("rects");
     assert(items.length === 3);
 
   }
@@ -48,4 +49,4 @@ b.test("GroupTests", {
 });
 
 // print collected test results
-b.test.result();
+basilTest.result();

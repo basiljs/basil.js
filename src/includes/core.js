@@ -27,6 +27,10 @@ var init = function() {
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 
+  if($.global.hasOwnProperty("basilTest")) {
+    return;
+  }
+
   exit(); // quit program execution
 };
 
@@ -291,7 +295,11 @@ var currentDoc = function(mode) {
     } else {
       doc = app.documents.add(mode !== pub.HIDDEN);
     }
-    setCurrDoc(doc);
+    if(!doc.saved && !doc.modified) {
+      setCurrDoc(doc, true);
+    } else {
+      setCurrDoc(doc);
+    }
   }
   return currDoc;
 };
@@ -306,11 +314,10 @@ var closeHiddenDocs = function () {
   }
 };
 
-var setCurrDoc = function(doc) {
+var setCurrDoc = function(doc, skipStyles) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
-
   // save initial doc settings for later resetting
   currDocSettings.rulerOrigin = currDoc.viewPreferences.rulerOrigin;
   currDocSettings.hUnits = currDoc.viewPreferences.horizontalMeasurementUnits;
@@ -326,11 +333,15 @@ var setCurrDoc = function(doc) {
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
-  currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
-  currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
-  currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
-  currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
-  currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+  if(!skipStyles) {
+    // in a fresh, unsaved document, those styles should not be set
+    // in order not to modify the doc and be able to enter mode(HIDDEN) without saving
+    currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
+    currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
+    currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
+    currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
+    currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+  }
 
   currAlign = currDoc.textDefaults.justification;
   currFont = currDoc.textDefaults.appliedFont;
@@ -338,7 +349,6 @@ var setCurrDoc = function(doc) {
   currKerning = 0;
   currLeading = currDoc.textDefaults.leading;
   currTracking = currDoc.textDefaults.tracking;
-
   updatePublicPageSizeVars();
 };
 
