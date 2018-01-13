@@ -24,7 +24,7 @@ var textCollection = function(collection, legalContainers, container, cb) {
   checkNull(container);
 
   if(!(container.hasOwnProperty("contents") || container instanceof Document || container instanceof Page)) {
-    error("b." + collection + "(), wrong object type. Use: " + legalContainers);
+    error(collection + "(), wrong object type. Use: " + legalContainers);
   }
 
   if(cb instanceof Function) {
@@ -66,9 +66,9 @@ pub.delay = function (milliseconds) {
  * @param  {Document} doc The document instance to iterate the stories in
  * @param  {Function} [cb] The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount.
  * @example
- * b.stories(b.doc(), function(story, loopCount){
- *   b.println("Number of words in each Story:");
- *   b.println(story.words.length);
+ * stories(doc(), function(story, loopCount){
+ *   println("Number of words in each Story:");
+ *   println(story.words.length);
  * });
  * @return {Stories} A collection of Story objects.
  */
@@ -81,7 +81,7 @@ pub.stories = function(doc, cb) {
   } else if (cb instanceof Function) {
     return forEach(doc.stories, cb);
   }
-  error("b.stories(), incorrect call. Wrong parameters!");
+  error("stories(), incorrect call. Wrong parameters!");
   return null;
 };
 
@@ -177,7 +177,7 @@ pub.items = function(container, cb) {
       return forEach(container.allPageItems, cb);
     }
   }
-  error("b.items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
+  error("items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
   return null;
 };
 
@@ -204,7 +204,7 @@ pub.clear = function(container) {
     container.remove();
 
   } else {
-    error("b.clear(), not a valid container! Use: Document, Page, Layer or Group.");
+    error("clear(), not a valid container! Use: Document, Page, Layer or Group.");
   }
 };
 
@@ -220,6 +220,6 @@ pub.remove = function(obj) {
   if(obj.hasOwnProperty("remove")) {
     obj.remove();
   } else {
-    throw new Error("Provided object cannot be removed in b.remove().");
+    error("remove(), provided object cannot be removed.");
   }
 };

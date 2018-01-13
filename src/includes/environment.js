@@ -25,7 +25,7 @@ pub.doc = function(doc) {
  * Sets the size of the current document, if arguments are given.
  * If only one argument is given, both the width and the height are set to this value.
  * Alternatively, a string can be given as the first argument to apply an existing page size preset ("A4", "Letter" etc.).
- * In this case, either b.PORTRAIT or b.LANDSCAPE can be used as a second argument to determine the orientation of the page.
+ * In this case, either PORTRAIT or LANDSCAPE can be used as a second argument to determine the orientation of the page.
  * If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat Document
@@ -35,21 +35,21 @@ pub.doc = function(doc) {
  * @return {Object} Object containing the current <code>width</code> and <code>height</code> of the document.
  *
  * @example <caption>Sets the document size to 70 x 100 units</caption>
- * b.size(70, 100);
+ * size(70, 100);
  *
  * @example <caption>Sets the document size to 70 x 70</caption>
- * b.size(70);
+ * size(70);
  *
  * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
- * b.size("A4");
+ * size("A4");
  *
  * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
- * b.size("A4", b.LANDSCAPE);
+ * size("A4", LANDSCAPE);
  */
 pub.size = function(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
-    warning("b.size()", "You have no open document.");
+    warning("size()", "You have no open document.");
     return;
   }
   if (arguments.length === 0) {
@@ -65,7 +65,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+      error("size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
     if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
@@ -110,7 +110,7 @@ pub.close = function(saveOptions, file) {
       saveOptions = SaveOptions.ASK;
     } else {
       if(!isEnum(SaveOptions, saveOptions)) {
-        error("b.close(), wrong saveOptions argument. Use True, False, InDesign SaveOptions constant or leave empty.");
+        error("close(), wrong saveOptions argument. Use True, False, InDesign SaveOptions constant or leave empty.");
       }
     }
 
@@ -151,8 +151,8 @@ pub.revert = function() {
 };
 
 /**
- * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
- * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+ * Use this to set the dimensions of the canvas. Choose between PAGE (default), MARGIN, BLEED resp. FACING_PAGES, FACING_MARGINS and FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
+ * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use translate(), rotate() and scale();
  * @cat Document
  * @subcat Page
  * @method canvasMode
@@ -164,13 +164,13 @@ pub.canvasMode = function (m) {
     return currCanvasMode;
   } else if (typeof m === "string") {
     if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
-      error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+      error("canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
     updatePublicPageSizeVars();
     return currCanvasMode;
   } else {
-    error("b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
+    error("canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
 };
 
@@ -189,12 +189,12 @@ pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currentDoc().pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
-    error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
+    error("pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
   }else if (typeof h === "number" && typeof v === "number") {
     currentDoc().pasteboardPreferences.pasteboardMargins = [h, v];
     return currentDoc().pasteboardPreferences.pasteboardMargins;
   }else {
-    error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
+    error("pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
   }
 };
 
@@ -222,11 +222,11 @@ pub.page = function(page) {
     try {
       tempPage.id;
     } catch (e) {
-      error("b.page(), " + page + " does not exist.");
+      error("page(), " + page + " does not exist.");
     }
     currPage = tempPage;
   } else if (typeof page !== "undefined") {
-    error("b.page(), bad type for b.page().");
+    error("page(), bad type for page().");
   }
   updatePublicPageSizeVars();
   if (currentDoc().windows.length) {
@@ -236,7 +236,7 @@ pub.page = function(page) {
 };
 
 /**
- * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
+ * Adds a new page to the document. Set the optional location parameter to either AT_END (default), AT_BEGINNING, AFTER or BEFORE. AFTER and BEFORE will use the current page as insertion point.
  *
  * @cat Document
  * @subcat Page
@@ -282,7 +282,7 @@ pub.addPage = function(location) {
     return nP;
 
   } catch (e) {
-    error("b.addPage(), invalid location argument passed to addPage()");
+    error("addPage(), invalid location argument passed to addPage()");
   }
 };
 
@@ -303,7 +303,7 @@ pub.removePage = function (page) {
     currPage = null; // reset!
     currentPage();
   } else {
-    error("b.removePage(), invalid call. Wrong parameter!");
+    error("removePage(), invalid call. Wrong parameter!");
   }
 };
 
@@ -319,7 +319,7 @@ pub.removePage = function (page) {
 pub.pageNumber = function (pageObj) {
   checkNull(pageObj);
   if (typeof pageObj === "number") {
-    error("b.pageNumber(), cannot be called with a Number argument.");
+    error("pageNumber(), cannot be called with a Number argument.");
   }
   if (pageObj instanceof Page) {
     return parseInt(pageObj.name); // current number of given page
@@ -372,7 +372,7 @@ pub.pageCount = function(pageCount) {
     if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
     } else {
-      error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
+      error("pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
     }
   }
   return currentDoc().pages.count();
@@ -392,14 +392,14 @@ pub.storyCount = function() {
 };
 
 /**
- * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+ * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
  *
  * @cat Document
  * @subcat Story
  * @method addToStory
  * @param {Story} story The story.
- * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
- * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+ * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: AT_BEGINNING and AT_END.
+ * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
  */
 pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
@@ -451,7 +451,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
         addToStoryCache.assets.firstItem().remove();
       }
     } else {
-      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.");
+      error("addToStory(), wrong arguments! Please use: addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.");
     }
   };
 };
@@ -480,20 +480,20 @@ pub.layer = function(layer) {
       currentDoc().activeLayer = currLayer;
     }
   } else if (arguments.length > 0) {
-    error("b.layer(), wrong arguments. Use layer object or string instead.");
+    error("layer(), wrong arguments. Use layer object or string instead.");
   }
   return currentLayer();
 };
 
 
 /**
- * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>b.FORWARD</code> or <code>b.BACKWARD</code> the object is sent forward or back one step. The constants <code>b.FRONT</code> or <code>b.BACK</code> send the object to the very front or very back. Using <code>b.FRONT</code> or <code>b.BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
+ * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>FORWARD</code> or <code>BACKWARD</code> the object is sent forward or back one step. The constants <code>FRONT</code> or <code>BACK</code> send the object to the very front or very back. Using <code>FRONT</code> or <code>BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
  *
  * @cat Document
  * @subcat Page
  * @method arrange
  * @param {PageItem|Layer} pItemOrLayer The page item or layer to be moved to a new position.
- * @param {String} positionOrDirection The position or direction to move the page item or layer. Can be <code>b.FRONT</code>, <code>b.BACK</code>, <code>b.FORWARD</code> or <code>b.BACKWARD</code>.
+ * @param {String} positionOrDirection The position or direction to move the page item or layer. Can be <code>FRONT</code>, <code>BACK</code>, <code>FORWARD</code> or <code>BACKWARD</code>.
  * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
  * @return {PageItem|Layer} The newly arranged page item or layer.
  */
@@ -510,7 +510,7 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
     } else if (positionOrDirection === pub.FRONT) {
       pItemOrLayer.bringToFront(reference);
     } else {
-      error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
+      error("arrange(), not a valid position or direction. Please use FRONT, BACK, FORWARD or BACKWARD.");
     }
   } else if (pItemOrLayer instanceof Layer) {
     if(positionOrDirection === pub.BACKWARD) {
@@ -532,10 +532,10 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
         pItemOrLayer.move(LocationOptions.BEFORE, reference);
       }
     } else {
-      error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
+      error("arrange(), not a valid position or direction. Please use FRONT, BACK, FORWARD or BACKWARD.");
     }
   } else {
-    error("b.arrange(), invalid first parameter. Use page item or layer.");
+    error("arrange(), invalid first parameter. Use page item or layer.");
   }
 
   return pItemOrLayer;
@@ -559,7 +559,7 @@ pub.group = function (pItems, name) {
   var group;
   if(pItems instanceof Array) {
     if(pItems.length < 2) {
-      error("b.group(), the array passed to b.group() must at least contain two page items.");
+      error("group(), the array passed to group() must at least contain two page items.");
     }
     // creates a group from Page Items
     group = currentDoc().groups.add(pItems);
@@ -570,10 +570,10 @@ pub.group = function (pItems, name) {
     // get the Group of the given name
     group = currentDoc().groups.item(pItems);
     if (!group.isValid) {
-      error("b.group(), a group with the provided name doesn't exist.");
+      error("group(), a group with the provided name doesn't exist.");
     }
   } else {
-    error("b.group(), not a valid argument. Use an array of page items to group or a name of an existing group.");
+    error("group(), not a valid argument. Use an array of page items to group or a name of an existing group.");
   }
 
   return group;
@@ -581,8 +581,7 @@ pub.group = function (pItems, name) {
 
 
 /**
- *  Ungroups an existing group. Returns an array of the items that were within the group before
- *  b.ungroup() was called.
+ *  Ungroups an existing group. Returns an array of the items that were within the group before ungroup() was called.
  *
  *  @cat Document
  *  @subCat Page
@@ -600,12 +599,12 @@ pub.ungroup = function(group) {
     // get the Group of the given name
     group = currentDoc().groups.item(group);
     if (!group.isValid) {
-      error("b.ungroup(), a group with the provided name doesn't exist.");
+      error("ungroup(), a group with the provided name doesn't exist.");
     }
     ungroupedItems = pub.items(group);
     group.ungroup();
   } else {
-    error("b.ungroup(), not a valid group. Please select a valid group.");
+    error("ungroup(), not a valid group. Please select a valid group.");
   }
   return ungroupedItems;
 };
@@ -636,14 +635,14 @@ pub.labels = function(label, cb) {
     return forEach(result, cb);
   }
   if(result.length === 0) {
-    error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    error("labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
   return result;
 };
 
 
 /**
- * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.
+ * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of <code>labels()</code>, when you know you just have one thing with that label and don't want to deal with a single-element array.
  *
  * @cat Document
  * @subcat Multi-Getters
@@ -660,7 +659,7 @@ pub.label = function(label) {
       return pageItem;
     }
   }
-  error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
 
@@ -674,7 +673,7 @@ pub.label = function(label) {
  */
 pub.selection = function() {
   if(app.selection.length === 0) {
-    error("b.selection(), selection is empty. Please select something.");
+    error("selection(), selection is empty. Please select something.");
   }
   return app.selection[0];
 };
@@ -690,7 +689,7 @@ pub.selection = function() {
  */
 pub.selections = function(cb) {
   if(app.selection.length === 0) {
-    error("b.selections(), selection is empty. Please select something.");
+    error("selections(), selection is empty. Please select something.");
   }
   if (arguments.length === 1 && cb instanceof Function) {
     return forEach(app.selection, cb);
@@ -718,7 +717,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   }
   return result;
 };
@@ -760,7 +759,7 @@ pub.units = function (units) {
     units = pub.PT;
     unitType = MeasurementUnits.points;
   } else {
-    error("b.unit(), invalid unit. Use: b.PT, b.MM, b.CM, b.IN or b.PX.");
+    error("units(), invalid unit. Use: PT, MM, CM, IN or PX.");
   }
 
   currDoc.viewPreferences.horizontalMeasurementUnits = unitType;
@@ -770,7 +769,7 @@ pub.units = function (units) {
   updatePublicPageSizeVars();
 
   if (unitsCalledCounter === 1) {
-    warning("Please note that b.units() will reset the current transformation matrix.");
+    warning("Please note that units() will reset the current transformation matrix.");
   }
   unitsCalledCounter++;
   return currUnits;
@@ -902,14 +901,14 @@ pub.bleeds = function(top, right, bottom, left) {
  * @param  {Array} [settings.propList] Array of properties to show. Default: <code>[]</code> (no propList)
  *
  * @example <caption>Inspecting a string</caption>
- * b.inspect("foo");
+ * inspect("foo");
  *
  * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
- * b.inspect(b.page(), {showMethods: true, maxLevel: 2})
+ * inspect(page(), {showMethods: true, maxLevel: 2})
  *
  * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
- * var myEllipse = b.ellipse(0, 0, 10, 10);
- * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
+ * var myEllipse = ellipse(0, 0, 10, 10);
+ * inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
 pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
@@ -1084,16 +1083,16 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
  * @return {File} File at the given path.
  *
  * @example <caption>Get an image file from the desktop and place it in the document</caption>
- * var myImage = b.file("~/Desktop/myImage.jpg");
- * b.image(myImage, 0, 0);
+ * var myImage = file("~/Desktop/myImage.jpg");
+ * image(myImage, 0, 0);
  *
  * @example <caption>Create a file and export it to the desktop</caption>
- * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
- * b.savePDF(myExportFile);
+ * var myExportFile = file("~/Desktop/myNewExportFile.pdf");
+ * savePDF(myExportFile);
  */
 pub.file = function(filePath) {
   if(! isString(filePath)) {
-    error("b.file(), wrong argument. Use a string that describes a file path.");
+    error("file(), wrong argument. Use a string that describes a file path.");
   }
 
   // check if user is referring to a file in the data directory
@@ -1122,22 +1121,22 @@ pub.file = function(filePath) {
  * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
  *
  * @example <caption>Get a folder from the desktop and load its files</caption>
- * var myImageFolder = b.folder("~/Desktop/myImages/");
- * var myImageFiles = b.files(myImageFolder);
+ * var myImageFolder = folder("~/Desktop/myImages/");
+ * var myImageFiles = files(myImageFolder);
  *
  * @example <caption>Get the data folder, if the document is already saved</caption>
- * var myDataFolder = b.folder();
+ * var myDataFolder = folder();
  */
 pub.folder = function(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
       return new Folder(pub.projectFolder() + "/data/");
     } else {
-      error("b.folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
+      error("folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
     }
   }
   if(! isString(folderPath)) {
-    error("b.folder(), wrong argument. Use a string that describes the path of a folder.");
+    error("folder(), wrong argument. Use a string that describes the path of a folder.");
   }
 
   // check if user is referring to a folder in the data directory
@@ -1170,12 +1169,12 @@ pub.folder = function(folderPath) {
  * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
  *
  * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
- * var myImageFolder = b.folder("~/Desktop/myImages/");
- * var myImageFiles = b.files(myImageFolder, {filter: ["jpeg", "jpg"]});
+ * var myImageFolder = folder("~/Desktop/myImages/");
+ * var myImageFiles = files(myImageFolder, {filter: ["jpeg", "jpg"]});
  *
  * @example <caption>If the document is saved, load all files from its data folder, including from its subfolders</caption>
- * var myDataFolder = b.folder();
- * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
+ * var myDataFolder = folder();
+ * var allMyDataFiles = files(myDataFolder, {recursive: true});
  */
 pub.files = function(folder, settings, collectedFiles) {
   var topLevel;
@@ -1183,15 +1182,15 @@ pub.files = function(folder, settings, collectedFiles) {
     if(folder === undefined && currentDoc().saved) {
       folder = pub.folder();
     } else if (folder === undefined) {
-      error("b.files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
+      error("files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
     }
     if(isString(folder)) {
       folder = pub.folder(folder);
     }
     if(!(folder instanceof Folder)) {
-      error("b.files(), wrong first argument. Use folder or a string to describe a folder path.");
+      error("files(), wrong first argument. Use folder or a string to describe a folder path.");
     } else if (!folder.exists) {
-      error("b.files(), the folder \"" + folder + "\" does not exist.");
+      error("files(), the folder \"" + folder + "\" does not exist.");
     }
 
     topLevel = true;
@@ -1248,10 +1247,10 @@ pub.files = function(folder, settings, collectedFiles) {
  * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
- * b.selectFile({prompt: "Please select a file."});
+ * selectFile({prompt: "Please select a file."});
  *
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
- * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ * selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFile = function(settings) {
   return createSelectionDialog(settings);
@@ -1269,10 +1268,10 @@ pub.selectFile = function(settings) {
  * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
- * b.selectFiles({prompt: "Please select your files."});
+ * selectFiles({prompt: "Please select your files."});
  *
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
- * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ * selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFiles = function(settings) {
   if(!settings) {
@@ -1294,10 +1293,10 @@ pub.selectFiles = function(settings) {
  * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
  *
  * @example <caption>Open folder selection dialog with a prompt text</caption>
- * b.selectFolder({prompt: "Please select a folder."});
+ * selectFolder({prompt: "Please select a folder."});
  *
  * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
- * b.selectFolder({folder: "~/Desktop/"});
+ * selectFolder({folder: "~/Desktop/"});
  */
 pub.selectFolder = function(settings) {
   if(!settings) {

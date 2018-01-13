@@ -34,7 +34,7 @@
   from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
 
-  The Lorem ipsum string of b.LOREM is taken from https://indieweb.org/Lorem_ipsum and
+  The Lorem ipsum string of LOREM is taken from https://indieweb.org/Lorem_ipsum and
   is available under a CC0 public domain dedication.
 
   Supported Adobe InDesign versions: CS 5+
@@ -93,7 +93,7 @@ pub.VERSION = "1.1.0";
 // ----------------------------------------
 
 /**
- * Used with b.units() to set the coordinate system to points.
+ * Used with units() to set the coordinate system to points.
  * @property PT {String}
  * @cat Document
  * @subcat Units
@@ -101,7 +101,7 @@ pub.VERSION = "1.1.0";
 pub.PT = "pt";
 
 /**
- * Used with b.units() to set the coordinate system to pixels.
+ * Used with units() to set the coordinate system to pixels.
  * @property PX {String}
  * @cat Document
  * @subcat Units
@@ -109,7 +109,7 @@ pub.PT = "pt";
 pub.PX = "px";
 
 /**
- * Used with b.units() to set the coordinate system to centimeters.
+ * Used with units() to set the coordinate system to centimeters.
  * @property CM {String}
  * @cat Document
  * @subcat Units
@@ -118,7 +118,7 @@ pub.PX = "px";
 pub.CM = "cm";
 
 /**
- * Used with b.units() to set the coordinate system to millimeters.
+ * Used with units() to set the coordinate system to millimeters.
  * @property MM {String}
  * @cat Document
  * @subcat Units
@@ -126,7 +126,7 @@ pub.CM = "cm";
 pub.MM = "mm";
 
 /**
- * Used with b.units() to set the coordinate system to inches.
+ * Used with units() to set the coordinate system to inches.
  * @property IN {String}
  * @cat Document
  * @subcat Units
@@ -134,28 +134,28 @@ pub.MM = "mm";
 pub.IN = "inch";
 
 /**
- * Used with b.colorMode() to set the color space.
+ * Used with colorMode() to set the color space.
  * @property RGB {String}
  * @cat Color
  */
 pub.RGB = "rgb";
 
 /**
- * Used with b.colorMode() to set the color space.
+ * Used with colorMode() to set the color space.
  * @property CMYK {String}
  * @cat Color
  */
 pub.CMYK = "cmyk";
 
 /**
- * Used with b.gradientMode() to set the gradient mode.
+ * Used with gradientMode() to set the gradient mode.
  * @property LINEAR {String}
  * @cat Color
  */
 pub.LINEAR = "linear";
 
 /**
- * Used with b.gradientMode() to set the gradient mode.
+ * Used with gradientMode() to set the gradient mode.
  * @property RADIAL {String}
  * @cat Color
  */
@@ -283,7 +283,7 @@ pub.EPSILON = 10e-12;
 pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
 
 /**
- * Used with b.canvasMode() to set the canvas to the full current page.
+ * Used with canvasMode() to set the canvas to the full current page.
  * @property PAGE {String}
  * @cat Document
  * @subcat Page
@@ -291,7 +291,7 @@ pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
 pub.PAGE = "page";
 
 /**
- * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
+ * Used with canvasMode() to set the canvas to the full current page minus the margins.
  * @property MARGIN {String}
  * @cat Document
  * @subcat Page
@@ -299,7 +299,7 @@ pub.PAGE = "page";
 pub.MARGIN = "margin";
 
 /**
- * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
+ * Used with canvasMode() to set the canvas to the full current page plus the bleed.
  * @property BLEED {String}
  * @cat Document
  * @subcat Page
@@ -307,7 +307,7 @@ pub.MARGIN = "margin";
 pub.BLEED = "bleed";
 
 /**
- * Used with b.canvasMode() to set the canvas to use the current facing pages.
+ * Used with canvasMode() to set the canvas to use the current facing pages.
  * @property FACING_PAGES {String}
  * @cat Document
  * @subcat Page
@@ -315,7 +315,7 @@ pub.BLEED = "bleed";
 pub.FACING_PAGES = "facing_pages";
 
 /**
- * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
+ * Used with canvasMode() to set the canvas to use the current facing pages plus bleeds.
  * @property FACING_BLEEDS {String}
  * @cat Document
  * @subcat Page
@@ -323,7 +323,7 @@ pub.FACING_PAGES = "facing_pages";
 pub.FACING_BLEEDS = "facing_bleeds";
 
 /**
- * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
+ * Used with canvasMode() to set the canvas to use the current facing pages minus margins.
  * @property FACING_MARGINS {String}
  * @cat Document
  * @subcat Page
@@ -331,7 +331,7 @@ pub.FACING_BLEEDS = "facing_bleeds";
 pub.FACING_MARGINS = "facing_margins";
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property AT_BEGINNING {String}
  * @cat Document
  * @subcat Page
@@ -339,7 +339,7 @@ pub.FACING_MARGINS = "facing_margins";
 pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property AT_END {String}
  * @cat Document
  * @subcat Page
@@ -347,7 +347,7 @@ pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
 pub.AT_END = LocationOptions.AT_END;
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property BEFORE {String}
  * @cat Document
  * @subcat Page
@@ -355,7 +355,7 @@ pub.AT_END = LocationOptions.AT_END;
 pub.BEFORE = LocationOptions.BEFORE;
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property AFTER {String}
  * @cat Document
  * @subcat Page
@@ -363,7 +363,7 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
- * Used with b.arrange() to bring a page item to the front or to bring it in front of a given reference object.
+ * Used with arrange() to bring a page item to the front or to bring it in front of a given reference object.
  * @property FRONT {String}
  * @cat Document
  * @subcat Page
@@ -371,7 +371,7 @@ pub.AFTER = LocationOptions.AFTER;
 pub.FRONT = "front";
 
 /**
- * Used with b.arrange() to send a page item to the back or to send it behind a given reference object.
+ * Used with arrange() to send a page item to the back or to send it behind a given reference object.
  * @property BACK {String}
  * @cat Document
  * @subcat Page
@@ -379,7 +379,7 @@ pub.FRONT = "front";
 pub.BACK = "back";
 
 /**
- * Used with b.arrange() to bring a page item one level forward in its layer.
+ * Used with arrange() to bring a page item one level forward in its layer.
  * @property FORWARD {String}
  * @cat Document
  * @subcat Page
@@ -387,7 +387,7 @@ pub.BACK = "back";
 pub.FORWARD = "forward";
 
 /**
- * Used with b.arrange() to send a page item one level backward in its layer.
+ * Used with arrange() to send a page item one level backward in its layer.
  * @property BACKWARD {String}
  * @cat Document
  * @subcat Page
@@ -395,7 +395,7 @@ pub.FORWARD = "forward";
 pub.BACKWARD = "backward";
 
 /**
- * Used with b.size() to set the orientation of a given page size to portrait.
+ * Used with size() to set the orientation of a given page size to portrait.
  * @property PORTRAIT {String}
  * @cat Document
  * @subcat Page
@@ -403,7 +403,7 @@ pub.BACKWARD = "backward";
 pub.PORTRAIT = PageOrientation.PORTRAIT;
 
 /**
- * Used with b.size() to set the orientation of a given page size to landscape.
+ * Used with size() to set the orientation of a given page size to landscape.
  * @property LANDSCAPE {String}
  * @cat Document
  * @subcat Page
@@ -437,7 +437,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 pub.SILENT = "silent";
 
 /**
- * Used with <code>mode()</code> to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to <code>VISIBLE</code>. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * Used with <code>mode()</code> to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to <code>VISIBLE</code>. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
  * @property HIDDEN {String}
  * @cat Environment
  * @subcat modes
@@ -585,7 +585,7 @@ if (!Array.prototype.map) {
 }
 
 /**
-* Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
+* Used to run a function on all elements of an array. Please note the existance of the convenience methods <code>stories()</code>, <code>paragraphs()</code>, <code>lines()</code>, <code>words()</code> and <code>characters()</code> that are used to iterate through all instances of the given type in the given document.
 *
 * @cat Data
 * @subcat Array
@@ -922,15 +922,13 @@ var runScript = function() {
 }
 
 var prepareLoop = function() {
-  // TODO rework this to use the new pub.file() and pub.folder() functions
-
-  // before running the loop we need to check if
-  // the stop script exists
+  // before running the loop we need to check if the stop script exists
   // the script looks for the lib folder next to itself
   var currentBasilFolderPath = File($.fileName).parent.fsName;
   var scriptPath = currentBasilFolderPath + "/lib/stop.jsx";
 
-  if(File(scriptPath).exists !== true) {
+  var stopScriptFile = pub.file(scriptPath);
+  if(stopScriptFile.exists !== true) {
     // the script is not there, let's create it
     var scriptContent = [
       "#targetengine \"loop\"",
@@ -940,7 +938,6 @@ var prepareLoop = function() {
       "  cleanUp = null;",
       "}"
     ];
-    var stopScriptFile = pub.file(scriptPath);
     pub.saveStrings(stopScriptFile, scriptContent);
   }
   currFrameRate = 25;
@@ -989,7 +986,7 @@ pub.noLoop = function(printFinished) {
 /**
  * Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, <code>mode()</code> should be placed in the beginning of the script. In basil there are three different performance modes:
  * <code>VISIBLE</code> is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
- * <code>HIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * <code>HIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
  * <code>SILENT</code> processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to <code>VISIBLE</code>.
  *
  * @cat Environment
@@ -1337,7 +1334,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: PAGE, MARGIN, BLEED, FACING_PAGES, FACING_MARGINS, FACING_BLEEDS");
       break;
   }
 
@@ -1517,7 +1514,7 @@ var textCollection = function(collection, legalContainers, container, cb) {
   checkNull(container);
 
   if(!(container.hasOwnProperty("contents") || container instanceof Document || container instanceof Page)) {
-    error("b." + collection + "(), wrong object type. Use: " + legalContainers);
+    error(collection + "(), wrong object type. Use: " + legalContainers);
   }
 
   if(cb instanceof Function) {
@@ -1559,9 +1556,9 @@ pub.delay = function (milliseconds) {
  * @param  {Document} doc The document instance to iterate the stories in
  * @param  {Function} [cb] The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount.
  * @example
- * b.stories(b.doc(), function(story, loopCount){
- *   b.println("Number of words in each Story:");
- *   b.println(story.words.length);
+ * stories(doc(), function(story, loopCount){
+ *   println("Number of words in each Story:");
+ *   println(story.words.length);
  * });
  * @return {Stories} A collection of Story objects.
  */
@@ -1574,7 +1571,7 @@ pub.stories = function(doc, cb) {
   } else if (cb instanceof Function) {
     return forEach(doc.stories, cb);
   }
-  error("b.stories(), incorrect call. Wrong parameters!");
+  error("stories(), incorrect call. Wrong parameters!");
   return null;
 };
 
@@ -1670,7 +1667,7 @@ pub.items = function(container, cb) {
       return forEach(container.allPageItems, cb);
     }
   }
-  error("b.items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
+  error("items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
   return null;
 };
 
@@ -1697,7 +1694,7 @@ pub.clear = function(container) {
     container.remove();
 
   } else {
-    error("b.clear(), not a valid container! Use: Document, Page, Layer or Group.");
+    error("clear(), not a valid container! Use: Document, Page, Layer or Group.");
   }
 };
 
@@ -1713,7 +1710,7 @@ pub.remove = function(obj) {
   if(obj.hasOwnProperty("remove")) {
     obj.remove();
   } else {
-    throw new Error("Provided object cannot be removed in b.remove().");
+    error("remove(), provided object cannot be removed.");
   }
 };
 
@@ -1744,7 +1741,7 @@ pub.doc = function(doc) {
  * Sets the size of the current document, if arguments are given.
  * If only one argument is given, both the width and the height are set to this value.
  * Alternatively, a string can be given as the first argument to apply an existing page size preset ("A4", "Letter" etc.).
- * In this case, either b.PORTRAIT or b.LANDSCAPE can be used as a second argument to determine the orientation of the page.
+ * In this case, either PORTRAIT or LANDSCAPE can be used as a second argument to determine the orientation of the page.
  * If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat Document
@@ -1754,21 +1751,21 @@ pub.doc = function(doc) {
  * @return {Object} Object containing the current <code>width</code> and <code>height</code> of the document.
  *
  * @example <caption>Sets the document size to 70 x 100 units</caption>
- * b.size(70, 100);
+ * size(70, 100);
  *
  * @example <caption>Sets the document size to 70 x 70</caption>
- * b.size(70);
+ * size(70);
  *
  * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
- * b.size("A4");
+ * size("A4");
  *
  * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
- * b.size("A4", b.LANDSCAPE);
+ * size("A4", LANDSCAPE);
  */
 pub.size = function(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
     // there are no documents
-    warning("b.size()", "You have no open document.");
+    warning("size()", "You have no open document.");
     return;
   }
   if (arguments.length === 0) {
@@ -1784,7 +1781,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
     try {
       doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      error("b.size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+      error("size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
     if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
       doc.documentPreferences.pageOrientation = heightOrOrientation;
@@ -1829,7 +1826,7 @@ pub.close = function(saveOptions, file) {
       saveOptions = SaveOptions.ASK;
     } else {
       if(!isEnum(SaveOptions, saveOptions)) {
-        error("b.close(), wrong saveOptions argument. Use True, False, InDesign SaveOptions constant or leave empty.");
+        error("close(), wrong saveOptions argument. Use True, False, InDesign SaveOptions constant or leave empty.");
       }
     }
 
@@ -1870,8 +1867,8 @@ pub.revert = function() {
 };
 
 /**
- * Use this to set the dimensions of the canvas. Choose between b.PAGE (default), b.MARGIN, b.BLEED resp. b.FACING_PAGES, b.FACING_MARGINS and b.FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
- * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use b.translate(), b.rotate() and b.scale();
+ * Use this to set the dimensions of the canvas. Choose between PAGE (default), MARGIN, BLEED resp. FACING_PAGES, FACING_MARGINS and FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
+ * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use translate(), rotate() and scale();
  * @cat Document
  * @subcat Page
  * @method canvasMode
@@ -1883,13 +1880,13 @@ pub.canvasMode = function (m) {
     return currCanvasMode;
   } else if (typeof m === "string") {
     if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
-      error("b.canvasMode(), cannot set a facing pages mode to a single page document");
+      error("canvasMode(), cannot set a facing pages mode to a single page document");
     }
     currCanvasMode = m;
     updatePublicPageSizeVars();
     return currCanvasMode;
   } else {
-    error("b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
+    error("canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
 };
 
@@ -1908,12 +1905,12 @@ pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
     return currentDoc().pasteboardPreferences.pasteboardMargins;
   } else if(arguments.length == 1) {
-    error("b.pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
+    error("pasteboard() requires both a horizontal and vertical value. Please check the reference for details.");
   }else if (typeof h === "number" && typeof v === "number") {
     currentDoc().pasteboardPreferences.pasteboardMargins = [h, v];
     return currentDoc().pasteboardPreferences.pasteboardMargins;
   }else {
-    error("b.pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
+    error("pasteboard(), there is a problem setting the pasteboard. Please check the reference for details.");
   }
 };
 
@@ -1941,11 +1938,11 @@ pub.page = function(page) {
     try {
       tempPage.id;
     } catch (e) {
-      error("b.page(), " + page + " does not exist.");
+      error("page(), " + page + " does not exist.");
     }
     currPage = tempPage;
   } else if (typeof page !== "undefined") {
-    error("b.page(), bad type for b.page().");
+    error("page(), bad type for page().");
   }
   updatePublicPageSizeVars();
   if (currentDoc().windows.length) {
@@ -1955,7 +1952,7 @@ pub.page = function(page) {
 };
 
 /**
- * Adds a new page to the document. Set the optional location parameter to either b.AT_END (default), b.AT_BEGINNING, b.AFTER or b.BEFORE. b.AFTER and b.BEFORE will use the current page as insertion point.
+ * Adds a new page to the document. Set the optional location parameter to either AT_END (default), AT_BEGINNING, AFTER or BEFORE. AFTER and BEFORE will use the current page as insertion point.
  *
  * @cat Document
  * @subcat Page
@@ -2001,7 +1998,7 @@ pub.addPage = function(location) {
     return nP;
 
   } catch (e) {
-    error("b.addPage(), invalid location argument passed to addPage()");
+    error("addPage(), invalid location argument passed to addPage()");
   }
 };
 
@@ -2022,7 +2019,7 @@ pub.removePage = function (page) {
     currPage = null; // reset!
     currentPage();
   } else {
-    error("b.removePage(), invalid call. Wrong parameter!");
+    error("removePage(), invalid call. Wrong parameter!");
   }
 };
 
@@ -2038,7 +2035,7 @@ pub.removePage = function (page) {
 pub.pageNumber = function (pageObj) {
   checkNull(pageObj);
   if (typeof pageObj === "number") {
-    error("b.pageNumber(), cannot be called with a Number argument.");
+    error("pageNumber(), cannot be called with a Number argument.");
   }
   if (pageObj instanceof Page) {
     return parseInt(pageObj.name); // current number of given page
@@ -2091,7 +2088,7 @@ pub.pageCount = function(pageCount) {
     if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
     } else {
-      error("b.pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
+      error("pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
     }
   }
   return currentDoc().pages.count();
@@ -2111,14 +2108,14 @@ pub.storyCount = function() {
 };
 
 /**
- * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+ * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
  *
  * @cat Document
  * @subcat Story
  * @method addToStory
  * @param {Story} story The story.
- * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: b.AT_BEGINNING and b.AT_END.
- * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: b.AT_BEGINNING and b.AT_END.
+ * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: AT_BEGINNING and AT_END.
+ * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
  */
 pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
@@ -2170,7 +2167,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
         addToStoryCache.assets.firstItem().remove();
       }
     } else {
-      error("b.addToStory(), wrong arguments! Please use: b.addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.");
+      error("addToStory(), wrong arguments! Please use: addToStory(story, itemOrString, insertionPointorMode). Parameter insertionPointorMode is optional.");
     }
   };
 };
@@ -2199,20 +2196,20 @@ pub.layer = function(layer) {
       currentDoc().activeLayer = currLayer;
     }
   } else if (arguments.length > 0) {
-    error("b.layer(), wrong arguments. Use layer object or string instead.");
+    error("layer(), wrong arguments. Use layer object or string instead.");
   }
   return currentLayer();
 };
 
 
 /**
- * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>b.FORWARD</code> or <code>b.BACKWARD</code> the object is sent forward or back one step. The constants <code>b.FRONT</code> or <code>b.BACK</code> send the object to the very front or very back. Using <code>b.FRONT</code> or <code>b.BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
+ * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>FORWARD</code> or <code>BACKWARD</code> the object is sent forward or back one step. The constants <code>FRONT</code> or <code>BACK</code> send the object to the very front or very back. Using <code>FRONT</code> or <code>BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
  *
  * @cat Document
  * @subcat Page
  * @method arrange
  * @param {PageItem|Layer} pItemOrLayer The page item or layer to be moved to a new position.
- * @param {String} positionOrDirection The position or direction to move the page item or layer. Can be <code>b.FRONT</code>, <code>b.BACK</code>, <code>b.FORWARD</code> or <code>b.BACKWARD</code>.
+ * @param {String} positionOrDirection The position or direction to move the page item or layer. Can be <code>FRONT</code>, <code>BACK</code>, <code>FORWARD</code> or <code>BACKWARD</code>.
  * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
  * @return {PageItem|Layer} The newly arranged page item or layer.
  */
@@ -2229,7 +2226,7 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
     } else if (positionOrDirection === pub.FRONT) {
       pItemOrLayer.bringToFront(reference);
     } else {
-      error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
+      error("arrange(), not a valid position or direction. Please use FRONT, BACK, FORWARD or BACKWARD.");
     }
   } else if (pItemOrLayer instanceof Layer) {
     if(positionOrDirection === pub.BACKWARD) {
@@ -2251,10 +2248,10 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
         pItemOrLayer.move(LocationOptions.BEFORE, reference);
       }
     } else {
-      error("b.arrange(), not a valid position or direction. Please use b.FRONT, b.BACK, b.FORWARD or b.BACKWARD.");
+      error("arrange(), not a valid position or direction. Please use FRONT, BACK, FORWARD or BACKWARD.");
     }
   } else {
-    error("b.arrange(), invalid first parameter. Use page item or layer.");
+    error("arrange(), invalid first parameter. Use page item or layer.");
   }
 
   return pItemOrLayer;
@@ -2278,7 +2275,7 @@ pub.group = function (pItems, name) {
   var group;
   if(pItems instanceof Array) {
     if(pItems.length < 2) {
-      error("b.group(), the array passed to b.group() must at least contain two page items.");
+      error("group(), the array passed to group() must at least contain two page items.");
     }
     // creates a group from Page Items
     group = currentDoc().groups.add(pItems);
@@ -2289,10 +2286,10 @@ pub.group = function (pItems, name) {
     // get the Group of the given name
     group = currentDoc().groups.item(pItems);
     if (!group.isValid) {
-      error("b.group(), a group with the provided name doesn't exist.");
+      error("group(), a group with the provided name doesn't exist.");
     }
   } else {
-    error("b.group(), not a valid argument. Use an array of page items to group or a name of an existing group.");
+    error("group(), not a valid argument. Use an array of page items to group or a name of an existing group.");
   }
 
   return group;
@@ -2300,8 +2297,7 @@ pub.group = function (pItems, name) {
 
 
 /**
- *  Ungroups an existing group. Returns an array of the items that were within the group before
- *  b.ungroup() was called.
+ *  Ungroups an existing group. Returns an array of the items that were within the group before ungroup() was called.
  *
  *  @cat Document
  *  @subCat Page
@@ -2319,12 +2315,12 @@ pub.ungroup = function(group) {
     // get the Group of the given name
     group = currentDoc().groups.item(group);
     if (!group.isValid) {
-      error("b.ungroup(), a group with the provided name doesn't exist.");
+      error("ungroup(), a group with the provided name doesn't exist.");
     }
     ungroupedItems = pub.items(group);
     group.ungroup();
   } else {
-    error("b.ungroup(), not a valid group. Please select a valid group.");
+    error("ungroup(), not a valid group. Please select a valid group.");
   }
   return ungroupedItems;
 };
@@ -2355,14 +2351,14 @@ pub.labels = function(label, cb) {
     return forEach(result, cb);
   }
   if(result.length === 0) {
-    error("b.labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+    error("labels(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
   }
   return result;
 };
 
 
 /**
- * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of b.labels, when you know you just have one thing with that label and don't want to deal with a single-element array.
+ * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of <code>labels()</code>, when you know you just have one thing with that label and don't want to deal with a single-element array.
  *
  * @cat Document
  * @subcat Multi-Getters
@@ -2379,7 +2375,7 @@ pub.label = function(label) {
       return pageItem;
     }
   }
-  error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
 };
 
 
@@ -2393,7 +2389,7 @@ pub.label = function(label) {
  */
 pub.selection = function() {
   if(app.selection.length === 0) {
-    error("b.selection(), selection is empty. Please select something.");
+    error("selection(), selection is empty. Please select something.");
   }
   return app.selection[0];
 };
@@ -2409,7 +2405,7 @@ pub.selection = function() {
  */
 pub.selections = function(cb) {
   if(app.selection.length === 0) {
-    error("b.selections(), selection is empty. Please select something.");
+    error("selections(), selection is empty. Please select something.");
   }
   if (arguments.length === 1 && cb instanceof Function) {
     return forEach(app.selection, cb);
@@ -2437,7 +2433,7 @@ pub.nameOnPage = function(name) {
     }
   }
   if(result === null) {
-    error("b.nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
+    error("nameOnPage(), no item found with the name '" + name + "' on page " + pub.pageNumber());
   }
   return result;
 };
@@ -2479,7 +2475,7 @@ pub.units = function (units) {
     units = pub.PT;
     unitType = MeasurementUnits.points;
   } else {
-    error("b.unit(), invalid unit. Use: b.PT, b.MM, b.CM, b.IN or b.PX.");
+    error("units(), invalid unit. Use: PT, MM, CM, IN or PX.");
   }
 
   currDoc.viewPreferences.horizontalMeasurementUnits = unitType;
@@ -2489,7 +2485,7 @@ pub.units = function (units) {
   updatePublicPageSizeVars();
 
   if (unitsCalledCounter === 1) {
-    warning("Please note that b.units() will reset the current transformation matrix.");
+    warning("Please note that units() will reset the current transformation matrix.");
   }
   unitsCalledCounter++;
   return currUnits;
@@ -2621,14 +2617,14 @@ pub.bleeds = function(top, right, bottom, left) {
  * @param  {Array} [settings.propList] Array of properties to show. Default: <code>[]</code> (no propList)
  *
  * @example <caption>Inspecting a string</caption>
- * b.inspect("foo");
+ * inspect("foo");
  *
  * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
- * b.inspect(b.page(), {showMethods: true, maxLevel: 2})
+ * inspect(page(), {showMethods: true, maxLevel: 2})
  *
  * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
- * var myEllipse = b.ellipse(0, 0, 10, 10);
- * b.inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
+ * var myEllipse = ellipse(0, 0, 10, 10);
+ * inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
 pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
@@ -2803,16 +2799,16 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
  * @return {File} File at the given path.
  *
  * @example <caption>Get an image file from the desktop and place it in the document</caption>
- * var myImage = b.file("~/Desktop/myImage.jpg");
- * b.image(myImage, 0, 0);
+ * var myImage = file("~/Desktop/myImage.jpg");
+ * image(myImage, 0, 0);
  *
  * @example <caption>Create a file and export it to the desktop</caption>
- * var myExportFile = b.file("~/Desktop/myNewExportFile.pdf");
- * b.savePDF(myExportFile);
+ * var myExportFile = file("~/Desktop/myNewExportFile.pdf");
+ * savePDF(myExportFile);
  */
 pub.file = function(filePath) {
   if(! isString(filePath)) {
-    error("b.file(), wrong argument. Use a string that describes a file path.");
+    error("file(), wrong argument. Use a string that describes a file path.");
   }
 
   // check if user is referring to a file in the data directory
@@ -2841,22 +2837,22 @@ pub.file = function(filePath) {
  * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
  *
  * @example <caption>Get a folder from the desktop and load its files</caption>
- * var myImageFolder = b.folder("~/Desktop/myImages/");
- * var myImageFiles = b.files(myImageFolder);
+ * var myImageFolder = folder("~/Desktop/myImages/");
+ * var myImageFiles = files(myImageFolder);
  *
  * @example <caption>Get the data folder, if the document is already saved</caption>
- * var myDataFolder = b.folder();
+ * var myDataFolder = folder();
  */
 pub.folder = function(folderPath) {
   if(folderPath === undefined) {
     if(currentDoc().saved) {
       return new Folder(pub.projectFolder() + "/data/");
     } else {
-      error("b.folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
+      error("folder(), no data folder. The document has not been saved yet, so there is no data folder to access.");
     }
   }
   if(! isString(folderPath)) {
-    error("b.folder(), wrong argument. Use a string that describes the path of a folder.");
+    error("folder(), wrong argument. Use a string that describes the path of a folder.");
   }
 
   // check if user is referring to a folder in the data directory
@@ -2889,12 +2885,12 @@ pub.folder = function(folderPath) {
  * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
  *
  * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
- * var myImageFolder = b.folder("~/Desktop/myImages/");
- * var myImageFiles = b.files(myImageFolder, {filter: ["jpeg", "jpg"]});
+ * var myImageFolder = folder("~/Desktop/myImages/");
+ * var myImageFiles = files(myImageFolder, {filter: ["jpeg", "jpg"]});
  *
  * @example <caption>If the document is saved, load all files from its data folder, including from its subfolders</caption>
- * var myDataFolder = b.folder();
- * var allMyDataFiles = b.files(myDataFolder, {recursive: true});
+ * var myDataFolder = folder();
+ * var allMyDataFiles = files(myDataFolder, {recursive: true});
  */
 pub.files = function(folder, settings, collectedFiles) {
   var topLevel;
@@ -2902,15 +2898,15 @@ pub.files = function(folder, settings, collectedFiles) {
     if(folder === undefined && currentDoc().saved) {
       folder = pub.folder();
     } else if (folder === undefined) {
-      error("b.files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
+      error("files(), missing first argument. Use folder or a string to describe a folder path or save your document to access the data folder.");
     }
     if(isString(folder)) {
       folder = pub.folder(folder);
     }
     if(!(folder instanceof Folder)) {
-      error("b.files(), wrong first argument. Use folder or a string to describe a folder path.");
+      error("files(), wrong first argument. Use folder or a string to describe a folder path.");
     } else if (!folder.exists) {
-      error("b.files(), the folder \"" + folder + "\" does not exist.");
+      error("files(), the folder \"" + folder + "\" does not exist.");
     }
 
     topLevel = true;
@@ -2967,10 +2963,10 @@ pub.files = function(folder, settings, collectedFiles) {
  * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
- * b.selectFile({prompt: "Please select a file."});
+ * selectFile({prompt: "Please select a file."});
  *
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
- * b.selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ * selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFile = function(settings) {
   return createSelectionDialog(settings);
@@ -2988,10 +2984,10 @@ pub.selectFile = function(settings) {
  * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
- * b.selectFiles({prompt: "Please select your files."});
+ * selectFiles({prompt: "Please select your files."});
  *
  * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
- * b.selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
+ * selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFiles = function(settings) {
   if(!settings) {
@@ -3013,10 +3009,10 @@ pub.selectFiles = function(settings) {
  * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
  *
  * @example <caption>Open folder selection dialog with a prompt text</caption>
- * b.selectFolder({prompt: "Please select a folder."});
+ * selectFolder({prompt: "Please select a folder."});
  *
  * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
- * b.selectFolder({folder: "~/Desktop/"});
+ * selectFolder({folder: "~/Desktop/"});
  */
 pub.selectFolder = function(settings) {
   if(!settings) {
@@ -3176,8 +3172,8 @@ pub.timestamp = function() {
 pub.JSON = {
   /**
    * Function parses and validates a string as JSON-object. Usage:
-   * var obj = b.JSON.decode(str);
-   * var str = b.JSON.encode(obj);
+   * var obj = JSON.decode(str);
+   * var str = JSON.encode(obj);
    *
    * @cat Data
    * @subcat JSON
@@ -3202,12 +3198,12 @@ pub.JSON = {
       .replace(rvalidbraces, ""))) {
       return (new Function("return " + data))();
     }
-    error("b.JSON.decode(), invalid JSON: " + data);
+    error("JSON.decode(), invalid JSON: " + data);
   },
   /**
    * Function convert an javascript object to a JSON-string. Usage:
-   * var str = b.JSON.encode(obj);
-   * var obj = b.JSON.decode(str);
+   * var str = JSON.encode(obj);
+   * var obj = JSON.decode(str);
    *
    * @cat Data
    * @subcat JSON
@@ -3270,14 +3266,14 @@ function CSV() {
     if (typeof delimiter === "string") {
       initDelimiter(delimiter);
     } else {
-      error("b.CSV.delimiter, separator has to be a character or string");
+      error("CSV.delimiter, separator has to be a character or string");
     }
   };
 
   /**
    * Function parses a string as CSV-object Array. Usage:
-   * var arr = b.CSV.decode(str);
-   * var str = b.CSV.encode(arr);
+   * var arr = CSV.decode(str);
+   * var str = CSV.encode(arr);
    *
    * @cat Data
    * @subcat CSV
@@ -3301,8 +3297,8 @@ function CSV() {
 
   /**
    * Function convert an javascript array of objects to a CSV-string. Usage:
-   * var str = b.CSV.encode(arr);
-   * var arr = b.CSV.decode(str);
+   * var str = CSV.encode(arr);
+   * var arr = CSV.decode(str);
    *
    * @cat Data
    * @subcat CSV
@@ -3512,7 +3508,7 @@ pub.unhex = function(hex) {
 
 
 /**
- * Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts "word!" to "word". Especially useful together with b.words();
+ * Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts "word!" to "word". Especially useful together with words();
  *
  * @method trimWord
  * @cat Data
@@ -3805,7 +3801,7 @@ var isURL = pub.isURL = function(url) {
  */
 var endsWith = pub.endsWith = function(str, suffix) {
   if(!isString(str) || !isString(suffix)) {
-    error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
+    error("endsWith() requires two strings, the string to be checked and the suffix to look for.");
   }
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
@@ -3822,7 +3818,7 @@ var endsWith = pub.endsWith = function(str, suffix) {
  */
 var startsWith = pub.startsWith = function(str, prefix) {
   if(!isString(str) || !isString(prefix)) {
-    error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
+    error("startsWith() requires two strings, the string to be checked and the prefix to look for.");
   }
   return str.indexOf(prefix) === 0;
 };
@@ -3921,7 +3917,7 @@ var isText = pub.isText = function(obj) {
 var initDataFile = function(file) {
 
   if(!(isString(file) || file instanceof File)) {
-    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
   }
 
   var result = null;
@@ -3931,7 +3927,7 @@ var initDataFile = function(file) {
     result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
   }
   if (!result.exists) {
-    error("b." + getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
+    error(getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
   }
   return result;
 };
@@ -3939,7 +3935,7 @@ var initDataFile = function(file) {
 var initExportFile = function(file) {
 
   if(!(isString(file) || file instanceof File)) {
-    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
   }
 
   var result, tmpPath = null;
@@ -3999,7 +3995,7 @@ var initExportFile = function(file) {
 
         if(!f.exists) {
           // in some cases, folder creation does not throw an error, yet folder does not exist
-          error("b." + getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
+          error(getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
             "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
         }
       }
@@ -4046,10 +4042,10 @@ pub.shellExecute = function(cmd) {
     try {
       return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
     } catch (e) {
-      error("b.shellExecute(): " + e);
+      error("shellExecute(): " + e);
     }
   } else {
-    error("b.shellExecute() is a Mac only feature at the moment. Sorry!");
+    error("shellExecute() is a Mac only feature at the moment. Sorry!");
   }
 };
 
@@ -4081,10 +4077,10 @@ var getURL = function(url) {
     if (Folder.fs === "Macintosh") {
       return pub.shellExecute("curl -m 15 -L '" + url + "'");
     } else {
-      error("b." + getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+      error(getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
   } else {
-    error("b." + getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
+    error(getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
   }
 };
 
@@ -4133,7 +4129,7 @@ var println = pub.println = function() {
 };
 
 /**
- * Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.
+ * Prints a message to the console output in the ExtendScript editor, but unlike println() it doesn't return the carriage to a new line at the end.
  *
  * @cat Output
  * @method print
@@ -4176,7 +4172,7 @@ pub.printInfo = function() {
  */
 pub.saveStrings = function(file, strings) {
   if(!isArray(strings)) {
-    error("b.saveStrings(), invalid second argument. Use an array of strings.");
+    error("saveStrings(), invalid second argument. Use an array of strings.");
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
@@ -4201,7 +4197,7 @@ pub.saveStrings = function(file, strings) {
  */
 pub.saveString = function(file, string) {
   if(!isString(string)) {
-    error("b.saveString(), invalid second argument. Use a string.");
+    error("saveString(), invalid second argument. Use a string.");
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
@@ -4227,7 +4223,7 @@ pub.savePDF = function(file, showOptions) {
   try{
     var myPDF = currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
   } catch(e) {
-    error("b.savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+    error("savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
       "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
   }
   return outputFile;
@@ -4248,7 +4244,7 @@ pub.savePNG = function(file, showOptions) {
   try{
     currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
   } catch(e) {
-    error("b.savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+    error("savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
       "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
   }
   return outputFile;
@@ -4371,7 +4367,7 @@ pub.download = function(url, file) {
  * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
-  if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
+  if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
@@ -4433,13 +4429,13 @@ pub.ellipse = function(x, y, w, h) {
  * @return {GraphicLine} New GraphicLine.
  *
  *  @example
- *  var vec1 = new b.Vector( x1, y1 );
- *  var vec2 = new b.Vector( x2, y2 );
- *  b.line( vec1, vec2 );
+ *  var vec1 = new Vector( x1, y1 );
+ *  var vec2 = new Vector( x2, y2 );
+ *  line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
-    error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+    error("line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   }
   var lines = currentPage().graphicLines;
   var newLine = lines.add(currentLayer());
@@ -4465,7 +4461,7 @@ pub.line = function(x1, y1, x2, y2) {
  * @cat Document
  * @subcat Primitives
  * @method beginShape
- * @param {String} shapeMode Set to b.CLOSE if the new Path should be auto-closed.
+ * @param {String} shapeMode Set to CLOSE if the new Path should be auto-closed.
  */
 pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
@@ -4507,7 +4503,7 @@ pub.vertex = function() {
                               [arguments[0], arguments[1]],
                               [arguments[4], arguments[5]]]);
     } else {
-      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)!");
+      error("vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)!");
     }
   } else {
     notCalledBeginShapeError();
@@ -4529,7 +4525,7 @@ pub.vertex = function() {
  * @param {Number} h Height of the arc's ellipse.
  * @param {Number} startAngle Starting angle of the arc in radians.
  * @param {Number} endAngle Ending angle of the arc in radians.
- * @param {String} [mode] Mode to define the rendering technique of the arc: b.OPEN (default), b.CHORD, or b.PIE.
+ * @param {String} [mode] Mode to define the rendering technique of the arc: OPEN (default), CHORD, or PIE.
  *
  * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
@@ -4538,7 +4534,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
     return false;
   }
-  if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
+  if (arguments.length < 6) error("arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
   var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
   startAngle %= pub.TWO_PI + o;
@@ -4649,7 +4645,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
  * addPath() is used to create multi component paths. Call addPath() to add
  * the vertices drawn so far to a single path. New vertices will then end up in a new path and
  * endShape() will return a multi path object. All component paths will account for
- * the setting (see b.CLOSE) given in beginShape(shapeMode).
+ * the setting (see CLOSE) given in beginShape(shapeMode).
  *
  * @cat Document
  * @subcat Primitives
@@ -4711,12 +4707,12 @@ function addPolygon() {
 
 
 function notCalledBeginShapeError () {
-  error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
+  error("endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
 }
 
 /**
  * Draws a rectangle on the page.
- * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the b.rectMode() function.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the rectMode() function.
  * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
  * @cat Document
@@ -4737,7 +4733,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
     // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
-  if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+  if (arguments.length < 4) error("rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
   if (currRectMode === pub.CORNER) {
@@ -4783,7 +4779,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if(arguments.length > 4) {
     for(var i = 4; i < arguments.length;i++){
       if(arguments[i] < 0 ){
-        error("b.rect(), needs positive values as arguments for the rounded corners.");
+        error("rect(), needs positive values as arguments for the rounded corners.");
       }
     }
     newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
@@ -4804,21 +4800,21 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
 
 /**
  * Modifies the location from which rectangles or text frames draw. The default
- * mode is b.rectMode(b.CORNER), which specifies the location to be the upper left
+ * mode is rectMode(CORNER), which specifies the location to be the upper left
  * corner of the shape and uses the <code>w</code> and <code>h</code> parameters to specify the
- * width and height. The syntax b.rectMode(b.CORNERS) uses the <code>x</code> and <code>y</code>
- * parameters of b.rect() or b.text() to set the location of one corner
+ * width and height. The syntax rectMode(CORNERS) uses the <code>x</code> and <code>y</code>
+ * parameters of <code>rect()</code> or <code>text()</code> to set the location of one corner
  * and uses the <code>w</code> and <code>h</code> parameters to set the opposite corner.
- * The syntax b.rectMode(b.CENTER) draws the shape from its center point and
+ * The syntax <code>rectMode(CENTER)</code> draws the shape from its center point and
  * uses the <code>w</code> and <code>h</code> parameters to specify the shape's
- * width and height. The syntax b.rectMode(b.RADIUS) draws the shape from its
+ * width and height. The syntax <code>rectMode(RADIUS)</code> draws the shape from its
  * center point and uses the <code>w</code> and <code>h</code> parameters to specify
  * half of the shape's width and height.
  *
  * @cat Document
  * @subcat Attributes
  * @method rectMode
- * @param {String} mode The rectMode to switch to: either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS.
+ * @param {String} mode The rectMode to switch to: either CORNER, CORNERS, CENTER, or RADIUS.
  *
  */
 pub.rectMode = function (mode) {
@@ -4827,24 +4823,24 @@ pub.rectMode = function (mode) {
     currRectMode = mode;
     return currRectMode;
   } else {
-    error("b.rectMode(), unsupported rectMode. Use: b.CORNER, b.CORNERS, b.CENTER, b.RADIUS.");
+    error("rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER, RADIUS.");
   }
 };
 
 /**
- * The origin of new ellipses is modified by the b.ellipseMode() function.
- * The default configuration is b.ellipseMode(b.CENTER), which specifies the
- * location of the ellipse as the center of the shape. The b.RADIUS mode is
- * the same, but the <code>w</code> and <code>h</code> parameters to b.ellipse() specify the
- * radius of the ellipse, rather than the diameter. The b.CORNER mode draws
- * the shape from the upper-left corner of its bounding box. The b.CORNERS
- * mode uses the four parameters to b.ellipse() to set two opposing corners
+ * The origin of new ellipses is modified by the <code>ellipseMode()</code> function.
+ * The default configuration is <code>ellipseMode(CENTER)</code>, which specifies the
+ * location of the ellipse as the center of the shape. The RADIUS mode is
+ * the same, but the <code>w</code> and <code>h</code> parameters to <code>ellipse()</code> specify the
+ * radius of the ellipse, rather than the diameter. The CORNER mode draws
+ * the shape from the upper-left corner of its bounding box. The CORNERS
+ * mode uses the four parameters to <code>ellipse()</code> to set two opposing corners
  * of the ellipse's bounding box.
  *
  * @cat Document
  * @subcat Attributes
  * @method ellipseMode
- * @param {String} mode The ellipse mode to switch to: either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS.
+ * @param {String} mode The ellipse mode to switch to: either CENTER, RADIUS, CORNER, or CORNERS.
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
@@ -4852,7 +4848,7 @@ pub.ellipseMode = function (mode) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
-    error("b.ellipseMode(), unsupported ellipseMode. Use: b.CENTER, b.RADIUS, b.CORNER, b.CORNERS.");
+    error("ellipseMode(), unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
   }
 };
 
@@ -4868,7 +4864,7 @@ pub.strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
-    error("b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string");
+    error("strokeWeight(), not supported type. Please make sure the strokeweight is a number or string");
   }
 };
 
@@ -4884,7 +4880,7 @@ pub.strokeWeight = function (weight) {
  * @return {ObjectStyle} The object style instance.
  */
 pub.objectStyle = function(itemOrName, props) {
-  var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
+  var styleErrorMsg = "objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
     error(styleErrorMsg);
@@ -4908,7 +4904,7 @@ pub.objectStyle = function(itemOrName, props) {
     try {
       style.properties = props;
     } catch (e) {
-      error("b.objectStyle(), wrong props parameter. Use object of property name/value pairs.");
+      error("objectStyle(), wrong props parameter. Use object of property name/value pairs.");
     }
   }
 
@@ -4932,12 +4928,12 @@ pub.applyObjectStyle = function(item, style) {
     var name = style;
     style = findInStylesByName(currentDoc().allObjectStyles, name);
     if(!style) {
-      error("b.applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
+      error("applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
     }
   }
 
   if(!(item.hasOwnProperty("appliedObjectStyle")) || !(style instanceof ObjectStyle)) {
-    error("b.applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
+    error("applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
   }
 
   item.appliedObjectStyle = style;
@@ -4946,7 +4942,7 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
- * Duplicates the given page after the current page or the given page item to the current page and layer. Use b.rectMode() to set center point.
+ * Duplicates the given page after the current page or the given page item to the current page and layer. Use <code>rectMode()</code> to set center point.
  *
  * @cat Document
  * @subcat Transformation
@@ -5016,7 +5012,7 @@ pub.fill = function (fillColor) {
     } else if (arguments.length === 5) {
       currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.fill(), wrong parameters. Use:\n"
+      error("fill(), wrong parameters. Use:\n"
         + "Swatch name or\n"
         + "GRAY, [name] or\n"
         + "R, G, B, [name] or\n"
@@ -5063,7 +5059,7 @@ pub.stroke = function (strokeColor) {
     } else if (arguments.length === 5) {
       currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.stroke(), wrong parameters. Use:\n"
+      error("stroke(), wrong parameters. Use:\n"
         + "Swatch name or\n"
         + "GRAY, [name] or\n"
         + "R, G, B, [name] or\n"
@@ -5096,7 +5092,7 @@ pub.fillTint = function (tint) {
   if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
   } else {
-    error("b.fillTint(), unsupported type. Please make sure the fillTint is a number or string");
+    error("fillTint(), unsupported type. Please make sure the fillTint is a number or string");
   }
 };
 
@@ -5117,11 +5113,11 @@ pub.strokeTint = function (tint) {
 };
 
 /**
- * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RGB.
+ * Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
  *
  * @cat Color
  * @method colorMode
- * @param  {Number} colorMode b.RGB or b.CMYK.
+ * @param  {Number} colorMode RGB or CMYK.
  */
 pub.colorMode = function(colorMode) {
   checkNull(colorMode);
@@ -5131,16 +5127,16 @@ pub.colorMode = function(colorMode) {
   if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
   } else {
-    error("b.colorMode(), unsupported colormode, use: b.RGB or b.CMYK");
+    error("colorMode(), unsupported colormode, use: RGB or CMYK");
   }
 };
 
 /**
- * Sets the gradient mode for b.gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
+ * Sets the gradient mode for gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
  *
  * @cat Color
  * @method gradientMode
- * @param  {String} gradientMode b.LINEAR or b.RADIAL.
+ * @param  {String} gradientMode LINEAR or RADIAL.
  */
 pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
@@ -5150,7 +5146,7 @@ pub.gradientMode = function(gradientMode) {
   if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
     currGradientMode = gradientMode;
   } else {
-    error("b.gradientMode(), unsupported gradient mode, use: b.LINEAR or b.RADIAL");
+    error("gradientMode(), unsupported gradient mode, use: LINEAR or RADIAL");
   }
 };
 
@@ -5174,7 +5170,7 @@ pub.swatch = function(){
           error("A swatch with the provided name doesn't exist.");
         }
     }else{
-      error("b.swatch() requires a string, the name of an existing swatch.");
+      error("swatch() requires a string, the name of an existing swatch.");
     }
   }
 }
@@ -5195,12 +5191,12 @@ pub.color = function() {
     c = arguments[2],
     d = arguments[3],
     e = arguments[4];
-  var colorErrorMsg = "b.color(), wrong parameters. Use:\n"
+  var colorErrorMsg = "color(), wrong parameters. Use:\n"
       + "GRAY,[name] or \n"
-      + "R,G,B,[name] in b.colorMode(b.RGB) or\n"
-      + "C,M,Y,K,[name] in b.colorMode(b.CMYK).\n"
+      + "R,G,B,[name] in colorMode(RGB) or\n"
+      + "C,M,Y,K,[name] in colorMode(CMYK).\n"
       + "Name is optional.\n"
-      + "NB: In InDesign colors don't have an alpha value, use b.opacity() to set alpha.";
+      + "NB: In InDesign colors don't have an alpha value, use opacity() to set alpha.";
 
   if (arguments.length === 1) {
     // get color by name
@@ -5209,7 +5205,7 @@ pub.color = function() {
       if (newCol.isValid) {
         return newCol;
       } else {
-        error("b.color(), a color with the provided name doesn't exist.");
+        error("color(), a color with the provided name doesn't exist.");
       }
     } else if (typeof a === "number") {
       // GRAY
@@ -5227,7 +5223,7 @@ pub.color = function() {
         props.name = "C=" + 0 + " M=" + 0 + " Y=" + 0 + " K=" + a;
       }
     } else {
-      error("b.color(), wrong type of first parameter.");
+      error("color(), wrong type of first parameter.");
     }
 
   } else if (arguments.length === 2) {
@@ -5336,7 +5332,7 @@ pub.gradient = function() {
   var a = arguments[0],
     b = arguments[1],
     c = arguments[2];
-  var gradientErrorMsg = "b.gradient(), wrong parameters. Use:\n"
+  var gradientErrorMsg = "gradient(), wrong parameters. Use:\n"
       + "c1,c2,[name] or\n"
       + "arrayOfColors,[name] or\n"
       + "arrayOfColors,arrayOfGradientStops,[name] or\n"
@@ -5348,17 +5344,17 @@ pub.gradient = function() {
     if (newGrad.isValid) {
       return newGrad;
     } else {
-      error("b.gradient(), a gradient with the provided name doesn't exist.");
+      error("gradient(), a gradient with the provided name doesn't exist.");
     }
   } else if (a instanceof Color && b instanceof Color && (typeof c === "string" || arguments.length === 2)) {
     // c1 and c2
     if (typeof c === "string") {
       if(currentDoc().colors.itemByName(c).isValid) {
-        error("b.gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
+        error("gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
       }
       if(currentDoc().gradients.itemByName(c).isValid) {
         currentDoc().gradients.itemByName(c).remove();
-        warning("b.gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
+        warning("gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: c});
     } else {
@@ -5388,16 +5384,16 @@ pub.gradient = function() {
       customStopLocations = true;
     }
     if(customStopLocations && !(a.length === b.length)) {
-      error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+      error("gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
     }
     var z = arguments[arguments.length - 1];
     if (typeof z === "string") {
       if(currentDoc().colors.itemByName(z).isValid) {
-        error("b.gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
+        error("gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
       }
       if(currentDoc().gradients.itemByName(z).isValid) {
         currentDoc().gradients.itemByName(z).remove();
-        warning("b.gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
+        warning("gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: z});
     } else {
@@ -5405,7 +5401,7 @@ pub.gradient = function() {
     }
     for (var i = 0; i < a.length; i++) {
       if(!(a[i] instanceof Color || a[i] instanceof Swatch)) {
-        error("b.gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
+        error("gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
       }
       if(i > newGrad.gradientStops.length - 1) {
         newGrad.gradientStops.add();
@@ -5413,7 +5409,7 @@ pub.gradient = function() {
       newGrad.gradientStops[i].stopColor = a[i];
       if(customStopLocations) {
         if(!(typeof b[i] === "number")) {
-          error("b.gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
+          error("gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
         }
         newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
       } else {
@@ -5444,7 +5440,7 @@ pub.opacity = function(obj, opacity) {
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
   } else {
-    warning("b.opacity(), the object " + obj.toString() + " doesn't have an opacity property");
+    warning("opacity(), the object " + obj.toString() + " doesn't have an opacity property");
   }
 };
 
@@ -5477,7 +5473,7 @@ pub.blendMode = function(obj, blendMode) {
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
   } else {
-    warning("b.blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
+    warning("blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
   }
 };
 
@@ -5531,10 +5527,10 @@ pub.lerpColor = function (c1, c2, amt) {
       return pub.color(ROut, GOut, BOut);
 
     } else {
-      error("b.lerpColor(), both colors must be either CMYK or RGB.");
+      error("lerpColor(), both colors must be either CMYK or RGB.");
     }
   } else {
-    error("b.lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
+    error("lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
   }
 };
 
@@ -6040,10 +6036,10 @@ pub.image = function(img, x, y, w, h) {
     fitOptions = null,
     width = null,
     height = null,
-    imgErrorMsg = "b.image(), wrong parameters. Use:\n"
-      + "b.image( {String|File}, {Rectangle|Oval|Polygon} ) or\n"
-      + "b.image( {String|File}, x, y ) or\n"
-      + "b.image( {String|File}, x, y, w, h )";
+    imgErrorMsg = "image(), wrong parameters. Use:\n"
+      + "image( {String|File}, {Rectangle|Oval|Polygon} ) or\n"
+      + "image( {String|File}, x, y ) or\n"
+      + "image( {String|File}, x, y, w, h )";
 
   if(arguments.length < 2 || arguments.length === 4 || arguments.length > 5) error(imgErrorMsg);
 
@@ -6067,7 +6063,7 @@ pub.image = function(img, x, y, w, h) {
       }
     } else {
       if (typeof w === "number" && typeof h === "number") {
-        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.");
+        if (w <= 0 || h <= 0) error("image(), invalid parameters. When using image(img, x, y, w, h) with the default imageMode CORNER, parameters w and h need to be greater than 0.");
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
@@ -6136,7 +6132,7 @@ pub.transformImage = function(img, x, y, width, height) {
     img.fit(FitOptions.CENTER_CONTENT);
     img.fit(FitOptions.contentToFrame);
   } else {
-    error("b.transformImage(), wrong type! Use: img, x, y, width, height");
+    error("transformImage(), wrong type! Use: img, x, y, width, height");
   }
 };
 
@@ -6147,7 +6143,7 @@ pub.transformImage = function(img, x, y, width, height) {
  * @cat Document
  * @subcat Image
  * @method imageMode
- * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER.
+ * @param {String} [mode] Either CORNER, CORNERS, or CENTER.
  * @return {String} The current mode.
  */
 pub.imageMode = function(mode) {
@@ -6156,7 +6152,7 @@ pub.imageMode = function(mode) {
   if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
     currImageMode = mode;
   } else {
-    error("b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
+    error("imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
   }
   return currImageMode;
 };
@@ -6516,7 +6512,7 @@ pub.ceil = Math.ceil;
  * @return {Number} The constrained value.
  */
 pub.constrain = function(aNumber, aMin, aMax) {
-  if(arguments.length !== 3) error("b.constrain(), wrong argument count.");
+  if(arguments.length !== 3) error("constrain(), wrong argument count.");
   if(aNumber <= aMin) return aMin;
   if(aNumber >= aMax) return aMax;
   return aNumber;
@@ -6541,7 +6537,7 @@ pub.dist = function() {
     dy = arguments[1] - arguments[3];
     return Math.sqrt(dx * dx + dy * dy);
   } else {
-    error("b.dist(), wrong argument count.");
+    error("dist(), wrong argument count.");
   }
 };
 
@@ -6579,7 +6575,7 @@ pub.floor = Math.floor;
  * @return {Number} The mapped value.
  */
 pub.lerp = function(value1, value2, amt) {
-  if(arguments.length !== 3) error("b.lerp(), wrong argument count.");
+  if(arguments.length !== 3) error("lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
 
@@ -6606,7 +6602,7 @@ pub.log = Math.log;
  * @return {Number} The magnitude.
  */
 pub.mag = function(a, b, c) {
-  if(!(arguments.length === 2 || arguments.length === 3)) error("b.mag(), wrong argument count.");
+  if(!(arguments.length === 2 || arguments.length === 3)) error("mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
 };
@@ -6627,7 +6623,7 @@ pub.mag = function(a, b, c) {
  * @return {Number} The mapped value.
  */
 pub.map = function(value, istart, istop, ostart, ostop) {
-  if(arguments.length !== 5) error("b.map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
+  if(arguments.length !== 5) error("map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
 
@@ -6645,7 +6641,7 @@ pub.map = function(value, istart, istop, ostart, ostop) {
 pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (!("length" in numbers && numbers.length > 0)) error("b.max(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0)) error("max(), non-empty array is expected");
   var max = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
@@ -6666,7 +6662,7 @@ pub.max = function() {
 pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (!("length" in numbers && numbers.length > 0)) error("b.min(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0)) error("min(), non-empty array is expected");
   var min = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
@@ -6689,7 +6685,7 @@ pub.min = function() {
  * @return {Number} The normalized value.
  */
 pub.norm = function(aNumber, low, high) {
-  if(arguments.length !== 3) error("b.norm, wrong argument count.");
+  if(arguments.length !== 3) error("norm(), wrong argument count.");
   return (aNumber - low) / (high - low);
 };
 
@@ -6726,7 +6722,7 @@ pub.round = Math.round;
  * @return {Number} Squared number.
  */
 pub.sq = function(aNumber) {
-  if(arguments.length !== 1) error("b.sq(), wrong argument count.");
+  if(arguments.length !== 1) error("sq(), wrong argument count.");
   return aNumber * aNumber;
 };
 
@@ -7091,7 +7087,7 @@ var precision = function(num, dec) {
 };
 
 /**
- * The function calculates the geometric bounds of any given object. Use b.itemX(), b.itemY(), b.itemPosition(), b.itemWidth(), b.itemHeight() and b.itemSize() to modify PageItems.
+ * The function calculates the geometric bounds of any given object. Use <code>itemX()</code>, <code>itemY()</code>, <code>itemPosition()</code>, <code>itemWidth()</code>, <code>itemHeight()</code> and <code>itemSize()</code> to modify page items.
  * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
  *
  * @cat Document
@@ -7116,7 +7112,7 @@ pub.bounds = function (obj) {
     h = y2 - y1;
 
     if (w < 0 || h < 0) {
-      warning("b.bounds(), not possible to get correct bounds, possible line break within textObj");
+      warning("bounds(), not possible to get correct bounds, possible line break within textObj");
     }
 
     // We not sure if this 100% correct, check
@@ -7156,7 +7152,7 @@ pub.bounds = function (obj) {
     }
     // no idea what that might be, give up
     else {
-      error("b.bounds(), invalide type of parameter! Can't get bounds for this object.");
+      error("bounds(), invalide type of parameter! Can't get bounds for this object.");
     }
   }
 };
@@ -7173,7 +7169,7 @@ pub.bounds = function (obj) {
  */
 pub.itemX = function(pItem, x) {
   var off = 0;
-  if(currRectMode !== b.CORNER) pub.warning("b.itemX(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) pub.warning("itemX(), please note that only CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
@@ -7183,7 +7179,7 @@ pub.itemX = function(pItem, x) {
       return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
     }
   } else {
-    error("b.itemX(), pItem has to be a valid PageItem");
+    error("itemX(), pItem has to be a valid PageItem");
   }
 };
 
@@ -7199,7 +7195,7 @@ pub.itemX = function(pItem, x) {
  */
 pub.itemY = function(pItem, y) {
   var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("b.itemY(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) pub.warning("itemY(), please note that only CORNER positioning is fully supported. Use with care.");
   if(pItem !== undefine && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
@@ -7210,7 +7206,7 @@ pub.itemY = function(pItem, y) {
       return precision(pItem.geometricBounds[0], 5) + off;
     }
   } else {
-    error("b.itemY(), pItem has to be a valid PageItem");
+    error("itemY(), pItem has to be a valid PageItem");
   }
 };
 
@@ -7231,7 +7227,7 @@ pub.itemY = function(pItem, y) {
  */
 pub.itemWidth = function(pItem, width) {
   if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    pub.warning("itemWidth(), please note that only CORNER positioning is fully supported. Use with care.");
   }
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
@@ -7240,7 +7236,7 @@ pub.itemWidth = function(pItem, width) {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
   } else {
-    error("b.itemWidth(), pItem has to be a valid PageItem");
+    error("itemWidth(), pItem has to be a valid PageItem");
   }
 };
 
@@ -7256,7 +7252,7 @@ pub.itemWidth = function(pItem, width) {
  */
 pub.itemHeight = function(pItem, height) {
   if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    pub.warning("itemHeight(), please note that only CORNER positioning is fully supported. Use with care.");
   }
   if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
@@ -7265,7 +7261,7 @@ pub.itemHeight = function(pItem, height) {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
   } else {
-    error("b.itemHeight(), pItem has to be a valid PageItem");
+    error("itemHeight(), pItem has to be a valid PageItem");
   }
 };
 
@@ -7283,7 +7279,7 @@ pub.itemHeight = function(pItem, height) {
 pub.itemPosition = function(pItem, x, y) {
 
   if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    pub.warning("itemPosition(), please note that only CORNER positioning is fully supported. Use with care.");
   }
   if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number" && typeof y === "number") {
@@ -7296,7 +7292,7 @@ pub.itemPosition = function(pItem, x, y) {
       return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
     }
   } else {
-    error("b.itemPosition(), works only with child classes of PageItem.");
+    error("itemPosition(), works only with child classes of PageItem.");
   }
 };
 
@@ -7312,8 +7308,8 @@ pub.itemPosition = function(pItem, x, y) {
  * @returns {Object} Returns an object with the fields width and height.
  */
 pub.itemSize = function(pItem, width, height) {
-  if(currRectMode !== b.CORNER) {
-    pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) {
+    pub.warning("itemSize(), please note that only CORNER positioning is fully supported. Use with care.");
   }
   if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
 
@@ -7327,7 +7323,7 @@ pub.itemSize = function(pItem, width, height) {
     }
 
   } else {
-    error("b.itemSize(), works only with child classes of PageItem.");
+    error("itemSize(), works only with child classes of PageItem.");
   }
 };
 
@@ -7708,7 +7704,7 @@ Matrix2D.prototype = {
 };
 
 /**
- * @description Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
+ * @description Returns the current matrix as a Matrix2D object for altering existing PageItems with transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
  *
  * @cat Document
  * @subcat Transformation
@@ -7765,7 +7761,7 @@ pub.popMatrix = function () {
   if (matrixStack.length > 0) {
     currMatrix.set(matrixStack.pop());
   } else {
-    error("b.popMatrix(), missing a pushMatrix() to go with that popMatrix()");
+    error("popMatrix(), missing a pushMatrix() to go with that popMatrix()");
   }
 };
 

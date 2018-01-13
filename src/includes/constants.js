@@ -3,7 +3,7 @@
 // ----------------------------------------
 
 /**
- * Used with b.units() to set the coordinate system to points.
+ * Used with units() to set the coordinate system to points.
  * @property PT {String}
  * @cat Document
  * @subcat Units
@@ -11,7 +11,7 @@
 pub.PT = "pt";
 
 /**
- * Used with b.units() to set the coordinate system to pixels.
+ * Used with units() to set the coordinate system to pixels.
  * @property PX {String}
  * @cat Document
  * @subcat Units
@@ -19,7 +19,7 @@ pub.PT = "pt";
 pub.PX = "px";
 
 /**
- * Used with b.units() to set the coordinate system to centimeters.
+ * Used with units() to set the coordinate system to centimeters.
  * @property CM {String}
  * @cat Document
  * @subcat Units
@@ -28,7 +28,7 @@ pub.PX = "px";
 pub.CM = "cm";
 
 /**
- * Used with b.units() to set the coordinate system to millimeters.
+ * Used with units() to set the coordinate system to millimeters.
  * @property MM {String}
  * @cat Document
  * @subcat Units
@@ -36,7 +36,7 @@ pub.CM = "cm";
 pub.MM = "mm";
 
 /**
- * Used with b.units() to set the coordinate system to inches.
+ * Used with units() to set the coordinate system to inches.
  * @property IN {String}
  * @cat Document
  * @subcat Units
@@ -44,28 +44,28 @@ pub.MM = "mm";
 pub.IN = "inch";
 
 /**
- * Used with b.colorMode() to set the color space.
+ * Used with colorMode() to set the color space.
  * @property RGB {String}
  * @cat Color
  */
 pub.RGB = "rgb";
 
 /**
- * Used with b.colorMode() to set the color space.
+ * Used with colorMode() to set the color space.
  * @property CMYK {String}
  * @cat Color
  */
 pub.CMYK = "cmyk";
 
 /**
- * Used with b.gradientMode() to set the gradient mode.
+ * Used with gradientMode() to set the gradient mode.
  * @property LINEAR {String}
  * @cat Color
  */
 pub.LINEAR = "linear";
 
 /**
- * Used with b.gradientMode() to set the gradient mode.
+ * Used with gradientMode() to set the gradient mode.
  * @property RADIAL {String}
  * @cat Color
  */
@@ -193,7 +193,7 @@ pub.EPSILON = 10e-12;
 pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
 
 /**
- * Used with b.canvasMode() to set the canvas to the full current page.
+ * Used with canvasMode() to set the canvas to the full current page.
  * @property PAGE {String}
  * @cat Document
  * @subcat Page
@@ -201,7 +201,7 @@ pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
 pub.PAGE = "page";
 
 /**
- * Used with b.canvasMode() to set the canvas to the full current page minus the margins.
+ * Used with canvasMode() to set the canvas to the full current page minus the margins.
  * @property MARGIN {String}
  * @cat Document
  * @subcat Page
@@ -209,7 +209,7 @@ pub.PAGE = "page";
 pub.MARGIN = "margin";
 
 /**
- * Used with b.canvasMode() to set the canvas to the full current page plus the bleed.
+ * Used with canvasMode() to set the canvas to the full current page plus the bleed.
  * @property BLEED {String}
  * @cat Document
  * @subcat Page
@@ -217,7 +217,7 @@ pub.MARGIN = "margin";
 pub.BLEED = "bleed";
 
 /**
- * Used with b.canvasMode() to set the canvas to use the current facing pages.
+ * Used with canvasMode() to set the canvas to use the current facing pages.
  * @property FACING_PAGES {String}
  * @cat Document
  * @subcat Page
@@ -225,7 +225,7 @@ pub.BLEED = "bleed";
 pub.FACING_PAGES = "facing_pages";
 
 /**
- * Used with b.canvasMode() to set the canvas to use the current facing pages plus bleeds.
+ * Used with canvasMode() to set the canvas to use the current facing pages plus bleeds.
  * @property FACING_BLEEDS {String}
  * @cat Document
  * @subcat Page
@@ -233,7 +233,7 @@ pub.FACING_PAGES = "facing_pages";
 pub.FACING_BLEEDS = "facing_bleeds";
 
 /**
- * Used with b.canvasMode() to set the canvas to use the current facing pages minus margins.
+ * Used with canvasMode() to set the canvas to use the current facing pages minus margins.
  * @property FACING_MARGINS {String}
  * @cat Document
  * @subcat Page
@@ -241,7 +241,7 @@ pub.FACING_BLEEDS = "facing_bleeds";
 pub.FACING_MARGINS = "facing_margins";
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property AT_BEGINNING {String}
  * @cat Document
  * @subcat Page
@@ -249,7 +249,7 @@ pub.FACING_MARGINS = "facing_margins";
 pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property AT_END {String}
  * @cat Document
  * @subcat Page
@@ -257,7 +257,7 @@ pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
 pub.AT_END = LocationOptions.AT_END;
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property BEFORE {String}
  * @cat Document
  * @subcat Page
@@ -265,7 +265,7 @@ pub.AT_END = LocationOptions.AT_END;
 pub.BEFORE = LocationOptions.BEFORE;
 
 /**
- * Used with b.addPage() to set the position of the new page in the book.
+ * Used with addPage() to set the position of the new page in the book.
  * @property AFTER {String}
  * @cat Document
  * @subcat Page
@@ -273,7 +273,7 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
- * Used with b.arrange() to bring a page item to the front or to bring it in front of a given reference object.
+ * Used with arrange() to bring a page item to the front or to bring it in front of a given reference object.
  * @property FRONT {String}
  * @cat Document
  * @subcat Page
@@ -281,7 +281,7 @@ pub.AFTER = LocationOptions.AFTER;
 pub.FRONT = "front";
 
 /**
- * Used with b.arrange() to send a page item to the back or to send it behind a given reference object.
+ * Used with arrange() to send a page item to the back or to send it behind a given reference object.
  * @property BACK {String}
  * @cat Document
  * @subcat Page
@@ -289,7 +289,7 @@ pub.FRONT = "front";
 pub.BACK = "back";
 
 /**
- * Used with b.arrange() to bring a page item one level forward in its layer.
+ * Used with arrange() to bring a page item one level forward in its layer.
  * @property FORWARD {String}
  * @cat Document
  * @subcat Page
@@ -297,7 +297,7 @@ pub.BACK = "back";
 pub.FORWARD = "forward";
 
 /**
- * Used with b.arrange() to send a page item one level backward in its layer.
+ * Used with arrange() to send a page item one level backward in its layer.
  * @property BACKWARD {String}
  * @cat Document
  * @subcat Page
@@ -305,7 +305,7 @@ pub.FORWARD = "forward";
 pub.BACKWARD = "backward";
 
 /**
- * Used with b.size() to set the orientation of a given page size to portrait.
+ * Used with size() to set the orientation of a given page size to portrait.
  * @property PORTRAIT {String}
  * @cat Document
  * @subcat Page
@@ -313,7 +313,7 @@ pub.BACKWARD = "backward";
 pub.PORTRAIT = PageOrientation.PORTRAIT;
 
 /**
- * Used with b.size() to set the orientation of a given page size to landscape.
+ * Used with size() to set the orientation of a given page size to landscape.
  * @property LANDSCAPE {String}
  * @cat Document
  * @subcat Page
@@ -347,7 +347,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 pub.SILENT = "silent";
 
 /**
- * Used with <code>mode()</code> to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to <code>VISIBLE</code>. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * Used with <code>mode()</code> to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to <code>VISIBLE</code>. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
  * @property HIDDEN {String}
  * @cat Environment
  * @subcat modes

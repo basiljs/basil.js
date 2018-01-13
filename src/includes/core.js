@@ -107,15 +107,13 @@ var runScript = function() {
 }
 
 var prepareLoop = function() {
-  // TODO rework this to use the new pub.file() and pub.folder() functions
-
-  // before running the loop we need to check if
-  // the stop script exists
+  // before running the loop we need to check if the stop script exists
   // the script looks for the lib folder next to itself
   var currentBasilFolderPath = File($.fileName).parent.fsName;
   var scriptPath = currentBasilFolderPath + "/lib/stop.jsx";
 
-  if(File(scriptPath).exists !== true) {
+  var stopScriptFile = pub.file(scriptPath);
+  if(stopScriptFile.exists !== true) {
     // the script is not there, let's create it
     var scriptContent = [
       "#targetengine \"loop\"",
@@ -125,7 +123,6 @@ var prepareLoop = function() {
       "  cleanUp = null;",
       "}"
     ];
-    var stopScriptFile = pub.file(scriptPath);
     pub.saveStrings(stopScriptFile, scriptContent);
   }
   currFrameRate = 25;
@@ -174,7 +171,7 @@ pub.noLoop = function(printFinished) {
 /**
  * Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, <code>mode()</code> should be placed in the beginning of the script. In basil there are three different performance modes:
  * <code>VISIBLE</code> is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
- * <code>HIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>b.println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * <code>HIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
  * <code>SILENT</code> processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to <code>VISIBLE</code>.
  *
  * @cat Environment
@@ -522,7 +519,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: PAGE, MARGIN, BLEED, FACING_PAGES, FACING_MARGINS, FACING_BLEEDS");
       break;
   }
 

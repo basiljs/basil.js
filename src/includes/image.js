@@ -26,10 +26,10 @@ pub.image = function(img, x, y, w, h) {
     fitOptions = null,
     width = null,
     height = null,
-    imgErrorMsg = "b.image(), wrong parameters. Use:\n"
-      + "b.image( {String|File}, {Rectangle|Oval|Polygon} ) or\n"
-      + "b.image( {String|File}, x, y ) or\n"
-      + "b.image( {String|File}, x, y, w, h )";
+    imgErrorMsg = "image(), wrong parameters. Use:\n"
+      + "image( {String|File}, {Rectangle|Oval|Polygon} ) or\n"
+      + "image( {String|File}, x, y ) or\n"
+      + "image( {String|File}, x, y, w, h )";
 
   if(arguments.length < 2 || arguments.length === 4 || arguments.length > 5) error(imgErrorMsg);
 
@@ -53,7 +53,7 @@ pub.image = function(img, x, y, w, h) {
       }
     } else {
       if (typeof w === "number" && typeof h === "number") {
-        if (w <= 0 || h <= 0) error("b.image, invalid parameters. When using b.image(img, x, y, w, h) with the default imageMode b.CORNER, parameters w and h need to be greater than 0.");
+        if (w <= 0 || h <= 0) error("image(), invalid parameters. When using image(img, x, y, w, h) with the default imageMode CORNER, parameters w and h need to be greater than 0.");
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
@@ -122,7 +122,7 @@ pub.transformImage = function(img, x, y, width, height) {
     img.fit(FitOptions.CENTER_CONTENT);
     img.fit(FitOptions.contentToFrame);
   } else {
-    error("b.transformImage(), wrong type! Use: img, x, y, width, height");
+    error("transformImage(), wrong type! Use: img, x, y, width, height");
   }
 };
 
@@ -133,7 +133,7 @@ pub.transformImage = function(img, x, y, width, height) {
  * @cat Document
  * @subcat Image
  * @method imageMode
- * @param {String} [mode] Either b.CORNER, b.CORNERS, or b.CENTER.
+ * @param {String} [mode] Either CORNER, CORNERS, or CENTER.
  * @return {String} The current mode.
  */
 pub.imageMode = function(mode) {
@@ -142,7 +142,7 @@ pub.imageMode = function(mode) {
   if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER) {
     currImageMode = mode;
   } else {
-    error("b.imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
+    error("imageMode(), unsupported imageMode. Use: CORNER, CORNERS, CENTER.");
   }
   return currImageMode;
 };

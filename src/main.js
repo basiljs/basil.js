@@ -33,7 +33,7 @@
   from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
 
-  The Lorem ipsum string of b.LOREM is taken from https://indieweb.org/Lorem_ipsum and
+  The Lorem ipsum string of LOREM is taken from https://indieweb.org/Lorem_ipsum and
   is available under a CC0 public domain dedication.
 
   Supported Adobe InDesign versions: CS 5+
