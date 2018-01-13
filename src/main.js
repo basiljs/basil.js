@@ -60,8 +60,7 @@ if($.engineName === "loop" && $.global.basilGlobal) {
 }
 
 // load global vars of the user script
-if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
-  $.writeln("Loading global variables.");
+if(($.global.setup instanceof Function || $.global.loop instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
   var f = app.activeScript;
   f.open("r");
   var data = f.read();

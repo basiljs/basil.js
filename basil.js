@@ -61,8 +61,7 @@ if($.engineName === "loop" && $.global.basilGlobal) {
 }
 
 // load global vars of the user script
-if(($.global.setup instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
-  $.writeln("Loading global variables.");
+if(($.global.setup instanceof Function || $.global.loop instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
   var f = app.activeScript;
   f.open("r");
   var data = f.read();
@@ -980,8 +979,8 @@ pub.noLoop = function(printFinished) {
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
   }
-  println("Basil.js -> Stopped looping.");
   if(printFinished) {
+    println("Basil.js -> Stopped looping.");
     println("[Finished in " + executionDuration() + "]");
   };
   resetUserSettings();
@@ -1164,6 +1163,7 @@ var setCurrDoc = function(doc, skipStyles) {
   currKerning = 0;
   currLeading = currDoc.textDefaults.leading;
   currTracking = currDoc.textDefaults.tracking;
+
   updatePublicPageSizeVars();
 };
 
@@ -1363,7 +1363,7 @@ var resetUserSettings = function() {
   app.preflightOptions.preflightOff  = appSettings.preflightOff;
 
   // doc settings
-  if(currDoc) {
+  if(currDoc && currDocSettings) {
     resetDocSettings();
   }
 }
