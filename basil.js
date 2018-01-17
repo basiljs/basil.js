@@ -68,7 +68,7 @@ try {
   sourceScript = e.source;
 }
 
-var userScript = sourceScript.replace(/[\s\S]*[#@]\s*include\s+.+basil\.js"\s*;*/, "");
+var userScript = sourceScript.replace(/[\s\S]*[#@]\s*[i]nclude\s+.+basil\.js"*\s*;*/, "");
 app.doScript(userScript);
 
 
