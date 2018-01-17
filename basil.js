@@ -61,19 +61,15 @@ if($.engineName === "loop" && $.global.basilGlobal) {
 }
 
 // load global vars of the user script
-if(($.global.setup instanceof Function || $.global.loop instanceof Function) && app.activeScript.name !== "jsRunner.jsx") {
-  var f = app.activeScript;
-  f.open("r");
-  var data = f.read();
-  f.close();
-
-  var userScript = data.
-    replace(/[\s\S]*[#@]\s*include\s+.+basil\.js";*/, "").// FILE NOT FOUND by extendscript-bundlr
-    replace(/function\s+setup[\s\S]*/g, "");
-  app.doScript(userScript);
-} else if ($.global.setup instanceof Function) {
-  $.writeln("### Basil Warning -> basil could not load global variables. If you need to use global variables outside of setup() and loop(), execute your script from the Extend Script Toolkit. If you are using draw(), there is no need to use setup(). Move all your global variables into draw() instead.");
+var sourceScript;
+try {
+  app.nonExistingProperty;
+} catch(e) {
+  sourceScript = e.source;
 }
+
+var userScript = sourceScript.replace(/[\s\S]*[#@]\s*include\s+.+basil\.js"\s*;*/, "");
+app.doScript(userScript);
 
 
 (function() {
