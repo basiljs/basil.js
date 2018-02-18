@@ -898,7 +898,7 @@ var runScript = function() {
 
   } finally {
 
-    if(!execTime) {
+    if((!execTime) && !($.global.loop instanceof Function)) {
       println("[Finished in " + executionDuration() + "]");
     }
 
