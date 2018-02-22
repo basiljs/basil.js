@@ -31,7 +31,9 @@ var init = function() {
     return;
   }
 
-  exit(); // quit program execution
+  if(basilCancelled) {
+    exit();
+  }
 };
 
 
@@ -78,6 +80,7 @@ var runScript = function() {
 
   } catch (e) {
     execTime = executionDuration();
+    basilCancelled = true;
 
     if(e.userCancel) {
       println("[Cancelled by user after " + execTime + "]");
@@ -106,8 +109,11 @@ var runScript = function() {
     if (!($.global.loop instanceof Function) || $.global.draw instanceof Function) {
       resetUserSettings();
     }
-  }
 
+    if(!($.global.loop instanceof Function)) {
+      delete $.global.basilRunning;
+    }
+  }
 }
 
 var prepareLoop = function() {
@@ -170,6 +176,7 @@ pub.noLoop = function(printFinished) {
     println("[Finished in " + executionDuration() + "]");
   };
   resetUserSettings();
+  delete $.global.basilRunning;
 };
 
 /**

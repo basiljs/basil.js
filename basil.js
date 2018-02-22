@@ -45,45 +45,49 @@
 // @target "InDesign";
 
 
-// clearing global space if it is still populated from previous run of a loop script
-// to ensure basil methods work properly
-if($.engineName === "loop" && $.global.basilGlobal) {
-  for (var i = basilGlobal.length - 1; i >= 0; i--) {
-    if($.global.hasOwnProperty(basilGlobal[i])) {
-      try{
-        delete $.global[basilGlobal[i]];
-      } catch(e) {
-        // could not delete
+if(!$.global.hasOwnProperty("basilRunning")) {
+
+  $.global.basilRunning = true;
+
+  // clearing global space if it is still populated from previous run of a loop script
+  // to ensure basil methods work properly
+  if($.global.basilGlobal) {
+    for (var i = basilGlobal.length - 1; i >= 0; i--) {
+      if($.global.hasOwnProperty(basilGlobal[i])) {
+        try{
+          delete $.global[basilGlobal[i]];
+        } catch(e) {
+          // could not delete
+        }
       }
     }
-  }
-  delete $.global.basilGlobal;
-}
-
-if(!$.global.hasOwnProperty("basilTest")) {
-  // load global vars of the user script
-  var sourceScript;
-  try {
-    app.nonExistingProperty;
-  } catch(e) {
-    sourceScript = e.source;
+    delete $.global.basilGlobal;
   }
 
-  var userScript = sourceScript.replace(/[\s\S]*[#@]\s*[i]nclude\s+.+basil\.js["']*[\s;)}]*/, "");
-  app.doScript(userScript);
-}
+  if(!$.global.hasOwnProperty("basilTest")) {
+    // load global vars of the user script
+    var sourceScript;
+    try {
+      app.nonExistingProperty;
+    } catch(e) {
+      sourceScript = e.source;
+    }
+
+    app.doScript(sourceScript);
+  }
 
 
-(function() {
+  (function() {
 
-var pub = {};
+  var pub = {};
 
-/**
- * The basil version
- * @property VERSION {String}
- * @cat Environment
- */
-pub.VERSION = "1.1.0";
+
+  /**
+   * The basil version
+   * @property VERSION {String}
+   * @cat Environment
+   */
+  pub.VERSION = "1.1.0";
 
 // ----------------------------------------
 // src/includes/constants.js
@@ -512,7 +516,8 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   matrixStack = null,
   noneSwatchColor = null,
   progressPanel = null,
-  startTime = null;
+  startTime = null,
+  basilCancelled = null;
 
 // ----------------------------------------
 // src/includes/global-functions.js
@@ -843,7 +848,9 @@ var init = function() {
     return;
   }
 
-  exit(); // quit program execution
+  if(basilCancelled) {
+    exit();
+  }
 };
 
 
@@ -890,6 +897,7 @@ var runScript = function() {
 
   } catch (e) {
     execTime = executionDuration();
+    basilCancelled = true;
 
     if(e.userCancel) {
       println("[Cancelled by user after " + execTime + "]");
@@ -918,8 +926,11 @@ var runScript = function() {
     if (!($.global.loop instanceof Function) || $.global.draw instanceof Function) {
       resetUserSettings();
     }
-  }
 
+    if(!($.global.loop instanceof Function)) {
+      delete $.global.basilRunning;
+    }
+  }
 }
 
 var prepareLoop = function() {
@@ -982,6 +993,7 @@ pub.noLoop = function(printFinished) {
     println("[Finished in " + executionDuration() + "]");
   };
   resetUserSettings();
+  delete $.global.basilRunning;
 };
 
 /**
@@ -7857,6 +7869,8 @@ pub.translate = function (tx, ty) {
 
 // Hey Ken, this is your new home...
 
-init();
+  init();
 
-})();
+  })();
+
+}
