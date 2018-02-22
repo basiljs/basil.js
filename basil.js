@@ -844,10 +844,6 @@ var init = function() {
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 
-  if($.global.hasOwnProperty("basilTest")) {
-    return;
-  }
-
   if(basilCancelled) {
     exit();
   }
