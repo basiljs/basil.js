@@ -168,20 +168,28 @@ var isValid = function (item) {
 };
 
 /**
- * Returns the current font and sets it if argument fontName is given.
+ * Returns the current font and sets it if argument fontName is given. If not fontStyle is given, the default style of the font is assumed.
  *
  * @cat Typography
  * @method textFont
- * @param  {String} [fontName] The name of the font to set e.g. Helvetica
- * @param  {String} [fontStyle] The font style e.g. Bold
+ * @param  {String|Font} [font] The name of the font to set (e.g. "Helvetica") or a font object.
+ * @param  {String} [fontStyle] The font style (e.g. "Bold").
  * @return {Font} The current font object
  */
 pub.textFont = function(fontName, fontStyle) {
 
+  if (fontName instanceof Font) {
+    currFont = fontName;
+    return currFont;
+  }
+
   if (arguments.length === 2) {
     fontName = fontName + "\t" + fontStyle;
   } else if (arguments.length === 1) {
-    fontName = fontName + "\tRegular";
+    // if there is a tab in the font name, user is already using font\tfontStyle notation
+    if(fontName.split("\t").length !== 2) {
+      fontName = fontName + "\tRegular";
+    }
   } else if (arguments.length === 0) {
     return currFont;
   } else {
