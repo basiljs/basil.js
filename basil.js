@@ -44,46 +44,54 @@
 /* globals init */
 // @target "InDesign";
 
+// at run time, the basil.js script can be only entered the first time it is run
+// consecutive, recursive calls (necessary to load global variables) will not enter the script
+if(!$.global.hasOwnProperty("basilTopLevelExecution")) {
 
-// clearing global space if it is still populated from previous run of a loop script
-// to ensure basil methods work properly
-if($.engineName === "loop" && $.global.basilGlobal) {
-  for (var i = basilGlobal.length - 1; i >= 0; i--) {
-    if($.global.hasOwnProperty(basilGlobal[i])) {
-      try{
-        delete $.global[basilGlobal[i]];
-      } catch(e) {
-        // could not delete
+  // set global property to make sure recursive calls don't enter the script
+  $.global.basilTopLevelExecution = true;
+
+  // clearing global space if it is still populated from previous run of a loop script
+  // to ensure basil methods work properly
+  if($.global.basilGlobal) {
+    for (var i = basilGlobal.length - 1; i >= 0; i--) {
+      if($.global.hasOwnProperty(basilGlobal[i])) {
+        try{
+          delete $.global[basilGlobal[i]];
+        } catch(e) {
+          // could not delete
+        }
       }
     }
-  }
-  delete $.global.basilGlobal;
-}
-
-if(!$.global.hasOwnProperty("basilTest")) {
-  // load global vars of the user script
-  var sourceScript;
-  try {
-    app.nonExistingProperty;
-  } catch(e) {
-    sourceScript = e.source;
+    delete $.global.basilGlobal;
   }
 
-  var userScript = sourceScript.replace(/[\s\S]*[#@]\s*[i]nclude\s+.+basil\.js["']*[\s;)}]*/, "");
-  app.doScript(userScript);
-}
+  if(!$.global.hasOwnProperty("basilTest")) {
+    // load global vars of the user script
+    var sourceScript;
+    try {
+      app.nonExistingProperty;
+    } catch(e) {
+      sourceScript = e.source;
+    }
+
+    app.doScript(sourceScript);
+  }
+
+  // all potential recursive calls happen before this point, global property can be safely deleted now
+  delete $.global.basilTopLevelExecution;
+
+  (function() {
+
+  var pub = {};
 
 
-(function() {
-
-var pub = {};
-
-/**
- * The basil version
- * @property VERSION {String}
- * @cat Environment
- */
-pub.VERSION = "1.1.0";
+  /**
+   * The basil version
+   * @property VERSION {String}
+   * @cat Environment
+   */
+  pub.VERSION = "1.1.0";
 
 // ----------------------------------------
 // src/includes/constants.js
@@ -512,7 +520,8 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   matrixStack = null,
   noneSwatchColor = null,
   progressPanel = null,
-  startTime = null;
+  startTime = null,
+  basilCancelled = null;
 
 // ----------------------------------------
 // src/includes/global-functions.js
@@ -839,11 +848,9 @@ var init = function() {
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 
-  if($.global.hasOwnProperty("basilTest")) {
-    return;
+  if(basilCancelled) {
+    exit();
   }
-
-  exit(); // quit program execution
 };
 
 
@@ -890,6 +897,7 @@ var runScript = function() {
 
   } catch (e) {
     execTime = executionDuration();
+    basilCancelled = true;
 
     if(e.userCancel) {
       println("[Cancelled by user after " + execTime + "]");
@@ -919,7 +927,6 @@ var runScript = function() {
       resetUserSettings();
     }
   }
-
 }
 
 var prepareLoop = function() {
@@ -7857,6 +7864,8 @@ pub.translate = function (tx, ty) {
 
 // Hey Ken, this is your new home...
 
-init();
+  init();
 
-})();
+  })();
+
+}

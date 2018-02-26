@@ -43,65 +43,75 @@
 /* globals init */
 // @target "InDesign";
 
+// at run time, the basil.js script can be only entered the first time it is run
+// consecutive, recursive calls (necessary to load global variables) will not enter the script
+if(!$.global.hasOwnProperty("basilTopLevelExecution")) {
 
-// clearing global space if it is still populated from previous run of a loop script
-// to ensure basil methods work properly
-if($.engineName === "loop" && $.global.basilGlobal) {
-  for (var i = basilGlobal.length - 1; i >= 0; i--) {
-    if($.global.hasOwnProperty(basilGlobal[i])) {
-      try{
-        delete $.global[basilGlobal[i]];
-      } catch(e) {
-        // could not delete
+  // set global property to make sure recursive calls don't enter the script
+  $.global.basilTopLevelExecution = true;
+
+  // clearing global space if it is still populated from previous run of a loop script
+  // to ensure basil methods work properly
+  if($.global.basilGlobal) {
+    for (var i = basilGlobal.length - 1; i >= 0; i--) {
+      if($.global.hasOwnProperty(basilGlobal[i])) {
+        try{
+          delete $.global[basilGlobal[i]];
+        } catch(e) {
+          // could not delete
+        }
       }
     }
-  }
-  delete $.global.basilGlobal;
-}
-
-if(!$.global.hasOwnProperty("basilTest")) {
-  // load global vars of the user script
-  var sourceScript;
-  try {
-    app.nonExistingProperty;
-  } catch(e) {
-    sourceScript = e.source;
+    delete $.global.basilGlobal;
   }
 
-  var userScript = sourceScript.replace(/[\s\S]*[#@]\s*[i]nclude\s+.+basil\.js["']*[\s;)}]*/, "");
-  app.doScript(userScript);
+  if(!$.global.hasOwnProperty("basilTest")) {
+    // load global vars of the user script
+    var sourceScript;
+    try {
+      app.nonExistingProperty;
+    } catch(e) {
+      sourceScript = e.source;
+    }
+
+    app.doScript(sourceScript);
+  }
+
+  // all potential recursive calls happen before this point, global property can be safely deleted now
+  delete $.global.basilTopLevelExecution;
+
+  (function() {
+
+  var pub = {};
+
+
+  /**
+   * The basil version
+   * @property VERSION {String}
+   * @cat Environment
+   */
+  pub.VERSION = "1.1.0";
+
+  // @include "includes/constants.js";
+  // @include "includes/public-vars.js";
+  // @include "includes/private-vars.js";
+  // @include "includes/global-functions.js";
+
+  // @include "includes/core.js";
+
+  // @include "includes/structure.js";
+  // @include "includes/environment.js";
+  // @include "includes/data.js";
+  // @include "includes/shape.js";
+  // @include "includes/color.js";
+  // @include "includes/typography.js";
+  // @include "includes/image.js";
+  // @include "includes/math.js";
+  // @include "includes/transformation.js";
+  // @include "includes/ui.js";
+
+  init();
+
+  })();
+
 }
-
-
-(function() {
-
-var pub = {};
-
-/**
- * The basil version
- * @property VERSION {String}
- * @cat Environment
- */
-pub.VERSION = "1.1.0";
-
-// @include "includes/constants.js";
-// @include "includes/public-vars.js";
-// @include "includes/private-vars.js";
-// @include "includes/global-functions.js";
-
-// @include "includes/core.js";
-
-// @include "includes/structure.js";
-// @include "includes/environment.js";
-// @include "includes/data.js";
-// @include "includes/shape.js";
-// @include "includes/color.js";
-// @include "includes/typography.js";
-// @include "includes/image.js";
-// @include "includes/math.js";
-// @include "includes/transformation.js";
-// @include "includes/ui.js";
-
-init();
-
-})();

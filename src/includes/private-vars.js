@@ -39,4 +39,5 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   matrixStack = null,
   noneSwatchColor = null,
   progressPanel = null,
-  startTime = null;
+  startTime = null,
+  basilCancelled = null;

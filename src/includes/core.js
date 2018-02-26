@@ -27,11 +27,9 @@ var init = function() {
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
 
-  if($.global.hasOwnProperty("basilTest")) {
-    return;
+  if(basilCancelled) {
+    exit();
   }
-
-  exit(); // quit program execution
 };
 
 
@@ -78,6 +76,7 @@ var runScript = function() {
 
   } catch (e) {
     execTime = executionDuration();
+    basilCancelled = true;
 
     if(e.userCancel) {
       println("[Cancelled by user after " + execTime + "]");
@@ -107,7 +106,6 @@ var runScript = function() {
       resetUserSettings();
     }
   }
-
 }
 
 var prepareLoop = function() {
