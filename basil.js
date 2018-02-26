@@ -44,10 +44,12 @@
 /* globals init */
 // @target "InDesign";
 
+// at run time, the basil.js script can be only entered the first time it is run
+// consecutive, recursive calls (necessary to load global variables) will not enter the script
+if(!$.global.hasOwnProperty("basilTopLevelExecution")) {
 
-if(!$.global.hasOwnProperty("basilRunning")) {
-
-  $.global.basilRunning = true;
+  // set global property to make sure recursive calls don't enter the script
+  $.global.basilTopLevelExecution = true;
 
   // clearing global space if it is still populated from previous run of a loop script
   // to ensure basil methods work properly
@@ -76,6 +78,8 @@ if(!$.global.hasOwnProperty("basilRunning")) {
     app.doScript(sourceScript);
   }
 
+  // all potential recursive calls happen before this point, global property can be safely deleted now
+  delete $.global.basilTopLevelExecution;
 
   (function() {
 
@@ -922,10 +926,6 @@ var runScript = function() {
     if (!($.global.loop instanceof Function) || $.global.draw instanceof Function) {
       resetUserSettings();
     }
-
-    if(!($.global.loop instanceof Function)) {
-      delete $.global.basilRunning;
-    }
   }
 }
 
@@ -989,7 +989,6 @@ pub.noLoop = function(printFinished) {
     println("[Finished in " + executionDuration() + "]");
   };
   resetUserSettings();
-  delete $.global.basilRunning;
 };
 
 /**

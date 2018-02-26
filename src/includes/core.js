@@ -105,10 +105,6 @@ var runScript = function() {
     if (!($.global.loop instanceof Function) || $.global.draw instanceof Function) {
       resetUserSettings();
     }
-
-    if(!($.global.loop instanceof Function)) {
-      delete $.global.basilRunning;
-    }
   }
 }
 
@@ -172,7 +168,6 @@ pub.noLoop = function(printFinished) {
     println("[Finished in " + executionDuration() + "]");
   };
   resetUserSettings();
-  delete $.global.basilRunning;
 };
 
 /**
