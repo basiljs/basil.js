@@ -175,7 +175,7 @@ pub.CORNER = "corner";
 pub.CORNERS = "corners";
 
 /**
- * Center, used for drawing modes.
+ * Center, used for drawing modes or used with referencePoint() to set the reference point of transformations to the center of the page item.
  * @property CENTER {String}
  * @cat Document
  * @subcat Primitives
@@ -189,6 +189,70 @@ pub.CENTER = "center";
  * @subcat Primitives
  */
 pub.RADIUS = "radius";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top left of the page item.
+ * @property TOP_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_LEFT = "topLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top center of the page item.
+ * @property TOP_CENTER {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_CENTER = "topCenter";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top right of the page item.
+ * @property TOP_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_RIGHT = "topRight";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the center left of the page item.
+ * @property CENTER_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.CENTER_LEFT = "centerLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the center right of the page item.
+ * @property CENTER_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.CENTER_RIGHT = "centerRight";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom left of the page item.
+ * @property BOTTOM_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_LEFT = "bottomLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom center of the page item.
+ * @property BOTTOM_CENTER {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_CENTER = "bottomCenter";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom right of the page item.
+ * @property BOTTOM_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_RIGHT = "bottomRight";
 
 /**
  * Close, used for endShape() modes.
@@ -498,6 +562,7 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currPage = null,
   currPathPointer = null,
   currPolygon = null,
+  currRefPoint = null,
   currRectMode = null,
   currShapeMode = null,
   currStrokeColor = null,
@@ -828,6 +893,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currRefPoint = pub.TOP_LEFT;
   currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
@@ -7218,6 +7284,57 @@ pub.itemY = function(pItem, y) {
 // src/includes/transformation.js
 // ----------------------------------------
 /* global precision */
+
+/**
+ * @description Sets the reference point for transformations using the <code>transform()</code> function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.
+ * Arguments can be the basil constants <code>TOP_LEFT</code>, <code>TOP_CENTER</code>, <code>TOP_RIGHT</code>, <code>CENTER_LEFT</code>, <code>CENTER</code>, <code>CENTER_RIGHT</code>, <code>BOTTOM_LEFT</code>, <code>BOTTOM_CENTER</code> or <code>BOTTOM_RIGHT</code>. Alternatively the digits 1 through 9 (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.
+ * If the function is used without any arguments the currently set reference point will be returned.
+ *
+ * @cat Document
+ * @subcat Transformation
+ * @method referencePoint
+ * @param {String} [referencePoint] The reference point to set.
+ * @returns {String} Current reference point setting.
+ */
+pub.referencePoint = function(refPoint) {
+  if(!arguments.length) {
+    return currRefPoint;
+  }
+
+  if(refPoint === pub.TOP_LEFT ||
+     refPoint === pub.TOP_CENTER ||
+     refPoint === pub.TOP_RIGHT ||
+     refPoint === pub.CENTER_LEFT ||
+     refPoint === pub.CENTER ||
+     refPoint === pub.CENTER_RIGHT ||
+     refPoint === pub.BOTTOM_LEFT ||
+     refPoint === pub.BOTTOM_CENTER ||
+     refPoint === pub.BOTTOM_RIGHT) {
+    currRefPoint = refPoint;
+  } else if(refPoint === 7 || refPoint === AnchorPoint.TOP_LEFT_ANCHOR) {
+    currRefPoint = pub.TOP_LEFT;
+  } else if(refPoint === 8 || refPoint === AnchorPoint.TOP_CENTER_ANCHOR) {
+    currRefPoint = pub.TOP_CENTER;
+  } else if(refPoint === 9 || refPoint === AnchorPoint.TOP_RIGHT_ANCHOR) {
+    currRefPoint = pub.TOP_RIGHT;
+  } else if(refPoint === 4 || refPoint === AnchorPoint.LEFT_CENTER_ANCHOR) {
+    currRefPoint = pub.CENTER_LEFT;
+  } else if(refPoint === 5 || refPoint === AnchorPoint.CENTER_ANCHOR) {
+    currRefPoint = pub.CENTER;
+  } else if(refPoint === 6 || refPoint === AnchorPoint.RIGHT_CENTER_ANCHOR) {
+    currRefPoint = pub.CENTER_RIGHT;
+  } else if(refPoint === 1 || refPoint === AnchorPoint.BOTTOM_LEFT_ANCHOR) {
+    currRefPoint = pub.BOTTOM_LEFT;
+  } else if(refPoint === 2 || refPoint === AnchorPoint.BOTTOM_CENTER_ANCHOR) {
+    currRefPoint = pub.BOTTOM_CENTER;
+  } else if(refPoint === 3 || refPoint === AnchorPoint.BOTTOM_RIGHT_ANCHOR) {
+    currRefPoint = pub.BOTTOM_RIGHT;
+  } else {
+    error("referencePoint(), wrong argument! Use reference point constant (TOP_LEFT, TOP_CENTER, ...), a digit between 1 and 9 or an InDesign anchor point enumerator.");
+  }
+
+  return currRefPoint;
+};
 
 /**
  * @description TODO

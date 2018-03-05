@@ -16,6 +16,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currRefPoint = pub.TOP_LEFT;
   currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
