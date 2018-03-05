@@ -893,6 +893,7 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currRefPoint = pub.TOP_LEFT;
   currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
@@ -7285,7 +7286,7 @@ pub.itemY = function(pItem, y) {
 /* global precision */
 
 /**
- * @description Sets the reference point for transformations using the <code>transform()</code> function. The reference point will be used for all following transformations, until it is changed again.
+ * @description Sets the reference point for transformations using the <code>transform()</code> function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.
  * Arguments can be the basil constants <code>TOP_LEFT</code>, <code>TOP_CENTER</code>, <code>TOP_RIGHT</code>, <code>CENTER_LEFT</code>, <code>CENTER</code>, <code>CENTER_RIGHT</code>, <code>BOTTOM_LEFT</code>, <code>BOTTOM_CENTER</code> or <code>BOTTOM_RIGHT</code>. Alternatively the digits 1 through 9 (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.
  * If the function is used without any arguments the currently set reference point will be returned.
  *
