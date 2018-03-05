@@ -19,10 +19,11 @@ pub.transform = function(pItem, type, value) {
   if(!pItem || !pItem.hasOwnProperty("geometricBounds") || !isString(type)) {
     error("b.transform(), invalid parameters. Use: page item, type, value.");
   }
-      println("CP1");
+  println("CP1");
 
   // TODO
-  // x, y, Position, Size, Shear
+  // x, y, Position, Translation return
+  // make this work for different anchor points
 
   var tm = app.transformationMatrices.add();
   var bounds = pItem.geometricBounds;
@@ -39,9 +40,10 @@ pub.transform = function(pItem, type, value) {
     }
   } else if (type === "height") {
     println("CPheight");
+
     if(isNumber(value)) {
       tm = tm.scaleMatrix(1, value / h);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.bottomRightAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
     } else {
       return h;
     }
@@ -49,9 +51,15 @@ pub.transform = function(pItem, type, value) {
     println("CPsize");
     if(isArray(value)) {
       tm = tm.scaleMatrix(value[0] / w, value[1] / h);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.bottomRightAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
     } else {
       return {width: w, height: h};
+    }
+  } else if(type === "translate") {
+    println("CPtranslate");
+    if(isArray(value)) {
+      tm = tm.translateMatrix(value[0], value[1]);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
     }
   } else if (type === "rotation") {
     if(isNumber(value)) {
@@ -67,6 +75,13 @@ pub.transform = function(pItem, type, value) {
     } else if(isArray(value)) {
       tm = tm.scaleMatrix(value[0], value[1]);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+    }
+  } else if (type === "shear") {
+    if(isNumber(value)) {
+      tm = tm.shearMatrix(-pItem.shearAngle - value);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+    } else {
+      return -pItem.shearAngle;
     }
     // TODO figure out what to return with scale
     // maybe the global "Adjust scaling percentage" option needs to be turned on in the beginning of the script
