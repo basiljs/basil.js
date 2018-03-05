@@ -84,11 +84,11 @@ pub.image = function(img, x, y, w, h) {
     frame.move(null, [-(width / 2), -(height / 2)]);
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
 

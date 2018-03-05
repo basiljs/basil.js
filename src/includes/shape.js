@@ -56,11 +56,11 @@ pub.ellipse = function(x, y, w, h) {
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
   return newOval;
 };
@@ -96,7 +96,7 @@ pub.line = function(x1, y1, x2, y2) {
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix( (x1 + x2) / 2, (y1 + y2) / 2 ));
   return newLine;
 };
 
@@ -318,7 +318,7 @@ pub.endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(currPolygon.geometricBounds[1], currPolygon.geometricBounds[0]));
   return currPolygon;
 };
 
@@ -418,11 +418,11 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
   if(arguments.length > 4) {

@@ -4411,11 +4411,11 @@ pub.ellipse = function(x, y, w, h) {
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
   return newOval;
 };
@@ -4451,7 +4451,7 @@ pub.line = function(x1, y1, x2, y2) {
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix( (x1 + x2) / 2, (y1 + y2) / 2 ));
   return newLine;
 };
 
@@ -4673,7 +4673,7 @@ pub.endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(currPolygon.geometricBounds[1], currPolygon.geometricBounds[0]));
   return currPolygon;
 };
 
@@ -4773,11 +4773,11 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
   if(arguments.length > 4) {
@@ -5610,11 +5610,11 @@ pub.text = function(txt, x, y, w, h) {
   if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
   return textFrame;
@@ -6098,11 +6098,11 @@ pub.image = function(img, x, y, w, h) {
     frame.move(null, [-(width / 2), -(height / 2)]);
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
 
@@ -7428,16 +7428,30 @@ Matrix2D.prototype = {
    * @subcat Transformation
    * @return {Array} Returns an Adobe Matrix.
    */
-  adobeMatrix: function array() {
+  adobeMatrix: function array(x, y) {
+    // this seems to work:
+    // it's important to know the position of the object around which it will be rotated and scaled.
 
-    var uVX = new UnitValue(this.elements[2], currUnits);
-    var uVY = new UnitValue(this.elements[5], currUnits);
+    // 1. making a copy of this matrix
+    var tmpMatrix = this.get();
+    // tmpMatrix.print();
+
+    // 2. pre-applying a translation as if the object was starting from the origin
+    tmpMatrix.preApply([1, 0, -x, 0, 1, -y]);
+    // tmpMatrix.print();
+
+    // 3. move to object to its given coordinates
+    tmpMatrix.apply([1, 0, x, 0, 1, y]);
+    // tmpMatrix.print();
+
+    var uVX = new UnitValue(tmpMatrix.elements[2], currUnits);
+    var uVY = new UnitValue(tmpMatrix.elements[5], currUnits);
 
     return [
-      this.elements[0],
-      this.elements[3],
-      this.elements[1],
-      this.elements[4],
+      tmpMatrix.elements[0],
+      tmpMatrix.elements[3],
+      tmpMatrix.elements[1],
+      tmpMatrix.elements[4],
       uVX.as("pt"),
       uVY.as("pt")
     ];
