@@ -104,6 +104,70 @@ pub.CENTER = "center";
 pub.RADIUS = "radius";
 
 /**
+ * Used with referencePoint() to set the reference point of transformations to the top left.
+ * @property TOP_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_LEFT = "topLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top center.
+ * @property TOP_CENTER {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_CENTER = "topCenter";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top right.
+ * @property TOP_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_RIGHT = "topRight";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the center left.
+ * @property CENTER_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.CENTER_LEFT = "centerLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the center right.
+ * @property CENTER_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.CENTER_RIGHT = "centerRight";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom left.
+ * @property BOTTOM_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_LEFT = "bottomLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom center.
+ * @property BOTTOM_CENTER {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_CENTER = "bottomCenter";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom right.
+ * @property BOTTOM_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_RIGHT = "bottomRight";
+
+/**
  * Close, used for endShape() modes.
  * @property CLOSE {String}
  * @cat Document
