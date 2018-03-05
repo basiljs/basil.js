@@ -88,7 +88,7 @@ pub.CORNER = "corner";
 pub.CORNERS = "corners";
 
 /**
- * Center, used for drawing modes.
+ * Center, used for drawing modes or used with referencePoint() to set the reference point of transformations to the center of the page item.
  * @property CENTER {String}
  * @cat Document
  * @subcat Primitives
@@ -104,7 +104,7 @@ pub.CENTER = "center";
 pub.RADIUS = "radius";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the top left.
+ * Used with referencePoint() to set the reference point of transformations to the top left of the page item.
  * @property TOP_LEFT {String}
  * @cat Document
  * @subcat Transformation
@@ -112,7 +112,7 @@ pub.RADIUS = "radius";
 pub.TOP_LEFT = "topLeft";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the top center.
+ * Used with referencePoint() to set the reference point of transformations to the top center of the page item.
  * @property TOP_CENTER {String}
  * @cat Document
  * @subcat Transformation
@@ -120,7 +120,7 @@ pub.TOP_LEFT = "topLeft";
 pub.TOP_CENTER = "topCenter";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the top right.
+ * Used with referencePoint() to set the reference point of transformations to the top right of the page item.
  * @property TOP_RIGHT {String}
  * @cat Document
  * @subcat Transformation
@@ -128,7 +128,7 @@ pub.TOP_CENTER = "topCenter";
 pub.TOP_RIGHT = "topRight";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the center left.
+ * Used with referencePoint() to set the reference point of transformations to the center left of the page item.
  * @property CENTER_LEFT {String}
  * @cat Document
  * @subcat Transformation
@@ -136,7 +136,7 @@ pub.TOP_RIGHT = "topRight";
 pub.CENTER_LEFT = "centerLeft";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the center right.
+ * Used with referencePoint() to set the reference point of transformations to the center right of the page item.
  * @property CENTER_RIGHT {String}
  * @cat Document
  * @subcat Transformation
@@ -144,7 +144,7 @@ pub.CENTER_LEFT = "centerLeft";
 pub.CENTER_RIGHT = "centerRight";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the bottom left.
+ * Used with referencePoint() to set the reference point of transformations to the bottom left of the page item.
  * @property BOTTOM_LEFT {String}
  * @cat Document
  * @subcat Transformation
@@ -152,7 +152,7 @@ pub.CENTER_RIGHT = "centerRight";
 pub.BOTTOM_LEFT = "bottomLeft";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the bottom center.
+ * Used with referencePoint() to set the reference point of transformations to the bottom center of the page item.
  * @property BOTTOM_CENTER {String}
  * @cat Document
  * @subcat Transformation
@@ -160,7 +160,7 @@ pub.BOTTOM_LEFT = "bottomLeft";
 pub.BOTTOM_CENTER = "bottomCenter";
 
 /**
- * Used with referencePoint() to set the reference point of transformations to the bottom right.
+ * Used with referencePoint() to set the reference point of transformations to the bottom right of the page item.
  * @property BOTTOM_RIGHT {String}
  * @cat Document
  * @subcat Transformation
