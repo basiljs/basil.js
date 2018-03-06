@@ -7335,7 +7335,7 @@ pub.transform = function(pItem, type, value) {
   app.transformPreferences.adjustStrokeWeightWhenScaling = false;
   app.transformPreferences.whenScaling = WhenScalingOptions.ADJUST_SCALING_PERCENTAGE;
 
-  var result;
+  var result = null;
   var idAnchorPoints = {
     topLeft: AnchorPoint.TOP_LEFT_ANCHOR,
     topCenter: AnchorPoint.TOP_CENTER_ANCHOR,
@@ -7477,7 +7477,7 @@ pub.transform = function(pItem, type, value) {
   app.transformPreferences.adjustStrokeWeightWhenScaling = true;
   app.transformPreferences.whenScaling = WhenScalingOptions.APPLY_TO_CONTENT;
 
-  if(!result) {
+  if(result === null) {
     result = value;
   }
   return result;
