@@ -7348,15 +7348,30 @@ pub.referencePoint = function(refPoint) {
  * @returns {Number} The current width.
  */
 pub.transform = function(pItem, type, value) {
-  println("CP0");
-  if(!pItem || !pItem.hasOwnProperty("geometricBounds") || !isString(type)) {
-    error("b.transform(), invalid parameters. Use: page item, type, value.");
+
+  if(!pItem || !pItem.hasOwnProperty("geometricBounds")) {
+    error("transform(), invalid first parameter. Use page item.");
   }
-  println("CP1");
+
+  var idAnchorPoints = {
+    topLeft: AnchorPoint.TOP_LEFT_ANCHOR,
+    topCenter: AnchorPoint.TOP_CENTER_ANCHOR,
+    topRight: AnchorPoint.TOP_RIGHT_ANCHOR,
+    centerLeft: AnchorPoint.LEFT_CENTER_ANCHOR,
+    center: AnchorPoint.CENTER_ANCHOR,
+    centerRight: AnchorPoint.RIGHT_CENTER_ANCHOR,
+    bottomLeft: AnchorPoint.BOTTOM_LEFT_ANCHOR,
+    bottomCenter: AnchorPoint.BOTTOM_CENTER_ANCHOR,
+    bottomRight: AnchorPoint.BOTTOM_RIGHT_ANCHOR
+  };
+
+  var aPoint = idAnchorPoints[currRefPoint];
 
   // TODO
   // x, y, Position, Translation return
   // make this work for different anchor points
+  // turn off scaling of strokes: app.transformPreferences.adjustStrokeWeightWhenScaling, need to reset user setting
+  //
 
   var tm = app.transformationMatrices.add();
   var bounds = pItem.geometricBounds;
@@ -7364,62 +7379,88 @@ pub.transform = function(pItem, type, value) {
   var h = Math.abs(bounds[2] - bounds[0]);
 
   if(type === "width") {
-    println("CPwidth");
     if(isNumber(value)) {
       tm = tm.scaleMatrix(value / w, 1);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
       return w;
     }
   } else if (type === "height") {
-    println("CPheight");
-
     if(isNumber(value)) {
       tm = tm.scaleMatrix(1, value / h);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
       return h;
     }
   } else if (type === "size") {
-    println("CPsize");
     if(isArray(value)) {
       tm = tm.scaleMatrix(value[0] / w, value[1] / h);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
       return {width: w, height: h};
     }
-  } else if(type === "translate") {
-    println("CPtranslate");
+  } else if(type === "translation" || type === "translate") {
     if(isArray(value)) {
       tm = tm.translateMatrix(value[0], value[1]);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     }
-  } else if (type === "rotation") {
+  } else if (type === "rotation" || type === "rotate") {
     if(isNumber(value)) {
       tm = tm.rotateMatrix(-pItem.rotationAngle - value);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
       return -pItem.rotationAngle;
     }
-  } else if (type === "scale") {
+  } else if (type === "scaling" || type === "scale") {
     if(isNumber(value)) {
       tm = tm.scaleMatrix(value, value);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else if(isArray(value)) {
       tm = tm.scaleMatrix(value[0], value[1]);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     }
-  } else if (type === "shear") {
+  } else if (type === "shearing"  || type === "shear") {
     if(isNumber(value)) {
       tm = tm.shearMatrix(-pItem.shearAngle - value);
-      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, AnchorPoint.topLeftAnchor, tm);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
       return -pItem.shearAngle;
     }
     // TODO figure out what to return with scale
     // maybe the global "Adjust scaling percentage" option needs to be turned on in the beginning of the script
-  } else if (type === "position") {
+    // app.transformPreferences.whenScaling
+  } else if (type === "position" || "x" || "y") {
 
+    var pageTopLeft = currPage.resolve(AnchorPoint.TOP_LEFT_ANCHOR, CoordinateSpaces.SPREAD_COORDINATES)[0];
+    var anchorPosOnSpread = pItem.resolve(aPoint, CoordinateSpaces.SPREAD_COORDINATES)[0];
+    var anchorPosOnPage = [anchorPosOnSpread[0] - pageTopLeft[0], anchorPosOnSpread[1] - pageTopLeft[1]];
+
+    if(type === "x") {
+      if(isNumber(value)) {
+        transform(pItem, "position", [value, anchorPosOnPage[1]]);
+        return value;
+      } else {
+        return anchorPosOnPage[0];
+      }
+    } else if (type === "y") {
+      if(isNumber(value)) {
+        transform(pItem, "position", [anchorPosOnPage[0], value]);
+        return value;
+      } else {
+        return anchorPosOnPage[1];
+      }
+    } else {
+      if(isArray(value)) {
+        var offset = [value[0] - anchorPosOnPage[0], value[1] - anchorPosOnPage[1]];
+        transform(pItem, "translation", offset);
+        return value;
+      } else {
+        return [anchorPosOnPage[0], anchorPosOnPage[1]];
+      }
+    }
+
+  } else {
+    error("transform(), invalid transform type. Use \"translation\", \"rotation\", \"scaling\", \"shearing\", \"size\", \"width\", \"height\", \"position\", \"x\" or \"y\".");
   }
 
 }
