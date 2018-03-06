@@ -7385,8 +7385,6 @@ pub.transform = function(pItem, type, value) {
   var aPoint = idAnchorPoints[currRefPoint];
   var unitEnum = basilUnits[currUnits];
 
-  println("Units: " + unitEnum.toString());
-
   var tm = app.transformationMatrices.add();
   var bounds = pItem.geometricBounds;
   var w = Math.abs(bounds[3] - bounds[1]);
@@ -7419,11 +7417,9 @@ pub.transform = function(pItem, type, value) {
   } else if(type === "translation" || type === "translate") {
     if(isArray(value)) {
 
-      if(currUnits !== "pt") {
-        println("CP units");
-        value[0] = UnitValue(value[0], unitEnum).as(MeasurementUnits.POINTS);
-        value[1] = UnitValue(value[1], unitEnum).as(MeasurementUnits.POINTS);
-      }
+      // for proper matrix translation, convert units to points
+      value[0] = UnitValue(value[0], unitEnum).as(MeasurementUnits.POINTS);
+      value[1] = UnitValue(value[1], unitEnum).as(MeasurementUnits.POINTS);
 
       tm = tm.translateMatrix(value[0], value[1]);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
@@ -7456,11 +7452,16 @@ pub.transform = function(pItem, type, value) {
 
   } else if (type === "position" || type === "x" || type === "y") {
 
-    println("CP positional")
-
+    // calculate position in points
     var pageTopLeft = currPage.resolve(AnchorPoint.TOP_LEFT_ANCHOR, CoordinateSpaces.SPREAD_COORDINATES)[0];
     var anchorPosOnSpread = pItem.resolve(aPoint, CoordinateSpaces.SPREAD_COORDINATES)[0];
-    var anchorPosOnPage = [anchorPosOnSpread[0] - pageTopLeft[0], anchorPosOnSpread[1] - pageTopLeft[1]];
+    var anchorPosOnPagePt = [anchorPosOnSpread[0] - pageTopLeft[0], anchorPosOnSpread[1] - pageTopLeft[1]];
+
+    // convert position to user units
+    var anchorPosOnPage = [
+      UnitValue(anchorPosOnPagePt[0], MeasurementUnits.POINTS).as(unitEnum),
+      UnitValue(anchorPosOnPagePt[1], MeasurementUnits.POINTS).as(unitEnum),
+    ];
 
     if(type === "x") {
       if(isNumber(value)) {
