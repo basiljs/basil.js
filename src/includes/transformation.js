@@ -55,16 +55,42 @@ pub.referencePoint = function(refPoint) {
 };
 
 /**
- * @description TODO
+ * @description Transforms a given page item. The type of transformation is determinded with the second parameter. The third parameter is the transformation value, either a number or an array of x and y values. The transformation's reference point (top left, bottom center etc.) can be set beforehand by using the <code>referencePoint()</code> function. If the third parameter is ommited, the function can be used to measure the value of the page item.
+ * There are 10 different transformation types:
+ * – <code>"translation"</code>: Translates the page item by the given <code>[x, y]</code> values. Returns the coordinates of the page item's anchor point as an array.
+ * – <code>"rotation"</code>: Rotates the page item to the given degree value. Returns the page item's rotation value in degrees.
+ * – <code>"scaling"</code>: Scales the page item to the given <code>[x, y]</code> scale factor values. Alternatively, a single scale factor value can be used to scale the page item uniformely. Returns the scale factor values of the page item's current scale as an array.
+ * – <code>"shearing"</code>: Shears the page item to the given degree value. Returns the page item's shear value in degrees.
+ * – <code>"size"</code>: Sets the page item's size to the given <code>[x, y]</code> dimensions. Returns the size of the page item as an array.
+ * – <code>"width"</code>: Sets the page item's width to the given value. Returns the width of the page item.
+ * – <code>"height"</code>: Sets the page item's height to the given value. Returns the height of the page item.
+ * - <code>"position"</code>: Sets the position of the page item's anchor point to the given <code>[x, y]</code> coordinates. Returns the coordinates of the page item's anchor point as an array.
+ * – <code>"x"</code>: Sets the x-position of the page item's anchor point to the given value. Returns the x-coordinate of the page item's anchor point.
+ * – <code>"y"</code>: Sets the y-position of the page item's anchor point to the given value. Returns the y-coordinate of the page item's anchor point.
  *
  * @cat Document
  * @subcat Transformation
  * @method transform
- * @param {PageItem} pItem The PageItem to transform.
+ * @param {PageItem} pItem The page item to transform.
  * @param {String} type The type of transformation.
- * @param {Number|Array} value The value(s) of the transformation.
- * @returns {Number} The current width.
+ * @param {Number|Array} [value] The value(s) of the transformation.
+ * @returns {Number|Array} The current value(s) of the specified transformation.
+ *
+ * @example <caption>Rotating a rectangle by 25 degrees</caption>
+ * var r = rect(20, 40, 200, 100);
+ * transform(r, "rotation", 25);
+ *
+ * @example <caption>Measure the width of a rectangle</caption>
+ * var r = rect(20, 40, random(100, 300), 100);
+ * var w = transform(r, "width");
+ * println(w); // prints the rectangle's random width between 100 and 300
+ *
+ * @example <caption>Position a rectangle's lower right corner at a certain position</caption>
+ * var r = rect(20, 40, random(100, 300), random(50, 150));
+ * referencePoint(BOTTOM_RIGHT);
+ * transform(r, "position", [40, 40]);
  */
+
 pub.transform = function(pItem, type, value) {
 
   if(!pItem || !pItem.hasOwnProperty("geometricBounds")) {
