@@ -7453,9 +7453,17 @@ pub.transform = function(pItem, type, value) {
   } else if (type === "position" || type === "x" || type === "y") {
 
     // calculate position in points
-    var pageTopLeft = currPage.resolve(AnchorPoint.TOP_LEFT_ANCHOR, CoordinateSpaces.SPREAD_COORDINATES)[0];
+    var topLeft;
+    if(currCanvasMode === PAGE || currCanvasMode === MARGIN || currCanvasMode === BLEED) {
+      // top left of current page
+      topLeft = currPage.resolve(AnchorPoint.TOP_LEFT_ANCHOR, CoordinateSpaces.SPREAD_COORDINATES)[0];
+    } else {
+      // top left of current spread
+      topLeft = currPage.parent.pages.firstItem().resolve(AnchorPoint.TOP_LEFT_ANCHOR, CoordinateSpaces.SPREAD_COORDINATES)[0];
+    }
+
     var anchorPosOnSpread = pItem.resolve(aPoint, CoordinateSpaces.SPREAD_COORDINATES)[0];
-    var anchorPosOnPagePt = [anchorPosOnSpread[0] - pageTopLeft[0], anchorPosOnSpread[1] - pageTopLeft[1]];
+    var anchorPosOnPagePt = [anchorPosOnSpread[0] - topLeft[0], anchorPosOnSpread[1] - topLeft[1]];
 
     // convert position to user units
     var anchorPosOnPage = [
