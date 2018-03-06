@@ -100,33 +100,6 @@ pub.image = function(img, x, y, w, h) {
 };
 
 /**
- * Transforms position and size of an image.
- * The image fit options are always "contentToFrame".
- *
- * @cat Document
- * @subcat Image
- * @method transformImage
- * @param  {Graphic} img The image to transform.
- * @param  {Number} x The new x.
- * @param  {Number} y The new y.
- * @param  {Number} width The new width.
- * @param  {Number} height The new height.
- */
-pub.transformImage = function(img, x, y, width, height) {
-  if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
-    // [y1, x1, y2, x2]
-    img.geometricBounds = [y, x, y + height, x + width];
-    if (currImageMode === pub.CENTER) {
-      img.move(null, [-(width / 2), -(height / 2)]);
-    }
-    img.fit(FitOptions.CENTER_CONTENT);
-    img.fit(FitOptions.contentToFrame);
-  } else {
-    error("transformImage(), wrong type! Use: img, x, y, width, height");
-  }
-};
-
-/**
  * Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.
  * If no parameter is passed the currently set mode is returned as String.
  *
