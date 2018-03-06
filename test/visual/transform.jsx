@@ -21,34 +21,39 @@ function draw() {
   textSize(16);
   textFont("Helvetica", "Bold");
 
+  // single transformations
+  createPage("translation", [20, -40], units());
 
-  // createPage("translation", [20, -40], units());
-
-  // createPage("rotation", 10, "°");
+  createPage("rotation", 10, "°");
 
   createPage("scaling", 1.5);
 
-  // createPage("shearing", 40, "°");
+  createPage("scaling", [-1, -0.8]);
 
-  // createPage("size", [40, 80], units());
+  createPage("scaling", [0.8, 1.2]);
 
-  // createPage("width", 60, units());
+  createPage("shearing", 40, "°");
 
-  // createPage("height", 80, units());
+  createPage("size", [40, 80], units());
 
-  // createPage("position", [220, 240], units());
+  createPage("size", [50, 50]);
 
-  // createPage("x", 220, units());
+  createPage("width", 60, units());
 
-  // createPage("y", 240, units());
+  createPage("height", 80, units());
 
-  // addTransform(createPage("scale", [1.5, 1.2]), "rotation", 20, "°");
-  // addTransform(createPage("rotation", 20, "°"), "scale", [1.5, 1.2]);
+  createPage("position", [220, 240], units());
 
-  // addTransform(createPage("shear", 40, "°"), "rotation", 20, "°");
-  // addTransform(createPage("rotation", 20, "°"), "shear", 40, "°");
+  createPage("x", 220, units());
 
+  createPage("y", 240, units());
 
+  // consectutive transformations
+  addTransform(createPage("scale", [1.5, 1.2]), "rotation", 20, "°");
+  addTransform(createPage("rotation", 20, "°"), "scale", [1.5, 1.2]);
+
+  addTransform(createPage("shear", 40, "°"), "rotation", 20, "°");
+  addTransform(createPage("rotation", 20, "°"), "shear", 40, "°");
 }
 
 function addTransform(page, transformType, value, unit) {

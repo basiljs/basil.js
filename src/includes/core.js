@@ -23,7 +23,9 @@ var init = function() {
 
   appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
-    preflightOff: app.preflightOptions.preflightOff
+    preflightOff: app.preflightOptions.preflightOff,
+    adjustStrokeWeight: app.transformPreferences.adjustStrokeWeightWhenScaling,
+    whenScaling: app.transformPreferences.whenScaling
   };
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
@@ -56,6 +58,8 @@ var runScript = function() {
     // app settings
     app.scriptPreferences.enableRedraw = true;
     app.preflightOptions.preflightOff = true;
+    app.transformPreferences.adjustStrokeWeightWhenScaling = true;
+    app.transformPreferences.whenScaling = WhenScalingOptions.APPLY_TO_CONTENT;
 
     currentDoc();
 
@@ -548,6 +552,8 @@ var resetUserSettings = function() {
   // app settings
   app.scriptPreferences.enableRedraw = appSettings.enableRedraw;
   app.preflightOptions.preflightOff  = appSettings.preflightOff;
+  app.transformPreferences.adjustStrokeWeightWhenScaling = appSettings.adjustStrokeWeight;
+  app.transformPreferences.whenScaling = appSettings.whenScaling;
 
   // doc settings
   if(currDoc && currDocSettings) {
