@@ -86,7 +86,18 @@ pub.transform = function(pItem, type, value) {
     bottomCenter: AnchorPoint.BOTTOM_CENTER_ANCHOR,
     bottomRight: AnchorPoint.BOTTOM_RIGHT_ANCHOR
   };
+  var basilUnits = {
+    pt: MeasurementUnits.POINTS,
+    mm: MeasurementUnits.MILLIMETERS,
+    cm: MeasurementUnits.CENTIMETERS,
+    inch: MeasurementUnits.INCHES,
+    px: MeasurementUnits.PIXELS
+  }
+
   var aPoint = idAnchorPoints[currRefPoint];
+  var unitEnum = basilUnits[currUnits];
+
+  println("Units: " + unitEnum.toString());
 
   var tm = app.transformationMatrices.add();
   var bounds = pItem.geometricBounds;
@@ -119,11 +130,17 @@ pub.transform = function(pItem, type, value) {
 
   } else if(type === "translation" || type === "translate") {
     if(isArray(value)) {
+
+      if(currUnits !== "pt") {
+        println("CP units");
+        value[0] = UnitValue(value[0], unitEnum).as(MeasurementUnits.POINTS);
+        value[1] = UnitValue(value[1], unitEnum).as(MeasurementUnits.POINTS);
+      }
+
       tm = tm.translateMatrix(value[0], value[1]);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
-    } else {
-      result = transform(pItem, "position");
     }
+    result = transform(pItem, "position");
 
   } else if (type === "rotation" || type === "rotate") {
     if(isNumber(value)) {
@@ -149,7 +166,9 @@ pub.transform = function(pItem, type, value) {
     }
     result = -pItem.shearAngle;
 
-  } else if (type === "position" || "x" || "y") {
+  } else if (type === "position" || type === "x" || type === "y") {
+
+    println("CP positional")
 
     var pageTopLeft = currPage.resolve(AnchorPoint.TOP_LEFT_ANCHOR, CoordinateSpaces.SPREAD_COORDINATES)[0];
     var anchorPosOnSpread = pItem.resolve(aPoint, CoordinateSpaces.SPREAD_COORDINATES)[0];
