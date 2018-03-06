@@ -7163,13 +7163,13 @@ var precision = function(num, dec) {
 };
 
 /**
- * The function calculates the geometric bounds of any given object. Use <code>itemX()</code>, <code>itemY()</code>, <code>itemPosition()</code>, <code>itemWidth()</code>, <code>itemHeight()</code> and <code>itemSize()</code> to modify page items.
- * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
+ * The function calculates the geometric bounds of any given page item or text. Use the <code>transforms()</code> function to modify page items.
+ * In case the object is any kind of text, additional typographic information baseline and xHeight are calculated.
  *
  * @cat Document
  * @subcat Transformation
  * @method bounds
- * @param  {Text|Object} obj The object to calculate the geometric bounds.
+ * @param  {PageItem|Text} obj The page item or text to calculate the geometric bounds.
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
 pub.bounds = function (obj) {
@@ -7230,59 +7230,6 @@ pub.bounds = function (obj) {
     else {
       error("bounds(), invalide type of parameter! Can't get bounds for this object.");
     }
-  }
-};
-
-/**
- * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemX
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [x] The new x position, optional.
- * @returns {Number} The current x position.
- */
-pub.itemX = function(pItem, x) {
-  var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("itemX(), please note that only CORNER positioning is fully supported. Use with care.");
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof x === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      pItem.geometricBounds = [pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width];
-    } else {
-      return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
-    }
-  } else {
-    error("itemX(), pItem has to be a valid PageItem");
-  }
-};
-
-/**
- * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemY
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [y] The new y position, optional.
- * @returns {Number} The current y position.
- */
-pub.itemY = function(pItem, y) {
-  var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("itemY(), please note that only CORNER positioning is fully supported. Use with care.");
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof y === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
-      pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
-    } else {
-      return precision(pItem.geometricBounds[0], 5) + off;
-    }
-  } else {
-    error("itemY(), pItem has to be a valid PageItem");
   }
 };
 
@@ -7536,119 +7483,6 @@ pub.transform = function(pItem, type, value) {
   return result;
 
 }
-
-/**
- * @description Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemWidth
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [width] The new width.
- * @returns {Number} The current width.
- */
-pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemWidth(), please note that only CORNER positioning is fully supported. Use with care.");
-  }
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof width === "number") {
-      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
-    } else {
-      return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
-    }
-  } else {
-    error("itemWidth(), pItem has to be a valid PageItem");
-  }
-};
-
-/**
- * @description Scales the given PageItem to the given height. If height is not given as argument the current height is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemHeight
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [height] The new height.
- * @returns {Number} The current height.
- */
-pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemHeight(), please note that only CORNER positioning is fully supported. Use with care.");
-  }
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof height === "number") {
-      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
-    } else {
-      return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
-    }
-  } else {
-    error("itemHeight(), pItem has to be a valid PageItem");
-  }
-};
-
-/**
- * @description Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemPosition
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [x] The new x coordinate.
- * @param {Number} [y] The new y coordinate.
- * @returns {Object} Returns an object with the fields x and y.
- */
-pub.itemPosition = function(pItem, x, y) {
-
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemPosition(), please note that only CORNER positioning is fully supported. Use with care.");
-  }
-  if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof x === "number" && typeof y === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      var offX = 0;
-      var offY = 0;
-      pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
-    } else {
-      return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
-    }
-  } else {
-    error("itemPosition(), works only with child classes of PageItem.");
-  }
-};
-
-/**
- * @description Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemSize
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [width] The new width.
- * @param {Number} [height] The new height.
- * @returns {Object} Returns an object with the fields width and height.
- */
-pub.itemSize = function(pItem, width, height) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemSize(), please note that only CORNER positioning is fully supported. Use with care.");
-  }
-  if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
-
-    var x = pItem.geometricBounds[1];
-    var y = pItem.geometricBounds[0];
-
-    if(typeof width === "number" && typeof height === "number") {
-      pItem.geometricBounds = [y, x, y + height, x + width];
-    } else {
-      return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
-    }
-
-  } else {
-    error("itemSize(), works only with child classes of PageItem.");
-  }
-};
-
 
 var printMatrixHelper = function(elements) {
   var big = 0;
