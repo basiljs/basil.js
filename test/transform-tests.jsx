@@ -24,7 +24,6 @@ basilTest("TransformTests", {
 
   testMoveX: function() {
     var myDoc = doc();
-    noStroke();
     // create box at 0,0
     var myRect = rect(0, 0, 100, 100);
     assert(approxEqual(transform(myRect, "x"), 0));
@@ -36,7 +35,6 @@ basilTest("TransformTests", {
 
   testMoveY: function() {
     var myDoc = doc();
-    noStroke();
     // create box at 0,0
     var myRect = rect(0, 0, 100, 100);
     assert(approxEqual(transform(myRect, "y"), 0));
@@ -48,7 +46,6 @@ basilTest("TransformTests", {
 
   testPosition: function() {
     var myDoc = doc();
-    noStroke();
     // create box at 0,0
     var myRect = rect(0, 0, 100, 100);
     assert(approxEqual(transform(myRect, "position")[0], 0) &&
@@ -62,7 +59,6 @@ basilTest("TransformTests", {
 
   testWidth: function() {
     var myDoc = doc();
-    noStroke();
     // create box at 0,0
     var myRect = rect(0, 0, 100, 100);
     assert(approxEqual(transform(myRect, "width"), 100));
@@ -74,7 +70,6 @@ basilTest("TransformTests", {
 
   testHeight: function() {
     var myDoc = doc();
-    noStroke();
     // create box at 0,0
     var myRect = rect(0, 0, 100, 100);
     assert(approxEqual(transform(myRect, "height"), 100));
@@ -86,7 +81,6 @@ basilTest("TransformTests", {
 
   testSize: function() {
     var myDoc = doc();
-    noStroke();
     // create box at 0,0
     var myRect = rect(0, 0, 100, 100);
     assert(approxEqual(transform(myRect, "size")[0], 100) &&
