@@ -7398,14 +7398,33 @@ pub.transform = function(pItem, type, value) {
 
   } else if (type === "position" || type === "x" || type === "y") {
 
-    // calculate position in points
-    var topLeft;
-    if(currCanvasMode === PAGE || currCanvasMode === MARGIN || currCanvasMode === BLEED) {
-      // top left of current page
-      topLeft = currPage.resolve([AnchorPoint.TOP_LEFT_ANCHOR, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
-    } else {
-      // top left of current spread
-      topLeft = currPage.parent.pages.firstItem().resolve([AnchorPoint.TOP_LEFT_ANCHOR, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
+    // find page that holds the top left corner of the current canvas mode
+    var refPage = currPage;
+    if(!(currCanvasMode === PAGE || currCanvasMode === MARGIN || currCanvasMode === BLEED)) {
+      refPage = currPage.parent.pages.firstItem();
+    }
+
+    var topLeft = refPage.resolve([AnchorPoint.TOP_LEFT_ANCHOR, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
+
+    // calculate offset for margin and bleed modes
+    if(currCanvasMode === MARGIN || currCanvasMode === FACING_MARGINS) {
+      if(refPage.side === PageSideOptions.LEFT_HAND) {
+        // left hand pages' outer margin refers to marginPreferences.right
+        topLeft[0] = topLeft[0] + UnitValue(refPage.marginPreferences.right, unitEnum).as(MeasurementUnits.POINTS);
+      } else {
+        topLeft[0] = topLeft[0] + UnitValue(refPage.marginPreferences.left, unitEnum).as(MeasurementUnits.POINTS);
+      }
+      topLeft[1] = topLeft[1] + UnitValue(refPage.marginPreferences.top, unitEnum).as(MeasurementUnits.POINTS);
+    } else if (currCanvasMode === BLEED || currCanvasMode === FACING_BLEEDS) {
+      if(refPage === currPage.parent.pages.firstItem()) {
+        // outside bleed only needs to be considered on the first page of a spread
+        if(refPage.side === PageSideOptions.LEFT_HAND) {
+          topLeft[0] = topLeft[0] - UnitValue(currentDoc().documentPreferences.documentBleedOutsideOrRightOffset, unitEnum).as(MeasurementUnits.POINTS);
+        } else {
+          topLeft[0] = topLeft[0] - UnitValue(currentDoc().documentPreferences.documentBleedInsideOrLeftOffset, unitEnum).as(MeasurementUnits.POINTS);
+        }
+      }
+      topLeft[1] = topLeft[1] - UnitValue(currentDoc().documentPreferences.documentBleedTopOffset, unitEnum).as(MeasurementUnits.POINTS);
     }
 
     var anchorPosOnSpread = pItem.resolve([aPoint, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
