@@ -460,14 +460,14 @@ var updatePublicPageSizeVars = function () {
 
     case pub.BLEED:
       widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      if(facingPages) {
+      if(facingPages && spreadCount > 1) {
         widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
       }
       heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
       pub.resetMatrix();
       pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
-      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
+      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND && spreadCount > 1) {
         pub.resetMatrix();
         pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
       }
@@ -486,7 +486,7 @@ var updatePublicPageSizeVars = function () {
 
       if(currentPage().name === "1") {
         pub.width = $.global.width = w;
-      } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
+      } else if (currentPage().side === PageSideOptions.RIGHT_HAND && spreadCount > 1) {
         pub.translate(-w, 0);
       }
 
@@ -506,7 +506,7 @@ var updatePublicPageSizeVars = function () {
       pub.width = $.global.width = w * spreadCount;
       pub.height = $.global.height = h;
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
+      if(currentPage().side === PageSideOptions.RIGHT_HAND && spreadCount > 1) {
         pub.translate(-w + widthOffset / spreadCount, 0);
       }
 
@@ -524,7 +524,7 @@ var updatePublicPageSizeVars = function () {
       pub.width = $.global.width = w * spreadCount;
       pub.height = $.global.height = h;
 
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
+      if(currentPage().side === PageSideOptions.RIGHT_HAND && spreadCount > 1) {
         pub.translate(-w - widthOffset / spreadCount, 0);
       }
 
