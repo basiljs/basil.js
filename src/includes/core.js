@@ -337,7 +337,6 @@ var setCurrDoc = function(doc, skipStyles) {
   currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
 
   // set document to default values
-  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
   if(!skipStyles) {
@@ -440,114 +439,77 @@ var currentPage = function() {
 };
 
 var updatePublicPageSizeVars = function () {
-  var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-  var facingPages = currDoc.documentPreferences.facingPages;
-  var singlePageMode = false;
+  var w, h;
+  var xOrigin = 0;
+  var yOrigin = 0;
+  var cm = currCanvasMode;
+  var p = currPage;
+  var spread = p.parent;
+  var docPrefs = currentDoc().documentPreferences;
 
-  var widthOffset = 0;
-  var heightOffset = 0;
+  if(cm === pub.PAGE || cm === pub.MARGIN || cm === pub.BLEED) {
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+    pub.resetMatrix();
 
-  switch(pub.canvasMode()) {
+    var leftHand = (p.side === PageSideOptions.LEFT_HAND);
+    w = p.bounds[3] - p.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-    case pub.PAGE:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
-      singlePageMode = true;
-      break;
-
-    case pub.MARGIN:
-      widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
-      heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-      singlePageMode = true;
-      break;
-
-    case pub.BLEED:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      if(facingPages) {
-        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+    if (cm === pub.MARGIN) {
+      w -= (p.marginPreferences.left + p.marginPreferences.right);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      xOrigin = leftHand ? p.marginPreferences.right : p.marginPreferences.left;
+      yOrigin = p.marginPreferences.top;
+    } else if (cm === pub.BLEED) {
+      // pub.BLEED
+      var leftBleed = 0;
+      var rightBleed = 0;
+      if(p === spread.pages.firstItem()) {
+        leftBleed = leftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.resetMatrix();
-        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
+      if(p === spread.pages.lastItem()) {
+        rightBleed = leftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
       }
-      singlePageMode = true;
-      break;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      xOrigin = -leftBleed;
+      yOrigin = -docPrefs.documentBleedTopOffset;
+    }
 
-    case pub.FACING_PAGES:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
+  } else {
+    // FACING_MODES
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.SPREAD_ORIGIN;
+    pub.resetMatrix();
 
-      var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
+    var firstPage = spread.pages.firstItem();
+    var lastPage = spread.pages.lastItem();
+    var firstPageLeftHand = (firstPage.side === PageSideOptions.LEFT_HAND);
+    var lastPageLeftHand = (lastPage.side === PageSideOptions.LEFT_HAND);
+    w = lastPage.bounds[3] - firstPage.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-      pub.width = $.global.width = w * 2;
+    if(cm === pub.FACING_MARGINS) {
+      var leftMargin = firstPageLeftHand ? firstPage.marginPreferences.right : firstPage.marginPreferences.left;
+      var rightMargin = lastPageLeftHand ? lastPage.marginPreferences.left : firstPage.marginPreferences.right;
+      w -= (leftMargin + rightMargin);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      xOrigin = leftMargin;
+      yOrigin = p.marginPreferences.top;
+    } else if (cm === pub.FACING_BLEEDS) {
+      var leftBleed = firstPageLeftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
+      var rightBleed = lastPageLeftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      xOrigin = -leftBleed;
+      yOrigin = -docPrefs.documentBleedTopOffset;
+    }
 
-      if(currentPage().name === "1") {
-        pub.width = $.global.width = w;
-      } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w, 0);
-      }
-
-
-      pub.height = $.global.height = h;
-      break;
-
-    case pub.FACING_BLEEDS:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w + widthOffset / 2, 0);
-      }
-
-      break;
-
-    case pub.FACING_MARGINS:
-      widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
-      heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-
-      var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w - widthOffset / 2, 0);
-      }
-
-      return; // early exit
-
-    default:
-      error("canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: PAGE, MARGIN, BLEED, FACING_PAGES, FACING_MARGINS, FACING_BLEEDS");
-      break;
   }
 
-  if(singlePageMode) {
-    var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;
+  pub.translate(xOrigin, yOrigin);
+  pub.width = $.global.width = w;
+  pub.height = $.global.height = h;
 
-    pub.width = $.global.width = w;
-    pub.height = $.global.height = h;
-  }
 };
 
 var resetUserSettings = function() {
