@@ -1248,6 +1248,7 @@ var updatePublicPageSizeVars = function () {
   var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
   var facingPages = currDoc.documentPreferences.facingPages;
   var singlePageMode = false;
+  var spreadCount = currentPage().parent.pages.length;
 
   var widthOffset = 0;
   var heightOffset = 0;
@@ -1293,7 +1294,7 @@ var updatePublicPageSizeVars = function () {
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = $.global.width = w * 2;
+      pub.width = $.global.width = w * spreadCount;
 
       if(currentPage().name === "1") {
         pub.width = $.global.width = w;
@@ -1311,14 +1312,14 @@ var updatePublicPageSizeVars = function () {
       pub.resetMatrix();
       pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
 
-      var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
+      var w = pageBounds[3] - pageBounds[1] + widthOffset / spreadCount;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = $.global.width = w * 2;
+      pub.width = $.global.width = w * spreadCount;
       pub.height = $.global.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w + widthOffset / 2, 0);
+        pub.translate(-w + widthOffset / spreadCount, 0);
       }
 
       break;
@@ -1329,14 +1330,14 @@ var updatePublicPageSizeVars = function () {
       pub.resetMatrix();
       pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
 
-      var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
+      var w = pageBounds[3] - pageBounds[1] - widthOffset / spreadCount;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
-      pub.width = $.global.width = w * 2;
+      pub.width = $.global.width = w * spreadCount;
       pub.height = $.global.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w - widthOffset / 2, 0);
+        pub.translate(-w - widthOffset / spreadCount, 0);
       }
 
       return; // early exit
