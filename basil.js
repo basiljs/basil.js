@@ -893,7 +893,6 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
-  currRefPoint = pub.TOP_LEFT;
   currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
@@ -939,6 +938,9 @@ var runScript = function() {
     app.transformPreferences.whenScaling = WhenScalingOptions.APPLY_TO_CONTENT;
 
     currentDoc();
+
+    appSettings.refPoint = app.activeWindow.transformReferencePoint;
+    currRefPoint = pub.referencePoint(app.activeWindow.transformReferencePoint);
 
     if ($.global.setup instanceof Function) {
       setup();
@@ -1431,6 +1433,10 @@ var resetUserSettings = function() {
   app.preflightOptions.preflightOff  = appSettings.preflightOff;
   app.transformPreferences.adjustStrokeWeightWhenScaling = appSettings.adjustStrokeWeight;
   app.transformPreferences.whenScaling = appSettings.whenScaling;
+
+  if(app.properties.activeWindow instanceof LayoutWindow ) {
+    app.activeWindow.transformReferencePoint = appSettings.refPoint;
+  }
 
   // doc settings
   if(currDoc && currDocSettings) {
