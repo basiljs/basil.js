@@ -7265,10 +7265,10 @@ pub.referencePoint = function(refPoint) {
 /**
  * @description Transforms a given page item. The type of transformation is determinded with the second parameter. The third parameter is the transformation value, either a number or an array of x and y values. The transformation's reference point (top left, bottom center etc.) can be set beforehand by using the <code>referencePoint()</code> function. If the third parameter is ommited, the function can be used to measure the value of the page item.
  * There are 10 different transformation types:
- * – <code>"translation"</code>: Translates the page item by the given <code>[x, y]</code> values. Returns the coordinates of the page item's anchor point as an array.
- * – <code>"rotation"</code>: Rotates the page item to the given degree value. Returns the page item's rotation value in degrees.
- * – <code>"scaling"</code>: Scales the page item to the given <code>[x, y]</code> scale factor values. Alternatively, a single scale factor value can be used to scale the page item uniformely. Returns the scale factor values of the page item's current scale as an array.
- * – <code>"shearing"</code>: Shears the page item to the given degree value. Returns the page item's shear value in degrees.
+ * – <code>"translate"</code>: Translates the page item by the given <code>[x, y]</code> values. Returns the coordinates of the page item's anchor point as an array.
+ * – <code>"rotate"</code>: Rotates the page item to the given degree value. Returns the page item's rotation value in degrees.
+ * – <code>"scale"</code>: Scales the page item to the given <code>[x, y]</code> scale factor values. Alternatively, a single scale factor value can be used to scale the page item uniformely. Returns the scale factor values of the page item's current scale as an array.
+ * – <code>"shear"</code>: Shears the page item to the given degree value. Returns the page item's shear value in degrees.
  * – <code>"size"</code>: Sets the page item's size to the given <code>[x, y]</code> dimensions. Returns the size of the page item as an array.
  * – <code>"width"</code>: Sets the page item's width to the given value. Returns the width of the page item.
  * – <code>"height"</code>: Sets the page item's height to the given value. Returns the height of the page item.
@@ -7284,9 +7284,9 @@ pub.referencePoint = function(refPoint) {
  * @param {Number|Array} [value] The value(s) of the transformation.
  * @returns {Number|Array} The current value(s) of the specified transformation.
  *
- * @example <caption>Rotating a rectangle by 25 degrees</caption>
+ * @example <caption>Rotating a rectangle to a 25 degrees angle</caption>
  * var r = rect(20, 40, 200, 100);
- * transform(r, "rotation", 25);
+ * transform(r, "rotate", 25);
  *
  * @example <caption>Measure the width of a rectangle</caption>
  * var r = rect(20, 40, random(100, 300), 100);
@@ -7360,7 +7360,7 @@ pub.transform = function(pItem, type, value) {
       result = [w, h];
     }
 
-  } else if(type === "translation" || type === "translate") {
+  } else if(type === "translate" || type === "translation") {
     if(isArray(value)) {
 
       // for proper matrix translation, convert units to points
@@ -7372,14 +7372,14 @@ pub.transform = function(pItem, type, value) {
     }
     result = transform(pItem, "position");
 
-  } else if (type === "rotation" || type === "rotate") {
+  } else if (type === "rotate" || type === "rotation") {
     if(isNumber(value)) {
       tm = tm.rotateMatrix(-pItem.rotationAngle - value);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     }
     result = -pItem.rotationAngle;
 
-  } else if (type === "scaling" || type === "scale") {
+  } else if (type === "scale" || type === "scaling") {
     if(isNumber(value)) {
       tm = tm.scaleMatrix(value, value);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
@@ -7389,7 +7389,7 @@ pub.transform = function(pItem, type, value) {
     }
     result = [pItem.horizontalScale / 100, pItem.verticalScale / 100];
 
-  } else if (type === "shearing"  || type === "shear") {
+  } else if (type === "shear"  || type === "shearing") {
     if(isNumber(value)) {
       tm = tm.shearMatrix(-pItem.shearAngle - value);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
@@ -7455,7 +7455,7 @@ pub.transform = function(pItem, type, value) {
     } else {
       if(isArray(value)) {
         var offset = [value[0] - anchorPosOnPage[0], value[1] - anchorPosOnPage[1]];
-        transform(pItem, "translation", offset);
+        transform(pItem, "translate", offset);
         return value;
       } else {
         result = [anchorPosOnPage[0], anchorPosOnPage[1]];
@@ -7463,7 +7463,7 @@ pub.transform = function(pItem, type, value) {
     }
 
   } else {
-    error("transform(), invalid transform type. Use \"translation\", \"rotation\", \"scaling\", \"shearing\", \"size\", \"width\", \"height\", \"position\", \"x\" or \"y\".");
+    error("transform(), invalid transform type. Use \"translate\", \"rotate\", \"scale\", \"shear\", \"size\", \"width\", \"height\", \"position\", \"x\" or \"y\".");
   }
 
   app.transformPreferences.adjustStrokeWeightWhenScaling = true;
