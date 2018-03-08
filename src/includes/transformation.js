@@ -14,41 +14,46 @@
  * @param {String} [referencePoint] The reference point to set.
  * @returns {String} Current reference point setting.
  */
-pub.referencePoint = function(refPoint) {
+pub.referencePoint = function(rp) {
   if(!arguments.length) {
     return currRefPoint;
   }
 
-  if(refPoint === pub.TOP_LEFT ||
-     refPoint === pub.TOP_CENTER ||
-     refPoint === pub.TOP_RIGHT ||
-     refPoint === pub.CENTER_LEFT ||
-     refPoint === pub.CENTER ||
-     refPoint === pub.CENTER_RIGHT ||
-     refPoint === pub.BOTTOM_LEFT ||
-     refPoint === pub.BOTTOM_CENTER ||
-     refPoint === pub.BOTTOM_RIGHT) {
-    currRefPoint = refPoint;
-  } else if(refPoint === 7 || refPoint === AnchorPoint.TOP_LEFT_ANCHOR) {
+  var anchorEnum;
+
+  if(rp === pub.TOP_LEFT || rp === 7 || rp === AnchorPoint.TOP_LEFT_ANCHOR) {
     currRefPoint = pub.TOP_LEFT;
-  } else if(refPoint === 8 || refPoint === AnchorPoint.TOP_CENTER_ANCHOR) {
+    anchorEnum = AnchorPoint.TOP_LEFT_ANCHOR;
+  } else if(rp === pub.TOP_CENTER || rp === 8 || rp === AnchorPoint.TOP_CENTER_ANCHOR) {
     currRefPoint = pub.TOP_CENTER;
-  } else if(refPoint === 9 || refPoint === AnchorPoint.TOP_RIGHT_ANCHOR) {
+    anchorEnum = AnchorPoint.TOP_CENTER_ANCHOR;
+  } else if(rp === pub.TOP_RIGHT || rp === 9 || rp === AnchorPoint.TOP_RIGHT_ANCHOR) {
     currRefPoint = pub.TOP_RIGHT;
-  } else if(refPoint === 4 || refPoint === AnchorPoint.LEFT_CENTER_ANCHOR) {
+    anchorEnum = AnchorPoint.TOP_RIGHT_ANCHOR;
+  } else if(rp === pub.CENTER_LEFT || rp === 4 || rp === AnchorPoint.LEFT_CENTER_ANCHOR) {
     currRefPoint = pub.CENTER_LEFT;
-  } else if(refPoint === 5 || refPoint === AnchorPoint.CENTER_ANCHOR) {
+    anchorEnum = AnchorPoint.LEFT_CENTER_ANCHOR;
+  } else if(rp === pub.CENTER || rp === 5 || rp === AnchorPoint.CENTER_ANCHOR) {
     currRefPoint = pub.CENTER;
-  } else if(refPoint === 6 || refPoint === AnchorPoint.RIGHT_CENTER_ANCHOR) {
+    anchorEnum = AnchorPoint.CENTER_ANCHOR;
+  } else if(rp === pub.CENTER_RIGHT || rp === 6 || rp === AnchorPoint.RIGHT_CENTER_ANCHOR) {
     currRefPoint = pub.CENTER_RIGHT;
-  } else if(refPoint === 1 || refPoint === AnchorPoint.BOTTOM_LEFT_ANCHOR) {
+    anchorEnum = AnchorPoint.RIGHT_CENTER_ANCHOR;
+  } else if(rp === pub.BOTTOM_LEFT || rp === 1 || rp === AnchorPoint.BOTTOM_LEFT_ANCHOR) {
     currRefPoint = pub.BOTTOM_LEFT;
-  } else if(refPoint === 2 || refPoint === AnchorPoint.BOTTOM_CENTER_ANCHOR) {
+    anchorEnum = AnchorPoint.BOTTOM_LEFT_ANCHOR;
+  } else if(rp === pub.BOTTOM_CENTER || rp === 2 || rp === AnchorPoint.BOTTOM_CENTER_ANCHOR) {
     currRefPoint = pub.BOTTOM_CENTER;
-  } else if(refPoint === 3 || refPoint === AnchorPoint.BOTTOM_RIGHT_ANCHOR) {
+    anchorEnum = AnchorPoint.BOTTOM_CENTER_ANCHOR;
+  } else if(rp === pub.BOTTOM_RIGHT || rp === 3 || rp === AnchorPoint.BOTTOM_RIGHT_ANCHOR) {
     currRefPoint = pub.BOTTOM_RIGHT;
+    anchorEnum = AnchorPoint.BOTTOM_RIGHT_ANCHOR;
   } else {
     error("referencePoint(), wrong argument! Use reference point constant (TOP_LEFT, TOP_CENTER, ...), a digit between 1 and 9 or an InDesign anchor point enumerator.");
+  }
+
+  if(app.properties.activeWindow instanceof LayoutWindow ) {
+    app.activeWindow.transformReferencePoint = anchorEnum;
   }
 
   return currRefPoint;
