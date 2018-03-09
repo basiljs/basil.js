@@ -13,6 +13,8 @@ var init = function() {
   currStrokeWeight = 1;
   currStrokeTint = 100;
   currFillTint = 100;
+  currOriginX = 0;
+  currOriginY = 0;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
@@ -440,12 +442,12 @@ var currentPage = function() {
 
 var updatePublicPageSizeVars = function () {
   var w, h;
-  var xOrigin = 0;
-  var yOrigin = 0;
   var cm = currCanvasMode;
-  var p = currPage;
+  var p = currentPage();
   var spread = p.parent;
   var docPrefs = currentDoc().documentPreferences;
+  currOriginX = 0;
+  currOriginY = 0;
 
   if(cm === pub.PAGE || cm === pub.MARGIN || cm === pub.BLEED) {
     currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
@@ -458,8 +460,8 @@ var updatePublicPageSizeVars = function () {
     if (cm === pub.MARGIN) {
       w -= (p.marginPreferences.left + p.marginPreferences.right);
       h -= (p.marginPreferences.top + p.marginPreferences.bottom);
-      xOrigin = leftHand ? p.marginPreferences.right : p.marginPreferences.left;
-      yOrigin = p.marginPreferences.top;
+      currOriginX = leftHand ? p.marginPreferences.right : p.marginPreferences.left;
+      currOriginY = p.marginPreferences.top;
     } else if (cm === pub.BLEED) {
       // pub.BLEED
       var leftBleed = 0;
@@ -472,15 +474,14 @@ var updatePublicPageSizeVars = function () {
       }
       w += leftBleed + rightBleed;
       h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
-      xOrigin = -leftBleed;
-      yOrigin = -docPrefs.documentBleedTopOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
     }
 
   } else {
     // FACING_MODES
     currDoc.viewPreferences.rulerOrigin = RulerOrigin.SPREAD_ORIGIN;
     pub.resetMatrix();
-
     var firstPage = spread.pages.firstItem();
     var lastPage = spread.pages.lastItem();
     var firstPageLeftHand = (firstPage.side === PageSideOptions.LEFT_HAND);
@@ -490,23 +491,23 @@ var updatePublicPageSizeVars = function () {
 
     if(cm === pub.FACING_MARGINS) {
       var leftMargin = firstPageLeftHand ? firstPage.marginPreferences.right : firstPage.marginPreferences.left;
-      var rightMargin = lastPageLeftHand ? lastPage.marginPreferences.left : firstPage.marginPreferences.right;
+      var rightMargin = lastPageLeftHand ? lastPage.marginPreferences.left : lastPage.marginPreferences.right;
       w -= (leftMargin + rightMargin);
       h -= (p.marginPreferences.top + p.marginPreferences.bottom);
-      xOrigin = leftMargin;
-      yOrigin = p.marginPreferences.top;
+      currOriginX = leftMargin;
+      currOriginY = p.marginPreferences.top;
     } else if (cm === pub.FACING_BLEEDS) {
       var leftBleed = firstPageLeftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
       var rightBleed = lastPageLeftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
       w += leftBleed + rightBleed;
       h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
-      xOrigin = -leftBleed;
-      yOrigin = -docPrefs.documentBleedTopOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
     }
 
   }
 
-  pub.translate(xOrigin, yOrigin);
+  pub.translate(currOriginX, currOriginY);
   pub.width = $.global.width = w;
   pub.height = $.global.height = h;
 
