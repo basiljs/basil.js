@@ -559,6 +559,8 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currLeading = null,
   currMatrix = null,
   currMode = null,
+  currOriginX = null,
+  currOriginY = null,
   currPage = null,
   currPathPointer = null,
   currPolygon = null,
@@ -890,6 +892,8 @@ var init = function() {
   currStrokeWeight = 1;
   currStrokeTint = 100;
   currFillTint = 100;
+  currOriginX = 0;
+  currOriginY = 0;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
@@ -1214,7 +1218,6 @@ var setCurrDoc = function(doc, skipStyles) {
   currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
 
   // set document to default values
-  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
   if(!skipStyles) {
@@ -1317,114 +1320,76 @@ var currentPage = function() {
 };
 
 var updatePublicPageSizeVars = function () {
-  var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-  var facingPages = currDoc.documentPreferences.facingPages;
-  var singlePageMode = false;
+  var w, h;
+  var cm = currCanvasMode;
+  var p = currentPage();
+  var spread = p.parent;
+  var docPrefs = currentDoc().documentPreferences;
+  currOriginX = 0;
+  currOriginY = 0;
 
-  var widthOffset = 0;
-  var heightOffset = 0;
+  if(cm === pub.PAGE || cm === pub.MARGIN || cm === pub.BLEED) {
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+    pub.resetMatrix();
 
-  switch(pub.canvasMode()) {
+    var leftHand = (p.side === PageSideOptions.LEFT_HAND);
+    w = p.bounds[3] - p.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-    case pub.PAGE:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
-      singlePageMode = true;
-      break;
-
-    case pub.MARGIN:
-      widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
-      heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-      singlePageMode = true;
-      break;
-
-    case pub.BLEED:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      if(facingPages) {
-        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+    if (cm === pub.MARGIN) {
+      w -= (p.marginPreferences.left + p.marginPreferences.right);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      currOriginX = leftHand ? p.marginPreferences.right : p.marginPreferences.left;
+      currOriginY = p.marginPreferences.top;
+    } else if (cm === pub.BLEED) {
+      // pub.BLEED
+      var leftBleed = 0;
+      var rightBleed = 0;
+      if(p === spread.pages.firstItem()) {
+        leftBleed = leftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.resetMatrix();
-        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
+      if(p === spread.pages.lastItem()) {
+        rightBleed = leftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
       }
-      singlePageMode = true;
-      break;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
+    }
 
-    case pub.FACING_PAGES:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
+  } else {
+    // FACING_MODES
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.SPREAD_ORIGIN;
+    pub.resetMatrix();
+    var firstPage = spread.pages.firstItem();
+    var lastPage = spread.pages.lastItem();
+    var firstPageLeftHand = (firstPage.side === PageSideOptions.LEFT_HAND);
+    var lastPageLeftHand = (lastPage.side === PageSideOptions.LEFT_HAND);
+    w = lastPage.bounds[3] - firstPage.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-      var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
+    if(cm === pub.FACING_MARGINS) {
+      var leftMargin = firstPageLeftHand ? firstPage.marginPreferences.right : firstPage.marginPreferences.left;
+      var rightMargin = lastPageLeftHand ? lastPage.marginPreferences.left : lastPage.marginPreferences.right;
+      w -= (leftMargin + rightMargin);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      currOriginX = leftMargin;
+      currOriginY = p.marginPreferences.top;
+    } else if (cm === pub.FACING_BLEEDS) {
+      var leftBleed = firstPageLeftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
+      var rightBleed = lastPageLeftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
+    }
 
-      pub.width = $.global.width = w * 2;
-
-      if(currentPage().name === "1") {
-        pub.width = $.global.width = w;
-      } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w, 0);
-      }
-
-
-      pub.height = $.global.height = h;
-      break;
-
-    case pub.FACING_BLEEDS:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w + widthOffset / 2, 0);
-      }
-
-      break;
-
-    case pub.FACING_MARGINS:
-      widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
-      heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-
-      var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w - widthOffset / 2, 0);
-      }
-
-      return; // early exit
-
-    default:
-      error("canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: PAGE, MARGIN, BLEED, FACING_PAGES, FACING_MARGINS, FACING_BLEEDS");
-      break;
   }
 
-  if(singlePageMode) {
-    var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;
+  pub.translate(currOriginX, currOriginY);
+  pub.width = $.global.width = w;
+  pub.height = $.global.height = h;
 
-    pub.width = $.global.width = w;
-    pub.height = $.global.height = h;
-  }
 };
 
 var resetUserSettings = function() {
@@ -1964,16 +1929,18 @@ pub.revert = function() {
 pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
-  } else if (typeof m === "string") {
-    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
-      error("canvasMode(), cannot set a facing pages mode to a single page document");
-    }
+  } else if (m === pub.PAGE ||
+             m === pub.MARGIN ||
+             m === pub.BLEED ||
+             m === pub.FACING_PAGES ||
+             m === pub.FACING_MARGINS ||
+             m === pub.FACING_BLEEDS) {
     currCanvasMode = m;
     updatePublicPageSizeVars();
-    return currCanvasMode;
   } else {
     error("canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
+  return currCanvasMode;
 };
 
 
@@ -5036,18 +5003,8 @@ pub.duplicate = function(item) {
 
   if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
-    var newItem = item.duplicate(currentPage());
+    var newItem = item.duplicate(currentPage().parent);
     newItem.move(currentLayer());
-
-    if (currRectMode === pub.CENTER) {
-      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(1, 1));
-    } else {
-      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix(1, 1));
-    }
 
     return newItem;
 
@@ -7972,6 +7929,8 @@ pub.pushMatrix = function () {
 pub.resetMatrix = function () {
   matrixStack = [];
   currMatrix = new Matrix2D();
+
+  pub.translate(currOriginX, currOriginY);
 };
 
 /**

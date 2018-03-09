@@ -758,6 +758,8 @@ pub.pushMatrix = function () {
 pub.resetMatrix = function () {
   matrixStack = [];
   currMatrix = new Matrix2D();
+
+  pub.translate(currOriginX, currOriginY);
 };
 
 /**
