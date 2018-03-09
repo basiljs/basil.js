@@ -15,16 +15,16 @@
  */
 pub.itemWidth = function(pItem, width) {
   if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemWidth(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    pub.warning("itemWidth(), please note that only CORNER positioning is fully supported. Use with care.");
   }
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof width === "number") {
       pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
     } else {
       return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
     }
   } else {
-    error("b.itemWidth(), pItem has to be a valid PageItem");
+    error("itemWidth(), pItem has to be a valid PageItem");
   }
 };
 
@@ -40,16 +40,16 @@ pub.itemWidth = function(pItem, width) {
  */
 pub.itemHeight = function(pItem, height) {
   if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemHeight(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    pub.warning("itemHeight(), please note that only CORNER positioning is fully supported. Use with care.");
   }
-  if(typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof height === "number") {
       pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
     } else {
       return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
     }
   } else {
-    error("b.itemHeight(), pItem has to be a valid PageItem");
+    error("itemHeight(), pItem has to be a valid PageItem");
   }
 };
 
@@ -67,9 +67,9 @@ pub.itemHeight = function(pItem, height) {
 pub.itemPosition = function(pItem, x, y) {
 
   if(currRectMode !== pub.CORNER) {
-    pub.warning("b.itemPosition(), please note that only b.CORNER positioning is fully supported. Use with care.");
+    pub.warning("itemPosition(), please note that only CORNER positioning is fully supported. Use with care.");
   }
-  if (typeof pItem !== "undef" && pItem.hasOwnProperty("geometricBounds")) {
+  if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
     if(typeof x === "number" && typeof y === "number") {
       var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
       var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
@@ -80,7 +80,7 @@ pub.itemPosition = function(pItem, x, y) {
       return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
     }
   } else {
-    error("b.itemPosition(), works only with child classes of PageItem.");
+    error("itemPosition(), works only with child classes of PageItem.");
   }
 };
 
@@ -96,8 +96,8 @@ pub.itemPosition = function(pItem, x, y) {
  * @returns {Object} Returns an object with the fields width and height.
  */
 pub.itemSize = function(pItem, width, height) {
-  if(currRectMode !== b.CORNER) {
-    pub.warning("b.itemSize(), please note that only b.CORNER positioning is fully supported. Use with care.");
+  if(currRectMode !== pub.CORNER) {
+    pub.warning("itemSize(), please note that only CORNER positioning is fully supported. Use with care.");
   }
   if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
 
@@ -111,7 +111,7 @@ pub.itemSize = function(pItem, width, height) {
     }
 
   } else {
-    error("b.itemSize(), works only with child classes of PageItem.");
+    error("itemSize(), works only with child classes of PageItem.");
   }
 };
 
@@ -492,7 +492,7 @@ Matrix2D.prototype = {
 };
 
 /**
- * @description Returns the current matrix as a Matrix2D object for altering existing PageItems with b.transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
+ * @description Returns the current matrix as a Matrix2D object for altering existing PageItems with transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
  *
  * @cat Document
  * @subcat Transformation
@@ -549,7 +549,7 @@ pub.popMatrix = function () {
   if (matrixStack.length > 0) {
     currMatrix.set(matrixStack.pop());
   } else {
-    error("b.popMatrix(), missing a pushMatrix() to go with that popMatrix()");
+    error("popMatrix(), missing a pushMatrix() to go with that popMatrix()");
   }
 };
 

@@ -3,11 +3,13 @@
 // ----------------------------------------
 
 var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign external library file*/
+  appSettings = null,
   currAlign = null,
   currCanvasMode = null,
   currColorMode = null,
   currDialogFolder = null,
   currDoc = null,
+  currDocSettings = null,
   currEllipseMode = null,
   currFillColor = null,
   currFillTint = null,
@@ -19,6 +21,7 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currLayer = null,
   currLeading = null,
   currMatrix = null,
+  currMode = null,
   currPage = null,
   currPathPointer = null,
   currPolygon = null,
@@ -31,6 +34,9 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currUnits = null,
   currVertexPoints = null,
   currYAlign = null,
+  currFrameRate = null,
+  currIdleTask = null,
   matrixStack = null,
   noneSwatchColor = null,
+  progressPanel = null,
   startTime = null;

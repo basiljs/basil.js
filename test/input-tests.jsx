@@ -1,52 +1,53 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("InputTests", {
+basilTest("InputTests", {
 
-  setUpTest: function(b) {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testFindByLabel: function(b) {
-    var label = "foo";
-    var textFrame1 = b.text("foo", 0, 0, 300, 300);
-    textFrame1.label = label;
+  testFindByLabel: function() {
+    var myLabel = "foo";
+    var textFrame1 = text("foo", 0, 0, 300, 300);
+    textFrame1.label = myLabel;
 
-    var found = b.labels(label);
+    var found = labels(myLabel);
 
     assert(found.length === 1);
     assert(found[0] instanceof TextFrame);
   },
 
-  testFindByLabelWithMultipleItemsWithSameLabel: function(b) {
-    var label = "foo";
-    var textFrame1 = b.text("foo", 0, 0, 300, 300);
-    textFrame1.label = label;
-    var textFrame2 = b.text("bar", 0, 0, 300, 300);
-    textFrame2.label = label;
+  testFindByLabelWithMultipleItemsWithSameLabel: function() {
+    var myLabel = "foo";
+    var textFrame1 = text("foo", 0, 0, 300, 300);
+    textFrame1.label = myLabel;
+    var textFrame2 = text("bar", 0, 0, 300, 300);
+    textFrame2.label = myLabel;
 
-    var found = b.labels(label);
+    var found = labels(myLabel);
 
     assert(found.length === 2);
   },
 
-  testFindByLabelWithNotExistingLabel: function(b) {
+  testFindByLabelWithNotExistingLabel: function() {
     try{
-      var found = b.labels("bar");
+      var found = labels("bar");
     } catch (e) {
       assert(true);
     }
@@ -55,4 +56,4 @@ b.test("InputTests", {
 });
 
 // print collected test results
-b.test.result();
+basilTest.result();

@@ -66,7 +66,7 @@ if (!Array.prototype.map) {
 }
 
 /**
-* Used to run a function on all elements of an array. Please note the existance of the convenience methods b.stories(), b.paragraphs(), b.lines(), b.words() and b.characters() that are used to iterate through all instances of the given type in the given document.
+* Used to run a function on all elements of an array. Please note the existance of the convenience methods <code>stories()</code>, <code>paragraphs()</code>, <code>lines()</code>, <code>words()</code> and <code>characters()</code> that are used to iterate through all instances of the given type in the given document.
 *
 * @cat Data
 * @subcat Array
@@ -74,23 +74,20 @@ if (!Array.prototype.map) {
 * @param {Array} collection The array to be processed.
 * @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
 */
-if (!glob.forEach) {
-  glob.forEach = function(collection, cb) {
-    for (var i = 0, len = collection.length; i < len; i++) {
+forEach = function(collection, cb) {
+  for (var i = 0, len = collection.length; i < len; i++) {
 
-      if(!isValid(collection[i])) {
-        warning("forEach(), invalid object processed.");
-        continue;
-      }
-
-      if(cb(collection[i], i) === false) {
-        return false;
-      }
+    if(!isValid(collection[i])) {
+      warning("forEach(), invalid object processed.");
+      continue;
     }
-    return true;
-  };
-}
-pub.forEach = glob.forEach;
+
+    if(cb(collection[i], i) === false) {
+      return false;
+    }
+  }
+  return true;
+};
 
 /**
  * HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
@@ -101,7 +98,7 @@ pub.forEach = glob.forEach;
  * @method HashList
  */
 // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
-glob.HashList = function () {
+HashList = function () {
   var that = {};
   that.length = 0;
   that.items = {};

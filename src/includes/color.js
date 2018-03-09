@@ -30,7 +30,7 @@ pub.fill = function (fillColor) {
     } else if (arguments.length === 5) {
       currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.fill(), wrong parameters. Use:\n"
+      error("fill(), wrong parameters. Use:\n"
         + "Swatch name or\n"
         + "GRAY, [name] or\n"
         + "R, G, B, [name] or\n"
@@ -77,7 +77,7 @@ pub.stroke = function (strokeColor) {
     } else if (arguments.length === 5) {
       currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
     } else {
-      error("b.stroke(), wrong parameters. Use:\n"
+      error("stroke(), wrong parameters. Use:\n"
         + "Swatch name or\n"
         + "GRAY, [name] or\n"
         + "R, G, B, [name] or\n"
@@ -110,7 +110,7 @@ pub.fillTint = function (tint) {
   if (typeof tint === "string" || typeof tint === "number") {
     currFillTint = tint;
   } else {
-    error("b.fillTint(), unsupported type. Please make sure the fillTint is a number or string");
+    error("fillTint(), unsupported type. Please make sure the fillTint is a number or string");
   }
 };
 
@@ -131,11 +131,11 @@ pub.strokeTint = function (tint) {
 };
 
 /**
- * Sets the colormode for creating new colors with b.color() to RGB or CMYK. The default color mode is RGB.
+ * Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
  *
  * @cat Color
  * @method colorMode
- * @param  {Number} colorMode b.RGB or b.CMYK.
+ * @param  {Number} colorMode RGB or CMYK.
  */
 pub.colorMode = function(colorMode) {
   checkNull(colorMode);
@@ -145,16 +145,16 @@ pub.colorMode = function(colorMode) {
   if (colorMode === pub.RGB || colorMode === pub.CMYK) {
     currColorMode = colorMode;
   } else {
-    error("b.colorMode(), unsupported colormode, use: b.RGB or b.CMYK");
+    error("colorMode(), unsupported colormode, use: RGB or CMYK");
   }
 };
 
 /**
- * Sets the gradient mode for b.gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
+ * Sets the gradient mode for gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
  *
  * @cat Color
  * @method gradientMode
- * @param  {String} gradientMode b.LINEAR or b.RADIAL.
+ * @param  {String} gradientMode LINEAR or RADIAL.
  */
 pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
@@ -164,7 +164,7 @@ pub.gradientMode = function(gradientMode) {
   if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
     currGradientMode = gradientMode;
   } else {
-    error("b.gradientMode(), unsupported gradient mode, use: b.LINEAR or b.RADIAL");
+    error("gradientMode(), unsupported gradient mode, use: LINEAR or RADIAL");
   }
 };
 
@@ -188,7 +188,7 @@ pub.swatch = function(){
           error("A swatch with the provided name doesn't exist.");
         }
     }else{
-      error("b.swatch() requires a string, the name of an existing swatch.");
+      error("swatch() requires a string, the name of an existing swatch.");
     }
   }
 }
@@ -209,12 +209,12 @@ pub.color = function() {
     c = arguments[2],
     d = arguments[3],
     e = arguments[4];
-  var colorErrorMsg = "b.color(), wrong parameters. Use:\n"
+  var colorErrorMsg = "color(), wrong parameters. Use:\n"
       + "GRAY,[name] or \n"
-      + "R,G,B,[name] in b.colorMode(b.RGB) or\n"
-      + "C,M,Y,K,[name] in b.colorMode(b.CMYK).\n"
+      + "R,G,B,[name] in colorMode(RGB) or\n"
+      + "C,M,Y,K,[name] in colorMode(CMYK).\n"
       + "Name is optional.\n"
-      + "NB: In InDesign colors don't have an alpha value, use b.opacity() to set alpha.";
+      + "NB: In InDesign colors don't have an alpha value, use opacity() to set alpha.";
 
   if (arguments.length === 1) {
     // get color by name
@@ -223,7 +223,7 @@ pub.color = function() {
       if (newCol.isValid) {
         return newCol;
       } else {
-        error("b.color(), a color with the provided name doesn't exist.");
+        error("color(), a color with the provided name doesn't exist.");
       }
     } else if (typeof a === "number") {
       // GRAY
@@ -241,7 +241,7 @@ pub.color = function() {
         props.name = "C=" + 0 + " M=" + 0 + " Y=" + 0 + " K=" + a;
       }
     } else {
-      error("b.color(), wrong type of first parameter.");
+      error("color(), wrong type of first parameter.");
     }
 
   } else if (arguments.length === 2) {
@@ -350,7 +350,7 @@ pub.gradient = function() {
   var a = arguments[0],
     b = arguments[1],
     c = arguments[2];
-  var gradientErrorMsg = "b.gradient(), wrong parameters. Use:\n"
+  var gradientErrorMsg = "gradient(), wrong parameters. Use:\n"
       + "c1,c2,[name] or\n"
       + "arrayOfColors,[name] or\n"
       + "arrayOfColors,arrayOfGradientStops,[name] or\n"
@@ -362,17 +362,17 @@ pub.gradient = function() {
     if (newGrad.isValid) {
       return newGrad;
     } else {
-      error("b.gradient(), a gradient with the provided name doesn't exist.");
+      error("gradient(), a gradient with the provided name doesn't exist.");
     }
   } else if (a instanceof Color && b instanceof Color && (typeof c === "string" || arguments.length === 2)) {
     // c1 and c2
     if (typeof c === "string") {
       if(currentDoc().colors.itemByName(c).isValid) {
-        error("b.gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
+        error("gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
       }
       if(currentDoc().gradients.itemByName(c).isValid) {
         currentDoc().gradients.itemByName(c).remove();
-        warning("b.gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
+        warning("gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: c});
     } else {
@@ -402,16 +402,16 @@ pub.gradient = function() {
       customStopLocations = true;
     }
     if(customStopLocations && !(a.length === b.length)) {
-      error("b.gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+      error("gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
     }
     var z = arguments[arguments.length - 1];
     if (typeof z === "string") {
       if(currentDoc().colors.itemByName(z).isValid) {
-        error("b.gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
+        error("gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
       }
       if(currentDoc().gradients.itemByName(z).isValid) {
         currentDoc().gradients.itemByName(z).remove();
-        warning("b.gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
+        warning("gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
       }
       newGrad = currentDoc().gradients.add({name: z});
     } else {
@@ -419,7 +419,7 @@ pub.gradient = function() {
     }
     for (var i = 0; i < a.length; i++) {
       if(!(a[i] instanceof Color || a[i] instanceof Swatch)) {
-        error("b.gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
+        error("gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
       }
       if(i > newGrad.gradientStops.length - 1) {
         newGrad.gradientStops.add();
@@ -427,7 +427,7 @@ pub.gradient = function() {
       newGrad.gradientStops[i].stopColor = a[i];
       if(customStopLocations) {
         if(!(typeof b[i] === "number")) {
-          error("b.gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
+          error("gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
         }
         newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
       } else {
@@ -458,7 +458,7 @@ pub.opacity = function(obj, opacity) {
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.opacity = opacity;
   } else {
-    warning("b.opacity(), the object " + obj.toString() + " doesn't have an opacity property");
+    warning("opacity(), the object " + obj.toString() + " doesn't have an opacity property");
   }
 };
 
@@ -491,7 +491,7 @@ pub.blendMode = function(obj, blendMode) {
   if (obj.hasOwnProperty("transparencySettings")) {
     obj.transparencySettings.blendingSettings.blendMode = blendMode;
   } else {
-    warning("b.blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
+    warning("blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
   }
 };
 
@@ -545,9 +545,9 @@ pub.lerpColor = function (c1, c2, amt) {
       return pub.color(ROut, GOut, BOut);
 
     } else {
-      error("b.lerpColor(), both colors must be either CMYK or RGB.");
+      error("lerpColor(), both colors must be either CMYK or RGB.");
     }
   } else {
-    error("b.lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
+    error("lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
   }
 };

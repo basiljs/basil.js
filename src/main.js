@@ -33,7 +33,7 @@
   from processing.js by the Processing.js team. We would have had a hard time
   to figure all of that out on our own!
 
-  The Lorem ipsum string of b.LOREM is taken from https://indieweb.org/Lorem_ipsum and
+  The Lorem ipsum string of LOREM is taken from https://indieweb.org/Lorem_ipsum and
   is available under a CC0 public domain dedication.
 
   Supported Adobe InDesign versions: CS 5+
@@ -43,40 +43,65 @@
 /* globals init */
 // @target "InDesign";
 
-(function(glob, app, undef) {
 
-  /**
-   * @class b
-   * @static
-   */
-  var pub = {};
+// clearing global space if it is still populated from previous run of a loop script
+// to ensure basil methods work properly
+if($.engineName === "loop" && $.global.basilGlobal) {
+  for (var i = basilGlobal.length - 1; i >= 0; i--) {
+    if($.global.hasOwnProperty(basilGlobal[i])) {
+      try{
+        delete $.global[basilGlobal[i]];
+      } catch(e) {
+        // could not delete
+      }
+    }
+  }
+  delete $.global.basilGlobal;
+}
 
-  /**
-   * The basil version
-   * @property VERSION {String}
-   * @cat Environment
-   */
-  pub.VERSION = "1.1.0";
+if(!$.global.hasOwnProperty("basilTest")) {
+  // load global vars of the user script
+  var sourceScript;
+  try {
+    app.nonExistingProperty;
+  } catch(e) {
+    sourceScript = e.source;
+  }
 
-  // @include "includes/constants.js";
-  // @include "includes/public-vars.js";
-  // @include "includes/private-vars.js";
-  // @include "includes/global-functions.js";
+  var userScript = sourceScript.replace(/[\s\S]*[#@]\s*[i]nclude\s+.+basil\.js["']*[\s;)}]*/, "");
+  app.doScript(userScript);
+}
 
-  // @include "includes/core.js";
 
-  // @include "includes/structure.js";
-  // @include "includes/environment.js";
-  // @include "includes/data.js";
-  // @include "includes/shape.js";
-  // @include "includes/color.js";
-  // @include "includes/typography.js";
-  // @include "includes/image.js";
-  // @include "includes/math.js";
-  // @include "includes/transformation.js";
-  // @include "includes/ui.js";
+(function() {
 
-  init();
+var pub = {};
 
-})(this, app);
+/**
+ * The basil version
+ * @property VERSION {String}
+ * @cat Environment
+ */
+pub.VERSION = "1.1.0";
 
+// @include "includes/constants.js";
+// @include "includes/public-vars.js";
+// @include "includes/private-vars.js";
+// @include "includes/global-functions.js";
+
+// @include "includes/core.js";
+
+// @include "includes/structure.js";
+// @include "includes/environment.js";
+// @include "includes/data.js";
+// @include "includes/shape.js";
+// @include "includes/color.js";
+// @include "includes/typography.js";
+// @include "includes/image.js";
+// @include "includes/math.js";
+// @include "includes/transformation.js";
+// @include "includes/ui.js";
+
+init();
+
+})();

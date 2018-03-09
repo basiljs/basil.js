@@ -1,63 +1,64 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("VertexTests", {
+basilTest("VertexTests", {
 
-  setUpTest: function(b) {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testVertex: function(b) {
+  testVertex: function() {
 
-    b.beginShape();
+    beginShape();
 
-    b.vertex(0, 0);
-    b.vertex(-10, 0);
-    b.vertex(-10, 10);
+    vertex(0, 0);
+    vertex(-10, 0);
+    vertex(-10, 10);
 
-    var shape = b.endShape();
+    var shape = endShape();
     assert(shape instanceof GraphicLine);
     assert(shape.paths.item(0).entirePath.length === 3);
 
-    b.beginShape();
+    beginShape();
 
-    b.vertex(0, 0);
-    b.vertex(-10, 0);
-    b.vertex(-10, 10);
+    vertex(0, 0);
+    vertex(-10, 0);
+    vertex(-10, 10);
 
-    b.addPath();
+    addPath();
 
-    b.vertex(0, 0);
-    b.vertex(-10, 0);
+    vertex(0, 0);
+    vertex(-10, 0);
 
-    shape = b.endShape();
+    shape = endShape();
 
     assert(shape instanceof GraphicLine);
     assert(shape.paths.item(0).entirePath.length === 3);
     assert(shape.paths.item(1).entirePath.length === 2);
 
 
-    b.beginShape();
+    beginShape();
 
-    b.vertex(0, 0);
-    b.vertex(-10, 0);
-    b.vertex(-10, 10);
+    vertex(0, 0);
+    vertex(-10, 0);
+    vertex(-10, 10);
 
-    shape = b.endShape(b.CLOSE);
+    shape = endShape(CLOSE);
     assert(shape instanceof GraphicLine);
 
     assert(shape.paths.length === 1);
@@ -65,21 +66,21 @@ b.test("VertexTests", {
 
   },
 
-  testArc: function(b) {
+  testArc: function() {
 
-    var shape = b.arc(0, 0, 50, 50, 0, b.QUARTER_PI);
+    var shape = arc(0, 0, 50, 50, 0, QUARTER_PI);
     assert(shape instanceof GraphicLine);
     assert(shape.paths.item(0).entirePath.length === 2);
 
-    shape = b.arc(0, 0, 50, 50, 0, b.HALF_PI);
+    shape = arc(0, 0, 50, 50, 0, HALF_PI);
     assert(shape instanceof GraphicLine);
     assert(shape.paths.item(0).entirePath.length === 2);
 
-    shape = b.arc(0, 0, 50, 50, 0, b.PI);
+    shape = arc(0, 0, 50, 50, 0, PI);
     assert(shape instanceof GraphicLine);
     assert(shape.paths.item(0).entirePath.length === 4); // because of overlapping points bug
 
-    shape = b.arc(0, 0, 50, 50, 0, b.TWO_PI);
+    shape = arc(0, 0, 50, 50, 0, TWO_PI);
     assert(shape instanceof GraphicLine);
     assert(shape.paths.item(0).entirePath.length === 8); // because of overlapping points bug
 
@@ -88,5 +89,5 @@ b.test("VertexTests", {
 });
 
 // print collected test results
-b.test.result();
+basilTest.result();
 

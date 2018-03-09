@@ -1,103 +1,107 @@
 /* globals assert */
-if (typeof b === "undefined") {
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("TransformTests", {
+basilTest("TransformTests", {
 
-  setUpTest: function(b) {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testMoveX: function(b) {
-    b.rectMode(b.CORNER);
-    var doc = b.doc();
+  testMoveX: function() {
+    rectMode(CORNER);
+    var myDoc = doc();
     // create box at 0,0
-    var rect = b.rect(0, 0, 100, 100);
-    assert(b.itemX(rect) === 0);
+    var myRect = rect(0, 0, 100, 100);
+    assert(itemX(myRect) === 0);
     // move to 50,0
-    b.itemX(rect, 50);
+    itemX(myRect, 50);
     // check new x coordinate
-    assert(b.itemX(rect) === 50);
-    rect.remove();
+    assert(itemX(myRect) === 50);
+    myRect.remove();
 
-// ~     b.rectMode(b.CENTER);
+// ~     rectMode(CENTER);
 // ~     // create box at 0,0
-// ~     var rect = b.rect(0,0,100,100);
+// ~     var myRect = rect(0,0,100,100);
 // ~
-// ~     assert( b.itemX(rect) === 0);
+// ~     assert( itemX(myRect) === 0);
 // ~     // move to 50,0
-// ~     b.itemX(rect, 50);
+// ~     itemX(myRect, 50);
 // ~     // check new x coordinate
-// ~     assert( b.itemX(rect) === 50);
-// ~     rect.remove();
+// ~     assert( itemX(myRect) === 50);
+// ~     myRect.remove();
   },
 
-  testMoveY: function(b) {
-    var doc = b.doc();
+  testMoveY: function() {
+    var myDoc = doc();
     // create box at 0,0
-    var rect = b.rect(0, 0, 100, 100);
-    assert(b.itemY(rect) === 0);
+    var myRect = rect(0, 0, 100, 100);
+    assert(itemY(myRect) === 0);
     // move to 50,0
-    b.itemY(rect, 50);
+    itemY(myRect, 50);
     // check new x coordinate
-    assert(b.itemY(rect) === 50);
+    assert(itemY(myRect) === 50);
   },
 
-  testPosition: function(b) {
-    var doc = b.doc();
+  testPosition: function() {
+    var myDoc = doc();
     // create box at 0,0
-    var rect = b.rect(0, 0, 100, 100);
-    assert(b.itemPosition(rect).x === 0 && b.itemPosition(rect).y === 0);
+    var myRect = rect(0, 0, 100, 100);
+    assert(itemPosition(myRect).x === 0 && itemPosition(myRect).y === 0);
     // move to 50,0
-    b.itemPosition(rect, 50, 50);
+    itemPosition(myRect, 50, 50);
     // check new x coordinate
-    assert(b.itemPosition(rect).x === 50 && b.itemPosition(rect).y === 50);
+    assert(itemPosition(myRect).x === 50 && itemPosition(myRect).y === 50);
   },
 
-  testWidth: function(b) {
-    var doc = b.doc();
+  testWidth: function() {
+    var myDoc = doc();
+    units(PT);
     // create box at 0,0
-    var rect = b.rect(0, 0, 100, 100);
-    assert(b.itemWidth(rect) === 100);
+    var myRect = rect(0, 0, 100, 100);
+    assert(itemWidth(myRect) === 100);
     // move to 50,0
-    b.itemWidth(rect, 50);
+    itemWidth(myRect, 50);
     // check new x coordinate
-    assert(b.itemWidth(rect) === 50);
+    assert(itemWidth(myRect) === 50);
   },
 
-  testHeight: function(b) {
-    var doc = b.doc();
+  testHeight: function() {
+    var myDoc = doc();
+    units(PT);
     // create box at 0,0
-    var rect = b.rect(0, 0, 100, 100);
-    assert(b.itemHeight(rect) === 100);
+    var myRect = rect(0, 0, 100, 100);
+    assert(itemHeight(myRect) === 100);
     // move to 50,0
-    b.itemHeight(rect, 50);
+    itemHeight(myRect, 50);
     // check new x coordinate
-    assert(b.itemHeight(rect) === 50);
+    assert(itemHeight(myRect) === 50);
   },
 
-  testSize: function(b) {
-    var doc = b.doc();
+  testSize: function() {
+    var myDoc = doc();
+    units(PT);
     // create box at 0,0
-    var rect = b.rect(0, 0, 100, 100);
-    assert(b.itemSize(rect).width === 100 && b.itemSize(rect).height === 100);
+    var myRect = rect(0, 0, 100, 100);
+    assert(itemSize(myRect).width === 100 && itemSize(myRect).height === 100);
     // move to 50,0
-    b.itemSize(rect, 50, 50);
+    itemSize(myRect, 50, 50);
     // check new x coordinate
-    assert(b.itemSize(rect).width === 50 && b.itemSize(rect).height === 50);
+    assert(itemSize(myRect).width === 50 && itemSize(myRect).height === 50);
   }
 
   // todo: add matrix transformation tests here ...
@@ -105,5 +109,5 @@ b.test("TransformTests", {
 });
 
 // print collected test results
-b.test.result();
+basilTest.result();
 

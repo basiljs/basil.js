@@ -1,18 +1,19 @@
-/* globals assert, HashList*/
-if (typeof b === "undefined") {
+/* globals assert */
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("DataTests", {
+basilTest("DataTests", {
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testHashList: function(b) {
+  testHashList: function() {
 
     var hash = new HashList();
 
@@ -115,37 +116,35 @@ b.test("DataTests", {
   },
 
   testIsText: function(b) {
-    var doc = b.doc();
+    var myDoc = doc();
 
-    var tf = b.text(b.LOREM, 0, 0, 200, 200);
+    var tf = text(LOREM, 0, 0, 200, 200);
 
-    assert(b.isText(b.characters(tf)));
-    assert(b.isText(b.characters(tf)[0]));
+    assert(isText(characters(tf)));
+    assert(isText(characters(tf)[0]));
 
-    assert(b.isText(tf.insertionPoints));
-    assert(b.isText(tf.insertionPoints.firstItem()));
+    assert(isText(tf.insertionPoints));
+    assert(isText(tf.insertionPoints.firstItem()));
 
-    assert(b.isText(b.words(tf)));
-    assert(b.isText(b.words(tf).firstItem()));
+    assert(isText(words(tf)));
+    assert(isText(words(tf).firstItem()));
 
-    assert(b.isText(b.lines(tf)));
-    assert(b.isText(b.lines(tf).firstItem()));
+    assert(isText(lines(tf)));
+    assert(isText(lines(tf).firstItem()));
 
-    assert(b.isText(tf.textStyleRanges));
-    assert(b.isText(tf.textStyleRanges.firstItem()));
+    assert(isText(tf.textStyleRanges));
+    assert(isText(tf.textStyleRanges.firstItem()));
 
-    assert(b.isText(b.paragraphs(tf)));
-    assert(b.isText(b.paragraphs(tf).firstItem()));
+    assert(isText(paragraphs(tf)));
+    assert(isText(paragraphs(tf).firstItem()));
 
-    assert(b.isText(tf.textColumns));
-    assert(b.isText(tf.textColumns.firstItem()));
+    assert(isText(tf.textColumns));
+    assert(isText(tf.textColumns.firstItem()));
 
-    assert(b.isText(tf.characters.itemByRange(0, 2))); // [object Text]
+    assert(isText(tf.characters.itemByRange(0, 2))); // [object Text]
   },
 
-  testIsNumber: function(b) {
-    var isNumber = b.isNumber;
-
+  testIsNumber: function() {
     assert(isNumber(null) === false);
     assert(isNumber(undefined) === false);
     assert(isNumber(true) === false);
@@ -164,10 +163,10 @@ b.test("DataTests", {
     assert(isNumber(66.123456789) === true);
     assert(isNumber(43) === true);
     assert(isNumber(-24) === true);
-  },
+  }
 
 });
 
 // print collected test results
-b.test.result();
+basilTest.result();
 

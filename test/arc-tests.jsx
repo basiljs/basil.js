@@ -1,44 +1,46 @@
-if (typeof b === "undefined") {
+/* globals assert */
+if (!$.global.VERSION) {
+  var basilTest = null;
   // @include "../basil.js";
 }
-if (typeof b.test === "undefined") {
+if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-b.test("ArcTests", {
-  setUpTest: function(b) {
+basilTest("ArcTests", {
+  setUpTest: function() {
   },
 
-  tearDownTest: function(b) {
+  tearDownTest: function() {
   },
 
-  setUp: function(b) {
+  setUp: function() {
   },
 
-  tearDown: function(b) {
-    b.close(SaveOptions.no);
+  tearDown: function() {
+    close(SaveOptions.no);
   },
 
-  testCreateArcs: function(b) {
+  testCreateArcs: function() {
     // http://processing.org/reference/arc_.html
-    b.fill(255);
-    b.arc(50, 55, 50, 50, 0, b.HALF_PI);
-    b.noFill();
-    b.arc(50, 55, 60, 60, b.HALF_PI, b.PI);
-    b.arc(50, 55, 70, 70, b.PI, b.PI + b.QUARTER_PI);
-    b.arc(50, 55, 80, 80, b.PI + b.QUARTER_PI, b.TWO_PI);
+    fill(255);
+    arc(50, 55, 50, 50, 0, HALF_PI);
+    noFill();
+    arc(50, 55, 60, 60, HALF_PI, PI);
+    arc(50, 55, 70, 70, PI, PI + QUARTER_PI);
+    arc(50, 55, 80, 80, PI + QUARTER_PI, TWO_PI);
   },
 
-  testPieChart: function(b) {
+  testPieChart: function() {
     // http://processing.org/examples/piechart.html
     var angles = [30, 10, 45, 35, 60, 38, 75, 67];
     function pieChart(diameter, data) {
       var lastAngle = 0;
       for (var i = 0; i < data.length; i++) {
-        var gray = b.map(i, 0, data.length, 0, 255);
-        b.fill(gray);
-        b.arc(b.width / 2, b.height / 2, diameter, diameter, lastAngle, lastAngle + b.radians(angles[i]));
-        lastAngle += b.radians(angles[i]);
+        var gray = map(i, 0, data.length, 0, 255);
+        fill(gray);
+        arc(width / 2, height / 2, diameter, diameter, lastAngle, lastAngle + radians(angles[i]));
+        lastAngle += radians(angles[i]);
       }
     }
     pieChart(300, angles);
@@ -47,4 +49,4 @@ b.test("ArcTests", {
 });
 
 // print collected test results
-b.test.result();
+basilTest.result();

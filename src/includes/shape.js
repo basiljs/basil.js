@@ -16,7 +16,7 @@
  * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
-  if (arguments.length !== 4) error("b.ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
+  if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
   var ellipseBounds = [];
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
@@ -78,13 +78,13 @@ pub.ellipse = function(x, y, w, h) {
  * @return {GraphicLine} New GraphicLine.
  *
  *  @example
- *  var vec1 = new b.Vector( x1, y1 );
- *  var vec2 = new b.Vector( x2, y2 );
- *  b.line( vec1, vec2 );
+ *  var vec1 = new Vector( x1, y1 );
+ *  var vec2 = new Vector( x2, y2 );
+ *  line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
-    error("b.line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+    error("line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
   }
   var lines = currentPage().graphicLines;
   var newLine = lines.add(currentLayer());
@@ -110,7 +110,7 @@ pub.line = function(x1, y1, x2, y2) {
  * @cat Document
  * @subcat Primitives
  * @method beginShape
- * @param {String} shapeMode Set to b.CLOSE if the new Path should be auto-closed.
+ * @param {String} shapeMode Set to CLOSE if the new Path should be auto-closed.
  */
 pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
@@ -152,7 +152,7 @@ pub.vertex = function() {
                               [arguments[0], arguments[1]],
                               [arguments[4], arguments[5]]]);
     } else {
-      error("b.vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)!");
+      error("vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)!");
     }
   } else {
     notCalledBeginShapeError();
@@ -174,7 +174,7 @@ pub.vertex = function() {
  * @param {Number} h Height of the arc's ellipse.
  * @param {Number} startAngle Starting angle of the arc in radians.
  * @param {Number} endAngle Ending angle of the arc in radians.
- * @param {String} [mode] Mode to define the rendering technique of the arc: b.OPEN (default), b.CHORD, or b.PIE.
+ * @param {String} [mode] Mode to define the rendering technique of the arc: OPEN (default), CHORD, or PIE.
  *
  * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
@@ -183,7 +183,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
     return false;
   }
-  if (arguments.length < 6) error("b.arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
+  if (arguments.length < 6) error("arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
 
   var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
   startAngle %= pub.TWO_PI + o;
@@ -294,7 +294,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
  * addPath() is used to create multi component paths. Call addPath() to add
  * the vertices drawn so far to a single path. New vertices will then end up in a new path and
  * endShape() will return a multi path object. All component paths will account for
- * the setting (see b.CLOSE) given in beginShape(shapeMode).
+ * the setting (see CLOSE) given in beginShape(shapeMode).
  *
  * @cat Document
  * @subcat Primitives
@@ -356,12 +356,12 @@ function addPolygon() {
 
 
 function notCalledBeginShapeError () {
-  error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
+  error("endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
 }
 
 /**
  * Draws a rectangle on the page.
- * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the b.rectMode() function.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the rectMode() function.
  * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
  * @cat Document
@@ -382,7 +382,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
     // InDesign doesn't draw a rectangle if width or height are set to 0
     return false;
   }
-  if (arguments.length < 4) error("b.rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+  if (arguments.length < 4) error("rect(), not enough parameters to draw a rect! Use: x, y, w, h");
 
   var rectBounds = [];
   if (currRectMode === pub.CORNER) {
@@ -428,7 +428,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if(arguments.length > 4) {
     for(var i = 4; i < arguments.length;i++){
       if(arguments[i] < 0 ){
-        error("b.rect(), needs positive values as arguments for the rounded corners.");
+        error("rect(), needs positive values as arguments for the rounded corners.");
       }
     }
     newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
@@ -449,21 +449,21 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
 
 /**
  * Modifies the location from which rectangles or text frames draw. The default
- * mode is b.rectMode(b.CORNER), which specifies the location to be the upper left
+ * mode is rectMode(CORNER), which specifies the location to be the upper left
  * corner of the shape and uses the <code>w</code> and <code>h</code> parameters to specify the
- * width and height. The syntax b.rectMode(b.CORNERS) uses the <code>x</code> and <code>y</code>
- * parameters of b.rect() or b.text() to set the location of one corner
+ * width and height. The syntax rectMode(CORNERS) uses the <code>x</code> and <code>y</code>
+ * parameters of <code>rect()</code> or <code>text()</code> to set the location of one corner
  * and uses the <code>w</code> and <code>h</code> parameters to set the opposite corner.
- * The syntax b.rectMode(b.CENTER) draws the shape from its center point and
+ * The syntax <code>rectMode(CENTER)</code> draws the shape from its center point and
  * uses the <code>w</code> and <code>h</code> parameters to specify the shape's
- * width and height. The syntax b.rectMode(b.RADIUS) draws the shape from its
+ * width and height. The syntax <code>rectMode(RADIUS)</code> draws the shape from its
  * center point and uses the <code>w</code> and <code>h</code> parameters to specify
  * half of the shape's width and height.
  *
  * @cat Document
  * @subcat Attributes
  * @method rectMode
- * @param {String} mode The rectMode to switch to: either b.CORNER, b.CORNERS, b.CENTER, or b.RADIUS.
+ * @param {String} mode The rectMode to switch to: either CORNER, CORNERS, CENTER, or RADIUS.
  *
  */
 pub.rectMode = function (mode) {
@@ -472,24 +472,24 @@ pub.rectMode = function (mode) {
     currRectMode = mode;
     return currRectMode;
   } else {
-    error("b.rectMode(), unsupported rectMode. Use: b.CORNER, b.CORNERS, b.CENTER, b.RADIUS.");
+    error("rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER, RADIUS.");
   }
 };
 
 /**
- * The origin of new ellipses is modified by the b.ellipseMode() function.
- * The default configuration is b.ellipseMode(b.CENTER), which specifies the
- * location of the ellipse as the center of the shape. The b.RADIUS mode is
- * the same, but the <code>w</code> and <code>h</code> parameters to b.ellipse() specify the
- * radius of the ellipse, rather than the diameter. The b.CORNER mode draws
- * the shape from the upper-left corner of its bounding box. The b.CORNERS
- * mode uses the four parameters to b.ellipse() to set two opposing corners
+ * The origin of new ellipses is modified by the <code>ellipseMode()</code> function.
+ * The default configuration is <code>ellipseMode(CENTER)</code>, which specifies the
+ * location of the ellipse as the center of the shape. The RADIUS mode is
+ * the same, but the <code>w</code> and <code>h</code> parameters to <code>ellipse()</code> specify the
+ * radius of the ellipse, rather than the diameter. The CORNER mode draws
+ * the shape from the upper-left corner of its bounding box. The CORNERS
+ * mode uses the four parameters to <code>ellipse()</code> to set two opposing corners
  * of the ellipse's bounding box.
  *
  * @cat Document
  * @subcat Attributes
  * @method ellipseMode
- * @param {String} mode The ellipse mode to switch to: either b.CENTER, b.RADIUS, b.CORNER, or b.CORNERS.
+ * @param {String} mode The ellipse mode to switch to: either CENTER, RADIUS, CORNER, or CORNERS.
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
@@ -497,7 +497,7 @@ pub.ellipseMode = function (mode) {
     currEllipseMode = mode;
     return currEllipseMode;
   } else {
-    error("b.ellipseMode(), unsupported ellipseMode. Use: b.CENTER, b.RADIUS, b.CORNER, b.CORNERS.");
+    error("ellipseMode(), unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
   }
 };
 
@@ -513,7 +513,7 @@ pub.strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
     currStrokeWeight = weight;
   } else {
-    error("b.strokeWeight, not supported type. Please make sure the strokeweight is a number or string");
+    error("strokeWeight(), not supported type. Please make sure the strokeweight is a number or string");
   }
 };
 
@@ -529,7 +529,7 @@ pub.strokeWeight = function (weight) {
  * @return {ObjectStyle} The object style instance.
  */
 pub.objectStyle = function(itemOrName, props) {
-  var styleErrorMsg = "b.objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
+  var styleErrorMsg = "objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
 
   if(!arguments || arguments.length > 2) {
     error(styleErrorMsg);
@@ -553,7 +553,7 @@ pub.objectStyle = function(itemOrName, props) {
     try {
       style.properties = props;
     } catch (e) {
-      error("b.objectStyle(), wrong props parameter. Use object of property name/value pairs.");
+      error("objectStyle(), wrong props parameter. Use object of property name/value pairs.");
     }
   }
 
@@ -577,12 +577,12 @@ pub.applyObjectStyle = function(item, style) {
     var name = style;
     style = findInStylesByName(currentDoc().allObjectStyles, name);
     if(!style) {
-      error("b.applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
+      error("applyObjectStyle(), an object style named \"" + name + "\" does not exist.");
     }
   }
 
   if(!(item.hasOwnProperty("appliedObjectStyle")) || !(style instanceof ObjectStyle)) {
-    error("b.applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
+    error("applyObjectStyle(), wrong parameters. Use: pageItem, objectStyle|name");
   }
 
   item.appliedObjectStyle = style;
@@ -591,7 +591,7 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
- * Duplicates the given page after the current page or the given page item to the current page and layer. Use b.rectMode() to set center point.
+ * Duplicates the given page after the current page or the given page item to the current page and layer. Use <code>rectMode()</code> to set center point.
  *
  * @cat Document
  * @subcat Transformation

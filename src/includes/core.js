@@ -4,9 +4,9 @@
 
 // all initialisations should go here
 var init = function() {
-  glob.b = pub;
 
   welcome();
+  populateGlobal();
 
   // -- init internal state vars --
   startTime = Date.now();
@@ -16,188 +16,230 @@ var init = function() {
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
+  currDocSettings = {};
   currDialogFolder = Folder("~");
+  currMode = pub.VISIBLE;
+
+  appSettings = {
+    enableRedraw: app.scriptPreferences.enableRedraw,
+    preflightOff: app.preflightOptions.preflightOff
+  };
+
+  app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
+
+  if($.global.hasOwnProperty("basilTest")) {
+    return;
+  }
+
+  exit(); // quit program execution
 };
 
 
 // ----------------------------------------
 // execution
 
-/**
- * Run the sketch! Has to be called in every sketch a the very end of the code.
- * You may add performance setting options when calling b.go():<br /><br />
- *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
- * b.go(b.MODESILENT) <br />
- * b.go(b.MODEHIDDEN)<br /><br />
- *
- * Currently there is no performance optimization in b.loop()<br />
- * @cat Environment
- * @method go
- * @param {MODESILENT|MODEHIDDEN|MODEVISIBLE} [modes] Optional: Switch performanceMode
- */
-pub.go = function (mode) {
-  if (!mode) {
-    mode = pub.DEFAULTMODE;
-  }
-  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
-  app.preflightOptions.preflightOff = true;
+var runScript = function() {
 
-  currentDoc(mode);
-  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
-    progressPanel = new Progress();
-  }
+  var execTime;
 
   try {
-    if (typeof glob.setup === "function") {
-      runSetup();
+
+    if($.global.loop instanceof Function) {
+      if ($.engineName !== "loop") {
+        error("function loop(), no target engine! To use basil's loop function, add the code line\n\n #targetengine \"loop\";\n\n at the very top of your script.");
+      } else {
+        prepareLoop();
+      }
     }
 
-    if (typeof glob.draw === "function") {
-      runDrawOnce();
+    // app settings
+    app.scriptPreferences.enableRedraw = true;
+    app.preflightOptions.preflightOff = true;
+
+    currentDoc();
+
+    if ($.global.setup instanceof Function) {
+      setup();
     }
+
+    if ($.global.draw instanceof Function) {
+      draw();
+    } else if ($.global.loop instanceof Function) {
+      var sleep = null;
+      if (arguments.length === 0) sleep = Math.round(1000 / currFrameRate);
+      else sleep = Math.round(1000 / framerate);
+
+      currIdleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
+      currIdleTask.addEventListener(IdleEvent.ON_IDLE, function() {
+        loop();
+      }, false);
+      println("Run the script lib/stop.jsx to end the loop, clean up and quit the script!");
+    }
+
   } catch (e) {
-    alert(e);
-    exit();
+    execTime = executionDuration();
+
+    if(e.userCancel) {
+      println("[Cancelled by user after " + execTime + "]");
+    } else {
+      println("[Cancelled after " + execTime + "]");
+      alert(e);
+    }
+
+  } finally {
+
+    if((!execTime) && !($.global.loop instanceof Function)) {
+      println("[Finished in " + executionDuration() + "]");
+    }
+
+    if(currDoc && !currDoc.windows.length) {
+      currDoc.windows.add(); // open the hidden doc
+    }
+    closeHiddenDocs();
+    if (progressPanel) {
+      progressPanel.closePanel();
+    }
+    if (addToStoryCache) {
+      addToStoryCache.close();
+    }
+
+    if (!($.global.loop instanceof Function) || $.global.draw instanceof Function) {
+      resetUserSettings();
+    }
   }
 
-  var executionDuration = pub.millis();
-  if (executionDuration < 1000) {
-    println("[Finished in " + executionDuration + "ms]");
-  } else {
-    println("[Finished in " + (executionDuration / 1000).toPrecision(3) + "s]");
-  }
+}
 
-  if(currDoc && !currDoc.windows.length) {
-    currDoc.windows.add(); // open the hidden doc
-  }
-  closeHiddenDocs();
-  if (progressPanel) {
-    progressPanel.closePanel();
-  }
-  if (addToStoryCache) {
-    addToStoryCache.close();
-  }
-  app.scriptPreferences.enableRedraw = true;
-  app.preflightOptions.preflightOff = false;
-  exit(); // quit program execution
-};
-
-/**
- * EXPERIMENTAL!
- *
- * Causes basil to continuously execute the code within draw() when InDesign is idle.
- * #targetengine "loop"; must be at the very top in the script file.
- * If noLoop() is called, the code in draw() stops executing.
- * It is essential to call noLoop() or execute the script lib/stop.jsx when the script is finished!
- * The framerate property determines how often draw() is called per second, e.g. a framerate of 20 will 20times call draw() per second.
- *
- * @cat Environment
- * @method loop
- * @param  {Number} framerate   The framerate per second, determines how often draw() is called per second.
- */
-pub.loop = function(framerate) {
-  // before running the loop we need to check if
-  // the stop script exists
-    // the Script looks for the lib folder next to itself
+var prepareLoop = function() {
+  // before running the loop we need to check if the stop script exists
+  // the script looks for the lib folder next to itself
   var currentBasilFolderPath = File($.fileName).parent.fsName;
   var scriptPath = currentBasilFolderPath + "/lib/stop.jsx";
-  if(File(scriptPath).exists !== true) {
-    // the script is not there. lets create it
+
+  var stopScriptFile = pub.file(scriptPath);
+  if(stopScriptFile.exists !== true) {
+    // the script is not there, let's create it
     var scriptContent = [
-      "//@targetengine \"loop\"",
-      "//@include \"../basil.js\";",
-      "b.noLoop();",
+      "#targetengine \"loop\"",
+      "noLoop(true);",
       "if (typeof cleanUp === \"function\") {",
-      "cleanUp();",
-      "}",
-      "cleanUp = null;"
+      "  cleanUp();",
+      "  cleanUp = null;",
+      "}"
     ];
-    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
-      // the lib folder also does not exist
-      var res = Folder(currentBasilFolderPath + "/lib").create();
-      if(res === false) {
-        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
-        return;
-      }else{
-        // the folder is there
-      }
-      var libFolder = Folder(currentBasilFolderPath + "/lib");
-      var stopScript = new File(libFolder.fsName + "/stop.jsx");
-      stopScript.open("w", undef, undef);
-    // set encoding and linefeeds
-      stopScript.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
-      stopScript.encoding = "UTF-8";
-      stopScript.write(scriptContent.join("\n"));
-      stopScript.close();
+    pub.saveStrings(stopScriptFile, scriptContent);
+  }
+  currFrameRate = 25;
+}
+
+/**
+ * Sets the framerate per second to determine how often loop() is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within setup() is recommended. The default rate is 25 frames per second. Calling frameRate() with no arguments returns the currently set framerate.
+ *
+ * @cat Environment
+ * @method frameRate
+ * @param {Number} [fps] Frames per second.
+ * @return {Number} Currently set frame rate.
+ */
+pub.frameRate = function(fps) {
+  if(arguments.length) {
+    if(!isNumber(fps) || fps <= 0) {
+      error("frameRate(), invalid argument. Use a number greater than 0.")
     }
-  }else{
-    // the script is there
-    // awesome
+
+    currFrameRate = fps;
+    if(currIdleTask) {
+      currIdleTask.sleep = Math.ceil(1000 / fps);
+    }
   }
-  var sleep = null;
-  if (arguments.length === 0) sleep = Math.round(1000 / 25);
-  else sleep = Math.round(1000 / framerate);
-
-  if ($.engineName !== "loop") {
-    error("b.loop(), Add #targetengine \"loop\"; at the very top of your script.");
-  }
-
-  currentDoc();
-  runSetup();
-
-  var idleTask = app.idleTasks.add({name: "basil_idle_task", sleep: sleep});
-  idleTask.addEventListener(IdleEvent.ON_IDLE, function() {
-    runDrawLoop();
-  }, false);
-  println("Run the script lib/stop.jsx to end the draw loop and clean up!");
-//    println("loop()");
+  return currFrameRate;
 };
 
 /**
- * EXPERIMENTAL!
- *
- * Stops basil from continuously executing the code within draw().
+ * Stops basil from continuously executing the code within loop() and quits the script.
  *
  * @cat Environment
  * @method noLoop
  */
-pub.noLoop = function() {
+pub.noLoop = function(printFinished) {
   var allIdleTasks = app.idleTasks;
   for (var i = app.idleTasks.length - 1; i >= 0; i--) {
     allIdleTasks[i].remove();
   }
-  println("noLoop()");
+  if(printFinished) {
+    println("Basil.js -> Stopped looping.");
+    println("[Finished in " + executionDuration() + "]");
+  };
+  resetUserSettings();
+};
+
+/**
+ * Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, <code>mode()</code> should be placed in the beginning of the script. In basil there are three different performance modes:
+ * <code>VISIBLE</code> is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
+ * <code>HIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * <code>SILENT</code> processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to <code>VISIBLE</code>.
+ *
+ * @cat Environment
+ * @method mode
+ * @param  {String} mode The performance mode to switch to.
+ */
+pub.mode = function(mode) {
+
+  if(!(mode === pub.VISIBLE || mode === pub.HIDDEN || mode === pub.SILENT)) {
+    error("mode(), invalid argument. Use VISIBLE, HIDDEN or SILENT.");
+  }
+
+  app.scriptPreferences.enableRedraw = (mode === pub.VISIBLE || mode === pub.HIDDEN);
+
+  if(!currDoc) {
+    // initiate new document in given mode
+    currentDoc(mode);
+  } else {
+
+    if (!currDoc.saved && !currDoc.modified && pub.HIDDEN) {
+      // unsaved, unmodified doc at the beginning of the script that needs to be hidden
+      // -> will be closed without saving, fresh hidden document will be opened
+      currDoc.close(SaveOptions.NO);
+      currDoc = app.documents.add(false);
+      setCurrDoc(currDoc);
+    } else if (mode === pub.HIDDEN && currMode !== pub.HIDDEN) {
+      // existing document needs to be hidden
+      if (!currDoc.saved && currDoc.modified) {
+        try {
+          currDoc.save();
+        } catch(e) {
+          throw {userCancel: true};
+        }
+        warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
+      } else if (currDoc.modified) {
+        currDoc.save(File(currDoc.fullName));
+        warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
+      }
+      var docPath = currDoc.fullName;
+      currDoc.close(); // close the doc and reopen it without adding to the display list
+      currDoc = app.open(File(docPath), false);
+
+      setCurrDoc(currDoc);
+    } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
+      // existing document needs to be unhidden
+      currDoc.windows.add();
+    }
+  }
+
+  if (!progressPanel && (mode === pub.HIDDEN || mode === pub.SILENT)) {
+    // turn on progress panel
+    progressPanel = new Progress();
+  } else if (progressPanel && mode === pub.VISIBLE) {
+    // turn off progress panel
+    progressPanel.closePanel();
+    progressPanel = null;
+  }
+
+  currMode = mode;
 };
 
 
 // ----------------------------------------
 // all private from here
-
-
-var runSetup = function() {
-  app.doScript(function() {
-    if (typeof glob.setup === "function") {
-      glob.setup();
-    }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
-};
-
-var runDrawOnce = function() {
-  app.doScript(function() {
-    if (typeof glob.draw === "function") {
-      glob.draw();
-    }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
-};
-
-var runDrawLoop = function() {
-  app.doScript(function() {
-    if (typeof glob.draw === "function") {
-      glob.draw();
-    }
-  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
-};
 
 var welcome = function() {
   clearConsole();
@@ -208,35 +250,62 @@ var welcome = function() {
       + " ...");
 };
 
-var currentDoc = function (mode) {
-  if (currDoc === null || !currDoc) {
-    var stack = $.stack;
-    if (!(stack.match(/go\(.*\)/) || stack.match(/loop\(.*\)/))) {
-      warning("Do not initialize Variables with dependency to b outside the setup() or the draw() function. If you do so, basil will not be able to run in performance optimized Modes! If you really need them globally we recommend to only declare them gobally but initialize them in setup()! Current Stack is " + stack);
+var populateGlobal = function() {
+  // inject all functions of pub into global space
+  // to make them available to the user
+
+  $.global.basilGlobal = [];
+  for(var key in pub) {
+    if(pub.hasOwnProperty(key)) {
+      if($.global.hasOwnProperty(key)) {
+        // the user created a function or variable
+        // with the same name as a basil has
+        var pubFuncVar = pub[key] instanceof Function ? "function \"" : "variable \"";
+        var globFuncVar = $.global[key] instanceof Function ? "function" : "variable";
+        error("basil had problems creating the global " + pubFuncVar + key + "\", possibly because your code is already using that name as a " + globFuncVar + ". You may want to rename your " + globFuncVar + " to something else.");
+      } else {
+        $.global[key] = pub[key];
+        $.global.basilGlobal.push(key);
+      }
     }
+  }
+}
+
+var currentDoc = function(mode) {
+  if (!currDoc) {
     var doc = null;
-    if (app.documents.length) {
+    if (app.documents.length && app.windows.length) {
       doc = app.activeDocument;
-      if (mode == pub.MODEHIDDEN) {
-        if (doc.modified) {
-          doc.save();
-          warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
+      if (mode === pub.HIDDEN) {
+        if (!doc.saved) {
+          try {
+            doc.save();
+          } catch(e) {
+            throw {userCancel: true};
+          }
+          warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
+        } else if (doc.modified) {
+          doc.save(File(doc.fullName));
+          warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
         }
         var docPath = doc.fullName;
         doc.close(); // Close the doc and reopen it without adding to the display list
         doc = app.open(File(docPath), false);
       }
+    } else {
+      doc = app.documents.add(mode !== pub.HIDDEN);
     }
-    else {
-      doc = app.documents.add(mode != pub.MODEHIDDEN);
+    if(!doc.saved && !doc.modified) {
+      setCurrDoc(doc, true);
+    } else {
+      setCurrDoc(doc);
     }
-    setCurrDoc(doc);
   }
   return currDoc;
 };
 
 var closeHiddenDocs = function () {
-    // in Case we break the Script during execution in MODEHIDDEN we might have documents open that are not on the display list. Close them.
+    // in Case we break the Script during execution in HIDDEN we might have documents open that are not on the display list. Close them.
   for (var i = app.documents.length - 1; i >= 0; i -= 1) {
     var d = app.documents[i];
     if (!d.windows.length) {
@@ -245,25 +314,44 @@ var closeHiddenDocs = function () {
   }
 };
 
-var setCurrDoc = function(doc) {
+var setCurrDoc = function(doc, skipStyles) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
+  // save initial doc settings for later resetting
+  currDocSettings.rulerOrigin = currDoc.viewPreferences.rulerOrigin;
+  currDocSettings.hUnits = currDoc.viewPreferences.horizontalMeasurementUnits;
+  currDocSettings.vUnits = currDoc.viewPreferences.verticalMeasurementUnits;
 
+  currDocSettings.pStyle = currDoc.textDefaults.appliedParagraphStyle;
+  currDocSettings.cStyle = currDoc.textDefaults.appliedCharacterStyle;
+  currDocSettings.otxtStyle = currDoc.pageItemDefaults.appliedTextObjectStyle;
+  currDocSettings.ograStyle = currDoc.pageItemDefaults.appliedGraphicObjectStyle;
+  currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
+
+  // set document to default values
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+  pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
+  if(!skipStyles) {
+    // in a fresh, unsaved document, those styles should not be set
+    // in order not to modify the doc and be able to enter mode(HIDDEN) without saving
+    currDoc.textDefaults.appliedParagraphStyle = currDoc.paragraphStyles.firstItem();
+    currDoc.textDefaults.appliedCharacterStyle = currDoc.characterStyles.firstItem();
+    currDoc.pageItemDefaults.appliedTextObjectStyle = currDoc.objectStyles.firstItem();
+    currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDoc.objectStyles.firstItem();
+    currDoc.pageItemDefaults.appliedGridObjectStyle = currDoc.objectStyles.firstItem();
+  }
+
+  currAlign = currDoc.textDefaults.justification;
   currFont = currDoc.textDefaults.appliedFont;
   currFontSize = currDoc.textDefaults.pointSize;
-  currAlign = currDoc.textDefaults.justification;
-  currLeading = currDoc.textDefaults.leading;
   currKerning = 0;
+  currLeading = currDoc.textDefaults.leading;
   currTracking = currDoc.textDefaults.tracking;
-  pub.units(pub.PT);
 
   updatePublicPageSizeVars();
 };
-
-var progressPanel = null;
 
 var Progress = function () {
   this.init = function () {
@@ -349,7 +437,8 @@ var updatePublicPageSizeVars = function () {
   var facingPages = currDoc.documentPreferences.facingPages;
   var singlePageMode = false;
 
-  var widthOffset = heightOffset = 0;
+  var widthOffset = 0;
+  var heightOffset = 0;
 
   switch(pub.canvasMode()) {
 
@@ -392,16 +481,16 @@ var updatePublicPageSizeVars = function () {
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
+      pub.width = $.global.width = w * 2;
 
       if(currentPage().name === "1") {
-        pub.width = w;
+        pub.width = $.global.width = w;
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
         pub.translate(-w, 0);
       }
 
 
-      pub.height = h;
+      pub.height = $.global.height = h;
       break;
 
     case pub.FACING_BLEEDS:
@@ -413,8 +502,8 @@ var updatePublicPageSizeVars = function () {
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      pub.width = $.global.width = w * 2;
+      pub.height = $.global.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
         pub.translate(-w + widthOffset / 2, 0);
@@ -431,8 +520,8 @@ var updatePublicPageSizeVars = function () {
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
       var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
-      pub.width = w * 2;
-      pub.height = h;
+      pub.width = $.global.width = w * 2;
+      pub.height = $.global.height = h;
 
       if(currentPage().side === PageSideOptions.RIGHT_HAND) {
         pub.translate(-w - widthOffset / 2, 0);
@@ -441,7 +530,7 @@ var updatePublicPageSizeVars = function () {
       return; // early exit
 
     default:
-      error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
+      error("canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: PAGE, MARGIN, BLEED, FACING_PAGES, FACING_MARGINS, FACING_BLEEDS");
       break;
   }
 
@@ -449,10 +538,38 @@ var updatePublicPageSizeVars = function () {
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
     var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
-    pub.width = w;
-    pub.height = h;
+    pub.width = $.global.width = w;
+    pub.height = $.global.height = h;
   }
 };
+
+var resetUserSettings = function() {
+  // app settings
+  app.scriptPreferences.enableRedraw = appSettings.enableRedraw;
+  app.preflightOptions.preflightOff  = appSettings.preflightOff;
+
+  // doc settings
+  if(currDoc && currDocSettings) {
+    resetDocSettings();
+  }
+}
+
+var resetDocSettings = function() {
+  try {
+    currDoc.viewPreferences.rulerOrigin = currDocSettings.rulerOrigin;
+    currDoc.viewPreferences.horizontalMeasurementUnits = currDocSettings.hUnits;
+    currDoc.viewPreferences.verticalMeasurementUnits = currDocSettings.vUnits;
+
+    currDoc.textDefaults.appliedParagraphStyle = currDocSettings.pStyle;
+    currDoc.textDefaults.appliedCharacterStyle = currDocSettings.cStyle;
+    currDoc.pageItemDefaults.appliedTextObjectStyle = currDocSettings.otxtStyle;
+    currDoc.pageItemDefaults.appliedGraphicObjectStyle = currDocSettings.ograStyle;
+    currDoc.pageItemDefaults.appliedGridObjectStyle = currDocSettings.ogriStyle;
+  } catch (e) {
+    // document was closed via non-basil methods
+    currDoc = null;
+  }
+}
 
 var createSelectionDialog = function(settings) {
   var result;
@@ -531,19 +648,29 @@ var getParentFunctionName = function(level) {
     return stackArray[stackArray.length - 2 - level];
 }
 
-var checkNull = pub.checkNull = function (obj) {
-
+var checkNull = function (obj) {
   if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
-var isNull = checkNull; // legacy
+var isEnum = function(base, value) {
+  var props = base.reflect.properties;
+  for (var i = 0; i < props.length; i++) {
+    if (base[props[i].name] == value) return true;
+  }
+  return false;
+}
 
-var error = pub.error = function(msg) {
+var executionDuration = function() {
+  var duration = pub.millis();
+  return duration < 1000 ? duration + "ms" : (duration / 1000).toPrecision(3) + "s";
+}
+
+var error = function(msg) {
   println(ERROR_PREFIX + msg);
   throw new Error(ERROR_PREFIX + msg);
 };
 
-var warning = pub.warning = function(msg) {
+var warning = function(msg) {
   println(WARNING_PREFIX + msg);
 };
 

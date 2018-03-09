@@ -5,8 +5,8 @@
 pub.JSON = {
   /**
    * Function parses and validates a string as JSON-object. Usage:
-   * var obj = b.JSON.decode(str);
-   * var str = b.JSON.encode(obj);
+   * var obj = JSON.decode(str);
+   * var str = JSON.encode(obj);
    *
    * @cat Data
    * @subcat JSON
@@ -31,12 +31,12 @@ pub.JSON = {
       .replace(rvalidbraces, ""))) {
       return (new Function("return " + data))();
     }
-    error("b.JSON.decode(), invalid JSON: " + data);
+    error("JSON.decode(), invalid JSON: " + data);
   },
   /**
    * Function convert an javascript object to a JSON-string. Usage:
-   * var str = b.JSON.encode(obj);
-   * var obj = b.JSON.decode(str);
+   * var str = JSON.encode(obj);
+   * var obj = JSON.decode(str);
    *
    * @cat Data
    * @subcat JSON
@@ -99,14 +99,14 @@ function CSV() {
     if (typeof delimiter === "string") {
       initDelimiter(delimiter);
     } else {
-      error("b.CSV.delimiter, separator has to be a character or string");
+      error("CSV.delimiter, separator has to be a character or string");
     }
   };
 
   /**
    * Function parses a string as CSV-object Array. Usage:
-   * var arr = b.CSV.decode(str);
-   * var str = b.CSV.encode(arr);
+   * var arr = CSV.decode(str);
+   * var str = CSV.encode(arr);
    *
    * @cat Data
    * @subcat CSV
@@ -130,8 +130,8 @@ function CSV() {
 
   /**
    * Function convert an javascript array of objects to a CSV-string. Usage:
-   * var str = b.CSV.encode(arr);
-   * var arr = b.CSV.decode(str);
+   * var str = CSV.encode(arr);
+   * var arr = CSV.decode(str);
    *
    * @cat Data
    * @subcat CSV
@@ -288,7 +288,7 @@ pub.unbinary = function(binaryString) {
 
 
 var decimalToHex = function(d, padding) {
-  padding = padding === undef || padding === null ? padding = 8 : padding;
+  padding = padding === undefined || padding === null ? padding = 8 : padding;
   if (d < 0) d = 4294967295 + d + 1;
   var hex = Number(d).toString(16).toUpperCase();
   while (hex.length < padding) hex = "0" + hex;
@@ -341,7 +341,7 @@ pub.unhex = function(hex) {
 
 
 /**
- * Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts "word!" to "word". Especially useful together with b.words();
+ * Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts "word!" to "word". Especially useful together with words();
  *
  * @method trimWord
  * @cat Data
@@ -436,7 +436,7 @@ pub.splitTokens = function(str, tokens) {
     pos = str.search(tokens);
   }
   if (str.length > 0) ary[index] = str;
-  if (ary.length === 0) ary = undef;
+  if (ary.length === 0) ary = undefined;
   return ary;
 };
 
@@ -460,7 +460,7 @@ pub.matchAll = function(aString, aRegExp) {
 function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
   var sign = value < 0 ? minus : plus;
   var autoDetectDecimals = rightDigits === 0;
-  var rightDigitsOfDefault = rightDigits === undef || rightDigits < 0 ? 0 : rightDigits;
+  var rightDigitsOfDefault = rightDigits === undefined || rightDigits < 0 ? 0 : rightDigits;
   var absValue = Math.abs(value);
   if (autoDetectDecimals) {
     rightDigitsOfDefault = 1;
@@ -483,7 +483,7 @@ function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
     buffer = "" + number % 10 + buffer;
     number = Math.floor(number / 10);
   }
-  if (group !== undef) {
+  if (group !== undefined) {
     var i = buffer.length - 3 - rightDigitsOfDefault;
     while (i > 0) {
       buffer = buffer.substring(0, i) + group + buffer.substring(i);
@@ -634,7 +634,7 @@ var isURL = pub.isURL = function(url) {
  */
 var endsWith = pub.endsWith = function(str, suffix) {
   if(!isString(str) || !isString(suffix)) {
-    error("b.endsWith() requires two strings, the string to be checked and the suffix to look for.");
+    error("endsWith() requires two strings, the string to be checked and the suffix to look for.");
   }
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
@@ -651,7 +651,7 @@ var endsWith = pub.endsWith = function(str, suffix) {
  */
 var startsWith = pub.startsWith = function(str, prefix) {
   if(!isString(str) || !isString(prefix)) {
-    error("b.startsWith() requires two strings, the string to be checked and the prefix to look for.");
+    error("startsWith() requires two strings, the string to be checked and the prefix to look for.");
   }
   return str.indexOf(prefix) === 0;
 };
@@ -750,17 +750,17 @@ var isText = pub.isText = function(obj) {
 var initDataFile = function(file) {
 
   if(!(isString(file) || file instanceof File)) {
-    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
   }
 
   var result = null;
   if (file instanceof File) {
     result = file;
   } else {
-    result = new File(projectFolder().absoluteURI + "/data/" + file);
+    result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
   }
   if (!result.exists) {
-    error("b." + getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
+    error(getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
   }
   return result;
 };
@@ -768,7 +768,7 @@ var initDataFile = function(file) {
 var initExportFile = function(file) {
 
   if(!(isString(file) || file instanceof File)) {
-    error("b." + getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
   }
 
   var result, tmpPath = null;
@@ -813,7 +813,7 @@ var initExportFile = function(file) {
     tmpPath = "";
   } else {
     // string paths relative to the project folder
-    tmpPath = projectFolder().absoluteURI;
+    tmpPath = pub.projectFolder().absoluteURI;
   }
   var fileName = pathNormalized[pathNormalized.length - 1];
 
@@ -828,7 +828,7 @@ var initExportFile = function(file) {
 
         if(!f.exists) {
           // in some cases, folder creation does not throw an error, yet folder does not exist
-          error("b." + getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
+          error(getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
             "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
         }
       }
@@ -851,7 +851,7 @@ var initExportFile = function(file) {
  * @method projectFolder
  * @return {Folder} The folder of the the active document
  */
-var projectFolder = pub.projectFolder = function() {
+pub.projectFolder = function() {
   if(!currentDoc().saved) {
     error("The current document must be saved before its project directory can be accessed.");
   }
@@ -875,10 +875,10 @@ pub.shellExecute = function(cmd) {
     try {
       return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
     } catch (e) {
-      error("b.shellExecute(): " + e);
+      error("shellExecute(): " + e);
     }
   } else {
-    error("b.shellExecute() is a Mac only feature at the moment. Sorry!");
+    error("shellExecute() is a Mac only feature at the moment. Sorry!");
   }
 };
 
@@ -910,10 +910,10 @@ var getURL = function(url) {
     if (Folder.fs === "Macintosh") {
       return pub.shellExecute("curl -m 15 -L '" + url + "'");
     } else {
-      error("b." + getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+      error(getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
     }
   } else {
-    error("b." + getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
+    error(getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
   }
 };
 
@@ -962,7 +962,7 @@ var println = pub.println = function() {
 };
 
 /**
- * Prints a message to the console output in the ExtendScript editor, but unlike b.println() it doesn't return the carriage to a new line at the end.
+ * Prints a message to the console output in the ExtendScript editor, but unlike println() it doesn't return the carriage to a new line at the end.
  *
  * @cat Output
  * @method print
@@ -1004,11 +1004,13 @@ pub.printInfo = function() {
  * @return {File} The file the strings were written to.
  */
 pub.saveStrings = function(file, strings) {
-  if(!isString(string)) {
-    error("b.saveString(), invalid second argument. Use an array of strings.");
+  if(!isArray(strings)) {
+    error("saveStrings(), invalid second argument. Use an array of strings.");
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
   forEach(strings, function(s) {
     outputFile.writeln(s);
   });
@@ -1028,10 +1030,12 @@ pub.saveStrings = function(file, strings) {
  */
 pub.saveString = function(file, string) {
   if(!isString(string)) {
-    error("b.saveString(), invalid second argument. Use a string.");
+    error("saveString(), invalid second argument. Use a string.");
   }
   var outputFile = initExportFile(file);
   outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
   outputFile.write(string);
   outputFile.close();
   return outputFile;
@@ -1052,7 +1056,7 @@ pub.savePDF = function(file, showOptions) {
   try{
     var myPDF = currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
   } catch(e) {
-    error("b.savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+    error("savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
       "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
   }
   return outputFile;
@@ -1073,7 +1077,7 @@ pub.savePNG = function(file, showOptions) {
   try{
     currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
   } catch(e) {
-    error("b.savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
+    error("savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
       "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
   }
   return outputFile;
@@ -1088,7 +1092,7 @@ pub.savePNG = function(file, showOptions) {
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
 pub.download = function(url, file) {
-  var projPath = projectFolder().fsName.replace(" ", "\\ ");
+  var projPath = pub.projectFolder().fsName.replace(" ", "\\ ");
   // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
   // This is more portable then a fixed location
   // the Script looks for the lib folder next to itself
@@ -1129,7 +1133,7 @@ pub.download = function(url, file) {
     var libFolder = Folder(currentBasilFolderPath + "/lib");
     // now create the script file
     var downloadScript = new File(libFolder.fsName + "/download.sh");
-    downloadScript.open("w", undef, undef);
+    downloadScript.open("w", undefined, undefined);
     // set encoding and linefeeds
     downloadScript.lineFeed = "Unix";
     downloadScript.encoding = "UTF-8";
