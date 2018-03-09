@@ -7311,7 +7311,7 @@ pub.transform = function(pItem, type, value) {
       tm = tm.scaleMatrix(value / w, 1);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
-      result = w;
+      result = precision(w, 12);
     }
 
   } else if (type === "height") {
@@ -7319,7 +7319,7 @@ pub.transform = function(pItem, type, value) {
       tm = tm.scaleMatrix(1, value / h);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
-      result = h;
+      result = precision(h, 12);
     }
 
   } else if (type === "size") {
@@ -7327,7 +7327,7 @@ pub.transform = function(pItem, type, value) {
       tm = tm.scaleMatrix(value[0] / w, value[1] / h);
       pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
-      result = [w, h];
+      result = [precision(w, 12), precision(h, 12)];
     }
 
   } else if(type === "translate" || type === "translation") {
@@ -7376,26 +7376,8 @@ pub.transform = function(pItem, type, value) {
 
     var topLeft = refPage.resolve([AnchorPoint.TOP_LEFT_ANCHOR, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
 
-    // calculate offset for margin and bleed modes
-    if(currCanvasMode === MARGIN || currCanvasMode === FACING_MARGINS) {
-      if(refPage.side === PageSideOptions.LEFT_HAND) {
-        // left hand pages' outer margin refers to marginPreferences.right
-        topLeft[0] = topLeft[0] + UnitValue(refPage.marginPreferences.right, unitEnum).as(MeasurementUnits.POINTS);
-      } else {
-        topLeft[0] = topLeft[0] + UnitValue(refPage.marginPreferences.left, unitEnum).as(MeasurementUnits.POINTS);
-      }
-      topLeft[1] = topLeft[1] + UnitValue(refPage.marginPreferences.top, unitEnum).as(MeasurementUnits.POINTS);
-    } else if (currCanvasMode === BLEED || currCanvasMode === FACING_BLEEDS) {
-      if(refPage === currPage.parent.pages.firstItem()) {
-        // outside bleed only needs to be considered on the first page of a spread
-        if(refPage.side === PageSideOptions.LEFT_HAND) {
-          topLeft[0] = topLeft[0] - UnitValue(currentDoc().documentPreferences.documentBleedOutsideOrRightOffset, unitEnum).as(MeasurementUnits.POINTS);
-        } else {
-          topLeft[0] = topLeft[0] - UnitValue(currentDoc().documentPreferences.documentBleedInsideOrLeftOffset, unitEnum).as(MeasurementUnits.POINTS);
-        }
-      }
-      topLeft[1] = topLeft[1] - UnitValue(currentDoc().documentPreferences.documentBleedTopOffset, unitEnum).as(MeasurementUnits.POINTS);
-    }
+    topLeft[0] += UnitValue(currOriginX, unitEnum).as(MeasurementUnits.POINTS);
+    topLeft[1] += UnitValue(currOriginY, unitEnum).as(MeasurementUnits.POINTS);
 
     var anchorPosOnSpread = pItem.resolve([aPoint, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
     var anchorPosOnPagePt = [anchorPosOnSpread[0] - topLeft[0], anchorPosOnSpread[1] - topLeft[1]];
@@ -7411,7 +7393,7 @@ pub.transform = function(pItem, type, value) {
         transform(pItem, "position", [value, anchorPosOnPage[1]]);
         return value;
       } else {
-        result = anchorPosOnPage[0];
+        result = precision(anchorPosOnPage[0], 12);
       }
 
     } else if (type === "y") {
@@ -7419,7 +7401,7 @@ pub.transform = function(pItem, type, value) {
         transform(pItem, "position", [anchorPosOnPage[0], value]);
         return value;
       } else {
-        result = anchorPosOnPage[1];
+        result = precision(anchorPosOnPage[1], 12);
       }
 
     } else {
@@ -7428,7 +7410,7 @@ pub.transform = function(pItem, type, value) {
         transform(pItem, "translate", offset);
         return value;
       } else {
-        result = [anchorPosOnPage[0], anchorPosOnPage[1]];
+        result = [precision(anchorPosOnPage[0], 12), precision(anchorPosOnPage[1], 12)];
       }
     }
 
