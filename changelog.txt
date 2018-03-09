@@ -11,6 +11,7 @@ basil.js x.x.x DAY MONTH YEAR
 + Added mode() to set performance modes (VISIBLE, HIDDEN, SILENT) during script execution
 + Added frameRate() to set frame rate during looping scripts
 + Added transform() function to transform page items independent of the current matrix
+  and to measure current transforms of page items
 + Added referencePoint() function to set the reference point for transform()
 + Added file() and folder()
   gets files and folders or creates them
@@ -33,7 +34,13 @@ basil.js x.x.x DAY MONTH YEAR
   checks if a given variable is an integer
 
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
-* basil scripts will by default use the user's default units or the current units of the document
+* basil scripts will by default use the user's default units or the current units of the document,
+  as well as the transformation reference point set by the user
+* canvasMode() behaves a lot more reliable now
+  FACING_PAGES, FACING_MARGINS, FACING_BLEEDS, fixed for 3+ page spreads
+  BLEED, MARGIN, FACING_MARGINS, FACING_BLEEDS, fixed for single page in facing_pages mode
+  all modes work now for margins or bleeds of different sizes
+  resetMatrix() does not reset the canvas mode anymore
 * performance constants are called VISIBLE, HIDDEN and SILENT now and are used together with the new mode() function
 * rect() now allows additional parameters to add rounded corners
 * paragraphStyle(), characterStyle() and objectStyle() are expanded:
@@ -57,6 +64,7 @@ basil.js x.x.x DAY MONTH YEAR
   (Characters, Words, Lines etc.)
 * size() now can use existing page size presets as a parameter with an optional
   second parameter for page orientation (introducing PORTRAIT and LANDSCAPE)
+* duplicate() now duplicates page items reliably in place, even when in FACING canvas modes
 * Changed all include/includepath/targetengine statements from # to //@
   This allows linting with eslint of all files
 * Linted all the test files
@@ -64,7 +72,8 @@ basil.js x.x.x DAY MONTH YEAR
 The user is allowed to have his files wherever he wants.
 
 - b.go() and b.loop() are removed (use function draw() or function loop() instead)
-- b.itemX(), b.itemY(), b.itemWidth(), b.itemHeight(), b.itemPosition() and b.itemSize() are removed and replaced by the new transform() function
+- b.itemX(), b.itemY(), b.itemWidth(), b.itemHeight(), b.itemPosition() and b.itemSize() are removed
+  and replaced by the new transform() function
 - b.transformImage() is removed as it can be replaced by the new transform function()
 
 Special thanks to Hartmut Bohnacker for making the transform functions work in Processing style!

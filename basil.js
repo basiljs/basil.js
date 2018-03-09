@@ -181,6 +181,7 @@ pub.CORNERS = "corners";
  * @subcat Primitives
  */
 pub.CENTER = "center";
+pub.CENTER_CENTER = "center";
 
 /**
  * Radius, used for drawing modes.
@@ -7204,7 +7205,7 @@ pub.referencePoint = function(rp) {
   } else if(rp === pub.CENTER_LEFT || rp === 4 || rp === AnchorPoint.LEFT_CENTER_ANCHOR) {
     currRefPoint = pub.CENTER_LEFT;
     anchorEnum = AnchorPoint.LEFT_CENTER_ANCHOR;
-  } else if(rp === pub.CENTER || rp === 5 || rp === AnchorPoint.CENTER_ANCHOR) {
+  } else if(rp === pub.CENTER || rp === pub.CENTER_CENTER || rp === 5 || rp === AnchorPoint.CENTER_ANCHOR) {
     currRefPoint = pub.CENTER;
     anchorEnum = AnchorPoint.CENTER_ANCHOR;
   } else if(rp === pub.CENTER_RIGHT || rp === 6 || rp === AnchorPoint.RIGHT_CENTER_ANCHOR) {

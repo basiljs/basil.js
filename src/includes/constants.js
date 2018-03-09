@@ -94,6 +94,7 @@ pub.CORNERS = "corners";
  * @subcat Primitives
  */
 pub.CENTER = "center";
+pub.CENTER_CENTER = "center";
 
 /**
  * Radius, used for drawing modes.
