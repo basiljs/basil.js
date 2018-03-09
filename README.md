@@ -1,6 +1,14 @@
 basil.js
 ========
 
+:exclamation: NOTE :exclamation:
+
+This is a former state of basil's [develop branch](https://github.com/basiljs/basil.js/tree/develop). It is the last state that still uses the `b.` notation, before we switched to basil v2.0's `b-less` notation. While this is not an official release, it is the most feature rich state of pre 2.0 basil, so feel free to download this branch's [basil.js](https://github.com/basiljs/basil.js/blob/develop-v1/basil.js) file to run those good ol' basil scripts.
+
+And btw. … if you made it that far already and feel adventurous, you can head over to basil's current [develop branch](https://github.com/basiljs/basil.js/tree/develop) and give the all [new basil.js](https://github.com/basiljs/basil.js/blob/develop/basil.js) a test drive, before it is even officialy released! It works without `b.`, comes with lots of new features and got rid of many nasty bugs on the way. Enjoy!
+
+---
+
 An attempt to port the spirit of the [Processing](http://processing.org/) visualization language to Adobe InDesign.
 
 For tutorials, examples and documentation go to the official website: [http://basiljs.ch](http://basiljs.ch). Follow us on twitter [@basil_js](https://twitter.com/basil_js) for news and updates
