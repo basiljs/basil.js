@@ -7242,7 +7242,7 @@ pub.referencePoint = function(rp) {
  * <li> <code>"size"</code>: Sets the page item's size to the given <code>[x, y]</code> dimensions. Returns the size of the page item as an array.</li>
  * <li> <code>"width"</code>: Sets the page item's width to the given value. Returns the width of the page item.</li>
  * <li> <code>"height"</code>: Sets the page item's height to the given value. Returns the height of the page item.</li>
- * - <code>"position"</code>: Sets the position of the page item's anchor point to the given <code>[x, y]</code> coordinates. Returns the coordinates of the page item's anchor point as an array.</li>
+ * <li> <code>"position"</code>: Sets the position of the page item's anchor point to the given <code>[x, y]</code> coordinates. Returns the coordinates of the page item's anchor point as an array.</li>
  * <li> <code>"x"</code>: Sets the x-position of the page item's anchor point to the given value. Returns the x-coordinate of the page item's anchor point.</li>
  * <li> <code>"y"</code>: Sets the y-position of the page item's anchor point to the given value. Returns the y-coordinate of the page item's anchor point.</li>
  * </ul>
