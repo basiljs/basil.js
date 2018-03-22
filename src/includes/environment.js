@@ -162,16 +162,18 @@ pub.revert = function() {
 pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
-  } else if (typeof m === "string") {
-    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
-      error("canvasMode(), cannot set a facing pages mode to a single page document");
-    }
+  } else if (m === pub.PAGE ||
+             m === pub.MARGIN ||
+             m === pub.BLEED ||
+             m === pub.FACING_PAGES ||
+             m === pub.FACING_MARGINS ||
+             m === pub.FACING_BLEEDS) {
     currCanvasMode = m;
     updatePublicPageSizeVars();
-    return currCanvasMode;
   } else {
     error("canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
+  return currCanvasMode;
 };
 
 

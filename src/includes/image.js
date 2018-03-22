@@ -84,11 +84,11 @@ pub.image = function(img, x, y, w, h) {
     frame.move(null, [-(width / 2), -(height / 2)]);
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
 
@@ -97,33 +97,6 @@ pub.image = function(img, x, y, w, h) {
   frame.strokeColor = currStrokeColor;
 
   return frame;
-};
-
-/**
- * Transforms position and size of an image.
- * The image fit options are always "contentToFrame".
- *
- * @cat Document
- * @subcat Image
- * @method transformImage
- * @param  {Graphic} img The image to transform.
- * @param  {Number} x The new x.
- * @param  {Number} y The new y.
- * @param  {Number} width The new width.
- * @param  {Number} height The new height.
- */
-pub.transformImage = function(img, x, y, width, height) {
-  if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
-    // [y1, x1, y2, x2]
-    img.geometricBounds = [y, x, y + height, x + width];
-    if (currImageMode === pub.CENTER) {
-      img.move(null, [-(width / 2), -(height / 2)]);
-    }
-    img.fit(FitOptions.CENTER_CONTENT);
-    img.fit(FitOptions.contentToFrame);
-  } else {
-    error("transformImage(), wrong type! Use: img, x, y, width, height");
-  }
 };
 
 /**

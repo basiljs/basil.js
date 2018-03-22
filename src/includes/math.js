@@ -928,13 +928,13 @@ var precision = function(num, dec) {
 };
 
 /**
- * The function calculates the geometric bounds of any given object. Use <code>itemX()</code>, <code>itemY()</code>, <code>itemPosition()</code>, <code>itemWidth()</code>, <code>itemHeight()</code> and <code>itemSize()</code> to modify page items.
- * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
+ * The function calculates the geometric bounds of any given page item or text. Use the <code>transforms()</code> function to modify page items.
+ * In case the object is any kind of text, additional typographic information baseline and xHeight are calculated.
  *
  * @cat Document
  * @subcat Transformation
  * @method bounds
- * @param  {Text|Object} obj The object to calculate the geometric bounds.
+ * @param  {PageItem|Text} obj The page item or text to calculate the geometric bounds.
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
 pub.bounds = function (obj) {
@@ -995,58 +995,5 @@ pub.bounds = function (obj) {
     else {
       error("bounds(), invalide type of parameter! Can't get bounds for this object.");
     }
-  }
-};
-
-/**
- * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemX
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [x] The new x position, optional.
- * @returns {Number} The current x position.
- */
-pub.itemX = function(pItem, x) {
-  var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("itemX(), please note that only CORNER positioning is fully supported. Use with care.");
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof x === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      pItem.geometricBounds = [pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width];
-    } else {
-      return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
-    }
-  } else {
-    error("itemX(), pItem has to be a valid PageItem");
-  }
-};
-
-/**
- * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemY
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [y] The new y position, optional.
- * @returns {Number} The current y position.
- */
-pub.itemY = function(pItem, y) {
-  var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("itemY(), please note that only CORNER positioning is fully supported. Use with care.");
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof y === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
-      pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
-    } else {
-      return precision(pItem.geometricBounds[0], 5) + off;
-    }
-  } else {
-    error("itemY(), pItem has to be a valid PageItem");
   }
 };
