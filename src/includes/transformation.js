@@ -276,12 +276,10 @@ var printMatrixHelper = function(elements) {
   return digits;
 };
 
-/**
- * @description A matrix.
- * @cat Document
- * @subcat Transformation
- */
-var Matrix2D = pub.Matrix2D = function() {
+// ----------------------------------------
+// private matrix functions
+
+var Matrix2D = function() {
   if (arguments.length === 0) {
     this.reset();
   } else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -290,19 +288,10 @@ var Matrix2D = pub.Matrix2D = function() {
     this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   }
 };
-/**
- * @cat Document
- * @subcat Transformation
- * @description A Matrix object.
- * @type {Object}
- */
+
 Matrix2D.prototype = {
-  /**
-   * @method Matrix2D.set
-   * @cat Document
-   * @subcat Transformation
-   * @description Set a Matrix.
-   */
+
+  // Set a Matrix.
   set: function() {
     if (arguments.length === 6) {
       var a = arguments;
@@ -314,60 +303,35 @@ Matrix2D.prototype = {
     }
   },
 
-/**
- * @description Get a Matrix.
- * @method Matrix2D.get
- * @cat Document
- * @subcat Transformation
- * @return {Matrix2D} The current Matrix.
- */
+  // Get a Matrix.
   get: function() {
     var outgoing = new Matrix2D();
     outgoing.set(this.elements);
     return outgoing;
   },
-/**
- * @description Reset the Matrix.
- * @method Matrix2D.reset
- * @cat Document
- * @subcat Transformation
- */
+
+  // Reset the Matrix.
   reset: function() {
     this.set([1, 0, 0, 0, 1, 0]);
   },
-  /**
-   * @description Slice the Matrix into an array.
-   * @method Matrix2D.array
-   * @cat Document
-   * @subcat Transformation
-   * @return {Array} Returns an sliced array.
-   */
+
+  // Slice the Matrix into an array.
   array: function array() {
     return this.elements.slice();
   },
-  /**
 
-   * @description Slice the Matrix into an array.
-   * @cat Document
-   * @method Matrix2D.adobeMatrix
-   * @subcat Transformation
-   * @return {Array} Returns an Adobe Matrix.
-   */
   adobeMatrix: function array(x, y) {
     // this seems to work:
     // it's important to know the position of the object around which it will be rotated and scaled.
 
     // 1. making a copy of this matrix
     var tmpMatrix = this.get();
-    // tmpMatrix.print();
 
     // 2. pre-applying a translation as if the object was starting from the origin
     tmpMatrix.preApply([1, 0, -x, 0, 1, -y]);
-    // tmpMatrix.print();
 
     // 3. move to object to its given coordinates
     tmpMatrix.apply([1, 0, x, 0, 1, y]);
-    // tmpMatrix.print();
 
     var uVX = new UnitValue(tmpMatrix.elements[2], currUnits);
     var uVY = new UnitValue(tmpMatrix.elements[5], currUnits);
@@ -381,146 +345,12 @@ Matrix2D.prototype = {
       uVY.as("pt")
     ];
   },
-  /**
-   * @description translate Needs more description.
-   * @cat Document
-   * @method Matrix2D.translate
-   * @subcat Transformation
-   * @param  {Number} tx …
-   * @param  {Number} ty …
-   */
+
   translate: function(tx, ty) {
     this.elements[2] = tx * this.elements[0] + ty * this.elements[1] + this.elements[2];
     this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5];
   },
-  /**
-   * @description invTranslate Needs more description.
-   * @method Matrix2D.invTranslate
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} tx …
-   * @param  {Number} ty …
-   */
-  invTranslate: function(tx, ty) {
-    this.translate(-tx, -ty);
-  },
-  /**
-   * @description transpose Needs more description.
-   * @method Matrix2D.transpose
-   * @cat Document
-   * @subcat Transformation
-   */
-  transpose: function() {},
-  /**
-   * @description mult Needs more description.
-   * @method Matrix2D.mult
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Vector|Array} source …
-   * @param  {Vector|Array} [target] …
-   * @return {Vector} A multiplied Vector.
-   */
-  mult: function(source, target) {
-    var x, y;
-    if (source instanceof Vector) {
-      x = source.x;
-      y = source.y;
-      if (!target) {
-        target = new Vector();
-      }
-    } else if (source instanceof Array) {
-      x = source[0];
-      y = source[1];
-      if (!target) {
-        target = [];
-      }
-    }
-    if (target instanceof Array) {
-      target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
-      target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-    } else if (target instanceof Vector) {
-      target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
-      target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-      target.z = 0;
-    }
-    return target;
-  },
-  /**
-   * @description multX Needs more description.
-   * @method Matrix2D.multX
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} x …
-   * @param  {Number} y …
-   * @return {Number} A mulitplied X value.
-   */
-  multX: function(x, y) {
-    return x * this.elements[0] + y * this.elements[1] + this.elements[2];
-  },
-  /**
-   * @description multY Needs more description.
-   * @method Matrix2D.multY
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} x …
-   * @param  {Number} y …
-   * @return {Number}   A multiplied Y value.
-   */
-  multY: function(x, y) {
-    return x * this.elements[3] + y * this.elements[4] + this.elements[5];
-  },
-  /*
-  // BUG, seems to be buggy in processing.js, and i am not clever enough to figure it out
-  shearX: function(angle) {
-    this.apply(1, 0, 1, Math.tan(angle), 0, 0)
-  },
-  shearY: function(angle) {
-    this.apply(1, 0, 1, 0, Math.tan(angle), 0)
-  },*/
-  /**
-   * @description determinant Needs more description.
-   * @method Matrix2D.determinant
-   * @cat Document
-   * @subcat Transformation
-   * @return {Number} A determinant …
-   */
-  determinant: function() {
-    return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3];
-  },
-  /**
-   * @description invert Needs more description.
-   * @method Matrix2D.invert
-   * @cat Document
-   * @subcat Transformation
-   * @return {Boolean} …
-   */
-  invert: function() {
-    var d = this.determinant();
-    if (Math.abs(d) > -2147483648) {
-      var old00 = this.elements[0];
-      var old01 = this.elements[1];
-      var old02 = this.elements[2];
-      var old10 = this.elements[3];
-      var old11 = this.elements[4];
-      var old12 = this.elements[5];
-      this.elements[0] = old11 / d;
-      this.elements[3] = -old10 / d;
-      this.elements[1] = -old01 / d;
-      this.elements[4] = old00 / d;
-      this.elements[2] = (old01 * old12 - old11 * old02) / d;
-      this.elements[5] = (old10 * old02 - old00 * old12) / d;
-      return true;
-    }
-    return false;
-  },
-  /**
-   * @description scale Needs more description.
-   * @method Matrix2D.scale
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} sx …
-   * @param  {Number} sy …
-   */
+
   scale: function(sx, sy) {
     if (sx && !sy) {
       sy = sx;
@@ -532,26 +362,7 @@ Matrix2D.prototype = {
       this.elements[4] *= sy;
     }
   },
-  /**
-   * @description invScale Needs more description.
-   * @method Matrix2D.invScale
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} sx …
-   * @param  {Number} sy …
-   */
-  invScale: function(sx, sy) {
-    if (sx && !sy) {
-      sy = sx;
-    }
-    this.scale(1 / sx, 1 / sy);
-  },
-  /**
-   * @description apply Needs more description.
-   * @method Matrix2D.apply
-   * @cat Document
-   * @subcat Transformation
-   */
+
   apply: function() {
     var source;
     if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -570,12 +381,7 @@ Matrix2D.prototype = {
     }
     this.elements = result.slice();
   },
-  /**
-   * @description preApply Needs more description.
-   * @method Matrix2D.preApply
-   * @cat Document
-   * @subcat Transformation
-   */
+
   preApply: function() {
     var source;
     if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -594,13 +400,7 @@ Matrix2D.prototype = {
     result[4] = this.elements[1] * source[3] + this.elements[4] * source[4];
     this.elements = result.slice();
   },
-  /**
-   * @description rotate Needs more description.
-   * @method Matrix2D.rotate
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} angle
-   */
+
   rotate: function(angle) {
     var c = Math.cos(angle);
     var s = Math.sin(angle);
@@ -613,73 +413,13 @@ Matrix2D.prototype = {
     this.elements[3] = c * temp1 + s * temp2;
     this.elements[4] = -s * temp1 + c * temp2;
   },
-  /**
-   * @description rotateZ Needs more description.
-   * @method Matrix2D.rotateZ
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} angle
-   */
-  rotateZ: function(angle) {
-    this.rotate(angle);
-  },
-  /**
-   * @description invRotateZ Needs more description.
-   * @method Matrix2D.invRotateZ
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} angle
-   */
-  invRotateZ: function(angle) {
-    this.rotateZ(angle - Math.PI);
-  },
-  /**
-   * @description print Needs more description.
-   * @method Matrix2D.print
-   * @cat Document
-   * @subcat Transformation
-   */
+
   print: function() {
     var digits = printMatrixHelper(this.elements);
     var output = "" + pub.nfs(this.elements[0], digits, 4) + " " + pub.nfs(this.elements[1], digits, 4) + " " + pub.nfs(this.elements[2], digits, 4) + "\n" + pub.nfs(this.elements[3], digits, 4) + " " + pub.nfs(this.elements[4], digits, 4) + " " + pub.nfs(this.elements[5], digits, 4) + "\n\n";
     pub.println(output);
   }
 };
-
-/**
- * @description Returns the current matrix as a Matrix2D object for altering existing PageItems with transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
- *
- * @cat Document
- * @subcat Transformation
- * @method matrix
- * @param {Matrix2D} [matrix] The matrix to be set as new current matrix.
- * @returns {Matrix2D} Returns the current matrix.
- */
-pub.matrix = function(matrix) {
-
-  if(matrix instanceof Matrix2D) {
-    currMatrix = matrix;
-  }
-  return currMatrix;
-};
-
-/**
- * @description Transforms the given PageItem with the given Matrix2D object.
- *
- * @cat Document
- * @subcat Transformation
- * @method transform
- * @param {PageItem} obj The item to be transformed.
- * @param {Matrix2D} matrix The matrix to be applied.
- */
-// pub.transform = function(obj, matrix) {
-
-//   obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-//                    AnchorPoint.TOP_LEFT_ANCHOR,
-//                    matrix.adobeMatrix()
-//   );
-
-// };
 
 /**
  *@description Multiplies the current matrix by the one specified through the parameters.
