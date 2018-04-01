@@ -4,7 +4,8 @@
 
 /**
  * @description The <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/filter">filter()</a> method creates a new array with all elements that pass the test implemented by the provided function.
- * @cat Data
+ *
+ * @cat    Data
  * @subcat Array
  * @method Array.filter
  * @param  {Function} callback The Function is a predicate, to test each element of the array. Return true to keep the element, false otherwise.
@@ -30,7 +31,8 @@ if (!Array.prototype.filter) {
 
 /**
  * @description The <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map">map()</a> method creates a new array with the results of calling a provided function on every element in this array.
- * @cat Data
+ *
+ * @cat    Data
  * @subcat Array
  * @method Array.map
  * @param  {Function} callback Function that produces an element of the new Array.
@@ -66,13 +68,13 @@ if (!Array.prototype.map) {
 }
 
 /**
-* Used to run a function on all elements of an array. Please note the existance of the convenience methods <code>stories()</code>, <code>paragraphs()</code>, <code>lines()</code>, <code>words()</code> and <code>characters()</code> that are used to iterate through all instances of the given type in the given document.
+* @description Used to run a function on all elements of an array. Please note the existance of the convenience methods <code>stories()</code>, <code>paragraphs()</code>, <code>lines()</code>, <code>words()</code> and <code>characters()</code> that are used to iterate through all instances of the given type in the given document.
 *
-* @cat Data
+* @cat    Data
 * @subcat Array
 * @method Array.forEach
-* @param {Array} collection The array to be processed.
-* @param {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+* @param  {Array} collection The array to be processed.
+* @param  {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
 */
 forEach = function(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
@@ -90,12 +92,12 @@ forEach = function(collection, cb) {
 };
 
 /**
- * HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
+ * @description HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
  *
- * @constructor
- * @cat Data
+ * @cat    Data
  * @subcat HashList
  * @method HashList
+ * @constructor
  */
 // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
 HashList = function () {
@@ -116,12 +118,12 @@ HashList = function () {
 
   /**
    *
-   * This removes a key - value pair by its key.
+   * @description This removes a key - value pair by its key.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.remove
-   * @param {String} key The key to delete.
+   * @param  {String} key The key to delete.
    * @return {Object} The value before deletion.
    */
   that.remove = function(key) {
@@ -135,12 +137,12 @@ HashList = function () {
   };
 
   /**
-   * This gets a value by its key.
+   * @description This gets a value by its key.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.get
-   * @param {String} key The key to look for.
+   * @param  {String} key The key to look for.
    * @return {Object} The value.
    */
   that.get = function(key) {
@@ -148,13 +150,13 @@ HashList = function () {
   };
 
   /**
-   * This sets a key - value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
+   * @description This sets a key - value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.set
-   * @param {String} key The key to use.
-   * @param {Object|String|Number|Boolean} value The value to set.
+   * @param  {String} key The key to use.
+   * @param  {Object|String|Number|Boolean} value The value to set.
    * @return {Object} The value after setting.
    */
   that.set = function(key, value) {
@@ -171,12 +173,12 @@ HashList = function () {
   };
 
   /**
-   * Checks for the existence of a given key.
+   * @description Checks for the existence of a given key.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.hasKey
-   * @param {String} key The key to check.
+   * @param  {String} key The key to check.
    * @return {Boolean} Returns true or false.
    */
   that.hasKey = function(key) {
@@ -185,12 +187,12 @@ HashList = function () {
   };
 
   /**
-   * Checks if a certain value exists at least once in all of the key - value pairs.
+   * @description Checks if a certain value exists at least once in all of the key - value pairs.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.hasValue
-   * @param {Object|String|Number|Boolean} value The value to check.
+   * @param  {Object|String|Number|Boolean} value The value to check.
    * @return {Boolean} Returns true or false.
    */
   that.hasValue = function(value) {
@@ -206,9 +208,9 @@ HashList = function () {
   };
 
   /**
-   * Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
+   * @description Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.getKeysByValues
    * @return {Array} An array with all the keys.
@@ -225,9 +227,9 @@ HashList = function () {
   };
 
   /**
-   * Returns an array with all keys in a sorted order from higher to lower magnitude.
+   * @description Returns an array with all keys in a sorted order from higher to lower magnitude.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.getSortedKeys
    * @return {Array} An array with all the keys sorted.
@@ -237,9 +239,9 @@ HashList = function () {
   };
 
   /**
-   * Returns an array with all keys.
+   * @description Returns an array with all keys.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.getKeys
    * @return {Array} An array with all the keys.
@@ -258,9 +260,9 @@ HashList = function () {
   };
 
   /**
-   * Returns an array with all values.
+   * @description Returns an array with all values.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.getValues
    * @return {Array} An array with all the values.
@@ -278,9 +280,9 @@ HashList = function () {
   };
 
   /**
-   * Deletes all the key - value pairs in this HashList.
+   * @description Deletes all the key - value pairs in this HashList.
    *
-   * @cat Data
+   * @cat    Data
    * @subcat HashList
    * @method HashList.clear
    */

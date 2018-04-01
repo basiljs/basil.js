@@ -3,16 +3,16 @@
 // ----------------------------------------
 
 /**
- * Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
+ * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
  * The first two parameters set the location, the third sets the width, and the fourth sets the height.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method ellipse
- * @param {Number} x X-coordinate of the ellipse.
- * @param {Number} y Y-coordinate of the ellipse.
- * @param {Number} w Width of the ellipse.
- * @param {Number} h Height of the ellipse.
+ * @param  {Number} x X-coordinate of the ellipse.
+ * @param  {Number} y Y-coordinate of the ellipse.
+ * @param  {Number} w Width of the ellipse.
+ * @param  {Number} h Height of the ellipse.
  * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
@@ -66,21 +66,21 @@ pub.ellipse = function(x, y, w, h) {
 };
 
 /**
- * Draws a line (a direct path between two points) to the page.
+ * @description Draws a line (a direct path between two points) to the page.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method line
- * @param {Number} x1 X-coordinate of Point 1.
- * @param {Number} y1 Y-coordinate of Point 1.
- * @param {Number} x2 X-coordinate of Point 2.
- * @param {Number} y2 Y-coordinate of Point 2.
+ * @param  {Number} x1 X-coordinate of Point 1.
+ * @param  {Number} y1 Y-coordinate of Point 1.
+ * @param  {Number} x2 X-coordinate of Point 2.
+ * @param  {Number} y2 Y-coordinate of Point 2.
  * @return {GraphicLine} New GraphicLine.
  *
- *  @example
- *  var vec1 = new Vector( x1, y1 );
- *  var vec2 = new Vector( x2, y2 );
- *  line( vec1, vec2 );
+ * @example
+ * var vec1 = new Vector( x1, y1 );
+ * var vec2 = new Vector( x2, y2 );
+ * line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
   if (arguments.length !== 4) {
@@ -101,16 +101,16 @@ pub.line = function(x1, y1, x2, y2) {
 };
 
 /**
- * Using the beginShape() and endShape() functions allows to create more complex forms.
+ * @description Using the beginShape() and endShape() functions allows to create more complex forms.
  * beginShape() begins recording vertices for a shape and endShape() stops recording.
  * After calling the beginShape() function, a series of vertex() commands must follow.
  * To stop drawing the shape, call endShape(). The shapeMode parameter allows to close the shape
  * (to connect the beginning and the end).
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method beginShape
- * @param {String} shapeMode Set to CLOSE if the new Path should be auto-closed.
+ * @param  {String} shapeMode Set to CLOSE if the new Path should be auto-closed.
  */
 pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
@@ -124,15 +124,15 @@ pub.beginShape = function(shapeMode) {
 };
 
 /**
- * Shapes are constructed by connecting a series of vertices. vertex() is used to
+ * @description Shapes are constructed by connecting a series of vertices. vertex() is used to
  * specify the vertex coordinates of lines and polygons. It is used exclusively between
  * the beginShape() and endShape() functions.
- *
+ * <br><br>
  * Use either vertex(x, y) for drawing straight corners or
  * vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle) for drawing bezier shapes.
  * You can also mix the two approaches.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method vertex
  * @param  {Number} x X-coordinate of the vertex.
@@ -160,22 +160,21 @@ pub.vertex = function() {
 };
 
 /**
- * The arc() function draws an arc. Arcs are drawn along the outer edge of an ellipse
+ * @description The arc() function draws an arc. Arcs are drawn along the outer edge of an ellipse
  * defined by the x, y, width and height parameters.
  * The origin or the arc's ellipse may be changed with the ellipseMode() function.
  * The start and stop parameters specify the angles at which to draw the arc.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method arc
- * @param {Number} cx X-coordinate of the arc's center.
- * @param {Number} cy Y-coordinate of the arc's center.
- * @param {Number} w Width of the arc's ellipse.
- * @param {Number} h Height of the arc's ellipse.
- * @param {Number} startAngle Starting angle of the arc in radians.
- * @param {Number} endAngle Ending angle of the arc in radians.
- * @param {String} [mode] Mode to define the rendering technique of the arc: OPEN (default), CHORD, or PIE.
- *
+ * @param  {Number} cx X-coordinate of the arc's center.
+ * @param  {Number} cy Y-coordinate of the arc's center.
+ * @param  {Number} w Width of the arc's ellipse.
+ * @param  {Number} h Height of the arc's ellipse.
+ * @param  {Number} startAngle Starting angle of the arc in radians.
+ * @param  {Number} endAngle Ending angle of the arc in radians.
+ * @param  {String} [mode] Mode to define the rendering technique of the arc: OPEN (default), CHORD, or PIE.
  * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  *
  */
@@ -291,12 +290,12 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
 }
 
 /**
- * addPath() is used to create multi component paths. Call addPath() to add
+ * @description addPath() is used to create multi component paths. Call addPath() to add
  * the vertices drawn so far to a single path. New vertices will then end up in a new path and
  * endShape() will return a multi path object. All component paths will account for
  * the setting (see CLOSE) given in beginShape(shapeMode).
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method addPath
  */
@@ -306,10 +305,10 @@ pub.addPath = function() {
 };
 
 /**
- * The endShape() function is the companion to beginShape() and may only be called
+ * @description The endShape() function is the companion to beginShape() and may only be called
  * after beginShape().
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method endShape
  * @return {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
@@ -360,11 +359,11 @@ function notCalledBeginShapeError () {
 }
 
 /**
- * Draws a rectangle on the page.
- * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the rectMode() function.
+ * @description Draws a rectangle on the page.<br>
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the rectMode() function.<br>
  * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Primitives
  * @method rect
  * @param  {Number} x X-coordinate of the rectangle.
@@ -448,7 +447,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
 // -- Attributes --
 
 /**
- * Modifies the location from which rectangles or text frames draw. The default
+ * @description Modifies the location from which rectangles or text frames draw. The default
  * mode is rectMode(CORNER), which specifies the location to be the upper left
  * corner of the shape and uses the <code>w</code> and <code>h</code> parameters to specify the
  * width and height. The syntax rectMode(CORNERS) uses the <code>x</code> and <code>y</code>
@@ -460,10 +459,10 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
  * center point and uses the <code>w</code> and <code>h</code> parameters to specify
  * half of the shape's width and height.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Attributes
  * @method rectMode
- * @param {String} mode The rectMode to switch to: either CORNER, CORNERS, CENTER, or RADIUS.
+ * @param  {String} mode The rectMode to switch to: either CORNER, CORNERS, CENTER, or RADIUS.
  *
  */
 pub.rectMode = function (mode) {
@@ -477,7 +476,7 @@ pub.rectMode = function (mode) {
 };
 
 /**
- * The origin of new ellipses is modified by the <code>ellipseMode()</code> function.
+ * @description The origin of new ellipses is modified by the <code>ellipseMode()</code> function.
  * The default configuration is <code>ellipseMode(CENTER)</code>, which specifies the
  * location of the ellipse as the center of the shape. The RADIUS mode is
  * the same, but the <code>w</code> and <code>h</code> parameters to <code>ellipse()</code> specify the
@@ -486,10 +485,10 @@ pub.rectMode = function (mode) {
  * mode uses the four parameters to <code>ellipse()</code> to set two opposing corners
  * of the ellipse's bounding box.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Attributes
  * @method ellipseMode
- * @param {String} mode The ellipse mode to switch to: either CENTER, RADIUS, CORNER, or CORNERS.
+ * @param  {String} mode The ellipse mode to switch to: either CENTER, RADIUS, CORNER, or CORNERS.
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
@@ -502,12 +501,12 @@ pub.ellipseMode = function (mode) {
 };
 
 /**
- * Sets the width of the stroke used for lines and the border around shapes.
+ * @description Sets the width of the stroke used for lines and the border around shapes.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Attributes
  * @method strokeWeight
- * @param {Number} weight The width of the stroke in points.
+ * @param  {Number} weight The width of the stroke in points.
  */
 pub.strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
@@ -518,14 +517,14 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
- * Returns the object style of a given page item or the object style with the given name. If an
+ * @description Returns the object style of a given page item or the object style with the given name. If an
  * object style of the given name does not exist, it gets created. Optionally a props object of
  * property name/value pairs can be used to set the object style's properties.
  *
- * @cat Typography
+ * @cat    Typography
  * @method objectStyle
  * @param  {PageItem|String} itemOrName A page item whose style to return or the name of the object style to return.
- * @param {Object} [props] An object of property name/value pairs to set the style's properties.
+ * @param  {Object} [props] An object of property name/value pairs to set the style's properties.
  * @return {ObjectStyle} The object style instance.
  */
 pub.objectStyle = function(itemOrName, props) {
@@ -561,13 +560,13 @@ pub.objectStyle = function(itemOrName, props) {
 };
 
 /**
- * Applies an object style to the given page item. The object style can be given as
+ * @description Applies an object style to the given page item. The object style can be given as
  * name or as an object style instance.
  *
- * @cat Typography
+ * @cat    Typography
  * @method applyObjectStyle
  * @param  {PageItem} item The page item to apply the style to.
- * @param {ObjectStyle|String} style An object style instance or the name of the object style to apply.
+ * @param  {ObjectStyle|String} style An object style instance or the name of the object style to apply.
  * @return {PageItem} The page item that the style was applied to.
  */
 
@@ -591,13 +590,13 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
- * Duplicates the given page after the current page or the given page item to the current page and layer. Use <code>rectMode()</code> to set center point.
+ * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use <code>rectMode()</code> to set center point.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Transformation
  * @method duplicate
- * @param {PageItem|Page} item The page item or page to duplicate.
- * @returns {Object} The new page item or page.
+ * @param  {PageItem|Page} item The page item or page to duplicate.
+ * @return {Object} The new page item or page.
  */
 pub.duplicate = function(item) {
 

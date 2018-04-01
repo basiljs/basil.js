@@ -46,10 +46,10 @@ var textCollection = function(collection, legalContainers, container, cb) {
 
 };
 /**
- * @description Suspends the calling thread for a number of milliseconds.
+ * @description Suspends the calling thread for a number of milliseconds.<br>
  * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
  *
- * @cat Environment
+ * @cat    Environment
  * @method delay
  * @param  {Number} milliseconds  The delay time in milliseconds.
  */
@@ -60,17 +60,18 @@ pub.delay = function (milliseconds) {
 /**
  * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Multi-Getters
  * @method stories
  * @param  {Document} doc The document instance to iterate the stories in
  * @param  {Function} [cb] The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount.
+ * @return {Stories} A collection of Story objects.
+ *
  * @example
  * stories(doc(), function(story, loopCount){
  *   println("Number of words in each Story:");
  *   println(story.words.length);
  * });
- * @return {Stories} A collection of Story objects.
  */
 pub.stories = function(doc, cb) {
 
@@ -88,7 +89,7 @@ pub.stories = function(doc, cb) {
 /**
  * @description If no callback function is given it returns a Collection of paragraphs in the container otherwise calls the given callback function with each paragraph of the given document, page, story or textFrame.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Multi-Getters
  * @method paragraphs
  * @param  {Document|Page|Story|TextFrame} container The document, story, page or textFrame instance to iterate the paragraphs in.
@@ -105,7 +106,7 @@ pub.paragraphs = function(container, cb) {
 /**
  * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Multi-Getters
  * @method lines
  * @param  {Document|Page|Story|TextFrame|Paragraph} container The document, page, story, textFrame or paragraph instance to iterate the lines in.
@@ -122,7 +123,7 @@ pub.lines = function(container, cb) {
 /**
  * @description If no callback function is given it returns a Collection of words in the container otherwise calls the given callback function with each word of the given document, page, story, textFrame, paragraph or line.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Multi-Getters
  * @method words
  * @param  {Document|Page|Story|TextFrame|Paragraph|Line} container The document, page, story, textFrame, paragraph or line instance to iterate the words in.
@@ -139,7 +140,7 @@ pub.words = function(container, cb) {
 /**
  * @description If no callback function is given it returns a Collection of characters in the container otherwise calls the given callback function with each character of the given document, page, story, textFrame, paragraph, line or word.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Multi-Getters
  * @method characters
  * @param  {Document|Page|Story|TextFrame|Paragraph|Line|Word} container The document, page, story, textFrame, paragraph, line or word instance to  iterate the characters in.
@@ -157,7 +158,7 @@ pub.characters = function(container, cb) {
 /**
  * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
  *
- * @cat Document
+ * @cat    Document
  * @subcat Multi-Getters
  * @method items
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
@@ -185,7 +186,7 @@ pub.items = function(container, cb) {
 /**
  * @description Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
  *
- * @cat Document
+ * @cat    Document
  * @method clear
  * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in.
  */
@@ -211,7 +212,7 @@ pub.clear = function(container) {
 /**
  * @description Removes the provided Page, Layer, PageItem, Swatch, etc.
  *
- * @cat Document
+ * @cat    Document
  * @method remove
  * @param  {PageItem} obj The object to be removed.
  */
