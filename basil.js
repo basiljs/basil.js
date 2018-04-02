@@ -5020,6 +5020,78 @@ pub.duplicate = function(item) {
 
 };
 
+/**
+ * @description Add additional anchor points to any page item. 
+ * Particularly useful with curved items in combination with <code>points()</code> and <code>pointsInPaths()</code>.
+ *
+ * @cat Document
+ * @subcat Transformation
+ * @method addPoints
+ * @param  {PageItem|Text} The page item to add additional anchor points to.
+ * @param  {number} Amount of additional anchor points to add between points.
+ */
+pub.addPoints = function(obj, numPoints) {
+  var amount = 1 / numPoints;
+  var prevPoint;
+  
+  try {
+    if(obj.polygons.length === 0) {
+      for (var i = 0; i < obj.paths.length; i++) {
+        pushPoints(obj.paths.item(i));
+      }
+    } else {
+      for (var k = 0; k < obj.polygons.length; k++) {
+        var paths = obj.polygons[k].paths;
+        for (var i = 0; i < paths.length; i++) {
+          pushPoints(paths.item(i));
+        }
+      }
+    }
+  } catch(e) {
+    error("addPoints(), invalid pageItem. Maybe sent grouped items, send one at a time.");
+  }
+
+  function pushPoints(pathObj) {
+    var myNewPath = [];
+    var points = pathObj.pathPoints;
+
+    for (var c = 0; c < points.length; c++) {
+      var point = points.item(c);
+      if(c === 0) {
+        prevPoint = points.item(points.length-1);
+      }
+      
+      for (var t = 0; t < 1; t += amount) { 
+        myNewPath.push(interpolate(point, prevPoint, t));
+      }
+      
+      prevPoint = point;    
+    }
+    pathObj.entirePath = myNewPath; 
+  }
+  
+  // Interpolation solution for bezier's combined by @kajetansom from:
+  // https://stackoverflow.com/questions/4089443/find-the-tangent-of-a-point-on-a-cubic-bezier-curve
+  // https://webglfundamentals.org/webgl/lessons/webgl-3d-geometry-lathe.html
+
+  function interpolate(point, lastPoint, t) {
+    var newCoord = [];
+    for (var i = 0; i < 2; i++) {
+      var p1 = lastPoint.anchor[i];
+      var p2 = lastPoint.rightDirection[i];
+      var p3 = point.leftDirection[i];
+      var p4 = point.anchor[i];
+
+      var C1 = (p4 - (3.0 * p3) + (3.0 * p2) - p1);
+      var C2 = ((3.0 * p3) - (6.0 * p2) + (3.0 * p1));
+      var C3 = ((3.0 * p2) - (3.0 * p1));
+      var C4 = (p1);
+
+      newCoord[i] = (C1 * t * t * t + C2 * t * t + C3 * t + C4);
+    }
+    return newCoord;
+  }
+}
 // ----------------------------------------
 // src/includes/color.js
 // ----------------------------------------
@@ -6048,6 +6120,34 @@ pub.placeholder = function (textFrame) {
     error("placeholder(), wrong type of parameter! Use: textFrame");
   }
 };
+
+/**
+ * @description Convert text items to their outlines. For best results, combine with <code>addPoints()</code> for optimal anchor points around curves. Optional 2nd parameter deletes the original text Item (default is true, similar to GUI experience).
+ *
+ * @cat Typography
+ * @method createOutlines
+ * @param  {Story|TextFrame||Paragraph||Line||Word||Character} Text to be converted.
+ * @return {Polygon | Array} Returns single polygon if applicable, otherwise array of grouped items.
+ */
+pub.createOutlines = function(item, deleteOriginal) {
+  if(deleteOriginal === null || deleteOriginal != false){
+    deleteOriginal = true;
+  }
+
+  var res = null;
+  
+  try{
+    res = item.createOutlines(deleteOriginal);
+    
+    if(res.length == 1){
+      return res[0];
+    } else {
+      return res;
+    }
+  } catch(e) {
+    error("Be sure to use:\n Story | TextFrame | Paragraph | Line | Word | Character")
+  }
+}
 // ----------------------------------------
 // src/includes/image.js
 // ----------------------------------------
@@ -6189,7 +6289,7 @@ var Vector = pub.Vector = function() {
    * @param {Number} y The second vector.
    * @param {Number} [z] The third vector.
    */
-  function Vector(x, y, z) {
+   function Vector(x, y, z) {
     this.x = x || 0;
     this.y = y || 0;
     this.z = z || 0;
@@ -6205,7 +6305,7 @@ var Vector = pub.Vector = function() {
    * @param {Vector} v2 The second vector.
    * @return {Number} The distance.
    */
-  Vector.dist = function(v1, v2) {
+   Vector.dist = function(v1, v2) {
     return v1.dist(v2);
   };
 
@@ -6220,7 +6320,7 @@ var Vector = pub.Vector = function() {
    * @param {Vector} v2 The second vector.
    * @return {Number} The dot product.
    */
-  Vector.dot = function(v1, v2) {
+   Vector.dot = function(v1, v2) {
     return v1.dot(v2);
   };
 
@@ -6235,7 +6335,7 @@ var Vector = pub.Vector = function() {
    * @param {Vector} v2 The second vector.
    * @return {Number} The cross product.
    */
-  Vector.cross = function(v1, v2) {
+   Vector.cross = function(v1, v2) {
     return v1.cross(v2);
   };
 
@@ -6250,7 +6350,7 @@ var Vector = pub.Vector = function() {
    * @param {Vector} v2 The second vector.
    * @return {Number} The angle.
    */
-  Vector.angleBetween = function(v1, v2) {
+   Vector.angleBetween = function(v1, v2) {
     return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
   };
 
@@ -6265,7 +6365,7 @@ var Vector = pub.Vector = function() {
      * @param {Number} [y] The y component.
      * @param {Number} [z] The z component.
      */
-    set: function(v, y, z) {
+     set: function(v, y, z) {
       if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
       else {
         this.x = v;
@@ -6280,7 +6380,7 @@ var Vector = pub.Vector = function() {
      * @subcat Vector
      * @return {Vector} A copy of the vector.
      */
-    get: function() {
+     get: function() {
       return new Vector(this.x, this.y, this.z);
     },
     /**
@@ -6290,10 +6390,10 @@ var Vector = pub.Vector = function() {
      * @subcat Vector
      * @return {Number} The length.
      */
-    mag: function() {
+     mag: function() {
       var x = this.x,
-        y = this.y,
-        z = this.z;
+      y = this.y,
+      z = this.z;
       return Math.sqrt(x * x + y * y + z * z);
     },
     /**
@@ -6305,7 +6405,7 @@ var Vector = pub.Vector = function() {
      * @param {Number} [y] The y component.
      * @param {Number} [z] The z component.
      */
-    add: function(v, y, z) {
+     add: function(v, y, z) {
       if (arguments.length === 1) {
         this.x += v.x;
         this.y += v.y;
@@ -6325,7 +6425,7 @@ var Vector = pub.Vector = function() {
      * @param {Number} [y] The y component.
      * @param {Number} [z] The z component.
      */
-    sub: function(v, y, z) {
+     sub: function(v, y, z) {
       if (arguments.length === 1) {
         this.x -= v.x;
         this.y -= v.y;
@@ -6345,7 +6445,7 @@ var Vector = pub.Vector = function() {
      * @param {Number} [y] The y component.
      * @param {Number} [z] The z component.
      */
-    mult: function(v) {
+     mult: function(v) {
       if (typeof v === "number") {
         this.x *= v;
         this.y *= v;
@@ -6365,7 +6465,7 @@ var Vector = pub.Vector = function() {
      * @param {Number} [y] The y component.
      * @param {Number} [z] The z component.
      */
-    div: function(v) {
+     div: function(v) {
       if (typeof v === "number") {
         this.x /= v;
         this.y /= v;
@@ -6386,10 +6486,10 @@ var Vector = pub.Vector = function() {
      * @param {Number} [z] The z component.
      * @return {Number} The distance.
      */
-    dist: function(v) {
+     dist: function(v) {
       var dx = this.x - v.x,
-        dy = this.y - v.y,
-        dz = this.z - v.z;
+      dy = this.y - v.y,
+      dz = this.z - v.z;
       return Math.sqrt(dx * dx + dy * dy + dz * dz);
     },
     /**
@@ -6402,7 +6502,7 @@ var Vector = pub.Vector = function() {
      * @param {Number} [z] The z component.
      * @return {Number} The dot product.
      */
-    dot: function(v, y, z) {
+     dot: function(v, y, z) {
       if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
       return this.x * v + this.y * y + this.z * z;
     },
@@ -6416,10 +6516,10 @@ var Vector = pub.Vector = function() {
      * @param {Number} [z] The z component.
      * @return {Number} The cross product.
      */
-    cross: function(v) {
+     cross: function(v) {
       var x = this.x,
-        y = this.y,
-        z = this.z;
+      y = this.y,
+      z = this.z;
       return new Vector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
     },
     /**
@@ -6428,7 +6528,7 @@ var Vector = pub.Vector = function() {
      * @subcat Vector
      * @method Vector.normalize
      */
-    normalize: function() {
+     normalize: function() {
       var m = this.mag();
       if (m > 0) this.div(m);
     },
@@ -6439,7 +6539,7 @@ var Vector = pub.Vector = function() {
      * @subcat Vector
      * @param {Number} high The value to scale to.
      */
-    limit: function(high) {
+     limit: function(high) {
       if (this.mag() > high) {
         this.normalize();
         this.mult(high);
@@ -6452,7 +6552,7 @@ var Vector = pub.Vector = function() {
      * @subcat Vector
      * @return {Number} A radian angle value.
      */
-    heading: function() {
+     heading: function() {
       return -Math.atan2(-this.y, this.x);
     },
     /**
@@ -6462,7 +6562,7 @@ var Vector = pub.Vector = function() {
      * @subcat Vector
      * @return {String} The x, y and z components as a string.
      */
-    toString: function() {
+     toString: function() {
       return "[" + this.x + ", " + this.y + ", " + this.z + "]";
     },
     /**
@@ -6472,7 +6572,7 @@ var Vector = pub.Vector = function() {
      * @subcat Vector
      * @return {Array} The x, y and z components as  an Array of [x,y,z].
      */
-    array: function() {
+     array: function() {
       return [this.x, this.y, this.z];
     }
   };
@@ -6485,7 +6585,7 @@ var Vector = pub.Vector = function() {
     };
   }
   for (var method in Vector.prototype) if (Vector.prototype.hasOwnProperty(method) && !Vector.hasOwnProperty(method)) Vector[method] = createVectorMethod(method);
-  return Vector;
+    return Vector;
 }();
 
 
@@ -6500,7 +6600,7 @@ var Vector = pub.Vector = function() {
  * @param {Number} val A number.
  * @return {Number} The absolute value of that number.
  */
-pub.abs = Math.abs;
+ pub.abs = Math.abs;
 
 /**
  * Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.
@@ -6511,7 +6611,7 @@ pub.abs = Math.abs;
  * @param {Number} val An arbitrary number.
  * @return {Number} The next highest integer value.
  */
-pub.ceil = Math.ceil;
+ pub.ceil = Math.ceil;
 
 /**
  * Constrains a value to not exceed a maximum and minimum value.
@@ -6524,7 +6624,7 @@ pub.ceil = Math.ceil;
  * @param {Number} aMax Maximum limit.
  * @return {Number} The constrained value.
  */
-pub.constrain = function(aNumber, aMin, aMax) {
+ pub.constrain = function(aNumber, aMin, aMax) {
   if(arguments.length !== 3) error("constrain(), wrong argument count.");
   if(aNumber <= aMin) return aMin;
   if(aNumber >= aMax) return aMax;
@@ -6543,7 +6643,7 @@ pub.constrain = function(aNumber, aMin, aMax) {
  * @param {Number} y2 The y-coordinate of the second point.
  * @return {Number} The distance.
  */
-pub.dist = function() {
+ pub.dist = function() {
   var dx, dy, dz;
   if (arguments.length === 4) {
     dx = arguments[0] - arguments[2];
@@ -6563,7 +6663,7 @@ pub.dist = function() {
  * @param {Number} x A number.
  * @return {Number} A number representing ex.
  */
-pub.exp = Math.exp;
+ pub.exp = Math.exp;
 
 /**
  * Calculates the closest int value that is less than or equal to the value of the parameter.
@@ -6574,7 +6674,7 @@ pub.exp = Math.exp;
  * @param {Number} a A number.
  * @return {Number} Integer number.
  */
-pub.floor = Math.floor;
+ pub.floor = Math.floor;
 
 /**
  * Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
@@ -6587,7 +6687,7 @@ pub.floor = Math.floor;
  * @param {Number} amt Amount between 0.0 and 1.0.
  * @return {Number} The mapped value.
  */
-pub.lerp = function(value1, value2, amt) {
+ pub.lerp = function(value1, value2, amt) {
   if(arguments.length !== 3) error("lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
@@ -6601,7 +6701,7 @@ pub.lerp = function(value1, value2, amt) {
  * @param {Number} x A number, must be greater then 0.0.
  * @return {Number} The natural logarithm.
  */
-pub.log = Math.log;
+ pub.log = Math.log;
 
 /**
  * Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
@@ -6614,7 +6714,7 @@ pub.log = Math.log;
  * @param {Number} [z] Coordinate, optional.
  * @return {Number} The magnitude.
  */
-pub.mag = function(a, b, c) {
+ pub.mag = function(a, b, c) {
   if(!(arguments.length === 2 || arguments.length === 3)) error("mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
@@ -6635,7 +6735,7 @@ pub.mag = function(a, b, c) {
  * @param {Number} ostop The end of the output range.
  * @return {Number} The mapped value.
  */
-pub.map = function(value, istart, istop, ostart, ostop) {
+ pub.map = function(value, istart, istop, ostart, ostop) {
   if(arguments.length !== 5) error("map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
@@ -6651,14 +6751,14 @@ pub.map = function(value, istart, istop, ostart, ostop) {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The highest value.
  */
-pub.max = function() {
+ pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("max(), non-empty array is expected");
   var max = numbers[0],
-    count = numbers.length;
+  count = numbers.length;
   for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
-  return max;
+    return max;
 };
 
 /**
@@ -6672,14 +6772,14 @@ pub.max = function() {
  * @param {Number} [c] Another value to be compared.
  * @return {Number} The lowest value.
  */
-pub.min = function() {
+ pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
   if (!("length" in numbers && numbers.length > 0)) error("min(), non-empty array is expected");
   var min = numbers[0],
-    count = numbers.length;
+  count = numbers.length;
   for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
-  return min;
+    return min;
 };
 
 /**
@@ -6697,7 +6797,7 @@ pub.min = function() {
  * @param {Number} high The highest value to be expected.
  * @return {Number} The normalized value.
  */
-pub.norm = function(aNumber, low, high) {
+ pub.norm = function(aNumber, low, high) {
   if(arguments.length !== 3) error("norm(), wrong argument count.");
   return (aNumber - low) / (high - low);
 };
@@ -6712,7 +6812,7 @@ pub.norm = function(aNumber, low, high) {
  * @param {Number} exponent Power of which to raise the base.
  * @return {Number} the result
  */
-pub.pow = Math.pow;
+ pub.pow = Math.pow;
 
 /**
  * Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.
@@ -6723,7 +6823,7 @@ pub.pow = Math.pow;
  * @param {Number} value The value to be rounded.
  * @return {Number} The rounded value.
  */
-pub.round = Math.round;
+ pub.round = Math.round;
 
 /**
  * Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.
@@ -6734,7 +6834,7 @@ pub.round = Math.round;
  * @param {Number} aNumber The value to be squared.
  * @return {Number} Squared number.
  */
-pub.sq = function(aNumber) {
+ pub.sq = function(aNumber) {
   if(arguments.length !== 1) error("sq(), wrong argument count.");
   return aNumber * aNumber;
 };
@@ -6750,7 +6850,7 @@ pub.sq = function(aNumber) {
  * @param {Number} val A value.
  * @return {Number} Square root.
  */
-pub.sqrt = Math.sqrt;
+ pub.sqrt = Math.sqrt;
 
 /**
  * The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6761,7 +6861,7 @@ pub.sqrt = Math.sqrt;
  * @param {Number} value The value whose arc cosine is to be returned.
  * @return {Number} The arc cosine.
  */
-pub.acos = Math.acos;
+ pub.acos = Math.acos;
 
 /**
  * The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6772,7 +6872,7 @@ pub.acos = Math.acos;
  * @param {Number} value The value whose arc sine is to be returned.
  * @return {Number} The arc sine.
  */
-pub.asin = Math.asin;
+ pub.asin = Math.asin;
 
 /**
  * The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
@@ -6783,7 +6883,7 @@ pub.asin = Math.asin;
  * @param {Number} value The value whose arc tangent is to be returned.
  * @return {Number} The arc tangent.
  */
-pub.atan = Math.atan;
+ pub.atan = Math.atan;
 
 /**
  * Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
@@ -6795,7 +6895,7 @@ pub.atan = Math.atan;
  * @param {Number} x The x coordinate.
  * @return {Number} The atan2 value.
  */
-pub.atan2 = Math.atan2;
+ pub.atan2 = Math.atan2;
 
 /**
  * Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
@@ -6806,7 +6906,7 @@ pub.atan2 = Math.atan2;
  * @param {Number} rad A value in radians.
  * @return {Number} The cosine.
  */
-pub.cos = Math.cos;
+ pub.cos = Math.cos;
 
 /**
  * Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
@@ -6817,7 +6917,7 @@ pub.cos = Math.cos;
  * @param {Number} aAngle An angle in radians.
  * @return {Number} The given angle in degree.
  */
-pub.degrees = function(aAngle) {
+ pub.degrees = function(aAngle) {
   return aAngle * 180 / Math.PI;
 };
 
@@ -6830,7 +6930,7 @@ pub.degrees = function(aAngle) {
  * @param {Number} aAngle An angle in degree.
  * @return {Number} The given angle in radians.
  */
-pub.radians = function(aAngle) {
+ pub.radians = function(aAngle) {
   return aAngle / 180 * Math.PI;
 };
 
@@ -6843,7 +6943,7 @@ pub.radians = function(aAngle) {
  * @param {Number} rad A value in radians.
  * @return {Number} The sine value.
  */
-pub.sin = Math.sin;
+ pub.sin = Math.sin;
 
 /**
  * Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
@@ -6854,7 +6954,7 @@ pub.sin = Math.sin;
  * @param {Number} rad A value in radians.
  * @return {Number} The tangent value.
  */
-pub.tan = Math.tan;
+ pub.tan = Math.tan;
 
 // -- Random --
 
@@ -6872,17 +6972,17 @@ var currentRandom = Math.random;
  * @param {Number} [high] The high border of the range.
  * @return {Number} A random number.
  */
-pub.random = function() {
+ pub.random = function() {
   if (arguments.length === 0) return currentRandom();
   if (arguments.length === 1) return currentRandom() * arguments[0];
   var aMin = arguments[0],
-    aMax = arguments[1];
+  aMax = arguments[1];
   return currentRandom() * (aMax - aMin) + aMin;
 };
 
 function Marsaglia(i1, i2) {
   var z = i1 || 362436069,
-    w = i2 || 521288629;
+  w = i2 || 521288629;
   var nextInt = function() {
     z = 36969 * (z & 65535) + (z >>> 16) & 4294967295;
     w = 18E3 * (w & 65535) + (w >>> 16) & 4294967295;
@@ -6907,7 +7007,7 @@ Marsaglia.createRandomized = function() {
  * @method randomSeed
  * @param  {Number} seed The seed value.
  */
-pub.randomSeed = function(seed) {
+ pub.randomSeed = function(seed) {
   currentRandom = (new Marsaglia(seed)).nextDouble;
 };
 /**
@@ -6918,14 +7018,14 @@ pub.randomSeed = function(seed) {
  * @method Random
  * @param {Number} seed The seed value.
  */
-pub.Random = function(seed) {
+ pub.Random = function(seed) {
   var haveNextNextGaussian = false,
-    nextNextGaussian, random;
+  nextNextGaussian, random;
   /**
    * @method Random.nextGaussian
    * @return {Number} The next Gaussian random value.
    */
-  this.nextGaussian = function() {
+   this.nextGaussian = function() {
     if (haveNextNextGaussian) {
       haveNextNextGaussian = false;
       return nextNextGaussian;
@@ -6949,76 +7049,76 @@ function PerlinNoise(seed) {
   var i, j;
   var perm = [];
   for (i = 0; i < 256; ++i) perm[i] = i;
-  for (i = 0; i < 256; ++i) {
-    var t = perm[j = rnd.nextInt() & 255];
-    perm[j] = perm[i];
-    perm[i] = t;
-  }
-  for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
+    for (i = 0; i < 256; ++i) {
+      var t = perm[j = rnd.nextInt() & 255];
+      perm[j] = perm[i];
+      perm[i] = t;
+    }
+    for (i = 0; i < 256; ++i) perm[i + 256] = perm[i];
 
-  function grad3d(i, x, y, z) {
-    var h = i & 15;
-    var u = h < 8 ? x : y,
-      v = h < 4 ? y : h === 12 || h === 14 ? x : z;
-    return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
-  }
+      function grad3d(i, x, y, z) {
+        var h = i & 15;
+        var u = h < 8 ? x : y,
+        v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+        return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+      }
 
-  function grad2d(i, x, y) {
-    var v = (i & 1) === 0 ? x : y;
-    return (i & 2) === 0 ? -v : v;
-  }
+      function grad2d(i, x, y) {
+        var v = (i & 1) === 0 ? x : y;
+        return (i & 2) === 0 ? -v : v;
+      }
 
-  function grad1d(i, x) {
-    return (i & 1) === 0 ? -x : x;
-  }
-  function lerp(t, a, b) {
-    return a + t * (b - a);
-  }
+      function grad1d(i, x) {
+        return (i & 1) === 0 ? -x : x;
+      }
+      function lerp(t, a, b) {
+        return a + t * (b - a);
+      }
 
-  this.noise3d = function(x, y, z) {
-    var X = Math.floor(x) & 255,
-      Y = Math.floor(y) & 255,
-      Z = Math.floor(z) & 255;
-    x -= Math.floor(x);
-    y -= Math.floor(y);
-    z -= Math.floor(z);
-    var fx = (3 - 2 * x) * x * x,
-      fy = (3 - 2 * y) * y * y,
-      fz = (3 - 2 * z) * z * z;
-    var p0 = perm[X] + Y,
-      p00 = perm[p0] + Z,
-      p01 = perm[p0 + 1] + Z,
-      p1 = perm[X + 1] + Y,
-      p10 = perm[p1] + Z,
-      p11 = perm[p1 + 1] + Z;
-    return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
-  };
+      this.noise3d = function(x, y, z) {
+        var X = Math.floor(x) & 255,
+        Y = Math.floor(y) & 255,
+        Z = Math.floor(z) & 255;
+        x -= Math.floor(x);
+        y -= Math.floor(y);
+        z -= Math.floor(z);
+        var fx = (3 - 2 * x) * x * x,
+        fy = (3 - 2 * y) * y * y,
+        fz = (3 - 2 * z) * z * z;
+        var p0 = perm[X] + Y,
+        p00 = perm[p0] + Z,
+        p01 = perm[p0 + 1] + Z,
+        p1 = perm[X + 1] + Y,
+        p10 = perm[p1] + Z,
+        p11 = perm[p1 + 1] + Z;
+        return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
+      };
 
-  this.noise2d = function(x, y) {
-    var X = Math.floor(x) & 255,
-      Y = Math.floor(y) & 255;
-    x -= Math.floor(x);
-    y -= Math.floor(y);
-    var fx = (3 - 2 * x) * x * x,
-      fy = (3 - 2 * y) * y * y;
-    var p0 = perm[X] + Y,
-      p1 = perm[X + 1] + Y;
-    return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
-  };
+      this.noise2d = function(x, y) {
+        var X = Math.floor(x) & 255,
+        Y = Math.floor(y) & 255;
+        x -= Math.floor(x);
+        y -= Math.floor(y);
+        var fx = (3 - 2 * x) * x * x,
+        fy = (3 - 2 * y) * y * y;
+        var p0 = perm[X] + Y,
+        p1 = perm[X + 1] + Y;
+        return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
+      };
 
-  this.noise1d = function(x) {
-    var X = Math.floor(x) & 255;
-    x -= Math.floor(x);
-    var fx = (3 - 2 * x) * x * x;
-    return lerp(fx, grad1d(perm[X], x), grad1d(perm[X + 1], x - 1));
-  };
-}
-var noiseProfile = {
-  generator: undefined,
-  octaves: 4,
-  fallout: 0.5,
-  seed: undefined
-};
+      this.noise1d = function(x) {
+        var X = Math.floor(x) & 255;
+        x -= Math.floor(x);
+        var fx = (3 - 2 * x) * x * x;
+        return lerp(fx, grad1d(perm[X], x), grad1d(perm[X + 1], x - 1));
+      };
+    }
+    var noiseProfile = {
+      generator: undefined,
+      octaves: 4,
+      fallout: 0.5,
+      seed: undefined
+    };
 
 /**
  * Returns the Perlin noise value at specified coordinates. Perlin noise is a random sequence generator producing a more natural ordered, harmonic succession of numbers compared to the standard random() function. It was invented by Ken Perlin in the 1980s and been used since in graphical applications to produce procedural textures, natural motion, shapes, terrains etc.
@@ -7037,24 +7137,24 @@ var noiseProfile = {
  * @param {Number} [z] Coordinate in z space.
  * @return {Number} The noise value.
  */
-pub.noise = function(x, y, z) {
+ pub.noise = function(x, y, z) {
   if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
   var generator = noiseProfile.generator;
   var effect = 1,
-    k = 1,
-    sum = 0;
+  k = 1,
+  sum = 0;
   for (var i = 0; i < noiseProfile.octaves; ++i) {
     effect *= noiseProfile.fallout;
     switch (arguments.length) {
       case 1:
-        sum += effect * (1 + generator.noise1d(k * x)) / 2;
-        break;
+      sum += effect * (1 + generator.noise1d(k * x)) / 2;
+      break;
       case 2:
-        sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
-        break;
+      sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
+      break;
       case 3:
-        sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
-        break;
+      sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
+      break;
     }
     k *= 2;
   }
@@ -7072,7 +7172,7 @@ pub.noise = function(x, y, z) {
  * @param {Number} octaves Number of octaves to be used by the noise() function.
  * @param {Number} fallout Falloff factor for each octave.
  */
-pub.noiseDetail = function(octaves, fallout) {
+ pub.noiseDetail = function(octaves, fallout) {
   noiseProfile.octaves = octaves;
   if (fallout !== undefined) noiseProfile.fallout = fallout;
 };
@@ -7085,7 +7185,7 @@ pub.noiseDetail = function(octaves, fallout) {
  * @method noiseSeed
  * @param {Number} seed Noise seed value.
  */
-pub.noiseSeed = function(seed) {
+ pub.noiseSeed = function(seed) {
   noiseProfile.seed = seed;
   noiseProfile.generator = undefined;
 };
@@ -7109,7 +7209,7 @@ var precision = function(num, dec) {
  * @param  {PageItem|Text} obj The page item or text to calculate the geometric bounds.
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
-pub.bounds = function (obj) {
+ pub.bounds = function (obj) {
   var x1, y1, x2, y2, w, h;
 
   if (isText(obj)) {
@@ -7133,13 +7233,13 @@ pub.bounds = function (obj) {
     var xHeight = y1 + descent;
 
     return {"width":w,
-            "height":h,
-            "left":x1,
-            "right":x2,
-            "top":y1,
-            "bottom":y2,
-            "baseline":baseline,
-            "xHeight":xHeight};
+    "height":h,
+    "left":x1,
+    "right":x2,
+    "top":y1,
+    "bottom":y2,
+    "baseline":baseline,
+    "xHeight":xHeight};
   } else {
     // is it a pageItem?
     if (obj.hasOwnProperty("geometricBounds")) {
@@ -7165,9 +7265,97 @@ pub.bounds = function (obj) {
     }
     // no idea what that might be, give up
     else {
-      error("bounds(), invalide type of parameter! Can't get bounds for this object.");
+      error("bounds(), invalid type of parameter! Can't get bounds for this object.");
     }
   }
+};
+
+/**
+ * @description Returns all coordinate points for an object as a single array.
+ *
+ * @cat Document
+ * @subcat Transformation
+ * @method points
+ * @param  {PageItem|Text} The page item or text to calculate the coordinates of.
+ * @return {Array[points]} Array of coordinate objects, with properties: x, y.
+ */
+ pub.points = function(obj) {
+  try {
+    return pointsCalc(obj).points;
+  } catch(e) {
+    error("points(), invalid pageItem. Maybe sent grouped items, send one at a time.");
+  }
+};
+
+/**
+ * @description Returns all coordinate points within all paths for an object as a two-dimensional array.
+ *
+ * @cat Document
+ * @subcat Transformation
+ * @method pointsInPaths
+ * @param  {PageItem|Text} The page item or text to calculate the coordinates of.
+ * @return {Array[paths][points]} 2D Array of paths containing array of coordinate objects, with properties: x, y.
+ */
+ pub.pointsInPaths = function(obj) {
+  try {
+    return pointsCalc(obj).pointPaths;
+  } catch(e) {
+    error("pointsInPaths(), invalid pageItem. Maybe sent grouped items, send one at a time.");
+  }
+};
+
+var pointsCalc = function(obj) {
+  var rawPaths, foundType;
+  var pointPathsCol = [];
+  var pointsCol = [];
+  
+  // catch text to outline first
+  if(isText(obj) || obj instanceof TextFrame){
+    if(obj instanceof TextFrame){
+      var dub = duplicate(obj);
+      rawPaths = dub.createOutlines()[0];
+    }else{
+      var bnds = bounds(obj);
+      var tf = doc().textFrames.add();  
+      tf.geometricBounds = [bnds.top, bnds.left, bnds.top + bnds.height, bnds.left + bnds.width*2];  
+      var dub = obj.duplicate(LocationOptions.AFTER, tf.insertionPoints[0]) ;   
+      rawPaths = tf.createOutlines()[0];
+    }
+    foundType = true;
+  }else{
+    rawPaths = obj;
+  }
+
+  // catch multi-line text or complex shapes
+  if(rawPaths.polygons.length === 0){
+    for (var i = 0; i < rawPaths.paths.length; i++) {
+      collectPoints(rawPaths.paths.item(i));
+    }
+  }else{
+    for (var k = 0; k < rawPaths.polygons.length; k++) {
+      var paths = rawPaths.polygons[k].paths;
+      for(var i=0; i<paths.length; i++) {
+        collectPoints(paths.item(i));
+      }
+    }
+  }
+
+  function collectPoints(pointObj) {
+    var pointsInPath = [];
+    var points = pointObj.pathPoints;
+    for (var c = 0; c < points.length; c++) {
+      pointsInPath.push({x:points.item(c).anchor[0], y: points.item(c).anchor[1]});
+      pointsCol.push({x:points.item(c).anchor[0], y: points.item(c).anchor[1]});
+    }
+    pointPathsCol.push(pointsInPath);
+  }
+
+  // clean up temp type outline
+  if(foundType) {
+    rawPaths.remove();
+  }
+
+  return {pointPaths:pointPathsCol, points:pointsCol};
 };
 
 // ----------------------------------------

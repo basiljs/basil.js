@@ -618,3 +618,76 @@ pub.duplicate = function(item) {
   }
 
 };
+
+/**
+ * @description Add additional anchor points to any page item. 
+ * Particularly useful with curved items in combination with <code>points()</code> and <code>pointsInPaths()</code>.
+ *
+ * @cat Document
+ * @subcat Transformation
+ * @method addPoints
+ * @param  {PageItem|Text} The page item to add additional anchor points to.
+ * @param  {number} Amount of additional anchor points to add between points.
+ */
+pub.addPoints = function(obj, numPoints) {
+  var amount = 1 / numPoints;
+  var prevPoint;
+  
+  try {
+    if(obj.polygons.length === 0) {
+      for (var i = 0; i < obj.paths.length; i++) {
+        pushPoints(obj.paths.item(i));
+      }
+    } else {
+      for (var k = 0; k < obj.polygons.length; k++) {
+        var paths = obj.polygons[k].paths;
+        for (var i = 0; i < paths.length; i++) {
+          pushPoints(paths.item(i));
+        }
+      }
+    }
+  } catch(e) {
+    error("addPoints(), invalid pageItem. Maybe sent grouped items, send one at a time.");
+  }
+
+  function pushPoints(pathObj) {
+    var myNewPath = [];
+    var points = pathObj.pathPoints;
+
+    for (var c = 0; c < points.length; c++) {
+      var point = points.item(c);
+      if(c === 0) {
+        prevPoint = points.item(points.length-1);
+      }
+      
+      for (var t = 0; t < 1; t += amount) { 
+        myNewPath.push(interpolate(point, prevPoint, t));
+      }
+      
+      prevPoint = point;    
+    }
+    pathObj.entirePath = myNewPath; 
+  }
+  
+  // Interpolation solution for bezier's combined by @kajetansom from:
+  // https://stackoverflow.com/questions/4089443/find-the-tangent-of-a-point-on-a-cubic-bezier-curve
+  // https://webglfundamentals.org/webgl/lessons/webgl-3d-geometry-lathe.html
+
+  function interpolate(point, lastPoint, t) {
+    var newCoord = [];
+    for (var i = 0; i < 2; i++) {
+      var p1 = lastPoint.anchor[i];
+      var p2 = lastPoint.rightDirection[i];
+      var p3 = point.leftDirection[i];
+      var p4 = point.anchor[i];
+
+      var C1 = (p4 - (3.0 * p3) + (3.0 * p2) - p1);
+      var C2 = ((3.0 * p3) - (6.0 * p2) + (3.0 * p1));
+      var C3 = ((3.0 * p2) - (3.0 * p1));
+      var C4 = (p1);
+
+      newCoord[i] = (C1 * t * t * t + C2 * t * t + C3 * t + C4);
+    }
+    return newCoord;
+  }
+}

@@ -472,3 +472,31 @@ pub.placeholder = function (textFrame) {
     error("placeholder(), wrong type of parameter! Use: textFrame");
   }
 };
+
+/**
+ * @description Convert text items to their outlines. For best results, combine with <code>addPoints()</code> for optimal anchor points around curves. Optional 2nd parameter deletes the original text Item (default is true, similar to GUI experience).
+ *
+ * @cat Typography
+ * @method createOutlines
+ * @param  {Story|TextFrame||Paragraph||Line||Word||Character} Text to be converted.
+ * @return {Polygon | Array} Returns single polygon if applicable, otherwise array of grouped items.
+ */
+pub.createOutlines = function(item, deleteOriginal) {
+  if(deleteOriginal === null || deleteOriginal != false){
+    deleteOriginal = true;
+  }
+
+  var res = null;
+  
+  try{
+    res = item.createOutlines(deleteOriginal);
+    
+    if(res.length == 1){
+      return res[0];
+    } else {
+      return res;
+    }
+  } catch(e) {
+    error("Be sure to use:\n Story | TextFrame | Paragraph | Line | Word | Character")
+  }
+}
