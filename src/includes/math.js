@@ -941,12 +941,6 @@ pub.bounds = function (obj) {
   var x1, y1, x2, y2, w, h;
   var offsets = [0, 0];
 
-  if(currCanvasMode === pub.MARGIN || currCanvasMode === pub.FACING_MARGINS){
-    offsets = [currentPage().marginPreferences.top, currentPage().marginPreferences.left];
-  }else if(currCanvasMode === pub.BLEED || currCanvasMode === pub.FACING_BLEEDS){
-    offsets = [-pub.doc().documentPreferences.documentBleedTopOffset, -pub.doc().documentPreferences.documentBleedInsideOrLeftOffset];    
-  }
-
   if (isText(obj)) {
     var baseline = obj.baseline;
     var ascent = obj.ascent;
@@ -967,36 +961,36 @@ pub.bounds = function (obj) {
     // http://en.wikipedia.org/wiki/File:Typography_Line_Terms.svg
     var xHeight = y1 + descent;
 
-    return {"width":w,
-            "height":h,
-            "left":x1 - offsets[1],
-            "right":x2 - offsets[1],
-            "top":y1 - offsets[0],
-            "bottom":y2 - offsets[0],
-            "baseline":baseline - offsets[0],
-            "xHeight":xHeight - offsets[0]};
+    return {"width": w,
+            "height": h,
+            "left": x1 + currOriginX,
+            "right": x2 + currOriginX,
+            "top": y1 + currOriginY,
+            "bottom": y2 + currOriginY,
+            "baseline": baseline + currOriginY,
+            "xHeight": xHeight + currOriginY};
   } else {
     // is it a pageItem?
     if (obj.hasOwnProperty("geometricBounds")) {
       var geometricBounds = obj.geometricBounds; // [y1, x1, y2, x2]
-      x1 = geometricBounds[1] - offsets[1];
-      y1 = geometricBounds[0] - offsets[0];
-      x2 = geometricBounds[3] - offsets[1];
-      y2 = geometricBounds[2] - offsets[0];
+      x1 = geometricBounds[1] + currOriginX;
+      y1 = geometricBounds[0] + currOriginY;
+      x2 = geometricBounds[3] + currOriginX;
+      y2 = geometricBounds[2] + currOriginY;
       w = x2 - x1;
       h = y2 - y1;
-      return {"width":w, "height":h, "left":x1, "right":x2, "top":y1, "bottom":y2};
+      return {"width": w, "height": h, "left": x1, "right": x2, "top": y1, "bottom": y2};
     }
     // everything else e.g. page, spread
     else if (obj.hasOwnProperty("bounds")) {
       var bounds = obj.bounds; // [y1, x1, y2, x2]
-      x1 = bounds[1] - offsets[1];
-      y1 = bounds[0] - offsets[0];
-      x2 = bounds[3] - offsets[1];
-      y2 = bounds[2] - offsets[0];
+      x1 = bounds[1] + currOriginX;
+      y1 = bounds[0] + currOriginY;
+      x2 = bounds[3] + currOriginX;
+      y2 = bounds[2] + currOriginY;
       w = x2 - x1;
       h = y2 - y1;
-      return {"width":w, "height":h, "left":x1, "right":x2, "top":y1, "bottom":y2};
+      return {"width": w, "height": h, "left": x1, "right": x2, "top": y1, "bottom": y2};
     }
     // no idea what that might be, give up
     else {
