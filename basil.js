@@ -175,12 +175,13 @@ pub.CORNER = "corner";
 pub.CORNERS = "corners";
 
 /**
- * Center, used for drawing modes.
+ * Center, used for drawing modes or used with referencePoint() to set the reference point of transformations to the center of the page item.
  * @property CENTER {String}
  * @cat Document
  * @subcat Primitives
  */
 pub.CENTER = "center";
+pub.CENTER_CENTER = "center";
 
 /**
  * Radius, used for drawing modes.
@@ -189,6 +190,70 @@ pub.CENTER = "center";
  * @subcat Primitives
  */
 pub.RADIUS = "radius";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top left of the page item.
+ * @property TOP_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_LEFT = "topLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top center of the page item.
+ * @property TOP_CENTER {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_CENTER = "topCenter";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the top right of the page item.
+ * @property TOP_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.TOP_RIGHT = "topRight";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the center left of the page item.
+ * @property CENTER_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.CENTER_LEFT = "centerLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the center right of the page item.
+ * @property CENTER_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.CENTER_RIGHT = "centerRight";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom left of the page item.
+ * @property BOTTOM_LEFT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_LEFT = "bottomLeft";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom center of the page item.
+ * @property BOTTOM_CENTER {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_CENTER = "bottomCenter";
+
+/**
+ * Used with referencePoint() to set the reference point of transformations to the bottom right of the page item.
+ * @property BOTTOM_RIGHT {String}
+ * @cat Document
+ * @subcat Transformation
+ */
+pub.BOTTOM_RIGHT = "bottomRight";
 
 /**
  * Close, used for endShape() modes.
@@ -495,9 +560,12 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
   currLeading = null,
   currMatrix = null,
   currMode = null,
+  currOriginX = null,
+  currOriginY = null,
   currPage = null,
   currPathPointer = null,
   currPolygon = null,
+  currRefPoint = null,
   currRectMode = null,
   currShapeMode = null,
   currStrokeColor = null,
@@ -825,6 +893,8 @@ var init = function() {
   currStrokeWeight = 1;
   currStrokeTint = 100;
   currFillTint = 100;
+  currOriginX = 0;
+  currOriginY = 0;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
@@ -834,7 +904,9 @@ var init = function() {
 
   appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
-    preflightOff: app.preflightOptions.preflightOff
+    preflightOff: app.preflightOptions.preflightOff,
+    adjustStrokeWeight: app.transformPreferences.adjustStrokeWeightWhenScaling,
+    whenScaling: app.transformPreferences.whenScaling
   };
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
@@ -867,8 +939,13 @@ var runScript = function() {
     // app settings
     app.scriptPreferences.enableRedraw = true;
     app.preflightOptions.preflightOff = true;
+    app.transformPreferences.adjustStrokeWeightWhenScaling = true;
+    app.transformPreferences.whenScaling = WhenScalingOptions.APPLY_TO_CONTENT;
 
     currentDoc();
+
+    appSettings.refPoint = app.activeWindow.transformReferencePoint;
+    currRefPoint = pub.referencePoint(app.activeWindow.transformReferencePoint);
 
     if ($.global.setup instanceof Function) {
       setup();
@@ -1142,7 +1219,6 @@ var setCurrDoc = function(doc, skipStyles) {
   currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
 
   // set document to default values
-  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
   if(!skipStyles) {
@@ -1245,120 +1321,88 @@ var currentPage = function() {
 };
 
 var updatePublicPageSizeVars = function () {
-  var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-  var facingPages = currDoc.documentPreferences.facingPages;
-  var singlePageMode = false;
+  var w, h;
+  var cm = currCanvasMode;
+  var p = currentPage();
+  var spread = p.parent;
+  var docPrefs = currentDoc().documentPreferences;
+  currOriginX = 0;
+  currOriginY = 0;
 
-  var widthOffset = 0;
-  var heightOffset = 0;
+  if(cm === pub.PAGE || cm === pub.MARGIN || cm === pub.BLEED) {
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+    pub.resetMatrix();
 
-  switch(pub.canvasMode()) {
+    var leftHand = (p.side === PageSideOptions.LEFT_HAND);
+    w = p.bounds[3] - p.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-    case pub.PAGE:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
-      singlePageMode = true;
-      break;
-
-    case pub.MARGIN:
-      widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
-      heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-      singlePageMode = true;
-      break;
-
-    case pub.BLEED:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      if(facingPages) {
-        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+    if (cm === pub.MARGIN) {
+      w -= (p.marginPreferences.left + p.marginPreferences.right);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      currOriginX = leftHand ? p.marginPreferences.right : p.marginPreferences.left;
+      currOriginY = p.marginPreferences.top;
+    } else if (cm === pub.BLEED) {
+      // pub.BLEED
+      var leftBleed = 0;
+      var rightBleed = 0;
+      if(p === spread.pages.firstItem()) {
+        leftBleed = leftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.resetMatrix();
-        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
+      if(p === spread.pages.lastItem()) {
+        rightBleed = leftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
       }
-      singlePageMode = true;
-      break;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
+    }
 
-    case pub.FACING_PAGES:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
+  } else {
+    // FACING_MODES
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.SPREAD_ORIGIN;
+    pub.resetMatrix();
+    var firstPage = spread.pages.firstItem();
+    var lastPage = spread.pages.lastItem();
+    var firstPageLeftHand = (firstPage.side === PageSideOptions.LEFT_HAND);
+    var lastPageLeftHand = (lastPage.side === PageSideOptions.LEFT_HAND);
+    w = lastPage.bounds[3] - firstPage.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-      var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
+    if(cm === pub.FACING_MARGINS) {
+      var leftMargin = firstPageLeftHand ? firstPage.marginPreferences.right : firstPage.marginPreferences.left;
+      var rightMargin = lastPageLeftHand ? lastPage.marginPreferences.left : lastPage.marginPreferences.right;
+      w -= (leftMargin + rightMargin);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      currOriginX = leftMargin;
+      currOriginY = p.marginPreferences.top;
+    } else if (cm === pub.FACING_BLEEDS) {
+      var leftBleed = firstPageLeftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
+      var rightBleed = lastPageLeftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
+    }
 
-      pub.width = $.global.width = w * 2;
-
-      if(currentPage().name === "1") {
-        pub.width = $.global.width = w;
-      } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w, 0);
-      }
-
-
-      pub.height = $.global.height = h;
-      break;
-
-    case pub.FACING_BLEEDS:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w + widthOffset / 2, 0);
-      }
-
-      break;
-
-    case pub.FACING_MARGINS:
-      widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
-      heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-
-      var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w - widthOffset / 2, 0);
-      }
-
-      return; // early exit
-
-    default:
-      error("canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: PAGE, MARGIN, BLEED, FACING_PAGES, FACING_MARGINS, FACING_BLEEDS");
-      break;
   }
 
-  if(singlePageMode) {
-    var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;
+  pub.translate(currOriginX, currOriginY);
+  pub.width = $.global.width = w;
+  pub.height = $.global.height = h;
 
-    pub.width = $.global.width = w;
-    pub.height = $.global.height = h;
-  }
 };
 
 var resetUserSettings = function() {
   // app settings
   app.scriptPreferences.enableRedraw = appSettings.enableRedraw;
   app.preflightOptions.preflightOff  = appSettings.preflightOff;
+  app.transformPreferences.adjustStrokeWeightWhenScaling = appSettings.adjustStrokeWeight;
+  app.transformPreferences.whenScaling = appSettings.whenScaling;
+
+  if(app.properties.activeWindow instanceof LayoutWindow ) {
+    app.activeWindow.transformReferencePoint = appSettings.refPoint;
+  }
 
   // doc settings
   if(currDoc && currDocSettings) {
@@ -1886,16 +1930,18 @@ pub.revert = function() {
 pub.canvasMode = function (m) {
   if(arguments.length === 0) {
     return currCanvasMode;
-  } else if (typeof m === "string") {
-    if ((m === pub.FACING_PAGES || m === pub.FACING_MARGINS || m === pub.FACING_BLEEDS) && !pub.doc().documentPreferences.facingPages) {
-      error("canvasMode(), cannot set a facing pages mode to a single page document");
-    }
+  } else if (m === pub.PAGE ||
+             m === pub.MARGIN ||
+             m === pub.BLEED ||
+             m === pub.FACING_PAGES ||
+             m === pub.FACING_MARGINS ||
+             m === pub.FACING_BLEEDS) {
     currCanvasMode = m;
     updatePublicPageSizeVars();
-    return currCanvasMode;
   } else {
     error("canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
+  return currCanvasMode;
 };
 
 
@@ -4411,11 +4457,11 @@ pub.ellipse = function(x, y, w, h) {
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
   return newOval;
 };
@@ -4451,7 +4497,7 @@ pub.line = function(x1, y1, x2, y2) {
   newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
   newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.CENTER_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix( (x1 + x2) / 2, (y1 + y2) / 2 ));
   return newLine;
 };
 
@@ -4673,7 +4719,7 @@ pub.endShape = function() {
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(currPolygon.geometricBounds[1], currPolygon.geometricBounds[0]));
   return currPolygon;
 };
 
@@ -4773,11 +4819,11 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
   if(arguments.length > 4) {
@@ -4958,18 +5004,8 @@ pub.duplicate = function(item) {
 
   if(!(item instanceof Page) && typeof (item) !== "undefined" && item.hasOwnProperty("duplicate")) {
 
-    var newItem = item.duplicate(currentPage());
+    var newItem = item.duplicate(currentPage().parent);
     newItem.move(currentLayer());
-
-    if (currRectMode === pub.CENTER) {
-      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
-    } else {
-      newItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                     AnchorPoint.TOP_LEFT_ANCHOR,
-                     currMatrix.adobeMatrix());
-    }
 
     return newItem;
 
@@ -5610,11 +5646,11 @@ pub.text = function(txt, x, y, w, h) {
   if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
   return textFrame;
@@ -6098,11 +6134,11 @@ pub.image = function(img, x, y, w, h) {
     frame.move(null, [-(width / 2), -(height / 2)]);
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                        AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix());
+                       currMatrix.adobeMatrix(x, y));
   } else {
     frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix());
+                   currMatrix.adobeMatrix(x, y));
   }
 
 
@@ -6111,33 +6147,6 @@ pub.image = function(img, x, y, w, h) {
   frame.strokeColor = currStrokeColor;
 
   return frame;
-};
-
-/**
- * Transforms position and size of an image.
- * The image fit options are always "contentToFrame".
- *
- * @cat Document
- * @subcat Image
- * @method transformImage
- * @param  {Graphic} img The image to transform.
- * @param  {Number} x The new x.
- * @param  {Number} y The new y.
- * @param  {Number} width The new width.
- * @param  {Number} height The new height.
- */
-pub.transformImage = function(img, x, y, width, height) {
-  if (img.hasOwnProperty("geometricBounds") && img.hasOwnProperty("fit")) {
-    // [y1, x1, y2, x2]
-    img.geometricBounds = [y, x, y + height, x + width];
-    if (currImageMode === pub.CENTER) {
-      img.move(null, [-(width / 2), -(height / 2)]);
-    }
-    img.fit(FitOptions.CENTER_CONTENT);
-    img.fit(FitOptions.contentToFrame);
-  } else {
-    error("transformImage(), wrong type! Use: img, x, y, width, height");
-  }
 };
 
 /**
@@ -7091,13 +7100,13 @@ var precision = function(num, dec) {
 };
 
 /**
- * The function calculates the geometric bounds of any given object. Use <code>itemX()</code>, <code>itemY()</code>, <code>itemPosition()</code>, <code>itemWidth()</code>, <code>itemHeight()</code> and <code>itemSize()</code> to modify page items.
- * In case the object is any kind of text, then additional typographic information baseline and xHeight are calculated
+ * The function calculates the geometric bounds of any given page item or text. Use the <code>transforms()</code> function to modify page items.
+ * In case the object is any kind of text, additional typographic information baseline and xHeight are calculated.
  *
  * @cat Document
  * @subcat Transformation
  * @method bounds
- * @param  {Text|Object} obj The object to calculate the geometric bounds.
+ * @param  {PageItem|Text} obj The page item or text to calculate the geometric bounds.
  * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
  */
 pub.bounds = function (obj) {
@@ -7168,176 +7177,264 @@ pub.bounds = function (obj) {
   }
 };
 
-/**
- * Positions a PageItem at the designated spot on the x axis. If no x argument is given the current x position is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemX
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [x] The new x position, optional.
- * @returns {Number} The current x position.
- */
-pub.itemX = function(pItem, x) {
-  var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("itemX(), please note that only CORNER positioning is fully supported. Use with care.");
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof x === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      pItem.geometricBounds = [pItem.geometricBounds[0] - off, x - off, pItem.geometricBounds[0] + height - off, x - off + width];
-    } else {
-      return precision(pItem.geometricBounds[1], 5) + off; // CS6 sets geometricBounds to initially slightly off values... terrible workaround
-    }
-  } else {
-    error("itemX(), pItem has to be a valid PageItem");
-  }
-};
-
-/**
- * Positions a PageItem at the designated spot on the y axis. If no y argument is given the current y position is returned.
- *
- * @cat Document
- * @subcat Transformation
- * @method itemY
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [y] The new y position, optional.
- * @returns {Number} The current y position.
- */
-pub.itemY = function(pItem, y) {
-  var off = 0;
-  if(currRectMode !== pub.CORNER) pub.warning("itemY(), please note that only CORNER positioning is fully supported. Use with care.");
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof y === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      pub.itemPosition(pItem, pItem.geometricBounds[1] - off, y);
-      pItem.geometricBounds = [y, pItem.geometricBounds[1] - off, y + height, pItem.geometricBounds[1] + width - off];
-    } else {
-      return precision(pItem.geometricBounds[0], 5) + off;
-    }
-  } else {
-    error("itemY(), pItem has to be a valid PageItem");
-  }
-};
-
 // ----------------------------------------
 // src/includes/transformation.js
 // ----------------------------------------
-
 /* global precision */
+
 /**
- * @description Scales the given PageItem to the given width. If width is not given as argument the current width is returned.
+ * @description Sets the reference point for transformations using the <code>transform()</code> function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.
+ * Arguments can be the basil constants <code>TOP_LEFT</code>, <code>TOP_CENTER</code>, <code>TOP_RIGHT</code>, <code>CENTER_LEFT</code>, <code>CENTER</code>, <code>CENTER_RIGHT</code>, <code>BOTTOM_LEFT</code>, <code>BOTTOM_CENTER</code> or <code>BOTTOM_RIGHT</code>. Alternatively the digits 1 through 9 (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.
+ * If the function is used without any arguments the currently set reference point will be returned.
  *
  * @cat Document
  * @subcat Transformation
- * @method itemWidth
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [width] The new width.
- * @returns {Number} The current width.
+ * @method referencePoint
+ * @param {String} [referencePoint] The reference point to set.
+ * @returns {String} Current reference point setting.
  */
-pub.itemWidth = function(pItem, width) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemWidth(), please note that only CORNER positioning is fully supported. Use with care.");
+pub.referencePoint = function(rp) {
+  if(!arguments.length) {
+    return currRefPoint;
   }
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof width === "number") {
-      pub.itemSize(pItem, width, Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]));
-    } else {
-      return Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]);
-    }
+
+  var anchorEnum;
+
+  if(rp === pub.TOP_LEFT || rp === 7 || rp === AnchorPoint.TOP_LEFT_ANCHOR) {
+    currRefPoint = pub.TOP_LEFT;
+    anchorEnum = AnchorPoint.TOP_LEFT_ANCHOR;
+  } else if(rp === pub.TOP_CENTER || rp === 8 || rp === AnchorPoint.TOP_CENTER_ANCHOR) {
+    currRefPoint = pub.TOP_CENTER;
+    anchorEnum = AnchorPoint.TOP_CENTER_ANCHOR;
+  } else if(rp === pub.TOP_RIGHT || rp === 9 || rp === AnchorPoint.TOP_RIGHT_ANCHOR) {
+    currRefPoint = pub.TOP_RIGHT;
+    anchorEnum = AnchorPoint.TOP_RIGHT_ANCHOR;
+  } else if(rp === pub.CENTER_LEFT || rp === 4 || rp === AnchorPoint.LEFT_CENTER_ANCHOR) {
+    currRefPoint = pub.CENTER_LEFT;
+    anchorEnum = AnchorPoint.LEFT_CENTER_ANCHOR;
+  } else if(rp === pub.CENTER || rp === pub.CENTER_CENTER || rp === 5 || rp === AnchorPoint.CENTER_ANCHOR) {
+    currRefPoint = pub.CENTER;
+    anchorEnum = AnchorPoint.CENTER_ANCHOR;
+  } else if(rp === pub.CENTER_RIGHT || rp === 6 || rp === AnchorPoint.RIGHT_CENTER_ANCHOR) {
+    currRefPoint = pub.CENTER_RIGHT;
+    anchorEnum = AnchorPoint.RIGHT_CENTER_ANCHOR;
+  } else if(rp === pub.BOTTOM_LEFT || rp === 1 || rp === AnchorPoint.BOTTOM_LEFT_ANCHOR) {
+    currRefPoint = pub.BOTTOM_LEFT;
+    anchorEnum = AnchorPoint.BOTTOM_LEFT_ANCHOR;
+  } else if(rp === pub.BOTTOM_CENTER || rp === 2 || rp === AnchorPoint.BOTTOM_CENTER_ANCHOR) {
+    currRefPoint = pub.BOTTOM_CENTER;
+    anchorEnum = AnchorPoint.BOTTOM_CENTER_ANCHOR;
+  } else if(rp === pub.BOTTOM_RIGHT || rp === 3 || rp === AnchorPoint.BOTTOM_RIGHT_ANCHOR) {
+    currRefPoint = pub.BOTTOM_RIGHT;
+    anchorEnum = AnchorPoint.BOTTOM_RIGHT_ANCHOR;
   } else {
-    error("itemWidth(), pItem has to be a valid PageItem");
+    error("referencePoint(), wrong argument! Use reference point constant (TOP_LEFT, TOP_CENTER, ...), a digit between 1 and 9 or an InDesign anchor point enumerator.");
   }
+
+  if(app.properties.activeWindow instanceof LayoutWindow ) {
+    app.activeWindow.transformReferencePoint = anchorEnum;
+  }
+
+  return currRefPoint;
 };
 
 /**
- * @description Scales the given PageItem to the given height. If height is not given as argument the current height is returned.
+ * @description Transforms a given page item. The type of transformation is determinded with the second parameter. The third parameter is the transformation value, either a number or an array of x and y values. The transformation's reference point (top left, bottom center etc.) can be set beforehand by using the <code>referencePoint()</code> function. If the third parameter is ommited, the function can be used to measure the value of the page item.
+ * There are 10 different transformation types:
+ * <ul>
+ * <li> <code>"translate"</code>: Translates the page item by the given <code>[x, y]</code> values. Returns the coordinates of the page item's anchor point as an array.</li>
+ * <li> <code>"rotate"</code>: Rotates the page item to the given degree value. Returns the page item's rotation value in degrees.</li>
+ * <li> <code>"scale"</code>: Scales the page item to the given <code>[x, y]</code> scale factor values. Alternatively, a single scale factor value can be used to scale the page item uniformely. Returns the scale factor values of the page item's current scale as an array.</li>
+ * <li> <code>"shear"</code>: Shears the page item to the given degree value. Returns the page item's shear value in degrees.</li>
+ * <li> <code>"size"</code>: Sets the page item's size to the given <code>[x, y]</code> dimensions. Returns the size of the page item as an array.</li>
+ * <li> <code>"width"</code>: Sets the page item's width to the given value. Returns the width of the page item.</li>
+ * <li> <code>"height"</code>: Sets the page item's height to the given value. Returns the height of the page item.</li>
+ * <li> <code>"position"</code>: Sets the position of the page item's anchor point to the given <code>[x, y]</code> coordinates. Returns the coordinates of the page item's anchor point as an array.</li>
+ * <li> <code>"x"</code>: Sets the x-position of the page item's anchor point to the given value. Returns the x-coordinate of the page item's anchor point.</li>
+ * <li> <code>"y"</code>: Sets the y-position of the page item's anchor point to the given value. Returns the y-coordinate of the page item's anchor point.</li>
+ * </ul>
  *
  * @cat Document
  * @subcat Transformation
- * @method itemHeight
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [height] The new height.
- * @returns {Number} The current height.
- */
-pub.itemHeight = function(pItem, height) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemHeight(), please note that only CORNER positioning is fully supported. Use with care.");
-  }
-  if(pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof height === "number") {
-      pub.itemSize(pItem, Math.abs(pItem.geometricBounds[3] - pItem.geometricBounds[1]), height);
-    } else {
-      return Math.abs(pItem.geometricBounds[2] - pItem.geometricBounds[0]);
-    }
-  } else {
-    error("itemHeight(), pItem has to be a valid PageItem");
-  }
-};
-
-/**
- * @description Moves the given PageItem to the given position. If x or y is not given as argument the current position is returned.
+ * @method transform
+ * @param {PageItem} pItem The page item to transform.
+ * @param {String} type The type of transformation.
+ * @param {Number|Array} [value] The value(s) of the transformation.
+ * @returns {Number|Array} The current value(s) of the specified transformation.
  *
- * @cat Document
- * @subcat Transformation
- * @method itemPosition
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [x] The new x coordinate.
- * @param {Number} [y] The new y coordinate.
- * @returns {Object} Returns an object with the fields x and y.
- */
-pub.itemPosition = function(pItem, x, y) {
-
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemPosition(), please note that only CORNER positioning is fully supported. Use with care.");
-  }
-  if (pItem !== undefined && pItem.hasOwnProperty("geometricBounds")) {
-    if(typeof x === "number" && typeof y === "number") {
-      var width = pItem.geometricBounds[3] - pItem.geometricBounds[1];
-      var height = pItem.geometricBounds[2] - pItem.geometricBounds[0];
-      var offX = 0;
-      var offY = 0;
-      pItem.geometricBounds = [y + offY, x + offX, y + height + offY, x + width + offX];
-    } else {
-      return {x: precision(pItem.geometricBounds[1], 5), y: precision(pItem.geometricBounds[0], 5)};
-    }
-  } else {
-    error("itemPosition(), works only with child classes of PageItem.");
-  }
-};
-
-/**
- * @description Scales the given PageItem to the given size. If width or height is not given as argument the current size is returned.
+ * @example <caption>Rotating a rectangle to a 25 degrees angle</caption>
+ * var r = rect(20, 40, 200, 100);
+ * transform(r, "rotate", 25);
  *
- * @cat Document
- * @subcat Transformation
- * @method itemSize
- * @param {PageItem} pItem The PageItem to alter.
- * @param {Number} [width] The new width.
- * @param {Number} [height] The new height.
- * @returns {Object} Returns an object with the fields width and height.
+ * @example <caption>Measure the width of a rectangle</caption>
+ * var r = rect(20, 40, random(100, 300), 100);
+ * var w = transform(r, "width");
+ * println(w); // prints the rectangle's random width between 100 and 300
+ *
+ * @example <caption>Position a rectangle's lower right corner at a certain position</caption>
+ * var r = rect(20, 40, random(100, 300), random(50, 150));
+ * referencePoint(BOTTOM_RIGHT);
+ * transform(r, "position", [40, 40]);
  */
-pub.itemSize = function(pItem, width, height) {
-  if(currRectMode !== pub.CORNER) {
-    pub.warning("itemSize(), please note that only CORNER positioning is fully supported. Use with care.");
+
+pub.transform = function(pItem, type, value) {
+
+  if(!pItem || !pItem.hasOwnProperty("geometricBounds")) {
+    error("transform(), invalid first parameter. Use page item.");
   }
-  if (pItem !== null && pItem.hasOwnProperty("geometricBounds")) {
 
-    var x = pItem.geometricBounds[1];
-    var y = pItem.geometricBounds[0];
+  app.transformPreferences.adjustStrokeWeightWhenScaling = false;
+  app.transformPreferences.whenScaling = WhenScalingOptions.ADJUST_SCALING_PERCENTAGE;
 
-    if(typeof width === "number" && typeof height === "number") {
-      pItem.geometricBounds = [y, x, y + height, x + width];
+  var result = null;
+  var idAnchorPoints = {
+    topLeft: AnchorPoint.TOP_LEFT_ANCHOR,
+    topCenter: AnchorPoint.TOP_CENTER_ANCHOR,
+    topRight: AnchorPoint.TOP_RIGHT_ANCHOR,
+    centerLeft: AnchorPoint.LEFT_CENTER_ANCHOR,
+    center: AnchorPoint.CENTER_ANCHOR,
+    centerRight: AnchorPoint.RIGHT_CENTER_ANCHOR,
+    bottomLeft: AnchorPoint.BOTTOM_LEFT_ANCHOR,
+    bottomCenter: AnchorPoint.BOTTOM_CENTER_ANCHOR,
+    bottomRight: AnchorPoint.BOTTOM_RIGHT_ANCHOR
+  };
+  var basilUnits = {
+    pt: MeasurementUnits.POINTS,
+    mm: MeasurementUnits.MILLIMETERS,
+    cm: MeasurementUnits.CENTIMETERS,
+    inch: MeasurementUnits.INCHES,
+    px: MeasurementUnits.PIXELS
+  }
+
+  var aPoint = idAnchorPoints[currRefPoint];
+  var unitEnum = basilUnits[currUnits];
+
+  var tm = app.transformationMatrices.add();
+  var bounds = pItem.geometricBounds;
+  var w = Math.abs(bounds[3] - bounds[1]);
+  var h = Math.abs(bounds[2] - bounds[0]);
+
+  if(type === "width") {
+    if(isNumber(value)) {
+      tm = tm.scaleMatrix(value / w, 1);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
     } else {
-      return {width: pItem.geometricBounds[3] - pItem.geometricBounds[1], height: pItem.geometricBounds[2] - pItem.geometricBounds[0]};
+      result = precision(w, 12);
+    }
+
+  } else if (type === "height") {
+    if(isNumber(value)) {
+      tm = tm.scaleMatrix(1, value / h);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
+    } else {
+      result = precision(h, 12);
+    }
+
+  } else if (type === "size") {
+    if(isArray(value)) {
+      tm = tm.scaleMatrix(value[0] / w, value[1] / h);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
+    } else {
+      result = [precision(w, 12), precision(h, 12)];
+    }
+
+  } else if(type === "translate" || type === "translation") {
+    if(isArray(value)) {
+
+      // for proper matrix translation, convert units to points
+      value[0] = UnitValue(value[0], unitEnum).as(MeasurementUnits.POINTS);
+      value[1] = UnitValue(value[1], unitEnum).as(MeasurementUnits.POINTS);
+
+      tm = tm.translateMatrix(value[0], value[1]);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
+    }
+    result = transform(pItem, "position");
+
+  } else if (type === "rotate" || type === "rotation") {
+    if(isNumber(value)) {
+      tm = tm.rotateMatrix(-pItem.rotationAngle - value);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
+    }
+    result = -pItem.rotationAngle;
+
+  } else if (type === "scale" || type === "scaling") {
+    if(isNumber(value)) {
+      tm = tm.scaleMatrix(value, value);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
+    } else if(isArray(value)) {
+      tm = tm.scaleMatrix(value[0], value[1]);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
+    }
+    result = [pItem.horizontalScale / 100, pItem.verticalScale / 100];
+
+  } else if (type === "shear"  || type === "shearing") {
+    if(isNumber(value)) {
+      tm = tm.shearMatrix(-pItem.shearAngle - value);
+      pItem.transform(CoordinateSpaces.PASTEBOARD_COORDINATES, aPoint, tm);
+    }
+    result = -pItem.shearAngle;
+
+  } else if (type === "position" || type === "x" || type === "y") {
+
+    // find page that holds the top left corner of the current canvas mode
+    var refPage = currPage;
+    if(!(currCanvasMode === PAGE || currCanvasMode === MARGIN || currCanvasMode === BLEED)) {
+      refPage = currPage.parent.pages.firstItem();
+    }
+
+    var topLeft = refPage.resolve([AnchorPoint.TOP_LEFT_ANCHOR, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
+
+    topLeft[0] += UnitValue(currOriginX, unitEnum).as(MeasurementUnits.POINTS);
+    topLeft[1] += UnitValue(currOriginY, unitEnum).as(MeasurementUnits.POINTS);
+
+    var anchorPosOnSpread = pItem.resolve([aPoint, BoundingBoxLimits.GEOMETRIC_PATH_BOUNDS, CoordinateSpaces.INNER_COORDINATES], CoordinateSpaces.SPREAD_COORDINATES)[0];
+    var anchorPosOnPagePt = [anchorPosOnSpread[0] - topLeft[0], anchorPosOnSpread[1] - topLeft[1]];
+
+    // convert position to user units
+    var anchorPosOnPage = [
+      UnitValue(anchorPosOnPagePt[0], MeasurementUnits.POINTS).as(unitEnum),
+      UnitValue(anchorPosOnPagePt[1], MeasurementUnits.POINTS).as(unitEnum),
+    ];
+
+    if(type === "x") {
+      if(isNumber(value)) {
+        transform(pItem, "position", [value, anchorPosOnPage[1]]);
+        return value;
+      } else {
+        result = precision(anchorPosOnPage[0], 12);
+      }
+
+    } else if (type === "y") {
+      if(isNumber(value)) {
+        transform(pItem, "position", [anchorPosOnPage[0], value]);
+        return value;
+      } else {
+        result = precision(anchorPosOnPage[1], 12);
+      }
+
+    } else {
+      if(isArray(value)) {
+        var offset = [value[0] - anchorPosOnPage[0], value[1] - anchorPosOnPage[1]];
+        transform(pItem, "translate", offset);
+        return value;
+      } else {
+        result = [precision(anchorPosOnPage[0], 12), precision(anchorPosOnPage[1], 12)];
+      }
     }
 
   } else {
-    error("itemSize(), works only with child classes of PageItem.");
+    error("transform(), invalid transform type. Use \"translate\", \"rotate\", \"scale\", \"shear\", \"size\", \"width\", \"height\", \"position\", \"x\" or \"y\".");
   }
-};
 
+  app.transformPreferences.adjustStrokeWeightWhenScaling = true;
+  app.transformPreferences.whenScaling = WhenScalingOptions.APPLY_TO_CONTENT;
+
+  if(result === null) {
+    result = value;
+  }
+  return result;
+
+}
 
 var printMatrixHelper = function(elements) {
   var big = 0;
@@ -7358,12 +7455,10 @@ var printMatrixHelper = function(elements) {
   return digits;
 };
 
-/**
- * @description A matrix.
- * @cat Document
- * @subcat Transformation
- */
-var Matrix2D = pub.Matrix2D = function() {
+// ----------------------------------------
+// private matrix functions
+
+var Matrix2D = function() {
   if (arguments.length === 0) {
     this.reset();
   } else if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -7372,19 +7467,10 @@ var Matrix2D = pub.Matrix2D = function() {
     this.set(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4], arguments[5]);
   }
 };
-/**
- * @cat Document
- * @subcat Transformation
- * @description A Matrix object.
- * @type {Object}
- */
+
 Matrix2D.prototype = {
-  /**
-   * @method Matrix2D.set
-   * @cat Document
-   * @subcat Transformation
-   * @description Set a Matrix.
-   */
+
+  // Set a Matrix.
   set: function() {
     if (arguments.length === 6) {
       var a = arguments;
@@ -7396,199 +7482,54 @@ Matrix2D.prototype = {
     }
   },
 
-/**
- * @description Get a Matrix.
- * @method Matrix2D.get
- * @cat Document
- * @subcat Transformation
- * @return {Matrix2D} The current Matrix.
- */
+  // Get a Matrix.
   get: function() {
     var outgoing = new Matrix2D();
     outgoing.set(this.elements);
     return outgoing;
   },
-/**
- * @description Reset the Matrix.
- * @method Matrix2D.reset
- * @cat Document
- * @subcat Transformation
- */
+
+  // Reset the Matrix.
   reset: function() {
     this.set([1, 0, 0, 0, 1, 0]);
   },
-  /**
-   * @description Slice the Matrix into an array.
-   * @method Matrix2D.array
-   * @cat Document
-   * @subcat Transformation
-   * @return {Array} Returns an sliced array.
-   */
+
+  // Slice the Matrix into an array.
   array: function array() {
     return this.elements.slice();
   },
-  /**
 
-   * @description Slice the Matrix into an array.
-   * @cat Document
-   * @method Matrix2D.adobeMatrix
-   * @subcat Transformation
-   * @return {Array} Returns an Adobe Matrix.
-   */
-  adobeMatrix: function array() {
+  adobeMatrix: function array(x, y) {
+    // this seems to work:
+    // it's important to know the position of the object around which it will be rotated and scaled.
 
-    var uVX = new UnitValue(this.elements[2], currUnits);
-    var uVY = new UnitValue(this.elements[5], currUnits);
+    // 1. making a copy of this matrix
+    var tmpMatrix = this.get();
+
+    // 2. pre-applying a translation as if the object was starting from the origin
+    tmpMatrix.preApply([1, 0, -x, 0, 1, -y]);
+
+    // 3. move to object to its given coordinates
+    tmpMatrix.apply([1, 0, x, 0, 1, y]);
+
+    var uVX = new UnitValue(tmpMatrix.elements[2], currUnits);
+    var uVY = new UnitValue(tmpMatrix.elements[5], currUnits);
 
     return [
-      this.elements[0],
-      this.elements[3],
-      this.elements[1],
-      this.elements[4],
+      tmpMatrix.elements[0],
+      tmpMatrix.elements[3],
+      tmpMatrix.elements[1],
+      tmpMatrix.elements[4],
       uVX.as("pt"),
       uVY.as("pt")
     ];
   },
-  /**
-   * @description translate Needs more description.
-   * @cat Document
-   * @method Matrix2D.translate
-   * @subcat Transformation
-   * @param  {Number} tx …
-   * @param  {Number} ty …
-   */
+
   translate: function(tx, ty) {
     this.elements[2] = tx * this.elements[0] + ty * this.elements[1] + this.elements[2];
     this.elements[5] = tx * this.elements[3] + ty * this.elements[4] + this.elements[5];
   },
-  /**
-   * @description invTranslate Needs more description.
-   * @method Matrix2D.invTranslate
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} tx …
-   * @param  {Number} ty …
-   */
-  invTranslate: function(tx, ty) {
-    this.translate(-tx, -ty);
-  },
-  /**
-   * @description transpose Needs more description.
-   * @method Matrix2D.transpose
-   * @cat Document
-   * @subcat Transformation
-   */
-  transpose: function() {},
-  /**
-   * @description mult Needs more description.
-   * @method Matrix2D.mult
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Vector|Array} source …
-   * @param  {Vector|Array} [target] …
-   * @return {Vector} A multiplied Vector.
-   */
-  mult: function(source, target) {
-    var x, y;
-    if (source instanceof Vector) {
-      x = source.x;
-      y = source.y;
-      if (!target) {
-        target = new Vector();
-      }
-    } else if (source instanceof Array) {
-      x = source[0];
-      y = source[1];
-      if (!target) {
-        target = [];
-      }
-    }
-    if (target instanceof Array) {
-      target[0] = this.elements[0] * x + this.elements[1] * y + this.elements[2];
-      target[1] = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-    } else if (target instanceof Vector) {
-      target.x = this.elements[0] * x + this.elements[1] * y + this.elements[2];
-      target.y = this.elements[3] * x + this.elements[4] * y + this.elements[5];
-      target.z = 0;
-    }
-    return target;
-  },
-  /**
-   * @description multX Needs more description.
-   * @method Matrix2D.multX
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} x …
-   * @param  {Number} y …
-   * @return {Number} A mulitplied X value.
-   */
-  multX: function(x, y) {
-    return x * this.elements[0] + y * this.elements[1] + this.elements[2];
-  },
-  /**
-   * @description multY Needs more description.
-   * @method Matrix2D.multY
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} x …
-   * @param  {Number} y …
-   * @return {Number}   A multiplied Y value.
-   */
-  multY: function(x, y) {
-    return x * this.elements[3] + y * this.elements[4] + this.elements[5];
-  },
-  /*
-  // BUG, seems to be buggy in processing.js, and i am not clever enough to figure it out
-  shearX: function(angle) {
-    this.apply(1, 0, 1, Math.tan(angle), 0, 0)
-  },
-  shearY: function(angle) {
-    this.apply(1, 0, 1, 0, Math.tan(angle), 0)
-  },*/
-  /**
-   * @description determinant Needs more description.
-   * @method Matrix2D.determinant
-   * @cat Document
-   * @subcat Transformation
-   * @return {Number} A determinant …
-   */
-  determinant: function() {
-    return this.elements[0] * this.elements[4] - this.elements[1] * this.elements[3];
-  },
-  /**
-   * @description invert Needs more description.
-   * @method Matrix2D.invert
-   * @cat Document
-   * @subcat Transformation
-   * @return {Boolean} …
-   */
-  invert: function() {
-    var d = this.determinant();
-    if (Math.abs(d) > -2147483648) {
-      var old00 = this.elements[0];
-      var old01 = this.elements[1];
-      var old02 = this.elements[2];
-      var old10 = this.elements[3];
-      var old11 = this.elements[4];
-      var old12 = this.elements[5];
-      this.elements[0] = old11 / d;
-      this.elements[3] = -old10 / d;
-      this.elements[1] = -old01 / d;
-      this.elements[4] = old00 / d;
-      this.elements[2] = (old01 * old12 - old11 * old02) / d;
-      this.elements[5] = (old10 * old02 - old00 * old12) / d;
-      return true;
-    }
-    return false;
-  },
-  /**
-   * @description scale Needs more description.
-   * @method Matrix2D.scale
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} sx …
-   * @param  {Number} sy …
-   */
+
   scale: function(sx, sy) {
     if (sx && !sy) {
       sy = sx;
@@ -7600,26 +7541,7 @@ Matrix2D.prototype = {
       this.elements[4] *= sy;
     }
   },
-  /**
-   * @description invScale Needs more description.
-   * @method Matrix2D.invScale
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} sx …
-   * @param  {Number} sy …
-   */
-  invScale: function(sx, sy) {
-    if (sx && !sy) {
-      sy = sx;
-    }
-    this.scale(1 / sx, 1 / sy);
-  },
-  /**
-   * @description apply Needs more description.
-   * @method Matrix2D.apply
-   * @cat Document
-   * @subcat Transformation
-   */
+
   apply: function() {
     var source;
     if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -7638,12 +7560,7 @@ Matrix2D.prototype = {
     }
     this.elements = result.slice();
   },
-  /**
-   * @description preApply Needs more description.
-   * @method Matrix2D.preApply
-   * @cat Document
-   * @subcat Transformation
-   */
+
   preApply: function() {
     var source;
     if (arguments.length === 1 && arguments[0] instanceof Matrix2D) {
@@ -7662,13 +7579,7 @@ Matrix2D.prototype = {
     result[4] = this.elements[1] * source[3] + this.elements[4] * source[4];
     this.elements = result.slice();
   },
-  /**
-   * @description rotate Needs more description.
-   * @method Matrix2D.rotate
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} angle
-   */
+
   rotate: function(angle) {
     var c = Math.cos(angle);
     var s = Math.sin(angle);
@@ -7681,72 +7592,12 @@ Matrix2D.prototype = {
     this.elements[3] = c * temp1 + s * temp2;
     this.elements[4] = -s * temp1 + c * temp2;
   },
-  /**
-   * @description rotateZ Needs more description.
-   * @method Matrix2D.rotateZ
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} angle
-   */
-  rotateZ: function(angle) {
-    this.rotate(angle);
-  },
-  /**
-   * @description invRotateZ Needs more description.
-   * @method Matrix2D.invRotateZ
-   * @cat Document
-   * @subcat Transformation
-   * @param  {Number} angle
-   */
-  invRotateZ: function(angle) {
-    this.rotateZ(angle - Math.PI);
-  },
-  /**
-   * @description print Needs more description.
-   * @method Matrix2D.print
-   * @cat Document
-   * @subcat Transformation
-   */
+
   print: function() {
     var digits = printMatrixHelper(this.elements);
     var output = "" + pub.nfs(this.elements[0], digits, 4) + " " + pub.nfs(this.elements[1], digits, 4) + " " + pub.nfs(this.elements[2], digits, 4) + "\n" + pub.nfs(this.elements[3], digits, 4) + " " + pub.nfs(this.elements[4], digits, 4) + " " + pub.nfs(this.elements[5], digits, 4) + "\n\n";
     pub.println(output);
   }
-};
-
-/**
- * @description Returns the current matrix as a Matrix2D object for altering existing PageItems with transform(). If a Matrix2D object is provided to the function it will overwrite the current matrix.
- *
- * @cat Document
- * @subcat Transformation
- * @method matrix
- * @param {Matrix2D} [matrix] The matrix to be set as new current matrix.
- * @returns {Matrix2D} Returns the current matrix.
- */
-pub.matrix = function(matrix) {
-
-  if(matrix instanceof Matrix2D) {
-    currMatrix = matrix;
-  }
-  return currMatrix;
-};
-
-/**
- * @description Transforms the given PageItem with the given Matrix2D object.
- *
- * @cat Document
- * @subcat Transformation
- * @method transform
- * @param {PageItem} obj The item to be transformed.
- * @param {Matrix2D} matrix The matrix to be applied.
- */
-pub.transform = function(obj, matrix) {
-
-  obj.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   matrix.adobeMatrix()
-  );
-
 };
 
 /**
@@ -7808,6 +7659,8 @@ pub.pushMatrix = function () {
 pub.resetMatrix = function () {
   matrixStack = [];
   currMatrix = new Matrix2D();
+
+  pub.translate(currOriginX, currOriginY);
 };
 
 /**
