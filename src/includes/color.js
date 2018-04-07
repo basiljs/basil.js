@@ -3,7 +3,14 @@
 // ----------------------------------------
 
 /**
- * Sets the color or gradient used to fill shapes.
+ * Sets the color or gradient used to fill shapes. You can use the code
+ * `color(255, 0, 0);` to create the color red. Also, what if you need
+ * multi-line code?
+ * ```
+ * Probably not gonna work, right?
+ * // Not even when commented?
+ * ```
+ *
  * @cat Color
  * @method fill
  * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
@@ -41,8 +48,13 @@ pub.fill = function (fillColor) {
 };
 
 /**
- * Disables filling geometry. If both noStroke() and noFill() are called,
- * newly drawn shapes will be invisible.
+ * Disables filling geometry. If both noStroke() and noFill() are called, newly
+ * drawn shapes will be invisible.
+ *
+ * How do I add a new paragraph? Not by inserting an empty line I guess.
+ * <br><br>
+ * Should this do the trick? Or will it not work for the lack of a description
+ * tag? That would be sad.
  *
  * @cat Color
  * @method noFill
@@ -52,7 +64,17 @@ pub.noFill = function () {
 };
 
 /**
- * Sets the color or gradient used to draw lines and borders around shapes.
+ * description  Sets the color or gradient used to draw lines and borders around
+ * shapes. Now that would great, if html suddenly worked here
+ * <br><br>
+ * Then we have a real new "paragraph".
+ * <br><br>
+ * Also, I need to test, if markdown works here with the description tag, so
+ * let's see: `color(255, 0, 0); // this is some nice piece of code`. Over and
+ * out.
+ *
+ *
+ *
  * @cat Color
  * @method stroke
  * @param  {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
