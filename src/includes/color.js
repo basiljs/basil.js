@@ -13,7 +13,7 @@
  *
  * @cat Color
  * @method fill
- * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Some crazy new text for testing purposes. Or values: GRAY / R,G,B / C,M,Y,K.
  * @param  {String} [name] If created with numbers, a custom swatch name can be given.
  */
 pub.fill = function (fillColor) {
@@ -64,7 +64,7 @@ pub.noFill = function () {
 };
 
 /**
- * description  Sets the color or gradient used to draw lines and borders around
+ * @description  Sets the color or gradient used to draw lines and borders around
  * shapes. Now that would great, if html suddenly worked here
  * <br><br>
  * Then we have a real new "paragraph".
@@ -110,8 +110,8 @@ pub.stroke = function (strokeColor) {
 };
 
 /**
- * Disables drawing the stroke. If both noStroke() and noFill() are called,
- * newly drawn shapes will be invisible.
+ * This has some new text as well. Disables drawing the stroke. If both
+ * noStroke() and noFill() are called, newly drawn shapes will be invisible.
  *
  * @cat Color
  * @method noStroke
