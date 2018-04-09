@@ -137,7 +137,7 @@ pub.fillTint = function (tint) {
 };
 
 /**
- * Sets the tint of the color used to draw lines and borders around shapes.
+ * Sets the tint of the `color` used to draw lines and borders around shapes.
  *
  * @cat Color
  * @method strokeTint
