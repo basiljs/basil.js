@@ -5175,7 +5175,7 @@ pub.strokeTint = function (tint) {
 };
 
 /**
- * Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
+ * Sets the [colormode](http://www.colormode.com/) for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
  *
  * @cat Color
  * @method colorMode
