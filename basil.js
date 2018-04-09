@@ -5159,7 +5159,7 @@ pub.fillTint = function (tint) {
 };
 
 /**
- * Sets the tint of the `color` used to draw lines and borders around shapes.
+ * @description Sets the tint of the `color` used to draw lines and borders around shapes.
  *
  * @cat Color
  * @method strokeTint
@@ -5175,7 +5175,7 @@ pub.strokeTint = function (tint) {
 };
 
 /**
- * Sets the [colormode](http://www.colormode.com/) for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
+ * @description Sets the [colormode](http://www.colormode.com/) for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
  *
  * @cat Color
  * @method colorMode
