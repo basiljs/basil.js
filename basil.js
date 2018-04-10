@@ -5194,7 +5194,7 @@ pub.colorMode = function(colorMode) {
 };
 
 /**
- * description  Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`. Possible modes are:
+ * @description  Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`. Possible modes are:
  * - Linear
  * - Radial
  * - Cubic
