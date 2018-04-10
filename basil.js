@@ -5194,7 +5194,15 @@ pub.colorMode = function(colorMode) {
 };
 
 /**
- * Sets the gradient mode for gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
+ * description  Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`. Possible modes are:
+ * - Linear
+ * - Radial
+ * - Cubic
+ *   - Cubic Light
+ *   - Cubic Extreme
+ * - Foo
+ * - Bar
+ * - Baz
  *
  * @cat Color
  * @method gradientMode
@@ -5213,7 +5221,10 @@ pub.gradientMode = function(gradientMode) {
 };
 
 /**
- * Gets a swatch by name.
+ * description  Gets a swatch by name. To achieve this, you have to follow three steps:
+ * 1. Get
+ * 2. a
+ * 3. swatch
  *
  * @cat Color
  * @method swatch
