@@ -449,14 +449,14 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
 /**
  * @description Modifies the location from which rectangles or text frames draw. The default
  * mode is rectMode(CORNER), which specifies the location to be the upper left
- * corner of the shape and uses the <code>w</code> and <code>h</code> parameters to specify the
- * width and height. The syntax rectMode(CORNERS) uses the <code>x</code> and <code>y</code>
- * parameters of <code>rect()</code> or <code>text()</code> to set the location of one corner
- * and uses the <code>w</code> and <code>h</code> parameters to set the opposite corner.
- * The syntax <code>rectMode(CENTER)</code> draws the shape from its center point and
- * uses the <code>w</code> and <code>h</code> parameters to specify the shape's
- * width and height. The syntax <code>rectMode(RADIUS)</code> draws the shape from its
- * center point and uses the <code>w</code> and <code>h</code> parameters to specify
+ * corner of the shape and uses the `w` and `h` parameters to specify the
+ * width and height. The syntax rectMode(CORNERS) uses the `x` and `y`
+ * parameters of `rect()` or `text()` to set the location of one corner
+ * and uses the `w` and `h` parameters to set the opposite corner.
+ * The syntax `rectMode(CENTER)` draws the shape from its center point and
+ * uses the `w` and `h` parameters to specify the shape's
+ * width and height. The syntax `rectMode(RADIUS)` draws the shape from its
+ * center point and uses the `w` and `h` parameters to specify
  * half of the shape's width and height.
  *
  * @cat    Document
@@ -476,13 +476,13 @@ pub.rectMode = function (mode) {
 };
 
 /**
- * @description The origin of new ellipses is modified by the <code>ellipseMode()</code> function.
- * The default configuration is <code>ellipseMode(CENTER)</code>, which specifies the
+ * @description The origin of new ellipses is modified by the `ellipseMode()` function.
+ * The default configuration is `ellipseMode(CENTER)`, which specifies the
  * location of the ellipse as the center of the shape. The RADIUS mode is
- * the same, but the <code>w</code> and <code>h</code> parameters to <code>ellipse()</code> specify the
+ * the same, but the `w` and `h` parameters to `ellipse()` specify the
  * radius of the ellipse, rather than the diameter. The CORNER mode draws
  * the shape from the upper-left corner of its bounding box. The CORNERS
- * mode uses the four parameters to <code>ellipse()</code> to set two opposing corners
+ * mode uses the four parameters to `ellipse()` to set two opposing corners
  * of the ellipse's bounding box.
  *
  * @cat    Document
@@ -590,7 +590,7 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
- * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use <code>rectMode()</code> to set center point.
+ * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use `rectMode()` to set center point.
  *
  * @cat    Document
  * @subcat Transformation

@@ -404,7 +404,7 @@ var stackArray = $.stack.
 pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
 
 /**
-* Used with <code>mode()</code> to set performance mode. Disables screen redraw during processing.
+* Used with `mode()` to set performance mode. Disables screen redraw during processing.
 * @property SILENT {String}
 * @cat Environment
 * @subcat modes
@@ -412,7 +412,7 @@ pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0
 pub.SILENT = "silent";
 
 /**
- * Used with <code>mode()</code> to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to <code>VISIBLE</code>. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * Used with `mode()` to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to `VISIBLE`. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
  * @property HIDDEN {String}
  * @cat Environment
  * @subcat modes
@@ -420,7 +420,7 @@ pub.SILENT = "silent";
 pub.HIDDEN = "hidden";
 
 /**
- * Default mode. Used with <code>mode()</code> to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
+ * Default mode. Used with `mode()` to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
  * @property VISIBLE {String}
  * @cat Environment
  * @subcat modes

@@ -32,7 +32,7 @@ pub.doc = function(doc) {
  * @method size
  * @param  {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
  * @param  {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
- * @return {Object} Object containing the current <code>width</code> and <code>height</code> of the document.
+ * @return {Object} Object containing the current `width` and `height` of the document.
  *
  * @example <caption>Sets the document size to 70 x 100 units</caption>
  * size(70, 100);
@@ -486,13 +486,13 @@ pub.layer = function(layer) {
 
 
 /**
- * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>FORWARD</code> or <code>BACKWARD</code> the object is sent forward or back one step. The constants <code>FRONT</code> or <code>BACK</code> send the object to the very front or very back. Using <code>FRONT</code> or <code>BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
+ * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants `FORWARD` or `BACKWARD` the object is sent forward or back one step. The constants `FRONT` or `BACK` send the object to the very front or very back. Using `FRONT` or `BACK` together with the optional reference object, sends the object in front or behind this reference object.
  *
  * @cat    Document
  * @subcat Page
  * @method arrange
  * @param  {PageItem|Layer} pItemOrLayer The page item or layer to be moved to a new position.
- * @param  {String} positionOrDirection The position or direction to move the page item or layer. Can be <code>FRONT</code>, <code>BACK</code>, <code>FORWARD</code> or <code>BACKWARD</code>.
+ * @param  {String} positionOrDirection The position or direction to move the page item or layer. Can be `FRONT`, `BACK`, `FORWARD` or `BACKWARD`.
  * @param  {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
  * @return {PageItem|Layer} The newly arranged page item or layer.
  */
@@ -641,7 +641,7 @@ pub.labels = function(label, cb) {
 
 
 /**
- * @description Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of <code>labels()</code>, when you know you just have one thing with that label and don't want to deal with a single-element array.
+ * @description Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of `labels()`, when you know you just have one thing with that label and don't want to deal with a single-element array.
  *
  * @cat    Document
  * @subcat Multi-Getters
@@ -882,22 +882,22 @@ pub.bleeds = function(top, right, bottom, left) {
 
 /**
  * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:<br>
- * <code>showProps</code>: Show or hide properties. Default: <code>true</code><br>
- * <code>showValues</code>: Show or hide values. Default: <code>true</code><br>
- * <code>showMethods</code>: Show or hide methods. Default: <code>false</code><br>
- * <code>maxLevel</code>: Chooses how many levels of properties should be inspected recursively. Default: <code>1</code><br>
- * <code>propList</code>: Allows to pass an array of property names to show. If propList is not set all properties will be shown. Default: <code>[]</code> (no propList)<br>
+ * `showProps`: Show or hide properties. Default: `true`<br>
+ * `showValues`: Show or hide values. Default: `true`<br>
+ * `showMethods`: Show or hide methods. Default: `false`<br>
+ * `maxLevel`: Chooses how many levels of properties should be inspected recursively. Default: `1`<br>
+ * `propList`: Allows to pass an array of property names to show. If propList is not set all properties will be shown. Default: `[]` (no propList)<br>
  * If no settings object is set, the default values will be used.
  *
  * @cat    Output
  * @method inspect
  * @param  {Object} obj An object or any other data item to be inspected.
  * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {Boolean} [settings.showProps] Show or hide properties. Default: <code>true</code>
- * @param  {Boolean} [settings.showValues] Show or hide values. Default: <code>true</code>
- * @param  {Boolean} [settings.showMethods] Show or hide methods. Default: <code>false</code>
- * @param  {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: <code>1</code>
- * @param  {Array} [settings.propList] Array of properties to show. Default: <code>[]</code> (no propList)
+ * @param  {Boolean} [settings.showProps] Show or hide properties. Default: `true`
+ * @param  {Boolean} [settings.showValues] Show or hide values. Default: `true`
+ * @param  {Boolean} [settings.showMethods] Show or hide methods. Default: `false`
+ * @param  {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: `1`
+ * @param  {Array} [settings.propList] Array of properties to show. Default: `[]` (no propList)
  *
  * @example <caption>Inspecting a string</caption>
  * inspect("foo");
@@ -1162,9 +1162,9 @@ pub.folder = function(folderPath) {
  * @method files
  * @param  {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
  * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String|Array} [settings.filter] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
- * @param  {Boolean} [settings.hidden] Hidden files will be included. Default: <code>false</code>
- * @param  {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: <code>false</code>
+ * @param  {String|Array} [settings.filter] Suffix(es) of file types to include. Default: `"*"` (include all file types)
+ * @param  {Boolean} [settings.hidden] Hidden files will be included. Default: `false`
+ * @param  {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: `false`
  * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
  *
  * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
@@ -1240,10 +1240,10 @@ pub.files = function(folder, settings, collectedFiles) {
  * @cat    Files
  * @method selectFile
  * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
- * @param  {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param  {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
+ * @param  {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
  * @param  {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
+ * @return {File|Null} The selected file. If the user cancels, `null` will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
  * selectFile({prompt: "Please select a file."});
@@ -1261,8 +1261,8 @@ pub.selectFile = function(settings) {
  * @cat    Files
  * @method selectFiles
  * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
- * @param  {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
+ * @param  {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
+ * @param  {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
  * @param  {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
  * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
  *
@@ -1287,9 +1287,9 @@ pub.selectFiles = function(settings) {
  * @cat    Files
  * @method selectFolder
  * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: <code>""</code> (no prompt)
+ * @param  {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: `""` (no prompt)
  * @param  {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
+ * @return {Folder|Null} The selected folder. If the user cancels, `null` will be returned.
  *
  * @example <caption>Open folder selection dialog with a prompt text</caption>
  * selectFolder({prompt: "Please select a folder."});

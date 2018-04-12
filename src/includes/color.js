@@ -471,22 +471,22 @@ pub.opacity = function(obj, opacity) {
  * @method blendMode
  * @param  {Object} obj The object to set blendMode of.
  * @param  {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
- *                           BlendMode.NORMAL<br>
- *                           BlendMode.MULTIPLY<br>
- *                           BlendMode.SCREEN<br>
- *                           BlendMode.OVERLAY<br>
- *                           BlendMode.SOFT_LIGHT<br>
- *                           BlendMode.HARD_LIGHT<br>
- *                           BlendMode.COLOR_DODGE<br>
- *                           BlendMode.COLOR_BURN<br>
- *                           BlendMode.DARKEN<br>
- *                           BlendMode.LIGHTEN<br>
- *                           BlendMode.DIFFERENCE<br>
- *                           BlendMode.EXCLUSION<br>
- *                           BlendMode.HUE<br>
- *                           BlendMode.SATURATION<br>
- *                           BlendMode.COLOR<br>
- *                           BlendMode.LUMINOSITY<br>
+ *    - `BlendMode.NORMAL`
+ *    - `BlendMode.MULTIPLY`
+ *    - `BlendMode.SCREEN`
+ *    - `BlendMode.OVERLAY`
+ *    - `BlendMode.SOFT_LIGHT`
+ *    - `BlendMode.HARD_LIGHT`
+ *    - `BlendMode.COLOR_DODGE`
+ *    - `BlendMode.COLOR_BURN`
+ *    - `BlendMode.DARKEN`
+ *    - `BlendMode.LIGHTEN`
+ *    - `BlendMode.DIFFERENCE`
+ *    - `BlendMode.EXCLUSION`
+ *    - `BlendMode.HUE`
+ *    - `BlendMode.SATURATION`
+ *    - `BlendMode.COLOR`
+ *    - `BlendMode.LUMINOSITY`
  */
 pub.blendMode = function(obj, blendMode) {
   checkNull(obj);
