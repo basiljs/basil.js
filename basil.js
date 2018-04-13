@@ -654,14 +654,21 @@ if (!Array.prototype.map) {
 }
 
 /**
-* @description Used to run a function on all elements of an array. Please note the existance of the convenience methods `stories()`, `paragraphs()`, `lines()`, `words()` and `characters()` that are used to iterate through all instances of the given type in the given document.
-*
-* @cat    Data
-* @subcat Array
-* @method Array.forEach
-* @param  {Array} collection The array to be processed.
-* @param  {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
-*/
+ * @description Used to run a function on all elements of an array. Please note
+ *          the existance of the convenience methods `stories()`,
+ *          `paragraphs()`, `lines()`, `words()` and `characters()` that are
+ *          used to iterate through all instances of the given type in the given
+ *          document.
+ *
+ * @cat     Data
+ * @subcat  Array
+ * @method  Array.forEach
+ *
+ * @param   {Array} collection The array to be processed.
+ * @param   {Function} cb The function that will be called on each element. The
+ *          call will be like function(item,i) where i is the current index of
+ *          the item within the array.
+ */
 forEach = function(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
 
@@ -678,12 +685,15 @@ forEach = function(collection, cb) {
 };
 
 /**
- * @description HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
+ * @description HashList is a data container that allows you to store
+ *          information as key - value pairs. As usual in JavaScript mixed types
+ *          of keys and values are accepted in one HashList instance.
  *
- * @cat    Data
- * @subcat HashList
- * @method HashList
- * @constructor
+ * @cat     Data
+ * @subcat  HashList
+ * @method  HashList
+ *
+ * @class
  */
 // taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
 HashList = function () {
@@ -703,14 +713,14 @@ HashList = function () {
   }
 
   /**
-   *
    * @description This removes a key - value pair by its key.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.remove
-   * @param  {String} key The key to delete.
-   * @return {Object} The value before deletion.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.remove
+   *
+   * @param   {String} key The key to delete.
+   * @return  {Object} The value before deletion.
    */
   that.remove = function(key) {
     var tmp_previous;
@@ -725,25 +735,29 @@ HashList = function () {
   /**
    * @description This gets a value by its key.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.get
-   * @param  {String} key The key to look for.
-   * @return {Object} The value.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.get
+   *
+   * @param   {String} key The key to look for.
+   * @return  {Object} The value.
    */
   that.get = function(key) {
     return that.items[key];
   };
 
   /**
-   * @description This sets a key - value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
+   * @description This sets a key - value pair. If a key is already existing,
+   *          the value will be updated. Please note that Functions are
+   *          currently not supported as values.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.set
-   * @param  {String} key The key to use.
-   * @param  {Object|String|Number|Boolean} value The value to set.
-   * @return {Object} The value after setting.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.set
+   *
+   * @param   {String} key The key to use.
+   * @param   {Object|String|Number|Boolean} value The value to set.
+   * @return  {Object} The value after setting.
    */
   that.set = function(key, value) {
 
@@ -761,11 +775,12 @@ HashList = function () {
   /**
    * @description Checks for the existence of a given key.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.hasKey
-   * @param  {String} key The key to check.
-   * @return {Boolean} Returns true or false.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.hasKey
+   *
+   * @param   {String} key The key to check.
+   * @return  {Boolean} Returns true or false.
    */
   that.hasKey = function(key) {
     checkKey(key);
@@ -773,13 +788,15 @@ HashList = function () {
   };
 
   /**
-   * @description Checks if a certain value exists at least once in all of the key - value pairs.
+   * @description Checks if a certain value exists at least once in all of the
+   *          key - value pairs.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.hasValue
-   * @param  {Object|String|Number|Boolean} value The value to check.
-   * @return {Boolean} Returns true or false.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.hasValue
+   *
+   * @param   {Object|String|Number|Boolean} value The value to check.
+   * @return  {Boolean} Returns true or false.
    */
   that.hasValue = function(value) {
     var obj = that.items;
@@ -794,12 +811,15 @@ HashList = function () {
   };
 
   /**
-   * @description Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
+   * @description Returns an array of all keys that are sorted by their values
+   *          from highest to lowest. Please note that this only works if you
+   *          have conistently used Numbers for values.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.getKeysByValues
-   * @return {Array} An array with all the keys.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getKeysByValues
+   *
+   * @return  {Array} An array with all the keys.
    */
   that.getKeysByValues = function() {
     var obj = that.items;
@@ -813,12 +833,14 @@ HashList = function () {
   };
 
   /**
-   * @description Returns an array with all keys in a sorted order from higher to lower magnitude.
+   * @description Returns an array with all keys in a sorted order from higher
+   *          to lower magnitude.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.getSortedKeys
-   * @return {Array} An array with all the keys sorted.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getSortedKeys
+   *
+   * @return  {Array} An array with all the keys sorted.
    */
   that.getSortedKeys = function () {
     return that.getKeys().sort(); // ["a", "b", "z"]
@@ -827,10 +849,11 @@ HashList = function () {
   /**
    * @description Returns an array with all keys.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.getKeys
-   * @return {Array} An array with all the keys.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getKeys
+   *
+   * @return  {Array} An array with all the keys.
    */
   that.getKeys = function () {
     var keys = [];
@@ -848,10 +871,11 @@ HashList = function () {
   /**
    * @description Returns an array with all values.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.getValues
-   * @return {Array} An array with all the values.
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getValues
+   *
+   * @return  {Array} An array with all the values.
    */
   that.getValues = function () {
 
@@ -868,9 +892,9 @@ HashList = function () {
   /**
    * @description Deletes all the key - value pairs in this HashList.
    *
-   * @cat    Data
-   * @subcat HashList
-   * @method HashList.clear
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.clear
    */
   that.clear = function() {
     for (var i in that.items) {
@@ -1622,25 +1646,31 @@ var textCollection = function(collection, legalContainers, container, cb) {
 };
 /**
  * @description Suspends the calling thread for a number of milliseconds.<br>
- * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
+ *          During a sleep period, checks at 100 millisecond intervals to see
+ *          whether the sleep should be terminated.
  *
- * @cat    Environment
- * @method delay
- * @param  {Number} milliseconds  The delay time in milliseconds.
+ * @cat     Environment
+ * @method  delay
+ * @param   {Number} milliseconds The delay time in milliseconds.
  */
 pub.delay = function (milliseconds) {
   $.sleep(milliseconds);
 };
 
 /**
- * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
+ * @description If no callback function is given it returns a Collection of
+ *          items otherwise calls the given callback function with each story of
+ *          the given document.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method stories
- * @param  {Document} doc The document instance to iterate the stories in
- * @param  {Function} [cb] The callback function to call with each story. When this function returns false the loop stops. Passed arguments: story, loopCount.
- * @return {Stories} A collection of Story objects.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  stories
+ *
+ * @param   {Document} doc The document instance to iterate the stories in
+ * @param   {Function} [cb] The callback function to call with each story. When
+ *          this function returns `false` the loop stops. Passed arguments:
+ *          `story`, `loopCount`.
+ * @return  {Stories} A collection of Story objects.
  *
  * @example
  * stories(doc(), function(story, loopCount){
@@ -1662,14 +1692,21 @@ pub.stories = function(doc, cb) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of paragraphs in the container otherwise calls the given callback function with each paragraph of the given document, page, story or textFrame.
+ * @description If no callback function is given it returns a Collection of
+ *          paragraphs in the container otherwise calls the given callback
+ *          function with each paragraph of the given document, page, story or
+ *          textFrame.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method paragraphs
- * @param  {Document|Page|Story|TextFrame} container The document, story, page or textFrame instance to iterate the paragraphs in.
- * @param  {Function} [cb]  Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: para, loopCount.
- * @return {Paragraphs} A collection of Paragraph objects.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  paragraphs
+ *
+ * @param   {Document|Page|Story|TextFrame} container The document, story, page
+ *          or textFrame instance to iterate the paragraphs in.
+ * @param   {Function} [cb] Optional: The callback function to call with each
+ *          paragraph. When this function returns false the loop stops. Passed
+ *          arguments: `para`, `loopCount`.
+ * @return  {Paragraphs} A collection of Paragraph objects.
  */
 pub.paragraphs = function(container, cb) {
 
@@ -1679,14 +1716,22 @@ pub.paragraphs = function(container, cb) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
+ * @description If no callback function is given it returns a Collection of
+ *          lines in the container otherwise calls the given callback function
+ *          with each line of the given document, page, story, textFrame or
+ *          paragraph.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method lines
- * @param  {Document|Page|Story|TextFrame|Paragraph} container The document, page, story, textFrame or paragraph instance to iterate the lines in.
- * @param  {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: line, loopCount.
- * @return {Lines} A collection of Line objects.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  lines
+ *
+ * @param   {Document|Page|Story|TextFrame|Paragraph} container The document,
+ *          page, story, textFrame or paragraph instance to iterate the lines
+ *          in.
+ * @param   {Function} [cb] Optional: The callback function to call with each
+ *          line. When this function returns false the loop stops. Passed
+ *          arguments: `line`, `loopCount`.
+ * @return  {Lines} A collection of Line objects.
  */
 pub.lines = function(container, cb) {
 
@@ -1696,14 +1741,22 @@ pub.lines = function(container, cb) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of words in the container otherwise calls the given callback function with each word of the given document, page, story, textFrame, paragraph or line.
+ * @description If no callback function is given it returns a Collection of
+ *          words in the container otherwise calls the given callback function
+ *          with each word of the given document, page, story, textFrame,
+ *          paragraph or line.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method words
- * @param  {Document|Page|Story|TextFrame|Paragraph|Line} container The document, page, story, textFrame, paragraph or line instance to iterate the words in.
- * @param  {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: word, loopCount.
- * @return {Words} A collection of Word objects.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  words
+ *
+ * @param   {Document|Page|Story|TextFrame|Paragraph|Line} container The
+ *          document, page, story, textFrame, paragraph or line instance to
+ *          iterate the words in.
+ * @param   {Function} [cb] The callback function to call with each word. When
+ *          this function returns false the loop stops. Passed arguments:
+ *          `word`, `loopCount`.
+ * @return  {Words} A collection of Word objects.
  */
 pub.words = function(container, cb) {
 
@@ -1713,14 +1766,22 @@ pub.words = function(container, cb) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of characters in the container otherwise calls the given callback function with each character of the given document, page, story, textFrame, paragraph, line or word.
+ * @description If no callback function is given it returns a Collection of
+ *          characters in the container otherwise calls the given callback
+ *          function with each character of the given document, page, story,
+ *          textFrame, paragraph, line or word.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method characters
- * @param  {Document|Page|Story|TextFrame|Paragraph|Line|Word} container The document, page, story, textFrame, paragraph, line or word instance to  iterate the characters in.
- * @param  {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: character, loopCount
- * @return {Characters} A collection of Character objects.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  characters
+ *
+ * @param   {Document|Page|Story|TextFrame|Paragraph|Line|Word} container The
+ *          document, page, story, textFrame, paragraph, line or word instance
+ *          to  iterate the characters in.
+ * @param   {Function} [cb] Optional: The callback function to call with each
+ *          character. When this function returns false the loop stops. Passed
+ *          arguments: `character`, `loopCount`
+ * @return  {Characters} A collection of Character objects.
  */
 pub.characters = function(container, cb) {
 
@@ -1731,14 +1792,20 @@ pub.characters = function(container, cb) {
 
 
 /**
- * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
+ * @description If no callback function is given it returns a Collection of
+ *          items otherwise calls the given callback function for each of the
+ *          PageItems in the given Document, Page, Layer or Group.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method items
- * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in
- * @param  {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: item, loopCount.
- * @return {PageItems} A collection of PageItem objects.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  items
+ *
+ * @param   {Document|Page|Layer|Group} container The container where the
+ *          PageItems sit in
+ * @param   {Function|Boolean} [cb] Optional: The callback function to call for
+ *          each PageItem. When this function returns false the loop stops.
+ *          Passed arguments: `item`, `loopCount`.
+ * @return  {PageItems} A collection of PageItem objects.
  */
 pub.items = function(container, cb) {
 
@@ -1759,11 +1826,15 @@ pub.items = function(container, cb) {
 
 
 /**
- * @description Removes all PageItems (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a Group, the Group itself will be removed as well.
+ * @description Removes all page items (including locked ones) in the given
+ *          Document, Page, Layer or Group. If the selected container is a
+ *          group, the group itself will be removed as well.
  *
- * @cat    Document
- * @method clear
- * @param  {Document|Page|Layer|Group} container The container where the PageItems sit in.
+ * @cat     Document
+ * @method  clear
+ *
+ * @param   {Document|Page|Layer|Group} container The container where the
+ *          PageItems sit in.
  */
 pub.clear = function(container) {
 
@@ -1787,9 +1858,10 @@ pub.clear = function(container) {
 /**
  * @description Removes the provided Page, Layer, PageItem, Swatch, etc.
  *
- * @cat    Document
- * @method remove
- * @param  {PageItem} obj The object to be removed.
+ * @cat     Document
+ * @method  remove
+ *
+ * @param   {PageItem} obj The object to be removed.
  */
 pub.remove = function(obj) {
 
@@ -1805,14 +1877,16 @@ pub.remove = function(obj) {
 // ----------------------------------------
 
 /**
- * @description Sets or possibly creates the current document and returns it.
- * If the param doc is not given the current document gets set to the active document
- * in the application. If no document at all is open, a new document gets created.
+ * @description Sets or possibly creates the current document and returns it. If
+ *          the `doc` parameter is not given, the current document gets set to
+ *          the active document in the application. If no document at all is
+ *          open, a new document gets created.
  *
- * @cat    Document
- * @method doc
- * @param  {Document} [doc] The document to set the current document to.
- * @return {Document} The current document instance.
+ * @cat     Document
+ * @method  doc
+ *
+ * @param   {Document} [doc] The document to set the current document to.
+ * @return  {Document} The current document instance.
  */
 pub.doc = function(doc) {
   if (doc instanceof Document) {
@@ -1825,16 +1899,25 @@ pub.doc = function(doc) {
 
 /**
  * @description Sets the size of the current document, if arguments are given.
- * If only one argument is given, both the width and the height are set to this value.
- * Alternatively, a string can be given as the first argument to apply an existing page size preset ("A4", "Letter" etc.).
- * In this case, either PORTRAIT or LANDSCAPE can be used as a second argument to determine the orientation of the page.
- * If no argument is given, an object containing the current document's width and height is returned.
+ *          If only one argument is given, both the width and the height are set
+ *          to this value. Alternatively, a string can be given as the first
+ *          argument to apply an existing page size preset (`"A4"`, `"Letter"`
+ *          etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as
+ *          a second argument to determine the orientation of the page. If no
+ *          argument is given, an object containing the current document's width
+ *          and height is returned.
  *
- * @cat    Document
- * @method size
- * @param  {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
- * @param  {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
- * @return {Object} Object containing the current `width` and `height` of the document.
+ * @cat     Document
+ * @method  size
+ *
+ * @param   {Number|String} [widthOrPageSize] The desired width of the current
+ *          document or the name of a page size preset.
+ * @param   {Number|String} [heightOrOrientation] The desired height of the
+ *          current document. If not provided the width will be used as the
+ *          height. If the first argument is a page size preset, the second
+ *          argument can be used to set the orientation.
+ * @return  {Object} Object containing the current `width` and `height` of the
+ *          document.
  *
  * @example <caption>Sets the document size to 70 x 100 units</caption>
  * size(70, 100);
@@ -1842,10 +1925,12 @@ pub.doc = function(doc) {
  * @example <caption>Sets the document size to 70 x 70</caption>
  * size(70);
  *
- * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
+ * @example <caption>Sets the document size to A4, keeps the current orientation
+ *          in place</caption>
  * size("A4");
  *
- * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
+ * @example <caption>Sets the document size to A4, set the orientation to
+ *          landscape</caption>
  * size("A4", LANDSCAPE);
  */
 pub.size = function(widthOrPageSize, heightOrOrientation) {
@@ -1894,12 +1979,16 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 };
 
 /**
- * @description Closes the current document. If no saveOptions argument is used, the user will be asked if they want to save or not.
+ * @description Closes the current document. If no `saveOptions` argument is
+ *          used, the user will be asked if they want to save or not.
  *
- * @cat    Document
- * @method close
- * @param  {Object|Boolean} [saveOptions] The InDesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The InDesign file instance to save the document to.
+ * @cat     Document
+ * @method  close
+ *
+ * @param   {Object|Boolean} [saveOptions] The InDesign SaveOptions constant or
+ *          either true for triggering saving before closing or false for
+ *          closing without saving.
+ * @param   {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   if (currDoc) {
@@ -1928,11 +2017,16 @@ pub.close = function(saveOptions, file) {
 };
 
 /**
- * @description Reverts the document to its last saved state. If the current document is not saved yet, this function will close the document without saving it and reopen a fresh document so as to "revert" the unsaved document. This function is helpful during development stage to start from a new or default document each time the script is run.
+ * @description Reverts the document to its last saved state. If the current
+ *          document is not saved yet, this function will close the document
+ *          without saving it and reopen a fresh document so as to "revert" the
+ *          unsaved document. This function is helpful during development stage
+ *          to start from a new or default document each time the script is run.
  *
- * @cat    Document
- * @method revert
- * @return {Document} The reverted document.
+ * @cat     Document
+ * @method  revert
+ *
+ * @return  {Document} The reverted document.
  */
 pub.revert = function() {
 
@@ -1953,14 +2047,21 @@ pub.revert = function() {
 };
 
 /**
- * @description Use this to set the dimensions of the canvas. Choose between PAGE (default), MARGIN, BLEED resp. FACING_PAGES, FACING_MARGINS and FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.<br>
- * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use translate(), rotate() and scale();
+ * @description Use this to set the dimensions of the canvas. Choose between
+ *          `PAGE` (default), `MARGIN`, `BLEED` resp. `FACING_PAGES`,
+ *          `FACING_MARGINS` and `FACING_BLEEDS` for book setups with facing
+ *          page. Please note: Setups with more than two facing pages are not
+ *          yet supported.<br>
+ *          Please note that you will loose your current
+ *          MatrixTransformation. You should set the canvasMode before you
+ *          attempt to use `translate()`, `rotate()` and `scale()`.
  *
- * @cat    Document
- * @subcat Page
- * @method canvasMode
- * @param  {String} mode The canvas mode to set.
- * @return {String} The current canvas mode.
+ * @cat     Document
+ * @subcat  Page
+ * @method  canvasMode
+ *
+ * @param   {String} mode The canvas mode to set.
+ * @return  {String} The current canvas mode.
  */
 pub.canvasMode = function (m) {
   if(arguments.length === 0) {
@@ -1981,14 +2082,16 @@ pub.canvasMode = function (m) {
 
 
 /**
- * @description Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given.
+ * @description Returns the current horizontal and vertical pasteboard margins
+ *          and sets them if both arguements are given.
  *
- * @cat    Document
- * @subcat Page
- * @method pasteboard
- * @param  {Number} h The desired horizontal pasteboard margin.
- * @param  {Number} v The desired vertical pasteboard margin.
- * @return {Array} The current horizontal, vertical pasteboard margins.
+ * @cat     Document
+ * @subcat  Page
+ * @method  pasteboard
+ *
+ * @param   {Number} h The desired horizontal pasteboard margin.
+ * @param   {Number} v The desired vertical pasteboard margin.
+ * @return  {Array} The current horizontal, vertical pasteboard margins.
  */
 pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
@@ -2004,13 +2107,17 @@ pub.pasteboard = function (h, v) {
 };
 
 /**
- * @description Returns the current page and sets it if argument page is given. Numbering starts with 1.
+ * @description Returns the current page and sets it if argument page is given.
+ *          Numbering starts with 1.
  *
- * @cat    Document
- * @subcat Page
- * @method page
- * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
- * @return {Page} The current page instance.
+ * @cat     Document
+ * @subcat  Page
+ * @method  page
+ *
+ * @param   {Page|Number|PageItem} [page] The page object or page number to set
+ *          the current page to. If you pass a page item the current page will
+ *          be set to its containing page.
+ * @return  {Page} The current page instance.
  */
 pub.page = function(page) {
   if (page instanceof Page) {
@@ -2041,13 +2148,17 @@ pub.page = function(page) {
 };
 
 /**
- * @description Adds a new page to the document. Set the optional location parameter to either AT_END (default), AT_BEGINNING, AFTER or BEFORE. AFTER and BEFORE will use the current page as insertion point.
+ * @description Adds a new page to the document. Set the optional location
+ *          parameter to either `AT_END` (default), `AT_BEGINNING`, `AFTER` or
+ *          `BEFORE`. `AFTER` and `BEFORE` will use the current page as
+ *          insertion point.
  *
- * @cat    Document
- * @subcat Page
- * @method addPage
- * @param  {String} [location] The location placement mode.
- * @return {Page} The new page.
+ * @cat     Document
+ * @subcat  Page
+ * @method  addPage
+ *
+ * @param   {String} [location] The location placement mode.
+ * @return  {Page} The new page.
  */
 pub.addPage = function(location) {
 
@@ -2093,12 +2204,16 @@ pub.addPage = function(location) {
 
 
 /**
- * @description Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
+ * @description Removes a page from the current document. This will either be
+ *          the current page if the parameter page is left empty, or the given
+ *          page object or page number.
  *
- * @cat    Document
- * @subcat Page
- * @method removePage
- * @param  {Page|Number} [page] The page to be removed as Page object or page number.
+ * @cat     Document
+ * @subcat  Page
+ *
+ * @method  removePage
+ * @param   {Page|Number} [page] The page to be removed as Page object or page
+ *          number.
  */
 pub.removePage = function (page) {
   checkNull(page);
@@ -2113,13 +2228,15 @@ pub.removePage = function (page) {
 };
 
 /**
- * @description Returns the current page number of either the current page or the given Page object.
+ * @description Returns the current page number of either the current page or
+ *          the given page object.
  *
- * @cat    Document
- * @subcat Page
- * @method pageNumber
- * @param  {Page} [pageObj] The page you want to know the number of.
- * @return {Number} The page number within the document.
+ * @cat     Document
+ * @subcat  Page
+ * @method  pageNumber
+ *
+ * @param   {Page} [pageObj] The page you want to know the number of.
+ * @return  {Number} The page number within the document.
  */
 pub.pageNumber = function (pageObj) {
   checkNull(pageObj);
@@ -2133,12 +2250,14 @@ pub.pageNumber = function (pageObj) {
 };
 
 /**
- * @description Set the next page of the document to be the active one. Returns new active page.
+ * @description Set the next page of the document to be the active one. Returns
+ *          new active page.
  *
- * @cat    Document
- * @subcat Page
- * @method nextPage
- * @return {Page} The active page.
+ * @cat     Document
+ * @subcat  Page
+ * @method  nextPage
+ *
+ * @return  {Page} The active page.
  */
 pub.nextPage = function () {
   var p = pub.doc().pages.nextItem(currentPage());
@@ -2147,12 +2266,14 @@ pub.nextPage = function () {
 
 
 /**
- * @description Set the previous page of the document to be the active one. Returns new active page.
+ * @description Set the previous page of the document to be the active one.
+ *          Returns new active page.
  *
- * @cat    Document
- * @subcat Page
- * @method previousPage
- * @return {Page} The active page.
+ * @cat     Document
+ * @subcat  Page
+ * @method  previousPage
+ *
+ * @return  {Page} The active page.
  */
 pub.previousPage = function () {
   var p = pub.doc().pages.previousItem(currentPage());
@@ -2161,16 +2282,19 @@ pub.previousPage = function () {
 
 
 /**
- * @description Returns the number of all pages in the current document. If a number is given as an argument,
- * it will set the document's page count to the given number by either adding pages or removing
- * pages until the number is reached. If pages are added, the master page of the document's last
- * page will be applied to the new pages.
+ * @description Returns the number of all pages in the current document. If a
+ *          number is given as an argument, it will set the document's page
+ *          count to the given number by either adding pages or removing pages
+ *          until the number is reached. If pages are added, the master page of
+ *          the document's last page will be applied to the new pages.
  *
- * @cat    Document
- * @subcat Page
- * @method pageCount
- * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
- * @return {Number} The amount of pages.
+ * @cat     Document
+ * @subcat  Page
+ * @method  pageCount
+ *
+ * @param   {Number} [pageCount] New page count of the document (integer between
+ *          1 and 9999).
+ * @return  {Number} The amount of pages.
  */
 pub.pageCount = function(pageCount) {
   if(arguments.length) {
@@ -2187,24 +2311,30 @@ pub.pageCount = function(pageCount) {
 /**
  * @description The number of all stories in the current document.
  *
- * @cat    Document
- * @subcat Story
- * @method storyCount
- * @return {Number} count The amount of stories.
+ * @cat     Document
+ * @subcat  Story
+ * @method  storyCount
+ *
+ * @return  {Number} count The amount of stories.
  */
 pub.storyCount = function() {
   return currentDoc().stories.count();
 };
 
 /**
- * @description Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
+ * @description Adds a page item or a string to an existing story. You can
+ *          control the position of the insert via the last parameter. It
+ *          accepts either an insertion point or one the following constants:
+ *          `AT_BEGINNING` and `AT_END`.
  *
- * @cat    Document
- * @subcat Story
- * @method addToStory
- * @param  {Story} story The story.
- * @param  {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: AT_BEGINNING and AT_END.
- * @param  {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
+ * @cat     Document
+ * @subcat  Story
+ * @method  addToStory
+ *
+ * @param   {Story} story The story.
+ * @param   {PageItem|String} itemOrString Either a page item or a string.
+ * @param   {InsertionPoint|String} insertionPointOrMode Insertion point object
+ *          or one the following constants: `AT_BEGINNING` and `AT_END`.
  */
 pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
@@ -2259,13 +2389,17 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
 
 /**
- * @description Returns the current layer if no argument is given. Sets active layer if layer object or name of existing layer is given. Newly creates layer and sets it to active if new name is given.
+ * @description Returns the current layer if no argument is given. Sets active
+ *          layer if layer object or name of existing layer is given. Newly
+ *          creates layer and sets it to active if new name is given.
  *
- * @cat    Document
- * @subcat Page
- * @method layer
- * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
- * @return {Layer} The current layer instance.
+ * @cat     Document
+ * @subcat  Page
+ * @method  layer
+ *
+ * @param   {Layer|String} [layer] The layer or layer name to set the current
+ *          layer to.
+ * @return  {Layer} The current layer instance.
  */
 pub.layer = function(layer) {
   checkNull(layer);
@@ -2288,15 +2422,24 @@ pub.layer = function(layer) {
 
 
 /**
- * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants `FORWARD` or `BACKWARD` the object is sent forward or back one step. The constants `FRONT` or `BACK` send the object to the very front or very back. Using `FRONT` or `BACK` together with the optional reference object, sends the object in front or behind this reference object.
+ * @description Arranges a page item or a layer before or behind other page
+ *          items or layers. If using the constants `FORWARD` or `BACKWARD` the
+ *          object is sent forward or back one step. The constants `FRONT` or
+ *          `BACK` send the object to the very front or very back. Using `FRONT`
+ *          or `BACK` together with the optional reference object, sends the
+ *          object in front or behind this reference object.
  *
- * @cat    Document
- * @subcat Page
- * @method arrange
- * @param  {PageItem|Layer} pItemOrLayer The page item or layer to be moved to a new position.
- * @param  {String} positionOrDirection The position or direction to move the page item or layer. Can be `FRONT`, `BACK`, `FORWARD` or `BACKWARD`.
- * @param  {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
- * @return {PageItem|Layer} The newly arranged page item or layer.
+ * @cat     Document
+ * @subcat  Page
+ * @method  arrange
+ *
+ * @param   {PageItem|Layer} pItemOrLayer The page item or layer to be moved to
+ *          a new position.
+ * @param   {String} positionOrDirection The position or direction to move the
+ *          page item or layer. Can be `FRONT`, `BACK`, `FORWARD` or `BACKWARD`.
+ * @param   {PageItem|Layer} [reference] A reference object to move the page
+ *          item or layer behind or in front of.
+ * @return  {PageItem|Layer} The newly arranged page item or layer.
  */
 pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
   checkNull(pItemOrLayer);
@@ -2344,16 +2487,20 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
 
 
 /**
- *  @description Returns the Group instance and sets it if argument Group is given.
- *  Groups items to a new group. Returns the resulting group instance. If a string is given as the only
- *  argument, the group by the given name will be returned.
+ * @description Returns the Group instance and sets it if argument Group is
+ *          given. Groups items to a new group. Returns the resulting group
+ *          instance. If a string is given as the only argument, the group by
+ *          the given name will be returned.
  *
- *  @cat    Document
- *  @subCat Page
- *  @method group
- *  @param  {Array} pItems An array of page items (must contain at least two items) or name of group instance.
- *  @param  {String} [name] The name of the group, only when creating a group from page items.
- *  @return {Group} The group instance.
+ * @cat     Document
+ * @subCat  Page
+ * @method  group
+ *
+ * @param   {Array} pItems An array of page items (must contain at least two
+ *          items) or name of group instance.
+ * @param   {String} [name] The name of the group, only when creating a group
+ *          from page items.
+ * @return  {Group} The group instance.
  */
 pub.group = function (pItems, name) {
   checkNull(pItems);
@@ -2382,13 +2529,16 @@ pub.group = function (pItems, name) {
 
 
 /**
- *  @description Ungroups an existing group. Returns an array of the items that were within the group before ungroup() was called.
+ * @description Ungroups an existing group. Returns an array of the items that
+ *          were within the group before ungroup() was called.
  *
- *  @cat    Document
- *  @subCat Page
- *  @method ungroup
- *  @param  {Group|String} group The group instance or name of the group to ungroup.
- *  @return {Array} An array of the ungrouped page items.
+ * @cat     Document
+ * @subCat  Page
+ * @method  ungroup
+ *
+ * @param   {Group|String} group The group instance or name of the group to
+ *          ungroup.
+ * @return  {Array} An array of the ungrouped page items.
  */
 pub.ungroup = function(group) {
   checkNull(group);
@@ -2412,14 +2562,19 @@ pub.ungroup = function(group) {
 
 
 /**
- * @description Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
+ * @description Returns items tagged with the given label in the InDesign Script
+ *          Label pane (`Window -> Utilities -> Script Label`).
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method labels
- * @param  {String} label The label identifier.
- * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
- * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  labels
+ *
+ * @param   {String} label The label identifier.
+ * @param   {Function} [cb] The callback function to call with each item in the
+ *          search result. When this function returns `false`, the loop stops.
+ *          Passed arguments: `item`, `loopCount`.
+ * @return  {Array} Array of concrete page item instances, e.g. text frame or
+ *          spline item.
  */
 pub.labels = function(label, cb) {
   checkNull(label);
@@ -2443,13 +2598,18 @@ pub.labels = function(label, cb) {
 
 
 /**
- * @description Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of `labels()`, when you know you just have one thing with that label and don't want to deal with a single-element array.
+ * @description Returns the first item that is tagged with the given label in
+ *          the InDesign Script Label pane (`Window -> Utilities -> Script
+ *          Label`). Use this instead of `labels()`, when you know you just have
+ *          one thing with that label and don't want to deal with a
+ *          single-element array.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method label
- * @param  {String} label The label identifier.
- * @return {PageItem} The first PageItem with the given label.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  label
+ *
+ * @param   {String} label The label identifier.
+ * @return  {PageItem} The first page item with the given label.
  */
 pub.label = function(label) {
   checkNull(label);
@@ -2465,12 +2625,15 @@ pub.label = function(label) {
 
 
 /**
- * @description Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
+ * @description Returns the first currently selected object. Use this if you
+ *          know you only have one selected item and don't want to deal with an
+ *          array.
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method selection
- * @return {Object} The first selected object.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  selection
+ *
+ * @return  {Object} The first selected object.
  */
 pub.selection = function() {
   if(app.selection.length === 0) {
@@ -2482,11 +2645,14 @@ pub.selection = function() {
 /**
  * @description Returns the currently selected object(s)
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method selections
- * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
- * @return {Array} Array of selected object(s).
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  selections
+ *
+ * @param   {Function} [cb] The callback function to call with each item in the
+ *          selection. When this function returns false the loop stops. Passed
+ *          arguments: item, loopCount.
+ * @return  {Array} Array of selected object(s).
  */
 pub.selections = function(cb) {
   if(app.selection.length === 0) {
@@ -2499,12 +2665,14 @@ pub.selections = function(cb) {
 };
 
 /**
- * @description Returns the first item on the active page that is named by the given name in the Layers pane (Window -> Layer).
+ * @description Returns the first item on the active page that is named by the
+ *          given name in the Layers pane (`Window -> Layer`).
  *
- * @cat    Document
- * @subcat Multi-Getters
- * @method nameOnPage
- * @return {Object} The first object on the active page with the given name.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  nameOnPage
+ *
+ * @return  {Object} The first object on the active page with the given name.
  */
 pub.nameOnPage = function(name) {
   checkNull(name);
@@ -2525,12 +2693,15 @@ pub.nameOnPage = function(name) {
 
 
 /**
- * @description Sets the units of the document (like right clicking the rulers). By default basil uses the units of the user's document or the user's default units.
+ * @description Sets the units of the document (like right clicking the rulers).
+ *          By default basil uses the units of the user's document or the user's
+ *          default units.
  *
- * @cat    Document
- * @method units
- * @param  {String} [units] Supported units: PT, PX, CM, MM or IN.
- * @return {String} Current unit setting.
+ * @cat     Document
+ * @method  units
+ *
+ * @param   {String} [units] Supported units: PT, PX, CM, MM or IN.
+ * @return  {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
 pub.units = function (units) {
@@ -2577,12 +2748,14 @@ pub.units = function (units) {
 };
 
 /**
- * @description Creates a vertical guide line at the current spread and current layer.
+ * @description Creates a vertical guide line at the current spread and current
+ *          layer.
  *
- * @cat    Document
- * @method guideX
- * @param  {Number} x Position of the new guide line.
- * @return {Guide} New guide line.
+ * @cat     Document
+ * @method  guideX
+ *
+ * @param   {Number} x Position of the new guide line.
+ * @return  {Guide} New guide line.
  */
 pub.guideX = function (x) {
   checkNull(x);
@@ -2596,12 +2769,14 @@ pub.guideX = function (x) {
 
 
 /**
- * @description Creates a horizontal guide line at the current spread and current layer.
+ * @description Creates a horizontal guide line at the current spread and
+ *          current layer.
  *
- * @cat    Document
- * @method guideY
- * @param  {Number} y Position of the new guide line.
- * @return {Guide} New guide line.
+ * @cat     Document
+ * @method  guideY
+ *
+ * @param   {Number} y Position of the new guide line.
+ * @return  {Guide} New guide line.
  */
 pub.guideY = function (y) {
   checkNull(y);
@@ -2615,17 +2790,24 @@ pub.guideY = function (y) {
 
 
 /**
- * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
+ * @description Sets the margins of a given page. If 1 value is given, all 4
+ *          sides are set equally. If 4 values are given, the current page will
+ *          be adjusted. Adding a 5th value will set the margin of a given page.
+ *          Calling the function without any values, will return the margins for
+ *          the current page.
  *
- * @cat    Document
- * @subcat Page
- * @method margins
- * @param  {Number} [top] Top margin or all if only one.
- * @param  {Number} [right] Right margin.
- * @param  {Number} [bottom] Bottom margin.
- * @param  {Number} [left] Left margin.
- * @param  {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
- * @return {Object} Current page margins with the properties: top, right, bottom, left.
+ * @cat     Document
+ * @subcat  Page
+ * @method  margins
+ *
+ * @param   {Number} [top] Top margin or all if only one.
+ * @param   {Number} [right] Right margin.
+ * @param   {Number} [bottom] Bottom margin.
+ * @param   {Number} [left] Left margin.
+ * @param   {Number} [pageNumber] Sets margins to selected page, currentPage()
+ *          if left blank.
+ * @return  {Object} Current page margins with the properties: `top`, `right`,
+ *          `bottom`, `left`.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
   if (arguments.length === 0) {
@@ -2652,16 +2834,20 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
 
 
 /**
- * @description Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
+ * @description Sets the document bleeds. If one value is given, all 4 are set
+ *          equally. If 4 values are given, the top/right/bottom/left document
+ *          bleeds will be adjusted. Calling the function without any values,
+ *          will return the document bleed settings.
  *
- * @cat    Document
- * @subcat Page
- * @method bleeds
- * @param  {Number} [top] Top bleed or all if only one.
- * @param  {Number} [right] Right bleed.
- * @param  {Number} [bottom] Bottom bleed.
- * @param  {Number} [left] Left bleed.
- * @return {Object} Current document bleeds settings.
+ * @cat     Document
+ * @subcat  Page
+ * @method  bleeds
+ *
+ * @param   {Number} [top] Top bleed or all if only one.
+ * @param   {Number} [right] Right bleed.
+ * @param   {Number} [bottom] Bottom bleed.
+ * @param   {Number} [left] Left bleed.
+ * @return  {Object} Current document bleeds settings.
  */
 pub.bleeds = function(top, right, bottom, left) {
   if (arguments.length === 0) {
@@ -2683,31 +2869,48 @@ pub.bleeds = function(top, right, bottom, left) {
 
 
 /**
- * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:<br>
- * `showProps`: Show or hide properties. Default: `true`<br>
- * `showValues`: Show or hide values. Default: `true`<br>
- * `showMethods`: Show or hide methods. Default: `false`<br>
- * `maxLevel`: Chooses how many levels of properties should be inspected recursively. Default: `1`<br>
- * `propList`: Allows to pass an array of property names to show. If propList is not set all properties will be shown. Default: `[]` (no propList)<br>
- * If no settings object is set, the default values will be used.
+ * @description Inspects a given object or any other data item and prints the
+ *          result to the console. This is useful for inspecting or debugging
+ *          any kind of variable or data item. The optional settings object
+ *          allows to control the function's output. The following parameters
+ *          can be set in the settings object:
  *
- * @cat    Output
- * @method inspect
- * @param  {Object} obj An object or any other data item to be inspected.
- * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {Boolean} [settings.showProps] Show or hide properties. Default: `true`
- * @param  {Boolean} [settings.showValues] Show or hide values. Default: `true`
- * @param  {Boolean} [settings.showMethods] Show or hide methods. Default: `false`
- * @param  {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: `1`
- * @param  {Array} [settings.propList] Array of properties to show. Default: `[]` (no propList)
+ *      - `showProps`: Show or hide properties. Default: `true`
+ *      - `showValues`: Show or hide values. Default: `true`
+ *      - `showMethods`: Show or hide methods. Default: `false`
+ *      - `maxLevel`: Chooses how many levels of properties should be inspected
+ *        recursively. Default: `1`
+ *      - `propList`: Allows to pass an array of property names to show. If
+ *        `propList` is not set all properties will be shown. Default: `[]`
+ *        (no propList)
+ *
+ *      If no settings object is set, the default values will be used.
+ *
+ * @cat     Output
+ * @method  inspect
+ *
+ * @param   {Object} obj An object or any other data item to be inspected.
+ * @param   {Object} [settings] A settings object to control the function's
+ *          behavior.
+ * @param   {Boolean} [settings.showProps] Show or hide properties. Default:
+ *          `true`
+ * @param   {Boolean} [settings.showValues] Show or hide values. Default: `true`
+ * @param   {Boolean} [settings.showMethods] Show or hide methods. Default:
+ *          `false`
+ * @param   {Number} [settings.maxLevel] How many levels of properties should be
+ *          inspected recursively. Default: `1`
+ * @param   {Array} [settings.propList] Array of properties to show. Default:
+ *          `[]` (no propList)
  *
  * @example <caption>Inspecting a string</caption>
  * inspect("foo");
  *
- * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
+ * @example <caption>Inspecting the current page, its methods and an additional
+ *          level of properties</caption>
  * inspect(page(), {showMethods: true, maxLevel: 2})
  *
- * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
+ * @example <caption>Inspecting an ellipse, listing only the properties
+ *          "geometricBounds" and "strokeWeight"</caption>
  * var myEllipse = ellipse(0, 0, 10, 10);
  * inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
  */
@@ -2876,14 +3079,19 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
 /**
  * @description Returns a file object.<br>
- * Note that the resulting file object can either refer to an already existing file or if the file does not exist, it can create a preliminary "virtual" file that refers to a file that could be created later (i.e. by an export command).
+ *          Note that the resulting file object
+ *          can either refer to an already existing file or if the file does not
+ *          exist, it can create a preliminary "virtual" file that refers to a
+ *          file that could be created later (i.e. by an export command).
  *
- * @cat    Files
- * @method file
- * @param  {String} filePath The file path.
- * @return {File} File at the given path.
+ * @cat     Files
+ * @method  file
  *
- * @example <caption>Get an image file from the desktop and place it in the document</caption>
+ * @param   {String} filePath The file path.
+ * @return  {File} File at the given path.
+ *
+ * @example <caption>Get an image file from the desktop and place it in the
+ *          document</caption>
  * var myImage = file("~/Desktop/myImage.jpg");
  * image(myImage, 0, 0);
  *
@@ -2914,18 +3122,25 @@ pub.file = function(filePath) {
 
 /**
  * @description Returns a folder object.<br>
- * Note that the resulting folder object can either refer to an already existing folder or if the folder does not exist, it can create a preliminary "virtual" folder that refers to a folder that could be created later.
+ *          Note that the resulting folder
+ *          object can either refer to an already existing folder or if the
+ *          folder does not exist, it can create a preliminary "virtual" folder
+ *          that refers to a folder that could be created later.
  *
- * @cat    Files
- * @method folder
- * @param  {String} [folderPath] The path of the folder.
- * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
+ * @cat     Files
+ * @method  folder
+ *
+ * @param   {String} [folderPath] The path of the folder.
+ * @return  {Folder} Folder at the given path. If no path is given, but the
+ *          document is already saved, the document's data folder will be
+ *          returned.
  *
  * @example <caption>Get a folder from the desktop and load its files</caption>
  * var myImageFolder = folder("~/Desktop/myImages/");
  * var myImageFiles = files(myImageFolder);
  *
- * @example <caption>Get the data folder, if the document is already saved</caption>
+ * @example <caption>Get the data folder, if the document is already
+ *          saved</caption>
  * var myDataFolder = folder();
  */
 pub.folder = function(folderPath) {
@@ -2957,23 +3172,34 @@ pub.folder = function(folderPath) {
 };
 
 /**
- * @description Gets all files of a folder and returns them in an array of file objects.
- * The settings object can be used to restrict the search to certain file types only, to include hidden files and to include files in subfolders.
+ * @description Gets all files of a folder and returns them in an array of file
+ *          objects. The settings object can be used to restrict the search to
+ *          certain file types only, to include hidden files and to include
+ *          files in subfolders.
  *
- * @cat    Files
- * @method files
- * @param  {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
- * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String|Array} [settings.filter] Suffix(es) of file types to include. Default: `"*"` (include all file types)
- * @param  {Boolean} [settings.hidden] Hidden files will be included. Default: `false`
- * @param  {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: `false`
- * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
+ * @cat     Files
+ * @method  files
  *
- * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
+ * @param   {Folder|String} [folder] The folder that holds the files or a string
+ *          describing the path to that folder.
+ * @param   {Object} [settings] A settings object to control the function's
+ *          behavior.
+ * @param   {String|Array} [settings.filter] Suffix(es) of file types to
+ *          include. Default: `"*"` (include all file types)
+ * @param   {Boolean} [settings.hidden] Hidden files will be included. Default:
+ *          `false`
+ * @param   {Boolean} [settings.recursive] Searches subfolders recursively for
+ *          matching files. Default: `false`
+ * @return  {Array} Array of the resulting file(s). If no files are found, an
+ *          empty array will be returned.
+ *
+ * @example <caption>Get a folder from the desktop and load all its JPEG
+ *          files</caption>
  * var myImageFolder = folder("~/Desktop/myImages/");
  * var myImageFiles = files(myImageFolder, {filter: ["jpeg", "jpg"]});
  *
- * @example <caption>If the document is saved, load all files from its data folder, including from its subfolders</caption>
+ * @example <caption>If the document is saved, load all files from its data
+ *          folder, including from its subfolders</caption>
  * var myDataFolder = folder();
  * var allMyDataFiles = files(myDataFolder, {recursive: true});
  */
@@ -3037,20 +3263,32 @@ pub.files = function(folder, settings, collectedFiles) {
 };
 
 /**
- * @description Opens a selection dialog that allows to select one file. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ * @description Opens a selection dialog that allows to select one file. The
+ *          settings object can be used to add a prompt text at the top of the
+ *          dialog, to restrict the selection to certain file types and to set
+ *          the dialog's starting folder.
  *
- * @cat    Files
- * @method selectFile
- * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
- * @param  {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
- * @param  {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {File|Null} The selected file. If the user cancels, `null` will be returned.
+ * @cat     Files
+ * @method  selectFile
+ *
+ * @param   {Object} [settings] A settings object to control the function's
+ *          behavior.
+ * @param   {String} [settings.prompt] The prompt text at the top of the file
+ *          selection dialog. Default: `""` (no prompt)
+ * @param   {String|Array} [settings.filter] String or an array containing
+ *          strings of file endings to include in the dialog. Default: `""`
+ *          (include all)
+ * @param   {Folder|String} [settings.folder] Folder or a folder path string
+ *          defining the start location of the dialog. Default: most recent
+ *          dialog folder or main user folder.
+ * @return  {File|Null} The selected file. If the user cancels, `null` will be
+ *          returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
  * selectFile({prompt: "Please select a file."});
  *
- * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * @example <caption>Open selection dialog starting at the user's desktop,
+ *          allowing to only select PNG or JPEG files</caption>
  * selectFile({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFile = function(settings) {
@@ -3058,20 +3296,32 @@ pub.selectFile = function(settings) {
 };
 
 /**
- * @description Opens a selection dialog that allows to select one or multiple files. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ * @description Opens a selection dialog that allows to select one or multiple
+ *          files. The settings object can be used to add a prompt text at the
+ *          top of the dialog, to restrict the selection to certain file types
+ *          and to set the dialog's starting folder.
  *
- * @cat    Files
- * @method selectFiles
- * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
- * @param  {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
- * @param  {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
+ * @cat     Files
+ * @method  selectFiles
+ *
+ * @param   {Object} [settings] A settings object to control the function's
+ *          behavior.
+ * @param   {String} [settings.prompt] The prompt text at the top of the file
+ *          selection dialog. Default: `""` (no prompt)
+ * @param   {String|Array} [settings.filter] String or an array containing
+ *          strings of file endings to include in the dialog. Default: `""`
+ *          (include all)
+ * @param   {Folder|String} [settings.folder] Folder or a folder path string
+ *          defining the start location of the dialog. Default: most recent
+ *          dialog folder or main user folder.
+ * @return  {Array} Array of the selected file(s). If the user cancels, an empty
+ *          array will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
  * selectFiles({prompt: "Please select your files."});
  *
- * @example <caption>Open selection dialog starting at the user's desktop, allowing to only select PNG or JPEG files</caption>
+ * @example <caption>Open selection dialog starting at the user's desktop,
+ *          allowing to only select PNG or JPEG files</caption>
  * selectFiles({folder: "~/Desktop/", filter: ["jpeg", "jpg", "png"]});
  */
 pub.selectFiles = function(settings) {
@@ -3084,19 +3334,28 @@ pub.selectFiles = function(settings) {
 };
 
 /**
- * @description Opens a selection dialog that allows to select a folder. The settings object can be used to add a prompt text at the top of the dialog and to set the dialog's starting folder.
+ * @description Opens a selection dialog that allows to select a folder. The
+ *          settings object can be used to add a prompt text at the top of the
+ *          dialog and to set the dialog's starting folder.
  *
- * @cat    Files
- * @method selectFolder
- * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: `""` (no prompt)
- * @param  {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {Folder|Null} The selected folder. If the user cancels, `null` will be returned.
+ * @cat     Files
+ * @method  selectFolder
+ *
+ * @param   {Object} [settings] A settings object to control the function's
+ *          behavior.
+ * @param   {String} [settings.prompt] The prompt text at the top of the folder
+ *          selection dialog. Default: `""` (no prompt)
+ * @param   {Folder|String} [settings.folder] Folder or a folder path string
+ *          defining the start location of the dialog. Default: most recent
+ *          dialog folder or main user folder.
+ * @return  {Folder|Null} The selected folder. If the user cancels, `null` will
+ *          be returned.
  *
  * @example <caption>Open folder selection dialog with a prompt text</caption>
  * selectFolder({prompt: "Please select a folder."});
  *
- * @example <caption>Open folder selection dialog starting at the user's desktop</caption>
+ * @example <caption>Open folder selection dialog starting at the user's
+ *          desktop</caption>
  * selectFolder({folder: "~/Desktop/"});
  */
 pub.selectFolder = function(settings) {
@@ -3113,12 +3372,14 @@ pub.selectFolder = function(settings) {
 // Date
 
 /**
- * @description The year() function returns the current year as an integer (2012, 2013 etc).
+ * @description The `year()` function returns the current year as a number
+ *          (`2018`, `2019` etc).
  *
- * @cat    Environment
- * @subcat Date
- * @method year
- * @return {Number} The current year.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  year
+ *
+ * @return  {Number} The current year.
  */
 pub.year = function() {
   return (new Date()).getFullYear();
@@ -3126,12 +3387,14 @@ pub.year = function() {
 
 
 /**
- * @description The month() function returns the current month as a value from 1 - 12.
+ * @description The `month()` function returns the current month as a value from
+ *          `1`-`12`.
  *
- * @cat    Environment
- * @subcat Date
- * @method month
- * @return {Number} The current month number.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  month
+ *
+ * @return  {Number} The current month number.
  */
 pub.month = function() {
   return (new Date()).getMonth() + 1;
@@ -3139,12 +3402,14 @@ pub.month = function() {
 
 
 /**
- * @description The day() function returns the current day as a value from 1 - 31.
+ * @description The `day()` function returns the current day as a value from
+ *          `1`-`31`.
  *
- * @cat    Environment
- * @subcat Date
- * @method day
- * @return {Number} The current day number.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  day
+ *
+ * @return  {Number} The current day number.
  */
 pub.day = function() {
   return (new Date()).getDate();
@@ -3152,12 +3417,14 @@ pub.day = function() {
 
 
 /**
- * @description The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
+ * @description The `weekday()` function returns the current weekday as a string
+ *          from `Sunday`, `Monday`, `Tuesday` ...
  *
- * @cat    Environment
- * @subcat Date
- * @method weekday
- * @return {String} The current weekday name.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  weekday
+ *
+ * @return  {String} The current weekday name.
  */
 pub.weekday = function() {
   var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
@@ -3166,12 +3433,14 @@ pub.weekday = function() {
 
 
 /**
- * @description The hour() function returns the current hour as a value from 0 - 23.
+ * @description The `hour()` function returns the current hour as a value from
+ *          `0` - `23`.
  *
- * @cat    Environment
- * @subcat Date
- * @method hour
- * @return {Number} The current hour.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  hour
+ *
+ * @return  {Number} The current hour.
  */
 pub.hour = function() {
   return (new Date()).getHours();
@@ -3179,12 +3448,14 @@ pub.hour = function() {
 
 
 /**
- * @description The minute() function returns the current minute as a value from 0 - 59.
+ * @description The `minute()` function returns the current minute as a value
+ *          from `0` - `59`.
  *
- * @cat    Environment
- * @subcat Date
- * @method minute
- * @return {Number} The current minute.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  minute
+ *
+ * @return  {Number} The current minute.
  */
 pub.minute = function() {
   return (new Date()).getMinutes();
@@ -3192,12 +3463,14 @@ pub.minute = function() {
 
 
 /**
- * @description The second() function returns the current second as a value from 0 - 59.
+ * @description The `second()` function returns the current second as a value
+ *          from `0` - `59`.
  *
- * @cat    Environment
- * @subcat Date
- * @method second
- * @return {Number} The current second.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  second
+ *
+ * @return  {Number} The current second.
  */
 pub.second = function() {
   return (new Date()).getSeconds();
@@ -3205,12 +3478,14 @@ pub.second = function() {
 
 
 /**
- * @description Returns the number of milliseconds (thousandths of a second) since starting an applet.
+ * @description Returns the number of milliseconds (thousandths of a second)
+ *          since starting the script.
  *
- * @cat    Environment
- * @subcat Date
- * @method millis
- * @return {Number} The current milli.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  millis
+ *
+ * @return  {Number} The current milli.
  */
 pub.millis = function() {
   return Date.now() - startTime;
@@ -3218,12 +3493,15 @@ pub.millis = function() {
 
 
 /**
- * @description The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
+ * @description The `millisecond()` function differs from `millis()`, in that it
+ *          returns the exact millisecond (thousandths of a second) of the
+ *          current time.
  *
- * @cat    Environment
- * @subcat Date
- * @method millisecond
- * @return {Number} The current millisecond.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  millisecond
+ *
+ * @return  {Number} The current millisecond.
  */
 pub.millisecond = function() {
   return (new Date()).getMilliseconds();
@@ -3231,12 +3509,14 @@ pub.millisecond = function() {
 
 
 /**
- * @description The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
+ * @description The `timestamp()` function returns the current date formatted as
+ *          `YYYYMMDD_HHMMSS` for useful unique filenaming.
  *
- * @cat    Environment
- * @subcat Date
- * @method timestamp
- * @return {String} The current time in YYYYMMDD_HHMMSS.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  timestamp
+ *
+ * @return  {String} The current time in `YYYYMMDD_HHMMSS`.
  */
 pub.timestamp = function() {
   var dt = new Date();
@@ -4514,17 +4794,21 @@ pub.download = function(url, file) {
 // ----------------------------------------
 
 /**
- * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle.
- * The first two parameters set the location, the third sets the width, and the fourth sets the height.
+ * @description Draws an ellipse (oval) in the display window. An ellipse with
+ *          an equal width and height is a circle. The first two parameters set
+ *          the location, the third sets the width, and the fourth sets the
+ *          height.
  *
- * @cat    Document
- * @subcat Primitives
- * @method ellipse
- * @param  {Number} x X-coordinate of the ellipse.
- * @param  {Number} y Y-coordinate of the ellipse.
- * @param  {Number} w Width of the ellipse.
- * @param  {Number} h Height of the ellipse.
- * @return {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  ellipse
+ *
+ * @param   {Number} x X-coordinate of the ellipse.
+ * @param   {Number} y Y-coordinate of the ellipse.
+ * @param   {Number} w Width of the ellipse.
+ * @param   {Number} h Height of the ellipse.
+ * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type
+ *          is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
   if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
@@ -4579,18 +4863,19 @@ pub.ellipse = function(x, y, w, h) {
 /**
  * @description Draws a line (a direct path between two points) to the page.
  *
- * @cat    Document
- * @subcat Primitives
- * @method line
- * @param  {Number} x1 X-coordinate of Point 1.
- * @param  {Number} y1 Y-coordinate of Point 1.
- * @param  {Number} x2 X-coordinate of Point 2.
- * @param  {Number} y2 Y-coordinate of Point 2.
- * @return {GraphicLine} New GraphicLine.
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  line
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @return  {GraphicLine} New GraphicLine.
  *
  * @example
- * var vec1 = new Vector( x1, y1 );
- * var vec2 = new Vector( x2, y2 );
+ * var vec1 = new Vector(x1, y1);
+ * var vec2 = new Vector(x2, y2);
  * line( vec1, vec2 );
  */
 pub.line = function(x1, y1, x2, y2) {
@@ -4612,16 +4897,20 @@ pub.line = function(x1, y1, x2, y2) {
 };
 
 /**
- * @description Using the beginShape() and endShape() functions allows to create more complex forms.
- * beginShape() begins recording vertices for a shape and endShape() stops recording.
- * After calling the beginShape() function, a series of vertex() commands must follow.
- * To stop drawing the shape, call endShape(). The shapeMode parameter allows to close the shape
- * (to connect the beginning and the end).
+ * @description Using the `beginShape()` and `endShape()` functions allows to
+ *          create more complex forms. `beginShape()` begins recording vertices
+ *          for a shape and `endShape()` stops recording. After calling the
+ *          `beginShape()` function, a series of `vertex()` commands must
+ *          follow. To stop drawing the shape, call `endShape()`. The shapeMode
+ *          parameter allows to close the shape (to connect the beginning and
+ *          the end).
  *
- * @cat    Document
- * @subcat Primitives
- * @method beginShape
- * @param  {String} shapeMode Set to CLOSE if the new Path should be auto-closed.
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  beginShape
+ *
+ * @param   {String} shapeMode Set to `CLOSE` if the new path should be
+ *          auto-closed.
  */
 pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
@@ -4635,23 +4924,24 @@ pub.beginShape = function(shapeMode) {
 };
 
 /**
- * @description Shapes are constructed by connecting a series of vertices. vertex() is used to
- * specify the vertex coordinates of lines and polygons. It is used exclusively between
- * the beginShape() and endShape() functions.
- * <br><br>
- * Use either vertex(x, y) for drawing straight corners or
- * vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle) for drawing bezier shapes.
- * You can also mix the two approaches.
+ * @description Shapes are constructed by connecting a series of vertices.
+ *          `vertex()` is used to specify the vertex coordinates of lines and
+ *          polygons. It is used exclusively between the `beginShape()` and
+ *          `endShape()` functions. <br><br> Use either `vertex(x, y)` for
+ *          drawing straight corners or `vertex(x, y, xLeftHandle, yLeftHandle,
+ *          xRightHandle, yRightHandle)` for drawing bezier shapes. You can also
+ *          mix the two approaches.
  *
- * @cat    Document
- * @subcat Primitives
- * @method vertex
- * @param  {Number} x X-coordinate of the vertex.
- * @param  {Number} y Y-coordinate of the vertex.
- * @param  {Number} [xLeftHandle] X-coordinate of the left-direction point.
- * @param  {Number} [yLeftHandle] Y-coordinate of the left-direction point.
- * @param  {Number} [xRightHandle] X-coordinate of the right-direction point.
- * @param  {Number} [yRightHandle] Y-coordinate of the right-direction point.
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  vertex
+ *
+ * @param   {Number} x X-coordinate of the vertex.
+ * @param   {Number} y Y-coordinate of the vertex.
+ * @param   {Number} [xLeftHandle] X-coordinate of the left-direction point.
+ * @param   {Number} [yLeftHandle] Y-coordinate of the left-direction point.
+ * @param   {Number} [xRightHandle] X-coordinate of the right-direction point.
+ * @param   {Number} [yRightHandle] Y-coordinate of the right-direction point.
  */
 pub.vertex = function() {
   if (isArray(currVertexPoints)) {
@@ -4671,23 +4961,27 @@ pub.vertex = function() {
 };
 
 /**
- * @description The arc() function draws an arc. Arcs are drawn along the outer edge of an ellipse
- * defined by the x, y, width and height parameters.
- * The origin or the arc's ellipse may be changed with the ellipseMode() function.
- * The start and stop parameters specify the angles at which to draw the arc.
+ * @description The `arc()` function draws an arc. Arcs are drawn along the
+ *          outer edge of an ellipse defined by the `x`, `y`, `width` and
+ *          `height` parameters. The origin or the arc's ellipse may be changed
+ *          with the `ellipseMode()` function. The start and stop parameters
+ *          specify the angles at which to draw the arc.
  *
- * @cat    Document
- * @subcat Primitives
- * @method arc
- * @param  {Number} cx X-coordinate of the arc's center.
- * @param  {Number} cy Y-coordinate of the arc's center.
- * @param  {Number} w Width of the arc's ellipse.
- * @param  {Number} h Height of the arc's ellipse.
- * @param  {Number} startAngle Starting angle of the arc in radians.
- * @param  {Number} endAngle Ending angle of the arc in radians.
- * @param  {String} [mode] Mode to define the rendering technique of the arc: OPEN (default), CHORD, or PIE.
- * @return {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  arc
  *
+ * @param   {Number} cx X-coordinate of the arc's center.
+ * @param   {Number} cy Y-coordinate of the arc's center.
+ * @param   {Number} w Width of the arc's ellipse.
+ * @param   {Number} h Height of the arc's ellipse.
+ * @param   {Number} startAngle Starting angle of the arc in radians.
+ * @param   {Number} endAngle Ending angle of the arc in radians.
+ * @param   {String} [mode] Mode to define the rendering technique of the arc:
+ *          `OPEN` (default), `CHORD`, or `PIE`.
+ * @return  {GraphicLine|Polygon} The resulting GraphicLine or Polygon object
+ *          (in InDesign Scripting terms the corresponding type is GraphicLine
+ *          or Polygon, not Arc).
  */
 pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
@@ -4760,16 +5054,12 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 /*
  * Cubic bezier approximation of a eliptical arc
  *
- * intial source code:
- * Golan Levin
- * golan@flong.com
+ * intial source code: Golan Levin golan@flong.com
  * http://www.flong.com/blog/2009/bezier-approximation-of-a-circular-arc-in-processing/
  *
  * The solution is taken from this PDF by Richard DeVeneza:
- * http://www.tinaja.com/glib/bezcirc2.pdf
- * linked from this excellent site by Don Lancaster:
- * http://www.tinaja.com/cubic01.asp
- *
+ * http://www.tinaja.com/glib/bezcirc2.pdf linked from this excellent site by
+ * Don Lancaster: http://www.tinaja.com/cubic01.asp
  */
 function calculateEllipticalArc(w, h, startAngle, endAngle) {
   var theta = (endAngle - startAngle);
@@ -4801,14 +5091,15 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
 }
 
 /**
- * @description addPath() is used to create multi component paths. Call addPath() to add
- * the vertices drawn so far to a single path. New vertices will then end up in a new path and
- * endShape() will return a multi path object. All component paths will account for
- * the setting (see CLOSE) given in beginShape(shapeMode).
+ * @description `addPath()` is used to create multi component paths. Call
+ *          `addPath()` to add the vertices drawn so far to a single path. New
+ *          vertices will then end up in a new path and `endShape()` will return
+ *          a multi path object. All component paths will account for the
+ *          setting (see `CLOSE`) given in `beginShape(shapeMode)`.
  *
- * @cat    Document
- * @subcat Primitives
- * @method addPath
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  addPath
  */
 pub.addPath = function() {
   doAddPath();
@@ -4816,13 +5107,15 @@ pub.addPath = function() {
 };
 
 /**
- * @description The endShape() function is the companion to beginShape() and may only be called
- * after beginShape().
+ * @description The `endShape()` function is the companion to `beginShape()` and
+ *          may only be called after `beginShape()`.
  *
- * @cat    Document
- * @subcat Primitives
- * @method endShape
- * @return {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  endShape
+ *
+ * @return  {GraphicLine|Polygon} The GraphicLine or Polygon object that was
+ *          created.
  */
 pub.endShape = function() {
   doAddPath();
@@ -4871,21 +5164,30 @@ function notCalledBeginShapeError () {
 
 /**
  * @description Draws a rectangle on the page.<br>
- * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the rectMode() function.<br>
- * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
+ *          By default, the first two
+ *          parameters set the location of the upper-left corner, the third sets
+ *          the width, and the fourth sets the height. The way these parameters
+ *          are interpreted, however, may be changed with the `rectMode()`
+ *          function.<br>
+ *          The fifth, sixth, seventh and eighth parameters, if
+ *          specified, determine corner radius for the top-right, top-left,
+ *          lower-right and lower-left corners, respectively. If only a fifth
+ *          parameter is provided, all corners will be set to this radius.
  *
- * @cat    Document
- * @subcat Primitives
- * @method rect
- * @param  {Number} x X-coordinate of the rectangle.
- * @param  {Number} y Y-coordinate of the rectangle.
- * @param  {Number} w Width of the rectangle.
- * @param  {Number} h Height of the rectangle.
- * @param  {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
- * @param  {Number} [tr] Radius of top right corner (optional).
- * @param  {Number} [br] Radius of bottom right corner (optional).
- * @param  {Number} [bl] Radius of bottom left corner (optional).
- * @return {Rectangle} The rectangle that was created.
+ * @cat     Document
+ * @subcat  Primitives
+ * @method  rect
+ *
+ * @param   {Number} x X-coordinate of the rectangle.
+ * @param   {Number} y Y-coordinate of the rectangle.
+ * @param   {Number} w Width of the rectangle.
+ * @param   {Number} h Height of the rectangle.
+ * @param   {Number} [tl] Radius of top left corner or radius of all 4 corners
+ *          (optional).
+ * @param   {Number} [tr] Radius of top right corner (optional).
+ * @param   {Number} [br] Radius of bottom right corner (optional).
+ * @param   {Number} [bl] Radius of bottom left corner (optional).
+ * @return  {Rectangle} The rectangle that was created.
  */
 pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   if (w === 0 || h === 0) {
@@ -4958,23 +5260,25 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
 // -- Attributes --
 
 /**
- * @description Modifies the location from which rectangles or text frames draw. The default
- * mode is rectMode(CORNER), which specifies the location to be the upper left
- * corner of the shape and uses the `w` and `h` parameters to specify the
- * width and height. The syntax rectMode(CORNERS) uses the `x` and `y`
- * parameters of `rect()` or `text()` to set the location of one corner
- * and uses the `w` and `h` parameters to set the opposite corner.
- * The syntax `rectMode(CENTER)` draws the shape from its center point and
- * uses the `w` and `h` parameters to specify the shape's
- * width and height. The syntax `rectMode(RADIUS)` draws the shape from its
- * center point and uses the `w` and `h` parameters to specify
- * half of the shape's width and height.
+ * @description Modifies the location from which rectangles or text frames draw.
+ *          The default mode is rectMode(CORNER), which specifies the location
+ *          to be the upper left corner of the shape and uses the `w` and `h`
+ *          parameters to specify the width and height. The syntax
+ *          rectMode(CORNERS) uses the `x` and `y` parameters of `rect()` or
+ *          `text()` to set the location of one corner and uses the `w` and `h`
+ *          parameters to set the opposite corner. The syntax `rectMode(CENTER)`
+ *          draws the shape from its center point and uses the `w` and `h`
+ *          parameters to specify the shape's width and height. The syntax
+ *          `rectMode(RADIUS)` draws the shape from its center point and uses
+ *          the `w` and `h` parameters to specify half of the shape's width and
+ *          height.
  *
- * @cat    Document
- * @subcat Attributes
- * @method rectMode
- * @param  {String} mode The rectMode to switch to: either CORNER, CORNERS, CENTER, or RADIUS.
+ * @cat     Document
+ * @subcat  Attributes
+ * @method  rectMode
  *
+ * @param   {String} mode The rectMode to switch to: either CORNER, CORNERS,
+ *          CENTER, or RADIUS.
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
@@ -4987,19 +5291,22 @@ pub.rectMode = function (mode) {
 };
 
 /**
- * @description The origin of new ellipses is modified by the `ellipseMode()` function.
- * The default configuration is `ellipseMode(CENTER)`, which specifies the
- * location of the ellipse as the center of the shape. The RADIUS mode is
- * the same, but the `w` and `h` parameters to `ellipse()` specify the
- * radius of the ellipse, rather than the diameter. The CORNER mode draws
- * the shape from the upper-left corner of its bounding box. The CORNERS
- * mode uses the four parameters to `ellipse()` to set two opposing corners
- * of the ellipse's bounding box.
+ * @description The origin of new ellipses is modified by the `ellipseMode()`
+ *          function. The default configuration is `ellipseMode(CENTER)`, which
+ *          specifies the location of the ellipse as the center of the shape.
+ *          The RADIUS mode is the same, but the `w` and `h` parameters to
+ *          `ellipse()` specify the radius of the ellipse, rather than the
+ *          diameter. The CORNER mode draws the shape from the upper-left corner
+ *          of its bounding box. The CORNERS mode uses the four parameters to
+ *          `ellipse()` to set two opposing corners of the ellipse's bounding
+ *          box.
  *
- * @cat    Document
- * @subcat Attributes
- * @method ellipseMode
- * @param  {String} mode The ellipse mode to switch to: either CENTER, RADIUS, CORNER, or CORNERS.
+ * @cat     Document
+ * @subcat  Attributes
+ * @method  ellipseMode
+ *
+ * @param   {String} mode The ellipse mode to switch to: either CENTER, RADIUS,
+ *          CORNER, or CORNERS.
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
@@ -5012,12 +5319,14 @@ pub.ellipseMode = function (mode) {
 };
 
 /**
- * @description Sets the width of the stroke used for lines and the border around shapes.
+ * @description Sets the width of the stroke used for lines and the border
+ *          around shapes.
  *
- * @cat    Document
- * @subcat Attributes
- * @method strokeWeight
- * @param  {Number} weight The width of the stroke in points.
+ * @cat     Document
+ * @subcat  Attributes
+ * @method  strokeWeight
+ *
+ * @param   {Number} weight The width of the stroke in points.
  */
 pub.strokeWeight = function (weight) {
   if (typeof weight === "string" || typeof weight === "number") {
@@ -5028,15 +5337,19 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
- * @description Returns the object style of a given page item or the object style with the given name. If an
- * object style of the given name does not exist, it gets created. Optionally a props object of
- * property name/value pairs can be used to set the object style's properties.
+ * @description Returns the object style of a given page item or the object
+ *          style with the given name. If an object style of the given name does
+ *          not exist, it gets created. Optionally a props object of property
+ *          name/value pairs can be used to set the object style's properties.
  *
- * @cat    Typography
- * @method objectStyle
- * @param  {PageItem|String} itemOrName A page item whose style to return or the name of the object style to return.
- * @param  {Object} [props] An object of property name/value pairs to set the style's properties.
- * @return {ObjectStyle} The object style instance.
+ * @cat     Typography
+ * @method  objectStyle
+ *
+ * @param   {PageItem|String} itemOrName A page item whose style to return or
+ *          the name of the object style to return.
+ * @param   {Object} [props] An object of property name/value pairs to set the
+ *          style's properties.
+ * @return  {ObjectStyle} The object style instance.
  */
 pub.objectStyle = function(itemOrName, props) {
   var styleErrorMsg = "objectStyle(), wrong parameters. Use: pageItem|name and props. Props is optional.";
@@ -5071,14 +5384,16 @@ pub.objectStyle = function(itemOrName, props) {
 };
 
 /**
- * @description Applies an object style to the given page item. The object style can be given as
- * name or as an object style instance.
+ * @description Applies an object style to the given page item. The object style
+ *          can be given as name or as an object style instance.
  *
- * @cat    Typography
- * @method applyObjectStyle
- * @param  {PageItem} item The page item to apply the style to.
- * @param  {ObjectStyle|String} style An object style instance or the name of the object style to apply.
- * @return {PageItem} The page item that the style was applied to.
+ * @cat     Typography
+ * @method  applyObjectStyle
+ *
+ * @param   {PageItem} item The page item to apply the style to.
+ * @param   {ObjectStyle|String} style An object style instance or the name of
+ *          the object style to apply.
+ * @return  {PageItem} The page item that the style was applied to.
  */
 
 pub.applyObjectStyle = function(item, style) {
@@ -5101,13 +5416,16 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
- * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use `rectMode()` to set center point.
+ * @description Duplicates the given page after the current page or the given
+ *          page item to the current page and layer. Use `rectMode()` to set
+ *          center point.
  *
- * @cat    Document
- * @subcat Transformation
- * @method duplicate
- * @param  {PageItem|Page} item The page item or page to duplicate.
- * @return {Object} The new page item or page.
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  duplicate
+ *
+ * @param   {PageItem|Page} item The page item or page to duplicate.
+ * @return  {Object} The new page item or page.
  */
 pub.duplicate = function(item) {
 
@@ -5638,22 +5956,22 @@ pub.opacity = function(obj, opacity) {
  * @param   {Object} obj The object to set blendMode of.
  * @param   {Number} blendMode The blendMode must be one of the InDesign
  *          BlendMode enum values:
- *      - `BlendMode.NORMAL`
- *      - `BlendMode.MULTIPLY`
- *      - `BlendMode.SCREEN`
- *      - `BlendMode.OVERLAY`
- *      - `BlendMode.SOFT_LIGHT`
- *      - `BlendMode.HARD_LIGHT`
- *      - `BlendMode.COLOR_DODGE`
- *      - `BlendMode.COLOR_BURN`
- *      - `BlendMode.DARKEN`
- *      - `BlendMode.LIGHTEN`
- *      - `BlendMode.DIFFERENCE`
- *      - `BlendMode.EXCLUSION`
- *      - `BlendMode.HUE`
- *      - `BlendMode.SATURATION`
- *      - `BlendMode.COLOR`
- *      - `BlendMode.LUMINOSITY`
+ *   - `BlendMode.NORMAL`
+ *   - `BlendMode.MULTIPLY`
+ *   - `BlendMode.SCREEN`
+ *   - `BlendMode.OVERLAY`
+ *   - `BlendMode.SOFT_LIGHT`
+ *   - `BlendMode.HARD_LIGHT`
+ *   - `BlendMode.COLOR_DODGE`
+ *   - `BlendMode.COLOR_BURN`
+ *   - `BlendMode.DARKEN`
+ *   - `BlendMode.LIGHTEN`
+ *   - `BlendMode.DIFFERENCE`
+ *   - `BlendMode.EXCLUSION`
+ *   - `BlendMode.HUE`
+ *   - `BlendMode.SATURATION`
+ *   - `BlendMode.COLOR`
+ *   - `BlendMode.LUMINOSITY`
  */
 pub.blendMode = function(obj, blendMode) {
   checkNull(obj);
@@ -5730,22 +6048,25 @@ pub.lerpColor = function (c1, c2, amt) {
 // ----------------------------------------
 
 /**
- * @description Creates a text frame on the current layer on the current page in the current document.
- * The text frame gets created in the position specified by the x and y parameters.
- * The default document font will be used unless a font is set with the textFont() function.
- * The default document font size will be used unless a font size is set with the textSize() function.
- * Change the color of the text with the fill() function.
- * The text displays in relation to the textAlign() and textYAlign() functions.
- * The width and height parameters define a rectangular area.
+ * @description Creates a text frame on the current layer on the current page in
+ *          the current document. The text frame gets created in the position
+ *          specified by the `x` and `y` parameters. The default document font
+ *          will be used unless a font is set with the `textFont()` function.
+ *          The default document font size will be used unless a font size is
+ *          set with the `textSize()` function. Change the color of the text
+ *          with the `fill()` function. The text displays in relation to the
+ *          `textAlign()` and `textYAlign()` functions. The `width` and `height`
+ *          parameters define a rectangular area.
  *
- * @cat    Typography
- * @method text
- * @param  {String} txt The text content to set in the text frame.
- * @param  {Number} x   x-coordinate of text frame
- * @param  {Number} y   y-coordinate of text frame
- * @param  {Number} w   width of text frame
- * @param  {Number} h   height of text frame
- * @return {TextFrame}  The created text frame instance
+ * @cat     Typography
+ * @method  text
+ *
+ * @param   {String} txt The text content to set in the text frame.
+ * @param   {Number} x x-coordinate of text frame
+ * @param   {Number} y y-coordinate of text frame
+ * @param   {Number} w width of text frame
+ * @param   {Number} h height of text frame
+ * @return  {TextFrame} The created text frame instance
  */
 pub.text = function(txt, x, y, w, h) {
   if (arguments.length !== 5) {
@@ -5808,21 +6129,29 @@ pub.text = function(txt, x, y, w, h) {
 };
 
 /**
- * @description Sets text properties to the given item. If the item is not an instance the text property can be set to,
- * the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
- * <br><br>
- * If no value is given and the given property is a string, the function acts as a getter and returns the
- * corresponding value(s) in an array. This can either be an array containing the value of the concrete item
- * (e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).
+ * @description Sets text properties to the given item. If the item is not an
+ *          instance the text property can be set to, the property gets set to
+ *          the direct descendants of the given item, e.g. all stories of a
+ *          given document.
+ *          <br><br>
+ *          If no value is given and the given property
+ *          is a string, the function acts as a getter and returns the
+ *          corresponding value(s) in an array. This can either be an array
+ *          containing the value of the concrete item (e.g. character) the
+ *          values of the item's descendants (e.g. paragraphs of given text
+ *          frame).
  *
- * @cat    Typography
- * @method typo
- * @param  {Document|Spread|Page|Layer|Story|TextFrame|Text} item  The object to apply the property to.
- * @param  {String|Object} property  The text property name or an object of key/value property/value pairs.
- *                                   If property is a string and no value is given, the function acts as getter.
- * @param  {String|Number|Object} [value]  The value to apply to the property.
- * @return {String[]|Number[]|Object[]}  The property value(s) if the function acts as getter or the items the property
- *                                       was assigned to.
+ * @cat     Typography
+ * @method  typo
+ *
+ * @param   {Document|Spread|Page|Layer|Story|TextFrame|Text} item The object to
+ *          apply the property to.
+ * @param   {String|Object} property The text property name or an object of
+ *          key/value property/value pairs. If property is a string and no value
+ *          is given, the function acts as getter.
+ * @param   {String|Number|Object} [value] The value to apply to the property.
+ * @return  {String[]|Number[]|Object[]} The property value(s) if the function
+ *          acts as getter or the items the property was assigned to.
  */
 pub.typo = function(item, property, value) {
   var result = [],
@@ -5895,13 +6224,15 @@ var isValid = function (item) {
 };
 
 /**
- * @description Returns the current font and sets it if argument fontName is given.
+ * @description Returns the current font and sets it if argument `fontName` is
+ *          given.
  *
- * @cat    Typography
- * @method textFont
- * @param  {String} [fontName] The name of the font to set e.g. Helvetica
- * @param  {String} [fontStyle] The font style e.g. Bold
- * @return {Font} The current font object
+ * @cat     Typography
+ * @method  textFont
+ *
+ * @param   {String} [fontName] The name of the font to set e.g. Helvetica
+ * @param   {String} [fontStyle] The font style e.g. Bold
+ * @return  {Font} The current font object
  */
 pub.textFont = function(fontName, fontStyle) {
 
@@ -5926,12 +6257,14 @@ pub.textFont = function(fontName, fontStyle) {
 };
 
 /**
- * @description Returns the current font size in points and sets it if argument pointSize is given.
+ * @description Returns the current font size in points and sets it if argument
+ *          `pointSize` is given.
  *
- * @cat    Typography
- * @method textSize
- * @param  {Number} [pointSize] The size in points to set.
- * @return {Number}             The current point size.
+ * @cat     Typography
+ * @method  textSize
+ *
+ * @param   {Number} [pointSize] The size in points to set.
+ * @return  {Number} The current point size.
  */
 pub.textSize = function(pointSize) {
   if (arguments.length === 1) {
@@ -5943,22 +6276,25 @@ pub.textSize = function(pointSize) {
 /**
  * @description Sets the current horizontal and vertical text alignment.
  *
- * @cat    Typography
- * @method textAlign
- * @param  {String} align    The horizontal text alignment to set. Must be one of the InDesign Justification enum values:
- *                           Justification.AWAY_FROM_BINDING_SIDE<br>
- *                           Justification.CENTER_ALIGN<br>
- *                           Justification.CENTER_JUSTIFIED<br>
- *                           Justification.FULLY_JUSTIFIED<br>
- *                           Justification.LEFT_ALIGN<br>
- *                           Justification.RIGHT_ALIGN<br>
- *                           Justification.RIGHT_JUSTIFIED<br>
- *                           Justification.TO_BINDING_SIDE<br>
- * @param  {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign VerticalJustification enum values:
- *                           VerticalJustification.BOTTOM_ALIGN<br>
- *                           VerticalJustification.CENTER_ALIGN<br>
- *                           VerticalJustification.JUSTIFY_ALIGN<br>
- *                           VerticalJustification.TOP_ALIGN<br>
+ * @cat     Typography
+ * @method  textAlign
+ *
+ * @param   {String} align The horizontal text alignment to set. Must be one of
+ *          the InDesign Justification enum values:
+ *      - `Justification.AWAY_FROM_BINDING_SIDE`
+ *      - `Justification.CENTER_ALIGN`
+ *      - `Justification.CENTER_JUSTIFIED`
+ *      - `Justification.FULLY_JUSTIFIED`
+ *      - `Justification.LEFT_ALIGN`
+ *      - `Justification.RIGHT_ALIGN`
+ *      - `Justification.RIGHT_JUSTIFIED`
+ *      - `Justification.TO_BINDING_SIDE`
+ * @param   {String} [yAlign] The vertical text alignment to set. Must be one of
+ *          the InDesign VerticalJustification enum values:
+ *      - `VerticalJustification.BOTTOM_ALIGN`
+ *      - `VerticalJustification.CENTER_ALIGN`
+ *      - `VerticalJustification.JUSTIFY_ALIGN`
+ *      - `VerticalJustification.TOP_ALIGN`
  */
 pub.textAlign = function(align, yAlign) {
   currAlign = align;
@@ -5966,13 +6302,15 @@ pub.textAlign = function(align, yAlign) {
 };
 
 /**
- * @description Returns the spacing between lines of text in units of points and sets it if argument leading is given.
+ * @description Returns the spacing between lines of text in units of points and
+ *          sets it if argument `leading` is given.
  *
- * @cat    Typography
- * @method textLeading
- * @param  {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum
- *                                   value Leading.AUTO.
- * @return {Number|String}           The current leading.
+ * @cat     Typography
+ * @method  textLeading
+ *
+ * @param   {Number|String} [leading] The spacing between lines of text in units
+ *          of points or the default InDesign enum value `Leading.AUTO`.
+ * @return  {Number|String} The current leading.
  */
 pub.textLeading = function(leading) {
   if (arguments.length === 1) {
@@ -5982,12 +6320,14 @@ pub.textLeading = function(leading) {
 };
 
 /**
- * @description Returns the current kerning and sets it if argument kerning is given.
+ * @description Returns the current kerning and sets it if argument `kerning` is
+ *          given.
  *
- * @cat    Typography
- * @method textKerning
- * @param  {Number} [kerning] The value to set.
- * @return {Number}           The current kerning.
+ * @cat     Typography
+ * @method  textKerning
+ *
+ * @param   {Number} [kerning] The value to set.
+ * @return  {Number} The current kerning.
  */
 pub.textKerning = function(kerning) {
   if (arguments.length === 1) {
@@ -5997,12 +6337,14 @@ pub.textKerning = function(kerning) {
 };
 
 /**
- * @description Returns the current tracking and sets it if argument tracking is given.
+ * @description Returns the current tracking and sets it if argument `tracking`
+ *          is given.
  *
- * @cat    Typography
- * @method textTracking
- * @param  {Number} [tracking] The value to set.
- * @return {Number}            The current tracking.
+ * @cat     Typography
+ * @method  textTracking
+ *
+ * @param   {Number} [tracking] The value to set.
+ * @return  {Number} The current tracking.
  */
 pub.textTracking = function(tracking) {
   if (arguments.length === 1) {
@@ -6012,15 +6354,20 @@ pub.textTracking = function(tracking) {
 };
 
 /**
- * @description Returns the character style of a given text object or the character style with the given name. If a
- * character style of the given name does not exist, it gets created. Optionally a props object of
- * property name/value pairs can be used to set the character style's properties.
+ * @description Returns the character style of a given text object or the
+ *          character style with the given name. If a character style of the
+ *          given name does not exist, it gets created. Optionally a props
+ *          object of property name/value pairs can be used to set the character
+ *          style's properties.
  *
- * @cat    Typography
- * @method characterStyle
- * @param  {Text|String} textOrName  A text object whose style to return or the name of the character style to return.
- * @param  {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
- * @return {CharacterStyle}  The character style instance.
+ * @cat     Typography
+ * @method  characterStyle
+ *
+ * @param   {Text|String} textOrName A text object whose style to return or the
+ *          name of the character style to return.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to
+ *          set the style's properties.
+ * @return  {CharacterStyle} The character style instance.
  */
 pub.characterStyle = function(textOrName, props) {
   var styleErrorMsg = "characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
@@ -6055,14 +6402,18 @@ pub.characterStyle = function(textOrName, props) {
 };
 
 /**
- * @description Applies a character style to the given text object, text frame or story. The character style
- * can be given as name or as character style instance.
+ * @description Applies a character style to the given text object, text frame
+ *          or story. The character style can be given as name or as character
+ *          style instance.
  *
- * @cat    Typography
- * @method applyCharacterStyle
- * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
- * @param  {CharacterStyle|String} style  A character style instance or the name of the character style to apply.
- * @return {Text}  The text that the style was applied to.
+ * @cat     Typography
+ * @method  applyCharacterStyle
+ *
+ * @param   {TextFrame|TextObject|Story} text The text frame, text object or
+ *          story to apply the style to.
+ * @param   {CharacterStyle|String} style A character style instance or the name
+ *          of the character style to apply.
+ * @return  {Text} The text that the style was applied to.
  */
 
 pub.applyCharacterStyle = function(text, style) {
@@ -6089,15 +6440,20 @@ pub.applyCharacterStyle = function(text, style) {
 };
 
 /**
- * @description Returns the paragraph style of a given text object or the paragraph style with the given name. If a
- * paragraph style of the given name does not exist, it gets created. Optionally a props object of
- * property name/value pairs can be used to set the paragraph style's properties.
+ * @description Returns the paragraph style of a given text object or the
+ *          paragraph style with the given name. If a paragraph style of the
+ *          given name does not exist, it gets created. Optionally a props
+ *          object of property name/value pairs can be used to set the paragraph
+ *          style's properties.
  *
- * @cat    Typography
- * @method paragraphStyle
- * @param  {Text|String} textOrName  A text object whose style to return or the name of the paragraph style to return.
- * @param  {Object} [props]  Optional: An object of property name/value pairs to set the style's properties.
- * @return {ParagraphStyle}  The paragraph style instance.
+ * @cat     Typography
+ * @method  paragraphStyle
+ *
+ * @param   {Text|String} textOrName A text object whose style to return or the
+ *          name of the paragraph style to return.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to
+ *          set the style's properties.
+ * @return  {ParagraphStyle} The paragraph style instance.
  */
 pub.paragraphStyle = function(textOrName, props) {
   var styleErrorMsg = "paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
@@ -6132,14 +6488,18 @@ pub.paragraphStyle = function(textOrName, props) {
 };
 
 /**
- * @description Applies a paragraph style to the given text object, text frame or story. The paragraph style
- * can be given as name or as paragraph style instance.
+ * @description Applies a paragraph style to the given text object, text frame
+ *          or story. The paragraph style can be given as name or as paragraph
+ *          style instance.
  *
- * @cat    Typography
- * @method applyParagraphStyle
- * @param  {TextFrame|TextObject|Story} text  The text frame, text object or story to apply the style to.
- * @param  {ParagraphStyle|String} style  A paragraph style instance or the name of the paragraph style to apply.
- * @return {Text}  The text that the style was applied to.
+ * @cat     Typography
+ * @method  applyParagraphStyle
+ *
+ * @param   {TextFrame|TextObject|Story} text The text frame, text object or
+ *          story to apply the style to.
+ * @param   {ParagraphStyle|String} style A paragraph style instance or the name
+ *          of the paragraph style to apply.
+ * @return  {Text} The text that the style was applied to.
  */
 
 pub.applyParagraphStyle = function(text, style) {
@@ -6166,12 +6526,14 @@ pub.applyParagraphStyle = function(text, style) {
 };
 
 /**
- * @description Links the stories of two textframes to one story. Text of first textframe overflows to second one.
+ * @description Links the stories of two textframes to one story. Text of first
+ *          textframe overflows to second one.
  *
- * @cat    Story
- * @method linkTextFrames
- * @param  {TextFrame} textFrameA
- * @param  {TextFrame} textFrameB
+ * @cat     Story
+ * @method  linkTextFrames
+ *
+ * @param   {TextFrame} textFrameA
+ * @param   {TextFrame} textFrameB
  */
 pub.linkTextFrames = function (textFrameA, textFrameB) {
   if (textFrameA instanceof TextFrame && textFrameB instanceof TextFrame) {
@@ -6182,12 +6544,15 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
 };
 
 /**
- * @description Fills the given textFrame and all linked textFrame with random placeholder text. The placeholder text will be added at the end of any already existing text in the text frame.
+ * @description Fills the given text frame and all linked text frames with
+ *          random placeholder text. The placeholder text will be added at the
+ *          end of any already existing text in the text frame.
  *
- * @cat    Story
- * @method placeholder
- * @param  {TextFrame} textFrame
- * @return {Text} The inserted placeholder text.
+ * @cat     Story
+ * @method  placeholder
+ *
+ * @param   {TextFrame} textFrame The text frame to fill.
+ * @return  {Text} The inserted placeholder text.
  */
 pub.placeholder = function (textFrame) {
   if (textFrame instanceof TextFrame) {
@@ -6204,22 +6569,32 @@ pub.placeholder = function (textFrame) {
 // ----------------------------------------
 
 /**
- * @description Adds an image to the document. If the image argument is given as a string the image file must be in the document's
- * data directory which is in the same directory where the document is saved in. The image argument can also be a File
- * instance which can be placed even before the document was saved.
- * The second argument can either be the x position of the frame to create or an instance of a rectangle,
- * oval or polygon to place the image in. If an x position is given, a y position must be given, too.
- * If x and y positions are given and width and height are not given, the frame's size gets set to the original image size.
+ * @description Adds an image to the document. If the image argument is given as
+ *          a string the image file must be in the document's data directory
+ *          which is in the same directory where the document is saved in. The
+ *          image argument can also be a File instance which can be placed even
+ *          before the document was saved. The second argument can either be the
+ *          x position of the frame to create or an instance of a rectangle,
+ *          oval or polygon to place the image in. If an x position is given, a
+ *          y position must be given, too. If x and y positions are given and
+ *          width and height are not given, the frame's size gets set to the
+ *          original image size.
  *
- * @cat    Document
- * @subcat Image
- * @method image
- * @param  {String|File} img The image file name in the document's data directory or a File instance.
- * @param  {Number|Rectangle|Oval|Polygon} x The x position on the current page or the item instance to place the image in.
- * @param  {Number} [y] The y position on the current page. Ignored if x is not a number.
- * @param  {Number} [w] The width of the rectangle to add the image to. Ignored if x is not a number.
- * @param  {Number} [h] The height of the rectangle to add the image to. Ignored if x is not a number.
- * @return {Rectangle|Oval|Polygon} The item instance the image was placed in.
+ * @cat     Document
+ * @subcat  Image
+ * @method  image
+ *
+ * @param   {String|File} img The image file name in the document's data
+ *          directory or a File instance.
+ * @param   {Number|Rectangle|Oval|Polygon} x The x position on the current page
+ *          or the item instance to place the image in.
+ * @param   {Number} [y] The y position on the current page. Ignored if x is not
+ *          a number.
+ * @param   {Number} [w] The width of the rectangle to add the image to. Ignored
+ *          if x is not a number.
+ * @param   {Number} [h] The height of the rectangle to add the image to.
+ *          Ignored if x is not a number.
+ * @return  {Rectangle|Oval|Polygon} The item instance the image was placed in.
  */
 pub.image = function(img, x, y, w, h) {
   var file = initDataFile(img),
@@ -6301,14 +6676,22 @@ pub.image = function(img, x, y, w, h) {
 };
 
 /**
- * @description Modifies the location from which images draw. The default mode is imageMode(CORNER), which specifies the location to be the upper left corner and uses the fourth and fifth parameters of image() to set the image's width and height. The syntax imageMode(CORNERS) uses the second and third parameters of image() to set the location of one corner of the image and uses the fourth and fifth parameters to set the opposite corner. Use imageMode(CENTER) to draw images centered at the given x and y position.
- * If no parameter is passed the currently set mode is returned as String.
+ * @description Modifies the location from which images draw. The default mode
+ *          is `CORNER`, which specifies the location to be the upper left
+ *          corner and uses the fourth and fifth parameters of `image()` to set
+ *          the image's width and height. The syntax `imageMode(CORNERS)` uses
+ *          the second and third parameters of `image()` to set the location of
+ *          one corner of the image and uses the fourth and fifth parameters to
+ *          set the opposite corner. Use `imageMode(CENTER)` to draw images
+ *          centered at the given `x` and `y` position. If no parameter is
+ *          passed the currently set mode is returned as String.
  *
- * @cat    Document
- * @subcat Image
- * @method imageMode
- * @param  {String} [mode] Either CORNER, CORNERS, or CENTER.
- * @return {String} The current mode.
+ * @cat     Document
+ * @subcat  Image
+ * @method  imageMode
+ *
+ * @param   {String} [mode] Either CORNER, CORNERS, or CENTER.
+ * @return  {String} The current mode.
  */
 pub.imageMode = function(mode) {
   if (arguments.length === 0) return currImageMode;
@@ -6328,17 +6711,32 @@ pub.imageMode = function(mode) {
 var Vector = pub.Vector = function() {
 
   /**
-   * @description A class to describe a two or three dimensional vector. This datatype stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the Vector class.
-   * <br><br>
-   * Constructor of Vector, can be two- or three-dimensional.
+   * @description A class to describe a two or three dimensional vector. This
+   *          data type stores two or three variables that are commonly used as
+   *          a position, velocity, and/or acceleration. Technically, position
+   *          is a point and velocity and acceleration are vectors, but this is
+   *          often simplified to consider all three as vectors. For example, if
+   *          you consider a rectangle moving across the screen, at any given
+   *          instant it has a position (the object's location, expressed as a
+   *          point.), a velocity (the rate at which the object's position
+   *          changes per time unit, expressed as a vector), and acceleration
+   *          (the rate at which the object's velocity changes per time unit,
+   *          expressed as a vector). Since vectors represent groupings of
+   *          values, we cannot simply use traditional
+   *          addition/multiplication/etc. Instead, we'll need to do some
+   *          "vector" math, which is made easy by the methods inside the Vector
+   *          class.
+   *          <br><br>
+   *          Constructor of Vector, can be two- or three-dimensional.
    *
-   * @cat    Math
-   * @subcat Vector
-   * @method Vector
-   * @param  {Number} x The first vector.
-   * @param  {Number} y The second vector.
-   * @param  {Number} [z] The third vector.
-   * @constructor
+   * @cat     Math
+   * @subcat  Vector
+   * @method  Vector
+   *
+   * @param   {Number} x The first vector.
+   * @param   {Number} y The second vector.
+   * @param   {Number} [z] The third vector.
+   * @class
    */
   function Vector(x, y, z) {
     this.x = x || 0;
@@ -6346,15 +6744,17 @@ var Vector = pub.Vector = function() {
     this.z = z || 0;
   }
   /**
-   * @description Static function. Calculates the Euclidean distance between two points (considering a point as a vector object).
-   * Is meant to be called "static" i.e. Vector.dist(v1, v2);
+   * @description Static function. Calculates the Euclidean distance between two
+   *          points (considering a point as a vector object). Is meant to be
+   *          called "static" i.e. `Vector.dist(v1, v2);`
    *
-   * @cat    Math
-   * @subcat Vector
-   * @method Vector.dist
-   * @param  {Vector} v1 The first vector.
-   * @param  {Vector} v2 The second vector.
-   * @return {Number} The distance.
+   * @cat     Math
+   * @subcat  Vector
+   * @method  Vector.dist
+   *
+   * @param   {Vector} v1 The first vector.
+   * @param   {Vector} v2 The second vector.
+   * @return  {Number} The distance.
    * @static
    */
   Vector.dist = function(v1, v2) {
@@ -6362,15 +6762,16 @@ var Vector = pub.Vector = function() {
   };
 
   /**
-   * @description Static function. Calculates the dot product of two vectors.
-   * Is meant to be called "static" i.e. Vector.dot(v1, v2);
+   * @description Static function. Calculates the dot product of two vectors. Is
+   *          meant to be called "static" i.e. `Vector.dot(v1, v2);`
    *
-   * @cat    Math
-   * @subcat Vector
-   * @method Vector.dot
-   * @param  {Vector} v1 The first vector.
-   * @param  {Vector} v2 The second vector.
-   * @return {Number} The dot product.
+   * @cat     Math
+   * @subcat  Vector
+   * @method  Vector.dot
+   *
+   * @param   {Vector} v1 The first vector.
+   * @param   {Vector} v2 The second vector.
+   * @return  {Number} The dot product.
    * @static
    */
   Vector.dot = function(v1, v2) {
@@ -6379,14 +6780,15 @@ var Vector = pub.Vector = function() {
 
   /**
    * @description Static function. Calculates the cross product of two vectors.
-   * Is meant to be called "static" i.e. Vector.cross(v1, v2);
+   *          Is meant to be called "static" i.e. `Vector.cross(v1, v2);`
    *
-   * @cat    Math
-   * @subcat Vector
-   * @method Vector.cross
-   * @param  {Vector} v1 The first vector.
-   * @param  {Vector} v2 The second vector.
-   * @return {Number} The cross product.
+   * @cat     Math
+   * @subcat  Vector
+   * @method  Vector.cross
+   *
+   * @param   {Vector} v1 The first vector.
+   * @param   {Vector} v2 The second vector.
+   * @return  {Number} The cross product.
    * @static
    */
   Vector.cross = function(v1, v2) {
@@ -6394,15 +6796,16 @@ var Vector = pub.Vector = function() {
   };
 
   /**
-   * @description Static function. Calculates the angle between two vectors.
-   * Is meant to be called "static" i.e. Vector.angleBetween(v1, v2);
+   * @description Static function. Calculates the angle between two vectors. Is
+   *          meant to be called "static" i.e. `Vector.angleBetween(v1, v2);`
    *
-   * @cat    Math
-   * @subcat Vector
-   * @method Vector.angleBetween
-   * @param  {Vector} v1 The first vector.
-   * @param  {Vector} v2 The second vector.
-   * @return {Number} The angle.
+   * @cat     Math
+   * @subcat  Vector
+   * @method  Vector.angleBetween
+   *
+   * @param   {Vector} v1 The first vector.
+   * @param   {Vector} v2 The second vector.
+   * @return  {Number} The angle.
    * @static
    */
   Vector.angleBetween = function(v1, v2) {
@@ -6412,14 +6815,17 @@ var Vector = pub.Vector = function() {
   Vector.prototype = {
 
     /**
-     * @description Sets the x, y, and z component of the vector using three separate variables, the data from a Vector, or the values from a float array.
+     * @description Sets the `x`, `y`, and `z` component of the vector using
+     *          three separate variables, the data from a Vector, or the values
+     *          from a float array.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.set
-     * @param  {Number|Array|Vector} v Either a vector, array or x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.set
+     *
+     * @param   {Number|Array|Vector} v Either a vector, array or `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
      */
     set: function(v, y, z) {
       if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
@@ -6432,21 +6838,24 @@ var Vector = pub.Vector = function() {
     /**
      * @description Gets a copy of the vector, returns a Vector object.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.get
-     * @return {Vector} A copy of the vector.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.get
+     *
+     * @return  {Vector} A copy of the vector.
      */
     get: function() {
       return new Vector(this.x, this.y, this.z);
     },
     /**
-     * @description Calculates the magnitude (length) of the vector and returns the result as a float
+     * @description Calculates the magnitude (length) of the vector and returns
+     *          the result as a float
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.mag
-     * @return {Number} The length.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.mag
+     *
+     * @return  {Number} The length.
      */
     mag: function() {
       var x = this.x,
@@ -6455,14 +6864,16 @@ var Vector = pub.Vector = function() {
       return Math.sqrt(x * x + y * y + z * z);
     },
     /**
-     * @description Adds x, y, and z components to a vector, adds one vector to another.
+     * @description Adds `x`, `y`, and `z` components to a vector, adds one
+     *          vector to another.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.add
-     * @param  {Vector|Number} v Either a full vector or an x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.add
+     *
+     * @param   {Vector|Number} v Either a full vector or an `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
      */
     add: function(v, y, z) {
       if (arguments.length === 1) {
@@ -6476,14 +6887,16 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Substract x, y, and z components or a full vector from this vector
+     * @description Substract `x`, `y`, and `z` components or a full vector from
+     *          this vector
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.sub
-     * @param  {Vector|Number} v Either a full vector or an x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.sub
+     *
+     * @param   {Vector|Number} v Either a full vector or an `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
      */
     sub: function(v, y, z) {
       if (arguments.length === 1) {
@@ -6497,14 +6910,16 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Multiplies this vector with x, y, and z components or another vector.
+     * @description Multiplies this vector with `x`, `y`, and `z` components or
+     *          another vector.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.mult
-     * @param  {Vector|Number} v Either a full vector or an x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.mult
+     *
+     * @param   {Vector|Number} v Either a full vector or an `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
      */
     mult: function(v) {
       if (typeof v === "number") {
@@ -6518,14 +6933,16 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Divides this vector through x, y, and z components or another vector.
+     * @description Divides this vector through `x`, `y`, and `z` components or
+     *          another vector.`
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.div
-     * @param  {Vector|Number} v Either a full vector or an x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.div
+     *
+     * @param   {Vector|Number} v Either a full vector or an `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
      */
     div: function(v) {
       if (typeof v === "number") {
@@ -6539,15 +6956,17 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Calculates the distance from this vector to another as x, y, and z components or full vector.
+     * @description Calculates the distance from this vector to another as `x`,
+     *          `y`, and `z` components or full vector.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.dist
-     * @param  {Vector|Number} v Either a full vector or an x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
-     * @return {Number} The distance.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.dist
+     *
+     * @param   {Vector|Number} v Either a full vector or an `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
+     * @return  {Number} The distance.
      */
     dist: function(v) {
       var dx = this.x - v.x,
@@ -6556,30 +6975,34 @@ var Vector = pub.Vector = function() {
       return Math.sqrt(dx * dx + dy * dy + dz * dz);
     },
     /**
-     * @description Calculates the dot product from this vector to another as x, y, and z components or full vector.
+     * @description Calculates the dot product from this vector to another as
+     *          `x`, `y`, and `z` components or full vector.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.dot
-     * @param  {Vector|Number} v Either a full vector or an x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
-     * @return {Number} The dot product.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.dot
+     *
+     * @param   {Vector|Number} v Either a full vector or an `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
+     * @return  {Number} The dot product.
      */
     dot: function(v, y, z) {
       if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
       return this.x * v + this.y * y + this.z * z;
     },
     /**
-     * @description Calculates the cross product from this vector to another as x, y, and z components or full vector.
+     * @description Calculates the cross product from this vector to another as
+     *          `x`, `y`, and `z` components or full vector.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.cross
-     * @param  {Vector|Number} v Either a full vector or an x component.
-     * @param  {Number} [y] The y component.
-     * @param  {Number} [z] The z component.
-     * @return {Number} The cross product.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.cross
+     *
+     * @param   {Vector|Number} v Either a full vector or an `x` component.
+     * @param   {Number} [y] The `y` component.
+     * @param   {Number} [z] The `z` component.
+     * @return  {Number} The cross product.
      */
     cross: function(v) {
       var x = this.x,
@@ -6590,9 +7013,9 @@ var Vector = pub.Vector = function() {
     /**
      * @description Normalizes the length of this vector to 1.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.normalize
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.normalize
      */
     normalize: function() {
       var m = this.mag();
@@ -6601,10 +7024,11 @@ var Vector = pub.Vector = function() {
     /**
      * @description Normalizes the length of this vector to the given parameter.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.limit
-     * @param  {Number} high The value to scale to.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.limit
+     *
+     * @param   {Number} high The value to scale to.
      */
     limit: function(high) {
       if (this.mag() > high) {
@@ -6615,10 +7039,11 @@ var Vector = pub.Vector = function() {
     /**
      * @description The 2D orientation (heading) of this vector in radian.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.heading
-     * @return {Number} A radian angle value.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.heading
+     *
+     * @return  {Number} A radian angle value.
      */
     heading: function() {
       return -Math.atan2(-this.y, this.x);
@@ -6626,21 +7051,24 @@ var Vector = pub.Vector = function() {
     /**
      * @description Returns data about this vector as a string.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.toString
-     * @return {String} The x, y and z components as a string.
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.toString
+     *
+     * @return  {String} The `x`, `y` and `z` components as a string.
      */
     toString: function() {
       return "[" + this.x + ", " + this.y + ", " + this.z + "]";
     },
     /**
-     * @description Returns this vector as an array [x,y,z].
+     * @description Returns this vector as an array `[x,y,z]`.
      *
-     * @cat    Math
-     * @subcat Vector
-     * @method Vector.array
-     * @return {Array} The x, y and z components as  an Array of [x,y,z].
+     * @cat     Math
+     * @subcat  Vector
+     * @method  Vector.array
+     *
+     * @return  {Array} The `x`, `y` and `z` components as an array of
+     *          `[x,y,z]`.
      */
     array: function() {
       return [this.x, this.y, this.z];
@@ -6662,37 +7090,43 @@ var Vector = pub.Vector = function() {
 // -- Calculation --
 
 /**
- * @description Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.
+ * @description Calculates the absolute value (magnitude) of a number. The
+ *          absolute value of a number is always positive.
  *
- * @cat    Math
- * @subcat Calculation
- * @method abs
- * @param  {Number} val A number.
- * @return {Number} The absolute value of that number.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  abs
+ *
+ * @param   {Number} val A number.
+ * @return  {Number} The absolute value of that number.
  */
 pub.abs = Math.abs;
 
 /**
- * @description Calculates the closest int value that is greater than or equal to the value of the parameter. For example, ceil(9.03) returns the value 10.
+ * @description Calculates the closest integer value that is greater than or
+ *          equal to the value of the parameter. For example, `ceil(9.03)`
+ *          returns the value `10`.
  *
- * @cat    Math
- * @subcat Calculation
- * @method ceil
- * @param  {Number} val An arbitrary number.
- * @return {Number} The next highest integer value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  ceil
+ *
+ * @param   {Number} val An arbitrary number.
+ * @return  {Number} The next highest integer value.
  */
 pub.ceil = Math.ceil;
 
 /**
  * @description Constrains a value to not exceed a maximum and minimum value.
  *
- * @cat    Math
- * @subcat Calculation
- * @method constrain
- * @param  {Number} aNumber The value to constrain.
- * @param  {Number} aMin Minimum limit.
- * @param  {Number} aMax Maximum limit.
- * @return {Number} The constrained value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  constrain
+ *
+ * @param   {Number} aNumber The value to constrain.
+ * @param   {Number} aMin Minimum limit.
+ * @param   {Number} aMax Maximum limit.
+ * @return  {Number} The constrained value.
  */
 pub.constrain = function(aNumber, aMin, aMax) {
   if(arguments.length !== 3) error("constrain(), wrong argument count.");
@@ -6704,14 +7138,15 @@ pub.constrain = function(aNumber, aMin, aMax) {
 /**
  * @description Calculates the distance between two points.
  *
- * @cat    Math
- * @subcat Calculation
- * @method dist
- * @param  {Number} x1 The x-coordinate of the first point.
- * @param  {Number} y1 The y-coordinate of the first point.
- * @param  {Number} x2 The x-coordinate of the second point.
- * @param  {Number} y2 The y-coordinate of the second point.
- * @return {Number} The distance.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  dist
+ *
+ * @param   {Number} x1 The x-coordinate of the first point.
+ * @param   {Number} y1 The y-coordinate of the first point.
+ * @param   {Number} x2 The x-coordinate of the second point.
+ * @param   {Number} y2 The y-coordinate of the second point.
+ * @return  {Number} The distance.
  */
 pub.dist = function() {
   var dx, dy, dz;
@@ -6725,37 +7160,48 @@ pub.dist = function() {
 };
 
 /**
- * @description The Math.exp() function returns ex, where x is the argument, and e is Euler's number (also known as Napier's constant), the base of the natural logarithms.
+ * @description The `exp()` function returns `ex`, where `x` is the argument,
+ *          and `e` is Euler's number (also known as Napier's constant), the
+ *          base of the natural logarithms.
  *
- * @cat    Math
- * @subcat Calculation
- * @method exp
- * @param  {Number} x A number.
- * @return {Number} A number representing ex.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  exp
+ *
+ * @param   {Number} x A number.
+ * @return  {Number} A number representing `ex`.
  */
 pub.exp = Math.exp;
 
 /**
- * @description Calculates the closest int value that is less than or equal to the value of the parameter.
+ * @description Calculates the closest integer value that is less than or equal
+ *          to the value of the parameter.
  *
- * @cat    Math
- * @subcat Calculation
- * @method floor
- * @param  {Number} a A number.
- * @return {Number} Integer number.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  floor
+ *
+ * @param   {Number} a A number.
+ * @return  {Number} Integer number.
  */
 pub.floor = Math.floor;
 
 /**
- * @description Calculates a number between two numbers at a specific increment. The amt parameter is the amount to interpolate between the two values where 0.0 equal to the first point, 0.1 is very near the first point, 0.5 is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
+ * @description Calculates a number between two numbers at a specific increment.
+ *          The `amt` parameter is the amount to interpolate between the two
+ *          values where `0.0` is equal to the first point, `0.1` is very near
+ *          the first point, `0.5` is half-way in between, etc. The lerp
+ *          function is convenient for creating motion along a straight path and
+ *          for drawing dotted lines.
  *
- * @cat    Math
- * @subcat Calculation
- * @method lerp
- * @param  {Number} value1 First value.
- * @param  {Number} value2 Second value.
- * @param  {Number} amt Amount between 0.0 and 1.0.
- * @return {Number} The mapped value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  lerp
+ *
+ * @param   {Number} value1 First value.
+ * @param   {Number} value2 Second value.
+ * @param   {Number} amt Amount between 0.0 and 1.0.
+ * @return  {Number} The mapped value.
  */
 pub.lerp = function(value1, value2, amt) {
   if(arguments.length !== 3) error("lerp(), wrong argument count.");
@@ -6763,26 +7209,34 @@ pub.lerp = function(value1, value2, amt) {
 };
 
 /**
- * @description Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than 0.0.
+ * @description Calculates the natural logarithm (the base-e logarithm) of a
+ *          number. This function expects the values greater than `0`.
  *
- * @cat    Math
- * @subcat Calculation
- * @method log
- * @param  {Number} x A number, must be greater then 0.0.
- * @return {Number} The natural logarithm.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  log
+ *
+ * @param   {Number} x A number, must be greater than `0`.
+ * @return  {Number} The natural logarithm.
  */
 pub.log = Math.log;
 
 /**
- * @description Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate (0,0) to its (x,y) value. Therefore, mag() is a shortcut for writing "dist(0, 0, x, y)".
+ * @description Calculates the magnitude (or length) of a vector. A vector is a
+ *          direction in space commonly used in computer graphics and linear
+ *          algebra. Because it has no "start" position, the magnitude of a
+ *          vector can be thought of as the distance from coordinate `(0,0)` to
+ *          its `(x,y)` value. Therefore, `mag()` is a shortcut for writing
+ *          `dist(0, 0, x, y)`.
  *
- * @cat    Math
- * @subcat Calculation
- * @method mag
- * @param  {Number} x Coordinate.
- * @param  {Number} y Coordinate.
- * @param  {Number} [z] Coordinate, optional.
- * @return {Number} The magnitude.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  mag
+ *
+ * @param   {Number} x Coordinate.
+ * @param   {Number} y Coordinate.
+ * @param   {Number} [z] Coordinate, optional.
+ * @return  {Number} The magnitude.
  */
 pub.mag = function(a, b, c) {
   if(!(arguments.length === 2 || arguments.length === 3)) error("mag(), wrong argument count.");
@@ -6792,17 +7246,19 @@ pub.mag = function(a, b, c) {
 
 /**
  * @description Re-maps a number from one range to another.<br>
- * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
+ *          Numbers outside the range are not clamped to `0` and `1`, because
+ *          out-of-range values are often intentional and useful.
  *
- * @cat    Math
- * @subcat Calculation
- * @method map
- * @param  {Number} value The value to be mapped.
- * @param  {Number} istart The start of the input range.
- * @param  {Number} istop The end of the input range.
- * @param  {Number} ostart The start of the output range.
- * @param  {Number} ostop The end of the output range.
- * @return {Number} The mapped value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  map
+ *
+ * @param   {Number} value The value to be mapped.
+ * @param   {Number} istart The start of the input range.
+ * @param   {Number} istop The end of the input range.
+ * @param   {Number} ostart The start of the output range.
+ * @param   {Number} ostop The end of the output range.
+ * @return  {Number} The mapped value.
  */
 pub.map = function(value, istart, istop, ostart, ostop) {
   if(arguments.length !== 5) error("map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
@@ -6812,13 +7268,14 @@ pub.map = function(value, istart, istop, ostart, ostop) {
 /**
  * @description Determines the largest value in a sequence of numbers.
  *
- * @cat    Math
- * @subcat Calculation
- * @method max
- * @param  {Number|Array} a A value or an array of Numbers.
- * @param  {Number} [b] Another value to be compared.
- * @param  {Number} [c] Another value to be compared.
- * @return {Number} The highest value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  max
+ *
+ * @param   {Number|Array} a A value or an array of Numbers.
+ * @param   {Number} [b] Another value to be compared.
+ * @param   {Number} [c] Another value to be compared.
+ * @return  {Number} The highest value.
  */
 pub.max = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
@@ -6833,13 +7290,14 @@ pub.max = function() {
 /**
  * @description Determines the smallest value in a sequence of numbers.
  *
- * @cat    Math
- * @subcat Calculation
- * @method min
- * @param  {Number|Array} a A value or an array of Numbers.
- * @param  {Number} [b] Another value to be compared.
- * @param  {Number} [c] Another value to be compared.
- * @return {Number} The lowest value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  min
+ *
+ * @param   {Number|Array} a A value or an array of Numbers.
+ * @param   {Number} [b] Another value to be compared.
+ * @param   {Number} [c] Another value to be compared.
+ * @return  {Number} The lowest value.
  */
 pub.min = function() {
   if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
@@ -6852,17 +7310,20 @@ pub.min = function() {
 };
 
 /**
- * @description Normalizes a number from another range into a value between 0 and 1.<br>
- * Identical to map(value, low, high, 0, 1);<br>
- * Numbers outside the range are not clamped to 0 and 1, because out-of-range values are often intentional and useful.
+ * @description Normalizes a number from another range into a value between `0`
+ *          and `1`.<br>
+ *          Identical to `map(value, low, high, 0, 1);`<br>
+ *          Numbers outside the range are not clamped to `0` and `1`, because
+ *          out-of-range values are often intentional and useful.
  *
- * @cat    Math
- * @subcat Calculation
- * @method norm
- * @param  {Number} aNumber The value to be normed.
- * @param  {Number} low The lowest value to be expected.
- * @param  {Number} high The highest value to be expected.
- * @return {Number} The normalized value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  norm
+ *
+ * @param   {Number} aNumber The value to be normed.
+ * @param   {Number} low The lowest value to be expected.
+ * @param   {Number} high The highest value to be expected.
+ * @return  {Number} The normalized value.
  */
 pub.norm = function(aNumber, low, high) {
   if(arguments.length !== 3) error("norm(), wrong argument count.");
@@ -6870,36 +7331,46 @@ pub.norm = function(aNumber, low, high) {
 };
 
 /**
- * @description Facilitates exponential expressions. The pow() function is an efficient way of multiplying numbers by themselves (or their reciprocal) in large quantities. For example, pow(3, 5) is equivalent to the expression 3*3*3*3*3 and pow(3, -5) is equivalent to 1 / 3*3*3*3*3
+ * @description Facilitates exponential expressions. The `pow()` function is an
+ *          efficient way of multiplying numbers by themselves (or their
+ *          reciprocal) in large quantities. For example, `pow(3, 5)` is
+ *          equivalent to the expression `3 * 3 * 3 * 3 * 3` and `pow(3, -5)` is
+ *          equivalent to `1 / 3 * 3 * 3 * 3 * 3`.
  *
- * @cat    Math
- * @subcat Calculation
- * @method pow
- * @param  {Number} num Base of the exponential expression.
- * @param  {Number} exponent Power of which to raise the base.
- * @return {Number} the result
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  pow
+ *
+ * @param   {Number} num Base of the exponential expression.
+ * @param   {Number} exponent Power of which to raise the base.
+ * @return  {Number} the result
  */
 pub.pow = Math.pow;
 
 /**
- * @description Calculates the integer closest to the value parameter. For example, round(9.2) returns the value 9.
+ * @description Calculates the integer closest to the value parameter. For
+ *          example, `round(9.2)` returns the value `9`.
  *
- * @cat    Math
- * @subcat Calculation
- * @method round
- * @param  {Number} value The value to be rounded.
- * @return {Number} The rounded value.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  round
+ *
+ * @param   {Number} value The value to be rounded.
+ * @return  {Number} The rounded value.
  */
 pub.round = Math.round;
 
 /**
- * @description Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, -1 * -1 = 1.
+ * @description Squares a number (multiplies a number by itself). The result is
+ *          always a positive number, as multiplying two negative numbers always
+ *          yields a positive result. For example, `-1 * -1 = 1`.
  *
- * @cat    Math
- * @subcat Calculation
- * @method sq
- * @param  {Number} aNumber The value to be squared.
- * @return {Number} Squared number.
+ * @cat     Math
+ * @subcat  Calculation
+ * @method  sq
+ *
+ * @param   {Number} aNumber The value to be squared.
+ * @return  {Number} Squared number.
  */
 pub.sq = function(aNumber) {
   if(arguments.length !== 1) error("sq(), wrong argument count.");
@@ -6909,117 +7380,159 @@ pub.sq = function(aNumber) {
 // -- Trigonometry --
 
 /**
- * @description Calculates the square root of a number. The square root of a number is always positive, even though there may be a valid negative root. The square root s of number a is such that s*s = a. It is the opposite of squaring.
+ * @description Calculates the square root of a number. The square root of a
+ *          number is always positive, even though there may be a valid negative
+ *          root. The square root s of number a is such that `s * s = a`. It is
+ *          the opposite of squaring.
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method sqrt
- * @param  {Number} val A value.
- * @return {Number} Square root.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  sqrt
+ *
+ * @param   {Number} val A value.
+ * @return  {Number} Square root.
  */
 pub.sqrt = Math.sqrt;
 
 /**
- * @description The inverse of cos(), returns the arc cosine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+ * @description The inverse of `cos()`, returns the arc cosine of a value. This
+ *          function expects the values in the range of `-1` to `1` and values
+ *          are returned in the range `0` to `PI` (`3.1415927`).
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method acos
- * @param  {Number} value The value whose arc cosine is to be returned.
- * @return {Number} The arc cosine.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  acos
+ *
+ * @param   {Number} value The value whose arc cosine is to be returned.
+ * @return  {Number} The arc cosine.
  */
 pub.acos = Math.acos;
 
 /**
- * @description The inverse of sin(), returns the arc sine of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+ * @description The inverse of `sin()`, returns the arc sine of a value. This
+ *          function expects the values in the range of `-1` to `1` and values
+ *          are returned in the range `0` to `PI` (`3.1415927`).
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method asin
- * @param  {Number} value The value whose arc sine is to be returned.
- * @return {Number} The arc sine.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  asin
+ *
+ * @param   {Number} value The value whose arc sine is to be returned.
+ * @return  {Number} The arc sine.
  */
 pub.asin = Math.asin;
 
 /**
- * @description The inverse of tan(), returns the arc tangent of a value. This function expects the values in the range of -1 to 1 and values are returned in the range 0 to PI (3.1415927).
+ * @description The inverse of `tan()`, returns the arc tangent of a value. This
+ *          function expects the values in the range of `-1` to `1` and values
+ *          are returned in the range `0` to `PI` (`3.1415927`).
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method atan
- * @param  {Number} value The value whose arc tangent is to be returned.
- * @return {Number} The arc tangent.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  atan
+ *
+ * @param   {Number} value The value whose arc tangent is to be returned.
+ * @return  {Number} The arc tangent.
  */
 pub.atan = Math.atan;
 
 /**
- * @description Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from PI to -PI. The atan2() function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
+ * @description Calculates the angle (in radians) from a specified point to the
+ *          coordinate origin as measured from the positive x-axis. Values are
+ *          returned as a float in the range from `PI` to `-PI`. The `atan2()`
+ *          function is most often used for orienting geometry to the position
+ *          of the cursor. Note: The y-coordinate of the point is the first
+ *          parameter and the x-coordinate is the second due the the structure
+ *          of calculating the tangent.
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method atan2
- * @param  {Number} y The y coordinate.
- * @param  {Number} x The x coordinate.
- * @return {Number} The atan2 value.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  atan2
+ *
+ * @param   {Number} y The y coordinate.
+ * @param   {Number} x The x coordinate.
+ * @return  {Number} The atan2 value.
  */
 pub.atan2 = Math.atan2;
 
 /**
- * @description Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range -1 to 1.
+ * @description Calculates the cosine of an angle. This function expects the
+ *          values of the angle parameter to be provided in radians (values from
+ *          `0` to `PI * 2`). Values are returned in the range `-1` to `1`.
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method cos
- * @param  {Number} rad A value in radians.
- * @return {Number} The cosine.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  cos
+ *
+ * @param   {Number} rad A value in radians.
+ * @return  {Number} The cosine.
  */
 pub.cos = Math.cos;
 
 /**
- * @description Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
+ * @description Converts a radian measurement to its corresponding value in
+ *          degrees. Radians and degrees are two ways of measuring the same
+ *          thing. There are 360 degrees in a circle and `2 * PI` radians in a
+ *          circle. For example, `90° = PI / 2 = 1.5707964`. All trigonometric
+ *          methods in basil require their parameters to be specified in
+ *          radians.
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method degrees
- * @param  {Number} aAngle An angle in radians.
- * @return {Number} The given angle in degree.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  degrees
+ *
+ * @param   {Number} aAngle An angle in radians.
+ * @return  {Number} The given angle in degree.
  */
 pub.degrees = function(aAngle) {
   return aAngle * 180 / Math.PI;
 };
 
 /**
- * @description Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and 2*PI radians in a circle. For example, 90° = PI/2 = 1.5707964. All trigonometric methods in Processing require their parameters to be specified in radians.
+ * @description Converts a degree measurement to its corresponding value in
+ *          radians. Radians and degrees are two ways of measuring the same
+ *          thing. There are 360 degrees in a circle and `2 * PI` radians in a
+ *          circle. For example, `90° = PI / 2 = 1.5707964`. All trigonometric
+ *          methods in basil require their parameters to be specified in
+ *          radians.
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method radians
- * @param  {Number} aAngle An angle in degree.
- * @return {Number} The given angle in radians.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  radians
+ *
+ * @param   {Number} aAngle An angle in degree.
+ * @return  {Number} The given angle in radians.
  */
 pub.radians = function(aAngle) {
   return aAngle / 180 * Math.PI;
 };
 
 /**
- * @description Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to 6.28). Values are returned in the range -1 to 1.
+ * @description Calculates the sine of an angle. This function expects the
+ *          values of the angle parameter to be provided in radians (values from
+ *          `0` to `6.28`). Values are returned in the range `-1` to `1`.
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method sin
- * @param  {Number} rad A value in radians.
- * @return {Number} The sine value.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  sin
+ *
+ * @param   {Number} rad A value in radians.
+ * @return  {Number} The sine value.
  */
 pub.sin = Math.sin;
 
 /**
- * @description Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from 0 to PI*2). Values are returned in the range infinity to -infinity.
+ * @description Calculates the ratio of the sine and cosine of an angle. This
+ *          function expects the values of the angle parameter to be provided in
+ *          radians (values from `0` to `PI * 2`). Values are returned in the
+ *          range `infinity` to `-infinity`.
  *
- * @cat    Math
- * @subcat Trigonometry
- * @method tan
- * @param  {Number} rad A value in radians.
- * @return {Number} The tangent value.
+ * @cat     Math
+ * @subcat  Trigonometry
+ * @method  tan
+ *
+ * @param   {Number} rad A value in radians.
+ * @return  {Number} The tangent value.
  */
 pub.tan = Math.tan;
 
@@ -7028,15 +7541,25 @@ pub.tan = Math.tan;
 var currentRandom = Math.random;
 
 /**
- * @description Generates random numbers. Each time the random() function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call random(5) returns values between 0 and 5. If two parameters are passed, it will return a float with a value between the the parameters. The function call random(-5, 10.2) returns values between -5 and 10.2.<br>
- * One parameter sets the range from 0 to the given parameter, while with two parameters present you set the range from val1 - val2.
+ * @description Generates random numbers. Each time the `random()` function is
+ *          called, it returns an unexpected value within the specified range.
+ *          If one parameter is passed to the function it will return a float
+ *          between zero and the value of the high parameter. The function call
+ *          `random(5)` returns values between `0` and `5`. If two parameters
+ *          are passed, it will return a float with a value between the the
+ *          parameters. The function call `random(-5, 10.2)` returns values
+ *          between `-5` and `10.2`.<br>
+ *          One parameter sets the range from `0`
+ *          to the given parameter, while with two parameters present you set
+ *          the range from `val1` to `val2`.
  *
- * @cat    Math
- * @subcat Random
- * @method random
- * @param  {Number} [low] The low border of the range.
- * @param  {Number} [high] The high border of the range.
- * @return {Number} A random number.
+ * @cat     Math
+ * @subcat  Random
+ * @method  random
+ *
+ * @param   {Number} [low] The low border of the range.
+ * @param   {Number} [high] The high border of the range.
+ * @return  {Number} A random number.
  */
 pub.random = function() {
   if (arguments.length === 0) return currentRandom();
@@ -7065,13 +7588,16 @@ Marsaglia.createRandomized = function() {
   return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295);
 };
 /**
- * @description Sets the seed value for random().<br>
- * By default, random() produces different results each time the program is run. Set the seed parameter to a constant to return the same pseudo-random numbers each time the software is run.
+ * @description Sets the seed value for `random()`.<br> By default, `random()`
+ *          produces different results each time the program is run. Set the
+ *          seed parameter to a constant to return the same pseudo-random
+ *          numbers each time the software is run.
  *
- * @cat    Math
- * @subcat Random
- * @method randomSeed
- * @param  {Number} seed The seed value.
+ * @cat     Math
+ * @subcat  Random
+ * @method  randomSeed
+ *
+ * @param   {Number} seed The seed value.
  */
 pub.randomSeed = function(seed) {
   currentRandom = (new Marsaglia(seed)).nextDouble;
@@ -7079,18 +7605,20 @@ pub.randomSeed = function(seed) {
 /**
  * @description Random Generator with Gaussian distribution.
  *
- * @cat    Math
- * @subcat Random
- * @method Random
- * @param  {Number} seed The seed value.
- * @constructor
+ * @cat     Math
+ * @subcat  Random
+ * @method  Random
+ *
+ * @param   {Number} seed The seed value.
+ * @class
  */
 pub.Random = function(seed) {
   var haveNextNextGaussian = false,
     nextNextGaussian, random;
   /**
-   * @method Random.nextGaussian
-   * @return {Number} The next Gaussian random value.
+   * @method  Random.nextGaussian
+   *
+   * @return  {Number} The next Gaussian random value.
    */
   this.nextGaussian = function() {
     if (haveNextNextGaussian) {
@@ -7188,21 +7716,47 @@ var noiseProfile = {
 };
 
 /**
- * @description Returns the Perlin noise value at specified coordinates. Perlin noise is a random sequence generator producing a more natural ordered, harmonic succession of numbers compared to the standard random() function. It was invented by Ken Perlin in the 1980s and been used since in graphical applications to produce procedural textures, natural motion, shapes, terrains etc.
- * <br><br>
- * The main difference to the random() function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between 0.0 and 1.0. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.
- * <br><br>
- * The actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result.
- * <br><br>
- * Another way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn't matter as such, only the distance between successive coordinates does (eg. when using noise() within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of 0.005-0.03 work best for most applications, but this will differ depending on use.
+ * @description Returns the Perlin noise value at specified coordinates. Perlin
+ *          noise is a random sequence generator producing a more natural
+ *          ordered, harmonic succession of numbers compared to the standard
+ *          `random()` function. It was invented by Ken Perlin in the 1980s and
+ *          been used since in graphical applications to produce procedural
+ *          textures, natural motion, shapes, terrains etc.
+ *          <br><br>
+ *          The main
+ *          difference to the `random()` function is that Perlin noise is
+ *          defined in an infinite n-dimensional space where each pair of
+ *          coordinates corresponds to a fixed semi-random value (fixed only for
+ *          the lifespan of the program). The resulting value will always be
+ *          between `0` and `1`. basil.js can compute 1D, 2D and 3D noise,
+ *          depending on the number of coordinates given. The noise value can be
+ *          animated by moving through the noise space. The 2nd and 3rd
+ *          dimension can also be interpreted as time.
+ *          <br><br>
+ *          The actual noise
+ *          is structured similar to an audio signal, in respect to the
+ *          function's use of frequencies. Similar to the concept of harmonics
+ *          in physics, perlin noise is computed over several octaves which are
+ *          added together for the final result.
+ *          <br><br>
+ *          Another way to adjust
+ *          the character of the resulting sequence is the scale of the input
+ *          coordinates. As the function works within an infinite space the
+ *          value of the coordinates doesn't matter as such, only the distance
+ *          between successive coordinates does (eg. when using `noise()` within
+ *          a loop). As a general rule the smaller the difference between
+ *          coordinates, the smoother the resulting noise sequence will be.
+ *          Steps of `0.005`- `0.03` work best for most applications, but this
+ *          will differ depending on use.
  *
- * @cat    Math
- * @subcat Random
- * @method noise
- * @param  {Number} x Coordinate in x space.
- * @param  {Number} [y] Coordinate in y space.
- * @param  {Number} [z] Coordinate in z space.
- * @return {Number} The noise value.
+ * @cat     Math
+ * @subcat  Random
+ * @method  noise
+ *
+ * @param   {Number} x Coordinate in x space.
+ * @param   {Number} [y] Coordinate in y space.
+ * @param   {Number} [z] Coordinate in z space.
+ * @return  {Number} The noise value.
  */
 pub.noise = function(x, y, z) {
   if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
@@ -7229,15 +7783,31 @@ pub.noise = function(x, y, z) {
 };
 
 /**
- * @description Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of 0.75 means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between 0.0 and 1.0 is valid, however note that values greater than 0.5 might result in greater than 1.0 values returned by noise().
- * <br><br>
- * By changing these parameters, the signal created by the noise() function can be adapted to fit very specific needs and characteristics.
+ * @description Adjusts the character and level of detail produced by the Perlin
+ *          noise function. Similar to harmonics in physics, noise is computed
+ *          over several octaves. Lower octaves contribute more to the output
+ *          signal and as such define the overal intensity of the noise, whereas
+ *          higher octaves create finer grained details in the noise sequence.
+ *          By default, noise is computed over 4 octaves with each octave
+ *          contributing exactly half than its predecessor, starting at 50%
+ *          strength for the 1st octave. This falloff amount can be changed by
+ *          adding an additional function parameter. Eg. a falloff factor of
+ *          `0.75` means each octave will now have 75% impact (25% less) of the
+ *          previous lower octave. Any value between `0` and `1` is valid,
+ *          however note that values greater than `0.5` might result in greater
+ *          than `1` values returned by `noise()`.
+ *          <br><br>
+ *          By changing these
+ *          parameters, the signal created by the `noise()` function can be
+ *          adapted to fit very specific needs and characteristics.
  *
- * @cat    Math
- * @subcat Random
- * @method noiseDetail
- * @param  {Number} octaves Number of octaves to be used by the noise() function.
- * @param  {Number} fallout Falloff factor for each octave.
+ * @cat     Math
+ * @subcat  Random
+ * @method  noiseDetail
+ *
+ * @param   {Number} octaves Number of octaves to be used by the noise()
+ *          function.
+ * @param   {Number} fallout Falloff factor for each octave.
  */
 pub.noiseDetail = function(octaves, fallout) {
   noiseProfile.octaves = octaves;
@@ -7245,12 +7815,16 @@ pub.noiseDetail = function(octaves, fallout) {
 };
 
 /**
- * @description Sets the seed value for noise(). By default, noise() produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.
+ * @description Sets the seed value for `noise()`. By default, `noise()`
+ *          produces different results each time the program is run. Set the
+ *          value parameter to a constant to return the same pseudo-random
+ *          numbers each time the software is run.
  *
- * @cat    Math
- * @subcat Random
- * @method noiseSeed
- * @param  {Number} seed Noise seed value.
+ * @cat     Math
+ * @subcat  Random
+ * @method  noiseSeed
+ *
+ * @param   {Number} seed Noise seed value.
  */
 pub.noiseSeed = function(seed) {
   noiseProfile.seed = seed;
@@ -7267,14 +7841,20 @@ var precision = function(num, dec) {
 };
 
 /**
- * @description The function calculates the geometric bounds of any given page item or text. Use the `transforms()` function to modify page items.
- * In case the object is any kind of text, additional typographic information baseline and xHeight are calculated.
+ * @description The function calculates the geometric bounds of any given page
+ *          item or text. Use the `transforms()` function to modify page items.
+ *          In case the object is any kind of text, additional typographic
+ *          information `baseline` and `xHeight` are calculated.
  *
- * @cat    Document
- * @subcat Transformation
- * @method bounds
- * @param  {PageItem|Text} obj The page item or text to calculate the geometric bounds.
- * @return {Object} Geometric bounds object with these properties: width, height, left, right, top, bottom and for text: baseline, xHeight.
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  bounds
+ *
+ * @param   {PageItem|Text} obj The page item or text to calculate the geometric
+ *          bounds.
+ * @return  {Object} Geometric bounds object with these properties: `width`,
+ *          `height`, `left`, `right`, `top`, `bottom` and for text: `baseline`,
+ *          `xHeight`.
  */
 pub.bounds = function (obj) {
   var x1, y1, x2, y2, w, h;
@@ -7343,15 +7923,27 @@ pub.bounds = function (obj) {
 /* global precision */
 
 /**
- * @description Sets the reference point for transformations using the `transform()` function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.<br>
- * Arguments can be the basil constants `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`, `BOTTOM_CENTER` or `BOTTOM_RIGHT`. Alternatively the digits 1 through 9 (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.<br>
- * If the function is used without any arguments the currently set reference point will be returned.
+ * @description Sets the reference point for transformations using the
+ *          `transform()` function. The reference point will be used for all
+ *          following transformations, until it is changed again. By default,
+ *          the reference point is set to the top left.<br>
+ *          Arguments can be the
+ *          basil constants `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`,
+ *          `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`,
+ *          `BOTTOM_CENTER` or `BOTTOM_RIGHT`. Alternatively the digits `1`
+ *          through `9` (as they are arranged on a num pad) can be used to set
+ *          the anchor point. Lastly the function can also use an InDesign
+ *          anchor point enumerator to set the reference point.<br>
+ *          If the
+ *          function is used without any arguments the currently set reference
+ *          point will be returned.
  *
- * @cat    Document
- * @subcat Transformation
- * @method referencePoint
- * @param  {String} [referencePoint] The reference point to set.
- * @return {String} Current reference point setting.
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  referencePoint
+ *
+ * @param   {String} [referencePoint] The reference point to set.
+ * @return  {String} Current reference point setting.
  */
 pub.referencePoint = function(rp) {
   if(!arguments.length) {
@@ -7399,26 +7991,46 @@ pub.referencePoint = function(rp) {
 };
 
 /**
- * @description Transforms a given page item. The type of transformation is determinded with the second parameter. The third parameter is the transformation value, either a number or an array of x and y values. The transformation's reference point (top left, bottom center etc.) can be set beforehand by using the `referencePoint()` function. If the third parameter is ommited, the function can be used to measure the value of the page item.
- * There are 10 different transformation types:
- *    - `"translate"`: Translates the page item by the given `[x, y]` values. Returns the coordinates of the page item's anchor point as an array.
- *    - `"rotate"`: Rotates the page item to the given degree value. Returns the page item's rotation value in degrees.
- *    - `"scale"`: Scales the page item to the given `[x, y]` scale factor values. Alternatively, a single scale factor value can be used to scale the page item uniformely. Returns the scale factor values of the page item's current scale as an array.
- *    - `"shear"`: Shears the page item to the given degree value. Returns the page item's shear value in degrees.
- *    - `"size"`: Sets the page item's size to the given `[x, y]` dimensions. Returns the size of the page item as an array.
- *    - `"width"`: Sets the page item's width to the given value. Returns the width of the page item.
- *    - `"height"`: Sets the page item's height to the given value. Returns the height of the page item.
- *    - `"position"`: Sets the position of the page item's anchor point to the given `[x, y]` coordinates. Returns the coordinates of the page item's anchor point as an array.
- *    - `"x"`: Sets the x-position of the page item's anchor point to the given value. Returns the x-coordinate of the page item's anchor point.
- *    - `"y"`: Sets the y-position of the page item's anchor point to the given value. Returns the y-coordinate of the page item's anchor point.
+ * @description Transforms a given page item. The type of transformation is
+ *          determinded with the second parameter. The third parameter is the
+ *          transformation value, either a number or an array of x and y values.
+ *          The transformation's reference point (top left, bottom center etc.)
+ *          can be set beforehand by using the `referencePoint()` function. If
+ *          the third parameter is ommited, the function can be used to measure
+ *          the value of the page item. There are 10 different transformation
+ *          types:
+ *    - `"translate"`: Translates the page item by the given `[x, y]` values.
+ *      Returns the coordinates of the page item's anchor point as an array.
+ *    - `"rotate"`: Rotates the page item to the given degree value. Returns the
+ *      page item's rotation value in degrees.
+ *    - `"scale"`: Scales the page item to the given `[x, y]` scale factor
+ *      values. Alternatively, a single scale factor value can be used to scale
+ *      the page item uniformely. Returns the scale factor values of the page
+ *      item's current scale as an array.
+ *    - `"shear"`: Shears the page item to the given degree value. Returns the
+ *      page item's shear value in degrees.
+ *    - `"size"`: Sets the page item's size to the given `[x, y]` dimensions.
+ *      Returns the size of the page item as an array.
+ *    - `"width"`: Sets the page item's width to the given value. Returns the
+ *      width of the page item.
+ *    - `"height"`: Sets the page item's height to the given value. Returns the
+ *      height of the page item.
+ *    - `"position"`: Sets the position of the page item's anchor point to the
+ *      given `[x, y]` coordinates. Returns the coordinates of the page item's
+ *      anchor point as an array.
+ *    - `"x"`: Sets the x-position of the page item's anchor point to the given
+ *      value. Returns the x-coordinate of the page item's anchor point.
+ *    - `"y"`: Sets the y-position of the page item's anchor point to the given
+ *      value. Returns the y-coordinate of the page item's anchor point.
  *
- * @cat    Document
- * @subcat Transformation
- * @method transform
- * @param  {PageItem} pItem The page item to transform.
- * @param  {String} type The type of transformation.
- * @param  {Number|Array} [value] The value(s) of the transformation.
- * @return {Number|Array} The current value(s) of the specified transformation.
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  transform
+ *
+ * @param   {PageItem} pItem The page item to transform.
+ * @param   {String} type The type of transformation.
+ * @param   {Number|Array} [value] The value(s) of the transformation.
+ * @return  {Number|Array} The current value(s) of the specified transformation.
  *
  * @example <caption>Rotating a rectangle to a 25 degrees angle</caption>
  * var r = rect(20, 40, 200, 100);
@@ -7429,7 +8041,8 @@ pub.referencePoint = function(rp) {
  * var w = transform(r, "width");
  * println(w); // prints the rectangle's random width between 100 and 300
  *
- * @example <caption>Position a rectangle's lower right corner at a certain position</caption>
+ * @example <caption>Position a rectangle's lower right corner at a certain
+ *          position</caption>
  * var r = rect(20, 40, random(100, 300), random(50, 150));
  * referencePoint(BOTTOM_RIGHT);
  * transform(r, "position", [40, 40]);
@@ -7758,23 +8371,31 @@ Matrix2D.prototype = {
 };
 
 /**
- * @description Multiplies the current matrix by the one specified through the parameters.
+ * @description Multiplies the current matrix by the one specified through the
+ *          parameters.
  *
- * @cat    Document
- * @subcat Transformation
- * @method applyMatrix
- * @param  {Matrix2D} matrix The matrix to be applied.
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  applyMatrix
+ *
+ * @param   {Matrix2D} matrix The matrix to be applied.
  */
 pub.applyMatrix = function (matrix) {
   currMatrix.apply(matrix);
 };
 
 /**
- * @description Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+ * @description Pops the current transformation matrix off the matrix stack.
+ *          Understanding pushing and popping requires understanding the concept
+ *          of a matrix stack. The `pushMatrix()` function saves the current
+ *          coordinate system to the stack and `popMatrix()` restores the prior
+ *          coordinate system. `pushMatrix()` and `popMatrix()` are used in
+ *          conjuction with the other transformation methods and may be embedded
+ *          to control the scope of the transformations.
  *
- * @cat    Document
- * @subcat Transformation
- * @method popMatrix
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  popMatrix
  */
 pub.popMatrix = function () {
   if (matrixStack.length > 0) {
@@ -7787,20 +8408,27 @@ pub.popMatrix = function () {
 /**
  * @description Prints the current matrix to the console window.
  *
- * @cat    Document
- * @subcat Transformation
- * @method printMatrix
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  printMatrix
  */
 pub.printMatrix = function () {
   currMatrix.print();
 };
 
 /**
- * @description Pushes the current transformation matrix onto the matrix stack. Understanding `pushMatrix()` and `popMatrix()` requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+ * @description Pushes the current transformation matrix onto the matrix stack.
+ *          Understanding `pushMatrix()` and `popMatrix()` requires
+ *          understanding the concept of a matrix stack. The `pushMatrix()`
+ *          function saves the current coordinate system to the stack and
+ *          `popMatrix()` restores the prior coordinate system. `pushMatrix()`
+ *          and `popMatrix()` are used in conjuction with the other
+ *          transformation methods and may be embedded to control the scope of
+ *          the transformations.
  *
- * @cat    Document
- * @subcat Transformation
- * @method pushMatrix
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  pushMatrix
  */
 pub.pushMatrix = function () {
   matrixStack.push(currMatrix.array());
@@ -7809,9 +8437,9 @@ pub.pushMatrix = function () {
 /**
  * @description Replaces the current matrix with the identity matrix.
  *
- * @cat    Document
- * @subcat Transformation
- * @method resetMatrix
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  resetMatrix
  */
 pub.resetMatrix = function () {
   matrixStack = [];
@@ -7821,12 +8449,26 @@ pub.resetMatrix = function () {
 };
 
 /**
- * @description Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to `PI`*2) or converted to radians with the `radians()` function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and `HALF_PI` being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `rotate(PI/2)` and then `rotate(PI/2)` is the same as `rotate(PI)`. If `rotate()` is called within the `draw()`, the transformation is reset when the loop begins again. Technically, `rotate()` multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
+ * @description Rotates an object the amount specified by the angle parameter.
+ *          Angles should be specified in radians (values from 0 to `PI`*2) or
+ *          converted to radians with the `radians()` function. Objects are
+ *          always rotated around their relative position to the origin and
+ *          positive numbers rotate objects in a clockwise direction with 0
+ *          radians or degrees being up and `HALF_PI` being to the right etc.
+ *          Transformations apply to everything that happens after and
+ *          subsequent calls to the function accumulates the effect. For
+ *          example, calling `rotate(PI/2)` and then `rotate(PI/2)` is the same
+ *          as `rotate(PI)`. If `rotate()` is called within the `draw()`, the
+ *          transformation is reset when the loop begins again. Technically,
+ *          `rotate()` multiplies the current transformation matrix by a
+ *          rotation matrix. This function can be further controlled by the
+ *          `pushMatrix()` and `popMatrix()`.
  *
- * @cat    Document
- * @subcat Transformation
- * @method rotate
- * @param  {Number} angle The angle specified in radians
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  rotate
+ *
+ * @param   {Number} angle The angle specified in radians
  */
 pub.rotate = function (angle) {
   if(typeof arguments[0] === "undefined") {
@@ -7836,14 +8478,25 @@ pub.rotate = function (angle) {
 };
 
 /**
- * @description Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call `scale(2.0)` increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling `scale(2.0)` and then `scale(1.5)` is the same as `scale(3.0)`. If `scale()` is called within `draw()`, the transformation is reset when the loop begins again. This function can be further controlled by `pushMatrix()` and `popMatrix()`.
- * If only one parameter is given, it is applied on X and Y axis.
+ * @description Increasing and decreasing the size of an object by expanding and
+ *          contracting vertices. Scale values are specified as decimal
+ *          percentages. The function call `scale(2.0)` increases the dimension
+ *          of a shape by 200%. Objects always scale from their relative origin
+ *          to the coordinate system. Transformations apply to everything that
+ *          happens after and subsequent calls to the function multiply the
+ *          effect. For example, calling `scale(2.0)` and then `scale(1.5)` is
+ *          the same as `scale(3.0)`. If `scale()` is called within `draw()`,
+ *          the transformation is reset when the loop begins again. This
+ *          function can be further controlled by `pushMatrix()` and
+ *          `popMatrix()`. If only one parameter is given, it is applied on X
+ *          and Y axis.
  *
- * @cat    Document
- * @subcat Transformation
- * @method scale
- * @param  {Number} scaleX The amount to scale the X axis.
- * @param  {Number} scaleY The amount to scale the Y axis.
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  scale
+ *
+ * @param   {Number} scaleX The amount to scale the X axis.
+ * @param   {Number} scaleY The amount to scale the Y axis.
  */
 pub.scale = function (scaleX, scaleY) {
   if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) {
@@ -7853,13 +8506,20 @@ pub.scale = function (scaleX, scaleY) {
 };
 
 /**
- * @description Specifies an amount to displace objects within the page. The x parameter specifies left/right translation, the y parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `translate(50, 0)` and then `translate(20, 0)` is the same as `translate(70, 0)`. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
+ * @description Specifies an amount to displace objects within the page. The `x`
+ *          parameter specifies left/right translation, the `y` parameter
+ *          specifies up/down translation. Transformations apply to everything
+ *          that happens after and subsequent calls to the function accumulates
+ *          the effect. For example, calling `translate(50, 0)` and then
+ *          `translate(20, 0)` is the same as `translate(70, 0)`. This function
+ *          can be further controlled by the `pushMatrix()` and `popMatrix()`.
  *
- * @cat    Document
- * @subcat Transformation
- * @method translate
- * @param  {Number} tx The amount of offset on the X axis.
- * @param  {Number} ty The amount of offset on the Y axis.
+ * @cat     Document
+ * @subcat  Transformation
+ * @method  translate
+ *
+ * @param   {Number} tx The amount of offset on the X axis.
+ * @param   {Number} ty The amount of offset on the Y axis.
  */
 pub.translate = function (tx, ty) {
   if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") {
