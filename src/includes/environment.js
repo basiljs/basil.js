@@ -22,7 +22,7 @@ pub.doc = function(doc) {
 };
 
 /**
- * @desc   Sets the size of the current *document*, if arguments are given.
+ * @description   Sets the size of the current *document*, if arguments are given.
  *         If only one argument is given, both the width and the height are set
  *         to this value. Alternatively, a string can be given as the first
  *         argument to apply an existing page size preset ("A4", "Letter" etc.).
