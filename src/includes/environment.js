@@ -897,26 +897,26 @@ pub.bleeds = function(top, right, bottom, left) {
  *          result to the console. This is useful for inspecting or debugging any
  *          kind of variable or data item.
  *
- *  - Test
- *  - List
- *  - Checking
- *  - If
+ *      - Test
+ *      - List
+ *      - Checking
+ *      - If
  *
- *  The optional settings object allows to we need to have more text,
- *  to give this some better testing.
- *  control the function's output. The following parameters can be set in
- *  the settings object:
+ *      The optional settings object allows to we need to have more text,
+ *      to give this some better testing.
+ *      control the function's output. The following parameters can be set in
+ *      the settings object:
  *
- *  - `showProps`: Show or hide properties. Default: `true`
- *  - `showValues`: Show or hide values. Default: `true`
- *  - `showMethods`: Show or hide methods. Default: `false`
- *  - `maxLevel`: Chooses how many levels of properties should be
- *    inspected recursively. Default: `1`
- *  - `propList`: Allows to pass an array of property names to show. If
- *    propList is not set all properties will be shown. Default: `[]`
- *    (no propList)
+ *      - `showProps`: Show or hide properties. Default: `true`
+ *      - `showValues`: Show or hide values. Default: `true`
+ *      - `showMethods`: Show or hide methods. Default: `false`
+ *      - `maxLevel`: Chooses how many levels of properties should be
+ *        inspected recursively. Default: `1`
+ *      - `propList`: Allows to pass an array of property names to show. If
+ *        propList is not set all properties will be shown. Default: `[]`
+ *        (no propList)
  *
- *  If no settings object is set, the default values will be used.
+ *      If no settings object is set, the default values will be used.
  *
  * @cat     Output
  * @method  inspect
