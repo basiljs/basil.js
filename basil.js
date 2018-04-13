@@ -1790,29 +1790,41 @@ pub.doc = function(doc) {
 };
 
 /**
- * Sets the size of the current document, if arguments are given.
- * If only one argument is given, both the width and the height are set to this value.
- * Alternatively, a string can be given as the first argument to apply an existing page size preset ("A4", "Letter" etc.).
- * In this case, either PORTRAIT or LANDSCAPE can be used as a second argument to determine the orientation of the page.
- * If no argument is given, an object containing the current document's width and height is returned.
+ * @desc   Sets the size of the current *document*, if arguments are given.
+ *         If only one argument is given, both the width and the height are set
+ *         to this value. Alternatively, a string can be given as the first
+ *         argument to apply an existing page size preset ("A4", "Letter" etc.).
  *
- * @cat Document
+ *         In this case, either PORTRAIT or LANDSCAPE can be used as a second
+ *         argument to determine the orientation of the page. If no argument is
+ *         given, an object containing the current document's width and height
+ *         is returned.
+ *
+ * @cat    Document
  * @method size
- * @param  {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
- * @param  {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
- * @return {Object} Object containing the current <code>width</code> and <code>height</code> of the document.
+ *
+ * @param  {Number|String} [widthOrPageSize] The desired width of the current
+ *         document or the name of a page size preset.
+ * @param  {Number|String} [heightOrOrientation] The desired height of the
+ *         current document. If not provided the width will be used as the
+ *         height. If the first argument is a page size preset, the second
+ *         argument can be used to set the orientation.
+ * @return {Object} Object containing the current <code>width</code> and
+ *         <code>height</code> of the document.
  *
  * @example <caption>Sets the document size to 70 x 100 units</caption>
- * size(70, 100);
+ *          size(70, 100);
  *
  * @example <caption>Sets the document size to 70 x 70</caption>
- * size(70);
+ *          size(70);
  *
- * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
- * size("A4");
+ * @example <caption>Sets the document size to A4, keeps the current orientation
+ *         in place</caption>
+ *         size("A4");
  *
- * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
- * size("A4", LANDSCAPE);
+ * @example <caption>Sets the document size to A4, set the orientation to
+ *         landscape</caption>
+ *         size("A4", LANDSCAPE);
  */
 pub.size = function(widthOrPageSize, heightOrOrientation) {
   if(app.documents.length === 0) {
