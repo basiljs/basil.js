@@ -896,11 +896,12 @@ pub.bleeds = function(top, right, bottom, left) {
  * @description Inspects a given object or any other data item and prints the
  *          result to the console. This is useful for inspecting or debugging any
  *          kind of variable or data item.
- *   - Test
- *   - List
- *   - Checking
- *   - If
- *          The optional settings object allows to
+ *     - Test
+ *     - List
+ *     - Checking
+ *     - If
+ *          The optional settings object allows to we need to have more text,
+ *          to give this some better testing.
  *       - Test
  *       - List
  *       - Checking
