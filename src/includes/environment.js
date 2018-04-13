@@ -893,33 +893,49 @@ pub.bleeds = function(top, right, bottom, left) {
 
 
 /**
- * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
- * <code>showProps</code>: Show or hide properties. Default: <code>true</code>
- * <code>showValues</code>: Show or hide values. Default: <code>true</code>
- * <code>showMethods</code>: Show or hide methods. Default: <code>false</code>
- * <code>maxLevel</code>: Chooses how many levels of properties should be inspected recursively. Default: <code>1</code>
- * <code>propList</code>: Allows to pass an array of property names to show. If propList is not set all properties will be shown. Default: <code>[]</code> (no propList)
- * If no settings object is set, the default values will be used.
+ * @description Inspects a given object or any other data item and prints the
+ *          result to the console. This is useful for inspecting or debugging any
+ *          kind of variable or data item. The optional settings object allows to
+ *          control the function's output. The following parameters can be set in
+ *          the settings object:
+ *          - `showProps`: Show or hide properties. Default: `true`
+ *          - `showValues`: Show or hide values. Default: `true`
+ *          - `showMethods`: Show or hide methods. Default: `false`
+ *          - `maxLevel`: Chooses how many levels of properties should be
+ *            inspected recursively. Default: `1`
+ *          - `propList`: Allows to pass an array of property names to show. If
+ *            propList is not set all properties will be shown. Default: `[]`
+ *            (no propList)
+ *          If no settings object is set, the default values will be used.
  *
- * @cat Output
- * @method inspect
- * @param  {Object} obj An object or any other data item to be inspected.
- * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {Boolean} [settings.showProps] Show or hide properties. Default: <code>true</code>
- * @param  {Boolean} [settings.showValues] Show or hide values. Default: <code>true</code>
- * @param  {Boolean} [settings.showMethods] Show or hide methods. Default: <code>false</code>
- * @param  {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: <code>1</code>
- * @param  {Array} [settings.propList] Array of properties to show. Default: <code>[]</code> (no propList)
+ * @cat     Output
+ * @method  inspect
  *
- * @example <caption>Inspecting a string</caption>
- * inspect("foo");
+ * @param   {Object} obj An object or any other data item to be inspected.
+ * @param   {Object} [settings] A settings object to control the function's
+ *          behavior.
+ * @param   {Boolean} [settings.showProps] Show or hide properties. Default:
+ *          `true`
+ * @param   {Boolean} [settings.showValues] Show or hide values. Default:
+ *          `true`
+ * @param   {Boolean} [settings.showMethods] Show or hide methods. Default:
+ *          `false`
+ * @param   {Number} [settings.maxLevel] How many levels of properties should be
+ *          inspected recursively. Default: `1`
+ * @param   {Array} [settings.propList] Array of properties to show. Default:
+ *          `[]` (no propList)
  *
- * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
- * inspect(page(), {showMethods: true, maxLevel: 2})
+ * @example <caption>Inspecting a string</caption> inspect("foo");
  *
- * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
- * var myEllipse = ellipse(0, 0, 10, 10);
- * inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
+ * @example <caption>Inspecting the current page, its methods and an additional
+ *          level of properties</caption>
+ *          inspect(page(), {showMethods: true, maxLevel: 2})
+ *
+ * @example <caption>Inspecting an ellipse, listing only the properties
+ *          "geometricBounds" and "strokeWeight"</caption>
+ *          var myEllipse = ellipse(0, 0, 10, 10);
+ *          inspect(myEllipse, {maxLevel: 2, propList:
+ *          ["geometricBounds, strokeWeight"]});
  */
 pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 
