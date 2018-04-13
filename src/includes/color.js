@@ -5,10 +5,14 @@
 /**
  * @description Sets the color or gradient used to fill shapes.
  *
- * @cat    Color
- * @method fill
- * @param  {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
- * @param  {String} [name] If created with numbers, a custom swatch name can be given.
+ * @cat     Color
+ * @method  fill
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a
+ *          color/gradient/swatch as string name or variable. Or values: GRAY /
+ *          R,G,B / C,M,Y,K.
+ * @param   {String} [name] If created with numbers, a custom swatch name can be
+ *          given.
  */
 pub.fill = function (fillColor) {
 
@@ -42,22 +46,26 @@ pub.fill = function (fillColor) {
 };
 
 /**
- * @description Disables filling geometry. If both noStroke() and noFill() are called,
- * newly drawn shapes will be invisible.
+ * @description Disables filling geometry. If both `noStroke()` and `noFill()`
+ *          are called, newly drawn shapes will be invisible.
  *
- * @cat    Color
- * @method noFill
+ * @cat     Color
+ * @method  noFill
  */
 pub.noFill = function () {
   currFillColor = noneSwatchColor;
 };
 
 /**
- * @description Sets the color or gradient used to draw lines and borders around shapes.
+ * @description Sets the color or gradient used to draw lines and borders around
+ *          shapes.
  *
- * @cat Color
- * @method stroke
- * @param {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @cat     Color
+ * @method  stroke
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a
+ *          color/gradient/swatch as string name or variable. Or values: GRAY /
+ *          R,G,B / C,M,Y,K.
  */
 pub.stroke = function (strokeColor) {
   checkNull(strokeColor);
@@ -90,11 +98,11 @@ pub.stroke = function (strokeColor) {
 };
 
 /**
- * @description Disables drawing the stroke. If both noStroke() and noFill() are called,
- * newly drawn shapes will be invisible.
+ * @description Disables drawing the stroke. If both noStroke() and noFill() are
+ *          called, newly drawn shapes will be invisible.
  *
- * @cat    Color
- * @method noStroke
+ * @cat     Color
+ * @method  noStroke
  */
 pub.noStroke = function () {
   currStrokeColor = noneSwatchColor;
@@ -103,9 +111,10 @@ pub.noStroke = function () {
 /**
  * @description Sets the tint of the color used to fill shapes.
  *
- * @cat    Color
- * @method fillTint
- * @param  {Number} tint Number from 0 to 100
+ * @cat     Color
+ * @method  fillTint
+ *
+ * @param   {Number} tint Number from 0 to 100
  */
 pub.fillTint = function (tint) {
   checkNull(tint);
@@ -117,11 +126,13 @@ pub.fillTint = function (tint) {
 };
 
 /**
- * @description Sets the tint of the color used to draw lines and borders around shapes.
+ * @description Sets the tint of the color used to draw lines and borders around
+ *          shapes.
  *
- * @cat    Color
- * @method strokeTint
- * @param  {Number} tint Number from 0 to 100.
+ * @cat     Color
+ * @method  strokeTint
+ *
+ * @param   {Number} tint Number from 0 to 100.
  */
 pub.strokeTint = function (tint) {
   checkNull(tint);
@@ -133,11 +144,13 @@ pub.strokeTint = function (tint) {
 };
 
 /**
- * @description Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
+ * @description Sets the colormode for creating new colors with color() to RGB
+ *          or CMYK. The default color mode is RGB.
  *
- * @cat    Color
- * @method colorMode
- * @param  {Number} colorMode RGB or CMYK.
+ * @cat     Color
+ * @method  colorMode
+ *
+ * @param   {Number} colorMode RGB or CMYK.
  */
 pub.colorMode = function(colorMode) {
   checkNull(colorMode);
@@ -152,11 +165,13 @@ pub.colorMode = function(colorMode) {
 };
 
 /**
- * @description Sets the gradient mode for gradient() to LINEAR or RADIAL. The default gradient mode is LINEAR.
+ * @description Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`.
+ *          The default gradient mode is `LINEAR`.
  *
- * @cat    Color
- * @method gradientMode
- * @param  {String} gradientMode LINEAR or RADIAL.
+ * @cat     Color
+ * @method  gradientMode
+ *
+ * @param   {String} gradientMode `LINEAR` or `RADIAL`.
  */
 pub.gradientMode = function(gradientMode) {
   checkNull(gradientMode);
@@ -173,9 +188,11 @@ pub.gradientMode = function(gradientMode) {
 /**
  * @description Gets a swatch by name.
  *
- * @cat    Color
- * @method swatch
- * @param  {String} swatchName Returns the swatch color/gradient for a given name by string.
+ * @cat     Color
+ * @method  swatch
+ *
+ * @param   {String} swatchName Returns the swatch color/gradient for a given
+ *          name by string.
  */
 pub.swatch = function(){
   var newSwatch;
@@ -196,12 +213,17 @@ pub.swatch = function(){
 }
 
 /**
- * @description Creates a new RGB / CMYK color and adds it to the document, or gets a color by name from the document. The default color mode is RGB.
+ * @description Creates a new RGB / CMYK color and adds it to the document, or
+ *          gets a color by name from the document. The default color mode is
+ *          RGB.
  *
- * @cat    Color
- * @method color
- * @param  {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
- * @return {Color} Found or new color
+ * @cat     Color
+ * @method  color
+ *
+ * @param   {String|Numbers} Get color: the color name. Create new color:
+ *          GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always
+ *          optional.
+ * @return  {Color} Found or new color
  */
 pub.color = function() {
   var newCol;
@@ -332,19 +354,30 @@ pub.color = function() {
 };
 
 /**
- * @description Creates a new gradient and adds it to the document, or gets a gradient by name from the document.<br>
- * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used
- * as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array
- * a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions
- * range from 0 to 100. All parameter options allow for an additional name parameter at the end to name the new gradient.
- * If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
+ * @description Creates a new gradient and adds it to the document, or gets a
+ *          gradient by name from the document.<br>
+ *          If two colors are given as
+ *          the first two parameters, a gradient is created that blends between
+ *          these two colors. If an array of colors is used as the first
+ *          parameter, a gradient with the contained colors will be created. The
+ *          colors will be distributed evenly. If additionally to this array a
+ *          second array of gradient stop positions is given, the colors will be
+ *          positioned at the given gradient stops. Possible gradient stop
+ *          positions range from 0 to 100. All parameter options allow for an
+ *          additional name parameter at the end to name the new gradient. If a
+ *          string is used as the only parameter, the gradient with that name
+ *          will be returned, if it exists in the document.
  *
- * @cat    Color
- * @method gradient
- * @param  {Color|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
- * @param  {Color|Array|String} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
- * @param  {String} [name] Optional name of the gradient.
- * @return {Gradient} Found or new gradient
+ * @cat     Color
+ * @method  gradient
+ *
+ * @param   {Color|Array|String} c1 First color of the gradient. Alternatively:
+ *          Array of colors/gradients or name of gradient to get.
+ * @param   {Color|Array|String} c2 Second color of the gradient. Alternatively:
+ *          Array of gradient stop positions (if first parameter is an array of
+ *          colors).
+ * @param   {String} [name] Optional name of the gradient.
+ * @return  {Gradient} Found or new gradient
  */
 pub.gradient = function() {
   var newGrad;
@@ -450,10 +483,11 @@ pub.gradient = function() {
 /**
  * @description Sets the opacity property of an object.
  *
- * @cat    Color
- * @method opacity
- * @param  {Object} obj The object to set opacity of.
- * @param  {Number} opacity The opacity value from 0 to 100.
+ * @cat     Color
+ * @method  opacity
+ *
+ * @param   {Object} obj The object to set opacity of.
+ * @param   {Number} opacity The opacity value from 0 to 100.
  */
 pub.opacity = function(obj, opacity) {
   checkNull(obj);
@@ -467,26 +501,28 @@ pub.opacity = function(obj, opacity) {
 /**
  * @description Sets the Effects blendMode property of an object.
  *
- * @cat    Color
- * @method blendMode
- * @param  {Object} obj The object to set blendMode of.
- * @param  {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
- *    - `BlendMode.NORMAL`
- *    - `BlendMode.MULTIPLY`
- *    - `BlendMode.SCREEN`
- *    - `BlendMode.OVERLAY`
- *    - `BlendMode.SOFT_LIGHT`
- *    - `BlendMode.HARD_LIGHT`
- *    - `BlendMode.COLOR_DODGE`
- *    - `BlendMode.COLOR_BURN`
- *    - `BlendMode.DARKEN`
- *    - `BlendMode.LIGHTEN`
- *    - `BlendMode.DIFFERENCE`
- *    - `BlendMode.EXCLUSION`
- *    - `BlendMode.HUE`
- *    - `BlendMode.SATURATION`
- *    - `BlendMode.COLOR`
- *    - `BlendMode.LUMINOSITY`
+ * @cat     Color
+ * @method  blendMode
+ *
+ * @param   {Object} obj The object to set blendMode of.
+ * @param   {Number} blendMode The blendMode must be one of the InDesign
+ *          BlendMode enum values:
+ *      - `BlendMode.NORMAL`
+ *      - `BlendMode.MULTIPLY`
+ *      - `BlendMode.SCREEN`
+ *      - `BlendMode.OVERLAY`
+ *      - `BlendMode.SOFT_LIGHT`
+ *      - `BlendMode.HARD_LIGHT`
+ *      - `BlendMode.COLOR_DODGE`
+ *      - `BlendMode.COLOR_BURN`
+ *      - `BlendMode.DARKEN`
+ *      - `BlendMode.LIGHTEN`
+ *      - `BlendMode.DIFFERENCE`
+ *      - `BlendMode.EXCLUSION`
+ *      - `BlendMode.HUE`
+ *      - `BlendMode.SATURATION`
+ *      - `BlendMode.COLOR`
+ *      - `BlendMode.LUMINOSITY`
  */
 pub.blendMode = function(obj, blendMode) {
   checkNull(obj);
@@ -498,16 +534,20 @@ pub.blendMode = function(obj, blendMode) {
 };
 
 /**
- * @description Calculates a color or colors between two colors at a specific increment.<br>
- * The amt parameter is the amount to interpolate between the two values where 0.0 equals the first color, 0.5 is half-way in between and 1.0 equals the second color.
- * N.B.: Both colors must be either CMYK or RGB.
+ * @description Calculates a color or colors between two colors at a specific
+ *          increment.<br>
+ *          The `amt` parameter is the amount to interpolate between
+ *          the two values where 0.0 equals the first color, 0.5 is half-way in
+ *          between and 1.0 equals the second color. N.B.: Both colors must be
+ *          either CMYK or RGB.
  *
- * @cat    Color
- * @method lerpColor
- * @param  {Color} c1   Input color 1.
- * @param  {Color} c2   Input color 2.
- * @param  {Number} amt The amount to interpolate between the two colors.
- * @return {Color} Interpolated color
+ * @cat     Color
+ * @method  lerpColor
+ *
+ * @param   {Color} c1 Input color 1.
+ * @param   {Color} c2 Input color 2.
+ * @param   {Number} amt The amount to interpolate between the two colors.
+ * @return  {Color} Interpolated color
  */
 pub.lerpColor = function (c1, c2, amt) {
   checkNull(c1);
