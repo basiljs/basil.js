@@ -26,7 +26,7 @@ pub.doc = function(doc) {
  *         If only one argument is given, both the width and the height are set
  *         to this value. Alternatively, a string can be given as the first
  *         argument to apply an existing page size preset ("A4", "Letter" etc.).
- *
+ *         <br><br>
  *         In this case, either PORTRAIT or LANDSCAPE can be used as a second
  *         argument to determine the orientation of the page. If no argument is
  *         given, an object containing the current document's width and height
