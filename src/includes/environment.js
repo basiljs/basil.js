@@ -900,8 +900,8 @@ pub.bleeds = function(top, right, bottom, left) {
  *    - List
  *    - Checking
  *    - If
- *          The optional settings object allows to we need to have more text,
- *          to give this some better testing.
+ *  The optional settings object allows to we need to have more text,
+ *  to give this some better testing.
  *       - Test
  *       - List
  *       - Checking
