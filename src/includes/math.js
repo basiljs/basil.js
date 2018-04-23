@@ -5,23 +5,9 @@
 var Vector = pub.Vector = function() {
 
   /**
-   * @description A class to describe a two or three dimensional vector. This
-   *          data type stores two or three variables that are commonly used as
-   *          a position, velocity, and/or acceleration. Technically, position
-   *          is a point and velocity and acceleration are vectors, but this is
-   *          often simplified to consider all three as vectors. For example, if
-   *          you consider a rectangle moving across the screen, at any given
-   *          instant it has a position (the object's location, expressed as a
-   *          point.), a velocity (the rate at which the object's position
-   *          changes per time unit, expressed as a vector), and acceleration
-   *          (the rate at which the object's velocity changes per time unit,
-   *          expressed as a vector). Since vectors represent groupings of
-   *          values, we cannot simply use traditional
-   *          addition/multiplication/etc. Instead, we'll need to do some
-   *          "vector" math, which is made easy by the methods inside the Vector
-   *          class.
-   *          <br><br>
-   *          Constructor of Vector, can be two- or three-dimensional.
+   * @description A class to describe a two or three dimensional vector. This data type stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the Vector class.
+   *
+   * Constructor of Vector, can be two- or three-dimensional.
    *
    * @cat     Math
    * @subcat  Vector
@@ -38,9 +24,7 @@ var Vector = pub.Vector = function() {
     this.z = z || 0;
   }
   /**
-   * @description Static function. Calculates the Euclidean distance between two
-   *          points (considering a point as a vector object). Is meant to be
-   *          called "static" i.e. `Vector.dist(v1, v2);`
+   * @description Static function. Calculates the Euclidean distance between two points (considering a point as a vector object). Is meant to be called "static" i.e. `Vector.dist(v1, v2);`
    *
    * @cat     Math
    * @subcat  Vector
@@ -56,8 +40,7 @@ var Vector = pub.Vector = function() {
   };
 
   /**
-   * @description Static function. Calculates the dot product of two vectors. Is
-   *          meant to be called "static" i.e. `Vector.dot(v1, v2);`
+   * @description Static function. Calculates the dot product of two vectors. Is meant to be called "static" i.e. `Vector.dot(v1, v2);`
    *
    * @cat     Math
    * @subcat  Vector
@@ -73,8 +56,7 @@ var Vector = pub.Vector = function() {
   };
 
   /**
-   * @description Static function. Calculates the cross product of two vectors.
-   *          Is meant to be called "static" i.e. `Vector.cross(v1, v2);`
+   * @description Static function. Calculates the cross product of two vectors. Is meant to be called "static" i.e. `Vector.cross(v1, v2);`
    *
    * @cat     Math
    * @subcat  Vector
@@ -90,8 +72,7 @@ var Vector = pub.Vector = function() {
   };
 
   /**
-   * @description Static function. Calculates the angle between two vectors. Is
-   *          meant to be called "static" i.e. `Vector.angleBetween(v1, v2);`
+   * @description Static function. Calculates the angle between two vectors. Is meant to be called "static" i.e. `Vector.angleBetween(v1, v2);`
    *
    * @cat     Math
    * @subcat  Vector
@@ -109,9 +90,7 @@ var Vector = pub.Vector = function() {
   Vector.prototype = {
 
     /**
-     * @description Sets the `x`, `y`, and `z` component of the vector using
-     *          three separate variables, the data from a Vector, or the values
-     *          from a float array.
+     * @description Sets the `x`, `y`, and `z` component of the vector using three separate variables, the data from a Vector, or the values from a float array.
      *
      * @cat     Math
      * @subcat  Vector
@@ -142,8 +121,7 @@ var Vector = pub.Vector = function() {
       return new Vector(this.x, this.y, this.z);
     },
     /**
-     * @description Calculates the magnitude (length) of the vector and returns
-     *          the result as a float
+     * @description Calculates the magnitude (length) of the vector and returns the result as a float
      *
      * @cat     Math
      * @subcat  Vector
@@ -158,8 +136,7 @@ var Vector = pub.Vector = function() {
       return Math.sqrt(x * x + y * y + z * z);
     },
     /**
-     * @description Adds `x`, `y`, and `z` components to a vector, adds one
-     *          vector to another.
+     * @description Adds `x`, `y`, and `z` components to a vector, adds one vector to another.
      *
      * @cat     Math
      * @subcat  Vector
@@ -181,8 +158,7 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Substract `x`, `y`, and `z` components or a full vector from
-     *          this vector
+     * @description Substract `x`, `y`, and `z` components or a full vector from this vector.
      *
      * @cat     Math
      * @subcat  Vector
@@ -204,8 +180,7 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Multiplies this vector with `x`, `y`, and `z` components or
-     *          another vector.
+     * @description Multiplies this vector with `x`, `y`, and `z` components or another vector.
      *
      * @cat     Math
      * @subcat  Vector
@@ -227,8 +202,7 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Divides this vector through `x`, `y`, and `z` components or
-     *          another vector.`
+     * @description Divides this vector through `x`, `y`, and `z` components or another vector.`
      *
      * @cat     Math
      * @subcat  Vector
@@ -250,8 +224,7 @@ var Vector = pub.Vector = function() {
       }
     },
     /**
-     * @description Calculates the distance from this vector to another as `x`,
-     *          `y`, and `z` components or full vector.
+     * @description Calculates the distance from this vector to another as `x`, `y`, and `z` components or full vector.
      *
      * @cat     Math
      * @subcat  Vector
@@ -269,8 +242,7 @@ var Vector = pub.Vector = function() {
       return Math.sqrt(dx * dx + dy * dy + dz * dz);
     },
     /**
-     * @description Calculates the dot product from this vector to another as
-     *          `x`, `y`, and `z` components or full vector.
+     * @description Calculates the dot product from this vector to another as `x`, `y`, and `z` components or full vector.
      *
      * @cat     Math
      * @subcat  Vector
@@ -286,8 +258,7 @@ var Vector = pub.Vector = function() {
       return this.x * v + this.y * y + this.z * z;
     },
     /**
-     * @description Calculates the cross product from this vector to another as
-     *          `x`, `y`, and `z` components or full vector.
+     * @description Calculates the cross product from this vector to another as `x`, `y`, and `z` components or full vector.
      *
      * @cat     Math
      * @subcat  Vector
@@ -361,8 +332,7 @@ var Vector = pub.Vector = function() {
      * @subcat  Vector
      * @method  Vector.array
      *
-     * @return  {Array} The `x`, `y` and `z` components as an array of
-     *          `[x,y,z]`.
+     * @return  {Array} The `x`, `y` and `z` components as an array of `[x,y,z]`.
      */
     array: function() {
       return [this.x, this.y, this.z];
@@ -384,8 +354,7 @@ var Vector = pub.Vector = function() {
 // -- Calculation --
 
 /**
- * @description Calculates the absolute value (magnitude) of a number. The
- *          absolute value of a number is always positive.
+ * @description Calculates the absolute value (magnitude) of a number. The absolute value of a number is always positive.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -397,9 +366,7 @@ var Vector = pub.Vector = function() {
 pub.abs = Math.abs;
 
 /**
- * @description Calculates the closest integer value that is greater than or
- *          equal to the value of the parameter. For example, `ceil(9.03)`
- *          returns the value `10`.
+ * @description Calculates the closest integer value that is greater than or equal to the value of the parameter. For example, `ceil(9.03)` returns the value `10`.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -454,9 +421,7 @@ pub.dist = function() {
 };
 
 /**
- * @description The `exp()` function returns `ex`, where `x` is the argument,
- *          and `e` is Euler's number (also known as Napier's constant), the
- *          base of the natural logarithms.
+ * @description The `exp()` function returns `ex`, where `x` is the argument, and `e` is Euler's number (also known as Napier's constant), the base of the natural logarithms.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -468,8 +433,7 @@ pub.dist = function() {
 pub.exp = Math.exp;
 
 /**
- * @description Calculates the closest integer value that is less than or equal
- *          to the value of the parameter.
+ * @description Calculates the closest integer value that is less than or equal to the value of the parameter.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -481,12 +445,7 @@ pub.exp = Math.exp;
 pub.floor = Math.floor;
 
 /**
- * @description Calculates a number between two numbers at a specific increment.
- *          The `amt` parameter is the amount to interpolate between the two
- *          values where `0.0` is equal to the first point, `0.1` is very near
- *          the first point, `0.5` is half-way in between, etc. The lerp
- *          function is convenient for creating motion along a straight path and
- *          for drawing dotted lines.
+ * @description Calculates a number between two numbers at a specific increment. The `amt` parameter is the amount to interpolate between the two values where `0.0` is equal to the first point, `0.1` is very near the first point, `0.5` is half-way in between, etc. The lerp function is convenient for creating motion along a straight path and for drawing dotted lines.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -503,8 +462,7 @@ pub.lerp = function(value1, value2, amt) {
 };
 
 /**
- * @description Calculates the natural logarithm (the base-e logarithm) of a
- *          number. This function expects the values greater than `0`.
+ * @description Calculates the natural logarithm (the base-e logarithm) of a number. This function expects the values greater than `0`.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -516,12 +474,7 @@ pub.lerp = function(value1, value2, amt) {
 pub.log = Math.log;
 
 /**
- * @description Calculates the magnitude (or length) of a vector. A vector is a
- *          direction in space commonly used in computer graphics and linear
- *          algebra. Because it has no "start" position, the magnitude of a
- *          vector can be thought of as the distance from coordinate `(0,0)` to
- *          its `(x,y)` value. Therefore, `mag()` is a shortcut for writing
- *          `dist(0, 0, x, y)`.
+ * @description Calculates the magnitude (or length) of a vector. A vector is a direction in space commonly used in computer graphics and linear algebra. Because it has no "start" position, the magnitude of a vector can be thought of as the distance from coordinate `(0,0)` to its `(x,y)` value. Therefore, `mag()` is a shortcut for writing `dist(0, 0, x, y)`.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -539,9 +492,8 @@ pub.mag = function(a, b, c) {
 };
 
 /**
- * @description Re-maps a number from one range to another.<br>
- *          Numbers outside the range are not clamped to `0` and `1`, because
- *          out-of-range values are often intentional and useful.
+ * @description Re-maps a number from one range to another.
+ * Numbers outside the range are not clamped to `0` and `1`, because out-of-range values are often intentional and useful.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -604,11 +556,9 @@ pub.min = function() {
 };
 
 /**
- * @description Normalizes a number from another range into a value between `0`
- *          and `1`.<br>
- *          Identical to `map(value, low, high, 0, 1);`<br>
- *          Numbers outside the range are not clamped to `0` and `1`, because
- *          out-of-range values are often intentional and useful.
+ * @description Normalizes a number from another range into a value between `0` and `1`.
+ * Identical to `map(value, low, high, 0, 1);`
+ * Numbers outside the range are not clamped to `0` and `1`, because out-of-range values are often intentional and useful.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -625,11 +575,7 @@ pub.norm = function(aNumber, low, high) {
 };
 
 /**
- * @description Facilitates exponential expressions. The `pow()` function is an
- *          efficient way of multiplying numbers by themselves (or their
- *          reciprocal) in large quantities. For example, `pow(3, 5)` is
- *          equivalent to the expression `3 * 3 * 3 * 3 * 3` and `pow(3, -5)` is
- *          equivalent to `1 / 3 * 3 * 3 * 3 * 3`.
+ * @description Facilitates exponential expressions. The `pow()` function is an efficient way of multiplying numbers by themselves (or their reciprocal) in large quantities. For example, `pow(3, 5)` is equivalent to the expression `3 * 3 * 3 * 3 * 3` and `pow(3, -5)` is equivalent to `1 / 3 * 3 * 3 * 3 * 3`.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -642,8 +588,7 @@ pub.norm = function(aNumber, low, high) {
 pub.pow = Math.pow;
 
 /**
- * @description Calculates the integer closest to the value parameter. For
- *          example, `round(9.2)` returns the value `9`.
+ * @description Calculates the integer closest to the value parameter. For example, `round(9.2)` returns the value `9`.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -655,9 +600,7 @@ pub.pow = Math.pow;
 pub.round = Math.round;
 
 /**
- * @description Squares a number (multiplies a number by itself). The result is
- *          always a positive number, as multiplying two negative numbers always
- *          yields a positive result. For example, `-1 * -1 = 1`.
+ * @description Squares a number (multiplies a number by itself). The result is always a positive number, as multiplying two negative numbers always yields a positive result. For example, `-1 * -1 = 1`.
  *
  * @cat     Math
  * @subcat  Calculation
@@ -674,10 +617,7 @@ pub.sq = function(aNumber) {
 // -- Trigonometry --
 
 /**
- * @description Calculates the square root of a number. The square root of a
- *          number is always positive, even though there may be a valid negative
- *          root. The square root s of number a is such that `s * s = a`. It is
- *          the opposite of squaring.
+ * @description Calculates the square root of a number. The square root of a number is always positive, even though there may be a valid negative root. The square root s of number a is such that `s * s = a`. It is the opposite of squaring.
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -689,9 +629,7 @@ pub.sq = function(aNumber) {
 pub.sqrt = Math.sqrt;
 
 /**
- * @description The inverse of `cos()`, returns the arc cosine of a value. This
- *          function expects the values in the range of `-1` to `1` and values
- *          are returned in the range `0` to `PI` (`3.1415927`).
+ * @description The inverse of `cos()`, returns the arc cosine of a value. This function expects the values in the range of `-1` to `1` and values are returned in the range `0` to `PI` (`3.1415927`).
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -703,9 +641,7 @@ pub.sqrt = Math.sqrt;
 pub.acos = Math.acos;
 
 /**
- * @description The inverse of `sin()`, returns the arc sine of a value. This
- *          function expects the values in the range of `-1` to `1` and values
- *          are returned in the range `0` to `PI` (`3.1415927`).
+ * @description The inverse of `sin()`, returns the arc sine of a value. This function expects the values in the range of `-1` to `1` and values are returned in the range `0` to `PI` (`3.1415927`).
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -717,9 +653,7 @@ pub.acos = Math.acos;
 pub.asin = Math.asin;
 
 /**
- * @description The inverse of `tan()`, returns the arc tangent of a value. This
- *          function expects the values in the range of `-1` to `1` and values
- *          are returned in the range `0` to `PI` (`3.1415927`).
+ * @description The inverse of `tan()`, returns the arc tangent of a value. This function expects the values in the range of `-1` to `1` and values are returned in the range `0` to `PI` (`3.1415927`).
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -731,13 +665,7 @@ pub.asin = Math.asin;
 pub.atan = Math.atan;
 
 /**
- * @description Calculates the angle (in radians) from a specified point to the
- *          coordinate origin as measured from the positive x-axis. Values are
- *          returned as a float in the range from `PI` to `-PI`. The `atan2()`
- *          function is most often used for orienting geometry to the position
- *          of the cursor. Note: The y-coordinate of the point is the first
- *          parameter and the x-coordinate is the second due the the structure
- *          of calculating the tangent.
+ * @description Calculates the angle (in radians) from a specified point to the coordinate origin as measured from the positive x-axis. Values are returned as a float in the range from `PI` to `-PI`. The `atan2()` function is most often used for orienting geometry to the position of the cursor. Note: The y-coordinate of the point is the first parameter and the x-coordinate is the second due the the structure of calculating the tangent.
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -750,9 +678,7 @@ pub.atan = Math.atan;
 pub.atan2 = Math.atan2;
 
 /**
- * @description Calculates the cosine of an angle. This function expects the
- *          values of the angle parameter to be provided in radians (values from
- *          `0` to `PI * 2`). Values are returned in the range `-1` to `1`.
+ * @description Calculates the cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from `0` to `PI * 2`). Values are returned in the range `-1` to `1`.
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -764,12 +690,7 @@ pub.atan2 = Math.atan2;
 pub.cos = Math.cos;
 
 /**
- * @description Converts a radian measurement to its corresponding value in
- *          degrees. Radians and degrees are two ways of measuring the same
- *          thing. There are 360 degrees in a circle and `2 * PI` radians in a
- *          circle. For example, `90° = PI / 2 = 1.5707964`. All trigonometric
- *          methods in basil require their parameters to be specified in
- *          radians.
+ * @description Converts a radian measurement to its corresponding value in degrees. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and `2 * PI` radians in a circle. For example, `90° = PI / 2 = 1.5707964`. All trigonometric methods in basil require their parameters to be specified in radians.
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -783,12 +704,7 @@ pub.degrees = function(aAngle) {
 };
 
 /**
- * @description Converts a degree measurement to its corresponding value in
- *          radians. Radians and degrees are two ways of measuring the same
- *          thing. There are 360 degrees in a circle and `2 * PI` radians in a
- *          circle. For example, `90° = PI / 2 = 1.5707964`. All trigonometric
- *          methods in basil require their parameters to be specified in
- *          radians.
+ * @description Converts a degree measurement to its corresponding value in radians. Radians and degrees are two ways of measuring the same thing. There are 360 degrees in a circle and `2 * PI` radians in a circle. For example, `90° = PI / 2 = 1.5707964`. All trigonometric methods in basil require their parameters to be specified in radians.
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -802,9 +718,7 @@ pub.radians = function(aAngle) {
 };
 
 /**
- * @description Calculates the sine of an angle. This function expects the
- *          values of the angle parameter to be provided in radians (values from
- *          `0` to `6.28`). Values are returned in the range `-1` to `1`.
+ * @description Calculates the sine of an angle. This function expects the values of the angle parameter to be provided in radians (values from `0` to `6.28`). Values are returned in the range `-1` to `1`.
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -816,10 +730,7 @@ pub.radians = function(aAngle) {
 pub.sin = Math.sin;
 
 /**
- * @description Calculates the ratio of the sine and cosine of an angle. This
- *          function expects the values of the angle parameter to be provided in
- *          radians (values from `0` to `PI * 2`). Values are returned in the
- *          range `infinity` to `-infinity`.
+ * @description Calculates the ratio of the sine and cosine of an angle. This function expects the values of the angle parameter to be provided in radians (values from `0` to `PI * 2`). Values are returned in the range `infinity` to `-infinity`.
  *
  * @cat     Math
  * @subcat  Trigonometry
@@ -835,17 +746,8 @@ pub.tan = Math.tan;
 var currentRandom = Math.random;
 
 /**
- * @description Generates random numbers. Each time the `random()` function is
- *          called, it returns an unexpected value within the specified range.
- *          If one parameter is passed to the function it will return a float
- *          between zero and the value of the high parameter. The function call
- *          `random(5)` returns values between `0` and `5`. If two parameters
- *          are passed, it will return a float with a value between the the
- *          parameters. The function call `random(-5, 10.2)` returns values
- *          between `-5` and `10.2`.<br>
- *          One parameter sets the range from `0`
- *          to the given parameter, while with two parameters present you set
- *          the range from `val1` to `val2`.
+ * @description Generates random numbers. Each time the `random()` function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call `random(5)` returns values between `0` and `5`. If two parameters are passed, it will return a float with a value between the the parameters. The function call `random(-5, 10.2)` returns values between `-5` and `10.2`.
+ * One parameter sets the range from `0` to the given parameter, while with two parameters present you set the range from `val1` to `val2`.
  *
  * @cat     Math
  * @subcat  Random
@@ -882,10 +784,8 @@ Marsaglia.createRandomized = function() {
   return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295);
 };
 /**
- * @description Sets the seed value for `random()`.<br> By default, `random()`
- *          produces different results each time the program is run. Set the
- *          seed parameter to a constant to return the same pseudo-random
- *          numbers each time the software is run.
+ * @description Sets the seed value for `random()`.
+ * By default, `random()` produces different results each time the program is run. Set the seed parameter to a constant to return the same pseudo-random numbers each time the software is run.
  *
  * @cat     Math
  * @subcat  Random
@@ -1010,38 +910,13 @@ var noiseProfile = {
 };
 
 /**
- * @description Returns the Perlin noise value at specified coordinates. Perlin
- *          noise is a random sequence generator producing a more natural
- *          ordered, harmonic succession of numbers compared to the standard
- *          `random()` function. It was invented by Ken Perlin in the 1980s and
- *          been used since in graphical applications to produce procedural
- *          textures, natural motion, shapes, terrains etc.
- *          <br><br>
- *          The main
- *          difference to the `random()` function is that Perlin noise is
- *          defined in an infinite n-dimensional space where each pair of
- *          coordinates corresponds to a fixed semi-random value (fixed only for
- *          the lifespan of the program). The resulting value will always be
- *          between `0` and `1`. basil.js can compute 1D, 2D and 3D noise,
- *          depending on the number of coordinates given. The noise value can be
- *          animated by moving through the noise space. The 2nd and 3rd
- *          dimension can also be interpreted as time.
- *          <br><br>
- *          The actual noise
- *          is structured similar to an audio signal, in respect to the
- *          function's use of frequencies. Similar to the concept of harmonics
- *          in physics, perlin noise is computed over several octaves which are
- *          added together for the final result.
- *          <br><br>
- *          Another way to adjust
- *          the character of the resulting sequence is the scale of the input
- *          coordinates. As the function works within an infinite space the
- *          value of the coordinates doesn't matter as such, only the distance
- *          between successive coordinates does (eg. when using `noise()` within
- *          a loop). As a general rule the smaller the difference between
- *          coordinates, the smoother the resulting noise sequence will be.
- *          Steps of `0.005`- `0.03` work best for most applications, but this
- *          will differ depending on use.
+ * @description Returns the Perlin noise value at specified coordinates. Perlin noise is a random sequence generator producing a more natural ordered, harmonic succession of numbers compared to the standard `random()` function. It was invented by Ken Perlin in the 1980s and been used since in graphical applications to produce procedural textures, natural motion, shapes, terrains etc.
+ *
+ * The main difference to the `random()` function is that Perlin noise is defined in an infinite n-dimensional space where each pair of coordinates corresponds to a fixed semi-random value (fixed only for the lifespan of the program). The resulting value will always be between `0` and `1`. basil.js can compute 1D, 2D and 3D noise, depending on the number of coordinates given. The noise value can be animated by moving through the noise space. The 2nd and 3rd dimension can also be interpreted as time.
+ *
+ * The actual noise is structured similar to an audio signal, in respect to the function's use of frequencies. Similar to the concept of harmonics in physics, perlin noise is computed over several octaves which are added together for the final result.
+ *
+ * Another way to adjust the character of the resulting sequence is the scale of the input coordinates. As the function works within an infinite space the value of the coordinates doesn't matter as such, only the distance between successive coordinates does (eg. when using `noise()` within a loop). As a general rule the smaller the difference between coordinates, the smoother the resulting noise sequence will be. Steps of `0.005`- `0.03` work best for most applications, but this will differ depending on use.
  *
  * @cat     Math
  * @subcat  Random
@@ -1077,30 +952,15 @@ pub.noise = function(x, y, z) {
 };
 
 /**
- * @description Adjusts the character and level of detail produced by the Perlin
- *          noise function. Similar to harmonics in physics, noise is computed
- *          over several octaves. Lower octaves contribute more to the output
- *          signal and as such define the overal intensity of the noise, whereas
- *          higher octaves create finer grained details in the noise sequence.
- *          By default, noise is computed over 4 octaves with each octave
- *          contributing exactly half than its predecessor, starting at 50%
- *          strength for the 1st octave. This falloff amount can be changed by
- *          adding an additional function parameter. Eg. a falloff factor of
- *          `0.75` means each octave will now have 75% impact (25% less) of the
- *          previous lower octave. Any value between `0` and `1` is valid,
- *          however note that values greater than `0.5` might result in greater
- *          than `1` values returned by `noise()`.
- *          <br><br>
- *          By changing these
- *          parameters, the signal created by the `noise()` function can be
- *          adapted to fit very specific needs and characteristics.
+ * @description Adjusts the character and level of detail produced by the Perlin noise function. Similar to harmonics in physics, noise is computed over several octaves. Lower octaves contribute more to the output signal and as such define the overal intensity of the noise, whereas higher octaves create finer grained details in the noise sequence. By default, noise is computed over 4 octaves with each octave contributing exactly half than its predecessor, starting at 50% strength for the 1st octave. This falloff amount can be changed by adding an additional function parameter. Eg. a falloff factor of `0.75` means each octave will now have 75% impact (25% less) of the previous lower octave. Any value between `0` and `1` is valid, however note that values greater than `0.5` might result in greater than `1` values returned by `noise()`.
+ *
+ * By changing these parameters, the signal created by the `noise()` function can be adapted to fit very specific needs and characteristics.
  *
  * @cat     Math
  * @subcat  Random
  * @method  noiseDetail
  *
- * @param   {Number} octaves Number of octaves to be used by the noise()
- *          function.
+ * @param   {Number} octaves Number of octaves to be used by the noise() function.
  * @param   {Number} fallout Falloff factor for each octave.
  */
 pub.noiseDetail = function(octaves, fallout) {
@@ -1109,10 +969,7 @@ pub.noiseDetail = function(octaves, fallout) {
 };
 
 /**
- * @description Sets the seed value for `noise()`. By default, `noise()`
- *          produces different results each time the program is run. Set the
- *          value parameter to a constant to return the same pseudo-random
- *          numbers each time the software is run.
+ * @description Sets the seed value for `noise()`. By default, `noise()` produces different results each time the program is run. Set the value parameter to a constant to return the same pseudo-random numbers each time the software is run.
  *
  * @cat     Math
  * @subcat  Random
@@ -1135,20 +992,14 @@ var precision = function(num, dec) {
 };
 
 /**
- * @description The function calculates the geometric bounds of any given page
- *          item or text. Use the `transforms()` function to modify page items.
- *          In case the object is any kind of text, additional typographic
- *          information `baseline` and `xHeight` are calculated.
+ * @description The function calculates the geometric bounds of any given page item or text. Use the `transforms()` function to modify page items. In case the object is any kind of text, additional typographic information `baseline` and `xHeight` are calculated.
  *
  * @cat     Document
  * @subcat  Transformation
  * @method  bounds
  *
- * @param   {PageItem|Text} obj The page item or text to calculate the geometric
- *          bounds.
- * @return  {Object} Geometric bounds object with these properties: `width`,
- *          `height`, `left`, `right`, `top`, `bottom` and for text: `baseline`,
- *          `xHeight`.
+ * @param   {PageItem|Text} obj The page item or text to calculate the geometric bounds.
+ * @return  {Object} Geometric bounds object with these properties: `width`, `height`, `left`, `right`, `top`, `bottom` and for text: `baseline`, `xHeight`.
  */
 pub.bounds = function (obj) {
   var x1, y1, x2, y2, w, h;

@@ -3,10 +3,7 @@
 // ----------------------------------------
 
 /**
- * @description Draws an ellipse (oval) in the display window. An ellipse with
- *          an equal width and height is a circle. The first two parameters set
- *          the location, the third sets the width, and the fourth sets the
- *          height.
+ * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height.
  *
  * @cat     Document
  * @subcat  Primitives
@@ -16,8 +13,7 @@
  * @param   {Number} y Y-coordinate of the ellipse.
  * @param   {Number} w Width of the ellipse.
  * @param   {Number} h Height of the ellipse.
- * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type
- *          is Oval, not Ellipse).
+ * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
   if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
@@ -106,20 +102,13 @@ pub.line = function(x1, y1, x2, y2) {
 };
 
 /**
- * @description Using the `beginShape()` and `endShape()` functions allows to
- *          create more complex forms. `beginShape()` begins recording vertices
- *          for a shape and `endShape()` stops recording. After calling the
- *          `beginShape()` function, a series of `vertex()` commands must
- *          follow. To stop drawing the shape, call `endShape()`. The shapeMode
- *          parameter allows to close the shape (to connect the beginning and
- *          the end).
+ * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`. The shapeMode parameter allows to close the shape (to connect the beginning and the end).
  *
  * @cat     Document
  * @subcat  Primitives
  * @method  beginShape
  *
- * @param   {String} shapeMode Set to `CLOSE` if the new path should be
- *          auto-closed.
+ * @param   {String} shapeMode Set to `CLOSE` if the new path should be auto-closed.
  */
 pub.beginShape = function(shapeMode) {
   currVertexPoints = [];
@@ -133,13 +122,9 @@ pub.beginShape = function(shapeMode) {
 };
 
 /**
- * @description Shapes are constructed by connecting a series of vertices.
- *          `vertex()` is used to specify the vertex coordinates of lines and
- *          polygons. It is used exclusively between the `beginShape()` and
- *          `endShape()` functions. <br><br> Use either `vertex(x, y)` for
- *          drawing straight corners or `vertex(x, y, xLeftHandle, yLeftHandle,
- *          xRightHandle, yRightHandle)` for drawing bezier shapes. You can also
- *          mix the two approaches.
+ * @description Shapes are constructed by connecting a series of vertices. `vertex()` is used to specify the vertex coordinates of lines and polygons. It is used exclusively between the `beginShape()` and `endShape()` functions.
+ *
+ * Use either `vertex(x, y)` for drawing straight corners or `vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)` for drawing bezier shapes. You can also mix the two approaches.
  *
  * @cat     Document
  * @subcat  Primitives
@@ -170,11 +155,7 @@ pub.vertex = function() {
 };
 
 /**
- * @description The `arc()` function draws an arc. Arcs are drawn along the
- *          outer edge of an ellipse defined by the `x`, `y`, `width` and
- *          `height` parameters. The origin or the arc's ellipse may be changed
- *          with the `ellipseMode()` function. The start and stop parameters
- *          specify the angles at which to draw the arc.
+ * @description The `arc()` function draws an arc. Arcs are drawn along the outer edge of an ellipse defined by the `x`, `y`, `width` and `height` parameters. The origin or the arc's ellipse may be changed with the `ellipseMode()` function. The start and stop parameters specify the angles at which to draw the arc.
  *
  * @cat     Document
  * @subcat  Primitives
@@ -186,11 +167,8 @@ pub.vertex = function() {
  * @param   {Number} h Height of the arc's ellipse.
  * @param   {Number} startAngle Starting angle of the arc in radians.
  * @param   {Number} endAngle Ending angle of the arc in radians.
- * @param   {String} [mode] Mode to define the rendering technique of the arc:
- *          `OPEN` (default), `CHORD`, or `PIE`.
- * @return  {GraphicLine|Polygon} The resulting GraphicLine or Polygon object
- *          (in InDesign Scripting terms the corresponding type is GraphicLine
- *          or Polygon, not Arc).
+ * @param   {String} [mode] Mode to define the rendering technique of the arc: `OPEN` (default), `CHORD`, or `PIE`.
+ * @return  {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
  */
 pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   if (w <= 0 || endAngle < startAngle) {
@@ -300,11 +278,7 @@ function calculateEllipticalArc(w, h, startAngle, endAngle) {
 }
 
 /**
- * @description `addPath()` is used to create multi component paths. Call
- *          `addPath()` to add the vertices drawn so far to a single path. New
- *          vertices will then end up in a new path and `endShape()` will return
- *          a multi path object. All component paths will account for the
- *          setting (see `CLOSE`) given in `beginShape(shapeMode)`.
+ * @description `addPath()` is used to create multi component paths. Call `addPath()` to add the vertices drawn so far to a single path. New vertices will then end up in a new path and `endShape()` will return a multi path object. All component paths will account for the setting (see `CLOSE`) given in `beginShape(shapeMode)`.
  *
  * @cat     Document
  * @subcat  Primitives
@@ -316,15 +290,13 @@ pub.addPath = function() {
 };
 
 /**
- * @description The `endShape()` function is the companion to `beginShape()` and
- *          may only be called after `beginShape()`.
+ * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`.
  *
  * @cat     Document
  * @subcat  Primitives
  * @method  endShape
  *
- * @return  {GraphicLine|Polygon} The GraphicLine or Polygon object that was
- *          created.
+ * @return  {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
 pub.endShape = function() {
   doAddPath();
@@ -372,16 +344,9 @@ function notCalledBeginShapeError () {
 }
 
 /**
- * @description Draws a rectangle on the page.<br>
- *          By default, the first two
- *          parameters set the location of the upper-left corner, the third sets
- *          the width, and the fourth sets the height. The way these parameters
- *          are interpreted, however, may be changed with the `rectMode()`
- *          function.<br>
- *          The fifth, sixth, seventh and eighth parameters, if
- *          specified, determine corner radius for the top-right, top-left,
- *          lower-right and lower-left corners, respectively. If only a fifth
- *          parameter is provided, all corners will be set to this radius.
+ * @description Draws a rectangle on the page.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the `rectMode()` function.
+ * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
  *
  * @cat     Document
  * @subcat  Primitives
@@ -391,8 +356,7 @@ function notCalledBeginShapeError () {
  * @param   {Number} y Y-coordinate of the rectangle.
  * @param   {Number} w Width of the rectangle.
  * @param   {Number} h Height of the rectangle.
- * @param   {Number} [tl] Radius of top left corner or radius of all 4 corners
- *          (optional).
+ * @param   {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
  * @param   {Number} [tr] Radius of top right corner (optional).
  * @param   {Number} [br] Radius of bottom right corner (optional).
  * @param   {Number} [bl] Radius of bottom left corner (optional).
@@ -469,25 +433,13 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
 // -- Attributes --
 
 /**
- * @description Modifies the location from which rectangles or text frames draw.
- *          The default mode is rectMode(CORNER), which specifies the location
- *          to be the upper left corner of the shape and uses the `w` and `h`
- *          parameters to specify the width and height. The syntax
- *          rectMode(CORNERS) uses the `x` and `y` parameters of `rect()` or
- *          `text()` to set the location of one corner and uses the `w` and `h`
- *          parameters to set the opposite corner. The syntax `rectMode(CENTER)`
- *          draws the shape from its center point and uses the `w` and `h`
- *          parameters to specify the shape's width and height. The syntax
- *          `rectMode(RADIUS)` draws the shape from its center point and uses
- *          the `w` and `h` parameters to specify half of the shape's width and
- *          height.
+ * @description Modifies the location from which rectangles or text frames draw. The default mode is `rectMode(CORNER)`, which specifies the location to be the upper left corner of the shape and uses the `w` and `h` parameters to specify the width and height. The syntax `rectMode(CORNERS)` uses the `x` and `y` parameters of `rect()` or `text()` to set the location of one corner and uses the `w` and `h` parameters to set the opposite corner. The syntax `rectMode(CENTER)` draws the shape from its center point and uses the `w` and `h` parameters to specify the shape's width and height. The syntax `rectMode(RADIUS)` draws the shape from its center point and uses the `w` and `h` parameters to specify half of the shape's width and height.
  *
  * @cat     Document
  * @subcat  Attributes
  * @method  rectMode
  *
- * @param   {String} mode The rectMode to switch to: either CORNER, CORNERS,
- *          CENTER, or RADIUS.
+ * @param   {String} mode The rectMode to switch to: either `CORNER`, `CORNERS`, `CENTER`, or `RADIUS`.
  */
 pub.rectMode = function (mode) {
   if (arguments.length === 0) return currRectMode;
@@ -500,22 +452,13 @@ pub.rectMode = function (mode) {
 };
 
 /**
- * @description The origin of new ellipses is modified by the `ellipseMode()`
- *          function. The default configuration is `ellipseMode(CENTER)`, which
- *          specifies the location of the ellipse as the center of the shape.
- *          The RADIUS mode is the same, but the `w` and `h` parameters to
- *          `ellipse()` specify the radius of the ellipse, rather than the
- *          diameter. The CORNER mode draws the shape from the upper-left corner
- *          of its bounding box. The CORNERS mode uses the four parameters to
- *          `ellipse()` to set two opposing corners of the ellipse's bounding
- *          box.
+ * @description The origin of new ellipses is modified by the `ellipseMode()` function. The default configuration is `ellipseMode(CENTER)`, which specifies the location of the ellipse as the center of the shape. The `RADIUS` mode is the same, but the `w` and `h` parameters to `ellipse()` specify the radius of the ellipse, rather than the diameter. The `CORNER` mode draws the shape from the upper-left corner of its bounding box. The `CORNERS` mode uses the four parameters to `ellipse()` to set two opposing corners of the ellipse's bounding box.
  *
  * @cat     Document
  * @subcat  Attributes
  * @method  ellipseMode
  *
- * @param   {String} mode The ellipse mode to switch to: either CENTER, RADIUS,
- *          CORNER, or CORNERS.
+ * @param   {String} mode The ellipse mode to switch to: either `CENTER`, `RADIUS`, `CORNER`, or `CORNERS`.
  */
 pub.ellipseMode = function (mode) {
   if (arguments.length === 0) return currEllipseMode;
@@ -528,8 +471,7 @@ pub.ellipseMode = function (mode) {
 };
 
 /**
- * @description Sets the width of the stroke used for lines and the border
- *          around shapes.
+ * @description Sets the width of the stroke used for lines and the border around shapes.
  *
  * @cat     Document
  * @subcat  Attributes
@@ -546,18 +488,13 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
- * @description Returns the object style of a given page item or the object
- *          style with the given name. If an object style of the given name does
- *          not exist, it gets created. Optionally a props object of property
- *          name/value pairs can be used to set the object style's properties.
+ * @description Returns the object style of a given page item or the object style with the given name. If an object style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the object style's properties.
  *
  * @cat     Typography
  * @method  objectStyle
  *
- * @param   {PageItem|String} itemOrName A page item whose style to return or
- *          the name of the object style to return.
- * @param   {Object} [props] An object of property name/value pairs to set the
- *          style's properties.
+ * @param   {PageItem|String} itemOrName A page item whose style to return or the name of the object style to return.
+ * @param   {Object} [props] An object of property name/value pairs to set the style's properties.
  * @return  {ObjectStyle} The object style instance.
  */
 pub.objectStyle = function(itemOrName, props) {
@@ -593,15 +530,13 @@ pub.objectStyle = function(itemOrName, props) {
 };
 
 /**
- * @description Applies an object style to the given page item. The object style
- *          can be given as name or as an object style instance.
+ * @description Applies an object style to the given page item. The object style can be given as name or as an object style instance.
  *
  * @cat     Typography
  * @method  applyObjectStyle
  *
  * @param   {PageItem} item The page item to apply the style to.
- * @param   {ObjectStyle|String} style An object style instance or the name of
- *          the object style to apply.
+ * @param   {ObjectStyle|String} style An object style instance or the name of the object style to apply.
  * @return  {PageItem} The page item that the style was applied to.
  */
 
@@ -625,9 +560,7 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
- * @description Duplicates the given page after the current page or the given
- *          page item to the current page and layer. Use `rectMode()` to set
- *          center point.
+ * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use `rectMode()` to set center point.
  *
  * @cat     Document
  * @subcat  Transformation

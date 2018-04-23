@@ -3,15 +3,7 @@
 // ----------------------------------------
 
 /**
- * @description Creates a text frame on the current layer on the current page in
- *          the current document. The text frame gets created in the position
- *          specified by the `x` and `y` parameters. The default document font
- *          will be used unless a font is set with the `textFont()` function.
- *          The default document font size will be used unless a font size is
- *          set with the `textSize()` function. Change the color of the text
- *          with the `fill()` function. The text displays in relation to the
- *          `textAlign()` and `textYAlign()` functions. The `width` and `height`
- *          parameters define a rectangular area.
+ * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `width` and `height` parameters define a rectangular area.
  *
  * @cat     Typography
  * @method  text
@@ -84,29 +76,17 @@ pub.text = function(txt, x, y, w, h) {
 };
 
 /**
- * @description Sets text properties to the given item. If the item is not an
- *          instance the text property can be set to, the property gets set to
- *          the direct descendants of the given item, e.g. all stories of a
- *          given document.
- *          <br><br>
- *          If no value is given and the given property
- *          is a string, the function acts as a getter and returns the
- *          corresponding value(s) in an array. This can either be an array
- *          containing the value of the concrete item (e.g. character) the
- *          values of the item's descendants (e.g. paragraphs of given text
- *          frame).
+ * @description Sets text properties to the given item. If the item is not an instance the text property can be set to, the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
+ *
+ * If no value is given and the given property is a string, the function acts as a getter and returns the corresponding value(s) in an array. This can either be an array containing the value of the concrete item (e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).
  *
  * @cat     Typography
  * @method  typo
  *
- * @param   {Document|Spread|Page|Layer|Story|TextFrame|Text} item The object to
- *          apply the property to.
- * @param   {String|Object} property The text property name or an object of
- *          key/value property/value pairs. If property is a string and no value
- *          is given, the function acts as getter.
+ * @param   {Document|Spread|Page|Layer|Story|TextFrame|Text} item The object to apply the property to.
+ * @param   {String|Object} property The text property name or an object of key/value property/value pairs. If property is a string and no value is given, the function acts as getter.
  * @param   {String|Number|Object} [value] The value to apply to the property.
- * @return  {String[]|Number[]|Object[]} The property value(s) if the function
- *          acts as getter or the items the property was assigned to.
+ * @return  {String[]|Number[]|Object[]} The property value(s) if the function acts as getter or the items the property was assigned to.
  */
 pub.typo = function(item, property, value) {
   var result = [],
@@ -179,8 +159,7 @@ var isValid = function (item) {
 };
 
 /**
- * @description Returns the current font and sets it if argument `fontName` is
- *          given.
+ * @description Returns the current font and sets it if argument `fontName` is given.
  *
  * @cat     Typography
  * @method  textFont
@@ -212,8 +191,7 @@ pub.textFont = function(fontName, fontStyle) {
 };
 
 /**
- * @description Returns the current font size in points and sets it if argument
- *          `pointSize` is given.
+ * @description Returns the current font size in points and sets it if argument `pointSize` is given.
  *
  * @cat     Typography
  * @method  textSize
@@ -234,22 +212,20 @@ pub.textSize = function(pointSize) {
  * @cat     Typography
  * @method  textAlign
  *
- * @param   {String} align The horizontal text alignment to set. Must be one of
- *          the InDesign Justification enum values:
- *      - `Justification.AWAY_FROM_BINDING_SIDE`
- *      - `Justification.CENTER_ALIGN`
- *      - `Justification.CENTER_JUSTIFIED`
- *      - `Justification.FULLY_JUSTIFIED`
- *      - `Justification.LEFT_ALIGN`
- *      - `Justification.RIGHT_ALIGN`
- *      - `Justification.RIGHT_JUSTIFIED`
- *      - `Justification.TO_BINDING_SIDE`
- * @param   {String} [yAlign] The vertical text alignment to set. Must be one of
- *          the InDesign VerticalJustification enum values:
- *      - `VerticalJustification.BOTTOM_ALIGN`
- *      - `VerticalJustification.CENTER_ALIGN`
- *      - `VerticalJustification.JUSTIFY_ALIGN`
- *      - `VerticalJustification.TOP_ALIGN`
+ * @param   {String} align The horizontal text alignment to set. Must be one of the InDesign `Justification` enum values:
+ * - `Justification.AWAY_FROM_BINDING_SIDE`
+ * - `Justification.CENTER_ALIGN`
+ * - `Justification.CENTER_JUSTIFIED`
+ * - `Justification.FULLY_JUSTIFIED`
+ * - `Justification.LEFT_ALIGN`
+ * - `Justification.RIGHT_ALIGN`
+ * - `Justification.RIGHT_JUSTIFIED`
+ * - `Justification.TO_BINDING_SIDE`
+ * @param   {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign `VerticalJustification` enum values:
+ * - `VerticalJustification.BOTTOM_ALIGN`
+ * - `VerticalJustification.CENTER_ALIGN`
+ * - `VerticalJustification.JUSTIFY_ALIGN`
+ * - `VerticalJustification.TOP_ALIGN`
  */
 pub.textAlign = function(align, yAlign) {
   currAlign = align;
@@ -257,14 +233,12 @@ pub.textAlign = function(align, yAlign) {
 };
 
 /**
- * @description Returns the spacing between lines of text in units of points and
- *          sets it if argument `leading` is given.
+ * @description Returns the spacing between lines of text in units of points and sets it if argument `leading` is given.
  *
  * @cat     Typography
  * @method  textLeading
  *
- * @param   {Number|String} [leading] The spacing between lines of text in units
- *          of points or the default InDesign enum value `Leading.AUTO`.
+ * @param   {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum value `Leading.AUTO`.
  * @return  {Number|String} The current leading.
  */
 pub.textLeading = function(leading) {
@@ -275,8 +249,7 @@ pub.textLeading = function(leading) {
 };
 
 /**
- * @description Returns the current kerning and sets it if argument `kerning` is
- *          given.
+ * @description Returns the current kerning and sets it if argument `kerning` is given.
  *
  * @cat     Typography
  * @method  textKerning
@@ -292,8 +265,7 @@ pub.textKerning = function(kerning) {
 };
 
 /**
- * @description Returns the current tracking and sets it if argument `tracking`
- *          is given.
+ * @description Returns the current tracking and sets it if argument `tracking` is given.
  *
  * @cat     Typography
  * @method  textTracking
@@ -309,19 +281,13 @@ pub.textTracking = function(tracking) {
 };
 
 /**
- * @description Returns the character style of a given text object or the
- *          character style with the given name. If a character style of the
- *          given name does not exist, it gets created. Optionally a props
- *          object of property name/value pairs can be used to set the character
- *          style's properties.
+ * @description Returns the character style of a given text object or the character style with the given name. If a character style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the character style's properties.
  *
  * @cat     Typography
  * @method  characterStyle
  *
- * @param   {Text|String} textOrName A text object whose style to return or the
- *          name of the character style to return.
- * @param   {Object} [props] Optional: An object of property name/value pairs to
- *          set the style's properties.
+ * @param   {Text|String} textOrName A text object whose style to return or the name of the character style to return.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
  * @return  {CharacterStyle} The character style instance.
  */
 pub.characterStyle = function(textOrName, props) {
@@ -357,17 +323,13 @@ pub.characterStyle = function(textOrName, props) {
 };
 
 /**
- * @description Applies a character style to the given text object, text frame
- *          or story. The character style can be given as name or as character
- *          style instance.
+ * @description Applies a character style to the given text object, text frame or story. The character style can be given as name or as character style instance.
  *
  * @cat     Typography
  * @method  applyCharacterStyle
  *
- * @param   {TextFrame|TextObject|Story} text The text frame, text object or
- *          story to apply the style to.
- * @param   {CharacterStyle|String} style A character style instance or the name
- *          of the character style to apply.
+ * @param   {TextFrame|TextObject|Story} text The text frame, text object or story to apply the style to.
+ * @param   {CharacterStyle|String} style A character style instance or the name of the character style to apply.
  * @return  {Text} The text that the style was applied to.
  */
 
@@ -395,19 +357,13 @@ pub.applyCharacterStyle = function(text, style) {
 };
 
 /**
- * @description Returns the paragraph style of a given text object or the
- *          paragraph style with the given name. If a paragraph style of the
- *          given name does not exist, it gets created. Optionally a props
- *          object of property name/value pairs can be used to set the paragraph
- *          style's properties.
+ * @description Returns the paragraph style of a given text object or the paragraph style with the given name. If a paragraph style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the paragraph style's properties.
  *
  * @cat     Typography
  * @method  paragraphStyle
  *
- * @param   {Text|String} textOrName A text object whose style to return or the
- *          name of the paragraph style to return.
- * @param   {Object} [props] Optional: An object of property name/value pairs to
- *          set the style's properties.
+ * @param   {Text|String} textOrName A text object whose style to return or the name of the paragraph style to return.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
  * @return  {ParagraphStyle} The paragraph style instance.
  */
 pub.paragraphStyle = function(textOrName, props) {
@@ -443,17 +399,13 @@ pub.paragraphStyle = function(textOrName, props) {
 };
 
 /**
- * @description Applies a paragraph style to the given text object, text frame
- *          or story. The paragraph style can be given as name or as paragraph
- *          style instance.
+ * @description Applies a paragraph style to the given text object, text frame or story. The paragraph style can be given as name or as paragraph style instance.
  *
  * @cat     Typography
  * @method  applyParagraphStyle
  *
- * @param   {TextFrame|TextObject|Story} text The text frame, text object or
- *          story to apply the style to.
- * @param   {ParagraphStyle|String} style A paragraph style instance or the name
- *          of the paragraph style to apply.
+ * @param   {TextFrame|TextObject|Story} text The text frame, text object or story to apply the style to.
+ * @param   {ParagraphStyle|String} style A paragraph style instance or the name of the paragraph style to apply.
  * @return  {Text} The text that the style was applied to.
  */
 
@@ -481,8 +433,7 @@ pub.applyParagraphStyle = function(text, style) {
 };
 
 /**
- * @description Links the stories of two textframes to one story. Text of first
- *          textframe overflows to second one.
+ * @description Links the stories of two textframes to one story. Text of first textframe overflows to second one.
  *
  * @cat     Story
  * @method  linkTextFrames
@@ -499,9 +450,7 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
 };
 
 /**
- * @description Fills the given text frame and all linked text frames with
- *          random placeholder text. The placeholder text will be added at the
- *          end of any already existing text in the text frame.
+ * @description Fills the given text frame and all linked text frames with random placeholder text. The placeholder text will be added at the end of any already existing text in the text frame.
  *
  * @cat     Story
  * @method  placeholder

@@ -4,20 +4,9 @@
 /* global precision */
 
 /**
- * @description Sets the reference point for transformations using the
- *          `transform()` function. The reference point will be used for all
- *          following transformations, until it is changed again. By default,
- *          the reference point is set to the top left.<br>
- *          Arguments can be the
- *          basil constants `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`,
- *          `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`,
- *          `BOTTOM_CENTER` or `BOTTOM_RIGHT`. Alternatively the digits `1`
- *          through `9` (as they are arranged on a num pad) can be used to set
- *          the anchor point. Lastly the function can also use an InDesign
- *          anchor point enumerator to set the reference point.<br>
- *          If the
- *          function is used without any arguments the currently set reference
- *          point will be returned.
+ * @description Sets the reference point for transformations using the `transform()` function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.
+ * Arguments can be the basil constants `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`, `BOTTOM_CENTER` or `BOTTOM_RIGHT`. Alternatively the digits `1` through `9` (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.
+ * If the function is used without any arguments the currently set reference point will be returned.
  *
  * @cat     Document
  * @subcat  Transformation
@@ -72,37 +61,17 @@ pub.referencePoint = function(rp) {
 };
 
 /**
- * @description Transforms a given page item. The type of transformation is
- *          determinded with the second parameter. The third parameter is the
- *          transformation value, either a number or an array of x and y values.
- *          The transformation's reference point (top left, bottom center etc.)
- *          can be set beforehand by using the `referencePoint()` function. If
- *          the third parameter is ommited, the function can be used to measure
- *          the value of the page item. There are 10 different transformation
- *          types:
- *    - `"translate"`: Translates the page item by the given `[x, y]` values.
- *      Returns the coordinates of the page item's anchor point as an array.
- *    - `"rotate"`: Rotates the page item to the given degree value. Returns the
- *      page item's rotation value in degrees.
- *    - `"scale"`: Scales the page item to the given `[x, y]` scale factor
- *      values. Alternatively, a single scale factor value can be used to scale
- *      the page item uniformely. Returns the scale factor values of the page
- *      item's current scale as an array.
- *    - `"shear"`: Shears the page item to the given degree value. Returns the
- *      page item's shear value in degrees.
- *    - `"size"`: Sets the page item's size to the given `[x, y]` dimensions.
- *      Returns the size of the page item as an array.
- *    - `"width"`: Sets the page item's width to the given value. Returns the
- *      width of the page item.
- *    - `"height"`: Sets the page item's height to the given value. Returns the
- *      height of the page item.
- *    - `"position"`: Sets the position of the page item's anchor point to the
- *      given `[x, y]` coordinates. Returns the coordinates of the page item's
- *      anchor point as an array.
- *    - `"x"`: Sets the x-position of the page item's anchor point to the given
- *      value. Returns the x-coordinate of the page item's anchor point.
- *    - `"y"`: Sets the y-position of the page item's anchor point to the given
- *      value. Returns the y-coordinate of the page item's anchor point.
+ * @description Transforms a given page item. The type of transformation is determinded with the second parameter. The third parameter is the transformation value, either a number or an array of x and y values. The transformation's reference point (top left, bottom center etc.) can be set beforehand by using the `referencePoint()` function. If the third parameter is ommited, the function can be used to measure the value of the page item. There are 10 different transformation types:
+ * - `"translate"`: Translates the page item by the given `[x, y]` values. Returns the coordinates of the page item's anchor point as anray.
+ * - `"rotate"`: Rotates the page item to the given degree value. Returns the page item's rotation value in degrees.
+ * - `"scale"`: Scales the page item to the given `[x, y]` scale factor values. Alternatively, a single scale factor value can be usto scale the page item uniformely. Returns the scale factor values of the page item's current scale as an array.
+ * - `"shear"`: Shears the page item to the given degree value. Returns the page item's shear value in degrees.
+ * - `"size"`: Sets the page item's size to the given `[x, y]` dimensions. Returns the size of the page item as an array.
+ * - `"width"`: Sets the page item's width to the given value. Returns the width of the page item.
+ * - `"height"`: Sets the page item's height to the given value. Returns the height of the page item.
+ * - `"position"`: Sets the position of the page item's anchor point to the given `[x, y]` coordinates. Returns the coordinates of the page item's anchor point as an array.
+ * - `"x"`: Sets the x-position of the page item's anchor point to the given value. Returns the x-coordinate of the page item's anr point.
+ * - `"y"`: Sets the y-position of the page item's anchor point to the given value. Returns the y-coordinate of the page item's anchor point.
  *
  * @cat     Document
  * @subcat  Transformation
@@ -122,8 +91,7 @@ pub.referencePoint = function(rp) {
  * var w = transform(r, "width");
  * println(w); // prints the rectangle's random width between 100 and 300
  *
- * @example <caption>Position a rectangle's lower right corner at a certain
- *          position</caption>
+ * @example <caption>Position a rectangle's lower right corner at a certain position</caption>
  * var r = rect(20, 40, random(100, 300), random(50, 150));
  * referencePoint(BOTTOM_RIGHT);
  * transform(r, "position", [40, 40]);
@@ -452,8 +420,7 @@ Matrix2D.prototype = {
 };
 
 /**
- * @description Multiplies the current matrix by the one specified through the
- *          parameters.
+ * @description Multiplies the current matrix by the one specified through the parameters.
  *
  * @cat     Document
  * @subcat  Transformation
@@ -466,13 +433,7 @@ pub.applyMatrix = function (matrix) {
 };
 
 /**
- * @description Pops the current transformation matrix off the matrix stack.
- *          Understanding pushing and popping requires understanding the concept
- *          of a matrix stack. The `pushMatrix()` function saves the current
- *          coordinate system to the stack and `popMatrix()` restores the prior
- *          coordinate system. `pushMatrix()` and `popMatrix()` are used in
- *          conjuction with the other transformation methods and may be embedded
- *          to control the scope of the transformations.
+ * @description Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
  *
  * @cat     Document
  * @subcat  Transformation
@@ -498,14 +459,7 @@ pub.printMatrix = function () {
 };
 
 /**
- * @description Pushes the current transformation matrix onto the matrix stack.
- *          Understanding `pushMatrix()` and `popMatrix()` requires
- *          understanding the concept of a matrix stack. The `pushMatrix()`
- *          function saves the current coordinate system to the stack and
- *          `popMatrix()` restores the prior coordinate system. `pushMatrix()`
- *          and `popMatrix()` are used in conjuction with the other
- *          transformation methods and may be embedded to control the scope of
- *          the transformations.
+ * @description Pushes the current transformation matrix onto the matrix stack. Understanding `pushMatrix()` and `popMatrix()` requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
  *
  * @cat     Document
  * @subcat  Transformation
@@ -530,20 +484,7 @@ pub.resetMatrix = function () {
 };
 
 /**
- * @description Rotates an object the amount specified by the angle parameter.
- *          Angles should be specified in radians (values from 0 to `PI`*2) or
- *          converted to radians with the `radians()` function. Objects are
- *          always rotated around their relative position to the origin and
- *          positive numbers rotate objects in a clockwise direction with 0
- *          radians or degrees being up and `HALF_PI` being to the right etc.
- *          Transformations apply to everything that happens after and
- *          subsequent calls to the function accumulates the effect. For
- *          example, calling `rotate(PI/2)` and then `rotate(PI/2)` is the same
- *          as `rotate(PI)`. If `rotate()` is called within the `draw()`, the
- *          transformation is reset when the loop begins again. Technically,
- *          `rotate()` multiplies the current transformation matrix by a
- *          rotation matrix. This function can be further controlled by the
- *          `pushMatrix()` and `popMatrix()`.
+ * @description Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to `PI`*2) or converted to radians with the `radians()` function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and `HALF_PI` being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `rotate(PI/2)` and then `rotate(PI/2)` is the same as `rotate(PI)`. If `rotate()` is called within the `draw()`, the transformation is reset when the loop begins again. Technically, `rotate()` multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
  *
  * @cat     Document
  * @subcat  Transformation
@@ -559,18 +500,7 @@ pub.rotate = function (angle) {
 };
 
 /**
- * @description Increasing and decreasing the size of an object by expanding and
- *          contracting vertices. Scale values are specified as decimal
- *          percentages. The function call `scale(2.0)` increases the dimension
- *          of a shape by 200%. Objects always scale from their relative origin
- *          to the coordinate system. Transformations apply to everything that
- *          happens after and subsequent calls to the function multiply the
- *          effect. For example, calling `scale(2.0)` and then `scale(1.5)` is
- *          the same as `scale(3.0)`. If `scale()` is called within `draw()`,
- *          the transformation is reset when the loop begins again. This
- *          function can be further controlled by `pushMatrix()` and
- *          `popMatrix()`. If only one parameter is given, it is applied on X
- *          and Y axis.
+ * @description Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call `scale(2.0)` increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling `scale(2.0)` and then `scale(1.5)` is the same as `scale(3.0)`. If `scale()` is called within `draw()`, the transformation is reset when the loop begins again. This function can be further controlled by `pushMatrix()` and `popMatrix()`. If only one parameter is given, it is applied on X and Y axis.
  *
  * @cat     Document
  * @subcat  Transformation
@@ -587,13 +517,7 @@ pub.scale = function (scaleX, scaleY) {
 };
 
 /**
- * @description Specifies an amount to displace objects within the page. The `x`
- *          parameter specifies left/right translation, the `y` parameter
- *          specifies up/down translation. Transformations apply to everything
- *          that happens after and subsequent calls to the function accumulates
- *          the effect. For example, calling `translate(50, 0)` and then
- *          `translate(20, 0)` is the same as `translate(70, 0)`. This function
- *          can be further controlled by the `pushMatrix()` and `popMatrix()`.
+ * @description Specifies an amount to displace objects within the page. The `x` parameter specifies left/right translation, the `y` parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `translate(50, 0)` and then `translate(20, 0)` is the same as `translate(70, 0)`. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
  *
  * @cat     Document
  * @subcat  Transformation
