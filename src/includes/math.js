@@ -796,42 +796,6 @@ Marsaglia.createRandomized = function() {
 pub.randomSeed = function(seed) {
   currentRandom = (new Marsaglia(seed)).nextDouble;
 };
-/**
- * @description Random Generator with Gaussian distribution.
- *
- * @cat     Math
- * @subcat  Random
- * @method  Random
- *
- * @param   {Number} seed The seed value.
- * @class
- */
-pub.Random = function(seed) {
-  var haveNextNextGaussian = false,
-    nextNextGaussian, random;
-  /**
-   * @method  Random.nextGaussian
-   *
-   * @return  {Number} The next Gaussian random value.
-   */
-  this.nextGaussian = function() {
-    if (haveNextNextGaussian) {
-      haveNextNextGaussian = false;
-      return nextNextGaussian;
-    }
-    var v1, v2, s;
-    do {
-      v1 = 2 * random() - 1;
-      v2 = 2 * random() - 1;
-      s = v1 * v1 + v2 * v2;
-    } while (s >= 1 || s === 0);
-    var multiplier = Math.sqrt(-2 * Math.log(s) / s);
-    nextNextGaussian = v2 * multiplier;
-    haveNextNextGaussian = true;
-    return v1 * multiplier;
-  };
-  random = seed === undefined ? Math.random : (new Marsaglia(seed)).nextDouble;
-};
 
 function PerlinNoise(seed) {
   var rnd = seed !== undefined ? new Marsaglia(seed) : Marsaglia.createRandomized();
