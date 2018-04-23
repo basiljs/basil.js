@@ -385,20 +385,6 @@ pub.pageCount = function(pageCount) {
   return currentDoc().pages.count();
 };
 
-
-/**
- * @description The number of all stories in the current document.
- *
- * @cat     Document
- * @subcat  Story
- * @method  storyCount
- *
- * @return  {Number} count The amount of stories.
- */
-pub.storyCount = function() {
-  return currentDoc().stories.count();
-};
-
 /**
  * @description Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an insertion point or one the following constants: `AT_BEGINNING` and `AT_END`.
  *
