@@ -363,15 +363,6 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
 pub.LANDSCAPE = PageOrientation.LANDSCAPE;
 
 /**
- * @description Returns a Lorem ipsum string that can be used for testing.
- *
- * @cat      Typography
- * @subcat   Constants
- * @property LOREM {String}
- */
-pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
-
-/**
 * @description The name of the current script.
  *
 * @cat      Environment
@@ -6059,6 +6050,19 @@ pub.paragraphStyle = function(textOrName, props) {
 
   return style;
 };
+
+// ----------------------------------------
+// Typography/Constants
+// ----------------------------------------
+
+/**
+ * @description Returns a Lorem ipsum string that can be used for testing.
+ *
+ * @cat      Typography
+ * @subcat   Constants
+ * @property LOREM {String}
+ */
+pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
 // ----------------------------------------
 // src/includes/image.js
