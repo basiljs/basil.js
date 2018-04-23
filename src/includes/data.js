@@ -175,7 +175,10 @@ function CSV() {
   };
 
   function formatRow(row) {
-    return row.map(formatValue).join(delimiterStr);
+    for (var i = 0; i < row.length; i++) {
+      row[i] = formatValue(row[i]);
+    }
+    return row.join(delimiterStr);
   }
 
   function formatValue(text) {
