@@ -483,7 +483,6 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
  * @param   {Array} collection The array to be processed.
  * @param   {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
  */
->>>>>>> develop
 forEach = function(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
 
