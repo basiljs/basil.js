@@ -3,14 +3,13 @@
 // ----------------------------------------
 
 /**
- * Sets or possibly creates the current document and returns it.
- * If the param doc is not given the current document gets set to the active document
- * in the application. If no document at all is open, a new document gets created.
+ * @description Sets or possibly creates the current document and returns it. If the `doc` parameter is not given, the current document gets set to the active document in the application. If no document at all is open, a new document gets created.
  *
- * @cat Document
- * @method doc
- * @param  {Document} [doc] The document to set the current document to.
- * @return {Document} The current document instance.
+ * @cat     Document
+ * @method  doc
+ *
+ * @param   {Document} [doc] The document to set the current document to.
+ * @return  {Document} The current document instance.
  */
 pub.doc = function(doc) {
   if (doc instanceof Document) {
@@ -22,17 +21,14 @@ pub.doc = function(doc) {
 };
 
 /**
- * Sets the size of the current document, if arguments are given.
- * If only one argument is given, both the width and the height are set to this value.
- * Alternatively, a string can be given as the first argument to apply an existing page size preset ("A4", "Letter" etc.).
- * In this case, either PORTRAIT or LANDSCAPE can be used as a second argument to determine the orientation of the page.
- * If no argument is given, an object containing the current document's width and height is returned.
+ * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
  *
- * @cat Document
- * @method size
- * @param  {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
- * @param  {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
- * @return {Object} Object containing the current <code>width</code> and <code>height</code> of the document.
+ * @cat     Document
+ * @method  size
+ *
+ * @param   {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
+ * @param   {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
+ * @return  {Object} Object containing the current `width` and `height` of the document.
  *
  * @example <caption>Sets the document size to 70 x 100 units</caption>
  * size(70, 100);
@@ -92,12 +88,13 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 };
 
 /**
- * Closes the current document. If no saveOptions argument is used, the user will be asked if they want to save or not.
+ * @description Closes the current document. If no `saveOptions` argument is used, the user will be asked if they want to save or not.
  *
- * @cat Document
- * @method close
- * @param  {Object|Boolean} [saveOptions] The InDesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
- * @param  {File} [file] The InDesign file instance to save the document to.
+ * @cat     Document
+ * @method  close
+ *
+ * @param   {Object|Boolean} [saveOptions] The InDesign SaveOptions constant or either true for triggering saving before closing or false for closing without saving.
+ * @param   {File} [file] The InDesign file instance to save the document to.
  */
 pub.close = function(saveOptions, file) {
   if (currDoc) {
@@ -128,9 +125,10 @@ pub.close = function(saveOptions, file) {
 /**
  * @description Reverts the document to its last saved state. If the current document is not saved yet, this function will close the document without saving it and reopen a fresh document so as to "revert" the unsaved document. This function is helpful during development stage to start from a new or default document each time the script is run.
  *
- * @cat Document
- * @method revert
- * @return {Document} The reverted document.
+ * @cat     Document
+ * @method  revert
+ *
+ * @return  {Document} The reverted document.
  */
 pub.revert = function() {
 
@@ -151,13 +149,15 @@ pub.revert = function() {
 };
 
 /**
- * Use this to set the dimensions of the canvas. Choose between PAGE (default), MARGIN, BLEED resp. FACING_PAGES, FACING_MARGINS and FACING_BLEEDS for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
- * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use translate(), rotate() and scale();
- * @cat Document
- * @subcat Page
- * @method canvasMode
- * @param  {String} mode The canvas mode to set.
- * @return {String} The current canvas mode.
+ * @description Use this to set the dimensions of the canvas. Choose between `PAGE` (default), `MARGIN`, `BLEED` resp. `FACING_PAGES`, `FACING_MARGINS` and `FACING_BLEEDS` for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
+ * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use `translate()`, `rotate()` and `scale()`.
+ *
+ * @cat     Document
+ * @subcat  Page
+ * @method  canvasMode
+ *
+ * @param   {String} mode The canvas mode to set.
+ * @return  {String} The current canvas mode.
  */
 pub.canvasMode = function (m) {
   if(arguments.length === 0) {
@@ -178,14 +178,15 @@ pub.canvasMode = function (m) {
 
 
 /**
- * Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given.
+ * @description Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given.
  *
- * @cat Document
- * @subcat Page
- * @method pasteboard
- * @param  {Number} h The desired horizontal pasteboard margin.
- * @param  {Number} v The desired vertical pasteboard margin.
- * @return {Array} The current horizontal, vertical pasteboard margins.
+ * @cat     Document
+ * @subcat  Page
+ * @method  pasteboard
+ *
+ * @param   {Number} h The desired horizontal pasteboard margin.
+ * @param   {Number} v The desired vertical pasteboard margin.
+ * @return  {Array} The current horizontal, vertical pasteboard margins.
  */
 pub.pasteboard = function (h, v) {
   if(arguments.length == 0) {
@@ -201,13 +202,14 @@ pub.pasteboard = function (h, v) {
 };
 
 /**
- * Returns the current page and sets it if argument page is given. Numbering starts with 1.
+ * @description Returns the current page and sets it if argument page is given. Numbering starts with 1.
  *
- * @cat Document
- * @subcat Page
- * @method page
- * @param  {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a PageItem the current page will be set to it's containing page.
- * @return {Page} The current page instance.
+ * @cat     Document
+ * @subcat  Page
+ * @method  page
+ *
+ * @param   {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a page item the current page will be set to its containing page.
+ * @return  {Page} The current page instance.
  */
 pub.page = function(page) {
   if (page instanceof Page) {
@@ -238,13 +240,14 @@ pub.page = function(page) {
 };
 
 /**
- * Adds a new page to the document. Set the optional location parameter to either AT_END (default), AT_BEGINNING, AFTER or BEFORE. AFTER and BEFORE will use the current page as insertion point.
+ * @description Adds a new page to the document. Set the optional location parameter to either `AT_END` (default), `AT_BEGINNING`, `AFTER` or `BEFORE`. `AFTER` and `BEFORE` will use the current page as insertion point.
  *
- * @cat Document
- * @subcat Page
- * @method addPage
- * @param  {String} [location] The location placement mode.
- * @return {Page} The new page.
+ * @cat     Document
+ * @subcat  Page
+ * @method  addPage
+ *
+ * @param   {String} [location] The location placement mode.
+ * @return  {Page} The new page.
  */
 pub.addPage = function(location) {
 
@@ -290,12 +293,13 @@ pub.addPage = function(location) {
 
 
 /**
- * Removes a page from the current document. This will either be the current Page if the parameter page is left empty, or the given Page object or page number.
+ * @description Removes a page from the current document. This will either be the current page if the parameter page is left empty, or the given page object or page number.
  *
- * @cat Document
- * @subcat Page
- * @method removePage
- * @param  {Page|Number} [page] The page to be removed as Page object or page number.
+ * @cat     Document
+ * @subcat  Page
+ * @method  removePage
+ *
+ * @param   {Page|Number} [page] The page to be removed as Page object or page number.
  */
 pub.removePage = function (page) {
   checkNull(page);
@@ -310,13 +314,14 @@ pub.removePage = function (page) {
 };
 
 /**
- * Returns the current page number of either the current page or the given Page object.
+ * @description Returns the current page number of either the current page or the given page object.
  *
- * @cat Document
- * @subcat Page
- * @method pageNumber
- * @param  {Page} [pageObj] The page you want to know the number of.
- * @return {Number} The page number within the document.
+ * @cat     Document
+ * @subcat  Page
+ * @method  pageNumber
+ *
+ * @param   {Page} [pageObj] The page you want to know the number of.
+ * @return  {Number} The page number within the document.
  */
 pub.pageNumber = function (pageObj) {
   checkNull(pageObj);
@@ -330,12 +335,13 @@ pub.pageNumber = function (pageObj) {
 };
 
 /**
- * Set the next page of the document to be the active one. Returns new active page.
+ * @description Set the next page of the document to be the active one. Returns new active page.
  *
- * @cat Document
- * @subcat Page
- * @method nextPage
- * @return {Page} The active page.
+ * @cat     Document
+ * @subcat  Page
+ * @method  nextPage
+ *
+ * @return  {Page} The active page.
  */
 pub.nextPage = function () {
   var p = pub.doc().pages.nextItem(currentPage());
@@ -344,12 +350,13 @@ pub.nextPage = function () {
 
 
 /**
- * Set the previous page of the document to be the active one. Returns new active page.
+ * @description Set the previous page of the document to be the active one. Returns new active page.
  *
- * @cat Document
- * @subcat Page
- * @method previousPage
- * @return {Page} The active page.
+ * @cat     Document
+ * @subcat  Page
+ * @method  previousPage
+ *
+ * @return  {Page} The active page.
  */
 pub.previousPage = function () {
   var p = pub.doc().pages.previousItem(currentPage());
@@ -358,16 +365,14 @@ pub.previousPage = function () {
 
 
 /**
- * Returns the number of all pages in the current document. If a number is given as an argument,
- * it will set the document's page count to the given number by either adding pages or removing
- * pages until the number is reached. If pages are added, the master page of the document's last
- * page will be applied to the new pages.
+ * @description Returns the number of all pages in the current document. If a number is given as an argument, it will set the document's page count to the given number by either adding pages or removing pages until the number is reached. If pages are added, the master page of the document's last page will be applied to the new pages.
  *
- * @cat Document
- * @subcat Page
- * @method pageCount
- * @param  {Number} [pageCount] New page count of the document (integer between 1 and 9999).
- * @return {Number} The amount of pages.
+ * @cat     Document
+ * @subcat  Page
+ * @method  pageCount
+ *
+ * @param   {Number} [pageCount] New page count of the document (integer between 1 and 9999).
+ * @return  {Number} The amount of pages.
  */
 pub.pageCount = function(pageCount) {
   if(arguments.length) {
@@ -382,26 +387,28 @@ pub.pageCount = function(pageCount) {
 
 
 /**
- * The number of all stories in the current document.
+ * @description The number of all stories in the current document.
  *
- * @cat Document
- * @subcat Story
- * @method storyCount
- * @return {Number} count The amount of stories.
+ * @cat     Document
+ * @subcat  Story
+ * @method  storyCount
+ *
+ * @return  {Number} count The amount of stories.
  */
 pub.storyCount = function() {
   return currentDoc().stories.count();
 };
 
 /**
- * Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
+ * @description Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an insertion point or one the following constants: `AT_BEGINNING` and `AT_END`.
  *
- * @cat Document
- * @subcat Story
- * @method addToStory
- * @param {Story} story The story.
- * @param {PageItem|String} itemOrString The itemOrString either a PageItem, a String or one the following constants: AT_BEGINNING and AT_END.
- * @param {InsertionPoint|String} insertionPointOrMode InsertionPoint or one the following constants: AT_BEGINNING and AT_END.
+ * @cat     Document
+ * @subcat  Story
+ * @method  addToStory
+ *
+ * @param   {Story} story The story.
+ * @param   {PageItem|String} itemOrString Either a page item or a string.
+ * @param   {InsertionPoint|String} insertionPointOrMode Insertion point object or one the following constants: `AT_BEGINNING` and `AT_END`.
  */
 pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
@@ -456,13 +463,14 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
 
 /**
- * Returns the current layer if no argument is given. Sets active layer if layer object or name of existing layer is given. Newly creates layer and sets it to active if new name is given.
+ * @description Returns the current layer if no argument is given. Sets active layer if layer object or name of existing layer is given. Newly creates layer and sets it to active if new name is given.
  *
- * @cat Document
- * @subcat Page
- * @method layer
- * @param  {Layer|String} [layer] The layer or layer name to set the current layer to.
- * @return {Layer} The current layer instance.
+ * @cat     Document
+ * @subcat  Page
+ * @method  layer
+ *
+ * @param   {Layer|String} [layer] The layer or layer name to set the current layer to.
+ * @return  {Layer} The current layer instance.
  */
 pub.layer = function(layer) {
   checkNull(layer);
@@ -485,15 +493,16 @@ pub.layer = function(layer) {
 
 
 /**
- * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants <code>FORWARD</code> or <code>BACKWARD</code> the object is sent forward or back one step. The constants <code>FRONT</code> or <code>BACK</code> send the object to the very front or very back. Using <code>FRONT</code> or <code>BACK</code> together with the optional reference object, sends the object in front or behind this reference object.
+ * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants `FORWARD` or `BACKWARD` the object is sent forward or back one step. The constants `FRONT` or `BACK` send the object to the very front or very back. Using `FRONT` or `BACK` together with the optional reference object, sends the object in front or behind this reference object.
  *
- * @cat Document
- * @subcat Page
- * @method arrange
- * @param {PageItem|Layer} pItemOrLayer The page item or layer to be moved to a new position.
- * @param {String} positionOrDirection The position or direction to move the page item or layer. Can be <code>FRONT</code>, <code>BACK</code>, <code>FORWARD</code> or <code>BACKWARD</code>.
- * @param {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
- * @return {PageItem|Layer} The newly arranged page item or layer.
+ * @cat     Document
+ * @subcat  Page
+ * @method  arrange
+ *
+ * @param   {PageItem|Layer} pItemOrLayer The page item or layer to be moved to a new position.
+ * @param   {String} positionOrDirection The position or direction to move the page item or layer. Can be `FRONT`, `BACK`, `FORWARD` or `BACKWARD`.
+ * @param   {PageItem|Layer} [reference] A reference object to move the page item or layer behind or in front of.
+ * @return  {PageItem|Layer} The newly arranged page item or layer.
  */
 pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
   checkNull(pItemOrLayer);
@@ -541,16 +550,15 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
 
 
 /**
- *  Returns the Group instance and sets it if argument Group is given.
- *  Groups items to a new group. Returns the resulting group instance. If a string is given as the only
- *  argument, the group by the given name will be returned.
+ * @description Returns the Group instance and sets it if argument Group is given. Groups items to a new group. Returns the resulting group instance. If a string is given as the only argument, the group by the given name will be returned.
  *
- *  @cat Document
- *  @subCat Page
- *  @method group
- *  @param {Array} pItems An array of page items (must contain at least two items) or name of group instance.
- *  @param {String} [name] The name of the group, only when creating a group from page items.
- *  @return {Group} The group instance.
+ * @cat     Document
+ * @subCat  Page
+ * @method  group
+ *
+ * @param   {Array} pItems An array of page items (must contain at least two items) or name of group instance.
+ * @param   {String} [name] The name of the group, only when creating a group from page items.
+ * @return  {Group} The group instance.
  */
 pub.group = function (pItems, name) {
   checkNull(pItems);
@@ -579,13 +587,14 @@ pub.group = function (pItems, name) {
 
 
 /**
- *  Ungroups an existing group. Returns an array of the items that were within the group before ungroup() was called.
+ * @description Ungroups an existing group. Returns an array of the items that were within the group before ungroup() was called.
  *
- *  @cat Document
- *  @subCat Page
- *  @method ungroup
- *  @param {Group|String} group The group instance or name of the group to ungroup.
- *  @return {Array} An array of the ungrouped page items.
+ * @cat     Document
+ * @subCat  Page
+ * @method  ungroup
+ *
+ * @param   {Group|String} group The group instance or name of the group to ungroup.
+ * @return  {Array} An array of the ungrouped page items.
  */
 pub.ungroup = function(group) {
   checkNull(group);
@@ -609,14 +618,15 @@ pub.ungroup = function(group) {
 
 
 /**
- * Returns items tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label).
+ * @description Returns items tagged with the given label in the InDesign Script Label pane (`Window -> Utilities -> Script Label`).
  *
- * @cat Document
- * @subcat Multi-Getters
- * @method labels
- * @param  {String} label The label identifier.
- * @param  {Function} [cb] The callback function to call with each item in the search result. When this function returns false the loop stops. Passed arguments: item, loopCount.
- * @return {Array} Array of concrete PageItem instances, e.g. TextFrame or SplineItem.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  labels
+ *
+ * @param   {String} label The label identifier.
+ * @param   {Function} [cb] The callback function to call with each item in the search result. When this function returns `false`, the loop stops. Passed arguments: `item`, `loopCount`.
+ * @return  {Array} Array of concrete page item instances, e.g. text frame or spline item.
  */
 pub.labels = function(label, cb) {
   checkNull(label);
@@ -640,13 +650,14 @@ pub.labels = function(label, cb) {
 
 
 /**
- * Returns the first item that is tagged with the given label in the InDesign Script Label pane (Window -> Utilities -> Script Label). Use this instead of <code>labels()</code>, when you know you just have one thing with that label and don't want to deal with a single-element array.
+ * @description Returns the first item that is tagged with the given label in the InDesign Script Label pane (`Window -> Utilities -> Script Label`). Use this instead of `labels()`, when you know you just have one thing with that label and don't want to deal with a single-element array.
  *
- * @cat Document
- * @subcat Multi-Getters
- * @method label
- * @param  {String} label The label identifier.
- * @return {PageItem} The first PageItem with the given label.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  label
+ *
+ * @param   {String} label The label identifier.
+ * @return  {PageItem} The first page item with the given label.
  */
 pub.label = function(label) {
   checkNull(label);
@@ -662,12 +673,13 @@ pub.label = function(label) {
 
 
 /**
- * Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
+ * @description Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
  *
- * @cat Document
- * @subcat Multi-Getters
- * @method selection
- * @return {Object} The first selected object.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  selection
+ *
+ * @return  {Object} The first selected object.
  */
 pub.selection = function() {
   if(app.selection.length === 0) {
@@ -677,13 +689,14 @@ pub.selection = function() {
 };
 
 /**
- * Returns the currently selected object(s)
+ * @description Returns the currently selected object(s)
  *
- * @cat Document
- * @subcat Multi-Getters
- * @method selections
- * @param  {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
- * @return {Array} Array of selected object(s).
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  selections
+ *
+ * @param   {Function} [cb] The callback function to call with each item in the selection. When this function returns false the loop stops. Passed arguments: item, loopCount.
+ * @return  {Array} Array of selected object(s).
  */
 pub.selections = function(cb) {
   if(app.selection.length === 0) {
@@ -696,12 +709,13 @@ pub.selections = function(cb) {
 };
 
 /**
- * Returns the first item on the active page that is named by the given name in the Layers pane (Window -> Layer).
+ * @description Returns the first item on the active page that is named by the given name in the Layers pane (`Window -> Layer`).
  *
- * @cat Document
- * @subcat Multi-Getters
- * @method nameOnPage
- * @return {Object} The first object on the active page with the given name.
+ * @cat     Document
+ * @subcat  Multi-Getters
+ * @method  nameOnPage
+ *
+ * @return  {Object} The first object on the active page with the given name.
  */
 pub.nameOnPage = function(name) {
   checkNull(name);
@@ -722,12 +736,13 @@ pub.nameOnPage = function(name) {
 
 
 /**
- * Sets the units of the document (like right clicking the rulers). By default basil uses the units of the user's document or the user's default units.
+ * @description Sets the units of the document (like right clicking the rulers). By default basil uses the units of the user's document or the user's default units.
  *
- * @cat Document
- * @method units
- * @param  {String} [units] Supported units: PT, PX, CM, MM or IN.
- * @return {String} Current unit setting.
+ * @cat     Document
+ * @method  units
+ *
+ * @param   {String} [units] Supported units: PT, PX, CM, MM or IN.
+ * @return  {String} Current unit setting.
  */
 var unitsCalledCounter = 0;
 pub.units = function (units) {
@@ -774,12 +789,13 @@ pub.units = function (units) {
 };
 
 /**
- * Creates a vertical guide line at the current spread and current layer.
+ * @description Creates a vertical guide line at the current spread and current layer.
  *
- * @cat Document
- * @method guideX
- * @param  {Number} x Position of the new guide line.
- * @return {Guide} New guide line.
+ * @cat     Document
+ * @method  guideX
+ *
+ * @param   {Number} x Position of the new guide line.
+ * @return  {Guide} New guide line.
  */
 pub.guideX = function (x) {
   checkNull(x);
@@ -793,12 +809,13 @@ pub.guideX = function (x) {
 
 
 /**
- * Creates a horizontal guide line at the current spread and current layer.
+ * @description Creates a horizontal guide line at the current spread and current layer.
  *
- * @cat Document
- * @method guideY
- * @param  {Number} y Position of the new guide line.
- * @return {Guide} New guide line.
+ * @cat     Document
+ * @method  guideY
+ *
+ * @param   {Number} y Position of the new guide line.
+ * @return  {Guide} New guide line.
  */
 pub.guideY = function (y) {
   checkNull(y);
@@ -811,18 +828,20 @@ pub.guideY = function (y) {
 };
 
 
+
 /**
- * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
+ * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
  *
- * @cat Document
- * @subcat Page
- * @method margins
- * @param {Number} [top] Top margin or all if only one.
- * @param {Number} [right] Right margin.
- * @param {Number} [bottom] Bottom margin.
- * @param {Number} [left] Left margin.
- * @param {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
- * @return {Object} Current page margins with the properties: top, right, bottom, left.
+ * @cat     Document
+ * @subcat  Page
+ * @method  margins
+ *
+ * @param   {Number} [top] Top margin or all if only one.
+ * @param   {Number} [right] Right margin.
+ * @param   {Number} [bottom] Bottom margin.
+ * @param   {Number} [left] Left margin.
+ * @param   {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
+ * @return  {Object} Current page margins with the properties: `top`, `right`, `bottom`, `left`.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
   if (arguments.length === 0) {
@@ -849,16 +868,17 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
 
 
 /**
- * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
+ * @description Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
  *
- * @cat Document
- * @subcat Page
- * @method bleeds
- * @param {Number} [top] Top bleed or all if only one.
- * @param {Number} [right] Right bleed.
- * @param {Number} [bottom] Bottom bleed.
- * @param {Number} [left] Left bleed.
- * @return {Object} Current document bleeds settings.
+ * @cat     Document
+ * @subcat  Page
+ * @method  bleeds
+ *
+ * @param   {Number} [top] Top bleed or all if only one.
+ * @param   {Number} [right] Right bleed.
+ * @param   {Number} [bottom] Bottom bleed.
+ * @param   {Number} [left] Left bleed.
+ * @return  {Object} Current document bleeds settings.
  */
 pub.bleeds = function(top, right, bottom, left) {
   if (arguments.length === 0) {
@@ -881,22 +901,23 @@ pub.bleeds = function(top, right, bottom, left) {
 
 /**
  * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
- * <code>showProps</code>: Show or hide properties. Default: <code>true</code>
- * <code>showValues</code>: Show or hide values. Default: <code>true</code>
- * <code>showMethods</code>: Show or hide methods. Default: <code>false</code>
- * <code>maxLevel</code>: Chooses how many levels of properties should be inspected recursively. Default: <code>1</code>
- * <code>propList</code>: Allows to pass an array of property names to show. If propList is not set all properties will be shown. Default: <code>[]</code> (no propList)
+ * - `showProps`: Show or hide properties. Default: `true`
+ * - `showValues`: Show or hide values. Default: `true`
+ * - `showMethods`: Show or hide methods. Default: `false`
+ * - `maxLevel`: Chooses how many levels of properties should be inspected recursively. Default: `1`
+ * - `propList`: Allows to pass an array of property names to show. If `propList` is not set all properties will be shown. Default: `[]` (no propList)
  * If no settings object is set, the default values will be used.
  *
- * @cat Output
- * @method inspect
- * @param  {Object} obj An object or any other data item to be inspected.
- * @param  {Object} [settings] A settings object to control the function's behavior.
- * @param  {Boolean} [settings.showProps] Show or hide properties. Default: <code>true</code>
- * @param  {Boolean} [settings.showValues] Show or hide values. Default: <code>true</code>
- * @param  {Boolean} [settings.showMethods] Show or hide methods. Default: <code>false</code>
- * @param  {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: <code>1</code>
- * @param  {Array} [settings.propList] Array of properties to show. Default: <code>[]</code> (no propList)
+ * @cat     Output
+ * @method  inspect
+ *
+ * @param   {Object} obj An object or any other data item to be inspected.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
+ * @param   {Boolean} [settings.showProps] Show or hide properties. Default: `true`
+ * @param   {Boolean} [settings.showValues] Show or hide values. Default: `true`
+ * @param   {Boolean} [settings.showMethods] Show or hide methods. Default: `false`
+ * @param   {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: `1`
+ * @param   {Array} [settings.propList] Array of properties to show. Default: `[]` (no propList)
  *
  * @example <caption>Inspecting a string</caption>
  * inspect("foo");
@@ -1072,13 +1093,14 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 // Files & Folders
 
 /**
- * Returns a file object.
+ * @description Returns a file object.
  * Note that the resulting file object can either refer to an already existing file or if the file does not exist, it can create a preliminary "virtual" file that refers to a file that could be created later (i.e. by an export command).
  *
- * @cat Files
- * @method file
- * @param {String} filePath The file path.
- * @return {File} File at the given path.
+ * @cat     Files
+ * @method  file
+ *
+ * @param   {String} filePath The file path.
+ * @return  {File} File at the given path.
  *
  * @example <caption>Get an image file from the desktop and place it in the document</caption>
  * var myImage = file("~/Desktop/myImage.jpg");
@@ -1110,13 +1132,14 @@ pub.file = function(filePath) {
 };
 
 /**
- * Returns a folder object.
+ * @description Returns a folder object.
  * Note that the resulting folder object can either refer to an already existing folder or if the folder does not exist, it can create a preliminary "virtual" folder that refers to a folder that could be created later.
  *
- * @cat Files
- * @method folder
- * @param {String} [folderPath] The path of the folder.
- * @return {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
+ * @cat     Files
+ * @method  folder
+ *
+ * @param   {String} [folderPath] The path of the folder.
+ * @return  {Folder} Folder at the given path. If no path is given, but the document is already saved, the document's data folder will be returned.
  *
  * @example <caption>Get a folder from the desktop and load its files</caption>
  * var myImageFolder = folder("~/Desktop/myImages/");
@@ -1154,17 +1177,17 @@ pub.folder = function(folderPath) {
 };
 
 /**
- * Gets all files of a folder and returns them in an array of file objects.
- * The settings object can be used to restrict the search to certain file types only, to include hidden files and to include files in subfolders.
+ * @description Gets all files of a folder and returns them in an array of file objects. The settings object can be used to restrict the search to certain file types only, to include hidden files and to include files in subfolders.
  *
- * @cat Files
- * @method files
- * @param {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
- * @param {Object} [settings] A settings object to control the function's behavior.
- * @param {String|Array} [settings.filter] Suffix(es) of file types to include. Default: <code>"*"</code> (include all file types)
- * @param {Boolean} [settings.hidden] Hidden files will be included. Default: <code>false</code>
- * @param {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: <code>false</code>
- * @return {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
+ * @cat     Files
+ * @method  files
+ *
+ * @param   {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
+ * @param   {String|Array} [settings.filter] Suffix(es) of file types to include. Default: `"*"` (include all file types)
+ * @param   {Boolean} [settings.hidden] Hidden files will be included. Default: `false`
+ * @param   {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: `false`
+ * @return  {Array} Array of the resulting file(s). If no files are found, an empty array will be returned.
  *
  * @example <caption>Get a folder from the desktop and load all its JPEG files</caption>
  * var myImageFolder = folder("~/Desktop/myImages/");
@@ -1234,15 +1257,16 @@ pub.files = function(folder, settings, collectedFiles) {
 };
 
 /**
- * Opens a selection dialog that allows to select one file. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ * @description Opens a selection dialog that allows to select one file. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
  *
- * @cat Files
- * @method selectFile
- * @param {Object} [settings] A settings object to control the function's behavior.
- * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
- * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
- * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {File|Null} The selected file. If the user cancels, <code>null</code> will be returned.
+ * @cat     Files
+ * @method  selectFile
+ *
+ * @param   {Object} [settings] A settings object to control the function's behavior.
+ * @param   {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
+ * @param   {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
+ * @param   {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return  {File|Null} The selected file. If the user cancels, `null` will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
  * selectFile({prompt: "Please select a file."});
@@ -1255,15 +1279,16 @@ pub.selectFile = function(settings) {
 };
 
 /**
- * Opens a selection dialog that allows to select one or multiple files. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
+ * @description Opens a selection dialog that allows to select one or multiple files. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
  *
- * @cat Files
- * @method selectFiles
- * @param {Object} [settings] A settings object to control the function's behavior.
- * @param {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: <code>""</code> (no prompt)
- * @param {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: <code>""</code> (include all)
- * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
+ * @cat     Files
+ * @method  selectFiles
+ *
+ * @param   {Object} [settings] A settings object to control the function's behavior.
+ * @param   {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
+ * @param   {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
+ * @param   {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return  {Array} Array of the selected file(s). If the user cancels, an empty array will be returned.
  *
  * @example <caption>Open file selection dialog with a prompt text</caption>
  * selectFiles({prompt: "Please select your files."});
@@ -1281,14 +1306,15 @@ pub.selectFiles = function(settings) {
 };
 
 /**
- * Opens a selection dialog that allows to select a folder. The settings object can be used to add a prompt text at the top of the dialog and to set the dialog's starting folder.
+ * @description Opens a selection dialog that allows to select a folder. The settings object can be used to add a prompt text at the top of the dialog and to set the dialog's starting folder.
  *
- * @cat Files
- * @method selectFolder
- * @param {Object} [settings] A settings object to control the function's behavior.
- * @param {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: <code>""</code> (no prompt)
- * @param {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
- * @return {Folder|Null} The selected folder. If the user cancels, <code>null</code> will be returned.
+ * @cat     Files
+ * @method  selectFolder
+ *
+ * @param   {Object} [settings] A settings object to control the function's behavior.
+ * @param   {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: `""` (no prompt)
+ * @param   {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
+ * @return  {Folder|Null} The selected folder. If the user cancels, `null` will be returned.
  *
  * @example <caption>Open folder selection dialog with a prompt text</caption>
  * selectFolder({prompt: "Please select a folder."});
@@ -1310,12 +1336,13 @@ pub.selectFolder = function(settings) {
 // Date
 
 /**
- * The year() function returns the current year as an integer (2012, 2013 etc).
+ * @description The `year()` function returns the current year as a number (`2018`, `2019` etc).
  *
- * @cat Environment
- * @subcat Date
- * @method year
- * @return {Number} The current year.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  year
+ *
+ * @return  {Number} The current year.
  */
 pub.year = function() {
   return (new Date()).getFullYear();
@@ -1323,12 +1350,13 @@ pub.year = function() {
 
 
 /**
- * The month() function returns the current month as a value from 1 - 12.
+ * @description The `month()` function returns the current month as a value from `1`-`12`.
  *
- * @cat Environment
- * @subcat Date
- * @method month
- * @return {Number} The current month number.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  month
+ *
+ * @return  {Number} The current month number.
  */
 pub.month = function() {
   return (new Date()).getMonth() + 1;
@@ -1336,12 +1364,13 @@ pub.month = function() {
 
 
 /**
- * The day() function returns the current day as a value from 1 - 31.
+ * @description The `day()` function returns the current day as a value from `1`-`31`.
  *
- * @cat Environment
- * @subcat Date
- * @method day
- * @return {Number} The current day number.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  day
+ *
+ * @return  {Number} The current day number.
  */
 pub.day = function() {
   return (new Date()).getDate();
@@ -1349,12 +1378,13 @@ pub.day = function() {
 
 
 /**
- * The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
+ * @description The `weekday()` function returns the current weekday as a string from `Sunday`, `Monday`, `Tuesday` ...
  *
- * @cat Environment
- * @subcat Date
- * @method weekday
- * @return {String} The current weekday name.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  weekday
+ *
+ * @return  {String} The current weekday name.
  */
 pub.weekday = function() {
   var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
@@ -1363,12 +1393,13 @@ pub.weekday = function() {
 
 
 /**
- * The hour() function returns the current hour as a value from 0 - 23.
+ * @description The `hour()` function returns the current hour as a value from `0` - `23`.
  *
- * @cat Environment
- * @subcat Date
- * @method hour
- * @return {Number} The current hour.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  hour
+ *
+ * @return  {Number} The current hour.
  */
 pub.hour = function() {
   return (new Date()).getHours();
@@ -1376,12 +1407,13 @@ pub.hour = function() {
 
 
 /**
- * The minute() function returns the current minute as a value from 0 - 59.
+ * @description The `minute()` function returns the current minute as a value from `0` - `59`.
  *
- * @cat Environment
- * @subcat Date
- * @method minute
- * @return {Number} The current minute.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  minute
+ *
+ * @return  {Number} The current minute.
  */
 pub.minute = function() {
   return (new Date()).getMinutes();
@@ -1389,12 +1421,13 @@ pub.minute = function() {
 
 
 /**
- * The second() function returns the current second as a value from 0 - 59.
+ * @description The `second()` function returns the current second as a value from `0` - `59`.
  *
- * @cat Environment
- * @subcat Date
- * @method second
- * @return {Number} The current second.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  second
+ *
+ * @return  {Number} The current second.
  */
 pub.second = function() {
   return (new Date()).getSeconds();
@@ -1402,12 +1435,13 @@ pub.second = function() {
 
 
 /**
- * Returns the number of milliseconds (thousandths of a second) since starting an applet.
+ * @description Returns the number of milliseconds (thousandths of a second) since starting the script.
  *
- * @cat Environment
- * @subcat Date
- * @method millis
- * @return {Number} The current milli.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  millis
+ *
+ * @return  {Number} The current milli.
  */
 pub.millis = function() {
   return Date.now() - startTime;
@@ -1415,12 +1449,13 @@ pub.millis = function() {
 
 
 /**
- * The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
+ * @description The `millisecond()` function differs from `millis()`, in that it returns the exact millisecond (thousandths of a second) of the current time.
  *
- * @cat Environment
- * @subcat Date
- * @method millisecond
- * @return {Number} The current millisecond.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  millisecond
+ *
+ * @return  {Number} The current millisecond.
  */
 pub.millisecond = function() {
   return (new Date()).getMilliseconds();
@@ -1428,12 +1463,13 @@ pub.millisecond = function() {
 
 
 /**
- * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
+ * @description The `timestamp()` function returns the current date formatted as `YYYYMMDD_HHMMSS` for useful unique filenaming.
  *
- * @cat Environment
- * @subcat Date
- * @method timestamp
- * @return {String} The current time in YYYYMMDD_HHMMSS.
+ * @cat     Environment
+ * @subcat  Date
+ * @method  timestamp
+ *
+ * @return  {String} The current time in `YYYYMMDD_HHMMSS`.
  */
 pub.timestamp = function() {
   var dt = new Date();

@@ -4,16 +4,19 @@
 
 pub.JSON = {
   /**
-   * Function parses and validates a string as JSON-object. Usage:
+   * @description Function parses and validates a string as JSON-object.
+   *
+   * @cat     Data
+   * @subcat  JSON
+   * @method  JSON.decode
+   *
+   * @param   {String} String to be parsed as JSON-object.
+   * @return  {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
+   *
+   * @example
    * var obj = JSON.decode(str);
    * var str = JSON.encode(obj);
-   *
-   * @cat Data
-   * @subcat JSON
-   * @method JSON.decode
-   * @param  {String} String to be parsed as JSON-object.
-   * @return {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
-  */
+   */
   // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
   decode: function(data) {
     if (typeof data !== "string" || !data) {
@@ -34,15 +37,18 @@ pub.JSON = {
     error("JSON.decode(), invalid JSON: " + data);
   },
   /**
-   * Function convert an javascript object to a JSON-string. Usage:
+   * Function convert an javascript object to a JSON-string.
+   *
+   * @cat     Data
+   * @subcat  JSON
+   * @method  JSON.encode
+   *
+   * @param   {Object} Object to be converted to a JSON-string
+   * @return  {String} Returns JSON-string
+   *
+   * @example
    * var str = JSON.encode(obj);
    * var obj = JSON.decode(str);
-   *
-   * @cat Data
-   * @subcat JSON
-   * @method JSON.encode
-   * @param  {Object} Object to be converted to a JSON-string
-   * @return {String} Returns JSON-string
    */
   // From: https://gist.github.com/754454
   encode: function(obj) {
@@ -86,14 +92,15 @@ function CSV() {
   }
 
   /**
-   * Sets the delimiter of the CSV decode and encode function.
+   * @description Sets the delimiter of the CSV decode and encode function.
    *
-   * @cat Data
-   * @subcat CSV
-   * @method CSV.delimiter
-   * @param  {String} [delimiter] Optional Sets the delimiter for CSV parsing
-   * @return {String} Returns the current delimiter if called without argument
-  */
+   * @cat     Data
+   * @subcat  CSV
+   * @method  CSV.delimiter
+   *
+   * @param   {String} [delimiter] Optional Sets the delimiter for CSV parsing
+   * @return  {String} Returns the current delimiter if called without argument
+   */
   this.delimiter = function(delimiter) {
     if (arguments.length === 0) return delimiterStr;
     if (typeof delimiter === "string") {
@@ -104,16 +111,19 @@ function CSV() {
   };
 
   /**
-   * Function parses a string as CSV-object Array. Usage:
+   * @description Function parses a string as CSV-object Array.
+   *
+   * @cat     Data
+   * @subcat  CSV
+   * @method  CSV.decode
+   *
+   * @param   {String} String to be parsed as CSV-object.
+   * @return  {Array} Returns CSV-object Array
+   *
+   * @example
    * var arr = CSV.decode(str);
    * var str = CSV.encode(arr);
-   *
-   * @cat Data
-   * @subcat CSV
-   * @method CSV.decode
-   * @param  {String} String to be parsed as CSV-object.
-   * @return {Array} Returns CSV-object Array
-  */
+   */
   this.decode = function(text) {
     var header;
     return parseRows(text, function(row, i) {
@@ -129,15 +139,18 @@ function CSV() {
   };
 
   /**
-   * Function convert an javascript array of objects to a CSV-string. Usage:
+   * @description Function convert an javascript array of objects to a CSV-string.
+   *
+   * @cat     Data
+   * @subcat  CSV
+   * @method  CSV.encode
+   *
+   * @param   {Array} Array to be converted to a CSV-string
+   * @return  {String} Returns CSV-string
+   *
+   * @example
    * var str = CSV.encode(arr);
    * var arr = CSV.decode(str);
-   *
-   * @cat Data
-   * @subcat CSV
-   * @method CSV.encode
-   * @param  {Array} Array to be converted to a CSV-string
-   * @return {String} Returns CSV-string
    */
   this.encode = function(rows) {
     var csvStrings = [];
@@ -232,18 +245,16 @@ function CSV() {
 
 
 /**
- * Converts a byte, char, int, or color to a String containing the
- * equivalent binary notation. For example color(0, 102, 153, 255)
- * will convert to the String "11111111000000000110011010011001". This
- * function can help make your geeky debugging sessions much happier.
+ * @description Converts a byte, char, int, or color to a String containing the equivalent binary notation. For example `color(0, 102, 153, 255)` will convert to the String `"11111111000000000110011010011001"`. This function can help make your geeky debugging sessions much happier.
  *
-
- * @cat Data
- * @subcat Conversion
- * @method binary
- * @param {Number} num value to convert
- * @param {Number} [numBits] number of digits to return
- * @return {String} A formatted string
+ *
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  binary
+ *
+ * @param   {Number} num value to convert
+ * @param   {Number} [numBits] number of digits to return
+ * @return  {String} A formatted string
  */
  // From: http://processingjs.org/reference/binary_/
 pub.binary = function(num, numBits) {
@@ -262,15 +273,14 @@ pub.binary = function(num, numBits) {
 };
 
 /**
- * Converts a String representation of a binary number to its
- * equivalent integer value. For example, unbinary("00001000") will
- * return 8.
+ * @description Converts a String representation of a binary number to its equivalent integer value. For example, `unbinary("00001000")` will return `8`.
  *
- * @cat Data
- * @subcat Conversion
- * @method unbinary
- * @param {String} binaryString value to convert
- * @return {Number} The integer representation
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  unbinary
+ *
+ * @param   {String} binaryString value to convert
+ * @return  {Number} The integer representation
  */
  // From: http://processingjs.org/reference/unbinary_/
 pub.unbinary = function(binaryString) {
@@ -297,14 +307,15 @@ var decimalToHex = function(d, padding) {
 };
 
 /**
- * Convert a number to a hex representation.
+ * @description Convert a number to a hex representation.
  *
- * @cat Data
- * @subcat Conversion
- * @method hex
- * @param {Number} value The number to convert
- * @param {Number} [len] The length of the hex number to be created, default: 8
- * @return {String} The hex representation as a string
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  hex
+ *
+ * @param   {Number} value The number to convert
+ * @param   {Number} [len] The length of the hex number to be created, default: `8`
+ * @return  {String} The hex representation as a string
  */
 pub.hex = function(value, len) {
   if (arguments.length === 1) len = 8;
@@ -318,13 +329,14 @@ var unhexScalar = function(hex) {
 };
 
 /**
- * Convert a hex representation to a number.
+ * @description Convert a hex representation to a number.
  *
- * @cat Data
- * @subcat Conversion
- * @method unhex
- * @param {String} hex The hex representation
- * @return {Number} The number
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  unhex
+ *
+ * @param   {String} hex The hex representation
+ * @return  {Number} The number
  */
 pub.unhex = function(hex) {
   if (hex instanceof Array) {
@@ -341,13 +353,14 @@ pub.unhex = function(hex) {
 
 
 /**
- * Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts "word!" to "word". Especially useful together with words();
+ * @description Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts `"word!"` to `"word"`. Especially useful together with `words()`;
  *
- * @method trimWord
- * @cat Data
- * @subcat String Functions
- * @param {String} s The String to trim
- * @return {String} The trimmed string
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  trimWord
+ *
+ * @param   {String} s The String to trim
+ * @return  {String} The trimmed string
  */
  // from: https://stackoverflow.com/a/25575009/3399765
 pub.trimWord = function(s) {
@@ -358,17 +371,15 @@ pub.trimWord = function(s) {
 };
 
 /**
- * Combines an array of Strings into one String, each separated by
- * the character(s) used for the separator parameter. To join arrays
- * of ints or floats, it's necessary to first convert them to strings
- * using nf() or nfs().
+ * @description Combines an array of Strings into one String, each separated by the character(s) used for the separator parameter. To join arrays of ints or floats, it's necessary to first convert them to strings using `nf()` or `nfs()`.
  *
- * @method join
- * @cat Data
- * @subcat String Functions
- * @param {Array} array A string array
- * @param {String} separator The separator to be inserted
- * @return {String} The joined string
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  join
+ *
+ * @param   {Array} array A string array
+ * @param   {String} separator The separator to be inserted
+ * @return  {String} The joined string
  */
  // http://processingjs.org/reference/join_/
 pub.join = function(array, separator) {
@@ -376,25 +387,17 @@ pub.join = function(array, separator) {
 };
 
 /**
- * The split() function breaks a string into pieces using a
- * character or string as the divider. The delim parameter specifies the
- * character or characters that mark the boundaries between each piece. A
- * String[] array is returned that contains each of the pieces.
+ * @description The `split()` function breaks a string into pieces using a character or string as the divider. The `delim` parameter specifies the character or characters that mark the boundaries between each piece. An array of strings is returned that contains each of the pieces.
  *
- * If the result is a set of numbers, you can convert the String[] array
- * to to a float[] or int[] array using the datatype conversion functions
- * int() and float() (see example above).
+ * The `splitTokens()` function works in a similar fashion, except that it splits using a range of characters instead of a specific character or sequence.
  *
- * The splitTokens() function works in a similar fashion, except that it
- * splits using a range of characters instead of a specific character or
- * sequence.
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  split
  *
- * @cat Data
- * @subcat String Functions
- * @method split
- * @param {String} str the String to be split
- * @param {String} [delim] The string used to separate the data
- * @return {Array} Array of strings
+ * @param   {String} str the String to be split
+ * @param   {String} [delim] The string used to separate the data
+ * @return  {Array} Array of strings
  */
  // http://processingjs.org/reference/split_/
 pub.split = function(str, delim) {
@@ -402,22 +405,17 @@ pub.split = function(str, delim) {
 };
 
 /**
- * The splitTokens() function splits a String at one or many character
- * "tokens." The tokens parameter specifies the character or characters
- * to be used as a boundary.
+ * @description The `splitTokens()` function splits a string at one or many character "tokens." The tokens parameter specifies the character or characters to be used as a boundary.
  *
- * If no tokens character is specified, any whitespace character is used
- * to split. Whitespace characters include tab (\t), line feed (\n),
- * carriage return (\r), form feed (\f), and space. To convert a String
- * to an array of integers or floats, use the datatype conversion functions
- * int() and float() to convert the array of Strings.
+ * If no tokens character is specified, any whitespace character is used to split. Whitespace characters include tab (`\t`), line feed (`\n`), carriage return (`\r`), form feed (`\f`), and space.
  *
- * @cat Data
- * @subcat String Functions
- * @method splitTokens
- * @param {String} str the String to be split
- * @param {String} [tokens] list of individual characters that will be used as separators
- * @return {Array} Array of strings
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  splitTokens
+ *
+ * @param   {String} str the String to be split
+ * @param   {String} [tokens] list of individual characters that will be used as separators
+ * @return  {Array} Array of strings
  */
  // From: http://processingjs.org/reference/splitTokens_/
 pub.splitTokens = function(str, tokens) {
@@ -503,23 +501,18 @@ function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
 }
 
 /**
- * Utility function for formatting numbers into strings. There
- * are two versions, one for formatting floats and one for formatting
- * ints. The values for the digits, left, and right parameters should
- * always be positive integers.
-
- * As shown in the above example, nf() is used to add zeros to the
- * left and/or right of a number. This is typically for aligning a list
- * of numbers. To remove digits from a floating-point number, use the
- * int(), ceil(), floor(), or round() functions.
+ * @description Utility function for formatting numbers into strings. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
  *
- * @cat Data
- * @subcat String Functions
- * @method nf
- * @param {Number} value The Number to convert
- * @param {Number} leftDigits
- * @param {Number} rightDigits
- * @return {String} The formatted string
+ * `nf()` is used to add zeros to the left and/or right of a number. This is typically for aligning a list of numbers. To remove digits from a floating-point number, use the `ceil()`, `floor()`, or `round()` functions.
+ *
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nf
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
  */
  // From: http://processingjs.org/reference/nf_/
 pub.nf = function(value, leftDigits, rightDigits) {
@@ -527,20 +520,16 @@ pub.nf = function(value, leftDigits, rightDigits) {
 };
 
 /**
- * Utility function for formatting numbers into strings. Similar to nf()
- * but leaves a blank space in front of positive numbers so they align
- * with negative numbers in spite of the minus symbol. There are two
- * versions, one for formatting floats and one for formatting ints. The
- * values for the digits, left, and right parameters should always be
- * positive integers.
+ * @description Utility function for formatting numbers into strings. Similar to `nf()` but leaves a blank space in front of positive numbers so they align with negative numbers in spite of the minus symbol. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
  *
- * @cat Data
- * @subcat String Functions
- * @method nfs
- * @param {Number} value The Number to convert
- * @param {Number} leftDigits
- * @param {Number} rightDigits
- * @return {String} The formatted string
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nfs
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfs_/
 pub.nfs = function(value, leftDigits, rightDigits) {
@@ -548,19 +537,16 @@ pub.nfs = function(value, leftDigits, rightDigits) {
 };
 
 /**
- * Utility function for formatting numbers into strings. Similar to nf()
- * but puts a "+" in front of positive numbers and a "-" in front of
- * negative numbers. There are two versions, one for formatting floats
- * and one for formatting ints. The values for the digits, left, and right
- * parameters should always be positive integers.
+ * @description Utility function for formatting numbers into strings. Similar to `nf()` but puts a `+` in front of positive numbers and a `-` in front of negative numbers. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
  *
- * @cat Data
- * @subcat String Functions
- * @method nfp
- * @param {Number} value The Number to convert
- * @param {Number} leftDigits
- * @param {Number} rightDigits
- * @return {String} The formatted string
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nfp
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfp_/
 pub.nfp = function(value, leftDigits, rightDigits) {
@@ -568,18 +554,16 @@ pub.nfp = function(value, leftDigits, rightDigits) {
 };
 
 /**
- * Utility function for formatting numbers into strings and placing
- * appropriate commas to mark units of 1000. There are two versions, one
- * for formatting ints and one for formatting an array of ints. The value
- * for the digits parameter should always be a positive integer.
+ * @description Utility function for formatting numbers into strings and placing appropriate commas to mark units of 1000. There are two versions, one for formatting ints and one for formatting an array of ints. The value for the digits parameter should always be a positive integer.
  *
- * @cat Data
- * @subcat String Functions
- * @method nfc
- * @param {Number} value The Number to convert
- * @param {Number} leftDigits
- * @param {Number} rightDigits
- * @return {String} The formatted string
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nfc
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
  */
  // From: http://processingjs.org/reference/nfc_/
 pub.nfc = function(value, leftDigits, rightDigits) {
@@ -588,15 +572,14 @@ pub.nfc = function(value, leftDigits, rightDigits) {
 
 
 /**
- * Removes whitespace characters from the beginning and end of a String.
- * In addition to standard whitespace characters such as space, carriage
- * return, and tab, this function also removes the Unicode "nbsp" character.
+ * @description Removes whitespace characters from the beginning and end of a String. In addition to standard whitespace characters such as space, carriage return, and tab, this function also removes the Unicode "nbsp" character.
  *
- * @cat Data
- * @subcat String Functions
- * @method trim
- * @param {String|Array} str A string or an array of strings to be trimmed
- * @return {String|Array} Returns the input in a trimmed way
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  trim
+ *
+ * @param   {String|Array} str A string or an array of strings to be trimmed
+ * @return  {String|Array} Returns the input in a trimmed way
  */
  // From: http://processingjs.org/reference/trim_/
 pub.trim = function(str) {
@@ -609,13 +592,14 @@ pub.trim = function(str) {
 };
 
 /**
- * Checks whether an URL string is valid.
+ * @description Checks whether an URL string is valid.
  *
- * @cat Data
- * @subcat String Functions
- * @method isURL
- * @param {String} url An url string to be checked
- * @return {Boolean} Returns either true or false
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  isURL
+ *
+ * @param   {String} url An url string to be checked
+ * @return  {Boolean} Returns either true or false
  */
 var isURL = pub.isURL = function(url) {
   var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
@@ -623,14 +607,15 @@ var isURL = pub.isURL = function(url) {
 };
 
 /**
- * Checks whether a string ends with a specific character or string.
+ * @description Checks whether a string ends with a specific character or string.
  *
- * @cat Data
- * @subcat String Functions
- * @method endsWith
- * @param {String} str A string to be checked
- * @param {String} suffix The string to look for
- * @return {Boolean} Returns either true or false
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  endsWith
+ *
+ * @param   {String} str A string to be checked
+ * @param   {String} suffix The string to look for
+ * @return  {Boolean} Returns either true or false
  */
 var endsWith = pub.endsWith = function(str, suffix) {
   if(!isString(str) || !isString(suffix)) {
@@ -640,14 +625,15 @@ var endsWith = pub.endsWith = function(str, suffix) {
 };
 
 /**
- * Checks whether a string starts with a specific character or string.
+ * @description Checks whether a string starts with a specific character or string.
  *
- * @cat Data
- * @subcat String Functions
- * @method startsWith
- * @param {String} str A string to be checked
- * @param {String} prefix The string to look for
- * @return {Boolean} Returns either true or false
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  startsWith
+ *
+ * @param   {String} str A string to be checked
+ * @param   {String} prefix The string to look for
+ * @return  {Boolean} Returns either true or false
  */
 var startsWith = pub.startsWith = function(str, prefix) {
   if(!isString(str) || !isString(prefix)) {
@@ -658,26 +644,28 @@ var startsWith = pub.startsWith = function(str, prefix) {
 
 
 /**
- * Checks whether a var is an Array, returns true if this is the case
+ * @description Checks whether a var is an array, returns `true` if this is the case.
  *
- * @cat Data
- * @subcat Type-Check
- * @method isArray
- * @param  {Object|String|Number|Boolean} obj The object to check
- * @return {Boolean} returns true if this is the case
+ * @cat     Data
+ * @subcat  Type-Check
+ * @method  isArray
+ *
+ * @param   {Object|String|Number|Boolean} obj The object to check
+ * @return  {Boolean} returns true if this is the case
  */
 var isArray = pub.isArray = function(obj) {
   return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
 /**
- * Checks whether a var is a number, returns true if this is the case
+ * @description Checks whether a var is a number, returns `true if this is the case.
  *
- * @cat Data
- * @subcat Type-Check
- * @method isNumber
- * @param  {Object|String|Number|Boolean}  num The number to check
- * @return {Boolean} returns true if this is the case
+ * @cat     Data
+ * @subcat  Type-Check
+ * @method  isNumber
+ *
+ * @param   {Object|String|Number|Boolean} num The number to check
+ * @return  {Boolean} returns true if this is the case
  */
 var isNumber = pub.isNumber = function(num) {
   if (num === null) {
@@ -691,41 +679,43 @@ var isNumber = pub.isNumber = function(num) {
 
 
 /**
- * Checks whether a var is an integer, returns true if this is the case.
+ * @description Checks whether a var is an integer, returns `true` if this is the case.
  *
- * @cat Data
- * @subcat Type-Check
- * @method isInteger
- * @param  {Object|String|Number|Boolean}  num The number to check.
- * @return {Boolean} Returns true if the given argument is an integer.
+ * @cat     Data
+ * @subcat  Type-Check
+ * @method  isInteger
+ *
+ * @param   {Object|String|Number|Boolean} num The number to check.
+ * @return  {Boolean} Returns true if the given argument is an integer.
  */
 var isInteger = pub.isInteger = function(num) {
   return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**
- * Checks whether a var is a string, returns true if this is the case
+ * @description Checks whether a var is a string, returns `true` if this is the case
  *
- * @cat Data
- * @subcat Type-Check
- * @method isString
- * @param  {Object|String|Number|Boolean} str The string to check
- * @return {Boolean} returns true if this is the case
+ * @cat     Data
+ * @subcat  Type-Check
+ * @method  isString
+ *
+ * @param   {Object|String|Number|Boolean} str The string to check
+ * @return  {Boolean} returns true if this is the case
  */
 var isString = pub.isString = function(str) {
   return Object.prototype.toString.call(str) === "[object String]";
 };
 
 /**
- * Checks whether a var is an InDesign text object, returns true if this is the case
- * NB: a InDesign TextFrame will return false as it is just a container holding text.
- * So you could say that isText() refers to all the things inside a TextFrame.
+ * @description Checks whether a var is an InDesign text object, returns `true` if this is the case.
+ * NB: a InDesign text frame will return `false` as it is just a container holding text. So you could say that `isText()` refers to all the things inside a text frame.
  *
- * @cat Document
- * @subcat Type-Check
- * @method isText
- * @param  {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word}  obj The object to check
- * @return {Boolean} returns true if this is the case
+ * @cat     Document
+ * @subcat  Type-Check
+ * @method  isText
+ *
+ * @param   {Character|InsertionPoint|Line|Paragraph|TextColumn|TextStyleRange|Word} obj The object to check
+ * @return  {Boolean} returns true if this is the case
  */
 var isText = pub.isText = function(obj) {
 
@@ -844,12 +834,13 @@ var initExportFile = function(file) {
 };
 
 /**
- * Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
+ * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
  *
- * @cat Document
- * @subcat Misc
- * @method projectFolder
- * @return {Folder} The folder of the the active document
+ * @cat     Document
+ * @subcat  Misc
+ * @method  projectFolder
+ *
+ * @return  {Folder} The folder of the the active document
  */
 pub.projectFolder = function() {
   if(!currentDoc().saved) {
@@ -860,15 +851,16 @@ pub.projectFolder = function() {
 
 
 /**
- * Executes a shell command and returns the result, currently Mac only.
+ * @description Executes a shell command and returns the result, currently Mac only.
  *
  * BE CAREFUL!
  *
- * @cat Data
- * @subcat Input
- * @method shellExecute
- * @param  {String} cmd The shell command to execute
- * @return {String}
+ * @cat     Data
+ * @subcat  Input
+ * @method  shellExecute
+ *
+ * @param   {String} cmd The shell command to execute
+ * @return  {String} { description_of_the_return_value }
  */
 pub.shellExecute = function(cmd) {
   if (Folder.fs === "Macintosh") {
@@ -883,14 +875,14 @@ pub.shellExecute = function(cmd) {
 };
 
 /**
- * Reads the contents of a file or loads an URL into a String.
- * If the file is specified by name as String, it must be located in the document's data directory.
+ * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as String, it must be located in the document's data directory.
  *
- * @cat Data
- * @subcat Input
- * @method loadString
- * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
- * @return {String}  String file or URL content.
+ * @cat     Data
+ * @subcat  Input
+ * @method  loadString
+ *
+ * @param   {String|File} file The text file name in the document's data directory or a File instance or an URL
+ * @return  {String} String file or URL content.
  */
 pub.loadString = function(file) {
   if (isURL(file)) {
@@ -918,14 +910,14 @@ var getURL = function(url) {
 };
 
 /**
- * Reads the contents of a file or loads an URL and creates a String array of its individual lines.
- * If the file is specified by name as String, it must be located in the document's data directory.
+ * @description Reads the contents of a file or loads an URL and creates a string array of its individual lines. If the file is specified by name as string, it must be located in the document's data directory.
  *
- * @cat Data
- * @subcat Input
- * @method loadStrings
- * @param  {String|File} file The text file name in the document's data directory or a File instance or an URL
- * @return {Array}  Array of the individual lines in the given File or URL
+ * @cat     Data
+ * @subcat  Input
+ * @method  loadStrings
+ *
+ * @param   {String|File} file The text file name in the document's data directory or a file instance or an URL
+ * @return  {Array} Array of the individual lines in the given file or URL
  */
 pub.loadStrings = function(file) {
   if (isURL(file)) {
@@ -948,11 +940,12 @@ pub.loadStrings = function(file) {
 // Output
 
 /**
- * Prints a message line to the console output in the ExtendScript editor.
+ * @description Prints a message line to the console output in the ExtendScript editor.
  *
- * @cat Output
- * @method println
- * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
+ * @cat     Output
+ * @method  println
+ *
+ * @param   {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
 var println = pub.println = function() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
@@ -962,11 +955,12 @@ var println = pub.println = function() {
 };
 
 /**
- * Prints a message to the console output in the ExtendScript editor, but unlike println() it doesn't return the carriage to a new line at the end.
+ * @description Prints a message to the console output in the ExtendScript editor, but unlike `println()` it doesn't return the carriage to a new line at the end.
  *
- * @cat Output
- * @method print
- * @param {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
+ * @cat     Output
+ * @method  print
+ *
+ * @param   {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
  */
 pub.print = function() {
   var msg = Array.prototype.slice.call(arguments).join(" ");
@@ -976,10 +970,10 @@ pub.print = function() {
 };
 
 /**
- * Print numerous information about the current environment to the console
+ * @description Print numerous information about the current environment to the console.
  *
- * @cat Output
- * @method printInfo
+ * @cat     Output
+ * @method  printInfo
  */
 pub.printInfo = function() {
 
@@ -994,14 +988,14 @@ pub.printInfo = function() {
 };
 
 /**
- * Writes an array of strings to a file, one line per string.
- * If the given file exists it gets overridden.
+ * @description Writes an array of strings to a file, one line per string. If the given file exists it gets overridden.
  *
- * @cat Output
- * @method saveStrings
- * @param  {String|File} file The file name or a File instance
- * @param  {Array} strings The string array to be written
- * @return {File} The file the strings were written to.
+ * @cat     Output
+ * @method  saveStrings
+ *
+ * @param   {String|File} file The file name or a File instance
+ * @param   {Array} strings The string array to be written
+ * @return  {File} The file the strings were written to.
  */
 pub.saveStrings = function(file, strings) {
   if(!isArray(strings)) {
@@ -1019,14 +1013,14 @@ pub.saveStrings = function(file, strings) {
 };
 
 /**
- * Writes a string to a file.
- * If the given file exists it gets overridden.
+ * @description Writes a string to a file. If the given file exists it gets overridden.
  *
- * @cat Output
- * @method saveString
- * @param  {String|File} file The file name or a File instance.
- * @param  {String} string The string to be written.
- * @return {File} The file the string was written to.
+ * @cat     Output
+ * @method  saveString
+ *
+ * @param   {String|File} file The file name or a File instance.
+ * @param   {String} string The string to be written.
+ * @return  {File} The file the string was written to.
  */
 pub.saveString = function(file, string) {
   if(!isString(string)) {
@@ -1042,13 +1036,14 @@ pub.saveString = function(file, string) {
 };
 
 /**
- * Exports the current document as PDF to the documents folder. Please note, that export options default to the last used export settings.
+ * @description Exports the current document as PDF to the documents folder. Please note that export options default to the last used export settings.
  *
- * @cat Output
- * @method savePDF
- * @param  {String|File} file The file name or a File instance.
- * @param  {Boolean} [showOptions] Whether to show the export dialog.
- * @return {File} The exported PDF file.
+ * @cat     Output
+ * @method  savePDF
+ *
+ * @param   {String|File} file The file name or a File instance.
+ * @param   {Boolean} [showOptions] Whether to show the export dialog.
+ * @return  {File} The exported PDF file.
  */
 pub.savePDF = function(file, showOptions) {
   var outputFile = initExportFile(file);
@@ -1063,13 +1058,14 @@ pub.savePDF = function(file, showOptions) {
 };
 
 /**
- * Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.
+ * @description Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.
  *
- * @cat Output
- * @method savePNG
- * @param {String|File} file The file name or a File instance
- * @param {Boolean} [showOptions] Whether to show the export dialog
- * @return {File} The exported PNG file.
+ * @cat     Output
+ * @method  savePNG
+ *
+ * @param   {String|File} file The file name or a File instance
+ * @param   {Boolean} [showOptions] Whether to show the export dialog
+ * @return  {File} The exported PNG file.
  */
 pub.savePNG = function(file, showOptions) {
   var outputFile = initExportFile(file);
@@ -1084,12 +1080,13 @@ pub.savePNG = function(file, showOptions) {
 };
 
 /**
- * Downloads an URL to a file, currently Mac only.
+ * @description Downloads an URL to a file, currently Mac only.
  *
- * @cat Output
- * @method download
- * @param {String} url The download url
- * @param {String|File} [file] A relative file path in the project folder or a File instance
+ * @cat     Output
+ * @method  download
+ *
+ * @param   {String} url The download url
+ * @param   {String|File} [file] A relative file path in the project folder or a File instance
  */
 pub.download = function(url, file) {
   var projPath = pub.projectFolder().fsName.replace(" ", "\\ ");
