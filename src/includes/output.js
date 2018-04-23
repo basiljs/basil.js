@@ -137,3 +137,85 @@ pub.saveStrings = function(file, strings) {
   outputFile.close();
   return outputFile;
 };
+
+// ----------------------------------------
+// Output Private
+// ----------------------------------------
+
+var initExportFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
+  var result, tmpPath = null;
+  var isFile = file instanceof File;
+  var filePath = isFile ? file.absoluteURI : file;
+
+  // if parent folder already exists, the rest can be skipped
+  if(isFile && File(filePath).parent.exists) {
+    // remove file as in some circumstances file cannot be overwritten
+    // (if file is on top level outside user folder)
+    // also improves performance considerably
+    File(filePath).remove();
+    return File(filePath);
+  }
+
+  // clean up string path
+  if((!isFile) && filePath[0] !== "~") {
+    if(filePath[0] !== "/") {
+      filePath = "/" + filePath;
+    }
+    // check if file path is a relative URI ( /Users/username/examples/... )
+    // if so, turn it into an absolute URI ( ~/examples/... )
+    var userRelURI = Folder("~").relativeURI;
+    if(startsWith(filePath, userRelURI)) {
+      filePath = "~" + filePath.substring(userRelURI.length);
+    }
+  }
+
+  // clean up path and convert to array
+  var pathNormalized = filePath.split("/");
+  for (var i = 0; i < pathNormalized.length; i++) {
+    if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
+      pathNormalized.splice(i, 1);
+    }
+  }
+
+  if(filePath[0] === "~") {
+    tmpPath = "~";
+    pathNormalized.splice(0, 1);
+  } else if (isFile) {
+    // file objects that are outside the user folder
+    tmpPath = "";
+  } else {
+    // string paths relative to the project folder
+    tmpPath = pub.projectFolder().absoluteURI;
+  }
+  var fileName = pathNormalized[pathNormalized.length - 1];
+
+  // does the path contain folders? if not, create them ...
+  if (pathNormalized.length > 1) {
+    var folders = pathNormalized.slice(0, -1);
+    for (var i = 0; i < folders.length; i++) {
+      tmpPath += "/" + folders[i];
+      var f = new Folder(tmpPath);
+      if (!f.exists) {
+        f.create();
+
+        if(!f.exists) {
+          // in some cases, folder creation does not throw an error, yet folder does not exist
+          error(getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
+            "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
+        }
+      }
+    }
+  }
+
+  if(File(tmpPath + "/" + fileName).exists) {
+    // remove existing file to avoid save errors
+    File(tmpPath + "/" + fileName).remove();
+  }
+
+  return File(tmpPath + "/" + fileName);
+};

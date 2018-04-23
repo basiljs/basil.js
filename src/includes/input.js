@@ -568,3 +568,37 @@ pub.weekday = function() {
 pub.year = function() {
   return (new Date()).getFullYear();
 };
+
+// ----------------------------------------
+// Input Private
+// ----------------------------------------
+
+var getURL = function(url) {
+  if (isURL(url)) {
+    if (Folder.fs === "Macintosh") {
+      return pub.shellExecute("curl -m 15 -L '" + url + "'");
+    } else {
+      error(getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+    }
+  } else {
+    error(getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
+  }
+};
+
+var initDataFile = function(file) {
+
+  if(!(isString(file) || file instanceof File)) {
+    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
+  }
+
+  var result = null;
+  if (file instanceof File) {
+    result = file;
+  } else {
+    result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
+  }
+  if (!result.exists) {
+    error(getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
+  }
+  return result;
+};

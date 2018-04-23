@@ -79,7 +79,6 @@ var pub = {};
 
 // @include "includes/constants.js";
 // @include "includes/private-vars.js";
-// @include "includes/global-functions.js";
 
 // @include "includes/core.js";
 
