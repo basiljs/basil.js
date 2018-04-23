@@ -130,70 +130,6 @@ pub.CHORD = "chord";
 pub.PIE = "pie";
 
 /**
- * @description Two Pi
- *
- * @cat      Math
- * @subcat   Constants
- * @property TWO_PI {Number}
- */
-pub.TWO_PI = Math.PI * 2;
-
-/**
- * @description Pi
- *
- * @cat      Math
- * @subcat   Constants
- * @property PI {Number}
- */
-pub.PI = Math.PI;
-
-/**
- * @description Half Pi
- *
- * @cat      Math
- * @subcat   Constants
- * @property HALF_PI {Number}
- */
-pub.HALF_PI = Math.PI / 2;
-
-/**
- * @description Quarter Pi
- *
- * @cat      Math
- * @subcat   Constants
- * @property QUARTER_PI {Number}
- */
-pub.QUARTER_PI = Math.PI / 4;
-
-/**
- * @description Sin Cos Length
- *
- * @cat      Math
- * @subcat   Constants
- * @property SINCOS_LENGTH {Number}
- */
-pub.SINCOS_LENGTH = 720;
-
-/**
- * @description Epsilon
- *
- * @cat      Math
- * @subcat   Constants
- * @property EPSILON {Number}
- */
-pub.EPSILON = 10e-12;
-
-/**
- * @description Kappa
- *
- * @cat      Math
- * @subcat   Constants
- * @property KAPPA {Number}
- */
-// Kappa, see: http://www.whizkidtech.redprince.net/bezier/circle/kappa/
-pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
-
-/**
  * Used with canvasMode() to set the canvas to the full current page.
  */
 pub.PAGE = "page";
@@ -272,28 +208,6 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
  * Used with size() to set the orientation of a given page size to landscape.
  */
 pub.LANDSCAPE = PageOrientation.LANDSCAPE;
-
-/**
- * @description Returns a Lorem ipsum string that can be used for testing.
- *
- * @cat      Typography
- * @subcat   Constants
- * @property LOREM {String}
- */
-pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
-
-/**
-* @description The name of the current script.
- *
-* @cat      Environment
-* @subcat   Constants
-* @property SCRIPTNAME {String}
-*/
-var stackArray = $.stack.
-            replace(/[\n]toString\(\)[\n]$/,'').
-            replace(/[\[\]']+/g,'').
-            split(/[\n]/);
-pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
 
 /**
 * Used with `mode()` to set performance mode. Disables screen redraw during processing.

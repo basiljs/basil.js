@@ -2,234 +2,91 @@
 // src/includes/structure.js
 // ----------------------------------------
 
-var forEachTextCollection = function(container, collection, cb) {
-  // var collection;
-  if(container instanceof Document) {
-    collection = container.stories.everyItem()[collection];
-  } else {
-    collection = container.textFrames.everyItem()[collection];
+// ----------------------------------------
+// Structure
+// ----------------------------------------
+
+/**
+ * @description Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, `mode()` should be placed in the beginning of the script. In basil there are three different performance modes:
+ *
+ * - `VISIBLE` is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
+ * - `HIDDEN` allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * - `SILENT` processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to `VISIBLE`.
+ *
+ * @cat     Structure
+ * @method  mode
+ *
+ * @param   {String} mode The performance mode to switch to.
+ */
+pub.mode = function(mode) {
+
+  if(!(mode === pub.VISIBLE || mode === pub.HIDDEN || mode === pub.SILENT)) {
+    error("mode(), invalid argument. Use VISIBLE, HIDDEN or SILENT.");
   }
 
-  for (var i = 0; i < collection.length; i++) {
-    if(cb(collection[i], i) === false) {
-      return false;
+  app.scriptPreferences.enableRedraw = (mode === pub.VISIBLE || mode === pub.HIDDEN);
+
+  if(!currDoc) {
+    // initiate new document in given mode
+    currentDoc(mode);
+  } else {
+
+    if (!currDoc.saved && !currDoc.modified && pub.HIDDEN) {
+      // unsaved, unmodified doc at the beginning of the script that needs to be hidden
+      // -> will be closed without saving, fresh hidden document will be opened
+      currDoc.close(SaveOptions.NO);
+      currDoc = app.documents.add(false);
+      setCurrDoc(currDoc);
+    } else if (mode === pub.HIDDEN && currMode !== pub.HIDDEN) {
+      // existing document needs to be hidden
+      if (!currDoc.saved && currDoc.modified) {
+        try {
+          currDoc.save();
+        } catch(e) {
+          throw {userCancel: true};
+        }
+        warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
+      } else if (currDoc.modified) {
+        currDoc.save(File(currDoc.fullName));
+        warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
+      }
+      var docPath = currDoc.fullName;
+      currDoc.close(); // close the doc and reopen it without adding to the display list
+      currDoc = app.open(File(docPath), false);
+
+      setCurrDoc(currDoc);
+    } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
+      // existing document needs to be unhidden
+      currDoc.windows.add();
     }
   }
-  return true;
-};
 
-
-var textCollection = function(collection, legalContainers, container, cb) {
-
-  checkNull(container);
-
-  if(!(container.hasOwnProperty("contents") || container instanceof Document || container instanceof Page)) {
-    error(collection + "(), wrong object type. Use: " + legalContainers);
+  if (!progressPanel && (mode === pub.HIDDEN || mode === pub.SILENT)) {
+    // turn on progress panel
+    progressPanel = new Progress();
+  } else if (progressPanel && mode === pub.VISIBLE) {
+    // turn off progress panel
+    progressPanel.closePanel();
+    progressPanel = null;
   }
 
-  if(cb instanceof Function) {
-    // callback function is passed
-    if (container instanceof Document || container instanceof Page) {
-      return forEachTextCollection(container, collection, cb);
-    }
-    return forEach(container[collection], cb);
+  currMode = mode;
+};
 
+/**
+ * @description Stops basil from continuously executing the code within `loop()` and quits the script.
+ *
+ * @cat     Structure
+ * @method  noLoop
+ */
+pub.noLoop = function(printFinished) {
+  var allIdleTasks = app.idleTasks;
+  for (var i = app.idleTasks.length - 1; i >= 0; i--) {
+    allIdleTasks[i].remove();
   }
-    // no callback function is passed
-  if(container instanceof Document) {
-    return container.stories.everyItem()[collection];
-  } else if (container instanceof Page) {
-    return container.textFrames.everyItem()[collection];
-  }
-  return container[collection];
-
-
-};
-/**
- * @description Suspends the calling thread for a number of milliseconds.
- * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
- *
- * @cat     Environment
- * @method  delay
- *
- * @param   {Number} milliseconds The delay time in milliseconds.
- */
-pub.delay = function (milliseconds) {
-  $.sleep(milliseconds);
-};
-
-/**
- * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
- *
- * @cat     Document
- * @subcat  Multi-Getters
- * @method  stories
- *
- * @param   {Document} doc The document instance to iterate the stories in
- * @param   {Function} [cb] The callback function to call with each story. When this function returns `false` the loop stops. Passed arguments: `story`, `loopCount`.
- * @return  {Stories} A collection of Story objects.
- *
- * @example
- * stories(doc(), function(story, loopCount){
- *   println("Number of words in each Story:");
- *   println(story.words.length);
- * });
- */
-pub.stories = function(doc, cb) {
-
-  checkNull(doc);
-
-  if(arguments.length === 1 && doc instanceof Document) {
-    return doc.stories;
-  } else if (cb instanceof Function) {
-    return forEach(doc.stories, cb);
-  }
-  error("stories(), incorrect call. Wrong parameters!");
-  return null;
-};
-
-/**
- * @description If no callback function is given it returns a Collection of paragraphs in the container otherwise calls the given callback function with each paragraph of the given document, page, story or textFrame.
- *
- * @cat     Document
- * @subcat  Multi-Getters
- * @method  paragraphs
- *
- * @param   {Document|Page|Story|TextFrame} container The document, story, page or textFrame instance to iterate the paragraphs in.
- * @param   {Function} [cb] Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: `para`, `loopCount`.
- * @return  {Paragraphs} A collection of Paragraph objects.
- */
-pub.paragraphs = function(container, cb) {
-
-  var legalContainers = "Document, Story, Page or TextFrame.";
-  return textCollection("paragraphs", legalContainers, container, cb);
-
-};
-
-/**
- * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
- *
- * @cat     Document
- * @subcat  Multi-Getters
- * @method  lines
- *
- * @param   {Document|Page|Story|TextFrame|Paragraph} container The document, page, story, textFrame or paragraph instance to iterate the lines in.
- * @param   {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: `line`, `loopCount`.
- * @return  {Lines} A collection of Line objects.
- */
-pub.lines = function(container, cb) {
-
-  var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
-  return textCollection("lines", legalContainers, container, cb);
-
-};
-
-/**
- * @description If no callback function is given it returns a Collection of words in the container otherwise calls the given callback function with each word of the given document, page, story, textFrame, paragraph or line.
- *
- * @cat     Document
- * @subcat  Multi-Getters
- * @method  words
- *
- * @param   {Document|Page|Story|TextFrame|Paragraph|Line} container The document, page, story, textFrame, paragraph or line instance to iterate the words in.
- * @param   {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: `word`, `loopCount`.
- * @return  {Words} A collection of Word objects.
- */
-pub.words = function(container, cb) {
-
-  var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
-  return textCollection("words", legalContainers, container, cb);
-
-};
-
-/**
- * @description If no callback function is given it returns a Collection of characters in the container otherwise calls the given callback function with each character of the given document, page, story, textFrame, paragraph, line or word.
- *
- * @cat     Document
- * @subcat  Multi-Getters
- * @method  characters
- *
- * @param   {Document|Page|Story|TextFrame|Paragraph|Line|Word} container The document, page, story, textFrame, paragraph, line or word instance to  iterate the characters in.
- * @param   {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: `character`, `loopCount`
- * @return  {Characters} A collection of Character objects.
- */
-pub.characters = function(container, cb) {
-
-  var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
-  return textCollection("characters", legalContainers, container, cb);
-
-};
-
-
-/**
- * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
- *
- * @cat     Document
- * @subcat  Multi-Getters
- * @method  items
- *
- * @param   {Document|Page|Layer|Group} container The container where the PageItems sit in
- * @param   {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: `item`, `loopCount`.
- * @return  {PageItems} A collection of PageItem objects.
- */
-pub.items = function(container, cb) {
-
-  if (container instanceof Document
-    || container instanceof Page
-    || container instanceof Layer
-    || container instanceof Group) {
-
-    if(arguments.length === 1 || cb === false) {
-      return container.allPageItems;
-    } else if(cb instanceof Function) {
-      return forEach(container.allPageItems, cb);
-    }
-  }
-  error("items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
-  return null;
-};
-
-
-/**
- * @description Removes all page items (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a group, the group itself will be removed as well.
- *
- * @cat     Document
- * @method  clear
- *
- * @param   {Document|Page|Layer|Group} container The container where the PageItems sit in.
- */
-pub.clear = function(container) {
-
-  if (container instanceof Document
-    || container instanceof Page
-    || container instanceof Layer) {
-
-    container.pageItems.everyItem().locked = false;
-    container.pageItems.everyItem().remove();
-
-  } else if (container instanceof Group) {
-
-    container.locked = false;
-    container.remove();
-
-  } else {
-    error("clear(), not a valid container! Use: Document, Page, Layer or Group.");
-  }
-};
-
-/**
- * @description Removes the provided Page, Layer, PageItem, Swatch, etc.
- *
- * @cat     Document
- * @method  remove
- *
- * @param   {PageItem} obj The object to be removed.
- */
-pub.remove = function(obj) {
-
-  if(obj.hasOwnProperty("remove")) {
-    obj.remove();
-  } else {
-    error("remove(), provided object cannot be removed.");
-  }
+  if(printFinished) {
+    println("Basil.js -> Stopped looping.");
+    println("[Finished in " + executionDuration() + "]");
+  };
+  resetUserSettings();
 };

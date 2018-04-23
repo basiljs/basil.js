@@ -2,203 +2,43 @@
 // src/includes/color.js
 // ----------------------------------------
 
+// ----------------------------------------
+// Color
+// ----------------------------------------
+
 /**
- * @description Sets the color or gradient used to fill shapes.
+ * @description Sets the Effects blendMode property of an object.
  *
  * @cat     Color
- * @method  fill
+ * @method  blendMode
  *
- * @param   {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
- * @param   {String} [name] If created with numbers, a custom swatch name can be given.
+ * @param   {Object} obj The object to set blendMode of.
+ * @param   {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
+ *   - `BlendMode.NORMAL`
+ *   - `BlendMode.MULTIPLY`
+ *   - `BlendMode.SCREEN`
+ *   - `BlendMode.OVERLAY`
+ *   - `BlendMode.SOFT_LIGHT`
+ *   - `BlendMode.HARD_LIGHT`
+ *   - `BlendMode.COLOR_DODGE`
+ *   - `BlendMode.COLOR_BURN`
+ *   - `BlendMode.DARKEN`
+ *   - `BlendMode.LIGHTEN`
+ *   - `BlendMode.DIFFERENCE`
+ *   - `BlendMode.EXCLUSION`
+ *   - `BlendMode.HUE`
+ *   - `BlendMode.SATURATION`
+ *   - `BlendMode.COLOR`
+ *   - `BlendMode.LUMINOSITY`
  */
-pub.fill = function (fillColor) {
-
-  checkNull(fillColor);
-  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
-    currFillColor = fillColor;
+pub.blendMode = function(obj, blendMode) {
+  checkNull(obj);
+  if (obj.hasOwnProperty("transparencySettings")) {
+    obj.transparencySettings.blendingSettings.blendMode = blendMode;
   } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currFillColor = pub.swatch(arguments[0]);
-      }else{
-        currFillColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currFillColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-    } else {
-      error("fill(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
-    }
+    warning("blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
   }
 };
-
-/**
- * @description Disables filling geometry. If both `noStroke()` and `noFill()` are called, newly drawn shapes will be invisible.
- *
- * @cat     Color
- * @method  noFill
- */
-pub.noFill = function () {
-  currFillColor = noneSwatchColor;
-};
-
-/**
- * @description Sets the color or gradient used to draw lines and borders around shapes.
- *
- * @cat     Color
- * @method  stroke
- *
- * @param   {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
- */
-pub.stroke = function (strokeColor) {
-  checkNull(strokeColor);
-  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
-    currStrokeColor = strokeColor;
-  } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currStrokeColor = pub.swatch(arguments[0]);
-      }else{
-        currStrokeColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currStrokeColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-    } else {
-      error("stroke(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
-    }
-  }
-};
-
-/**
- * @description Disables drawing the stroke. If both noStroke() and noFill() are called, newly drawn shapes will be invisible.
- *
- * @cat     Color
- * @method  noStroke
- */
-pub.noStroke = function () {
-  currStrokeColor = noneSwatchColor;
-};
-
-/**
- * @description Sets the tint of the color used to fill shapes.
- *
- * @cat     Color
- * @method  fillTint
- *
- * @param   {Number} tint Number from 0 to 100
- */
-pub.fillTint = function (tint) {
-  checkNull(tint);
-  if (typeof tint === "string" || typeof tint === "number") {
-    currFillTint = tint;
-  } else {
-    error("fillTint(), unsupported type. Please make sure the fillTint is a number or string");
-  }
-};
-
-/**
- * @description Sets the tint of the color used to draw lines and borders around shapes.
- *
- * @cat     Color
- * @method  strokeTint
- *
- * @param   {Number} tint Number from 0 to 100.
- */
-pub.strokeTint = function (tint) {
-  checkNull(tint);
-  if (typeof tint === "string" || typeof tint === "number") {
-    currStrokeTint = tint;
-  } else {
-    error("strokeTint(), unsupported type. Please make sure the strokeTint parameter is a number or string");
-  }
-};
-
-/**
- * @description Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
- *
- * @cat     Color
- * @method  colorMode
- *
- * @param   {Number} colorMode RGB or CMYK.
- */
-pub.colorMode = function(colorMode) {
-  checkNull(colorMode);
-  if (arguments.length === 0) {
-    return currColorMode;
-  }
-  if (colorMode === pub.RGB || colorMode === pub.CMYK) {
-    currColorMode = colorMode;
-  } else {
-    error("colorMode(), unsupported colormode, use: RGB or CMYK");
-  }
-};
-
-/**
- * @description Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`.
- *
- * @cat     Color
- * @method  gradientMode
- *
- * @param   {String} gradientMode `LINEAR` or `RADIAL`.
- */
-pub.gradientMode = function(gradientMode) {
-  checkNull(gradientMode);
-  if (arguments.length === 0) {
-    return currGradientMode;
-  }
-  if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
-    currGradientMode = gradientMode;
-  } else {
-    error("gradientMode(), unsupported gradient mode, use: LINEAR or RADIAL");
-  }
-};
-
-/**
- * @description Gets a swatch by name.
- *
- * @cat     Color
- * @method  swatch
- *
- * @param   {String} swatchName Returns the swatch color/gradient for a given name by string.
- */
-pub.swatch = function(){
-  var newSwatch;
-  var props = {};
-  if (arguments.length === 1) {
-    var a = arguments[0];
-    if (typeof a === "string") {
-      newSwatch = currentDoc().swatches.itemByName(a);
-      if(newSwatch.isValid){
-          return newSwatch;
-        }else{
-          error("A swatch with the provided name doesn't exist.");
-        }
-    }else{
-      error("swatch() requires a string, the name of an existing swatch.");
-    }
-  }
-}
 
 /**
  * @description Creates a new RGB / CMYK color and adds it to the document, or gets a color by name from the document. The default color mode is RGB.
@@ -338,6 +178,83 @@ pub.color = function() {
 };
 
 /**
+ * @description Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
+ *
+ * @cat     Color
+ * @method  colorMode
+ *
+ * @param   {Number} colorMode RGB or CMYK.
+ */
+pub.colorMode = function(colorMode) {
+  checkNull(colorMode);
+  if (arguments.length === 0) {
+    return currColorMode;
+  }
+  if (colorMode === pub.RGB || colorMode === pub.CMYK) {
+    currColorMode = colorMode;
+  } else {
+    error("colorMode(), unsupported colormode, use: RGB or CMYK");
+  }
+};
+
+/**
+ * @description Sets the color or gradient used to fill shapes.
+ *
+ * @cat     Color
+ * @method  fill
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @param   {String} [name] If created with numbers, a custom swatch name can be given.
+ */
+pub.fill = function (fillColor) {
+
+  checkNull(fillColor);
+  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
+    currFillColor = fillColor;
+  } else {
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === "string") {
+        currFillColor = pub.swatch(arguments[0]);
+      }else{
+        currFillColor = pub.color(arguments[0]);
+      }
+    } else if (arguments.length === 2) {
+      currFillColor = pub.color(arguments[0], arguments[1]);
+    } else if (arguments.length === 3) {
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
+    } else if (arguments.length === 4) {
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+    } else if (arguments.length === 5) {
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    } else {
+      error("fill(), wrong parameters. Use:\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
+        + "Name is optional.");
+    }
+  }
+};
+
+/**
+ * @description Sets the tint of the color used to fill shapes.
+ *
+ * @cat     Color
+ * @method  fillTint
+ *
+ * @param   {Number} tint Number from 0 to 100
+ */
+pub.fillTint = function (tint) {
+  checkNull(tint);
+  if (typeof tint === "string" || typeof tint === "number") {
+    currFillTint = tint;
+  } else {
+    error("fillTint(), unsupported type. Please make sure the fillTint is a number or string");
+  }
+};
+
+/**
  * @description Creates a new gradient and adds it to the document, or gets a gradient by name from the document.
  * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions range from 0 to 100. All parameter options allow for an additional name parameter at the end to name the new gradient. If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
  *
@@ -451,54 +368,22 @@ pub.gradient = function() {
 };
 
 /**
- * @description Sets the opacity property of an object.
+ * @description Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`.
  *
  * @cat     Color
- * @method  opacity
+ * @method  gradientMode
  *
- * @param   {Object} obj The object to set opacity of.
- * @param   {Number} opacity The opacity value from 0 to 100.
+ * @param   {String} gradientMode `LINEAR` or `RADIAL`.
  */
-pub.opacity = function(obj, opacity) {
-  checkNull(obj);
-  if (obj.hasOwnProperty("transparencySettings")) {
-    obj.transparencySettings.blendingSettings.opacity = opacity;
-  } else {
-    warning("opacity(), the object " + obj.toString() + " doesn't have an opacity property");
+pub.gradientMode = function(gradientMode) {
+  checkNull(gradientMode);
+  if (arguments.length === 0) {
+    return currGradientMode;
   }
-};
-
-/**
- * @description Sets the Effects blendMode property of an object.
- *
- * @cat     Color
- * @method  blendMode
- *
- * @param   {Object} obj The object to set blendMode of.
- * @param   {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
- *   - `BlendMode.NORMAL`
- *   - `BlendMode.MULTIPLY`
- *   - `BlendMode.SCREEN`
- *   - `BlendMode.OVERLAY`
- *   - `BlendMode.SOFT_LIGHT`
- *   - `BlendMode.HARD_LIGHT`
- *   - `BlendMode.COLOR_DODGE`
- *   - `BlendMode.COLOR_BURN`
- *   - `BlendMode.DARKEN`
- *   - `BlendMode.LIGHTEN`
- *   - `BlendMode.DIFFERENCE`
- *   - `BlendMode.EXCLUSION`
- *   - `BlendMode.HUE`
- *   - `BlendMode.SATURATION`
- *   - `BlendMode.COLOR`
- *   - `BlendMode.LUMINOSITY`
- */
-pub.blendMode = function(obj, blendMode) {
-  checkNull(obj);
-  if (obj.hasOwnProperty("transparencySettings")) {
-    obj.transparencySettings.blendingSettings.blendMode = blendMode;
+  if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
+    currGradientMode = gradientMode;
   } else {
-    warning("blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
+    error("gradientMode(), unsupported gradient mode, use: LINEAR or RADIAL");
   }
 };
 
@@ -558,3 +443,122 @@ pub.lerpColor = function (c1, c2, amt) {
     error("lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
   }
 };
+
+/**
+ * @description Disables filling geometry. If both `noStroke()` and `noFill()` are called, newly drawn shapes will be invisible.
+ *
+ * @cat     Color
+ * @method  noFill
+ */
+pub.noFill = function () {
+  currFillColor = noneSwatchColor;
+};
+
+/**
+ * @description Disables drawing the stroke. If both noStroke() and noFill() are called, newly drawn shapes will be invisible.
+ *
+ * @cat     Color
+ * @method  noStroke
+ */
+pub.noStroke = function () {
+  currStrokeColor = noneSwatchColor;
+};
+
+/**
+ * @description Sets the opacity property of an object.
+ *
+ * @cat     Color
+ * @method  opacity
+ *
+ * @param   {Object} obj The object to set opacity of.
+ * @param   {Number} opacity The opacity value from 0 to 100.
+ */
+pub.opacity = function(obj, opacity) {
+  checkNull(obj);
+  if (obj.hasOwnProperty("transparencySettings")) {
+    obj.transparencySettings.blendingSettings.opacity = opacity;
+  } else {
+    warning("opacity(), the object " + obj.toString() + " doesn't have an opacity property");
+  }
+};
+
+/**
+ * @description Sets the color or gradient used to draw lines and borders around shapes.
+ *
+ * @cat     Color
+ * @method  stroke
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ */
+pub.stroke = function (strokeColor) {
+  checkNull(strokeColor);
+  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
+    currStrokeColor = strokeColor;
+  } else {
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === "string") {
+        currStrokeColor = pub.swatch(arguments[0]);
+      }else{
+        currStrokeColor = pub.color(arguments[0]);
+      }
+    } else if (arguments.length === 2) {
+      currStrokeColor = pub.color(arguments[0], arguments[1]);
+    } else if (arguments.length === 3) {
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
+    } else if (arguments.length === 4) {
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+    } else if (arguments.length === 5) {
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    } else {
+      error("stroke(), wrong parameters. Use:\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
+        + "Name is optional.");
+    }
+  }
+};
+
+/**
+ * @description Sets the tint of the color used to draw lines and borders around shapes.
+ *
+ * @cat     Color
+ * @method  strokeTint
+ *
+ * @param   {Number} tint Number from 0 to 100.
+ */
+pub.strokeTint = function (tint) {
+  checkNull(tint);
+  if (typeof tint === "string" || typeof tint === "number") {
+    currStrokeTint = tint;
+  } else {
+    error("strokeTint(), unsupported type. Please make sure the strokeTint parameter is a number or string");
+  }
+};
+
+/**
+ * @description Gets a swatch by name.
+ *
+ * @cat     Color
+ * @method  swatch
+ *
+ * @param   {String} swatchName Returns the swatch color/gradient for a given name by string.
+ */
+pub.swatch = function(){
+  var newSwatch;
+  var props = {};
+  if (arguments.length === 1) {
+    var a = arguments[0];
+    if (typeof a === "string") {
+      newSwatch = currentDoc().swatches.itemByName(a);
+      if(newSwatch.isValid){
+          return newSwatch;
+        }else{
+          error("A swatch with the provided name doesn't exist.");
+        }
+    }else{
+      error("swatch() requires a string, the name of an existing swatch.");
+    }
+  }
+}

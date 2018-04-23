@@ -65,6 +65,8 @@ basil.js x.x.x DAY MONTH YEAR
 * size() now can use existing page size presets as a parameter with an optional
   second parameter for page orientation (introducing PORTRAIT and LANDSCAPE)
 * duplicate() now duplicates page items reliably in place, even when in FACING canvas modes
+* Updated categories and sub-categories of many functions to better align to Processing/p5.js categories
+  or – in case of non-Processing functions – to better reflect the InDesign categories they belong to
 * Changed all include/includepath/targetengine statements from # to //@
   This allows linting with eslint of all files
 * Linted all the test files

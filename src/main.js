@@ -77,31 +77,23 @@ if(!$.global.hasOwnProperty("basilTest")) {
 
 var pub = {};
 
-/**
- * @description The basil version
- *
- * @cat      Environment
- * @subcat   Constants
- * @property VERSION {String}
- */
-pub.VERSION = "1.1.0";
-
 // @include "includes/constants.js";
-// @include "includes/public-vars.js";
 // @include "includes/private-vars.js";
-// @include "includes/global-functions.js";
 
 // @include "includes/core.js";
 
-// @include "includes/structure.js";
-// @include "includes/environment.js";
-// @include "includes/data.js";
-// @include "includes/shape.js";
 // @include "includes/color.js";
-// @include "includes/typography.js";
+// @include "includes/data.js";
+// @include "includes/document.js";
+// @include "includes/environment.js";
 // @include "includes/image.js";
+// @include "includes/input.js";
 // @include "includes/math.js";
-// @include "includes/transformation.js";
+// @include "includes/output.js";
+// @include "includes/shape.js";
+// @include "includes/structure.js";
+// @include "includes/transform.js";
+// @include "includes/typography.js";
 // @include "includes/ui.js";
 
 init();

@@ -141,115 +141,6 @@ var prepareLoop = function() {
   currFrameRate = 25;
 }
 
-/**
- * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
- *
- * @cat     Environment
- * @method  frameRate
- *
- * @param   {Number} [fps] Frames per second.
- * @return  {Number} Currently set frame rate.
- */
-pub.frameRate = function(fps) {
-  if(arguments.length) {
-    if(!isNumber(fps) || fps <= 0) {
-      error("frameRate(), invalid argument. Use a number greater than 0.")
-    }
-
-    currFrameRate = fps;
-    if(currIdleTask) {
-      currIdleTask.sleep = Math.ceil(1000 / fps);
-    }
-  }
-  return currFrameRate;
-};
-
-/**
- * @description Stops basil from continuously executing the code within `loop()` and quits the script.
- *
- * @cat     Environment
- * @method  noLoop
- */
-pub.noLoop = function(printFinished) {
-  var allIdleTasks = app.idleTasks;
-  for (var i = app.idleTasks.length - 1; i >= 0; i--) {
-    allIdleTasks[i].remove();
-  }
-  if(printFinished) {
-    println("Basil.js -> Stopped looping.");
-    println("[Finished in " + executionDuration() + "]");
-  };
-  resetUserSettings();
-};
-
-/**
- * @description Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, `mode()` should be placed in the beginning of the script. In basil there are three different performance modes:
- *
- * - `VISIBLE` is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
- * - `HIDDEN` allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
- * - `SILENT` processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to `VISIBLE`.
- *
- * @cat     Environment
- * @method  mode
- *
- * @param   {String} mode The performance mode to switch to.
- */
-pub.mode = function(mode) {
-
-  if(!(mode === pub.VISIBLE || mode === pub.HIDDEN || mode === pub.SILENT)) {
-    error("mode(), invalid argument. Use VISIBLE, HIDDEN or SILENT.");
-  }
-
-  app.scriptPreferences.enableRedraw = (mode === pub.VISIBLE || mode === pub.HIDDEN);
-
-  if(!currDoc) {
-    // initiate new document in given mode
-    currentDoc(mode);
-  } else {
-
-    if (!currDoc.saved && !currDoc.modified && pub.HIDDEN) {
-      // unsaved, unmodified doc at the beginning of the script that needs to be hidden
-      // -> will be closed without saving, fresh hidden document will be opened
-      currDoc.close(SaveOptions.NO);
-      currDoc = app.documents.add(false);
-      setCurrDoc(currDoc);
-    } else if (mode === pub.HIDDEN && currMode !== pub.HIDDEN) {
-      // existing document needs to be hidden
-      if (!currDoc.saved && currDoc.modified) {
-        try {
-          currDoc.save();
-        } catch(e) {
-          throw {userCancel: true};
-        }
-        warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
-      } else if (currDoc.modified) {
-        currDoc.save(File(currDoc.fullName));
-        warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
-      }
-      var docPath = currDoc.fullName;
-      currDoc.close(); // close the doc and reopen it without adding to the display list
-      currDoc = app.open(File(docPath), false);
-
-      setCurrDoc(currDoc);
-    } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
-      // existing document needs to be unhidden
-      currDoc.windows.add();
-    }
-  }
-
-  if (!progressPanel && (mode === pub.HIDDEN || mode === pub.SILENT)) {
-    // turn on progress panel
-    progressPanel = new Progress();
-  } else if (progressPanel && mode === pub.VISIBLE) {
-    // turn off progress panel
-    progressPanel.closePanel();
-    progressPanel = null;
-  }
-
-  currMode = mode;
-};
-
-
 // ----------------------------------------
 // all private from here
 
@@ -607,6 +498,22 @@ var createSelectionDialog = function(settings) {
 
   return result;
 }
+
+var isValid = function (item) {
+
+  checkNull(item);
+
+  if (item.hasOwnProperty("isValid")) {
+    if (!item.isValid) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  return true; // if does not have isValid field -> normal array element and not collection
+
+  return false;
+};
 
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {

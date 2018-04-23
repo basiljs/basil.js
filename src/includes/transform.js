@@ -1,63 +1,99 @@
 // ----------------------------------------
-// src/includes/transformation.js
+// src/includes/transform.js
 // ----------------------------------------
-/* global precision */
+
+// ----------------------------------------
+// Transform
+// ----------------------------------------
 
 /**
- * @description Sets the reference point for transformations using the `transform()` function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.
- * Arguments can be the basil constants `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`, `BOTTOM_CENTER` or `BOTTOM_RIGHT`. Alternatively the digits `1` through `9` (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.
- * If the function is used without any arguments the currently set reference point will be returned.
+ * @description Multiplies the current matrix by the one specified through the parameters.
  *
- * @cat     Document
- * @subcat  Transformation
- * @method  referencePoint
+ * @cat     Transform
+ * @method  applyMatrix
  *
- * @param   {String} [referencePoint] The reference point to set.
- * @return  {String} Current reference point setting.
+ * @param   {Matrix2D} matrix The matrix to be applied.
  */
-pub.referencePoint = function(rp) {
-  if(!arguments.length) {
-    return currRefPoint;
-  }
+pub.applyMatrix = function (matrix) {
+  currMatrix.apply(matrix);
+};
 
-  var anchorEnum;
-
-  if(rp === pub.TOP_LEFT || rp === 7 || rp === AnchorPoint.TOP_LEFT_ANCHOR) {
-    currRefPoint = pub.TOP_LEFT;
-    anchorEnum = AnchorPoint.TOP_LEFT_ANCHOR;
-  } else if(rp === pub.TOP_CENTER || rp === 8 || rp === AnchorPoint.TOP_CENTER_ANCHOR) {
-    currRefPoint = pub.TOP_CENTER;
-    anchorEnum = AnchorPoint.TOP_CENTER_ANCHOR;
-  } else if(rp === pub.TOP_RIGHT || rp === 9 || rp === AnchorPoint.TOP_RIGHT_ANCHOR) {
-    currRefPoint = pub.TOP_RIGHT;
-    anchorEnum = AnchorPoint.TOP_RIGHT_ANCHOR;
-  } else if(rp === pub.CENTER_LEFT || rp === 4 || rp === AnchorPoint.LEFT_CENTER_ANCHOR) {
-    currRefPoint = pub.CENTER_LEFT;
-    anchorEnum = AnchorPoint.LEFT_CENTER_ANCHOR;
-  } else if(rp === pub.CENTER || rp === pub.CENTER_CENTER || rp === 5 || rp === AnchorPoint.CENTER_ANCHOR) {
-    currRefPoint = pub.CENTER;
-    anchorEnum = AnchorPoint.CENTER_ANCHOR;
-  } else if(rp === pub.CENTER_RIGHT || rp === 6 || rp === AnchorPoint.RIGHT_CENTER_ANCHOR) {
-    currRefPoint = pub.CENTER_RIGHT;
-    anchorEnum = AnchorPoint.RIGHT_CENTER_ANCHOR;
-  } else if(rp === pub.BOTTOM_LEFT || rp === 1 || rp === AnchorPoint.BOTTOM_LEFT_ANCHOR) {
-    currRefPoint = pub.BOTTOM_LEFT;
-    anchorEnum = AnchorPoint.BOTTOM_LEFT_ANCHOR;
-  } else if(rp === pub.BOTTOM_CENTER || rp === 2 || rp === AnchorPoint.BOTTOM_CENTER_ANCHOR) {
-    currRefPoint = pub.BOTTOM_CENTER;
-    anchorEnum = AnchorPoint.BOTTOM_CENTER_ANCHOR;
-  } else if(rp === pub.BOTTOM_RIGHT || rp === 3 || rp === AnchorPoint.BOTTOM_RIGHT_ANCHOR) {
-    currRefPoint = pub.BOTTOM_RIGHT;
-    anchorEnum = AnchorPoint.BOTTOM_RIGHT_ANCHOR;
+/**
+ * @description Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+ *
+ * @cat     Transform
+ * @method  popMatrix
+ */
+pub.popMatrix = function () {
+  if (matrixStack.length > 0) {
+    currMatrix.set(matrixStack.pop());
   } else {
-    error("referencePoint(), wrong argument! Use reference point constant (TOP_LEFT, TOP_CENTER, ...), a digit between 1 and 9 or an InDesign anchor point enumerator.");
+    error("popMatrix(), missing a pushMatrix() to go with that popMatrix()");
   }
+};
 
-  if(app.properties.activeWindow instanceof LayoutWindow ) {
-    app.activeWindow.transformReferencePoint = anchorEnum;
+/**
+ * @description Prints the current matrix to the console window.
+ *
+ * @cat     Transform
+ * @method  printMatrix
+ */
+pub.printMatrix = function () {
+  currMatrix.print();
+};
+
+/**
+ * @description Pushes the current transformation matrix onto the matrix stack. Understanding `pushMatrix()` and `popMatrix()` requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
+ *
+ * @cat     Transform
+ * @method  pushMatrix
+ */
+pub.pushMatrix = function () {
+  matrixStack.push(currMatrix.array());
+};
+
+/**
+ * @description Replaces the current matrix with the identity matrix.
+ *
+ * @cat     Transform
+ * @method  resetMatrix
+ */
+pub.resetMatrix = function () {
+  matrixStack = [];
+  currMatrix = new Matrix2D();
+
+  pub.translate(currOriginX, currOriginY);
+};
+
+/**
+ * @description Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to `PI`*2) or converted to radians with the `radians()` function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and `HALF_PI` being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `rotate(PI/2)` and then `rotate(PI/2)` is the same as `rotate(PI)`. If `rotate()` is called within the `draw()`, the transformation is reset when the loop begins again. Technically, `rotate()` multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
+ *
+ * @cat     Transform
+ * @method  rotate
+ *
+ * @param   {Number} angle The angle specified in radians
+ */
+pub.rotate = function (angle) {
+  if(typeof arguments[0] === "undefined") {
+    error("Please provide an angle for rotation.");
   }
+  currMatrix.rotate(angle);
+};
 
-  return currRefPoint;
+/**
+ * @description Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call `scale(2.0)` increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling `scale(2.0)` and then `scale(1.5)` is the same as `scale(3.0)`. If `scale()` is called within `draw()`, the transformation is reset when the loop begins again. This function can be further controlled by `pushMatrix()` and `popMatrix()`. If only one parameter is given, it is applied on X and Y axis.
+ *
+ * @cat     Transform
+ * @method  scale
+ *
+ * @param   {Number} scaleX The amount to scale the X axis.
+ * @param   {Number} scaleY The amount to scale the Y axis.
+ */
+pub.scale = function (scaleX, scaleY) {
+  if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) {
+    error("Please provide valid x and/or y factors for scaling.");
+  }
+  currMatrix.scale(scaleX, scaleY);
 };
 
 /**
@@ -73,8 +109,7 @@ pub.referencePoint = function(rp) {
  * - `"x"`: Sets the x-position of the page item's anchor point to the given value. Returns the x-coordinate of the page item's anr point.
  * - `"y"`: Sets the y-position of the page item's anchor point to the given value. Returns the y-coordinate of the page item's anchor point.
  *
- * @cat     Document
- * @subcat  Transformation
+ * @cat     Transform
  * @method  transform
  *
  * @param   {PageItem} pItem The page item to transform.
@@ -255,27 +290,25 @@ pub.transform = function(pItem, type, value) {
 
 }
 
-var printMatrixHelper = function(elements) {
-  var big = 0;
-  for (var i = 0; i < elements.length; i++) {
-    if (i !== 0) {
-      big = Math.max(big, Math.abs(elements[i]));
-
-    } else {
-      big = Math.abs(elements[i]);
-    }
+/**
+ * @description Specifies an amount to displace objects within the page. The `x` parameter specifies left/right translation, the `y` parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `translate(50, 0)` and then `translate(20, 0)` is the same as `translate(70, 0)`. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
+ *
+ * @cat     Transform
+ * @method  translate
+ *
+ * @param   {Number} tx The amount of offset on the X axis.
+ * @param   {Number} ty The amount of offset on the Y axis.
+ */
+pub.translate = function (tx, ty) {
+  if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") {
+    error("Please provide x and y coordinates for translation.");
   }
-  var digits = (big + "").indexOf(".");
-  if (digits === 0) {
-    digits = 1;
-  } else if (digits === -1) {
-    digits = (big + "").length;
-  }
-  return digits;
+  currMatrix.translate(tx, ty);
 };
 
 // ----------------------------------------
-// private matrix functions
+// Transform Private
+// ----------------------------------------
 
 var Matrix2D = function() {
   if (arguments.length === 0) {
@@ -419,116 +452,21 @@ Matrix2D.prototype = {
   }
 };
 
-/**
- * @description Multiplies the current matrix by the one specified through the parameters.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  applyMatrix
- *
- * @param   {Matrix2D} matrix The matrix to be applied.
- */
-pub.applyMatrix = function (matrix) {
-  currMatrix.apply(matrix);
-};
+var printMatrixHelper = function(elements) {
+  var big = 0;
+  for (var i = 0; i < elements.length; i++) {
+    if (i !== 0) {
+      big = Math.max(big, Math.abs(elements[i]));
 
-/**
- * @description Pops the current transformation matrix off the matrix stack. Understanding pushing and popping requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  popMatrix
- */
-pub.popMatrix = function () {
-  if (matrixStack.length > 0) {
-    currMatrix.set(matrixStack.pop());
-  } else {
-    error("popMatrix(), missing a pushMatrix() to go with that popMatrix()");
+    } else {
+      big = Math.abs(elements[i]);
+    }
   }
-};
-
-/**
- * @description Prints the current matrix to the console window.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  printMatrix
- */
-pub.printMatrix = function () {
-  currMatrix.print();
-};
-
-/**
- * @description Pushes the current transformation matrix onto the matrix stack. Understanding `pushMatrix()` and `popMatrix()` requires understanding the concept of a matrix stack. The `pushMatrix()` function saves the current coordinate system to the stack and `popMatrix()` restores the prior coordinate system. `pushMatrix()` and `popMatrix()` are used in conjuction with the other transformation methods and may be embedded to control the scope of the transformations.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  pushMatrix
- */
-pub.pushMatrix = function () {
-  matrixStack.push(currMatrix.array());
-};
-
-/**
- * @description Replaces the current matrix with the identity matrix.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  resetMatrix
- */
-pub.resetMatrix = function () {
-  matrixStack = [];
-  currMatrix = new Matrix2D();
-
-  pub.translate(currOriginX, currOriginY);
-};
-
-/**
- * @description Rotates an object the amount specified by the angle parameter. Angles should be specified in radians (values from 0 to `PI`*2) or converted to radians with the `radians()` function. Objects are always rotated around their relative position to the origin and positive numbers rotate objects in a clockwise direction with 0 radians or degrees being up and `HALF_PI` being to the right etc. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `rotate(PI/2)` and then `rotate(PI/2)` is the same as `rotate(PI)`. If `rotate()` is called within the `draw()`, the transformation is reset when the loop begins again. Technically, `rotate()` multiplies the current transformation matrix by a rotation matrix. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  rotate
- *
- * @param   {Number} angle The angle specified in radians
- */
-pub.rotate = function (angle) {
-  if(typeof arguments[0] === "undefined") {
-    error("Please provide an angle for rotation.");
+  var digits = (big + "").indexOf(".");
+  if (digits === 0) {
+    digits = 1;
+  } else if (digits === -1) {
+    digits = (big + "").length;
   }
-  currMatrix.rotate(angle);
-};
-
-/**
- * @description Increasing and decreasing the size of an object by expanding and contracting vertices. Scale values are specified as decimal percentages. The function call `scale(2.0)` increases the dimension of a shape by 200%. Objects always scale from their relative origin to the coordinate system. Transformations apply to everything that happens after and subsequent calls to the function multiply the effect. For example, calling `scale(2.0)` and then `scale(1.5)` is the same as `scale(3.0)`. If `scale()` is called within `draw()`, the transformation is reset when the loop begins again. This function can be further controlled by `pushMatrix()` and `popMatrix()`. If only one parameter is given, it is applied on X and Y axis.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  scale
- *
- * @param   {Number} scaleX The amount to scale the X axis.
- * @param   {Number} scaleY The amount to scale the Y axis.
- */
-pub.scale = function (scaleX, scaleY) {
-  if(typeof arguments[0] != "number" || (arguments.length === 2 && typeof arguments[1] != "number")) {
-    error("Please provide valid x and/or y factors for scaling.");
-  }
-  currMatrix.scale(scaleX, scaleY);
-};
-
-/**
- * @description Specifies an amount to displace objects within the page. The `x` parameter specifies left/right translation, the `y` parameter specifies up/down translation. Transformations apply to everything that happens after and subsequent calls to the function accumulates the effect. For example, calling `translate(50, 0)` and then `translate(20, 0)` is the same as `translate(70, 0)`. This function can be further controlled by the `pushMatrix()` and `popMatrix()`.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  translate
- *
- * @param   {Number} tx The amount of offset on the X axis.
- * @param   {Number} ty The amount of offset on the Y axis.
- */
-pub.translate = function (tx, ty) {
-  if(typeof arguments[0] === "undefined" || typeof arguments[1] === "undefined") {
-    error("Please provide x and y coordinates for translation.");
-  }
-  currMatrix.translate(tx, ty);
+  return digits;
 };

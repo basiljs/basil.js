@@ -2,77 +2,129 @@
 // src/includes/data.js
 // ----------------------------------------
 
-pub.JSON = {
-  /**
-   * @description Function parses and validates a string as JSON-object.
-   *
-   * @cat     Data
-   * @subcat  JSON
-   * @method  JSON.decode
-   *
-   * @param   {String} String to be parsed as JSON-object.
-   * @return  {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
-   *
-   * @example
-   * var obj = JSON.decode(str);
-   * var str = JSON.encode(obj);
-   */
-  // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
-  decode: function(data) {
-    if (typeof data !== "string" || !data) {
-      return null;
-    }
-    var rvalidchars = /^[\],:{}\s]*$/,
-      rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
-      rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
-      rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
+// ----------------------------------------
+// Data/Collections
+// ----------------------------------------
 
-    // Make sure the incoming data is actual JSON
-    // Logic borrowed from http://json.org/json2.js
-    if (rvalidchars.test(data.replace(rvalidescape, "@")
-      .replace(rvalidtokens, "]")
-      .replace(rvalidbraces, ""))) {
-      return (new Function("return " + data))();
-    }
-    error("JSON.decode(), invalid JSON: " + data);
-  },
-  /**
-   * Function convert an javascript object to a JSON-string.
-   *
-   * @cat     Data
-   * @subcat  JSON
-   * @method  JSON.encode
-   *
-   * @param   {Object} Object to be converted to a JSON-string
-   * @return  {String} Returns JSON-string
-   *
-   * @example
-   * var str = JSON.encode(obj);
-   * var obj = JSON.decode(str);
-   */
-  // From: https://gist.github.com/754454
-  encode: function(obj) {
-    var t = typeof (obj);
-    if (t !== "object" || obj === null) {
-      // simple data type
-      if (t === "string") obj = "\"" + obj + "\"";
-      return String(obj);
-    } else {
-      // recurse array or object
-      var n, v, json = [], arr = (obj && obj.constructor === Array);
+/**
+ * @description Used to run a function on all elements of an array. Please note the existence of the convenience methods `stories()`, `paragraphs()`, `lines()`, `words()` and `characters()` that are used to iterate through all instances of the given type in the given document.
+ *
+ * @cat     Data
+ * @subcat  Collections
+ * @method  forEach
+ *
+ * @param   {Array} collection The array to be processed.
+ * @param   {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+ */
+forEach = function(collection, cb) {
+  for (var i = 0, len = collection.length; i < len; i++) {
 
-      for (n in obj) {
-        v = obj[n];
-        t = typeof (v);
-        if (obj.hasOwnProperty(n)) {
-          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
-          json.push((arr ? "" : "\"" + n + "\":") + String(v));
-        }
-      }
-      return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    if(!isValid(collection[i])) {
+      warning("forEach(), invalid object processed.");
+      continue;
+    }
+
+    if(cb(collection[i], i) === false) {
+      return false;
     }
   }
+  return true;
 };
+
+// ----------------------------------------
+// Data/Conversion
+// ----------------------------------------
+
+/**
+ * @description Converts a byte, char, int, or color to a String containing the equivalent binary notation. For example `color(0, 102, 153, 255)` will convert to the String `"11111111000000000110011010011001"`. This function can help make your geeky debugging sessions much happier.
+ *
+ *
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  binary
+ *
+ * @param   {Number} num value to convert
+ * @param   {Number} [numBits] number of digits to return
+ * @return  {String} A formatted string
+ */
+ // From: http://processingjs.org/reference/binary_/
+pub.binary = function(num, numBits) {
+  var bit;
+  if (numBits > 0) bit = numBits;
+  else if (num instanceof Char) {
+    bit = 16;
+    num |= 0;
+  } else {
+    bit = 32;
+    while (bit > 1 && !(num >>> bit - 1 & 1)) bit--;
+  }
+  var result = "";
+  while (bit > 0) result += num >>> --bit & 1 ? "1" : "0";
+  return result;
+};
+
+/**
+ * @description Convert a number to a hex representation.
+ *
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  hex
+ *
+ * @param   {Number} value The number to convert
+ * @param   {Number} [len] The length of the hex number to be created, default: `8`
+ * @return  {String} The hex representation as a string
+ */
+pub.hex = function(value, len) {
+  if (arguments.length === 1) len = 8;
+  return decimalToHex(value, len);
+};
+
+/**
+ * @description Converts a String representation of a binary number to its equivalent integer value. For example, `unbinary("00001000")` will return `8`.
+ *
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  unbinary
+ *
+ * @param   {String} binaryString value to convert
+ * @return  {Number} The integer representation
+ */
+ // From: http://processingjs.org/reference/unbinary_/
+pub.unbinary = function(binaryString) {
+  var i = binaryString.length - 1,
+    mask = 1,
+    result = 0;
+  while (i >= 0) {
+    var ch = binaryString[i--];
+    if (ch !== "0" && ch !== "1") throw "the value passed into unbinary was not an 8 bit binary number";
+    if (ch === "1") result += mask;
+    mask <<= 1;
+  }
+  return result;
+};
+
+/**
+ * @description Convert a hex representation to a number.
+ *
+ * @cat     Data
+ * @subcat  Conversion
+ * @method  unhex
+ *
+ * @param   {String} hex The hex representation
+ * @return  {Number} The number
+ */
+pub.unhex = function(hex) {
+  if (hex instanceof Array) {
+    var arr = [];
+    for (var i = 0; i < hex.length; i++) arr.push(unhexScalar(hex[i]));
+    return arr;
+  }
+  return unhexScalar(hex);
+};
+
+// ----------------------------------------
+// Data/CSV
+// ----------------------------------------
 
 // Taken and hijacked from d3.js robust csv parser. Hopefully Michael Bostock won't mind.
 // https://github.com/mbostock/d3/tree/master/src/dsv
@@ -90,25 +142,6 @@ function CSV() {
     delimiterCode = delimiter.charCodeAt(0);
     delimiterStr = delimiter;
   }
-
-  /**
-   * @description Sets the delimiter of the CSV decode and encode function.
-   *
-   * @cat     Data
-   * @subcat  CSV
-   * @method  CSV.delimiter
-   *
-   * @param   {String} [delimiter] Optional Sets the delimiter for CSV parsing
-   * @return  {String} Returns the current delimiter if called without argument
-   */
-  this.delimiter = function(delimiter) {
-    if (arguments.length === 0) return delimiterStr;
-    if (typeof delimiter === "string") {
-      initDelimiter(delimiter);
-    } else {
-      error("CSV.delimiter, separator has to be a character or string");
-    }
-  };
 
   /**
    * @description Function parses a string as CSV-object Array.
@@ -136,6 +169,25 @@ function CSV() {
         return null;
       }
     });
+  };
+
+  /**
+   * @description Sets the delimiter of the CSV decode and encode function.
+   *
+   * @cat     Data
+   * @subcat  CSV
+   * @method  CSV.delimiter
+   *
+   * @param   {String} [delimiter] Optional Sets the delimiter for CSV parsing
+   * @return  {String} Returns the current delimiter if called without argument
+   */
+  this.delimiter = function(delimiter) {
+    if (arguments.length === 0) return delimiterStr;
+    if (typeof delimiter === "string") {
+      initDelimiter(delimiter);
+    } else {
+      error("CSV.delimiter, separator has to be a character or string");
+    }
   };
 
   /**
@@ -244,133 +296,321 @@ function CSV() {
   }
 }
 
-// -- Conversion --
-
+// ----------------------------------------
+// Data/HashList
+// ----------------------------------------
 
 /**
- * @description Converts a byte, char, int, or color to a String containing the equivalent binary notation. For example `color(0, 102, 153, 255)` will convert to the String `"11111111000000000110011010011001"`. This function can help make your geeky debugging sessions much happier.
- *
+ * @description HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
  *
  * @cat     Data
- * @subcat  Conversion
- * @method  binary
+ * @subcat  HashList
+ * @method  HashList
  *
- * @param   {Number} num value to convert
- * @param   {Number} [numBits] number of digits to return
- * @return  {String} A formatted string
+ * @class
  */
- // From: http://processingjs.org/reference/binary_/
-pub.binary = function(num, numBits) {
-  var bit;
-  if (numBits > 0) bit = numBits;
-  else if (num instanceof Char) {
-    bit = 16;
-    num |= 0;
-  } else {
-    bit = 32;
-    while (bit > 1 && !(num >>> bit - 1 & 1)) bit--;
+// taken from http://pbrajkumar.wordpress.com/2011/01/17/hashmap-in-javascript/
+HashList = function () {
+  var that = {};
+  that.length = 0;
+  that.items = {};
+
+  for (var key in that.items) {
+    pub.println(key);
   }
-  var result = "";
-  while (bit > 0) result += num >>> --bit & 1 ? "1" : "0";
-  return result;
-};
 
-/**
- * @description Converts a String representation of a binary number to its equivalent integer value. For example, `unbinary("00001000")` will return `8`.
- *
- * @cat     Data
- * @subcat  Conversion
- * @method  unbinary
- *
- * @param   {String} binaryString value to convert
- * @return  {Number} The integer representation
- */
- // From: http://processingjs.org/reference/unbinary_/
-pub.unbinary = function(binaryString) {
-  var i = binaryString.length - 1,
-    mask = 1,
-    result = 0;
-  while (i >= 0) {
-    var ch = binaryString[i--];
-    if (ch !== "0" && ch !== "1") throw "the value passed into unbinary was not an 8 bit binary number";
-    if (ch === "1") result += mask;
-    mask <<= 1;
+  // Please note: this is removing Object fields, but has to be done to have an empty "bucket"
+  function checkKey(key) {
+    if(that.items[key] instanceof Function) {
+      that.items[key] = undefined;
+    }
   }
-  return result;
+
+  /**
+   * @description Deletes all the key - value pairs in this HashList.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.clear
+   */
+  that.clear = function() {
+    for (var i in that.items) {
+      delete that.items[i];
+    }
+    that.length = 0;
+  };
+
+  /**
+   * @description This gets a value by its key.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.get
+   *
+   * @param   {String} key The key to look for.
+   * @return  {Object} The value.
+   */
+  that.get = function(key) {
+    return that.items[key];
+  };
+
+  /**
+   * @description Returns an array with all keys.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getKeys
+   *
+   * @return  {Array} An array with all the keys.
+   */
+  that.getKeys = function () {
+    var keys = [];
+
+    for(var key in that.items)
+      {
+      if(that.items.hasOwnProperty(key))
+          {
+        keys.push(key);
+      }
+    }
+    return keys;
+  };
+
+  /**
+   * @description Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getKeysByValues
+   *
+   * @return  {Array} An array with all the keys.
+   */
+  that.getKeysByValues = function() {
+    var obj = that.items;
+    var keys = [];
+    for(var key in obj)
+        {
+      if(typeof obj[key] != "number") error("HashList.getKeysByValues(), only works with Numbers as values. ");
+      keys.push(key);
+    }
+    return keys.sort(function(a, b) {return obj[b] - obj[a];});
+  };
+
+  /**
+   * @description Returns an array with all keys in a sorted order from higher to lower magnitude.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getSortedKeys
+   *
+   * @return  {Array} An array with all the keys sorted.
+   */
+  that.getSortedKeys = function () {
+    return that.getKeys().sort(); // ["a", "b", "z"]
+  };
+
+  /**
+   * @description Returns an array with all values.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.getValues
+   *
+   * @return  {Array} An array with all the values.
+   */
+  that.getValues = function () {
+
+    var obj = that.items;
+    var values = [];
+
+    for(var key in obj) {
+      values.push(obj[key]);
+    }
+    return values;
+
+  };
+
+  /**
+   * @description Checks for the existence of a given key.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.hasKey
+   *
+   * @param   {String} key The key to check.
+   * @return  {Boolean} Returns true or false.
+   */
+  that.hasKey = function(key) {
+    checkKey(key);
+    return typeof that.items[key] != "undefined";
+  };
+
+  /**
+   * @description Checks if a certain value exists at least once in all of the key - value pairs.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.hasValue
+   *
+   * @param   {Object|String|Number|Boolean} value The value to check.
+   * @return  {Boolean} Returns true or false.
+   */
+  that.hasValue = function(value) {
+    var obj = that.items;
+    var found = false;
+    for(var key in obj) {
+      if (obj[key] === value) {
+        found = true;
+        break;
+      }
+    }
+    return found;
+  };
+
+  /**
+   * @description This removes a key - value pair by its key.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.remove
+   *
+   * @param   {String} key The key to delete.
+   * @return  {Object} The value before deletion.
+   */
+  that.remove = function(key) {
+    var tmp_previous;
+    if (typeof that.items[key] != "undefined") {
+      var tmp_previous = that.items[key];
+      delete that.items[key];
+      that.length--;
+    }
+    return tmp_previous;
+  };
+
+  /**
+   * @description This sets a key - value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
+   *
+   * @cat     Data
+   * @subcat  HashList
+   * @method  HashList.set
+   *
+   * @param   {String} key The key to use.
+   * @param   {Object|String|Number|Boolean} value The value to set.
+   * @return  {Object} The value after setting.
+   */
+  that.set = function(key, value) {
+
+    if(value instanceof Function) error("HashList does not support storing Functions as values.");
+    checkKey(key);
+    if (typeof value != "undefined") {
+      if (typeof that.items[key] === "undefined") {
+        that.length++;
+      }
+      that.items[key] = value;
+    }
+    return that.items[key];
+  };
+
+  return that;
 };
 
+// ----------------------------------------
+// Data/JSON
+// ----------------------------------------
 
-var decimalToHex = function(d, padding) {
-  padding = padding === undefined || padding === null ? padding = 8 : padding;
-  if (d < 0) d = 4294967295 + d + 1;
-  var hex = Number(d).toString(16).toUpperCase();
-  while (hex.length < padding) hex = "0" + hex;
-  if (hex.length >= padding) hex = hex.substring(hex.length - padding, hex.length);
-  return hex;
-};
+pub.JSON = {
+  /**
+   * @description Function parses and validates a string as JSON-object.
+   *
+   * @cat     Data
+   * @subcat  JSON
+   * @method  JSON.decode
+   *
+   * @param   {String} String to be parsed as JSON-object.
+   * @return  {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
+   *
+   * @example
+   * var obj = JSON.decode(str);
+   * var str = JSON.encode(obj);
+   */
+  // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
+  decode: function(data) {
+    if (typeof data !== "string" || !data) {
+      return null;
+    }
+    var rvalidchars = /^[\],:{}\s]*$/,
+      rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
+      rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
+      rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
 
-/**
- * @description Convert a number to a hex representation.
- *
- * @cat     Data
- * @subcat  Conversion
- * @method  hex
- *
- * @param   {Number} value The number to convert
- * @param   {Number} [len] The length of the hex number to be created, default: `8`
- * @return  {String} The hex representation as a string
- */
-pub.hex = function(value, len) {
-  if (arguments.length === 1) len = 8;
-  return decimalToHex(value, len);
-};
+    // Make sure the incoming data is actual JSON
+    // Logic borrowed from http://json.org/json2.js
+    if (rvalidchars.test(data.replace(rvalidescape, "@")
+      .replace(rvalidtokens, "]")
+      .replace(rvalidbraces, ""))) {
+      return (new Function("return " + data))();
+    }
+    error("JSON.decode(), invalid JSON: " + data);
+  },
 
-var unhexScalar = function(hex) {
-  var value = parseInt("0x" + hex, 16);
-  if (value > 2147483647) value -= 4294967296;
-  return value;
-};
+  /**
+   * Function convert an javascript object to a JSON-string.
+   *
+   * @cat     Data
+   * @subcat  JSON
+   * @method  JSON.encode
+   *
+   * @param   {Object} Object to be converted to a JSON-string
+   * @return  {String} Returns JSON-string
+   *
+   * @example
+   * var str = JSON.encode(obj);
+   * var obj = JSON.decode(str);
+   */
+  // From: https://gist.github.com/754454
+  encode: function(obj) {
+    var t = typeof (obj);
+    if (t !== "object" || obj === null) {
+      // simple data type
+      if (t === "string") obj = "\"" + obj + "\"";
+      return String(obj);
+    } else {
+      // recurse array or object
+      var n, v, json = [], arr = (obj && obj.constructor === Array);
 
-/**
- * @description Convert a hex representation to a number.
- *
- * @cat     Data
- * @subcat  Conversion
- * @method  unhex
- *
- * @param   {String} hex The hex representation
- * @return  {Number} The number
- */
-pub.unhex = function(hex) {
-  if (hex instanceof Array) {
-    var arr = [];
-    for (var i = 0; i < hex.length; i++) arr.push(unhexScalar(hex[i]));
-    return arr;
+      for (n in obj) {
+        v = obj[n];
+        t = typeof (v);
+        if (obj.hasOwnProperty(n)) {
+          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
+          json.push((arr ? "" : "\"" + n + "\":") + String(v));
+        }
+      }
+      return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
   }
-  return unhexScalar(hex);
 };
 
-
-// -- String Functions --
-
-
+// ----------------------------------------
+// Data/String Functions
+// ----------------------------------------
 
 /**
- * @description Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts `"word!"` to `"word"`. Especially useful together with `words()`;
+ * @description Checks whether a string ends with a specific character or string.
  *
  * @cat     Data
  * @subcat  String Functions
- * @method  trimWord
+ * @method  endsWith
  *
- * @param   {String} s The String to trim
- * @return  {String} The trimmed string
+ * @param   {String} str A string to be checked
+ * @param   {String} suffix The string to look for
+ * @return  {Boolean} Returns either true or false
  */
- // from: https://stackoverflow.com/a/25575009/3399765
-pub.trimWord = function(s) {
-  s = s.replace(/\s*/g, "")
-       .replace(/\n*/g, "")
-       .replace(/(^[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*)|([\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*$)/gi, "");
-  return s;
+var endsWith = pub.endsWith = function(str, suffix) {
+  if(!isString(str) || !isString(suffix)) {
+    error("endsWith() requires two strings, the string to be checked and the suffix to look for.");
+  }
+  return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
 /**
@@ -387,6 +627,76 @@ pub.trimWord = function(s) {
  // http://processingjs.org/reference/join_/
 pub.join = function(array, separator) {
   return array.join(separator);
+};
+
+/**
+ * @description Utility function for formatting numbers into strings. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
+ *
+ * `nf()` is used to add zeros to the left and/or right of a number. This is typically for aligning a list of numbers. To remove digits from a floating-point number, use the `ceil()`, `floor()`, or `round()` functions.
+ *
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nf
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
+ */
+ // From: http://processingjs.org/reference/nf_/
+pub.nf = function(value, leftDigits, rightDigits) {
+  return nfCore(value, "", "-", leftDigits, rightDigits);
+};
+
+/**
+ * @description Utility function for formatting numbers into strings and placing appropriate commas to mark units of 1000. There are two versions, one for formatting ints and one for formatting an array of ints. The value for the digits parameter should always be a positive integer.
+ *
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nfc
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
+ */
+ // From: http://processingjs.org/reference/nfc_/
+pub.nfc = function(value, leftDigits, rightDigits) {
+  return nfCore(value, "", "-", leftDigits, rightDigits, ",");
+};
+
+/**
+ * @description Utility function for formatting numbers into strings. Similar to `nf()` but puts a `+` in front of positive numbers and a `-` in front of negative numbers. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
+ *
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nfp
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
+ */
+ // From: http://processingjs.org/reference/nfp_/
+pub.nfp = function(value, leftDigits, rightDigits) {
+  return nfCore(value, "+", "-", leftDigits, rightDigits);
+};
+
+/**
+ * @description Utility function for formatting numbers into strings. Similar to `nf()` but leaves a blank space in front of positive numbers so they align with negative numbers in spite of the minus symbol. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
+ *
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  nfs
+ *
+ * @param   {Number} value The Number to convert
+ * @param   {Number} leftDigits
+ * @param   {Number} rightDigits
+ * @return  {String} The formatted string
+ */
+ // From: http://processingjs.org/reference/nfs_/
+pub.nfs = function(value, leftDigits, rightDigits) {
+  return nfCore(value, " ", "-", leftDigits, rightDigits);
 };
 
 /**
@@ -441,138 +751,23 @@ pub.splitTokens = function(str, tokens) {
   return ary;
 };
 
-
-pub.match = function(str, regexp) {
-  return str.match(regexp);
-};
-
-
-pub.matchAll = function(aString, aRegExp) {
-  var results = [],
-    latest;
-  var regexp = new RegExp(aRegExp, "g");
-  while ((latest = regexp.exec(aString)) !== null) {
-    results.push(latest);
-    if (latest[0].length === 0)++regexp.lastIndex;
-  }
-  return results.length > 0 ? results : null;
-};
-
-function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
-  var sign = value < 0 ? minus : plus;
-  var autoDetectDecimals = rightDigits === 0;
-  var rightDigitsOfDefault = rightDigits === undefined || rightDigits < 0 ? 0 : rightDigits;
-  var absValue = Math.abs(value);
-  if (autoDetectDecimals) {
-    rightDigitsOfDefault = 1;
-    absValue *= 10;
-    while (Math.abs(Math.round(absValue) - absValue) > 1.0E-6 && rightDigitsOfDefault < 7) {
-      ++rightDigitsOfDefault;
-      absValue *= 10;
-    }
-  } else if (rightDigitsOfDefault !== 0) absValue *= Math.pow(10, rightDigitsOfDefault);
-  var number, doubled = absValue * 2;
-  if (Math.floor(absValue) === absValue) number = absValue;
-  else if (Math.floor(doubled) === doubled) {
-    var floored = Math.floor(absValue);
-    number = floored + floored % 2;
-  } else number = Math.round(absValue);
-  var buffer = "";
-  var totalDigits = leftDigits + rightDigitsOfDefault;
-  while (totalDigits > 0 || number > 0) {
-    totalDigits--;
-    buffer = "" + number % 10 + buffer;
-    number = Math.floor(number / 10);
-  }
-  if (group !== undefined) {
-    var i = buffer.length - 3 - rightDigitsOfDefault;
-    while (i > 0) {
-      buffer = buffer.substring(0, i) + group + buffer.substring(i);
-      i -= 3;
-    }
-  }
-  if (rightDigitsOfDefault > 0) return sign + buffer.substring(0, buffer.length - rightDigitsOfDefault) + "." + buffer.substring(buffer.length - rightDigitsOfDefault, buffer.length);
-  return sign + buffer;
-}
-function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
-  if (value instanceof Array) {
-    var arr = [];
-    for (var i = 0, len = value.length; i < len; i++) arr.push(nfCoreScalar(value[i], plus, minus, leftDigits, rightDigits, group));
-    return arr;
-  }
-  return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group);
-}
-
 /**
- * @description Utility function for formatting numbers into strings. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
- *
- * `nf()` is used to add zeros to the left and/or right of a number. This is typically for aligning a list of numbers. To remove digits from a floating-point number, use the `ceil()`, `floor()`, or `round()` functions.
+ * @description Checks whether a string starts with a specific character or string.
  *
  * @cat     Data
  * @subcat  String Functions
- * @method  nf
+ * @method  startsWith
  *
- * @param   {Number} value The Number to convert
- * @param   {Number} leftDigits
- * @param   {Number} rightDigits
- * @return  {String} The formatted string
+ * @param   {String} str A string to be checked
+ * @param   {String} prefix The string to look for
+ * @return  {Boolean} Returns either true or false
  */
- // From: http://processingjs.org/reference/nf_/
-pub.nf = function(value, leftDigits, rightDigits) {
-  return nfCore(value, "", "-", leftDigits, rightDigits);
+var startsWith = pub.startsWith = function(str, prefix) {
+  if(!isString(str) || !isString(prefix)) {
+    error("startsWith() requires two strings, the string to be checked and the prefix to look for.");
+  }
+  return str.indexOf(prefix) === 0;
 };
-
-/**
- * @description Utility function for formatting numbers into strings. Similar to `nf()` but leaves a blank space in front of positive numbers so they align with negative numbers in spite of the minus symbol. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
- *
- * @cat     Data
- * @subcat  String Functions
- * @method  nfs
- *
- * @param   {Number} value The Number to convert
- * @param   {Number} leftDigits
- * @param   {Number} rightDigits
- * @return  {String} The formatted string
- */
- // From: http://processingjs.org/reference/nfs_/
-pub.nfs = function(value, leftDigits, rightDigits) {
-  return nfCore(value, " ", "-", leftDigits, rightDigits);
-};
-
-/**
- * @description Utility function for formatting numbers into strings. Similar to `nf()` but puts a `+` in front of positive numbers and a `-` in front of negative numbers. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
- *
- * @cat     Data
- * @subcat  String Functions
- * @method  nfp
- *
- * @param   {Number} value The Number to convert
- * @param   {Number} leftDigits
- * @param   {Number} rightDigits
- * @return  {String} The formatted string
- */
- // From: http://processingjs.org/reference/nfp_/
-pub.nfp = function(value, leftDigits, rightDigits) {
-  return nfCore(value, "+", "-", leftDigits, rightDigits);
-};
-
-/**
- * @description Utility function for formatting numbers into strings and placing appropriate commas to mark units of 1000. There are two versions, one for formatting ints and one for formatting an array of ints. The value for the digits parameter should always be a positive integer.
- *
- * @cat     Data
- * @subcat  String Functions
- * @method  nfc
- *
- * @param   {Number} value The Number to convert
- * @param   {Number} leftDigits
- * @param   {Number} rightDigits
- * @return  {String} The formatted string
- */
- // From: http://processingjs.org/reference/nfc_/
-pub.nfc = function(value, leftDigits, rightDigits) {
-  return nfCore(value, "", "-", leftDigits, rightDigits, ",");
-};
-
 
 /**
  * @description Removes whitespace characters from the beginning and end of a String. In addition to standard whitespace characters such as space, carriage return, and tab, this function also removes the Unicode "nbsp" character.
@@ -595,56 +790,26 @@ pub.trim = function(str) {
 };
 
 /**
- * @description Checks whether an URL string is valid.
+ * @description Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts `"word!"` to `"word"`. Especially useful together with `words()`;
  *
  * @cat     Data
  * @subcat  String Functions
- * @method  isURL
+ * @method  trimWord
  *
- * @param   {String} url An url string to be checked
- * @return  {Boolean} Returns either true or false
+ * @param   {String} s The String to trim
+ * @return  {String} The trimmed string
  */
-var isURL = pub.isURL = function(url) {
-  var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-  return pattern.test(url);
+ // from: https://stackoverflow.com/a/25575009/3399765
+pub.trimWord = function(s) {
+  s = s.replace(/\s*/g, "")
+       .replace(/\n*/g, "")
+       .replace(/(^[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*)|([\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]*$)/gi, "");
+  return s;
 };
 
-/**
- * @description Checks whether a string ends with a specific character or string.
- *
- * @cat     Data
- * @subcat  String Functions
- * @method  endsWith
- *
- * @param   {String} str A string to be checked
- * @param   {String} suffix The string to look for
- * @return  {Boolean} Returns either true or false
- */
-var endsWith = pub.endsWith = function(str, suffix) {
-  if(!isString(str) || !isString(suffix)) {
-    error("endsWith() requires two strings, the string to be checked and the suffix to look for.");
-  }
-  return str.indexOf(suffix, str.length - suffix.length) !== -1;
-};
-
-/**
- * @description Checks whether a string starts with a specific character or string.
- *
- * @cat     Data
- * @subcat  String Functions
- * @method  startsWith
- *
- * @param   {String} str A string to be checked
- * @param   {String} prefix The string to look for
- * @return  {Boolean} Returns either true or false
- */
-var startsWith = pub.startsWith = function(str, prefix) {
-  if(!isString(str) || !isString(prefix)) {
-    error("startsWith() requires two strings, the string to be checked and the prefix to look for.");
-  }
-  return str.indexOf(prefix) === 0;
-};
-
+// ----------------------------------------
+// Data/Type-Check
+// ----------------------------------------
 
 /**
  * @description Checks whether a var is an array, returns `true` if this is the case.
@@ -658,6 +823,20 @@ var startsWith = pub.startsWith = function(str, prefix) {
  */
 var isArray = pub.isArray = function(obj) {
   return Object.prototype.toString.call(obj) === "[object Array]";
+};
+
+/**
+ * @description Checks whether a var is an integer, returns `true` if this is the case.
+ *
+ * @cat     Data
+ * @subcat  Type-Check
+ * @method  isInteger
+ *
+ * @param   {Object|String|Number|Boolean} num The number to check.
+ * @return  {Boolean} Returns true if the given argument is an integer.
+ */
+var isInteger = pub.isInteger = function(num) {
+  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**
@@ -678,21 +857,6 @@ var isNumber = pub.isNumber = function(num) {
     return false;
   }
   return isFinite(num) && num.constructor.name === "Number";
-};
-
-
-/**
- * @description Checks whether a var is an integer, returns `true` if this is the case.
- *
- * @cat     Data
- * @subcat  Type-Check
- * @method  isInteger
- *
- * @param   {Object|String|Number|Boolean} num The number to check.
- * @return  {Boolean} Returns true if the given argument is an integer.
- */
-var isInteger = pub.isInteger = function(num) {
-  return Object.prototype.toString.call(num) === "[object Number]" && num % 1 === 0;
 };
 
 /**
@@ -739,445 +903,97 @@ var isText = pub.isText = function(obj) {
          obj.constructor.name === "TextColumns";
 };
 
-
-var initDataFile = function(file) {
-
-  if(!(isString(file) || file instanceof File)) {
-    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
-  }
-
-  var result = null;
-  if (file instanceof File) {
-    result = file;
-  } else {
-    result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
-  }
-  if (!result.exists) {
-    error(getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
-  }
-  return result;
-};
-
-var initExportFile = function(file) {
-
-  if(!(isString(file) || file instanceof File)) {
-    error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
-  }
-
-  var result, tmpPath = null;
-  var isFile = file instanceof File;
-  var filePath = isFile ? file.absoluteURI : file;
-
-  // if parent folder already exists, the rest can be skipped
-  if(isFile && File(filePath).parent.exists) {
-    // remove file as in some circumstances file cannot be overwritten
-    // (if file is on top level outside user folder)
-    // also improves performance considerably
-    File(filePath).remove();
-    return File(filePath);
-  }
-
-  // clean up string path
-  if((!isFile) && filePath[0] !== "~") {
-    if(filePath[0] !== "/") {
-      filePath = "/" + filePath;
-    }
-    // check if file path is a relative URI ( /Users/username/examples/... )
-    // if so, turn it into an absolute URI ( ~/examples/... )
-    var userRelURI = Folder("~").relativeURI;
-    if(startsWith(filePath, userRelURI)) {
-      filePath = "~" + filePath.substring(userRelURI.length);
-    }
-  }
-
-  // clean up path and convert to array
-  var pathNormalized = filePath.split("/");
-  for (var i = 0; i < pathNormalized.length; i++) {
-    if (pathNormalized[i] === "" || pathNormalized[i] === ".") {
-      pathNormalized.splice(i, 1);
-    }
-  }
-
-  if(filePath[0] === "~") {
-    tmpPath = "~";
-    pathNormalized.splice(0, 1);
-  } else if (isFile) {
-    // file objects that are outside the user folder
-    tmpPath = "";
-  } else {
-    // string paths relative to the project folder
-    tmpPath = pub.projectFolder().absoluteURI;
-  }
-  var fileName = pathNormalized[pathNormalized.length - 1];
-
-  // does the path contain folders? if not, create them ...
-  if (pathNormalized.length > 1) {
-    var folders = pathNormalized.slice(0, -1);
-    for (var i = 0; i < folders.length; i++) {
-      tmpPath += "/" + folders[i];
-      var f = new Folder(tmpPath);
-      if (!f.exists) {
-        f.create();
-
-        if(!f.exists) {
-          // in some cases, folder creation does not throw an error, yet folder does not exist
-          error(getParentFunctionName(1) + "(), folder \"" + tmpPath + "\" could not be created.\n\n" +
-            "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
-        }
-      }
-    }
-  }
-
-  if(File(tmpPath + "/" + fileName).exists) {
-    // remove existing file to avoid save errors
-    File(tmpPath + "/" + fileName).remove();
-  }
-
-  return File(tmpPath + "/" + fileName);
-};
-
 /**
- * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
- *
- * @cat     Document
- * @subcat  Misc
- * @method  projectFolder
- *
- * @return  {Folder} The folder of the the active document
- */
-pub.projectFolder = function() {
-  if(!currentDoc().saved) {
-    error("The current document must be saved before its project directory can be accessed.");
-  }
-  return currentDoc().filePath;
-};
-
-
-/**
- * @description Executes a shell command and returns the result, currently Mac only.
- *
- * BE CAREFUL!
+ * @description Checks whether an URL string is valid.
  *
  * @cat     Data
- * @subcat  Input
- * @method  shellExecute
+ * @subcat  Type-Check
+ * @method  isURL
  *
- * @param   {String} cmd The shell command to execute
- * @return  {String} { description_of_the_return_value }
+ * @param   {String} url An url string to be checked
+ * @return  {Boolean} Returns either true or false
  */
-pub.shellExecute = function(cmd) {
-  if (Folder.fs === "Macintosh") {
-    try {
-      return app.doScript("return do shell script item 1 of arguments", ScriptLanguage.applescriptLanguage, [cmd]);
-    } catch (e) {
-      error("shellExecute(): " + e);
-    }
-  } else {
-    error("shellExecute() is a Mac only feature at the moment. Sorry!");
-  }
+var isURL = pub.isURL = function(url) {
+  var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+  return pattern.test(url);
 };
-
-/**
- * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as String, it must be located in the document's data directory.
- *
- * @cat     Data
- * @subcat  Input
- * @method  loadString
- *
- * @param   {String|File} file The text file name in the document's data directory or a File instance or an URL
- * @return  {String} String file or URL content.
- */
-pub.loadString = function(file) {
-  if (isURL(file)) {
-    return getURL(file);
-  } else {
-    var inputFile = initDataFile(file),
-      data = null;
-    inputFile.open("r");
-    data = inputFile.read();
-    inputFile.close();
-    return data;
-  }
-};
-
-var getURL = function(url) {
-  if (isURL(url)) {
-    if (Folder.fs === "Macintosh") {
-      return pub.shellExecute("curl -m 15 -L '" + url + "'");
-    } else {
-      error(getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
-    }
-  } else {
-    error(getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
-  }
-};
-
-/**
- * @description Reads the contents of a file or loads an URL and creates a string array of its individual lines. If the file is specified by name as string, it must be located in the document's data directory.
- *
- * @cat     Data
- * @subcat  Input
- * @method  loadStrings
- *
- * @param   {String|File} file The text file name in the document's data directory or a file instance or an URL
- * @return  {Array} Array of the individual lines in the given file or URL
- */
-pub.loadStrings = function(file) {
-  if (isURL(file)) {
-    var result = getURL(file);
-    return result.match(/[^\r\n]+/g);
-  } else {
-    var inputFile = initDataFile(file),
-      result = [];
-    inputFile.open("r");
-    while (!inputFile.eof) {
-      result.push(inputFile.readln());
-    }
-    inputFile.close();
-    return result;
-  }
-};
-
 
 // ----------------------------------------
-// Output
+// Data Private
+// ----------------------------------------
 
-/**
- * @description Prints a message line to the console output in the ExtendScript editor.
- *
- * @cat     Output
- * @method  println
- *
- * @param   {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
- */
-var println = pub.println = function() {
-  var msg = Array.prototype.slice.call(arguments).join(" ");
-  $.writeln(msg);
-  if (progressPanel)
-    progressPanel.writeMessage(msg + "\n");
+var decimalToHex = function(d, padding) {
+  padding = padding === undefined || padding === null ? padding = 8 : padding;
+  if (d < 0) d = 4294967295 + d + 1;
+  var hex = Number(d).toString(16).toUpperCase();
+  while (hex.length < padding) hex = "0" + hex;
+  if (hex.length >= padding) hex = hex.substring(hex.length - padding, hex.length);
+  return hex;
 };
 
-/**
- * @description Prints a message to the console output in the ExtendScript editor, but unlike `println()` it doesn't return the carriage to a new line at the end.
- *
- * @cat     Output
- * @method  print
- *
- * @param   {Any} msg Any combination of Number, String, Object, Boolean, Array to print.
- */
-pub.print = function() {
-  var msg = Array.prototype.slice.call(arguments).join(" ");
-  $.write(msg);
-  if (progressPanel)
-    progressPanel.writeMessage(msg);
-};
-
-/**
- * @description Print numerous information about the current environment to the console.
- *
- * @cat     Output
- * @method  printInfo
- */
-pub.printInfo = function() {
-
-  pub.println("###");
-  pub.println("OS: " + $.os);
-  pub.println("ExtendScript Build: " + $.build);
-  pub.println("ExtendScript Version:" + $.version);
-  pub.println("Engine: " + $.engineName);
-  pub.println("memCache: " + $.memCache + " bytes");
-  pub.println("###");
-
-};
-
-/**
- * @description Writes an array of strings to a file, one line per string. If the given file exists it gets overridden.
- *
- * @cat     Output
- * @method  saveStrings
- *
- * @param   {String|File} file The file name or a File instance
- * @param   {Array} strings The string array to be written
- * @return  {File} The file the strings were written to.
- */
-pub.saveStrings = function(file, strings) {
-  if(!isArray(strings)) {
-    error("saveStrings(), invalid second argument. Use an array of strings.");
+function nfCore(value, plus, minus, leftDigits, rightDigits, group) {
+  if (value instanceof Array) {
+    var arr = [];
+    for (var i = 0, len = value.length; i < len; i++) arr.push(nfCoreScalar(value[i], plus, minus, leftDigits, rightDigits, group));
+    return arr;
   }
-  var outputFile = initExportFile(file);
-  outputFile.open("w");
-  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
-  outputFile.encoding = "UTF-8";
-  forEach(strings, function(s) {
-    outputFile.writeln(s);
-  });
-  outputFile.close();
-  return outputFile;
-};
+  return nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group);
+}
 
-/**
- * @description Writes a string to a file. If the given file exists it gets overridden.
- *
- * @cat     Output
- * @method  saveString
- *
- * @param   {String|File} file The file name or a File instance.
- * @param   {String} string The string to be written.
- * @return  {File} The file the string was written to.
- */
-pub.saveString = function(file, string) {
-  if(!isString(string)) {
-    error("saveString(), invalid second argument. Use a string.");
-  }
-  var outputFile = initExportFile(file);
-  outputFile.open("w");
-  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
-  outputFile.encoding = "UTF-8";
-  outputFile.write(string);
-  outputFile.close();
-  return outputFile;
-};
-
-/**
- * @description Exports the current document as PDF to the documents folder. Please note that export options default to the last used export settings.
- *
- * @cat     Output
- * @method  savePDF
- *
- * @param   {String|File} file The file name or a File instance.
- * @param   {Boolean} [showOptions] Whether to show the export dialog.
- * @return  {File} The exported PDF file.
- */
-pub.savePDF = function(file, showOptions) {
-  var outputFile = initExportFile(file);
-  if (showOptions !== true) showOptions = false;
-  try{
-    var myPDF = currentDoc().exportFile(ExportFormat.PDF_TYPE, outputFile, showOptions);
-  } catch(e) {
-    error("savePDF(), PDF could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
-      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
-  }
-  return outputFile;
-};
-
-/**
- * @description Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.
- *
- * @cat     Output
- * @method  savePNG
- *
- * @param   {String|File} file The file name or a File instance
- * @param   {Boolean} [showOptions] Whether to show the export dialog
- * @return  {File} The exported PNG file.
- */
-pub.savePNG = function(file, showOptions) {
-  var outputFile = initExportFile(file);
-  if (showOptions !== true) showOptions = false;
-  try{
-    currentDoc().exportFile(ExportFormat.PNG_FORMAT, outputFile, showOptions);
-  } catch(e) {
-    error("savePNG(), PNG could not be saved. Possibly you are trying to save to a write protected location.\n\n" +
-      "InDesign cannot create top level folders outside the user folder. If you are trying to write to such a folder, first create it manually.");
-  }
-  return outputFile;
-};
-
-/**
- * @description Downloads an URL to a file, currently Mac only.
- *
- * @cat     Output
- * @method  download
- *
- * @param   {String} url The download url
- * @param   {String|File} [file] A relative file path in the project folder or a File instance
- */
-pub.download = function(url, file) {
-  var projPath = pub.projectFolder().fsName.replace(" ", "\\ ");
-  // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
-  // This is more portable then a fixed location
-  // the Script looks for the lib folder next to itself
-  var currentBasilFolderPath = File($.fileName).parent.fsName;
-  var scriptPath = currentBasilFolderPath + "/lib/download.sh";
-  if(File(scriptPath).exists === true) {
-    // the script is there. Great
-    scriptPath = File(scriptPath).fsName;
-  } else {
-    // if not lets create it on the fly
-    var scriptContent = [
-      "#!/bin/bash",
-      "mkdir -p \"$1\"",
-      "cd \"$1\"",
-      "if [ -z \"$3\" ]",
-      "  then",
-      "    # echo \"-O\"",
-      "    curl -L -O $2",
-      "  else",
-      "    # echo \"-o\"",
-      "    curl -L -o \"$3\" $2",
-      "fi"];
-    // check if the lib folder is there.
-    if(Folder(currentBasilFolderPath + "/lib").exists !== true) {
-      // no its not lets create ot
-      // should be functionalized
-      // will be needed for loop and stop.jsx as well
-      var res = Folder(currentBasilFolderPath + "/lib").create();
-      if(res === false) {
-        // ! Error creating folder :-(
-        // uh this should never happen
-        error("An error occurred while creating the \"/lib\" folder. Please report this issue");
-        return;
-      }
-    } // end of lib folder check
-    // the folder should be there.
-    // lets get it
-    var libFolder = Folder(currentBasilFolderPath + "/lib");
-    // now create the script file
-    var downloadScript = new File(libFolder.fsName + "/download.sh");
-    downloadScript.open("w", undefined, undefined);
-    // set encoding and linefeeds
-    downloadScript.lineFeed = "Unix";
-    downloadScript.encoding = "UTF-8";
-    downloadScript.write(scriptContent.join("\n"));
-    downloadScript.close();
-  } // end of file and folder creation
-
-  if (isURL(url)) {
-    var cmd = null;
-
-    if (file) {
-      if (file instanceof File) {
-        var downloadFolder = file.parent.fsName;
-        var fileName = file.displayName;
-        downloadFolder = downloadFolder.replace(" ", "\\ ");
-        fileName = fileName.replace(" ", "\\ ");
-        cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
-
-      } else {
-        var downloadFolder = file.substr(0, file.lastIndexOf("/"));
-        var fileName = file.substr(file.lastIndexOf("/") + 1);
-
-        // get rif of some special cases
-        if(startsWith(downloadFolder, "./")) downloadFolder.substr(2);
-        if(startsWith(downloadFolder, "/")) downloadFolder.substr(1);
-
-        downloadFolder = downloadFolder.replace(" ", "\\ ");
-        fileName = fileName.replace(" ", "\\ ");
-        downloadFolder = projPath + "/data/" + downloadFolder;
-        cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
-
-      }
-
-    } else {
-      var downloadFolder = projPath + "/data/download";
-      var cmd = ["sh", scriptPath, downloadFolder, url].join(" ");
+function nfCoreScalar(value, plus, minus, leftDigits, rightDigits, group) {
+  var sign = value < 0 ? minus : plus;
+  var autoDetectDecimals = rightDigits === 0;
+  var rightDigitsOfDefault = rightDigits === undefined || rightDigits < 0 ? 0 : rightDigits;
+  var absValue = Math.abs(value);
+  if (autoDetectDecimals) {
+    rightDigitsOfDefault = 1;
+    absValue *= 10;
+    while (Math.abs(Math.round(absValue) - absValue) > 1.0E-6 && rightDigitsOfDefault < 7) {
+      ++rightDigitsOfDefault;
+      absValue *= 10;
     }
-
-    println(cmd);
-    pub.shellExecute(cmd);
-
-  } else {
-    error("The url " + url + " is not a valid one. Please double check!");
+  } else if (rightDigitsOfDefault !== 0) absValue *= Math.pow(10, rightDigitsOfDefault);
+  var number, doubled = absValue * 2;
+  if (Math.floor(absValue) === absValue) number = absValue;
+  else if (Math.floor(doubled) === doubled) {
+    var floored = Math.floor(absValue);
+    number = floored + floored % 2;
+  } else number = Math.round(absValue);
+  var buffer = "";
+  var totalDigits = leftDigits + rightDigitsOfDefault;
+  while (totalDigits > 0 || number > 0) {
+    totalDigits--;
+    buffer = "" + number % 10 + buffer;
+    number = Math.floor(number / 10);
   }
+  if (group !== undefined) {
+    var i = buffer.length - 3 - rightDigitsOfDefault;
+    while (i > 0) {
+      buffer = buffer.substring(0, i) + group + buffer.substring(i);
+      i -= 3;
+    }
+  }
+  if (rightDigitsOfDefault > 0) return sign + buffer.substring(0, buffer.length - rightDigitsOfDefault) + "." + buffer.substring(buffer.length - rightDigitsOfDefault, buffer.length);
+  return sign + buffer;
+}
+
+var unhexScalar = function(hex) {
+  var value = parseInt("0x" + hex, 16);
+  if (value > 2147483647) value -= 4294967296;
+  return value;
 };
 
+pub.match = function(str, regexp) {
+  return str.match(regexp);
+};
 
+pub.matchAll = function(aString, aRegExp) {
+  var results = [],
+    latest;
+  var regexp = new RegExp(aRegExp, "g");
+  while ((latest = regexp.exec(aString)) !== null) {
+    results.push(latest);
+    if (latest[0].length === 0)++regexp.lastIndex;
+  }
+  return results.length > 0 ? results : null;
+};
