@@ -13,6 +13,8 @@ var init = function() {
   currStrokeWeight = 1;
   currStrokeTint = 100;
   currFillTint = 100;
+  currOriginX = 0;
+  currOriginY = 0;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
   currGradientMode = pub.LINEAR;
@@ -22,7 +24,9 @@ var init = function() {
 
   appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
-    preflightOff: app.preflightOptions.preflightOff
+    preflightOff: app.preflightOptions.preflightOff,
+    adjustStrokeWeight: app.transformPreferences.adjustStrokeWeightWhenScaling,
+    whenScaling: app.transformPreferences.whenScaling
   };
 
   app.doScript(runScript, ScriptLanguage.JAVASCRIPT, undefined, UndoModes.ENTIRE_SCRIPT, pub.SCRIPTNAME);
@@ -55,8 +59,13 @@ var runScript = function() {
     // app settings
     app.scriptPreferences.enableRedraw = true;
     app.preflightOptions.preflightOff = true;
+    app.transformPreferences.adjustStrokeWeightWhenScaling = true;
+    app.transformPreferences.whenScaling = WhenScalingOptions.APPLY_TO_CONTENT;
 
     currentDoc();
+
+    appSettings.refPoint = app.activeWindow.transformReferencePoint;
+    currRefPoint = pub.referencePoint(app.activeWindow.transformReferencePoint);
 
     if ($.global.setup instanceof Function) {
       setup();
@@ -133,12 +142,13 @@ var prepareLoop = function() {
 }
 
 /**
- * Sets the framerate per second to determine how often loop() is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within setup() is recommended. The default rate is 25 frames per second. Calling frameRate() with no arguments returns the currently set framerate.
+ * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
  *
- * @cat Environment
- * @method frameRate
- * @param {Number} [fps] Frames per second.
- * @return {Number} Currently set frame rate.
+ * @cat     Environment
+ * @method  frameRate
+ *
+ * @param   {Number} [fps] Frames per second.
+ * @return  {Number} Currently set frame rate.
  */
 pub.frameRate = function(fps) {
   if(arguments.length) {
@@ -155,10 +165,10 @@ pub.frameRate = function(fps) {
 };
 
 /**
- * Stops basil from continuously executing the code within loop() and quits the script.
+ * @description Stops basil from continuously executing the code within `loop()` and quits the script.
  *
- * @cat Environment
- * @method noLoop
+ * @cat     Environment
+ * @method  noLoop
  */
 pub.noLoop = function(printFinished) {
   var allIdleTasks = app.idleTasks;
@@ -173,14 +183,16 @@ pub.noLoop = function(printFinished) {
 };
 
 /**
- * Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, <code>mode()</code> should be placed in the beginning of the script. In basil there are three different performance modes:
- * <code>VISIBLE</code> is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
- * <code>HIDDEN</code> allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use <code>println("yourMessage")</code> in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
- * <code>SILENT</code> processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to <code>VISIBLE</code>.
+ * @description Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, `mode()` should be placed in the beginning of the script. In basil there are three different performance modes:
  *
- * @cat Environment
- * @method mode
- * @param  {String} mode The performance mode to switch to.
+ * - `VISIBLE` is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
+ * - `HIDDEN` allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * - `SILENT` processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to `VISIBLE`.
+ *
+ * @cat     Environment
+ * @method  mode
+ *
+ * @param   {String} mode The performance mode to switch to.
  */
 pub.mode = function(mode) {
 
@@ -330,7 +342,6 @@ var setCurrDoc = function(doc, skipStyles) {
   currDocSettings.ogriStyle = currDoc.pageItemDefaults.appliedGridObjectStyle;
 
   // set document to default values
-  currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   pub.units(currDoc.viewPreferences.horizontalMeasurementUnits);
 
   if(!skipStyles) {
@@ -433,120 +444,88 @@ var currentPage = function() {
 };
 
 var updatePublicPageSizeVars = function () {
-  var pageBounds = currentPage().bounds; // [y1, x1, y2, x2]
-  var facingPages = currDoc.documentPreferences.facingPages;
-  var singlePageMode = false;
+  var w, h;
+  var cm = currCanvasMode;
+  var p = currentPage();
+  var spread = p.parent;
+  var docPrefs = currentDoc().documentPreferences;
+  currOriginX = 0;
+  currOriginY = 0;
 
-  var widthOffset = 0;
-  var heightOffset = 0;
+  if(cm === pub.PAGE || cm === pub.MARGIN || cm === pub.BLEED) {
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
+    pub.resetMatrix();
 
-  switch(pub.canvasMode()) {
+    var leftHand = (p.side === PageSideOptions.LEFT_HAND);
+    w = p.bounds[3] - p.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-    case pub.PAGE:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
-      singlePageMode = true;
-      break;
-
-    case pub.MARGIN:
-      widthOffset = -currentPage().marginPreferences.left - currentPage().marginPreferences.right;
-      heightOffset = -currentPage().marginPreferences.top - currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-      singlePageMode = true;
-      break;
-
-    case pub.BLEED:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      if(facingPages) {
-        widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset;
+    if (cm === pub.MARGIN) {
+      w -= (p.marginPreferences.left + p.marginPreferences.right);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      currOriginX = leftHand ? p.marginPreferences.right : p.marginPreferences.left;
+      currOriginY = p.marginPreferences.top;
+    } else if (cm === pub.BLEED) {
+      // pub.BLEED
+      var leftBleed = 0;
+      var rightBleed = 0;
+      if(p === spread.pages.firstItem()) {
+        leftBleed = leftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
       }
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.resetMatrix();
-        pub.translate(0, -pub.doc().documentPreferences.documentBleedTopOffset);
+      if(p === spread.pages.lastItem()) {
+        rightBleed = leftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
       }
-      singlePageMode = true;
-      break;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
+    }
 
-    case pub.FACING_PAGES:
-      widthOffset = 0;
-      heightOffset = 0;
-      pub.resetMatrix();
+  } else {
+    // FACING_MODES
+    currDoc.viewPreferences.rulerOrigin = RulerOrigin.SPREAD_ORIGIN;
+    pub.resetMatrix();
+    var firstPage = spread.pages.firstItem();
+    var lastPage = spread.pages.lastItem();
+    var firstPageLeftHand = (firstPage.side === PageSideOptions.LEFT_HAND);
+    var lastPageLeftHand = (lastPage.side === PageSideOptions.LEFT_HAND);
+    w = lastPage.bounds[3] - firstPage.bounds[1];
+    h = p.bounds[2] - p.bounds[0];
 
-      var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
+    if(cm === pub.FACING_MARGINS) {
+      var leftMargin = firstPageLeftHand ? firstPage.marginPreferences.right : firstPage.marginPreferences.left;
+      var rightMargin = lastPageLeftHand ? lastPage.marginPreferences.left : lastPage.marginPreferences.right;
+      w -= (leftMargin + rightMargin);
+      h -= (p.marginPreferences.top + p.marginPreferences.bottom);
+      currOriginX = leftMargin;
+      currOriginY = p.marginPreferences.top;
+    } else if (cm === pub.FACING_BLEEDS) {
+      var leftBleed = firstPageLeftHand ? docPrefs.documentBleedOutsideOrRightOffset : docPrefs.documentBleedInsideOrLeftOffset;
+      var rightBleed = lastPageLeftHand ? docPrefs.documentBleedInsideOrLeftOffset : docPrefs.documentBleedOutsideOrRightOffset;
+      w += leftBleed + rightBleed;
+      h += docPrefs.documentBleedTopOffset + docPrefs.documentBleedBottomOffset;
+      currOriginX = -leftBleed;
+      currOriginY = -docPrefs.documentBleedTopOffset;
+    }
 
-      pub.width = $.global.width = w * 2;
-
-      if(currentPage().name === "1") {
-        pub.width = $.global.width = w;
-      } else if (currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w, 0);
-      }
-
-
-      pub.height = $.global.height = h;
-      break;
-
-    case pub.FACING_BLEEDS:
-      widthOffset = pub.doc().documentPreferences.documentBleedInsideOrLeftOffset + pub.doc().documentPreferences.documentBleedOutsideOrRightOffset;
-      heightOffset = pub.doc().documentPreferences.documentBleedBottomOffset + pub.doc().documentPreferences.documentBleedTopOffset;
-      pub.resetMatrix();
-      pub.translate(-pub.doc().documentPreferences.documentBleedInsideOrLeftOffset, -pub.doc().documentPreferences.documentBleedTopOffset);
-
-      var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w + widthOffset / 2, 0);
-      }
-
-      break;
-
-    case pub.FACING_MARGINS:
-      widthOffset = currentPage().marginPreferences.left + currentPage().marginPreferences.right;
-      heightOffset = currentPage().marginPreferences.top + currentPage().marginPreferences.bottom;
-      pub.resetMatrix();
-      pub.translate(currentPage().marginPreferences.left, currentPage().marginPreferences.top);
-
-      var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;
-
-      pub.width = $.global.width = w * 2;
-      pub.height = $.global.height = h;
-
-      if(currentPage().side === PageSideOptions.RIGHT_HAND) {
-        pub.translate(-w - widthOffset / 2, 0);
-      }
-
-      return; // early exit
-
-    default:
-      error("canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: PAGE, MARGIN, BLEED, FACING_PAGES, FACING_MARGINS, FACING_BLEEDS");
-      break;
   }
 
-  if(singlePageMode) {
-    var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;
+  pub.translate(currOriginX, currOriginY);
+  pub.width = $.global.width = w;
+  pub.height = $.global.height = h;
 
-    pub.width = $.global.width = w;
-    pub.height = $.global.height = h;
-  }
 };
 
 var resetUserSettings = function() {
   // app settings
   app.scriptPreferences.enableRedraw = appSettings.enableRedraw;
   app.preflightOptions.preflightOff  = appSettings.preflightOff;
+  app.transformPreferences.adjustStrokeWeightWhenScaling = appSettings.adjustStrokeWeight;
+  app.transformPreferences.whenScaling = appSettings.whenScaling;
+
+  if(app.properties.activeWindow instanceof LayoutWindow ) {
+    app.activeWindow.transformReferencePoint = appSettings.refPoint;
+  }
 
   // doc settings
   if(currDoc && currDocSettings) {
