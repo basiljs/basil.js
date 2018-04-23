@@ -608,6 +608,22 @@ var createSelectionDialog = function(settings) {
   return result;
 }
 
+var isValid = function (item) {
+
+  checkNull(item);
+
+  if (item.hasOwnProperty("isValid")) {
+    if (!item.isValid) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  return true; // if does not have isValid field -> normal array element and not collection
+
+  return false;
+};
+
 // internal helper to get a style by name, wether it is nested in a stlye group or not
 var findInStylesByName = function(allStylesCollection, name) {
   for (var i = 0; i < allStylesCollection.length; i++) {
