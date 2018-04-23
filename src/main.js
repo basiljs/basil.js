@@ -77,15 +77,6 @@ if(!$.global.hasOwnProperty("basilTest")) {
 
 var pub = {};
 
-/**
- * @description The basil version
- *
- * @cat      Environment
- * @subcat   Constants
- * @property VERSION {String}
- */
-pub.VERSION = "1.1.0";
-
 // @include "includes/constants.js";
 // @include "includes/public-vars.js";
 // @include "includes/private-vars.js";

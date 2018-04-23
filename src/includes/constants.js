@@ -274,19 +274,6 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
 pub.LANDSCAPE = PageOrientation.LANDSCAPE;
 
 /**
-* @description The name of the current script.
- *
-* @cat      Environment
-* @subcat   Constants
-* @property SCRIPTNAME {String}
-*/
-var stackArray = $.stack.
-            replace(/[\n]toString\(\)[\n]$/,'').
-            replace(/[\[\]']+/g,'').
-            split(/[\n]/);
-pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
-
-/**
 * Used with `mode()` to set performance mode. Disables screen redraw during processing.
 */
 pub.SILENT = "silent";

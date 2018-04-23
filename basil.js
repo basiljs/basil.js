@@ -78,15 +78,6 @@ if(!$.global.hasOwnProperty("basilTest")) {
 
 var pub = {};
 
-/**
- * @description The basil version
- *
- * @cat      Environment
- * @subcat   Constants
- * @property VERSION {String}
- */
-pub.VERSION = "1.1.0";
-
 // ----------------------------------------
 // src/includes/constants.js
 // ----------------------------------------
@@ -363,19 +354,6 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
 pub.LANDSCAPE = PageOrientation.LANDSCAPE;
 
 /**
-* @description The name of the current script.
- *
-* @cat      Environment
-* @subcat   Constants
-* @property SCRIPTNAME {String}
-*/
-var stackArray = $.stack.
-            replace(/[\n]toString\(\)[\n]$/,'').
-            replace(/[\[\]']+/g,'').
-            split(/[\n]/);
-pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
-
-/**
 * Used with `mode()` to set performance mode. Disables screen redraw during processing.
 */
 pub.SILENT = "silent";
@@ -394,26 +372,7 @@ pub.VISIBLE = "visible";
 var ERROR_PREFIX = "\nBasil.js Error -> ",
   WARNING_PREFIX = "### Basil Warning -> ";
 
-// ----------------------------------------
-// src/includes/public-vars.js
-// ----------------------------------------
-
-/**
- * @description System variable which stores the width of the current page.
- *
- * @cat Environment
- * @property {Number} width Width of the current page.
- */
-pub.width = null;
-
-/**
- * @description System variable which stores the height of the current page.
- *
- * @cat Environment
- * @property {Number} height Height of the current page.
- */
-pub.height = null;
-
+// @include "includes/public-vars.js";// FILE NOT FOUND by extendscript-bundlr
 // ----------------------------------------
 // src/includes/private-vars.js
 // ----------------------------------------
@@ -845,29 +804,6 @@ var prepareLoop = function() {
   }
   currFrameRate = 25;
 }
-
-/**
- * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
- *
- * @cat     Environment
- * @method  frameRate
- *
- * @param   {Number} [fps] Frames per second.
- * @return  {Number} Currently set frame rate.
- */
-pub.frameRate = function(fps) {
-  if(arguments.length) {
-    if(!isNumber(fps) || fps <= 0) {
-      error("frameRate(), invalid argument. Use a number greater than 0.")
-    }
-
-    currFrameRate = fps;
-    if(currIdleTask) {
-      currIdleTask.sleep = Math.ceil(1000 / fps);
-    }
-  }
-  return currFrameRate;
-};
 
 /**
  * @description Stops basil from continuously executing the code within `loop()` and quits the script.
@@ -1388,6 +1324,14 @@ var clearConsole = function() {
 // src/includes/structure.js
 // ----------------------------------------
 
+// ----------------------------------------
+// src/includes/environment.js
+// ----------------------------------------
+
+// ----------------------------------------
+// Environment
+// ----------------------------------------
+
 /**
  * @description Suspends the calling thread for a number of milliseconds.
  * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
@@ -1401,76 +1345,36 @@ pub.delay = function (milliseconds) {
   $.sleep(milliseconds);
 };
 
-// ----------------------------------------
-// src/includes/environment.js
-// ----------------------------------------
+/**
+ * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
+ *
+ * @cat     Environment
+ * @method  frameRate
+ *
+ * @param   {Number} [fps] Frames per second.
+ * @return  {Number} Currently set frame rate.
+ */
+pub.frameRate = function(fps) {
+  if(arguments.length) {
+    if(!isNumber(fps) || fps <= 0) {
+      error("frameRate(), invalid argument. Use a number greater than 0.")
+    }
+
+    currFrameRate = fps;
+    if(currIdleTask) {
+      currIdleTask.sleep = Math.ceil(1000 / fps);
+    }
+  }
+  return currFrameRate;
+};
 
 /**
- * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
+ * @description System variable which stores the height of the current page.
  *
- * @cat     Document
- * @method  size
- *
- * @param   {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
- * @param   {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
- * @return  {Object} Object containing the current `width` and `height` of the document.
- *
- * @example <caption>Sets the document size to 70 x 100 units</caption>
- * size(70, 100);
- *
- * @example <caption>Sets the document size to 70 x 70</caption>
- * size(70);
- *
- * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
- * size("A4");
- *
- * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
- * size("A4", LANDSCAPE);
+ * @cat      Environment
+ * @property {Number} height Height of the current page.
  */
-pub.size = function(widthOrPageSize, heightOrOrientation) {
-  if(app.documents.length === 0) {
-    // there are no documents
-    warning("size()", "You have no open document.");
-    return;
-  }
-  if (arguments.length === 0) {
-    // no arguments given
-    // return the current values
-    return {width: pub.width, height: pub.height};
-  }
-
-  var doc = currentDoc();
-
-  if(isString(widthOrPageSize)) {
-    try {
-      doc.documentPreferences.pageSize = widthOrPageSize;
-    } catch (e) {
-      error("size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
-    }
-    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
-      doc.documentPreferences.pageOrientation = heightOrOrientation;
-    }
-    pub.width = $.global.width = doc.documentPreferences.pageWidth;
-    pub.height = $.global.height = doc.documentPreferences.pageHeight;
-    return {width: pub.width, height: pub.height};
-  } else if(arguments.length === 1) {
-    // only one argument set the first to the secound
-    heightOrOrientation = widthOrPageSize;
-  }
-  // set the document's pageHeight and pageWidth
-  doc.properties = {
-    documentPreferences: {
-      pageHeight: heightOrOrientation,
-      pageWidth: widthOrPageSize
-    }
-  };
-  // set height and width
-  pub.width = $.global.width = widthOrPageSize;
-  pub.height = $.global.height = heightOrOrientation;
-
-  return {width: pub.width, height: pub.height};
-
-};
+pub.height = null;
 
 /**
  * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
@@ -1481,7 +1385,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  * - `propList`: Allows to pass an array of property names to show. If `propList` is not set all properties will be shown. Default: `[]` (no propList)
  * If no settings object is set, the default values will be used.
  *
- * @cat     Output
+ * @cat     Environment
  * @method  inspect
  *
  * @param   {Object} obj An object or any other data item to be inspected.
@@ -1661,6 +1565,140 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
   println(output);
 
 };
+
+/**
+ * @description Print numerous information about the current environment to the console.
+ *
+ * @cat     Environment
+ * @method  printInfo
+ */
+pub.printInfo = function() {
+
+  pub.println("###");
+  pub.println("OS: " + $.os);
+  pub.println("ExtendScript Build: " + $.build);
+  pub.println("ExtendScript Version:" + $.version);
+  pub.println("Engine: " + $.engineName);
+  pub.println("memCache: " + $.memCache + " bytes");
+  pub.println("###");
+
+};
+
+/**
+ * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
+ *
+ * @cat     Environment
+ * @method  projectFolder
+ *
+ * @return  {Folder} The folder of the the active document
+ */
+pub.projectFolder = function() {
+  if(!currentDoc().saved) {
+    error("The current document must be saved before its project directory can be accessed.");
+  }
+  return currentDoc().filePath;
+};
+
+/**
+ * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
+ *
+ * @cat     Environment
+ * @method  size
+ *
+ * @param   {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
+ * @param   {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
+ * @return  {Object} Object containing the current `width` and `height` of the document.
+ *
+ * @example <caption>Sets the document size to 70 x 100 units</caption>
+ * size(70, 100);
+ *
+ * @example <caption>Sets the document size to 70 x 70</caption>
+ * size(70);
+ *
+ * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
+ * size("A4");
+ *
+ * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
+ * size("A4", LANDSCAPE);
+ */
+pub.size = function(widthOrPageSize, heightOrOrientation) {
+  if(app.documents.length === 0) {
+    // there are no documents
+    warning("size()", "You have no open document.");
+    return;
+  }
+  if (arguments.length === 0) {
+    // no arguments given
+    // return the current values
+    return {width: pub.width, height: pub.height};
+  }
+
+  var doc = currentDoc();
+
+  if(isString(widthOrPageSize)) {
+    try {
+      doc.documentPreferences.pageSize = widthOrPageSize;
+    } catch (e) {
+      error("size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
+    }
+    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
+      doc.documentPreferences.pageOrientation = heightOrOrientation;
+    }
+    pub.width = $.global.width = doc.documentPreferences.pageWidth;
+    pub.height = $.global.height = doc.documentPreferences.pageHeight;
+    return {width: pub.width, height: pub.height};
+  } else if(arguments.length === 1) {
+    // only one argument set the first to the secound
+    heightOrOrientation = widthOrPageSize;
+  }
+  // set the document's pageHeight and pageWidth
+  doc.properties = {
+    documentPreferences: {
+      pageHeight: heightOrOrientation,
+      pageWidth: widthOrPageSize
+    }
+  };
+  // set height and width
+  pub.width = $.global.width = widthOrPageSize;
+  pub.height = $.global.height = heightOrOrientation;
+
+  return {width: pub.width, height: pub.height};
+
+};
+
+/**
+ * @description System variable which stores the width of the current page.
+ *
+ * @cat      Environment
+ * @property {Number} width Width of the current page.
+ */
+pub.width = null;
+
+// ----------------------------------------
+// Environment/Constants
+// ----------------------------------------
+
+/**
+ * @description The name of the current script.
+ *
+ * @cat      Environment
+ * @subcat   Constants
+ * @property SCRIPTNAME {String}
+ */
+var stackArray = $.stack.
+            replace(/[\n]toString\(\)[\n]$/,'').
+            replace(/[\[\]']+/g,'').
+            split(/[\n]/);
+pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
+
+/**
+ * @description The basil version
+ *
+ * @cat      Environment
+ * @subcat   Constants
+ * @property VERSION {String}
+ */
+pub.VERSION = "1.1.0";
 
 // ----------------------------------------
 // Files & Folders
@@ -2895,23 +2933,6 @@ var initExportFile = function(file) {
 };
 
 /**
- * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
- *
- * @cat     Document
- * @subcat  Misc
- * @method  projectFolder
- *
- * @return  {Folder} The folder of the the active document
- */
-pub.projectFolder = function() {
-  if(!currentDoc().saved) {
-    error("The current document must be saved before its project directory can be accessed.");
-  }
-  return currentDoc().filePath;
-};
-
-
-/**
  * @description Executes a shell command and returns the result, currently Mac only.
  *
  * BE CAREFUL!
@@ -3028,24 +3049,6 @@ pub.print = function() {
   $.write(msg);
   if (progressPanel)
     progressPanel.writeMessage(msg);
-};
-
-/**
- * @description Print numerous information about the current environment to the console.
- *
- * @cat     Output
- * @method  printInfo
- */
-pub.printInfo = function() {
-
-  pub.println("###");
-  pub.println("OS: " + $.os);
-  pub.println("ExtendScript Build: " + $.build);
-  pub.println("ExtendScript Version:" + $.version);
-  pub.println("Engine: " + $.engineName);
-  pub.println("memCache: " + $.memCache + " bytes");
-  pub.println("###");
-
 };
 
 /**

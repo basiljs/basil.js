@@ -837,23 +837,6 @@ var initExportFile = function(file) {
 };
 
 /**
- * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
- *
- * @cat     Document
- * @subcat  Misc
- * @method  projectFolder
- *
- * @return  {Folder} The folder of the the active document
- */
-pub.projectFolder = function() {
-  if(!currentDoc().saved) {
-    error("The current document must be saved before its project directory can be accessed.");
-  }
-  return currentDoc().filePath;
-};
-
-
-/**
  * @description Executes a shell command and returns the result, currently Mac only.
  *
  * BE CAREFUL!
@@ -970,24 +953,6 @@ pub.print = function() {
   $.write(msg);
   if (progressPanel)
     progressPanel.writeMessage(msg);
-};
-
-/**
- * @description Print numerous information about the current environment to the console.
- *
- * @cat     Output
- * @method  printInfo
- */
-pub.printInfo = function() {
-
-  pub.println("###");
-  pub.println("OS: " + $.os);
-  pub.println("ExtendScript Build: " + $.build);
-  pub.println("ExtendScript Version:" + $.version);
-  pub.println("Engine: " + $.engineName);
-  pub.println("memCache: " + $.memCache + " bytes");
-  pub.println("###");
-
 };
 
 /**

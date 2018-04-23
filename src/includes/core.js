@@ -142,29 +142,6 @@ var prepareLoop = function() {
 }
 
 /**
- * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
- *
- * @cat     Environment
- * @method  frameRate
- *
- * @param   {Number} [fps] Frames per second.
- * @return  {Number} Currently set frame rate.
- */
-pub.frameRate = function(fps) {
-  if(arguments.length) {
-    if(!isNumber(fps) || fps <= 0) {
-      error("frameRate(), invalid argument. Use a number greater than 0.")
-    }
-
-    currFrameRate = fps;
-    if(currIdleTask) {
-      currIdleTask.sleep = Math.ceil(1000 / fps);
-    }
-  }
-  return currFrameRate;
-};
-
-/**
  * @description Stops basil from continuously executing the code within `loop()` and quits the script.
  *
  * @cat     Environment
