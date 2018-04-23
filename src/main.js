@@ -78,7 +78,6 @@ if(!$.global.hasOwnProperty("basilTest")) {
 var pub = {};
 
 // @include "includes/constants.js";
-// @include "includes/public-vars.js";
 // @include "includes/private-vars.js";
 // @include "includes/global-functions.js";
 

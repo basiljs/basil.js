@@ -372,7 +372,6 @@ pub.VISIBLE = "visible";
 var ERROR_PREFIX = "\nBasil.js Error -> ",
   WARNING_PREFIX = "### Basil Warning -> ";
 
-// @include "includes/public-vars.js";// FILE NOT FOUND by extendscript-bundlr
 // ----------------------------------------
 // src/includes/private-vars.js
 // ----------------------------------------
