@@ -1,7 +1,6 @@
 // ----------------------------------------
 // src/includes/transformation.js
 // ----------------------------------------
-/* global precision */
 
 /**
  * @description Transforms a given page item. The type of transformation is determinded with the second parameter. The third parameter is the transformation value, either a number or an array of x and y values. The transformation's reference point (top left, bottom center etc.) can be set beforehand by using the `referencePoint()` function. If the third parameter is ommited, the function can be used to measure the value of the page item. There are 10 different transformation types:
