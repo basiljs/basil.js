@@ -96,6 +96,7 @@ pub.VERSION = "1.1.0";
 // @include "includes/structure.js";
 // @include "includes/environment.js";
 // @include "includes/data.js";
+// @include "includes/document.js";
 // @include "includes/shape.js";
 // @include "includes/color.js";
 // @include "includes/typography.js";

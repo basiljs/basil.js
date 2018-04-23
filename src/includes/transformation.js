@@ -4,63 +4,6 @@
 /* global precision */
 
 /**
- * @description Sets the reference point for transformations using the `transform()` function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.
- * Arguments can be the basil constants `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`, `BOTTOM_CENTER` or `BOTTOM_RIGHT`. Alternatively the digits `1` through `9` (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.
- * If the function is used without any arguments the currently set reference point will be returned.
- *
- * @cat     Document
- * @subcat  Transformation
- * @method  referencePoint
- *
- * @param   {String} [referencePoint] The reference point to set.
- * @return  {String} Current reference point setting.
- */
-pub.referencePoint = function(rp) {
-  if(!arguments.length) {
-    return currRefPoint;
-  }
-
-  var anchorEnum;
-
-  if(rp === pub.TOP_LEFT || rp === 7 || rp === AnchorPoint.TOP_LEFT_ANCHOR) {
-    currRefPoint = pub.TOP_LEFT;
-    anchorEnum = AnchorPoint.TOP_LEFT_ANCHOR;
-  } else if(rp === pub.TOP_CENTER || rp === 8 || rp === AnchorPoint.TOP_CENTER_ANCHOR) {
-    currRefPoint = pub.TOP_CENTER;
-    anchorEnum = AnchorPoint.TOP_CENTER_ANCHOR;
-  } else if(rp === pub.TOP_RIGHT || rp === 9 || rp === AnchorPoint.TOP_RIGHT_ANCHOR) {
-    currRefPoint = pub.TOP_RIGHT;
-    anchorEnum = AnchorPoint.TOP_RIGHT_ANCHOR;
-  } else if(rp === pub.CENTER_LEFT || rp === 4 || rp === AnchorPoint.LEFT_CENTER_ANCHOR) {
-    currRefPoint = pub.CENTER_LEFT;
-    anchorEnum = AnchorPoint.LEFT_CENTER_ANCHOR;
-  } else if(rp === pub.CENTER || rp === pub.CENTER_CENTER || rp === 5 || rp === AnchorPoint.CENTER_ANCHOR) {
-    currRefPoint = pub.CENTER;
-    anchorEnum = AnchorPoint.CENTER_ANCHOR;
-  } else if(rp === pub.CENTER_RIGHT || rp === 6 || rp === AnchorPoint.RIGHT_CENTER_ANCHOR) {
-    currRefPoint = pub.CENTER_RIGHT;
-    anchorEnum = AnchorPoint.RIGHT_CENTER_ANCHOR;
-  } else if(rp === pub.BOTTOM_LEFT || rp === 1 || rp === AnchorPoint.BOTTOM_LEFT_ANCHOR) {
-    currRefPoint = pub.BOTTOM_LEFT;
-    anchorEnum = AnchorPoint.BOTTOM_LEFT_ANCHOR;
-  } else if(rp === pub.BOTTOM_CENTER || rp === 2 || rp === AnchorPoint.BOTTOM_CENTER_ANCHOR) {
-    currRefPoint = pub.BOTTOM_CENTER;
-    anchorEnum = AnchorPoint.BOTTOM_CENTER_ANCHOR;
-  } else if(rp === pub.BOTTOM_RIGHT || rp === 3 || rp === AnchorPoint.BOTTOM_RIGHT_ANCHOR) {
-    currRefPoint = pub.BOTTOM_RIGHT;
-    anchorEnum = AnchorPoint.BOTTOM_RIGHT_ANCHOR;
-  } else {
-    error("referencePoint(), wrong argument! Use reference point constant (TOP_LEFT, TOP_CENTER, ...), a digit between 1 and 9 or an InDesign anchor point enumerator.");
-  }
-
-  if(app.properties.activeWindow instanceof LayoutWindow ) {
-    app.activeWindow.transformReferencePoint = anchorEnum;
-  }
-
-  return currRefPoint;
-};
-
-/**
  * @description Transforms a given page item. The type of transformation is determinded with the second parameter. The third parameter is the transformation value, either a number or an array of x and y values. The transformation's reference point (top left, bottom center etc.) can be set beforehand by using the `referencePoint()` function. If the third parameter is ommited, the function can be used to measure the value of the page item. There are 10 different transformation types:
  * - `"translate"`: Translates the page item by the given `[x, y]` values. Returns the coordinates of the page item's anchor point as anray.
  * - `"rotate"`: Rotates the page item to the given degree value. Returns the page item's rotation value in degrees.
