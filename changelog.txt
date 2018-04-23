@@ -76,6 +76,7 @@ The user is allowed to have his files wherever he wants.
 - b.itemX(), b.itemY(), b.itemWidth(), b.itemHeight(), b.itemPosition() and b.itemSize() are removed
   and replaced by the new transform() function
 - b.transformImage() is removed as it can be replaced by the new transform function()
+- b.storyCount() is removed (use stories(doc()).length instead)
 - b.Random.nextGaussian() is removed
 
 Special thanks to Hartmut Bohnacker for making the transform functions work in Processing style!
