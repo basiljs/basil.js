@@ -82,18 +82,18 @@ var pub = {};
 
 // @include "includes/core.js";
 
-// @include "includes/structure.js";
-// @include "includes/environment.js";
+// @include "includes/color.js";
 // @include "includes/data.js";
 // @include "includes/document.js";
-// @include "includes/shape.js";
-// @include "includes/color.js";
-// @include "includes/typography.js";
+// @include "includes/environment.js";
 // @include "includes/image.js";
 // @include "includes/input.js";
 // @include "includes/math.js";
 // @include "includes/output.js";
+// @include "includes/shape.js";
+// @include "includes/structure.js";
 // @include "includes/transform.js";
+// @include "includes/typography.js";
 // @include "includes/ui.js";
 
 init();

@@ -928,473 +928,569 @@ var clearConsole = function() {
 
 
 // ----------------------------------------
-// src/includes/structure.js
+// src/includes/color.js
 // ----------------------------------------
 
 // ----------------------------------------
-// Structure
+// Color
 // ----------------------------------------
 
 /**
- * @description Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, `mode()` should be placed in the beginning of the script. In basil there are three different performance modes:
+ * @description Sets the Effects blendMode property of an object.
  *
- * - `VISIBLE` is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
- * - `HIDDEN` allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
- * - `SILENT` processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to `VISIBLE`.
+ * @cat     Color
+ * @method  blendMode
  *
- * @cat     Structure
- * @method  mode
- *
- * @param   {String} mode The performance mode to switch to.
+ * @param   {Object} obj The object to set blendMode of.
+ * @param   {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
+ *   - `BlendMode.NORMAL`
+ *   - `BlendMode.MULTIPLY`
+ *   - `BlendMode.SCREEN`
+ *   - `BlendMode.OVERLAY`
+ *   - `BlendMode.SOFT_LIGHT`
+ *   - `BlendMode.HARD_LIGHT`
+ *   - `BlendMode.COLOR_DODGE`
+ *   - `BlendMode.COLOR_BURN`
+ *   - `BlendMode.DARKEN`
+ *   - `BlendMode.LIGHTEN`
+ *   - `BlendMode.DIFFERENCE`
+ *   - `BlendMode.EXCLUSION`
+ *   - `BlendMode.HUE`
+ *   - `BlendMode.SATURATION`
+ *   - `BlendMode.COLOR`
+ *   - `BlendMode.LUMINOSITY`
  */
-pub.mode = function(mode) {
-
-  if(!(mode === pub.VISIBLE || mode === pub.HIDDEN || mode === pub.SILENT)) {
-    error("mode(), invalid argument. Use VISIBLE, HIDDEN or SILENT.");
-  }
-
-  app.scriptPreferences.enableRedraw = (mode === pub.VISIBLE || mode === pub.HIDDEN);
-
-  if(!currDoc) {
-    // initiate new document in given mode
-    currentDoc(mode);
+pub.blendMode = function(obj, blendMode) {
+  checkNull(obj);
+  if (obj.hasOwnProperty("transparencySettings")) {
+    obj.transparencySettings.blendingSettings.blendMode = blendMode;
   } else {
-
-    if (!currDoc.saved && !currDoc.modified && pub.HIDDEN) {
-      // unsaved, unmodified doc at the beginning of the script that needs to be hidden
-      // -> will be closed without saving, fresh hidden document will be opened
-      currDoc.close(SaveOptions.NO);
-      currDoc = app.documents.add(false);
-      setCurrDoc(currDoc);
-    } else if (mode === pub.HIDDEN && currMode !== pub.HIDDEN) {
-      // existing document needs to be hidden
-      if (!currDoc.saved && currDoc.modified) {
-        try {
-          currDoc.save();
-        } catch(e) {
-          throw {userCancel: true};
-        }
-        warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
-      } else if (currDoc.modified) {
-        currDoc.save(File(currDoc.fullName));
-        warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
-      }
-      var docPath = currDoc.fullName;
-      currDoc.close(); // close the doc and reopen it without adding to the display list
-      currDoc = app.open(File(docPath), false);
-
-      setCurrDoc(currDoc);
-    } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
-      // existing document needs to be unhidden
-      currDoc.windows.add();
-    }
+    warning("blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
   }
-
-  if (!progressPanel && (mode === pub.HIDDEN || mode === pub.SILENT)) {
-    // turn on progress panel
-    progressPanel = new Progress();
-  } else if (progressPanel && mode === pub.VISIBLE) {
-    // turn off progress panel
-    progressPanel.closePanel();
-    progressPanel = null;
-  }
-
-  currMode = mode;
 };
 
 /**
- * @description Stops basil from continuously executing the code within `loop()` and quits the script.
+ * @description Creates a new RGB / CMYK color and adds it to the document, or gets a color by name from the document. The default color mode is RGB.
  *
- * @cat     Structure
- * @method  noLoop
+ * @cat     Color
+ * @method  color
+ *
+ * @param   {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
+ * @return  {Color} Found or new color
  */
-pub.noLoop = function(printFinished) {
-  var allIdleTasks = app.idleTasks;
-  for (var i = app.idleTasks.length - 1; i >= 0; i--) {
-    allIdleTasks[i].remove();
-  }
-  if(printFinished) {
-    println("Basil.js -> Stopped looping.");
-    println("[Finished in " + executionDuration() + "]");
-  };
-  resetUserSettings();
-};
+pub.color = function() {
+  var newCol;
+  var props = {};
+  var a = arguments[0],
+    b = arguments[1],
+    c = arguments[2],
+    d = arguments[3],
+    e = arguments[4];
+  var colorErrorMsg = "color(), wrong parameters. Use:\n"
+      + "GRAY,[name] or \n"
+      + "R,G,B,[name] in colorMode(RGB) or\n"
+      + "C,M,Y,K,[name] in colorMode(CMYK).\n"
+      + "Name is optional.\n"
+      + "NB: In InDesign colors don't have an alpha value, use opacity() to set alpha.";
 
-// ----------------------------------------
-// src/includes/environment.js
-// ----------------------------------------
-
-// ----------------------------------------
-// Environment
-// ----------------------------------------
-
-/**
- * @description Suspends the calling thread for a number of milliseconds.
- * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
- *
- * @cat     Environment
- * @method  delay
- *
- * @param   {Number} milliseconds The delay time in milliseconds.
- */
-pub.delay = function (milliseconds) {
-  $.sleep(milliseconds);
-};
-
-/**
- * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
- *
- * @cat     Environment
- * @method  frameRate
- *
- * @param   {Number} [fps] Frames per second.
- * @return  {Number} Currently set frame rate.
- */
-pub.frameRate = function(fps) {
-  if(arguments.length) {
-    if(!isNumber(fps) || fps <= 0) {
-      error("frameRate(), invalid argument. Use a number greater than 0.")
-    }
-
-    currFrameRate = fps;
-    if(currIdleTask) {
-      currIdleTask.sleep = Math.ceil(1000 / fps);
-    }
-  }
-  return currFrameRate;
-};
-
-/**
- * @description System variable which stores the height of the current page.
- *
- * @cat      Environment
- * @property {Number} height Height of the current page.
- */
-pub.height = null;
-
-/**
- * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
- * - `showProps`: Show or hide properties. Default: `true`
- * - `showValues`: Show or hide values. Default: `true`
- * - `showMethods`: Show or hide methods. Default: `false`
- * - `maxLevel`: Chooses how many levels of properties should be inspected recursively. Default: `1`
- * - `propList`: Allows to pass an array of property names to show. If `propList` is not set all properties will be shown. Default: `[]` (no propList)
- * If no settings object is set, the default values will be used.
- *
- * @cat     Environment
- * @method  inspect
- *
- * @param   {Object} obj An object or any other data item to be inspected.
- * @param   {Object} [settings] A settings object to control the function's behavior.
- * @param   {Boolean} [settings.showProps] Show or hide properties. Default: `true`
- * @param   {Boolean} [settings.showValues] Show or hide values. Default: `true`
- * @param   {Boolean} [settings.showMethods] Show or hide methods. Default: `false`
- * @param   {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: `1`
- * @param   {Array} [settings.propList] Array of properties to show. Default: `[]` (no propList)
- *
- * @example <caption>Inspecting a string</caption>
- * inspect("foo");
- *
- * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
- * inspect(page(), {showMethods: true, maxLevel: 2})
- *
- * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
- * var myEllipse = ellipse(0, 0, 10, 10);
- * inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
- */
-pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
-
-  var output, indent;
-  output = indent = "";
-
-  if (!level) {
-    level = 0;
-    branchArray = [];
-
-    if(!settings) {
-      settings = {};
-    }
-
-    // set settings object to given values or defaults
-    settings.showProps = settings.hasOwnProperty("showProps") ? settings.showProps : true;
-    settings.showValues = settings.hasOwnProperty("showValues") ? settings.showValues : true;
-    settings.showMethods = settings.hasOwnProperty("showMethods") ? settings.showMethods : false;
-    settings.maxLevel = settings.hasOwnProperty("maxLevel") ? settings.maxLevel : 1;
-    settings.propList = settings.hasOwnProperty("propList") ? settings.propList : [];
-
-    if(obj === null || obj === undefined) {
-      println(obj + "");
-      return;
-    }
-
-    if(obj.constructor.name === "Array") {
-      if(obj.length > 0 && obj.reflect.properties.length < 3) {
-        // fixing InDesign's buggy implementation of certain arrays
-        // see: https://forums.adobe.com/message/9408120#9408120
-        obj = Array.prototype.slice.call(obj, 0);
-      }
-      output += "[" + obj.join(", ") + "] (Array)";
-    } else if (obj.constructor.name === "String") {
-      output += "\"" + obj + "\" (String)";
-    } else {
-      output += obj + " (" + obj.constructor.name + ")";
-    }
-  } else {
-    // setting up tree structure indent
-    if(branchArray.length < level) {
-      branchArray.push(branchEnd);
-    } else if (branchArray.length > level) {
-      branchArray.pop();
-    }
-    if(branchEnd) {
-      if(!(level === 1 && settings.showMethods)) {
-        branchArray[branchArray.length - 1] = true;
-      }
-    }
-    for (var i = 0; i < level; i++) {
-      if(branchArray[i]) {
-        indent += "    ";
+  if (arguments.length === 1) {
+    // get color by name
+    if (typeof a === "string") {
+      newCol = currentDoc().colors.itemByName(a); // check color
+      if (newCol.isValid) {
+        return newCol;
       } else {
-        indent += "|   ";
+        error("color(), a color with the provided name doesn't exist.");
+      }
+    } else if (typeof a === "number") {
+      // GRAY
+      if (currColorMode === pub.RGB) {
+        a = pub.constrain(a, 0, 255);
+        props.model = ColorModel.PROCESS;
+        props.space = ColorSpace.RGB;
+        props.colorValue = [a, a, a];
+        props.name = "R=" + a + " G=" + a + " B=" + a;
+      } else {
+        a = pub.constrain(a, 0, 100);
+        props.model = ColorModel.PROCESS;
+        props.space = ColorSpace.CMYK;
+        props.colorValue = [0, 0, 0, a];
+        props.name = "C=" + 0 + " M=" + 0 + " Y=" + 0 + " K=" + a;
+      }
+    } else {
+      error("color(), wrong type of first parameter.");
+    }
+
+  } else if (arguments.length === 2) {
+    // GRAY + name
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.RGB;
+      props.colorValue = [a, a, a];
+      props.name = b;
+    } else {
+      a = pub.constrain(a, 0, 100);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.CMYK;
+      props.colorValue = [0, 0, 0, a];
+      props.name = b;
+    }
+
+  } else if (arguments.length === 3) {
+    // R G B
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
+      b = pub.constrain(b, 0, 255);
+      c = pub.constrain(c, 0, 255);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.RGB;
+      props.colorValue = [a, b, c];
+      props.name = "R=" + a + " G=" + b + " B=" + c;
+    } else {
+      error(colorErrorMsg);
+    }
+
+
+  } else if (arguments.length === 4 && typeof d === "string") {
+    // R G B + name
+    if (currColorMode === pub.RGB) {
+      a = pub.constrain(a, 0, 255);
+      b = pub.constrain(b, 0, 255);
+      c = pub.constrain(c, 0, 255);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.RGB;
+      props.colorValue = [a, b, c];
+      props.name = d;
+    } else {
+      error(colorErrorMsg);
+    }
+
+  } else if (arguments.length === 4 && typeof d === "number") {
+    // C M Y K
+    if (currColorMode === pub.CMYK) {
+      a = pub.constrain(a, 0, 100);
+      b = pub.constrain(b, 0, 100);
+      c = pub.constrain(c, 0, 100);
+      d = pub.constrain(d, 0, 100);
+      props.model = ColorModel.PROCESS;
+      props.space = ColorSpace.CMYK;
+      props.colorValue = [a, b, c, d];
+      props.name = "C=" + a + " M=" + b + " Y=" + c + " K=" + d;
+    } else {
+      error(colorErrorMsg);
+    }
+
+  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === pub.CMYK) {
+    // C M Y K + name
+    a = pub.constrain(a, 0, 100);
+    b = pub.constrain(b, 0, 100);
+    c = pub.constrain(c, 0, 100);
+    d = pub.constrain(d, 0, 100);
+    props.model = ColorModel.PROCESS;
+    props.space = ColorSpace.CMYK;
+    props.colorValue = [a, b, c, d];
+    props.name = e;
+
+  } else {
+    error(colorErrorMsg);
+  }
+
+  // check whether color was already created and added to colors,
+  // keeps the document clean ...
+  newCol = currentDoc().colors.itemByName(props.name);
+  if (!newCol.isValid) {
+    newCol = currentDoc().colors.add();
+  }
+  newCol.properties = props;
+  return newCol;
+};
+
+/**
+ * @description Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
+ *
+ * @cat     Color
+ * @method  colorMode
+ *
+ * @param   {Number} colorMode RGB or CMYK.
+ */
+pub.colorMode = function(colorMode) {
+  checkNull(colorMode);
+  if (arguments.length === 0) {
+    return currColorMode;
+  }
+  if (colorMode === pub.RGB || colorMode === pub.CMYK) {
+    currColorMode = colorMode;
+  } else {
+    error("colorMode(), unsupported colormode, use: RGB or CMYK");
+  }
+};
+
+/**
+ * @description Sets the color or gradient used to fill shapes.
+ *
+ * @cat     Color
+ * @method  fill
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @param   {String} [name] If created with numbers, a custom swatch name can be given.
+ */
+pub.fill = function (fillColor) {
+
+  checkNull(fillColor);
+  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
+    currFillColor = fillColor;
+  } else {
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === "string") {
+        currFillColor = pub.swatch(arguments[0]);
+      }else{
+        currFillColor = pub.color(arguments[0]);
+      }
+    } else if (arguments.length === 2) {
+      currFillColor = pub.color(arguments[0], arguments[1]);
+    } else if (arguments.length === 3) {
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
+    } else if (arguments.length === 4) {
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+    } else if (arguments.length === 5) {
+      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    } else {
+      error("fill(), wrong parameters. Use:\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
+        + "Name is optional.");
+    }
+  }
+};
+
+/**
+ * @description Sets the tint of the color used to fill shapes.
+ *
+ * @cat     Color
+ * @method  fillTint
+ *
+ * @param   {Number} tint Number from 0 to 100
+ */
+pub.fillTint = function (tint) {
+  checkNull(tint);
+  if (typeof tint === "string" || typeof tint === "number") {
+    currFillTint = tint;
+  } else {
+    error("fillTint(), unsupported type. Please make sure the fillTint is a number or string");
+  }
+};
+
+/**
+ * @description Creates a new gradient and adds it to the document, or gets a gradient by name from the document.
+ * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions range from 0 to 100. All parameter options allow for an additional name parameter at the end to name the new gradient. If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
+ *
+ * @cat     Color
+ * @method  gradient
+ *
+ * @param   {Color|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
+ * @param   {Color|Array|String} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
+ * @param   {String} [name] Optional name of the gradient.
+ * @return  {Gradient} Found or new gradient
+ */
+pub.gradient = function() {
+  var newGrad;
+  // var props = {};
+  var a = arguments[0],
+    b = arguments[1],
+    c = arguments[2];
+  var gradientErrorMsg = "gradient(), wrong parameters. Use:\n"
+      + "c1,c2,[name] or\n"
+      + "arrayOfColors,[name] or\n"
+      + "arrayOfColors,arrayOfGradientStops,[name] or\n"
+      + "gradientName";
+
+  if (typeof a === "string" && arguments.length === 1) {
+    // get gradient by name
+    newGrad = currentDoc().gradients.itemByName(a);
+    if (newGrad.isValid) {
+      return newGrad;
+    } else {
+      error("gradient(), a gradient with the provided name doesn't exist.");
+    }
+  } else if (a instanceof Color && b instanceof Color && (typeof c === "string" || arguments.length === 2)) {
+    // c1 and c2
+    if (typeof c === "string") {
+      if(currentDoc().colors.itemByName(c).isValid) {
+        error("gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
+      }
+      if(currentDoc().gradients.itemByName(c).isValid) {
+        currentDoc().gradients.itemByName(c).remove();
+        warning("gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
+      }
+      newGrad = currentDoc().gradients.add({name: c});
+    } else {
+      newGrad = currentDoc().gradients.add();
+    }
+    newGrad.gradientStops[0].stopColor = a;
+    newGrad.gradientStops[1].stopColor = b;
+    if(currGradientMode === pub.LINEAR) {
+      newGrad.type = GradientType.LINEAR;
+    } else {
+      newGrad.type = GradientType.RADIAL;
+    }
+    return newGrad;
+  } else if (a instanceof Array) {
+    // array of colors
+    var customStopLocations = false;
+    if(arguments.length > 3) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && !(b instanceof Array || typeof b === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length === 3 && !(typeof c === "string")) {
+      error(gradientErrorMsg);
+    }
+    if(arguments.length > 1 && b instanceof Array) {
+      customStopLocations = true;
+    }
+    if(customStopLocations && !(a.length === b.length)) {
+      error("gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
+    }
+    var z = arguments[arguments.length - 1];
+    if (typeof z === "string") {
+      if(currentDoc().colors.itemByName(z).isValid) {
+        error("gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
+      }
+      if(currentDoc().gradients.itemByName(z).isValid) {
+        currentDoc().gradients.itemByName(z).remove();
+        warning("gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
+      }
+      newGrad = currentDoc().gradients.add({name: z});
+    } else {
+      newGrad = currentDoc().gradients.add();
+    }
+    for (var i = 0; i < a.length; i++) {
+      if(!(a[i] instanceof Color || a[i] instanceof Swatch)) {
+        error("gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
+      }
+      if(i > newGrad.gradientStops.length - 1) {
+        newGrad.gradientStops.add();
+      }
+      newGrad.gradientStops[i].stopColor = a[i];
+      if(customStopLocations) {
+        if(!(typeof b[i] === "number")) {
+          error("gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
+        }
+        newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
+      } else {
+        newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
       }
     }
-  }
-
-  if(settings.showProps) {
-    var propArray, value, usePropList;
-
-    if(level === 0 && settings.propList.length > 0 && settings.propList.constructor.name === "Array") {
-      usePropList = true;
-      propArray = settings.propList.reverse();
-    } else if (obj.constructor.name === "Array") {
-      // correct sorting for Array number properties (0, 1, 2 etc.)
-      propArray = obj.reflect.properties.sort(function(a, b) {return a - b}).reverse();
+    if(currGradientMode === pub.LINEAR) {
+      newGrad.type = GradientType.LINEAR;
     } else {
-      propArray = obj.reflect.properties.sort().reverse();
+      newGrad.type = GradientType.RADIAL;
     }
-
-    if(propArray.length > 1 || usePropList) {
-      output += "\n" + indent + "|";
-
-      for (var i = propArray.length - 1; i >= 0; i--) {
-        if(propArray[i] == "__proto__" || propArray[i] == "__count__" || propArray[i] == "__class__"|| propArray[i] == "reflect") {
-          if(!i) {
-            output += "\n" + indent;
-          }
-          continue;
-        }
-
-        if(settings.showValues) {
-
-          try {
-            var propValue = obj[propArray[i]];
-            if (usePropList && !obj.hasOwnProperty(propArray[i]) && propArray[i] != "length") {
-              // in case a non-existing prop is passed via propList
-              // "length" needs special handling as it is not correctly recognized as a property
-              value = ": The inspected item has no such property.";
-            } else if (propValue === null || propValue === undefined) {
-              value = ": " + propValue;
-            } else if (propValue.constructor.name === "Array") {
-              if(propValue.length > 0 && propValue.reflect.properties.length < 3) {
-                propValue = Array.prototype.slice.call(propValue, 0);
-              }
-              value = ": Array (" + propValue.length + ")";
-              if(propValue.length && level < settings.maxLevel - 1) {
-                // recursive inspecting of Array properties
-                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
-              }
-            } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
-              value = ": " + propValue;
-              if(level < settings.maxLevel - 1) {
-                // recursive inspecting of Object properties
-                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
-              }
-            } else {
-              value = ": " + propValue.toString();
-            }
-          } catch (e) {
-            if(e.number === 30615) {
-              value = ": The property is not applicable in the current state.";
-            } else if (e.number === 55) {
-              value = ": Object does not support the property '" + propArray[i] + "'.";
-            } else {
-              // other InDesign specific error messages
-              value = ": " + e.message;
-            }
-          }
-
-        } else {
-          value = "";
-        }
-
-        output += "\n" + indent + "|-- " + propArray[i] + value;
-
-
-        if(!i && !branchEnd && level !== 0) {
-          // separation space when a sub-branch ends
-          output += "\n" + indent;
-        }
-      } // end for-loop
-    } // end if(propArray.length > 1 || usePropList)
-  } // end if(settings.showProps)
-
-  if(level === 0 && settings.showMethods) {
-
-    var methodArray = settings.showMethods ? obj.reflect.methods.sort().reverse() : [];
-
-    if(methodArray.length) {
-      output += "\n|" +
-                "\n|   METHODS";
-    }
-
-    for (var i = methodArray.length - 1; i >= 0; i--) {
-      if(methodArray[i].name.charAt(0) === "=") {continue;}
-      output += "\n|-- " + methodArray[i] + "()";
-    }
+    return newGrad;
+  } else {
+    error(gradientErrorMsg);
   }
-
-  if(level > 0) {
-    // return for recursive calls
-    return output;
-  }
-  // print for top level call
-  println(output);
-
 };
 
 /**
- * @description Print numerous information about the current environment to the console.
+ * @description Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`.
  *
- * @cat     Environment
- * @method  printInfo
+ * @cat     Color
+ * @method  gradientMode
+ *
+ * @param   {String} gradientMode `LINEAR` or `RADIAL`.
  */
-pub.printInfo = function() {
-
-  pub.println("###");
-  pub.println("OS: " + $.os);
-  pub.println("ExtendScript Build: " + $.build);
-  pub.println("ExtendScript Version:" + $.version);
-  pub.println("Engine: " + $.engineName);
-  pub.println("memCache: " + $.memCache + " bytes");
-  pub.println("###");
-
-};
-
-/**
- * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
- *
- * @cat     Environment
- * @method  projectFolder
- *
- * @return  {Folder} The folder of the the active document
- */
-pub.projectFolder = function() {
-  if(!currentDoc().saved) {
-    error("The current document must be saved before its project directory can be accessed.");
-  }
-  return currentDoc().filePath;
-};
-
-/**
- * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
- *
- * @cat     Environment
- * @method  size
- *
- * @param   {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
- * @param   {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
- * @return  {Object} Object containing the current `width` and `height` of the document.
- *
- * @example <caption>Sets the document size to 70 x 100 units</caption>
- * size(70, 100);
- *
- * @example <caption>Sets the document size to 70 x 70</caption>
- * size(70);
- *
- * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
- * size("A4");
- *
- * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
- * size("A4", LANDSCAPE);
- */
-pub.size = function(widthOrPageSize, heightOrOrientation) {
-  if(app.documents.length === 0) {
-    // there are no documents
-    warning("size()", "You have no open document.");
-    return;
-  }
+pub.gradientMode = function(gradientMode) {
+  checkNull(gradientMode);
   if (arguments.length === 0) {
-    // no arguments given
-    // return the current values
-    return {width: pub.width, height: pub.height};
+    return currGradientMode;
   }
-
-  var doc = currentDoc();
-
-  if(isString(widthOrPageSize)) {
-    try {
-      doc.documentPreferences.pageSize = widthOrPageSize;
-    } catch (e) {
-      error("size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
-    }
-    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
-      doc.documentPreferences.pageOrientation = heightOrOrientation;
-    }
-    pub.width = $.global.width = doc.documentPreferences.pageWidth;
-    pub.height = $.global.height = doc.documentPreferences.pageHeight;
-    return {width: pub.width, height: pub.height};
-  } else if(arguments.length === 1) {
-    // only one argument set the first to the secound
-    heightOrOrientation = widthOrPageSize;
+  if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
+    currGradientMode = gradientMode;
+  } else {
+    error("gradientMode(), unsupported gradient mode, use: LINEAR or RADIAL");
   }
-  // set the document's pageHeight and pageWidth
-  doc.properties = {
-    documentPreferences: {
-      pageHeight: heightOrOrientation,
-      pageWidth: widthOrPageSize
-    }
-  };
-  // set height and width
-  pub.width = $.global.width = widthOrPageSize;
-  pub.height = $.global.height = heightOrOrientation;
-
-  return {width: pub.width, height: pub.height};
-
 };
 
 /**
- * @description System variable which stores the width of the current page.
+ * @description Calculates a color or colors between two colors at a specific increment.
+ * The `amt` parameter is the amount to interpolate between the two values where 0.0 equals the first color, 0.5 is half-way in between and 1.0 equals the second color. N.B.: Both colors must be either CMYK or RGB.
  *
- * @cat      Environment
- * @property {Number} width Width of the current page.
+ * @cat     Color
+ * @method  lerpColor
+ *
+ * @param   {Color} c1 Input color 1.
+ * @param   {Color} c2 Input color 2.
+ * @param   {Number} amt The amount to interpolate between the two colors.
+ * @return  {Color} Interpolated color
  */
-pub.width = null;
+pub.lerpColor = function (c1, c2, amt) {
+  checkNull(c1);
+  checkNull(c2);
+  if ((c1 instanceof Color || c1 instanceof Swatch) &&
+     (c2 instanceof Color || c2 instanceof Swatch) &&
+      typeof amt === "number") {
+    if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
+      var C1 = c1.colorValue[0];
+      var M1 = c1.colorValue[1];
+      var Y1 = c1.colorValue[2];
+      var K1 = c1.colorValue[3];
 
-// ----------------------------------------
-// Environment/Constants
-// ----------------------------------------
+      var C2 = c2.colorValue[0];
+      var M2 = c2.colorValue[1];
+      var Y2 = c2.colorValue[2];
+      var K2 = c2.colorValue[3];
+
+      var COut = Math.round(pub.lerp(C1, C2, amt));
+      var MOut = Math.round(pub.lerp(M1, M2, amt));
+      var YOut = Math.round(pub.lerp(Y1, Y2, amt));
+      var KOut = Math.round(pub.lerp(K1, K2, amt));
+      return pub.color(COut, MOut, YOut, KOut);
+
+    } else if (c1.space === ColorSpace.RGB && c2.space === ColorSpace.RGB) {
+      var R1 = c1.colorValue[0];
+      var G1 = c1.colorValue[1];
+      var B1 = c1.colorValue[2];
+
+      var R2 = c2.colorValue[0];
+      var G2 = c2.colorValue[1];
+      var B2 = c2.colorValue[2];
+
+      var ROut = Math.round(pub.lerp(R1, R2, amt));
+      var GOut = Math.round(pub.lerp(G1, G2, amt));
+      var BOut = Math.round(pub.lerp(B1, B2, amt));
+      return pub.color(ROut, GOut, BOut);
+
+    } else {
+      error("lerpColor(), both colors must be either CMYK or RGB.");
+    }
+  } else {
+    error("lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
+  }
+};
 
 /**
- * @description The name of the current script.
+ * @description Disables filling geometry. If both `noStroke()` and `noFill()` are called, newly drawn shapes will be invisible.
  *
- * @cat      Environment
- * @subcat   Constants
- * @property SCRIPTNAME {String}
+ * @cat     Color
+ * @method  noFill
  */
-var stackArray = $.stack.
-            replace(/[\n]toString\(\)[\n]$/,'').
-            replace(/[\[\]']+/g,'').
-            split(/[\n]/);
-pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
+pub.noFill = function () {
+  currFillColor = noneSwatchColor;
+};
 
 /**
- * @description The basil version
+ * @description Disables drawing the stroke. If both noStroke() and noFill() are called, newly drawn shapes will be invisible.
  *
- * @cat      Environment
- * @subcat   Constants
- * @property VERSION {String}
+ * @cat     Color
+ * @method  noStroke
  */
-pub.VERSION = "1.1.0";
+pub.noStroke = function () {
+  currStrokeColor = noneSwatchColor;
+};
+
+/**
+ * @description Sets the opacity property of an object.
+ *
+ * @cat     Color
+ * @method  opacity
+ *
+ * @param   {Object} obj The object to set opacity of.
+ * @param   {Number} opacity The opacity value from 0 to 100.
+ */
+pub.opacity = function(obj, opacity) {
+  checkNull(obj);
+  if (obj.hasOwnProperty("transparencySettings")) {
+    obj.transparencySettings.blendingSettings.opacity = opacity;
+  } else {
+    warning("opacity(), the object " + obj.toString() + " doesn't have an opacity property");
+  }
+};
+
+/**
+ * @description Sets the color or gradient used to draw lines and borders around shapes.
+ *
+ * @cat     Color
+ * @method  stroke
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ */
+pub.stroke = function (strokeColor) {
+  checkNull(strokeColor);
+  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
+    currStrokeColor = strokeColor;
+  } else {
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === "string") {
+        currStrokeColor = pub.swatch(arguments[0]);
+      }else{
+        currStrokeColor = pub.color(arguments[0]);
+      }
+    } else if (arguments.length === 2) {
+      currStrokeColor = pub.color(arguments[0], arguments[1]);
+    } else if (arguments.length === 3) {
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
+    } else if (arguments.length === 4) {
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+    } else if (arguments.length === 5) {
+      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    } else {
+      error("stroke(), wrong parameters. Use:\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
+        + "Name is optional.");
+    }
+  }
+};
+
+/**
+ * @description Sets the tint of the color used to draw lines and borders around shapes.
+ *
+ * @cat     Color
+ * @method  strokeTint
+ *
+ * @param   {Number} tint Number from 0 to 100.
+ */
+pub.strokeTint = function (tint) {
+  checkNull(tint);
+  if (typeof tint === "string" || typeof tint === "number") {
+    currStrokeTint = tint;
+  } else {
+    error("strokeTint(), unsupported type. Please make sure the strokeTint parameter is a number or string");
+  }
+};
+
+/**
+ * @description Gets a swatch by name.
+ *
+ * @cat     Color
+ * @method  swatch
+ *
+ * @param   {String} swatchName Returns the swatch color/gradient for a given name by string.
+ */
+pub.swatch = function(){
+  var newSwatch;
+  var props = {};
+  if (arguments.length === 1) {
+    var a = arguments[0];
+    if (typeof a === "string") {
+      newSwatch = currentDoc().swatches.itemByName(a);
+      if(newSwatch.isValid){
+          return newSwatch;
+        }else{
+          error("A swatch with the provided name doesn't exist.");
+        }
+    }else{
+      error("swatch() requires a string, the name of an existing swatch.");
+    }
+  }
+}
 
 // ----------------------------------------
 // src/includes/data.js
@@ -3713,1524 +3809,380 @@ var textCollection = function(collection, legalContainers, container, cb) {
 };
 
 // ----------------------------------------
-// src/includes/shape.js
+// src/includes/environment.js
 // ----------------------------------------
 
 // ----------------------------------------
-// Shape/Attributes
+// Environment
 // ----------------------------------------
 
 /**
- * @description The origin of new ellipses is modified by the `ellipseMode()` function. The default configuration is `ellipseMode(CENTER)`, which specifies the location of the ellipse as the center of the shape. The `RADIUS` mode is the same, but the `w` and `h` parameters to `ellipse()` specify the radius of the ellipse, rather than the diameter. The `CORNER` mode draws the shape from the upper-left corner of its bounding box. The `CORNERS` mode uses the four parameters to `ellipse()` to set two opposing corners of the ellipse's bounding box.
+ * @description Suspends the calling thread for a number of milliseconds.
+ * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
  *
- * @cat     Shape
- * @subcat  Attributes
- * @method  ellipseMode
+ * @cat     Environment
+ * @method  delay
  *
- * @param   {String} mode The ellipse mode to switch to: either `CENTER`, `RADIUS`, `CORNER`, or `CORNERS`.
+ * @param   {Number} milliseconds The delay time in milliseconds.
  */
-pub.ellipseMode = function (mode) {
-  if (arguments.length === 0) return currEllipseMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
-    currEllipseMode = mode;
-    return currEllipseMode;
+pub.delay = function (milliseconds) {
+  $.sleep(milliseconds);
+};
+
+/**
+ * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
+ *
+ * @cat     Environment
+ * @method  frameRate
+ *
+ * @param   {Number} [fps] Frames per second.
+ * @return  {Number} Currently set frame rate.
+ */
+pub.frameRate = function(fps) {
+  if(arguments.length) {
+    if(!isNumber(fps) || fps <= 0) {
+      error("frameRate(), invalid argument. Use a number greater than 0.")
+    }
+
+    currFrameRate = fps;
+    if(currIdleTask) {
+      currIdleTask.sleep = Math.ceil(1000 / fps);
+    }
+  }
+  return currFrameRate;
+};
+
+/**
+ * @description System variable which stores the height of the current page.
+ *
+ * @cat      Environment
+ * @property {Number} height Height of the current page.
+ */
+pub.height = null;
+
+/**
+ * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
+ * - `showProps`: Show or hide properties. Default: `true`
+ * - `showValues`: Show or hide values. Default: `true`
+ * - `showMethods`: Show or hide methods. Default: `false`
+ * - `maxLevel`: Chooses how many levels of properties should be inspected recursively. Default: `1`
+ * - `propList`: Allows to pass an array of property names to show. If `propList` is not set all properties will be shown. Default: `[]` (no propList)
+ * If no settings object is set, the default values will be used.
+ *
+ * @cat     Environment
+ * @method  inspect
+ *
+ * @param   {Object} obj An object or any other data item to be inspected.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
+ * @param   {Boolean} [settings.showProps] Show or hide properties. Default: `true`
+ * @param   {Boolean} [settings.showValues] Show or hide values. Default: `true`
+ * @param   {Boolean} [settings.showMethods] Show or hide methods. Default: `false`
+ * @param   {Number} [settings.maxLevel] How many levels of properties should be inspected recursively. Default: `1`
+ * @param   {Array} [settings.propList] Array of properties to show. Default: `[]` (no propList)
+ *
+ * @example <caption>Inspecting a string</caption>
+ * inspect("foo");
+ *
+ * @example <caption>Inspecting the current page, its methods and an additional level of properties</caption>
+ * inspect(page(), {showMethods: true, maxLevel: 2})
+ *
+ * @example <caption>Inspecting an ellipse, listing only the properties "geometricBounds" and "strokeWeight"</caption>
+ * var myEllipse = ellipse(0, 0, 10, 10);
+ * inspect(myEllipse, {maxLevel: 2, propList: ["geometricBounds, strokeWeight"]});
+ */
+pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
+
+  var output, indent;
+  output = indent = "";
+
+  if (!level) {
+    level = 0;
+    branchArray = [];
+
+    if(!settings) {
+      settings = {};
+    }
+
+    // set settings object to given values or defaults
+    settings.showProps = settings.hasOwnProperty("showProps") ? settings.showProps : true;
+    settings.showValues = settings.hasOwnProperty("showValues") ? settings.showValues : true;
+    settings.showMethods = settings.hasOwnProperty("showMethods") ? settings.showMethods : false;
+    settings.maxLevel = settings.hasOwnProperty("maxLevel") ? settings.maxLevel : 1;
+    settings.propList = settings.hasOwnProperty("propList") ? settings.propList : [];
+
+    if(obj === null || obj === undefined) {
+      println(obj + "");
+      return;
+    }
+
+    if(obj.constructor.name === "Array") {
+      if(obj.length > 0 && obj.reflect.properties.length < 3) {
+        // fixing InDesign's buggy implementation of certain arrays
+        // see: https://forums.adobe.com/message/9408120#9408120
+        obj = Array.prototype.slice.call(obj, 0);
+      }
+      output += "[" + obj.join(", ") + "] (Array)";
+    } else if (obj.constructor.name === "String") {
+      output += "\"" + obj + "\" (String)";
+    } else {
+      output += obj + " (" + obj.constructor.name + ")";
+    }
   } else {
-    error("ellipseMode(), unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
-  }
-};
-
-/**
- * @description Modifies the location from which rectangles or text frames draw. The default mode is `rectMode(CORNER)`, which specifies the location to be the upper left corner of the shape and uses the `w` and `h` parameters to specify the width and height. The syntax `rectMode(CORNERS)` uses the `x` and `y` parameters of `rect()` or `text()` to set the location of one corner and uses the `w` and `h` parameters to set the opposite corner. The syntax `rectMode(CENTER)` draws the shape from its center point and uses the `w` and `h` parameters to specify the shape's width and height. The syntax `rectMode(RADIUS)` draws the shape from its center point and uses the `w` and `h` parameters to specify half of the shape's width and height.
- *
- * @cat     Shape
- * @subcat  Attributes
- * @method  rectMode
- *
- * @param   {String} mode The rectMode to switch to: either `CORNER`, `CORNERS`, `CENTER`, or `RADIUS`.
- */
-pub.rectMode = function (mode) {
-  if (arguments.length === 0) return currRectMode;
-  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
-    currRectMode = mode;
-    return currRectMode;
-  } else {
-    error("rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER, RADIUS.");
-  }
-};
-
-/**
- * @description Sets the width of the stroke used for lines and the border around shapes.
- *
- * @cat     Shape
- * @subcat  Attributes
- * @method  strokeWeight
- *
- * @param   {Number} weight The width of the stroke in points.
- */
-pub.strokeWeight = function (weight) {
-  if (typeof weight === "string" || typeof weight === "number") {
-    currStrokeWeight = weight;
-  } else {
-    error("strokeWeight(), not supported type. Please make sure the strokeweight is a number or string");
-  }
-};
-
-// ----------------------------------------
-// Shape/Primitives
-// ----------------------------------------
-
-/**
- * @description The `arc()` function draws an arc. Arcs are drawn along the outer edge of an ellipse defined by the `x`, `y`, `width` and `height` parameters. The origin or the arc's ellipse may be changed with the `ellipseMode()` function. The start and stop parameters specify the angles at which to draw the arc.
- *
- * @cat     Shape
- * @subcat  Primitives
- * @method  arc
- *
- * @param   {Number} cx X-coordinate of the arc's center.
- * @param   {Number} cy Y-coordinate of the arc's center.
- * @param   {Number} w Width of the arc's ellipse.
- * @param   {Number} h Height of the arc's ellipse.
- * @param   {Number} startAngle Starting angle of the arc in radians.
- * @param   {Number} endAngle Ending angle of the arc in radians.
- * @param   {String} [mode] Mode to define the rendering technique of the arc: `OPEN` (default), `CHORD`, or `PIE`.
- * @return  {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
- */
-pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
-  if (w <= 0 || endAngle < startAngle) {
-    return false;
-  }
-  if (arguments.length < 6) error("arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
-
-  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
-  startAngle %= pub.TWO_PI + o;
-  endAngle %= pub.TWO_PI + o;
-  w /= 2;
-  h /= 2;
-
-  if (currEllipseMode === pub.CORNER) {
-    cx = (cx - w);
-    cy = (cy + h);
-  }
-  else if (currEllipseMode === pub.CORNERS) {
-    // cx = (cx-w);
-    // cy = (cy-h);
-    // w -= cx;
-    // h -= cy;
-  }
-  else if (currEllipseMode === pub.RADIUS) {
-    w *= 2;
-    h *= 2;
-  }
-
-  var delta = pub.abs(endAngle - startAngle);
-  var direction = (startAngle < endAngle) ? 1 : -1;
-  var thetaStart = startAngle;
-
-  if(mode == pub.CHORD) {
-    pub.beginShape(pub.CLOSE);
-  }
-  else if(mode == pub.PIE) {
-    pub.beginShape(pub.CLOSE);
-    pub.vertex(cx, cy);
-  }
-  else {
-    pub.beginShape();
-  }
-  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON;) {
-    var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
-    var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
-
-    pub.vertex(
-      cx + points.startx,
-      cy + points.starty,
-      cx + points.startx,
-      cy + points.starty,
-      cx + points.handle1x,
-      cy + points.handle1y
-    );
-    pub.vertex(
-      cx + points.endx,
-      cy + points.endy,
-      cx + points.handle2x,
-      cy + points.handle2y,
-      cx + points.endx,
-      cy + points.endy
-    );
-
-    theta -= pub.abs(thetaEnd - thetaStart);
-    thetaStart = thetaEnd;
-  }
-  return pub.endShape();
-};
-
-/**
- * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height.
- *
- * @cat     Shape
- * @subcat  Primitives
- * @method  ellipse
- *
- * @param   {Number} x X-coordinate of the ellipse.
- * @param   {Number} y Y-coordinate of the ellipse.
- * @param   {Number} w Width of the ellipse.
- * @param   {Number} h Height of the ellipse.
- * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
- */
-pub.ellipse = function(x, y, w, h) {
-  if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
-  var ellipseBounds = [];
-  if (currEllipseMode === pub.CORNER) {
-    ellipseBounds[0] = y;
-    ellipseBounds[1] = x;
-    ellipseBounds[2] = y + h;
-    ellipseBounds[3] = x + w;
-  } else if (currEllipseMode === pub.CORNERS) {
-    ellipseBounds[0] = y;
-    ellipseBounds[1] = x;
-    ellipseBounds[2] = h;
-    ellipseBounds[3] = w;
-  } else if (currEllipseMode === pub.CENTER) {
-    ellipseBounds[0] = y - (h / 2);
-    ellipseBounds[1] = x - (w / 2);
-    ellipseBounds[2] = y + (h / 2);
-    ellipseBounds[3] = x + (w / 2);
-  } else if (currEllipseMode === pub.RADIUS) {
-    ellipseBounds[0] = y - h;
-    ellipseBounds[1] = x - w;
-    ellipseBounds[2] = y + h;
-    ellipseBounds[3] = x + w;
-  }
-
-  if(w === 0 || h === 0)
-    {return false;}
-
-  var ovals = currentPage().ovals;
-  var newOval = ovals.add(currentLayer());
-
-  newOval.strokeWeight = currStrokeWeight;
-  newOval.strokeTint = currStrokeTint;
-  newOval.fillColor = currFillColor;
-  newOval.fillTint = currFillTint;
-  newOval.strokeColor = currStrokeColor;
-  newOval.geometricBounds = ellipseBounds;
-
-  if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
-    newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
-  } else {
-    newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
-  }
-  return newOval;
-};
-
-/**
- * @description Draws a line (a direct path between two points) to the page.
- *
- * @cat     Shape
- * @subcat  Primitives
- * @method  line
- *
- * @param   {Number} x1 X-coordinate of Point 1.
- * @param   {Number} y1 Y-coordinate of Point 1.
- * @param   {Number} x2 X-coordinate of Point 2.
- * @param   {Number} y2 Y-coordinate of Point 2.
- * @return  {GraphicLine} New GraphicLine.
- *
- * @example
- * var vec1 = new Vector(x1, y1);
- * var vec2 = new Vector(x2, y2);
- * line( vec1, vec2 );
- */
-pub.line = function(x1, y1, x2, y2) {
-  if (arguments.length !== 4) {
-    error("line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
-  }
-  var lines = currentPage().graphicLines;
-  var newLine = lines.add(currentLayer());
-  newLine.strokeWeight = currStrokeWeight;
-  newLine.strokeTint = currStrokeTint;
-  newLine.fillColor = currFillColor;
-  newLine.fillTint = currFillTint;
-  newLine.strokeColor = currStrokeColor;
-  newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
-  newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.CENTER_ANCHOR,
-                   currMatrix.adobeMatrix( (x1 + x2) / 2, (y1 + y2) / 2 ));
-  return newLine;
-};
-
-/**
- * @description Draws a rectangle on the page.
- * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the `rectMode()` function.
- * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
- *
- * @cat     Shape
- * @subcat  Primitives
- * @method  rect
- *
- * @param   {Number} x X-coordinate of the rectangle.
- * @param   {Number} y Y-coordinate of the rectangle.
- * @param   {Number} w Width of the rectangle.
- * @param   {Number} h Height of the rectangle.
- * @param   {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
- * @param   {Number} [tr] Radius of top right corner (optional).
- * @param   {Number} [br] Radius of bottom right corner (optional).
- * @param   {Number} [bl] Radius of bottom left corner (optional).
- * @return  {Rectangle} The rectangle that was created.
- */
-pub.rect = function(x, y, w, h, tl, tr, br, bl) {
-  if (w === 0 || h === 0) {
-    // InDesign doesn't draw a rectangle if width or height are set to 0
-    return false;
-  }
-  if (arguments.length < 4) error("rect(), not enough parameters to draw a rect! Use: x, y, w, h");
-
-  var rectBounds = [];
-  if (currRectMode === pub.CORNER) {
-    rectBounds[0] = y;
-    rectBounds[1] = x;
-    rectBounds[2] = y + h;
-    rectBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
-    rectBounds[0] = y;
-    rectBounds[1] = x;
-    rectBounds[2] = h;
-    rectBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
-    rectBounds[0] = y - (h / 2);
-    rectBounds[1] = x - (w / 2);
-    rectBounds[2] = y + (h / 2);
-    rectBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
-    rectBounds[0] = y - h;
-    rectBounds[1] = x - w;
-    rectBounds[2] = y + h;
-    rectBounds[3] = x + w;
-  }
-
-  var newRect = currentPage().rectangles.add(currentLayer());
-  newRect.geometricBounds = rectBounds;
-  newRect.strokeWeight = currStrokeWeight;
-  newRect.strokeTint = currStrokeTint;
-  newRect.fillColor = currFillColor;
-  newRect.fillTint = currFillTint;
-  newRect.strokeColor = currStrokeColor;
-
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
-    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
-  } else {
-    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
-  }
-
-  if(arguments.length > 4) {
-    for(var i = 4; i < arguments.length;i++){
-      if(arguments[i] < 0 ){
-        error("rect(), needs positive values as arguments for the rounded corners.");
+    // setting up tree structure indent
+    if(branchArray.length < level) {
+      branchArray.push(branchEnd);
+    } else if (branchArray.length > level) {
+      branchArray.pop();
+    }
+    if(branchEnd) {
+      if(!(level === 1 && settings.showMethods)) {
+        branchArray[branchArray.length - 1] = true;
       }
     }
-    newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
-    if(arguments.length === 8) {
-      newRect.topLeftCornerRadius = tl;
-      newRect.topRightCornerRadius = tr;
-      newRect.bottomRightCornerRadius = br;
-      newRect.bottomLeftCornerRadius = bl;
-    } else {
-      newRect.topLeftCornerRadius = newRect.topRightCornerRadius = newRect.bottomRightCornerRadius = newRect.bottomLeftCornerRadius = tl;
-    }
-  }
-  return newRect;
-};
-
-// ----------------------------------------
-// Shape/Vertex
-// ----------------------------------------
-
-/**
- * @description `addPath()` is used to create multi component paths. Call `addPath()` to add the vertices drawn so far to a single path. New vertices will then end up in a new path and `endShape()` will return a multi path object. All component paths will account for the setting (see `CLOSE`) given in `beginShape(shapeMode)`.
- *
- * @cat     Shape
- * @subcat  Vertex
- * @method  addPath
- */
-pub.addPath = function() {
-  doAddPath();
-  currPathPointer++;
-};
-
-/**
- * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`. The shapeMode parameter allows to close the shape (to connect the beginning and the end).
- *
- * @cat     Shape
- * @subcat  Vertex
- * @method  beginShape
- *
- * @param   {String} shapeMode Set to `CLOSE` if the new path should be auto-closed.
- */
-pub.beginShape = function(shapeMode) {
-  currVertexPoints = [];
-  currPathPointer = 0;
-  currPolygon = null;
-  if(typeof shapeMode != null) {
-    currShapeMode = shapeMode;
-  } else {
-    currShapeMode = null;
-  }
-};
-
-/**
- * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`.
- *
- * @cat     Shape
- * @subcat  Vertex
- * @method  endShape
- *
- * @return  {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
- */
-pub.endShape = function() {
-  doAddPath();
-  currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(currPolygon.geometricBounds[1], currPolygon.geometricBounds[0]));
-  return currPolygon;
-};
-
-/**
- * @description Shapes are constructed by connecting a series of vertices. `vertex()` is used to specify the vertex coordinates of lines and polygons. It is used exclusively between the `beginShape()` and `endShape()` functions.
- *
- * Use either `vertex(x, y)` for drawing straight corners or `vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)` for drawing bezier shapes. You can also mix the two approaches.
- *
- * @cat     Shape
- * @subcat  Vertex
- * @method  vertex
- *
- * @param   {Number} x X-coordinate of the vertex.
- * @param   {Number} y Y-coordinate of the vertex.
- * @param   {Number} [xLeftHandle] X-coordinate of the left-direction point.
- * @param   {Number} [yLeftHandle] Y-coordinate of the left-direction point.
- * @param   {Number} [xRightHandle] X-coordinate of the right-direction point.
- * @param   {Number} [yRightHandle] Y-coordinate of the right-direction point.
- */
-pub.vertex = function() {
-  if (isArray(currVertexPoints)) {
-    if (arguments.length === 2) {
-      currVertexPoints.push([arguments[0], arguments[1]]);
-    } else if (arguments.length === 6) {
-      // [[xL1, YL1], [x1, y1], [xR1, yR1]]
-      currVertexPoints.push([[arguments[2], arguments[3]],
-                              [arguments[0], arguments[1]],
-                              [arguments[4], arguments[5]]]);
-    } else {
-      error("vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)!");
-    }
-  } else {
-    notCalledBeginShapeError();
-  }
-};
-
-// ----------------------------------------
-// Shape Private
-// ----------------------------------------
-
-function addPolygon() {
-  if (currShapeMode === pub.CLOSE) {
-    currPolygon = currentPage().polygons.add(currentLayer());
-  } else {
-    currPolygon = currentPage().graphicLines.add(currentLayer());
-  }
-
-  currPolygon.strokeWeight = currStrokeWeight;
-  currPolygon.strokeTint = currStrokeTint;
-  currPolygon.fillColor = currFillColor;
-  currPolygon.fillTint = currFillTint;
-  currPolygon.strokeColor = currStrokeColor;
-}
-
-/*
- * Cubic bezier approximation of a eliptical arc
- *
- * intial source code: Golan Levin golan@flong.com
- * http://www.flong.com/blog/2009/bezier-approximation-of-a-circular-arc-in-processing/
- *
- * The solution is taken from this PDF by Richard DeVeneza:
- * http://www.tinaja.com/glib/bezcirc2.pdf linked from this excellent site by
- * Don Lancaster: http://www.tinaja.com/cubic01.asp
- */
-function calculateEllipticalArc(w, h, startAngle, endAngle) {
-  var theta = (endAngle - startAngle);
-
-  var x0 = pub.cos(theta / 2.0);
-  var y0 = pub.sin(theta / 2.0);
-  var x3 = x0;
-  var y3 = 0 - y0;
-  var x1 = (4.0 - x0) / 3.0;
-  var y1 = ((1.0 - x0) * (3.0 - x0)) / (3.0 * y0);
-  var x2 = x1;
-  var y2 = 0 - y1;
-
-  var bezAng = startAngle + theta / 2.0;
-  var cBezAng = pub.cos(bezAng);
-  var sBezAng = pub.sin(bezAng);
-
-  return {
-    startx:   w * (cBezAng * x0 - sBezAng * y0),
-    starty:   h * (sBezAng * x0 + cBezAng * y0),
-    handle1x: w * (cBezAng * x1 - sBezAng * y1),
-    handle1y: h * (sBezAng * x1 + cBezAng * y1),
-
-    handle2x: w * (cBezAng * x2 - sBezAng * y2),
-    handle2y: h * (sBezAng * x2 + cBezAng * y2),
-    endx:     w * (cBezAng * x3 - sBezAng * y3),
-    endy:     h * (sBezAng * x3 + cBezAng * y3)
-  };
-}
-
-function doAddPath() {
-  if (isArray(currVertexPoints)) {
-    if (currVertexPoints.length > 0) {
-
-      if(currPolygon === null) {
-        addPolygon();
+    for (var i = 0; i < level; i++) {
+      if(branchArray[i]) {
+        indent += "    ";
       } else {
-        currPolygon.paths.add();
+        indent += "|   ";
       }
-
-      currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
-      currVertexPoints = [];
     }
-  } else {
-    notCalledBeginShapeError();
-  }
-}
-
-function notCalledBeginShapeError () {
-  error("endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
-}
-
-// ----------------------------------------
-// src/includes/color.js
-// ----------------------------------------
-
-// ----------------------------------------
-// Color
-// ----------------------------------------
-
-/**
- * @description Sets the Effects blendMode property of an object.
- *
- * @cat     Color
- * @method  blendMode
- *
- * @param   {Object} obj The object to set blendMode of.
- * @param   {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
- *   - `BlendMode.NORMAL`
- *   - `BlendMode.MULTIPLY`
- *   - `BlendMode.SCREEN`
- *   - `BlendMode.OVERLAY`
- *   - `BlendMode.SOFT_LIGHT`
- *   - `BlendMode.HARD_LIGHT`
- *   - `BlendMode.COLOR_DODGE`
- *   - `BlendMode.COLOR_BURN`
- *   - `BlendMode.DARKEN`
- *   - `BlendMode.LIGHTEN`
- *   - `BlendMode.DIFFERENCE`
- *   - `BlendMode.EXCLUSION`
- *   - `BlendMode.HUE`
- *   - `BlendMode.SATURATION`
- *   - `BlendMode.COLOR`
- *   - `BlendMode.LUMINOSITY`
- */
-pub.blendMode = function(obj, blendMode) {
-  checkNull(obj);
-  if (obj.hasOwnProperty("transparencySettings")) {
-    obj.transparencySettings.blendingSettings.blendMode = blendMode;
-  } else {
-    warning("blendMode(), the object " + obj.toString() + " doesn't have a blendMode property");
-  }
-};
-
-/**
- * @description Creates a new RGB / CMYK color and adds it to the document, or gets a color by name from the document. The default color mode is RGB.
- *
- * @cat     Color
- * @method  color
- *
- * @param   {String|Numbers} Get color: the color name. Create new color: GRAY,[name] / R,G,B,[name] / C,M,Y,K,[name]. Name is always optional.
- * @return  {Color} Found or new color
- */
-pub.color = function() {
-  var newCol;
-  var props = {};
-  var a = arguments[0],
-    b = arguments[1],
-    c = arguments[2],
-    d = arguments[3],
-    e = arguments[4];
-  var colorErrorMsg = "color(), wrong parameters. Use:\n"
-      + "GRAY,[name] or \n"
-      + "R,G,B,[name] in colorMode(RGB) or\n"
-      + "C,M,Y,K,[name] in colorMode(CMYK).\n"
-      + "Name is optional.\n"
-      + "NB: In InDesign colors don't have an alpha value, use opacity() to set alpha.";
-
-  if (arguments.length === 1) {
-    // get color by name
-    if (typeof a === "string") {
-      newCol = currentDoc().colors.itemByName(a); // check color
-      if (newCol.isValid) {
-        return newCol;
-      } else {
-        error("color(), a color with the provided name doesn't exist.");
-      }
-    } else if (typeof a === "number") {
-      // GRAY
-      if (currColorMode === pub.RGB) {
-        a = pub.constrain(a, 0, 255);
-        props.model = ColorModel.PROCESS;
-        props.space = ColorSpace.RGB;
-        props.colorValue = [a, a, a];
-        props.name = "R=" + a + " G=" + a + " B=" + a;
-      } else {
-        a = pub.constrain(a, 0, 100);
-        props.model = ColorModel.PROCESS;
-        props.space = ColorSpace.CMYK;
-        props.colorValue = [0, 0, 0, a];
-        props.name = "C=" + 0 + " M=" + 0 + " Y=" + 0 + " K=" + a;
-      }
-    } else {
-      error("color(), wrong type of first parameter.");
-    }
-
-  } else if (arguments.length === 2) {
-    // GRAY + name
-    if (currColorMode === pub.RGB) {
-      a = pub.constrain(a, 0, 255);
-      props.model = ColorModel.PROCESS;
-      props.space = ColorSpace.RGB;
-      props.colorValue = [a, a, a];
-      props.name = b;
-    } else {
-      a = pub.constrain(a, 0, 100);
-      props.model = ColorModel.PROCESS;
-      props.space = ColorSpace.CMYK;
-      props.colorValue = [0, 0, 0, a];
-      props.name = b;
-    }
-
-  } else if (arguments.length === 3) {
-    // R G B
-    if (currColorMode === pub.RGB) {
-      a = pub.constrain(a, 0, 255);
-      b = pub.constrain(b, 0, 255);
-      c = pub.constrain(c, 0, 255);
-      props.model = ColorModel.PROCESS;
-      props.space = ColorSpace.RGB;
-      props.colorValue = [a, b, c];
-      props.name = "R=" + a + " G=" + b + " B=" + c;
-    } else {
-      error(colorErrorMsg);
-    }
-
-
-  } else if (arguments.length === 4 && typeof d === "string") {
-    // R G B + name
-    if (currColorMode === pub.RGB) {
-      a = pub.constrain(a, 0, 255);
-      b = pub.constrain(b, 0, 255);
-      c = pub.constrain(c, 0, 255);
-      props.model = ColorModel.PROCESS;
-      props.space = ColorSpace.RGB;
-      props.colorValue = [a, b, c];
-      props.name = d;
-    } else {
-      error(colorErrorMsg);
-    }
-
-  } else if (arguments.length === 4 && typeof d === "number") {
-    // C M Y K
-    if (currColorMode === pub.CMYK) {
-      a = pub.constrain(a, 0, 100);
-      b = pub.constrain(b, 0, 100);
-      c = pub.constrain(c, 0, 100);
-      d = pub.constrain(d, 0, 100);
-      props.model = ColorModel.PROCESS;
-      props.space = ColorSpace.CMYK;
-      props.colorValue = [a, b, c, d];
-      props.name = "C=" + a + " M=" + b + " Y=" + c + " K=" + d;
-    } else {
-      error(colorErrorMsg);
-    }
-
-  } else if (arguments.length === 5 && typeof e === "string" && currColorMode === pub.CMYK) {
-    // C M Y K + name
-    a = pub.constrain(a, 0, 100);
-    b = pub.constrain(b, 0, 100);
-    c = pub.constrain(c, 0, 100);
-    d = pub.constrain(d, 0, 100);
-    props.model = ColorModel.PROCESS;
-    props.space = ColorSpace.CMYK;
-    props.colorValue = [a, b, c, d];
-    props.name = e;
-
-  } else {
-    error(colorErrorMsg);
   }
 
-  // check whether color was already created and added to colors,
-  // keeps the document clean ...
-  newCol = currentDoc().colors.itemByName(props.name);
-  if (!newCol.isValid) {
-    newCol = currentDoc().colors.add();
-  }
-  newCol.properties = props;
-  return newCol;
-};
+  if(settings.showProps) {
+    var propArray, value, usePropList;
 
-/**
- * @description Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
- *
- * @cat     Color
- * @method  colorMode
- *
- * @param   {Number} colorMode RGB or CMYK.
- */
-pub.colorMode = function(colorMode) {
-  checkNull(colorMode);
-  if (arguments.length === 0) {
-    return currColorMode;
-  }
-  if (colorMode === pub.RGB || colorMode === pub.CMYK) {
-    currColorMode = colorMode;
-  } else {
-    error("colorMode(), unsupported colormode, use: RGB or CMYK");
-  }
-};
-
-/**
- * @description Sets the color or gradient used to fill shapes.
- *
- * @cat     Color
- * @method  fill
- *
- * @param   {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
- * @param   {String} [name] If created with numbers, a custom swatch name can be given.
- */
-pub.fill = function (fillColor) {
-
-  checkNull(fillColor);
-  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
-    currFillColor = fillColor;
-  } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currFillColor = pub.swatch(arguments[0]);
-      }else{
-        currFillColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currFillColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    if(level === 0 && settings.propList.length > 0 && settings.propList.constructor.name === "Array") {
+      usePropList = true;
+      propArray = settings.propList.reverse();
+    } else if (obj.constructor.name === "Array") {
+      // correct sorting for Array number properties (0, 1, 2 etc.)
+      propArray = obj.reflect.properties.sort(function(a, b) {return a - b}).reverse();
     } else {
-      error("fill(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
+      propArray = obj.reflect.properties.sort().reverse();
     }
-  }
-};
 
-/**
- * @description Sets the tint of the color used to fill shapes.
- *
- * @cat     Color
- * @method  fillTint
- *
- * @param   {Number} tint Number from 0 to 100
- */
-pub.fillTint = function (tint) {
-  checkNull(tint);
-  if (typeof tint === "string" || typeof tint === "number") {
-    currFillTint = tint;
-  } else {
-    error("fillTint(), unsupported type. Please make sure the fillTint is a number or string");
-  }
-};
+    if(propArray.length > 1 || usePropList) {
+      output += "\n" + indent + "|";
 
-/**
- * @description Creates a new gradient and adds it to the document, or gets a gradient by name from the document.
- * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions range from 0 to 100. All parameter options allow for an additional name parameter at the end to name the new gradient. If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
- *
- * @cat     Color
- * @method  gradient
- *
- * @param   {Color|Array|String} c1 First color of the gradient. Alternatively: Array of colors/gradients or name of gradient to get.
- * @param   {Color|Array|String} c2 Second color of the gradient. Alternatively: Array of gradient stop positions (if first parameter is an array of colors).
- * @param   {String} [name] Optional name of the gradient.
- * @return  {Gradient} Found or new gradient
- */
-pub.gradient = function() {
-  var newGrad;
-  // var props = {};
-  var a = arguments[0],
-    b = arguments[1],
-    c = arguments[2];
-  var gradientErrorMsg = "gradient(), wrong parameters. Use:\n"
-      + "c1,c2,[name] or\n"
-      + "arrayOfColors,[name] or\n"
-      + "arrayOfColors,arrayOfGradientStops,[name] or\n"
-      + "gradientName";
-
-  if (typeof a === "string" && arguments.length === 1) {
-    // get gradient by name
-    newGrad = currentDoc().gradients.itemByName(a);
-    if (newGrad.isValid) {
-      return newGrad;
-    } else {
-      error("gradient(), a gradient with the provided name doesn't exist.");
-    }
-  } else if (a instanceof Color && b instanceof Color && (typeof c === "string" || arguments.length === 2)) {
-    // c1 and c2
-    if (typeof c === "string") {
-      if(currentDoc().colors.itemByName(c).isValid) {
-        error("gradient(), \"" + c + "\" already exists as a color. Use another name for the gradient.");
-      }
-      if(currentDoc().gradients.itemByName(c).isValid) {
-        currentDoc().gradients.itemByName(c).remove();
-        warning("gradient(), a gradient named \"" + c + "\" already existed. The old gradient is replaced by a new one.");
-      }
-      newGrad = currentDoc().gradients.add({name: c});
-    } else {
-      newGrad = currentDoc().gradients.add();
-    }
-    newGrad.gradientStops[0].stopColor = a;
-    newGrad.gradientStops[1].stopColor = b;
-    if(currGradientMode === pub.LINEAR) {
-      newGrad.type = GradientType.LINEAR;
-    } else {
-      newGrad.type = GradientType.RADIAL;
-    }
-    return newGrad;
-  } else if (a instanceof Array) {
-    // array of colors
-    var customStopLocations = false;
-    if(arguments.length > 3) {
-      error(gradientErrorMsg);
-    }
-    if(arguments.length > 1 && !(b instanceof Array || typeof b === "string")) {
-      error(gradientErrorMsg);
-    }
-    if(arguments.length === 3 && !(typeof c === "string")) {
-      error(gradientErrorMsg);
-    }
-    if(arguments.length > 1 && b instanceof Array) {
-      customStopLocations = true;
-    }
-    if(customStopLocations && !(a.length === b.length)) {
-      error("gradient(), arrayOfColors and arrayOfGradientStops need to have the same length.");
-    }
-    var z = arguments[arguments.length - 1];
-    if (typeof z === "string") {
-      if(currentDoc().colors.itemByName(z).isValid) {
-        error("gradient(), \"" + z + "\" already exists as a color. Use another name for the gradient.");
-      }
-      if(currentDoc().gradients.itemByName(z).isValid) {
-        currentDoc().gradients.itemByName(z).remove();
-        warning("gradient(), a gradient named \"" + z + "\" already existed. The old gradient is replaced by a new one.");
-      }
-      newGrad = currentDoc().gradients.add({name: z});
-    } else {
-      newGrad = currentDoc().gradients.add();
-    }
-    for (var i = 0; i < a.length; i++) {
-      if(!(a[i] instanceof Color || a[i] instanceof Swatch)) {
-        error("gradient(), element #" + (i + 1) + " of the given arrayOfColors is not a color or swatch.");
-      }
-      if(i > newGrad.gradientStops.length - 1) {
-        newGrad.gradientStops.add();
-      }
-      newGrad.gradientStops[i].stopColor = a[i];
-      if(customStopLocations) {
-        if(!(typeof b[i] === "number")) {
-          error("gradient(), element #" + (i + 1) + " of the given arrayOfGradientStops is not a number.");
+      for (var i = propArray.length - 1; i >= 0; i--) {
+        if(propArray[i] == "__proto__" || propArray[i] == "__count__" || propArray[i] == "__class__"|| propArray[i] == "reflect") {
+          if(!i) {
+            output += "\n" + indent;
+          }
+          continue;
         }
-        newGrad.gradientStops[i].location = pub.constrain(b[i], 0, 100);
-      } else {
-        newGrad.gradientStops[i].location = pub.map(i, 0, a.length - 1, 0, 100);
-      }
-    }
-    if(currGradientMode === pub.LINEAR) {
-      newGrad.type = GradientType.LINEAR;
-    } else {
-      newGrad.type = GradientType.RADIAL;
-    }
-    return newGrad;
-  } else {
-    error(gradientErrorMsg);
-  }
-};
 
-/**
- * @description Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`.
- *
- * @cat     Color
- * @method  gradientMode
- *
- * @param   {String} gradientMode `LINEAR` or `RADIAL`.
- */
-pub.gradientMode = function(gradientMode) {
-  checkNull(gradientMode);
-  if (arguments.length === 0) {
-    return currGradientMode;
-  }
-  if (gradientMode === pub.LINEAR || gradientMode === pub.RADIAL) {
-    currGradientMode = gradientMode;
-  } else {
-    error("gradientMode(), unsupported gradient mode, use: LINEAR or RADIAL");
-  }
-};
+        if(settings.showValues) {
 
-/**
- * @description Calculates a color or colors between two colors at a specific increment.
- * The `amt` parameter is the amount to interpolate between the two values where 0.0 equals the first color, 0.5 is half-way in between and 1.0 equals the second color. N.B.: Both colors must be either CMYK or RGB.
- *
- * @cat     Color
- * @method  lerpColor
- *
- * @param   {Color} c1 Input color 1.
- * @param   {Color} c2 Input color 2.
- * @param   {Number} amt The amount to interpolate between the two colors.
- * @return  {Color} Interpolated color
- */
-pub.lerpColor = function (c1, c2, amt) {
-  checkNull(c1);
-  checkNull(c2);
-  if ((c1 instanceof Color || c1 instanceof Swatch) &&
-     (c2 instanceof Color || c2 instanceof Swatch) &&
-      typeof amt === "number") {
-    if (c1.space === ColorSpace.CMYK && c2.space === ColorSpace.CMYK) {
-      var C1 = c1.colorValue[0];
-      var M1 = c1.colorValue[1];
-      var Y1 = c1.colorValue[2];
-      var K1 = c1.colorValue[3];
+          try {
+            var propValue = obj[propArray[i]];
+            if (usePropList && !obj.hasOwnProperty(propArray[i]) && propArray[i] != "length") {
+              // in case a non-existing prop is passed via propList
+              // "length" needs special handling as it is not correctly recognized as a property
+              value = ": The inspected item has no such property.";
+            } else if (propValue === null || propValue === undefined) {
+              value = ": " + propValue;
+            } else if (propValue.constructor.name === "Array") {
+              if(propValue.length > 0 && propValue.reflect.properties.length < 3) {
+                propValue = Array.prototype.slice.call(propValue, 0);
+              }
+              value = ": Array (" + propValue.length + ")";
+              if(propValue.length && level < settings.maxLevel - 1) {
+                // recursive inspecting of Array properties
+                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+              }
+            } else if (typeof propValue === "object" && propValue.constructor.name !== "Enumerator"  && propValue.constructor.name !== "Date") {
+              value = ": " + propValue;
+              if(level < settings.maxLevel - 1) {
+                // recursive inspecting of Object properties
+                value += pub.inspect(propValue, settings, level + 1, branchArray, !i);
+              }
+            } else {
+              value = ": " + propValue.toString();
+            }
+          } catch (e) {
+            if(e.number === 30615) {
+              value = ": The property is not applicable in the current state.";
+            } else if (e.number === 55) {
+              value = ": Object does not support the property '" + propArray[i] + "'.";
+            } else {
+              // other InDesign specific error messages
+              value = ": " + e.message;
+            }
+          }
 
-      var C2 = c2.colorValue[0];
-      var M2 = c2.colorValue[1];
-      var Y2 = c2.colorValue[2];
-      var K2 = c2.colorValue[3];
-
-      var COut = Math.round(pub.lerp(C1, C2, amt));
-      var MOut = Math.round(pub.lerp(M1, M2, amt));
-      var YOut = Math.round(pub.lerp(Y1, Y2, amt));
-      var KOut = Math.round(pub.lerp(K1, K2, amt));
-      return pub.color(COut, MOut, YOut, KOut);
-
-    } else if (c1.space === ColorSpace.RGB && c2.space === ColorSpace.RGB) {
-      var R1 = c1.colorValue[0];
-      var G1 = c1.colorValue[1];
-      var B1 = c1.colorValue[2];
-
-      var R2 = c2.colorValue[0];
-      var G2 = c2.colorValue[1];
-      var B2 = c2.colorValue[2];
-
-      var ROut = Math.round(pub.lerp(R1, R2, amt));
-      var GOut = Math.round(pub.lerp(G1, G2, amt));
-      var BOut = Math.round(pub.lerp(B1, B2, amt));
-      return pub.color(ROut, GOut, BOut);
-
-    } else {
-      error("lerpColor(), both colors must be either CMYK or RGB.");
-    }
-  } else {
-    error("lerpColor(), wrong parameters. Use: two colors (of the same type) and a number.");
-  }
-};
-
-/**
- * @description Disables filling geometry. If both `noStroke()` and `noFill()` are called, newly drawn shapes will be invisible.
- *
- * @cat     Color
- * @method  noFill
- */
-pub.noFill = function () {
-  currFillColor = noneSwatchColor;
-};
-
-/**
- * @description Disables drawing the stroke. If both noStroke() and noFill() are called, newly drawn shapes will be invisible.
- *
- * @cat     Color
- * @method  noStroke
- */
-pub.noStroke = function () {
-  currStrokeColor = noneSwatchColor;
-};
-
-/**
- * @description Sets the opacity property of an object.
- *
- * @cat     Color
- * @method  opacity
- *
- * @param   {Object} obj The object to set opacity of.
- * @param   {Number} opacity The opacity value from 0 to 100.
- */
-pub.opacity = function(obj, opacity) {
-  checkNull(obj);
-  if (obj.hasOwnProperty("transparencySettings")) {
-    obj.transparencySettings.blendingSettings.opacity = opacity;
-  } else {
-    warning("opacity(), the object " + obj.toString() + " doesn't have an opacity property");
-  }
-};
-
-/**
- * @description Sets the color or gradient used to draw lines and borders around shapes.
- *
- * @cat     Color
- * @method  stroke
- *
- * @param   {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
- */
-pub.stroke = function (strokeColor) {
-  checkNull(strokeColor);
-  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
-    currStrokeColor = strokeColor;
-  } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currStrokeColor = pub.swatch(arguments[0]);
-      }else{
-        currStrokeColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currStrokeColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-    } else {
-      error("stroke(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
-    }
-  }
-};
-
-/**
- * @description Sets the tint of the color used to draw lines and borders around shapes.
- *
- * @cat     Color
- * @method  strokeTint
- *
- * @param   {Number} tint Number from 0 to 100.
- */
-pub.strokeTint = function (tint) {
-  checkNull(tint);
-  if (typeof tint === "string" || typeof tint === "number") {
-    currStrokeTint = tint;
-  } else {
-    error("strokeTint(), unsupported type. Please make sure the strokeTint parameter is a number or string");
-  }
-};
-
-/**
- * @description Gets a swatch by name.
- *
- * @cat     Color
- * @method  swatch
- *
- * @param   {String} swatchName Returns the swatch color/gradient for a given name by string.
- */
-pub.swatch = function(){
-  var newSwatch;
-  var props = {};
-  if (arguments.length === 1) {
-    var a = arguments[0];
-    if (typeof a === "string") {
-      newSwatch = currentDoc().swatches.itemByName(a);
-      if(newSwatch.isValid){
-          return newSwatch;
-        }else{
-          error("A swatch with the provided name doesn't exist.");
+        } else {
+          value = "";
         }
-    }else{
-      error("swatch() requires a string, the name of an existing swatch.");
+
+        output += "\n" + indent + "|-- " + propArray[i] + value;
+
+
+        if(!i && !branchEnd && level !== 0) {
+          // separation space when a sub-branch ends
+          output += "\n" + indent;
+        }
+      } // end for-loop
+    } // end if(propArray.length > 1 || usePropList)
+  } // end if(settings.showProps)
+
+  if(level === 0 && settings.showMethods) {
+
+    var methodArray = settings.showMethods ? obj.reflect.methods.sort().reverse() : [];
+
+    if(methodArray.length) {
+      output += "\n|" +
+                "\n|   METHODS";
+    }
+
+    for (var i = methodArray.length - 1; i >= 0; i--) {
+      if(methodArray[i].name.charAt(0) === "=") {continue;}
+      output += "\n|-- " + methodArray[i] + "()";
     }
   }
-}
 
-// ----------------------------------------
-// src/includes/typography.js
-// ----------------------------------------
-
-// ----------------------------------------
-// Typography
-// ----------------------------------------
-
-/**
- * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `width` and `height` parameters define a rectangular area.
- *
- * @cat     Typography
- * @method  text
- *
- * @param   {String} txt The text content to set in the text frame.
- * @param   {Number} x x-coordinate of text frame
- * @param   {Number} y y-coordinate of text frame
- * @param   {Number} w width of text frame
- * @param   {Number} h height of text frame
- * @return  {TextFrame} The created text frame instance
- */
-pub.text = function(txt, x, y, w, h) {
-  if (arguments.length !== 5) {
-    error("text(), not enough parameters to draw a text! Use: text(txt, x, y, w, h)");
+  if(level > 0) {
+    // return for recursive calls
+    return output;
   }
-  if (!(isString(txt) || isNumber(txt))) {
-    warning("text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: text(txt, x, y, w, h)");
-  }
+  // print for top level call
+  println(output);
 
-  var textBounds = [];
-  if (currRectMode === pub.CORNER) {
-    textBounds[0] = y;
-    textBounds[1] = x;
-    textBounds[2] = y + h;
-    textBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
-    textBounds[0] = y;
-    textBounds[1] = x;
-    textBounds[2] = h;
-    textBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
-    textBounds[0] = y - (h / 2);
-    textBounds[1] = x - (w / 2);
-    textBounds[2] = y + (h / 2);
-    textBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
-    textBounds[0] = y - h;
-    textBounds[1] = x - w;
-    textBounds[2] = y + h;
-    textBounds[3] = x + w;
-  }
-
-  var textFrame = currentPage().textFrames.add(currentLayer());
-  textFrame.contents = txt.toString();
-  textFrame.geometricBounds = textBounds;
-  textFrame.textFramePreferences.verticalJustification = currYAlign;
-
-  pub.typo(textFrame, {
-    appliedFont: currFont,
-    pointSize: currFontSize,
-    fillColor: currFillColor,
-    justification: currAlign,
-    leading: currLeading,
-    kerningValue: currKerning,
-    tracking: currTracking
-  });
-
-
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
-    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
-  } else {
-    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
-  }
-
-  return textFrame;
-};
-
-// ----------------------------------------
-// Typography/Attributes
-// ----------------------------------------
-
-/**
- * @description Sets the current horizontal and vertical text alignment.
- *
- * @cat     Typography
- * @subcat  Attributes
- * @method  textAlign
- *
- * @param   {String} align The horizontal text alignment to set. Must be one of the InDesign `Justification` enum values:
- * - `Justification.AWAY_FROM_BINDING_SIDE`
- * - `Justification.CENTER_ALIGN`
- * - `Justification.CENTER_JUSTIFIED`
- * - `Justification.FULLY_JUSTIFIED`
- * - `Justification.LEFT_ALIGN`
- * - `Justification.RIGHT_ALIGN`
- * - `Justification.RIGHT_JUSTIFIED`
- * - `Justification.TO_BINDING_SIDE`
- * @param   {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign `VerticalJustification` enum values:
- * - `VerticalJustification.BOTTOM_ALIGN`
- * - `VerticalJustification.CENTER_ALIGN`
- * - `VerticalJustification.JUSTIFY_ALIGN`
- * - `VerticalJustification.TOP_ALIGN`
- */
-pub.textAlign = function(align, yAlign) {
-  currAlign = align;
-  if (arguments.length === 2) currYAlign = yAlign;
 };
 
 /**
- * @description Returns the current font and sets it if argument `fontName` is given.
+ * @description Print numerous information about the current environment to the console.
  *
- * @cat     Typography
- * @subcat  Attributes
- * @method  textFont
- *
- * @param   {String} [fontName] The name of the font to set e.g. Helvetica
- * @param   {String} [fontStyle] The font style e.g. Bold
- * @return  {Font} The current font object
+ * @cat     Environment
+ * @method  printInfo
  */
-pub.textFont = function(fontName, fontStyle) {
+pub.printInfo = function() {
 
-  if (arguments.length === 2) {
-    fontName = fontName + "\t" + fontStyle;
-  } else if (arguments.length === 1) {
-    fontName = fontName + "\tRegular";
-  } else if (arguments.length === 0) {
-    return currFont;
-  } else {
-    error("textFont(), wrong parameters. To set font use: fontName, fontStyle. fontStyle is optional.");
-  }
+  pub.println("###");
+  pub.println("OS: " + $.os);
+  pub.println("ExtendScript Build: " + $.build);
+  pub.println("ExtendScript Version:" + $.version);
+  pub.println("Engine: " + $.engineName);
+  pub.println("memCache: " + $.memCache + " bytes");
+  pub.println("###");
 
-  if(app.fonts.itemByName(fontName).status !== FontStatus.INSTALLED) {
-    warning("textFont(), font \"" + fontName.replace("\t", " ") + "\" not installed. "
-      + "Using current font \"" + currFont.fontFamily + " " + currFont.fontStyleName + "\" instead.");
-  } else {
-    currFont = app.fonts.itemByName(fontName);
-  }
-
-  return currFont;
 };
 
 /**
- * @description Returns the current kerning and sets it if argument `kerning` is given.
+ * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
  *
- * @cat     Typography
- * @subcat  Attributes
- * @method  textKerning
+ * @cat     Environment
+ * @method  projectFolder
  *
- * @param   {Number} [kerning] The value to set.
- * @return  {Number} The current kerning.
+ * @return  {Folder} The folder of the the active document
  */
-pub.textKerning = function(kerning) {
-  if (arguments.length === 1) {
-    currKerning = kerning;
+pub.projectFolder = function() {
+  if(!currentDoc().saved) {
+    error("The current document must be saved before its project directory can be accessed.");
   }
-  return currKerning;
+  return currentDoc().filePath;
 };
 
 /**
- * @description Returns the spacing between lines of text in units of points and sets it if argument `leading` is given.
+ * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
  *
- * @cat     Typography
- * @subcat  Attributes
- * @method  textLeading
+ * @cat     Environment
+ * @method  size
  *
- * @param   {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum value `Leading.AUTO`.
- * @return  {Number|String} The current leading.
+ * @param   {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
+ * @param   {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
+ * @return  {Object} Object containing the current `width` and `height` of the document.
+ *
+ * @example <caption>Sets the document size to 70 x 100 units</caption>
+ * size(70, 100);
+ *
+ * @example <caption>Sets the document size to 70 x 70</caption>
+ * size(70);
+ *
+ * @example <caption>Sets the document size to A4, keeps the current orientation in place</caption>
+ * size("A4");
+ *
+ * @example <caption>Sets the document size to A4, set the orientation to landscape</caption>
+ * size("A4", LANDSCAPE);
  */
-pub.textLeading = function(leading) {
-  if (arguments.length === 1) {
-    currLeading = leading;
-  }
-  return currLeading;
-};
-
-/**
- * @description Returns the current font size in points and sets it if argument `pointSize` is given.
- *
- * @cat     Typography
- * @subcat  Attributes
- * @method  textSize
- *
- * @param   {Number} [pointSize] The size in points to set.
- * @return  {Number} The current point size.
- */
-pub.textSize = function(pointSize) {
-  if (arguments.length === 1) {
-    currFontSize = pointSize;
-  }
-  return currFontSize;
-};
-
-/**
- * @description Returns the current tracking and sets it if argument `tracking` is given.
- *
- * @cat     Typography
- * @subcat  Attributes
- * @method  textTracking
- *
- * @param   {Number} [tracking] The value to set.
- * @return  {Number} The current tracking.
- */
-pub.textTracking = function(tracking) {
-  if (arguments.length === 1) {
-    currTracking = tracking;
-  }
-  return currTracking;
-};
-
-/**
- * @description Sets text properties to the given item. If the item is not an instance the text property can be set to, the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
- *
- * If no value is given and the given property is a string, the function acts as a getter and returns the corresponding value(s) in an array. This can either be an array containing the value of the concrete item (e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).
- *
- * @cat     Typography
- * @subcat  Attributes
- * @method  typo
- *
- * @param   {Document|Spread|Page|Layer|Story|TextFrame|Text} item The object to apply the property to.
- * @param   {String|Object} property The text property name or an object of key/value property/value pairs. If property is a string and no value is given, the function acts as getter.
- * @param   {String|Number|Object} [value] The value to apply to the property.
- * @return  {String[]|Number[]|Object[]} The property value(s) if the function acts as getter or the items the property was assigned to.
- */
-pub.typo = function(item, property, value) {
-  var result = [],
-    actsAsGetter = typeof property === "string" && (value === undefined || value === null),
-    getOrSetProperties = function(textItem) {
-      if (actsAsGetter) {
-        result.push(textItem[property]);
-      } else {
-        setProperties(textItem);
-      }
-    },
-    setProperties = function(textItem) {
-      if (typeof property === "string") {
-        result.push(textItem);
-        setProperty(textItem, property, value);
-      } else if (typeof property === "object") {
-        result.push(textItem);
-        for (var prop in property) {
-          setProperty(textItem, prop, property[prop]);
-        }
-      }
-    },
-    setProperty = function(textItem, prop, val) {
-      textItem[prop] = val;
-    };
-
-  if(typeof item === "string") error("typo() cannot work on strings. Please pass a Text object to modify.");
-
-  if(!isValid(item)) {
-    warning("typo(), invalid object passed");
+pub.size = function(widthOrPageSize, heightOrOrientation) {
+  if(app.documents.length === 0) {
+    // there are no documents
+    warning("size()", "You have no open document.");
     return;
   }
-
-  if (item instanceof Document ||
-      item instanceof Spread ||
-      item instanceof Page ||
-      item instanceof Layer) {
-    forEach(item.textFrames, function(textFrame) {
-      pub.typo(textFrame, property, value);
-    });
-  } else if (item instanceof Story ||
-             item instanceof TextFrame) {
-    var paras = item.paragraphs;
-    // loop backwards to prevent invalid object reference error when
-    // start of para is overflown in "invisible" textFrame area after
-    // applying prop to previous para(s)
-    for (var i = paras.length - 1; i >= 0; i--) {
-      getOrSetProperties(paras[i]);
-    }
-  } else if (isText(item)) {
-    getOrSetProperties(item);
-  }
-  return result;
-};
-
-// ----------------------------------------
-// Typography/Styles
-// ----------------------------------------
-
-/**
- * @description Applies a character style to the given text object, text frame or story. The character style can be given as name or as character style instance.
- *
- * @cat     Typography
- * @subcat  Styles
- * @method  applyCharacterStyle
- *
- * @param   {TextFrame|TextObject|Story} text The text frame, text object or story to apply the style to.
- * @param   {CharacterStyle|String} style A character style instance or the name of the character style to apply.
- * @return  {Text} The text that the style was applied to.
- */
-
-pub.applyCharacterStyle = function(text, style) {
-
-  if(isString(style)) {
-    var name = style;
-    style = findInStylesByName(currentDoc().allCharacterStyles, name);
-    if(!style) {
-      error("applyCharacterStyle(), a character style named \"" + name + "\" does not exist.");
-    }
+  if (arguments.length === 0) {
+    // no arguments given
+    // return the current values
+    return {width: pub.width, height: pub.height};
   }
 
-  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
-    error("applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
-  }
+  var doc = currentDoc();
 
-  if(text instanceof TextFrame) {
-    text = text.characters.everyItem();
-  }
-
-  text.appliedCharacterStyle = style;
-
-  return text;
-};
-
-/**
- * @description Applies a paragraph style to the given text object, text frame or story. The paragraph style can be given as name or as paragraph style instance.
- *
- * @cat     Typography
- * @subcat  Styles
- * @method  applyParagraphStyle
- *
- * @param   {TextFrame|TextObject|Story} text The text frame, text object or story to apply the style to.
- * @param   {ParagraphStyle|String} style A paragraph style instance or the name of the paragraph style to apply.
- * @return  {Text} The text that the style was applied to.
- */
-
-pub.applyParagraphStyle = function(text, style) {
-
-  if(isString(style)) {
-    var name = style;
-    style = findInStylesByName(currentDoc().allParagraphStyles, name);
-    if(!style) {
-      error("applyParagraphStyle(), a paragraph style named \"" + name + "\" does not exist.");
-    }
-  }
-
-  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
-    error("applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
-  }
-
-  if(text instanceof TextFrame) {
-    text = text.paragraphs.everyItem();
-  }
-
-  text.appliedParagraphStyle = style;
-
-  return text;
-};
-
-/**
- * @description Returns the character style of a given text object or the character style with the given name. If a character style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the character style's properties.
- *
- * @cat     Typography
- * @subcat  Styles
- * @method  characterStyle
- *
- * @param   {Text|String} textOrName A text object whose style to return or the name of the character style to return.
- * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
- * @return  {CharacterStyle} The character style instance.
- */
-pub.characterStyle = function(textOrName, props) {
-  var styleErrorMsg = "characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
-
-  if(!arguments || arguments.length > 2) {
-    error(styleErrorMsg);
-  }
-
-  var style;
-  if(isText(textOrName)) {
-    // text object is given
-    style = textOrName.appliedCharacterStyle;
-  } else if(isString(textOrName)) {
-    // name is given
-    style = findInStylesByName(currentDoc().allCharacterStyles, textOrName);
-    if(!style) {
-      style = currentDoc().characterStyles.add({name: textOrName});
-    }
-  } else {
-    error(styleErrorMsg);
-  }
-
-  if(props) {
+  if(isString(widthOrPageSize)) {
     try {
-      style.properties = props;
+      doc.documentPreferences.pageSize = widthOrPageSize;
     } catch (e) {
-      error("characterStyle(), wrong props parameter. Use object of property name/value pairs.");
+      error("size(), could not find a page size preset named \"" + widthOrPageSize + "\".");
     }
+    if(heightOrOrientation === pub.PORTRAIT || heightOrOrientation === pub.LANDSCAPE) {
+      doc.documentPreferences.pageOrientation = heightOrOrientation;
+    }
+    pub.width = $.global.width = doc.documentPreferences.pageWidth;
+    pub.height = $.global.height = doc.documentPreferences.pageHeight;
+    return {width: pub.width, height: pub.height};
+  } else if(arguments.length === 1) {
+    // only one argument set the first to the secound
+    heightOrOrientation = widthOrPageSize;
   }
+  // set the document's pageHeight and pageWidth
+  doc.properties = {
+    documentPreferences: {
+      pageHeight: heightOrOrientation,
+      pageWidth: widthOrPageSize
+    }
+  };
+  // set height and width
+  pub.width = $.global.width = widthOrPageSize;
+  pub.height = $.global.height = heightOrOrientation;
 
-  return style;
+  return {width: pub.width, height: pub.height};
+
 };
 
 /**
- * @description Returns the paragraph style of a given text object or the paragraph style with the given name. If a paragraph style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the paragraph style's properties.
+ * @description System variable which stores the width of the current page.
  *
- * @cat     Typography
- * @subcat  Styles
- * @method  paragraphStyle
- *
- * @param   {Text|String} textOrName A text object whose style to return or the name of the paragraph style to return.
- * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
- * @return  {ParagraphStyle} The paragraph style instance.
+ * @cat      Environment
+ * @property {Number} width Width of the current page.
  */
-pub.paragraphStyle = function(textOrName, props) {
-  var styleErrorMsg = "paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
-
-  if(!arguments || arguments.length > 2) {
-    error(styleErrorMsg);
-  }
-
-  var style;
-  if(isText(textOrName)) {
-    // text object is given
-    style = textOrName.appliedParagraphStyle;
-  } else if(isString(textOrName)) {
-    // name is given
-    style = findInStylesByName(currentDoc().allParagraphStyles, textOrName);
-    if(!style) {
-      style = currentDoc().paragraphStyles.add({name: textOrName});
-    }
-  } else {
-    error(styleErrorMsg);
-  }
-
-  if(props) {
-    try {
-      style.properties = props;
-    } catch (e) {
-      error("paragraphStyle(), wrong props parameter. Use object of property name/value pairs.");
-    }
-  }
-
-  return style;
-};
+pub.width = null;
 
 // ----------------------------------------
-// Typography/Constants
+// Environment/Constants
 // ----------------------------------------
 
 /**
- * @description Returns a Lorem ipsum string that can be used for testing.
+ * @description The name of the current script.
  *
- * @cat      Typography
+ * @cat      Environment
  * @subcat   Constants
- * @property LOREM {String}
+ * @property SCRIPTNAME {String}
  */
-pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+var stackArray = $.stack.
+            replace(/[\n]toString\(\)[\n]$/,'').
+            replace(/[\[\]']+/g,'').
+            split(/[\n]/);
+pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
+
+/**
+ * @description The basil version
+ *
+ * @cat      Environment
+ * @subcat   Constants
+ * @property VERSION {String}
+ */
+pub.VERSION = "1.1.0";
 
 // ----------------------------------------
 // src/includes/image.js
@@ -7231,6 +6183,600 @@ var initExportFile = function(file) {
 };
 
 // ----------------------------------------
+// src/includes/shape.js
+// ----------------------------------------
+
+// ----------------------------------------
+// Shape/Attributes
+// ----------------------------------------
+
+/**
+ * @description The origin of new ellipses is modified by the `ellipseMode()` function. The default configuration is `ellipseMode(CENTER)`, which specifies the location of the ellipse as the center of the shape. The `RADIUS` mode is the same, but the `w` and `h` parameters to `ellipse()` specify the radius of the ellipse, rather than the diameter. The `CORNER` mode draws the shape from the upper-left corner of its bounding box. The `CORNERS` mode uses the four parameters to `ellipse()` to set two opposing corners of the ellipse's bounding box.
+ *
+ * @cat     Shape
+ * @subcat  Attributes
+ * @method  ellipseMode
+ *
+ * @param   {String} mode The ellipse mode to switch to: either `CENTER`, `RADIUS`, `CORNER`, or `CORNERS`.
+ */
+pub.ellipseMode = function (mode) {
+  if (arguments.length === 0) return currEllipseMode;
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
+    currEllipseMode = mode;
+    return currEllipseMode;
+  } else {
+    error("ellipseMode(), unsupported ellipseMode. Use: CENTER, RADIUS, CORNER, CORNERS.");
+  }
+};
+
+/**
+ * @description Modifies the location from which rectangles or text frames draw. The default mode is `rectMode(CORNER)`, which specifies the location to be the upper left corner of the shape and uses the `w` and `h` parameters to specify the width and height. The syntax `rectMode(CORNERS)` uses the `x` and `y` parameters of `rect()` or `text()` to set the location of one corner and uses the `w` and `h` parameters to set the opposite corner. The syntax `rectMode(CENTER)` draws the shape from its center point and uses the `w` and `h` parameters to specify the shape's width and height. The syntax `rectMode(RADIUS)` draws the shape from its center point and uses the `w` and `h` parameters to specify half of the shape's width and height.
+ *
+ * @cat     Shape
+ * @subcat  Attributes
+ * @method  rectMode
+ *
+ * @param   {String} mode The rectMode to switch to: either `CORNER`, `CORNERS`, `CENTER`, or `RADIUS`.
+ */
+pub.rectMode = function (mode) {
+  if (arguments.length === 0) return currRectMode;
+  if (mode === pub.CORNER || mode === pub.CORNERS || mode === pub.CENTER || mode === pub.RADIUS) {
+    currRectMode = mode;
+    return currRectMode;
+  } else {
+    error("rectMode(), unsupported rectMode. Use: CORNER, CORNERS, CENTER, RADIUS.");
+  }
+};
+
+/**
+ * @description Sets the width of the stroke used for lines and the border around shapes.
+ *
+ * @cat     Shape
+ * @subcat  Attributes
+ * @method  strokeWeight
+ *
+ * @param   {Number} weight The width of the stroke in points.
+ */
+pub.strokeWeight = function (weight) {
+  if (typeof weight === "string" || typeof weight === "number") {
+    currStrokeWeight = weight;
+  } else {
+    error("strokeWeight(), not supported type. Please make sure the strokeweight is a number or string");
+  }
+};
+
+// ----------------------------------------
+// Shape/Primitives
+// ----------------------------------------
+
+/**
+ * @description The `arc()` function draws an arc. Arcs are drawn along the outer edge of an ellipse defined by the `x`, `y`, `width` and `height` parameters. The origin or the arc's ellipse may be changed with the `ellipseMode()` function. The start and stop parameters specify the angles at which to draw the arc.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  arc
+ *
+ * @param   {Number} cx X-coordinate of the arc's center.
+ * @param   {Number} cy Y-coordinate of the arc's center.
+ * @param   {Number} w Width of the arc's ellipse.
+ * @param   {Number} h Height of the arc's ellipse.
+ * @param   {Number} startAngle Starting angle of the arc in radians.
+ * @param   {Number} endAngle Ending angle of the arc in radians.
+ * @param   {String} [mode] Mode to define the rendering technique of the arc: `OPEN` (default), `CHORD`, or `PIE`.
+ * @return  {GraphicLine|Polygon} The resulting GraphicLine or Polygon object (in InDesign Scripting terms the corresponding type is GraphicLine or Polygon, not Arc).
+ */
+pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
+  if (w <= 0 || endAngle < startAngle) {
+    return false;
+  }
+  if (arguments.length < 6) error("arc(), not enough parameters to draw an arc! Use: x, y, w, h, startAngle, endAngle");
+
+  var o = pub.radians(1); // add 1 degree to ensure angles of 360 degrees are drawn
+  startAngle %= pub.TWO_PI + o;
+  endAngle %= pub.TWO_PI + o;
+  w /= 2;
+  h /= 2;
+
+  if (currEllipseMode === pub.CORNER) {
+    cx = (cx - w);
+    cy = (cy + h);
+  }
+  else if (currEllipseMode === pub.CORNERS) {
+    // cx = (cx-w);
+    // cy = (cy-h);
+    // w -= cx;
+    // h -= cy;
+  }
+  else if (currEllipseMode === pub.RADIUS) {
+    w *= 2;
+    h *= 2;
+  }
+
+  var delta = pub.abs(endAngle - startAngle);
+  var direction = (startAngle < endAngle) ? 1 : -1;
+  var thetaStart = startAngle;
+
+  if(mode == pub.CHORD) {
+    pub.beginShape(pub.CLOSE);
+  }
+  else if(mode == pub.PIE) {
+    pub.beginShape(pub.CLOSE);
+    pub.vertex(cx, cy);
+  }
+  else {
+    pub.beginShape();
+  }
+  for (var theta = pub.min(pub.TWO_PI, delta); theta > pub.EPSILON;) {
+    var thetaEnd = thetaStart + direction * pub.min(theta, pub.HALF_PI);
+    var points = calculateEllipticalArc(w, h, thetaEnd, thetaStart);
+
+    pub.vertex(
+      cx + points.startx,
+      cy + points.starty,
+      cx + points.startx,
+      cy + points.starty,
+      cx + points.handle1x,
+      cy + points.handle1y
+    );
+    pub.vertex(
+      cx + points.endx,
+      cy + points.endy,
+      cx + points.handle2x,
+      cy + points.handle2y,
+      cx + points.endx,
+      cy + points.endy
+    );
+
+    theta -= pub.abs(thetaEnd - thetaStart);
+    thetaStart = thetaEnd;
+  }
+  return pub.endShape();
+};
+
+/**
+ * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  ellipse
+ *
+ * @param   {Number} x X-coordinate of the ellipse.
+ * @param   {Number} y Y-coordinate of the ellipse.
+ * @param   {Number} w Width of the ellipse.
+ * @param   {Number} h Height of the ellipse.
+ * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
+ */
+pub.ellipse = function(x, y, w, h) {
+  if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
+  var ellipseBounds = [];
+  if (currEllipseMode === pub.CORNER) {
+    ellipseBounds[0] = y;
+    ellipseBounds[1] = x;
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
+  } else if (currEllipseMode === pub.CORNERS) {
+    ellipseBounds[0] = y;
+    ellipseBounds[1] = x;
+    ellipseBounds[2] = h;
+    ellipseBounds[3] = w;
+  } else if (currEllipseMode === pub.CENTER) {
+    ellipseBounds[0] = y - (h / 2);
+    ellipseBounds[1] = x - (w / 2);
+    ellipseBounds[2] = y + (h / 2);
+    ellipseBounds[3] = x + (w / 2);
+  } else if (currEllipseMode === pub.RADIUS) {
+    ellipseBounds[0] = y - h;
+    ellipseBounds[1] = x - w;
+    ellipseBounds[2] = y + h;
+    ellipseBounds[3] = x + w;
+  }
+
+  if(w === 0 || h === 0)
+    {return false;}
+
+  var ovals = currentPage().ovals;
+  var newOval = ovals.add(currentLayer());
+
+  newOval.strokeWeight = currStrokeWeight;
+  newOval.strokeTint = currStrokeTint;
+  newOval.fillColor = currFillColor;
+  newOval.fillTint = currFillTint;
+  newOval.strokeColor = currStrokeColor;
+  newOval.geometricBounds = ellipseBounds;
+
+  if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
+    newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                       AnchorPoint.CENTER_ANCHOR,
+                       currMatrix.adobeMatrix(x, y));
+  } else {
+    newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.TOP_LEFT_ANCHOR,
+                   currMatrix.adobeMatrix(x, y));
+  }
+  return newOval;
+};
+
+/**
+ * @description Draws a line (a direct path between two points) to the page.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  line
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @return  {GraphicLine} New GraphicLine.
+ *
+ * @example
+ * var vec1 = new Vector(x1, y1);
+ * var vec2 = new Vector(x2, y2);
+ * line( vec1, vec2 );
+ */
+pub.line = function(x1, y1, x2, y2) {
+  if (arguments.length !== 4) {
+    error("line(), not enough parameters to draw a line! Use: x1, y1, x2, y2");
+  }
+  var lines = currentPage().graphicLines;
+  var newLine = lines.add(currentLayer());
+  newLine.strokeWeight = currStrokeWeight;
+  newLine.strokeTint = currStrokeTint;
+  newLine.fillColor = currFillColor;
+  newLine.fillTint = currFillTint;
+  newLine.strokeColor = currStrokeColor;
+  newLine.paths.item(0).entirePath = [[x1, y1], [x2, y2]];
+  newLine.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.CENTER_ANCHOR,
+                   currMatrix.adobeMatrix( (x1 + x2) / 2, (y1 + y2) / 2 ));
+  return newLine;
+};
+
+/**
+ * @description Draws a rectangle on the page.
+ * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the `rectMode()` function.
+ * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  rect
+ *
+ * @param   {Number} x X-coordinate of the rectangle.
+ * @param   {Number} y Y-coordinate of the rectangle.
+ * @param   {Number} w Width of the rectangle.
+ * @param   {Number} h Height of the rectangle.
+ * @param   {Number} [tl] Radius of top left corner or radius of all 4 corners (optional).
+ * @param   {Number} [tr] Radius of top right corner (optional).
+ * @param   {Number} [br] Radius of bottom right corner (optional).
+ * @param   {Number} [bl] Radius of bottom left corner (optional).
+ * @return  {Rectangle} The rectangle that was created.
+ */
+pub.rect = function(x, y, w, h, tl, tr, br, bl) {
+  if (w === 0 || h === 0) {
+    // InDesign doesn't draw a rectangle if width or height are set to 0
+    return false;
+  }
+  if (arguments.length < 4) error("rect(), not enough parameters to draw a rect! Use: x, y, w, h");
+
+  var rectBounds = [];
+  if (currRectMode === pub.CORNER) {
+    rectBounds[0] = y;
+    rectBounds[1] = x;
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
+  } else if (currRectMode === pub.CORNERS) {
+    rectBounds[0] = y;
+    rectBounds[1] = x;
+    rectBounds[2] = h;
+    rectBounds[3] = w;
+  } else if (currRectMode === pub.CENTER) {
+    rectBounds[0] = y - (h / 2);
+    rectBounds[1] = x - (w / 2);
+    rectBounds[2] = y + (h / 2);
+    rectBounds[3] = x + (w / 2);
+  } else if (currRectMode === pub.RADIUS) {
+    rectBounds[0] = y - h;
+    rectBounds[1] = x - w;
+    rectBounds[2] = y + h;
+    rectBounds[3] = x + w;
+  }
+
+  var newRect = currentPage().rectangles.add(currentLayer());
+  newRect.geometricBounds = rectBounds;
+  newRect.strokeWeight = currStrokeWeight;
+  newRect.strokeTint = currStrokeTint;
+  newRect.fillColor = currFillColor;
+  newRect.fillTint = currFillTint;
+  newRect.strokeColor = currStrokeColor;
+
+  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                       AnchorPoint.CENTER_ANCHOR,
+                       currMatrix.adobeMatrix(x, y));
+  } else {
+    newRect.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.TOP_LEFT_ANCHOR,
+                   currMatrix.adobeMatrix(x, y));
+  }
+
+  if(arguments.length > 4) {
+    for(var i = 4; i < arguments.length;i++){
+      if(arguments[i] < 0 ){
+        error("rect(), needs positive values as arguments for the rounded corners.");
+      }
+    }
+    newRect.topLeftCornerOption = newRect.topRightCornerOption = newRect.bottomRightCornerOption = newRect.bottomLeftCornerOption = CornerOptions.ROUNDED_CORNER;
+    if(arguments.length === 8) {
+      newRect.topLeftCornerRadius = tl;
+      newRect.topRightCornerRadius = tr;
+      newRect.bottomRightCornerRadius = br;
+      newRect.bottomLeftCornerRadius = bl;
+    } else {
+      newRect.topLeftCornerRadius = newRect.topRightCornerRadius = newRect.bottomRightCornerRadius = newRect.bottomLeftCornerRadius = tl;
+    }
+  }
+  return newRect;
+};
+
+// ----------------------------------------
+// Shape/Vertex
+// ----------------------------------------
+
+/**
+ * @description `addPath()` is used to create multi component paths. Call `addPath()` to add the vertices drawn so far to a single path. New vertices will then end up in a new path and `endShape()` will return a multi path object. All component paths will account for the setting (see `CLOSE`) given in `beginShape(shapeMode)`.
+ *
+ * @cat     Shape
+ * @subcat  Vertex
+ * @method  addPath
+ */
+pub.addPath = function() {
+  doAddPath();
+  currPathPointer++;
+};
+
+/**
+ * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`. The shapeMode parameter allows to close the shape (to connect the beginning and the end).
+ *
+ * @cat     Shape
+ * @subcat  Vertex
+ * @method  beginShape
+ *
+ * @param   {String} shapeMode Set to `CLOSE` if the new path should be auto-closed.
+ */
+pub.beginShape = function(shapeMode) {
+  currVertexPoints = [];
+  currPathPointer = 0;
+  currPolygon = null;
+  if(typeof shapeMode != null) {
+    currShapeMode = shapeMode;
+  } else {
+    currShapeMode = null;
+  }
+};
+
+/**
+ * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`.
+ *
+ * @cat     Shape
+ * @subcat  Vertex
+ * @method  endShape
+ *
+ * @return  {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
+ */
+pub.endShape = function() {
+  doAddPath();
+  currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.TOP_LEFT_ANCHOR,
+                   currMatrix.adobeMatrix(currPolygon.geometricBounds[1], currPolygon.geometricBounds[0]));
+  return currPolygon;
+};
+
+/**
+ * @description Shapes are constructed by connecting a series of vertices. `vertex()` is used to specify the vertex coordinates of lines and polygons. It is used exclusively between the `beginShape()` and `endShape()` functions.
+ *
+ * Use either `vertex(x, y)` for drawing straight corners or `vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)` for drawing bezier shapes. You can also mix the two approaches.
+ *
+ * @cat     Shape
+ * @subcat  Vertex
+ * @method  vertex
+ *
+ * @param   {Number} x X-coordinate of the vertex.
+ * @param   {Number} y Y-coordinate of the vertex.
+ * @param   {Number} [xLeftHandle] X-coordinate of the left-direction point.
+ * @param   {Number} [yLeftHandle] Y-coordinate of the left-direction point.
+ * @param   {Number} [xRightHandle] X-coordinate of the right-direction point.
+ * @param   {Number} [yRightHandle] Y-coordinate of the right-direction point.
+ */
+pub.vertex = function() {
+  if (isArray(currVertexPoints)) {
+    if (arguments.length === 2) {
+      currVertexPoints.push([arguments[0], arguments[1]]);
+    } else if (arguments.length === 6) {
+      // [[xL1, YL1], [x1, y1], [xR1, yR1]]
+      currVertexPoints.push([[arguments[2], arguments[3]],
+                              [arguments[0], arguments[1]],
+                              [arguments[4], arguments[5]]]);
+    } else {
+      error("vertex(), wrong argument count: Please use either vertex(x, y) or vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)!");
+    }
+  } else {
+    notCalledBeginShapeError();
+  }
+};
+
+// ----------------------------------------
+// Shape Private
+// ----------------------------------------
+
+function addPolygon() {
+  if (currShapeMode === pub.CLOSE) {
+    currPolygon = currentPage().polygons.add(currentLayer());
+  } else {
+    currPolygon = currentPage().graphicLines.add(currentLayer());
+  }
+
+  currPolygon.strokeWeight = currStrokeWeight;
+  currPolygon.strokeTint = currStrokeTint;
+  currPolygon.fillColor = currFillColor;
+  currPolygon.fillTint = currFillTint;
+  currPolygon.strokeColor = currStrokeColor;
+}
+
+/*
+ * Cubic bezier approximation of a eliptical arc
+ *
+ * intial source code: Golan Levin golan@flong.com
+ * http://www.flong.com/blog/2009/bezier-approximation-of-a-circular-arc-in-processing/
+ *
+ * The solution is taken from this PDF by Richard DeVeneza:
+ * http://www.tinaja.com/glib/bezcirc2.pdf linked from this excellent site by
+ * Don Lancaster: http://www.tinaja.com/cubic01.asp
+ */
+function calculateEllipticalArc(w, h, startAngle, endAngle) {
+  var theta = (endAngle - startAngle);
+
+  var x0 = pub.cos(theta / 2.0);
+  var y0 = pub.sin(theta / 2.0);
+  var x3 = x0;
+  var y3 = 0 - y0;
+  var x1 = (4.0 - x0) / 3.0;
+  var y1 = ((1.0 - x0) * (3.0 - x0)) / (3.0 * y0);
+  var x2 = x1;
+  var y2 = 0 - y1;
+
+  var bezAng = startAngle + theta / 2.0;
+  var cBezAng = pub.cos(bezAng);
+  var sBezAng = pub.sin(bezAng);
+
+  return {
+    startx:   w * (cBezAng * x0 - sBezAng * y0),
+    starty:   h * (sBezAng * x0 + cBezAng * y0),
+    handle1x: w * (cBezAng * x1 - sBezAng * y1),
+    handle1y: h * (sBezAng * x1 + cBezAng * y1),
+
+    handle2x: w * (cBezAng * x2 - sBezAng * y2),
+    handle2y: h * (sBezAng * x2 + cBezAng * y2),
+    endx:     w * (cBezAng * x3 - sBezAng * y3),
+    endy:     h * (sBezAng * x3 + cBezAng * y3)
+  };
+}
+
+function doAddPath() {
+  if (isArray(currVertexPoints)) {
+    if (currVertexPoints.length > 0) {
+
+      if(currPolygon === null) {
+        addPolygon();
+      } else {
+        currPolygon.paths.add();
+      }
+
+      currPolygon.paths.item(currPathPointer).entirePath = currVertexPoints;
+      currVertexPoints = [];
+    }
+  } else {
+    notCalledBeginShapeError();
+  }
+}
+
+function notCalledBeginShapeError () {
+  error("endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
+}
+
+// ----------------------------------------
+// src/includes/structure.js
+// ----------------------------------------
+
+// ----------------------------------------
+// Structure
+// ----------------------------------------
+
+/**
+ * @description Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, `mode()` should be placed in the beginning of the script. In basil there are three different performance modes:
+ *
+ * - `VISIBLE` is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
+ * - `HIDDEN` allows to process the document in background mode. The document is not visible in this mode, which speeds up the script execution. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+ * - `SILENT` processes the document without redrawing the screen. The document will stay visible and only update once the script is finished or once the mode is changed back to `VISIBLE`.
+ *
+ * @cat     Structure
+ * @method  mode
+ *
+ * @param   {String} mode The performance mode to switch to.
+ */
+pub.mode = function(mode) {
+
+  if(!(mode === pub.VISIBLE || mode === pub.HIDDEN || mode === pub.SILENT)) {
+    error("mode(), invalid argument. Use VISIBLE, HIDDEN or SILENT.");
+  }
+
+  app.scriptPreferences.enableRedraw = (mode === pub.VISIBLE || mode === pub.HIDDEN);
+
+  if(!currDoc) {
+    // initiate new document in given mode
+    currentDoc(mode);
+  } else {
+
+    if (!currDoc.saved && !currDoc.modified && pub.HIDDEN) {
+      // unsaved, unmodified doc at the beginning of the script that needs to be hidden
+      // -> will be closed without saving, fresh hidden document will be opened
+      currDoc.close(SaveOptions.NO);
+      currDoc = app.documents.add(false);
+      setCurrDoc(currDoc);
+    } else if (mode === pub.HIDDEN && currMode !== pub.HIDDEN) {
+      // existing document needs to be hidden
+      if (!currDoc.saved && currDoc.modified) {
+        try {
+          currDoc.save();
+        } catch(e) {
+          throw {userCancel: true};
+        }
+        warning("Document was not saved and has now been saved to your hard drive in order to enter HIDDEN.");
+      } else if (currDoc.modified) {
+        currDoc.save(File(currDoc.fullName));
+        warning("Document was modified and has now been saved to your hard drive in order to enter HIDDEN.");
+      }
+      var docPath = currDoc.fullName;
+      currDoc.close(); // close the doc and reopen it without adding to the display list
+      currDoc = app.open(File(docPath), false);
+
+      setCurrDoc(currDoc);
+    } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
+      // existing document needs to be unhidden
+      currDoc.windows.add();
+    }
+  }
+
+  if (!progressPanel && (mode === pub.HIDDEN || mode === pub.SILENT)) {
+    // turn on progress panel
+    progressPanel = new Progress();
+  } else if (progressPanel && mode === pub.VISIBLE) {
+    // turn off progress panel
+    progressPanel.closePanel();
+    progressPanel = null;
+  }
+
+  currMode = mode;
+};
+
+/**
+ * @description Stops basil from continuously executing the code within `loop()` and quits the script.
+ *
+ * @cat     Structure
+ * @method  noLoop
+ */
+pub.noLoop = function(printFinished) {
+  var allIdleTasks = app.idleTasks;
+  for (var i = app.idleTasks.length - 1; i >= 0; i--) {
+    allIdleTasks[i].remove();
+  }
+  if(printFinished) {
+    println("Basil.js -> Stopped looping.");
+    println("[Finished in " + executionDuration() + "]");
+  };
+  resetUserSettings();
+};
+
+// ----------------------------------------
 // src/includes/transform.js
 // ----------------------------------------
 
@@ -7702,6 +7248,460 @@ var printMatrixHelper = function(elements) {
   }
   return digits;
 };
+
+// ----------------------------------------
+// src/includes/typography.js
+// ----------------------------------------
+
+// ----------------------------------------
+// Typography
+// ----------------------------------------
+
+/**
+ * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `width` and `height` parameters define a rectangular area.
+ *
+ * @cat     Typography
+ * @method  text
+ *
+ * @param   {String} txt The text content to set in the text frame.
+ * @param   {Number} x x-coordinate of text frame
+ * @param   {Number} y y-coordinate of text frame
+ * @param   {Number} w width of text frame
+ * @param   {Number} h height of text frame
+ * @return  {TextFrame} The created text frame instance
+ */
+pub.text = function(txt, x, y, w, h) {
+  if (arguments.length !== 5) {
+    error("text(), not enough parameters to draw a text! Use: text(txt, x, y, w, h)");
+  }
+  if (!(isString(txt) || isNumber(txt))) {
+    warning("text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: text(txt, x, y, w, h)");
+  }
+
+  var textBounds = [];
+  if (currRectMode === pub.CORNER) {
+    textBounds[0] = y;
+    textBounds[1] = x;
+    textBounds[2] = y + h;
+    textBounds[3] = x + w;
+  } else if (currRectMode === pub.CORNERS) {
+    textBounds[0] = y;
+    textBounds[1] = x;
+    textBounds[2] = h;
+    textBounds[3] = w;
+  } else if (currRectMode === pub.CENTER) {
+    textBounds[0] = y - (h / 2);
+    textBounds[1] = x - (w / 2);
+    textBounds[2] = y + (h / 2);
+    textBounds[3] = x + (w / 2);
+  } else if (currRectMode === pub.RADIUS) {
+    textBounds[0] = y - h;
+    textBounds[1] = x - w;
+    textBounds[2] = y + h;
+    textBounds[3] = x + w;
+  }
+
+  var textFrame = currentPage().textFrames.add(currentLayer());
+  textFrame.contents = txt.toString();
+  textFrame.geometricBounds = textBounds;
+  textFrame.textFramePreferences.verticalJustification = currYAlign;
+
+  pub.typo(textFrame, {
+    appliedFont: currFont,
+    pointSize: currFontSize,
+    fillColor: currFillColor,
+    justification: currAlign,
+    leading: currLeading,
+    kerningValue: currKerning,
+    tracking: currTracking
+  });
+
+
+  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                       AnchorPoint.CENTER_ANCHOR,
+                       currMatrix.adobeMatrix(x, y));
+  } else {
+    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                   AnchorPoint.TOP_LEFT_ANCHOR,
+                   currMatrix.adobeMatrix(x, y));
+  }
+
+  return textFrame;
+};
+
+// ----------------------------------------
+// Typography/Attributes
+// ----------------------------------------
+
+/**
+ * @description Sets the current horizontal and vertical text alignment.
+ *
+ * @cat     Typography
+ * @subcat  Attributes
+ * @method  textAlign
+ *
+ * @param   {String} align The horizontal text alignment to set. Must be one of the InDesign `Justification` enum values:
+ * - `Justification.AWAY_FROM_BINDING_SIDE`
+ * - `Justification.CENTER_ALIGN`
+ * - `Justification.CENTER_JUSTIFIED`
+ * - `Justification.FULLY_JUSTIFIED`
+ * - `Justification.LEFT_ALIGN`
+ * - `Justification.RIGHT_ALIGN`
+ * - `Justification.RIGHT_JUSTIFIED`
+ * - `Justification.TO_BINDING_SIDE`
+ * @param   {String} [yAlign] The vertical text alignment to set. Must be one of the InDesign `VerticalJustification` enum values:
+ * - `VerticalJustification.BOTTOM_ALIGN`
+ * - `VerticalJustification.CENTER_ALIGN`
+ * - `VerticalJustification.JUSTIFY_ALIGN`
+ * - `VerticalJustification.TOP_ALIGN`
+ */
+pub.textAlign = function(align, yAlign) {
+  currAlign = align;
+  if (arguments.length === 2) currYAlign = yAlign;
+};
+
+/**
+ * @description Returns the current font and sets it if argument `fontName` is given.
+ *
+ * @cat     Typography
+ * @subcat  Attributes
+ * @method  textFont
+ *
+ * @param   {String} [fontName] The name of the font to set e.g. Helvetica
+ * @param   {String} [fontStyle] The font style e.g. Bold
+ * @return  {Font} The current font object
+ */
+pub.textFont = function(fontName, fontStyle) {
+
+  if (arguments.length === 2) {
+    fontName = fontName + "\t" + fontStyle;
+  } else if (arguments.length === 1) {
+    fontName = fontName + "\tRegular";
+  } else if (arguments.length === 0) {
+    return currFont;
+  } else {
+    error("textFont(), wrong parameters. To set font use: fontName, fontStyle. fontStyle is optional.");
+  }
+
+  if(app.fonts.itemByName(fontName).status !== FontStatus.INSTALLED) {
+    warning("textFont(), font \"" + fontName.replace("\t", " ") + "\" not installed. "
+      + "Using current font \"" + currFont.fontFamily + " " + currFont.fontStyleName + "\" instead.");
+  } else {
+    currFont = app.fonts.itemByName(fontName);
+  }
+
+  return currFont;
+};
+
+/**
+ * @description Returns the current kerning and sets it if argument `kerning` is given.
+ *
+ * @cat     Typography
+ * @subcat  Attributes
+ * @method  textKerning
+ *
+ * @param   {Number} [kerning] The value to set.
+ * @return  {Number} The current kerning.
+ */
+pub.textKerning = function(kerning) {
+  if (arguments.length === 1) {
+    currKerning = kerning;
+  }
+  return currKerning;
+};
+
+/**
+ * @description Returns the spacing between lines of text in units of points and sets it if argument `leading` is given.
+ *
+ * @cat     Typography
+ * @subcat  Attributes
+ * @method  textLeading
+ *
+ * @param   {Number|String} [leading] The spacing between lines of text in units of points or the default InDesign enum value `Leading.AUTO`.
+ * @return  {Number|String} The current leading.
+ */
+pub.textLeading = function(leading) {
+  if (arguments.length === 1) {
+    currLeading = leading;
+  }
+  return currLeading;
+};
+
+/**
+ * @description Returns the current font size in points and sets it if argument `pointSize` is given.
+ *
+ * @cat     Typography
+ * @subcat  Attributes
+ * @method  textSize
+ *
+ * @param   {Number} [pointSize] The size in points to set.
+ * @return  {Number} The current point size.
+ */
+pub.textSize = function(pointSize) {
+  if (arguments.length === 1) {
+    currFontSize = pointSize;
+  }
+  return currFontSize;
+};
+
+/**
+ * @description Returns the current tracking and sets it if argument `tracking` is given.
+ *
+ * @cat     Typography
+ * @subcat  Attributes
+ * @method  textTracking
+ *
+ * @param   {Number} [tracking] The value to set.
+ * @return  {Number} The current tracking.
+ */
+pub.textTracking = function(tracking) {
+  if (arguments.length === 1) {
+    currTracking = tracking;
+  }
+  return currTracking;
+};
+
+/**
+ * @description Sets text properties to the given item. If the item is not an instance the text property can be set to, the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
+ *
+ * If no value is given and the given property is a string, the function acts as a getter and returns the corresponding value(s) in an array. This can either be an array containing the value of the concrete item (e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).
+ *
+ * @cat     Typography
+ * @subcat  Attributes
+ * @method  typo
+ *
+ * @param   {Document|Spread|Page|Layer|Story|TextFrame|Text} item The object to apply the property to.
+ * @param   {String|Object} property The text property name or an object of key/value property/value pairs. If property is a string and no value is given, the function acts as getter.
+ * @param   {String|Number|Object} [value] The value to apply to the property.
+ * @return  {String[]|Number[]|Object[]} The property value(s) if the function acts as getter or the items the property was assigned to.
+ */
+pub.typo = function(item, property, value) {
+  var result = [],
+    actsAsGetter = typeof property === "string" && (value === undefined || value === null),
+    getOrSetProperties = function(textItem) {
+      if (actsAsGetter) {
+        result.push(textItem[property]);
+      } else {
+        setProperties(textItem);
+      }
+    },
+    setProperties = function(textItem) {
+      if (typeof property === "string") {
+        result.push(textItem);
+        setProperty(textItem, property, value);
+      } else if (typeof property === "object") {
+        result.push(textItem);
+        for (var prop in property) {
+          setProperty(textItem, prop, property[prop]);
+        }
+      }
+    },
+    setProperty = function(textItem, prop, val) {
+      textItem[prop] = val;
+    };
+
+  if(typeof item === "string") error("typo() cannot work on strings. Please pass a Text object to modify.");
+
+  if(!isValid(item)) {
+    warning("typo(), invalid object passed");
+    return;
+  }
+
+  if (item instanceof Document ||
+      item instanceof Spread ||
+      item instanceof Page ||
+      item instanceof Layer) {
+    forEach(item.textFrames, function(textFrame) {
+      pub.typo(textFrame, property, value);
+    });
+  } else if (item instanceof Story ||
+             item instanceof TextFrame) {
+    var paras = item.paragraphs;
+    // loop backwards to prevent invalid object reference error when
+    // start of para is overflown in "invisible" textFrame area after
+    // applying prop to previous para(s)
+    for (var i = paras.length - 1; i >= 0; i--) {
+      getOrSetProperties(paras[i]);
+    }
+  } else if (isText(item)) {
+    getOrSetProperties(item);
+  }
+  return result;
+};
+
+// ----------------------------------------
+// Typography/Styles
+// ----------------------------------------
+
+/**
+ * @description Applies a character style to the given text object, text frame or story. The character style can be given as name or as character style instance.
+ *
+ * @cat     Typography
+ * @subcat  Styles
+ * @method  applyCharacterStyle
+ *
+ * @param   {TextFrame|TextObject|Story} text The text frame, text object or story to apply the style to.
+ * @param   {CharacterStyle|String} style A character style instance or the name of the character style to apply.
+ * @return  {Text} The text that the style was applied to.
+ */
+
+pub.applyCharacterStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allCharacterStyles, name);
+    if(!style) {
+      error("applyCharacterStyle(), a character style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof CharacterStyle)) {
+    error("applyCharacterStyle(), wrong parameters. Use: textObject|textFrame|story, characterStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.characters.everyItem();
+  }
+
+  text.appliedCharacterStyle = style;
+
+  return text;
+};
+
+/**
+ * @description Applies a paragraph style to the given text object, text frame or story. The paragraph style can be given as name or as paragraph style instance.
+ *
+ * @cat     Typography
+ * @subcat  Styles
+ * @method  applyParagraphStyle
+ *
+ * @param   {TextFrame|TextObject|Story} text The text frame, text object or story to apply the style to.
+ * @param   {ParagraphStyle|String} style A paragraph style instance or the name of the paragraph style to apply.
+ * @return  {Text} The text that the style was applied to.
+ */
+
+pub.applyParagraphStyle = function(text, style) {
+
+  if(isString(style)) {
+    var name = style;
+    style = findInStylesByName(currentDoc().allParagraphStyles, name);
+    if(!style) {
+      error("applyParagraphStyle(), a paragraph style named \"" + name + "\" does not exist.");
+    }
+  }
+
+  if(!(pub.isText(text) || text instanceof TextFrame || text instanceof Story) || !(style instanceof ParagraphStyle)) {
+    error("applyParagraphStyle(), wrong parameters. Use: textObject|textFrame|story, paragraphStyle|name");
+  }
+
+  if(text instanceof TextFrame) {
+    text = text.paragraphs.everyItem();
+  }
+
+  text.appliedParagraphStyle = style;
+
+  return text;
+};
+
+/**
+ * @description Returns the character style of a given text object or the character style with the given name. If a character style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the character style's properties.
+ *
+ * @cat     Typography
+ * @subcat  Styles
+ * @method  characterStyle
+ *
+ * @param   {Text|String} textOrName A text object whose style to return or the name of the character style to return.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
+ * @return  {CharacterStyle} The character style instance.
+ */
+pub.characterStyle = function(textOrName, props) {
+  var styleErrorMsg = "characterStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
+
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
+  }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedCharacterStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allCharacterStyles, textOrName);
+    if(!style) {
+      style = currentDoc().characterStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("characterStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
+  return style;
+};
+
+/**
+ * @description Returns the paragraph style of a given text object or the paragraph style with the given name. If a paragraph style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the paragraph style's properties.
+ *
+ * @cat     Typography
+ * @subcat  Styles
+ * @method  paragraphStyle
+ *
+ * @param   {Text|String} textOrName A text object whose style to return or the name of the paragraph style to return.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
+ * @return  {ParagraphStyle} The paragraph style instance.
+ */
+pub.paragraphStyle = function(textOrName, props) {
+  var styleErrorMsg = "paragraphStyle(), wrong parameters. Use: textObject|name and props. Props is optional.";
+
+  if(!arguments || arguments.length > 2) {
+    error(styleErrorMsg);
+  }
+
+  var style;
+  if(isText(textOrName)) {
+    // text object is given
+    style = textOrName.appliedParagraphStyle;
+  } else if(isString(textOrName)) {
+    // name is given
+    style = findInStylesByName(currentDoc().allParagraphStyles, textOrName);
+    if(!style) {
+      style = currentDoc().paragraphStyles.add({name: textOrName});
+    }
+  } else {
+    error(styleErrorMsg);
+  }
+
+  if(props) {
+    try {
+      style.properties = props;
+    } catch (e) {
+      error("paragraphStyle(), wrong props parameter. Use object of property name/value pairs.");
+    }
+  }
+
+  return style;
+};
+
+// ----------------------------------------
+// Typography/Constants
+// ----------------------------------------
+
+/**
+ * @description Returns a Lorem ipsum string that can be used for testing.
+ *
+ * @cat      Typography
+ * @subcat   Constants
+ * @property LOREM {String}
+ */
+pub.LOREM = "Lorem ipsum is dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
 // ----------------------------------------
 // src/includes/ui.js
