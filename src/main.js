@@ -91,6 +91,7 @@ var pub = {};
 // @include "includes/color.js";
 // @include "includes/typography.js";
 // @include "includes/image.js";
+// @include "includes/input.js";
 // @include "includes/math.js";
 // @include "includes/transformation.js";
 // @include "includes/ui.js";
