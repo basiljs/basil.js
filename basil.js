@@ -4084,6 +4084,54 @@ pub.projectFolder = function() {
 };
 
 /**
+ * @description TODO.
+ *
+ * @cat     Environment
+ * @method  property
+ *
+ * @param   {Object} [object] Todo.
+ * @param   {String} [propertyName] Todo.
+ * @param   {Number|String|Object} [value] Todo.
+ * @return  {Folder} Todo.
+ */
+pub.property = function(obj, propertyName, value) {
+
+  if(obj === null || obj === undefined) {
+    error("property(), given object is undefined or does not exist.");
+  }
+
+  if(obj.hasOwnProperty(isValid) && !obj.isValid) {
+    error("property(), object does not exist.");
+  }
+
+  if(isString(propertyName)) {
+
+    if(!obj.hasOwnProperty(propertyName)) {
+      error("property(), invalid property. The given " + (obj.constructor.name).toLowerCase() + " does not have a property \"" + propertyName + "\".");
+    }
+
+    try {
+      obj[propertyName] = value;
+    } catch(e) {
+      error("property(), invalid arguments.\n" +
+            "(" + obj + ", \"" + propertyName + "\", " + value + ");\n\n" +
+            e.message);
+    }
+
+  } else if(propertyName instanceof Object) {
+
+    for(var key in propertyName) {
+      pub.property(obj, key, propertyName[key]);
+    }
+
+  } else {
+    error("property(), invalid second argument. Use property name string or an object with key value pairs.");
+  }
+
+  return obj;
+};
+
+/**
  * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat     Environment
