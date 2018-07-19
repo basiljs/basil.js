@@ -4084,17 +4084,31 @@ pub.projectFolder = function() {
 };
 
 /**
- * @description TODO.
+ * @description Sets a property of an object or of any other given data item to the specified value. Alternatively an object of key value pairs can be used as the second argument to set several properties to specified values at once. To retrieve a list of available properties for the different data types, the inspect() method can be used.
  *
  * @cat     Environment
  * @method  property
  *
- * @param   {Object} [object] Todo.
- * @param   {String} [propertyName] Todo.
- * @param   {Number|String|Object} [value] Todo.
- * @return  {Folder} Todo.
+ * @param   {Any} obj An object or any other data item whose properties to change.
+ * @param   {String|Object} prop A string describing an object's property or alternatively an object containing key value pairs.
+ * @param   {Any} [value] A value of the appropriate type to set the object's property to.
+ * @return  {Any} The object or other data item with the newly set property.
+ *
+ * @example <caption>Sets name and fill color of an ellipse</caption>
+ * var ell = ellipse(100, 100, 50, 50);
+ * property(ell, "name", "Red Circle");
+ * property(ell, "fillColor", color(255, 0, 0));
+ *
+ * @example <caption>Sets name and fill color of a rectangle and locks it, using an object with key value pairs</caption>
+ * var blueSquare = rect(100, 100, 50, 50);
+ * var squareProps = {
+ *   name: "Blue Square",
+ *   fillColor: color(0, 0, 255),
+ *   locked: true
+ * }
+ * property(blueSquare, squareProps);
  */
-pub.property = function(obj, propertyName, value) {
+pub.property = function(obj, prop, value) {
 
   if(obj === null || obj === undefined) {
     error("property(), given object is undefined or does not exist.");
@@ -4104,24 +4118,24 @@ pub.property = function(obj, propertyName, value) {
     error("property(), object does not exist.");
   }
 
-  if(isString(propertyName)) {
+  if(isString(prop)) {
 
-    if(!obj.hasOwnProperty(propertyName)) {
-      error("property(), invalid property. The given " + (obj.constructor.name).toLowerCase() + " does not have a property \"" + propertyName + "\".");
+    if(!obj.hasOwnProperty(prop)) {
+      error("property(), invalid property. The given " + (obj.constructor.name).toLowerCase() + " does not have a property \"" + prop + "\".");
     }
 
     try {
-      obj[propertyName] = value;
+      obj[prop] = value;
     } catch(e) {
       error("property(), invalid arguments.\n" +
-            "(" + obj + ", \"" + propertyName + "\", " + value + ");\n\n" +
+            "(" + obj + ", \"" + prop + "\", " + value + ");\n\n" +
             e.message);
     }
 
-  } else if(propertyName instanceof Object) {
+  } else if(prop instanceof Object) {
 
-    for(var key in propertyName) {
-      pub.property(obj, key, propertyName[key]);
+    for(var key in prop) {
+      pub.property(obj, key, prop[key]);
     }
 
   } else {
