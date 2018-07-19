@@ -274,6 +274,68 @@ pub.projectFolder = function() {
 };
 
 /**
+ * @description Sets a property of an object or of any other given data item to the specified value. Alternatively an object of key value pairs can be used as the second argument to set several properties to specified values at once. To retrieve a list of available properties for the different data types, the inspect() method can be used.
+ *
+ * @cat     Environment
+ * @method  property
+ *
+ * @param   {Any} obj An object or any other data item whose properties to change.
+ * @param   {String|Object} prop A string describing an object's property or alternatively an object containing key value pairs.
+ * @param   {Any} [value] A value of the appropriate type to set the object's property to.
+ * @return  {Any} The object or other data item with the newly set property.
+ *
+ * @example <caption>Sets name and fill color of an ellipse</caption>
+ * var ell = ellipse(100, 100, 50, 50);
+ * property(ell, "name", "Red Circle");
+ * property(ell, "fillColor", color(255, 0, 0));
+ *
+ * @example <caption>Sets name and fill color of a rectangle and locks it, using an object with key value pairs</caption>
+ * var blueSquare = rect(100, 100, 50, 50);
+ * var squareProps = {
+ *   name: "Blue Square",
+ *   fillColor: color(0, 0, 255),
+ *   locked: true
+ * }
+ * property(blueSquare, squareProps);
+ */
+pub.property = function(obj, prop, value) {
+
+  if(obj === null || obj === undefined) {
+    error("property(), given object is undefined or does not exist.");
+  }
+
+  if(obj.hasOwnProperty(isValid) && !obj.isValid) {
+    error("property(), object does not exist.");
+  }
+
+  if(isString(prop)) {
+
+    if(!obj.hasOwnProperty(prop)) {
+      error("property(), invalid property. The given " + (obj.constructor.name).toLowerCase() + " does not have a property \"" + prop + "\".");
+    }
+
+    try {
+      obj[prop] = value;
+    } catch(e) {
+      error("property(), invalid arguments.\n" +
+            "(" + obj + ", \"" + prop + "\", " + value + ");\n\n" +
+            e.message);
+    }
+
+  } else if(prop instanceof Object) {
+
+    for(var key in prop) {
+      pub.property(obj, key, prop[key]);
+    }
+
+  } else {
+    error("property(), invalid second argument. Use property name string or an object with key value pairs.");
+  }
+
+  return obj;
+};
+
+/**
  * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat     Environment
