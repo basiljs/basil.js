@@ -639,24 +639,27 @@ pub.previousPage = function () {
 };
 
 /**
- * @description Removes a page from the current document. This will either be the current page if the parameter page is left empty, or the given page object or page number.
+ * @description Removes a page from the current document. This will either be the current page if the parameter page is left empty, or the given page object or the page of a specific number or name.
  *
  * @cat     Document
  * @subcat  Page
  * @method  removePage
  *
- * @param   {Page|Number} [page] The page to be removed as Page object or page number.
+ * @param   {Number|String|Page} [page] The page to be removed as page number, page name or page object.
  */
 pub.removePage = function (page) {
-  checkNull(page);
-  if(typeof page === "number" || arguments.length === 0 || page instanceof Page) {
-    var p = pub.page(page);
-    p.remove();
-    currPage = null; // reset!
-    currentPage();
+
+  if(arguments.length === 0) {
+    page = currPage;
+  } else if(isNumber(page) || isString(page) || page instanceof Page) {
+    page = pub.page(page);
   } else {
-    error("removePage(), invalid call. Wrong parameter!");
+    error("removePage(), invalid parameter! Use page number, page name or page object!");
   }
+
+  page.remove();
+  currPage = null; // reset!
+  currentPage();
 };
 
 // ----------------------------------------
