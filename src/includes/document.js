@@ -509,6 +509,16 @@ pub.nextPage = function () {
  *
  * @param   {Number|String|Page|PageItem} [page] The page number (as integer), page name or page object to set the current page to or an page item to refer to its containing page.
  * @return  {Page} The current page instance.
+ *
+ * @example <caption>Sets the current page to the third page of the document</caption>
+ * page(3);
+ *
+ * @example <caption>Sets the current page to the page named "004"</caption>
+ * page("004");
+ *
+ * @example <caption>Sets the current page to the containing page of a rectangle>
+ * var myRect = rect(100, 100, 200, 200);
+ * page(myRect);
  */
 pub.page = function(page) {
 
