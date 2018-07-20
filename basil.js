@@ -2995,7 +2995,7 @@ pub.nextPage = function () {
 };
 
 /**
- * @description Returns the current page and sets it if argument page is given. If page is given as string, the page will be set to the page with this name (e.g. "4", "04", "D", "IV"). If the page is given as an integer, the page will be set to the page according to this number, no matter the actual naming of the page. Numbering starts with 1 in this case. If you pass a page item the current page will be set to its containing page. If this page item is off the page (on the art board) the current page will be set to the first page of its containing spread.
+ * @description Returns the current page and sets it if argument page is given. If page is given as string, the page will be set to the page with this name (e.g. "4", "04", "D", "IV"). If the page is given as an integer, the page will be set to the page according to this number, no matter the actual naming of the page. Numbering starts with 1 in this case. If you pass a page item the current page will be set to its containing page. If this page item is off the page (on the pasteboard) the current page will be set to the first page of its containing spread.
  *
  * @cat     Document
  * @subcat  Page
@@ -3027,8 +3027,21 @@ pub.page = function(page) {
       currPage = page;
     } else if (page.hasOwnProperty("parentPage")) {
       // target page via page item
-      currPage = page.parentPage;
-      // TODO fix for page items on the artboard
+      if(page.parentPage === null) {
+        // page item is on the pasteboard, return first page of spread
+        while(!(page.parent instanceof Spread)) {
+          if(page.parent instanceof Character) {
+            // anchored page item
+            page = page.parent.parentTextFrames[0];
+          } else {
+            // nested page item
+            page = page.parent;
+          }
+        }
+        currPage = page.parent.pages[0];
+      } else {
+        currPage = page.parentPage;
+      }
     } else {
       error("page(), invalid parameter. Use page number, page name, page object or a page item.");
     }
