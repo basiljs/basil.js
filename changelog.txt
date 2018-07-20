@@ -24,6 +24,8 @@ basil.js x.x.x DAY MONTH YEAR
   see examples/typography/styles.jsx
 + Added arrange()
   allows to arrange page items or layers in z-space
++ Added property()
+  sets a property of an object to a given value
 + Added swatch()
   returns a color or gradient of a given name
 + Added revert()
@@ -53,7 +55,9 @@ basil.js x.x.x DAY MONTH YEAR
   Options to show or hide properties, values and/or methods.
   Option to show only certain properties.
   Lots of minor fixes.
+* page() now also accepts strings to set current page by name
 * pageCount() can now also be used to set the doc's page count
+* previousPage() and nextPage() now work as expected
 * println() and print() can now print multiple parameters to console
 * trimWord() now correctly trims all punctuation from word borders
 * text() now respects the currently set rectangle mode
