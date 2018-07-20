@@ -55,7 +55,7 @@ basil.js x.x.x DAY MONTH YEAR
   Options to show or hide properties, values and/or methods.
   Option to show only certain properties.
   Lots of minor fixes.
-* page() now also accepts strings to set current page by name
+* page() and removePage() now also accept page name strings as parameters
 * pageCount() can now also be used to set the doc's page count
 * previousPage() and nextPage() now work as expected
 * println() and print() can now print multiple parameters to console
