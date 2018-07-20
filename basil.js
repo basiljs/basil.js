@@ -2995,40 +2995,74 @@ pub.nextPage = function () {
 };
 
 /**
- * @description Returns the current page and sets it if argument page is given. Numbering starts with 1.
+ * @description Returns the current page and sets it if argument page is given. If page is given as string, the page will be set to the page with this name (e.g. "4", "04", "D", "IV"). If the page is given as an integer, the page will be set to the page according to this number, no matter the actual naming of the page. Numbering starts with 1 in this case. If you pass a page item the current page will be set to its containing page. If this page item is off the page (on the pasteboard) the current page will be set to the first page of its containing spread.
  *
  * @cat     Document
  * @subcat  Page
  * @method  page
  *
- * @param   {Page|Number|PageItem} [page] The page object or page number to set the current page to. If you pass a page item the current page will be set to its containing page.
+ * @param   {Number|String|Page|PageItem} [page] The page number (as integer), page name or page object to set the current page to or an page item to refer to its containing page.
  * @return  {Page} The current page instance.
+ *
+ * @example <caption>Sets the current page to the third page of the document</caption>
+ * page(3);
+ *
+ * @example <caption>Sets the current page to the page named "004"</caption>
+ * page("004");
+ *
+ * @example <caption>Sets the current page to the containing page of a rectangle>
+ * var myRect = rect(100, 100, 200, 200);
+ * page(myRect);
  */
 pub.page = function(page) {
-  if (page instanceof Page) {
-    currPage = page;
-  } else if (typeof page !== "undefined" && page.hasOwnProperty("parentPage")) {
-    currPage = page.parentPage; // page is actually a PageItem
-  } else if (typeof page === "number") {
-    if(page < 1) {
-      p = 0;
+
+  if(arguments.length) {
+
+    if(isNumber(page)) {
+      // target page by document offset
+      if(isInteger(page) && page > 0 && page <= currentDoc().pages.length) {
+        currPage = currentDoc().pages[page - 1];
+      } else {
+        error("page(), the page " + page + " does not exist.");
+      }
+    } else if(isString(page)) {
+      // target page by name
+      if(currentDoc().pages.item(page).isValid) {
+        currPage = currentDoc().pages.item(page);
+      } else {
+        error("page(), the page \"" + page + "\" does not exist.");
+      }
+    } else if(page instanceof Page) {
+      // target page object
+      currPage = page;
+    } else if (page.hasOwnProperty("parentPage")) {
+      // target page via page item
+      if(page.parentPage === null) {
+        // page item is on the pasteboard, return first page of spread
+        while(!(page.parent instanceof Spread)) {
+          if(page.parent instanceof Character) {
+            // anchored page item
+            page = page.parent.parentTextFrames[0];
+          } else {
+            // nested page item
+            page = page.parent;
+          }
+        }
+        currPage = page.parent.pages[0];
+      } else {
+        currPage = page.parentPage;
+      }
     } else {
-      p = page - 1;
+      error("page(), invalid parameter. Use page number, page name, page object or a page item.");
     }
-    var tempPage = currentDoc().pages[p];
-    try {
-      tempPage.id;
-    } catch (e) {
-      error("page(), " + page + " does not exist.");
+
+    updatePublicPageSizeVars();
+    if (currentDoc().windows.length) {
+      // focus GUI on new page, if not in HIDDEN mode
+      app.activeWindow.activePage = currPage;
     }
-    currPage = tempPage;
-  } else if (typeof page !== "undefined") {
-    error("page(), bad type for page().");
   }
-  updatePublicPageSizeVars();
-  if (currentDoc().windows.length) {
-    app.activeWindow.activePage = currPage;
-  } // focus in GUI if not in HIDDEN
+
   return currentPage();
 };
 
