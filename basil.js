@@ -2981,7 +2981,7 @@ pub.addPage = function(location) {
 };
 
 /**
- * @description Set the next page of the document to be the active one. Returns new active page.
+ * @description Set the next page of the document to be the active one. Returns new active page. If the current page is the last page, the last page will be returned.
  *
  * @cat     Document
  * @subcat  Page
@@ -2990,8 +2990,13 @@ pub.addPage = function(location) {
  * @return  {Page} The active page.
  */
 pub.nextPage = function () {
-  var p = pub.doc().pages.nextItem(currentPage());
-  return pub.page(p);
+
+  if(currPage.documentOffset + 1 === currentDoc().documentPreferences.pagesPerDocument) {
+    // last page
+    return currPage;
+  }
+
+  return pub.page(currentDoc().pages[currPage.documentOffset + 1]);
 };
 
 /**
@@ -3109,7 +3114,7 @@ pub.pageNumber = function (pageObj) {
 };
 
 /**
- * @description Set the previous page of the document to be the active one. Returns new active page.
+ * @description Set the previous page of the document to be the active one. Returns new active page. If the current page is the first page, the first page will be returned.
  *
  * @cat     Document
  * @subcat  Page
@@ -3118,8 +3123,13 @@ pub.pageNumber = function (pageObj) {
  * @return  {Page} The active page.
  */
 pub.previousPage = function () {
-  var p = pub.doc().pages.previousItem(currentPage());
-  return pub.page(p);
+
+  if(currPage.documentOffset === 0) {
+    // first page
+    return currPage;
+  }
+
+  return pub.page(currentDoc().pages[currPage.documentOffset - 1]);
 };
 
 /**
