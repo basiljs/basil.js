@@ -2940,44 +2940,18 @@ pub.pasteboard = function (h, v) {
  */
 pub.addPage = function(location) {
 
-  checkNull(location);
-
-  if(arguments.length === 0) {
-    location = pub.AT_END;
-  } // default
-
-  var nP;
-  try {
-
-    switch (location) {
-
-      case pub.AT_END:
-        nP = currentDoc().pages.add(location);
-        break;
-
-      case pub.AT_BEGINNING:
-        nP = currentDoc().pages.add(location);
-        break;
-
-      case pub.AFTER:
-        nP = currentDoc().pages.add(location, pub.page());
-        break;
-
-      case pub.BEFORE:
-        nP = currentDoc().pages.add(location, pub.page());
-        break;
-
-      default:
-        throw new Error();
-        break;
+  if(arguments.length) {
+    if(!(location === pub.AFTER ||
+         location === pub.AT_BEGINNING ||
+         location === pub.AT_END ||
+         location === pub.BEFORE)) {
+      error("addPage(), invalid location argument! Use AT_END, AT_BEGINNING, AFTER or BEFORE.");
     }
-
-    pub.page(nP);
-    return nP;
-
-  } catch (e) {
-    error("addPage(), invalid location argument passed to addPage()");
+  } else {
+    location = pub.AT_END;
   }
+
+  return currentDoc().pages.add(location, pub.page());
 };
 
 /**
