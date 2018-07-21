@@ -649,6 +649,10 @@ pub.previousPage = function () {
  */
 pub.removePage = function (page) {
 
+  if(currentDoc().pages.length === 1) {
+    error("removePage(), the only page of the document cannot be deleted.");
+  }
+
   if(arguments.length === 0) {
     page = currPage;
   } else if(isNumber(page) || isString(page) || page instanceof Page) {
