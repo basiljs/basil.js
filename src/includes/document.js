@@ -573,24 +573,34 @@ pub.pageCount = function(pageCount) {
 };
 
 /**
- * @description Returns the current page number of either the current page or the given page object.
+ * @description Returns the current page number of either the current page or the given page name or page object. Numbering of pages starts at 1.
  *
  * @cat     Document
  * @subcat  Page
  * @method  pageNumber
  *
- * @param   {Page} [pageObj] The page you want to know the number of.
+ * @param   {String|Page} [page] The page name or page object of the page you want to know the number of.
  * @return  {Number} The page number within the document.
  */
-pub.pageNumber = function (pageObj) {
-  checkNull(pageObj);
-  if (typeof pageObj === "number") {
-    error("pageNumber(), cannot be called with a Number argument.");
+pub.pageNumber = function (page) {
+
+  if(arguments.length === 0) {
+    return currPage.documentOffset + 1;
   }
-  if (pageObj instanceof Page) {
-    return parseInt(pageObj.name); // current number of given page
+
+  if(isString(page)) {
+    if(currentDoc().pages.item(page).isValid) {
+      return currentDoc().pages.item(page).documentOffset + 1;
+    } else {
+      error("pageNumber(), invalid page name! A page \"" + page + "\" does not exist.");
+    }
   }
-  return parseInt(pub.page().name); // number of current page
+
+  if(page instanceof Page) {
+    return page.documentOffset + 1;
+  } else {
+    error("pageNumber(), invalid parameter! Use page name as string or page object.");
+  }
 };
 
 /**
