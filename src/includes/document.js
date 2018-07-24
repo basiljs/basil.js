@@ -461,6 +461,84 @@ pub.addPage = function(location) {
 };
 
 /**
+ * @description Applies a master page to the given page.
+ *
+ * The `page` parameter can be given as a page object, as a page name or as a page number (numbering starts at 1).
+ *
+ * The `master` parameter can be given as a master spread object or as a string. If a string is used, it can either hold the master page prefix (e.g "A", "B") or the full name *including* the prefix (e.g "A-Master", "B-Master"). The latter is useful, if there are several masters using the same prefix. Alternatively, the constant `NONE` can be used to apply InDesign's `[none]` master to the page and thus remove the previously applied master page from the page.
+ *
+ * @cat     Document
+ * @subcat  Page
+ * @method  applyMasterPage
+ *
+ * @param   {Number|String|Page} page The page to apply the master page to.
+ * @param   {String|MasterSpread} master The master page to apply.
+ * @return  {Page} The page the master page was applied to.
+ *
+ * @example <caption>Apply the master with prefix "B" to the documents third page</caption>
+ * applyMasterPage(3, "B");
+ *
+ * @example <caption>In a document with master pages "A-Text" and "A-Images", apply "A-Images" to the current page</caption>
+ * applyMasterPage(page(), "A-Images");
+ *
+ * @example <caption>Remove the master page from the page named "IV"</caption>
+ * applyMasterPage("IV", NONE);
+ */
+pub.applyMasterPage = function(page, master) {
+
+  if(isNumber(page) || isString(page) || page instanceof Page) {
+    page = getPage(page, "applyMasterPage");
+  } else {
+    error("applyMasterPage(), invalid first parameter! Use page number, page name or page object for the page to apply the master to.");
+  }
+
+  if(isString(master)) {
+
+    var ms = currentDoc().masterSpreads;
+
+    if(master.indexOf("-") > 0) {
+      // full name is presumably given
+      for (var i = 0; i < ms.length; i++) {
+        if(ms[i].name === master) {
+          master = ms[i];
+          break;
+        }
+      }
+    }
+
+    if(isString(master) && master.length <= 4) {
+      // suffix is given
+      for (var j = 0; j < ms.length; j++) {
+        if(ms[j].namePrefix === master) {
+          master = ms[j];
+          break;
+        }
+      }
+    }
+
+    if(master === pub.NONE) {
+      // apply InDesign's [None] master
+      page.appliedMaster = NothingEnum.NOTHING;
+      return page;
+    }
+
+    if(isString(master)) {
+      var prefixErrorMsg = master.length <= 4 ? "or with prefix \"" + master + "\" " : "";
+      error("applyMasterPage(), the master page named \"" + master + "\" " + prefixErrorMsg + "does not exist.");
+    }
+
+  }
+
+  if(!(master instanceof MasterSpread)) {
+    error("applyMasterPage(), invalid second parameter! Use full master page name, master page prefix or master spread object.");
+  }
+
+  page.appliedMaster = master;
+
+  return page;
+};
+
+/**
  * @description Set the next page of the document to be the active one. Returns new active page. If the current page is the last page, the last page will be returned.
  *
  * @cat     Document
@@ -476,7 +554,7 @@ pub.nextPage = function () {
     return currPage;
   }
 
-  return pub.page(currentDoc().pages[currPage.documentOffset + 1]);
+  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset + 1], "nextPage");
 };
 
 /**
@@ -502,50 +580,7 @@ pub.nextPage = function () {
 pub.page = function(page) {
 
   if(arguments.length) {
-
-    if(isNumber(page)) {
-      // target page by document offset
-      if(isInteger(page) && page > 0 && page <= currentDoc().pages.length) {
-        currPage = currentDoc().pages[page - 1];
-      } else {
-        error("page(), the page " + page + " does not exist.");
-      }
-    } else if(isString(page)) {
-      // target page by name
-      if(currentDoc().pages.item(page).isValid) {
-        currPage = currentDoc().pages.item(page);
-      } else {
-        error("page(), the page \"" + page + "\" does not exist.");
-      }
-    } else if(page instanceof Page) {
-      // target page object
-      currPage = page;
-    } else if (page.hasOwnProperty("parentPage")) {
-      // target page via page item
-      if(page.parentPage === null) {
-        // page item is on the pasteboard, return first page of spread
-        while(!(page.parent instanceof Spread)) {
-          if(page.parent instanceof Character) {
-            // anchored page item
-            page = page.parent.parentTextFrames[0];
-          } else {
-            // nested page item
-            page = page.parent;
-          }
-        }
-        currPage = page.parent.pages[0];
-      } else {
-        currPage = page.parentPage;
-      }
-    } else {
-      error("page(), invalid parameter. Use page number, page name, page object or a page item.");
-    }
-
-    updatePublicPageSizeVars();
-    if (currentDoc().windows.length) {
-      // focus GUI on new page, if not in HIDDEN mode
-      app.activeWindow.activePage = currPage;
-    }
+    getAndUpdatePage(page, "page");
   }
 
   return currentPage();
@@ -619,7 +654,7 @@ pub.previousPage = function () {
     return currPage;
   }
 
-  return pub.page(currentDoc().pages[currPage.documentOffset - 1]);
+  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset - 1], "previousPage");
 };
 
 /**
@@ -640,7 +675,7 @@ pub.removePage = function (page) {
   if(arguments.length === 0) {
     page = currPage;
   } else if(isNumber(page) || isString(page) || page instanceof Page) {
-    page = pub.page(page);
+    page = getPage(page, "removePage");
   } else {
     error("removePage(), invalid parameter! Use page number, page name or page object!");
   }
@@ -1321,6 +1356,60 @@ var forEachTextCollection = function(container, collection, cb) {
   }
   return true;
 };
+
+var getPage = function(page, parentFunctionName) {
+  // get a page by number, name, page object or page item, without jumping to the page
+  if(isNumber(page)) {
+    // target page by document offset
+    if(isInteger(page) && page > 0 && page <= currentDoc().pages.length) {
+      return currentDoc().pages[page - 1];
+    } else {
+      error(parentFunctionName + "(), page " + page + " does not exist.");
+    }
+  } else if(isString(page)) {
+    // target page by name
+    if(currentDoc().pages.item(page).isValid) {
+      return currentDoc().pages.item(page);
+    } else {
+      error(parentFunctionName + "(), the page \"" + page + "\" does not exist.");
+    }
+  } else if(page instanceof Page) {
+    // target page object
+    return page;
+  } else if (page.hasOwnProperty("parentPage")) {
+    // target page via page item
+    if(page.parentPage === null) {
+      // page item is on the pasteboard, return first page of spread
+      while(!(page.parent instanceof Spread)) {
+        if(page.parent instanceof Character) {
+          // anchored page item
+          page = page.parent.parentTextFrames[0];
+        } else {
+          // nested page item
+          page = page.parent;
+        }
+      }
+      return page.parent.pages[0];
+    } else {
+      return page.parentPage;
+    }
+  } else {
+    // TODO make this message work for all parent functions
+    error(parentFunctionName + "(), invalid parameter. Use page number, page name, page object or a page item.");
+  }
+
+}
+
+var getAndUpdatePage = function(page, parentFunctionName) {
+
+    currPage = getPage(page, parentFunctionName)
+    updatePublicPageSizeVars();
+    if (currentDoc().windows.length) {
+      // focus GUI on new page, if not in HIDDEN mode
+      app.activeWindow.activePage = currPage;
+    }
+
+}
 
 var textCollection = function(collection, legalContainers, container, cb) {
 
