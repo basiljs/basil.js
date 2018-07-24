@@ -461,6 +461,24 @@ pub.addPage = function(location) {
 };
 
 /**
+ * @description TODO Applies an object style to the given page item. The object style can be given as name or as an object style instance.
+ *
+ * @cat     Document
+ * @subcat  Page
+ * @method  applyMasterPage
+ *
+ * @param   {Number|String|Page} page The page to apply the master page to.
+ * @param   {String|MasterSpread} master Todo.
+ * @return  {Page} The page that the master page was applied to.
+ */
+pub.applyMasterPage = function(page, master) {
+
+
+
+  return currentDoc().pages.add(location, pub.page());
+};
+
+/**
  * @description Set the next page of the document to be the active one. Returns new active page. If the current page is the last page, the last page will be returned.
  *
  * @cat     Document
@@ -476,7 +494,7 @@ pub.nextPage = function () {
     return currPage;
   }
 
-  return pub.page(currentDoc().pages[currPage.documentOffset + 1]);
+  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset + 1], "nextPage");
 };
 
 /**
@@ -502,50 +520,7 @@ pub.nextPage = function () {
 pub.page = function(page) {
 
   if(arguments.length) {
-
-    if(isNumber(page)) {
-      // target page by document offset
-      if(isInteger(page) && page > 0 && page <= currentDoc().pages.length) {
-        currPage = currentDoc().pages[page - 1];
-      } else {
-        error("page(), the page " + page + " does not exist.");
-      }
-    } else if(isString(page)) {
-      // target page by name
-      if(currentDoc().pages.item(page).isValid) {
-        currPage = currentDoc().pages.item(page);
-      } else {
-        error("page(), the page \"" + page + "\" does not exist.");
-      }
-    } else if(page instanceof Page) {
-      // target page object
-      currPage = page;
-    } else if (page.hasOwnProperty("parentPage")) {
-      // target page via page item
-      if(page.parentPage === null) {
-        // page item is on the pasteboard, return first page of spread
-        while(!(page.parent instanceof Spread)) {
-          if(page.parent instanceof Character) {
-            // anchored page item
-            page = page.parent.parentTextFrames[0];
-          } else {
-            // nested page item
-            page = page.parent;
-          }
-        }
-        currPage = page.parent.pages[0];
-      } else {
-        currPage = page.parentPage;
-      }
-    } else {
-      error("page(), invalid parameter. Use page number, page name, page object or a page item.");
-    }
-
-    updatePublicPageSizeVars();
-    if (currentDoc().windows.length) {
-      // focus GUI on new page, if not in HIDDEN mode
-      app.activeWindow.activePage = currPage;
-    }
+    getAndUpdatePage(page, "page");
   }
 
   return currentPage();
@@ -619,7 +594,7 @@ pub.previousPage = function () {
     return currPage;
   }
 
-  return pub.page(currentDoc().pages[currPage.documentOffset - 1]);
+  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset - 1], "previousPage");
 };
 
 /**
@@ -640,7 +615,7 @@ pub.removePage = function (page) {
   if(arguments.length === 0) {
     page = currPage;
   } else if(isNumber(page) || isString(page) || page instanceof Page) {
-    page = pub.page(page);
+    page = getPage(page, "removePage");
   } else {
     error("removePage(), invalid parameter! Use page number, page name or page object!");
   }
@@ -1321,6 +1296,60 @@ var forEachTextCollection = function(container, collection, cb) {
   }
   return true;
 };
+
+var getPage = function(page, parentFunctionName) {
+  // get a page by number, name, page object or page item, without jumping to the page
+  if(isNumber(page)) {
+    // target page by document offset
+    if(isInteger(page) && page > 0 && page <= currentDoc().pages.length) {
+      return currentDoc().pages[page - 1];
+    } else {
+      error(parentFunctionName + "(), page " + page + " does not exist.");
+    }
+  } else if(isString(page)) {
+    // target page by name
+    if(currentDoc().pages.item(page).isValid) {
+      return currentDoc().pages.item(page);
+    } else {
+      error(parentFunctionName + "(), the page \"" + page + "\" does not exist.");
+    }
+  } else if(page instanceof Page) {
+    // target page object
+    return page;
+  } else if (page.hasOwnProperty("parentPage")) {
+    // target page via page item
+    if(page.parentPage === null) {
+      // page item is on the pasteboard, return first page of spread
+      while(!(page.parent instanceof Spread)) {
+        if(page.parent instanceof Character) {
+          // anchored page item
+          page = page.parent.parentTextFrames[0];
+        } else {
+          // nested page item
+          page = page.parent;
+        }
+      }
+      return page.parent.pages[0];
+    } else {
+      return page.parentPage;
+    }
+  } else {
+    // TODO make this message work for all parent functions
+    error(parentFunctionName + "(), invalid parameter. Use page number, page name, page object or a page item.");
+  }
+
+}
+
+var getAndUpdatePage = function(page, parentFunctionName) {
+
+    currPage = getPage(page, parentFunctionName)
+    updatePublicPageSizeVars();
+    if (currentDoc().windows.length) {
+      // focus GUI on new page, if not in HIDDEN mode
+      app.activeWindow.activePage = currPage;
+    }
+
+}
 
 var textCollection = function(collection, legalContainers, container, cb) {
 
