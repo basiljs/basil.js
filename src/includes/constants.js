@@ -180,6 +180,11 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Used with addPage() to set the position of the new page in the book.
+ */
+pub.NONE = "noneMasterSpread";
+
+/**
  * Used with arrange() to bring a page item to the front or to bring it in front of a given reference object.
  */
 pub.FRONT = "front";

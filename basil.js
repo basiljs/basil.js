@@ -260,6 +260,11 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
+ * Used with addPage() to set the position of the new page in the book.
+ */
+pub.NONE = "noneMasterSpread";
+
+/**
  * Used with arrange() to bring a page item to the front or to bring it in front of a given reference object.
  */
 pub.FRONT = "front";
@@ -2955,21 +2960,72 @@ pub.addPage = function(location) {
 };
 
 /**
- * @description TODO Applies an object style to the given page item. The object style can be given as name or as an object style instance.
+ * @description Applies a master page to the given page.
+ *
+ * The `page` parameter can be given as a page object, as a page name or as a page number (numbering starts at 1).
+ *
+ * The `master` parameter can be given as a master spread object or as a string. If a string is used, it can either hold the master page prefix (e.g "A", "B") or the full name *including* the prefix (e.g "A-Master", "B-Master"). The latter is useful, if there are several masters using the same prefix. Alternatively, the constant `NONE` can be used to apply InDesign's `[none]` master to the page and thus remove the previously applied master page from the page.
  *
  * @cat     Document
  * @subcat  Page
  * @method  applyMasterPage
  *
  * @param   {Number|String|Page} page The page to apply the master page to.
- * @param   {String|MasterSpread} master Todo.
- * @return  {Page} The page that the master page was applied to.
+ * @param   {String|MasterSpread} master The master page to apply.
+ * @return  {Page} The page the master page was applied to.
  */
 pub.applyMasterPage = function(page, master) {
 
+  if(isNumber(page) || isString(page) || page instanceof Page) {
+    page = getPage(page, "applyMasterPage");
+  } else {
+    error("applyMasterPage(), invalid first parameter! Use page number, page name or page object for the page to apply the master to.");
+  }
 
+  if(isString(master)) {
 
-  return currentDoc().pages.add(location, pub.page());
+    var ms = currentDoc().masterSpreads;
+
+    if(master.indexOf("-") > 0) {
+      // full name is presumably given
+      for (var i = 0; i < ms.length; i++) {
+        if(ms[i].name === master) {
+          master = ms[i];
+          break;
+        }
+      }
+    }
+
+    if(isString(master) && master.length <= 4) {
+      // suffix is given
+      for (var j = 0; j < ms.length; j++) {
+        if(ms[j].namePrefix === master) {
+          master = ms[j];
+          break;
+        }
+      }
+    }
+
+    if(master === pub.NONE) {
+      // apply InDesign's [None] master
+      page.appliedMaster = NothingEnum.NOTHING;
+      return page;
+    }
+
+    if(isString(master)) {
+      var prefixErrorMsg = master.length <= 4 ? "or with prefix \"" + master + "\" " : "";
+      error("applyMasterPage(), the master page named \"" + master + "\" " + prefixErrorMsg + "does not exist.");
+    }
+
+  }
+
+  if(!(master instanceof MasterSpread)) {
+    error("applyMasterPage(), invalid second parameter! Use full master page name, master page prefix or master spread object.");
+  }
+
+  page.appliedMaster = master;
+
+  return page;
 };
 
 /**
