@@ -3072,7 +3072,7 @@ pub.nextPage = function () {
  * @example <caption>Sets the current page to the page named "004"</caption>
  * page("004");
  *
- * @example <caption>Sets the current page to the containing page of a rectangle>
+ * @example <caption>Sets the current page to the containing page of a rectangle</caption>
  * var myRect = rect(100, 100, 200, 200);
  * page(myRect);
  */
