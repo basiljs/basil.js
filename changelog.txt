@@ -22,6 +22,8 @@ basil.js x.x.x DAY MONTH YEAR
 + Added applyParagraphStyle(), applyCharacterStyle(), applyObjectStyle(),
   set the style of a text object/page item.
   see examples/typography/styles.jsx
++ Added applyMasterPage()
+  applies a master page to a page
 + Added arrange()
   allows to arrange page items or layers in z-space
 + Added property()

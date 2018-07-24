@@ -474,6 +474,15 @@ pub.addPage = function(location) {
  * @param   {Number|String|Page} page The page to apply the master page to.
  * @param   {String|MasterSpread} master The master page to apply.
  * @return  {Page} The page the master page was applied to.
+ *
+ * @example <caption>Apply the master with prefix "B" to the documents third page</caption>
+ * applyMasterPage(3, "B");
+ *
+ * @example <caption>In a document with master pages "A-Text" and "A-Images", apply "A-Images" to the current page</caption>
+ * applyMasterPage(page(), "A-Images");
+ *
+ * @example <caption>Remove the master page from the page named "IV"</caption>
+ * applyMasterPage("IV", NONE);
  */
 pub.applyMasterPage = function(page, master) {
 
