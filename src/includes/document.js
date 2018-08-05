@@ -492,50 +492,65 @@ pub.applyMasterPage = function(page, master) {
     error("applyMasterPage(), invalid first parameter! Use page number, page name or page object for the page to apply the master to.");
   }
 
-  if(isString(master)) {
-
-    var ms = currentDoc().masterSpreads;
-
-    if(master.indexOf("-") > 0) {
-      // full name is presumably given
-      for (var i = 0; i < ms.length; i++) {
-        if(ms[i].name === master) {
-          master = ms[i];
-          break;
-        }
-      }
-    }
-
-    if(isString(master) && master.length <= 4) {
-      // suffix is given
-      for (var j = 0; j < ms.length; j++) {
-        if(ms[j].namePrefix === master) {
-          master = ms[j];
-          break;
-        }
-      }
-    }
-
-    if(master === pub.NONE) {
-      // apply InDesign's [None] master
-      page.appliedMaster = NothingEnum.NOTHING;
-      return page;
-    }
-
-    if(isString(master)) {
-      var prefixErrorMsg = master.length <= 4 ? "or with prefix \"" + master + "\" " : "";
-      error("applyMasterPage(), the master page named \"" + master + "\" " + prefixErrorMsg + "does not exist.");
-    }
-
+  if(master === pub.NONE) {
+    // apply InDesign's [None] master
+    page.appliedMaster = NothingEnum.NOTHING;
+    return page;
   }
 
-  if(!(master instanceof MasterSpread)) {
-    error("applyMasterPage(), invalid second parameter! Use full master page name, master page prefix or master spread object.");
-  }
-
-  page.appliedMaster = master;
+  page.appliedMaster = getMasterSpread(master, "applyMasterPage");
 
   return page;
+};
+
+/**
+ * @description Sets a master page to be the active page. This can be used to set up and arrange page items on master pages, so they appear throughout the entire document.
+ *
+ * The `master` parameter describes the master spread that contains the master page. It can be given as a master spread object or as a string. If a string is used, it can either hold the master page prefix (e.g "A", "B") or the full name *including* the prefix (e.g "A-Master", "B-Master"). The latter is useful, if there are several masters using the same prefix.
+ *
+ * As master pages cannot directly be targeted by number, the optional `pageIndex` parameter can be used to specify which master page of the given master spread should be set as the active page, in case there are several pages on the master spread. Counting starts from 0, beginning from the leftmost page. If the `pageIndex` parameter is not given, the first page of the master spread is returned.
+ *
+ * @cat     Document
+ * @subcat  Page
+ * @method  masterPage
+ *
+ * @param   {String|MasterSpread} master The master spread that contains the master page.
+ * @param   {Number} [pageIndex] The index of the page on the master spread, counting from 0.
+ * @return  {Page} The active master page.
+ *
+ * @example <caption>Set master page to be the first page of master "A".</caption>
+ * masterPage("A");
+ *
+ * @example <caption>Set master page to be the second page of master "B".</caption>
+ * masterPage("B", 1);
+ *
+ * @example <caption>Alternate way to set master page ot the second page of master "B".</caption>
+ * masterPage("B");
+ * nextPage();
+ */
+pub.masterPage = function(master, pageIndex) {
+
+  var mp;
+  var ms = getMasterSpread(master, "masterPage");
+
+  if(arguments.length === 1) {
+    mp = ms.pages[0];
+  } else {
+    if((!isNumber(pageIndex)) || pageIndex > ms.pages.length - 1) {
+      error("masterPage(), invalid page index! Use number that describes a valid page index. Counting starts at 0 from the leftmost page of a master spread.");
+    }
+    mp = ms.pages[pageIndex];
+  }
+
+  // set active page
+  currPage = mp;
+  updatePublicPageSizeVars();
+  if (currentDoc().windows.length) {
+    // focus GUI on new page, if not in HIDDEN mode
+    app.activeWindow.activePage = currPage;
+  }
+
+  return mp;
 };
 
 /**
@@ -1409,6 +1424,46 @@ var getAndUpdatePage = function(page, parentFunctionName) {
       app.activeWindow.activePage = currPage;
     }
 
+}
+
+var getMasterSpread = function(master, parentFunctionName) {
+
+  if(isString(master)) {
+
+    var ms = currentDoc().masterSpreads;
+
+    if(master.indexOf("-") > 0) {
+      // full name is presumably given
+      for (var i = 0; i < ms.length; i++) {
+        if(ms[i].name === master) {
+          master = ms[i];
+          break;
+        }
+      }
+    }
+
+    if(isString(master) && master.length <= 4) {
+      // suffix is given
+      for (var j = 0; j < ms.length; j++) {
+        if(ms[j].namePrefix === master) {
+          master = ms[j];
+          break;
+        }
+      }
+    }
+
+    if(isString(master)) {
+      var prefixErrorMsg = master.length <= 4 ? "or with prefix \"" + master + "\" " : "";
+      error(parentFunctionName + "(), the master page named \"" + master + "\" " + prefixErrorMsg + "does not exist.");
+    }
+
+  }
+
+  if(!(master instanceof MasterSpread)) {
+    error(parentFunctionName + "(), invalid master parameter! Use full master page name, master page prefix or master spread object.");
+  }
+
+  return master;
 }
 
 var textCollection = function(collection, legalContainers, container, cb) {
