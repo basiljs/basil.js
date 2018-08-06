@@ -3137,7 +3137,7 @@ pub.pageCount = function(pageCount) {
 };
 
 /**
- * @description Returns the current page number of either the current page or the given page name or page object. Numbering of pages starts at 1.
+ * @description Returns the current page number of either the current page or the given page name or page object. Numbering of pages starts at 1. Master pages have no real numbering and will return -1 instead.
  *
  * @cat     Document
  * @subcat  Page
@@ -3149,7 +3149,7 @@ pub.pageCount = function(pageCount) {
 pub.pageNumber = function (page) {
 
   if(arguments.length === 0) {
-    return currPage.documentOffset + 1;
+    return currPage.parent instanceof MasterSpread ? -1 : currPage.documentOffset + 1;
   }
 
   if(isString(page)) {
@@ -3161,7 +3161,7 @@ pub.pageNumber = function (page) {
   }
 
   if(page instanceof Page) {
-    return page.documentOffset + 1;
+    return page.parent instanceof MasterSpread ? -1 : page.documentOffset + 1;
   } else {
     error("pageNumber(), invalid parameter! Use page name as string or page object.");
   }
