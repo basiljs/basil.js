@@ -24,6 +24,8 @@ basil.js x.x.x DAY MONTH YEAR
   see examples/typography/styles.jsx
 + Added applyMasterPage()
   applies a master page to a page
++ Added masterPage()
+  activates and returns a master page
 + Added arrange()
   allows to arrange page items or layers in z-space
 + Added property()

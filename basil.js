@@ -2991,54 +2991,69 @@ pub.applyMasterPage = function(page, master) {
     error("applyMasterPage(), invalid first parameter! Use page number, page name or page object for the page to apply the master to.");
   }
 
-  if(isString(master)) {
-
-    var ms = currentDoc().masterSpreads;
-
-    if(master.indexOf("-") > 0) {
-      // full name is presumably given
-      for (var i = 0; i < ms.length; i++) {
-        if(ms[i].name === master) {
-          master = ms[i];
-          break;
-        }
-      }
-    }
-
-    if(isString(master) && master.length <= 4) {
-      // suffix is given
-      for (var j = 0; j < ms.length; j++) {
-        if(ms[j].namePrefix === master) {
-          master = ms[j];
-          break;
-        }
-      }
-    }
-
-    if(master === pub.NONE) {
-      // apply InDesign's [None] master
-      page.appliedMaster = NothingEnum.NOTHING;
-      return page;
-    }
-
-    if(isString(master)) {
-      var prefixErrorMsg = master.length <= 4 ? "or with prefix \"" + master + "\" " : "";
-      error("applyMasterPage(), the master page named \"" + master + "\" " + prefixErrorMsg + "does not exist.");
-    }
-
+  if(master === pub.NONE) {
+    // apply InDesign's [None] master
+    page.appliedMaster = NothingEnum.NOTHING;
+    return page;
   }
 
-  if(!(master instanceof MasterSpread)) {
-    error("applyMasterPage(), invalid second parameter! Use full master page name, master page prefix or master spread object.");
-  }
-
-  page.appliedMaster = master;
+  page.appliedMaster = getMasterSpread(master, "applyMasterPage");
 
   return page;
 };
 
 /**
- * @description Set the next page of the document to be the active one. Returns new active page. If the current page is the last page, the last page will be returned.
+ * @description Sets a master page to be the active page. This can be used to set up and arrange page items on master pages, so they appear throughout the entire document.
+ *
+ * The `master` parameter describes the master spread that contains the master page. It can be given as a master spread object or as a string. If a string is used, it can either hold the master page prefix (e.g "A", "B") or the full name *including* the prefix (e.g "A-Master", "B-Master"). The latter is useful, if there are several masters using the same prefix.
+ *
+ * As master pages cannot directly be targeted by number, the optional `pageIndex` parameter can be used to specify which master page of the given master spread should be set as the active page, in case there are several pages on the master spread. Counting starts from 0, beginning from the leftmost page. If the `pageIndex` parameter is not given, the first page of the master spread is returned.
+ *
+ * @cat     Document
+ * @subcat  Page
+ * @method  masterPage
+ *
+ * @param   {String|MasterSpread} master The master spread that contains the master page.
+ * @param   {Number} [pageIndex] The index of the page on the master spread, counting from 0.
+ * @return  {Page} The active master page.
+ *
+ * @example <caption>Set master page to be the first page of master "A".</caption>
+ * masterPage("A");
+ *
+ * @example <caption>Set master page to be the second page of master "B".</caption>
+ * masterPage("B", 1);
+ *
+ * @example <caption>Alternate way to set master page ot the second page of master "B".</caption>
+ * masterPage("B");
+ * nextPage();
+ */
+pub.masterPage = function(master, pageIndex) {
+
+  var mp;
+  var ms = getMasterSpread(master, "masterPage");
+
+  if(arguments.length === 1) {
+    mp = ms.pages[0];
+  } else {
+    if((!isNumber(pageIndex)) || pageIndex > ms.pages.length - 1) {
+      error("masterPage(), invalid page index! Use number that describes a valid page index. Counting starts at 0 from the leftmost page of a master spread.");
+    }
+    mp = ms.pages[pageIndex];
+  }
+
+  // set active page
+  currPage = mp;
+  updatePublicPageSizeVars();
+  if (currentDoc().windows.length) {
+    // focus GUI on new page, if not in HIDDEN mode
+    app.activeWindow.activePage = currPage;
+  }
+
+  return mp;
+};
+
+/**
+ * @description Set the next page of the document to be the active one and returns the new active page. If the current page is the last page or the last master page, this page will be returned.
  *
  * @cat     Document
  * @subcat  Page
@@ -3048,12 +3063,27 @@ pub.applyMasterPage = function(page, master) {
  */
 pub.nextPage = function () {
 
-  if(currPage.documentOffset + 1 === currentDoc().documentPreferences.pagesPerDocument) {
-    // last page
-    return currPage;
+  var np;
+  if(currPage.parent instanceof MasterSpread) {
+    // master page
+    if(currPage.parent.pages.nextItem(currPage).isValid) {
+      np = currPage.parent.pages.nextItem(currPage);
+    } else if(currentDoc().masterSpreads.nextItem(currPage.parent).isValid) {
+      np = currentDoc().masterSpreads.nextItem(currPage.parent).pages[0];
+    } else {
+      // last master page
+      return currPage;
+    }
+  } else {
+    // regular page
+    if(currPage.documentOffset + 1 === currentDoc().documentPreferences.pagesPerDocument) {
+      // last page
+      return currPage;
+    }
+    np = currentDoc().pages[currPage.documentOffset + 1];
   }
 
-  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset + 1], "nextPage");
+  return getAndUpdatePage(np, "nextPage");
 };
 
 /**
@@ -3107,7 +3137,7 @@ pub.pageCount = function(pageCount) {
 };
 
 /**
- * @description Returns the current page number of either the current page or the given page name or page object. Numbering of pages starts at 1.
+ * @description Returns the current page number of either the current page or the given page name or page object. Numbering of pages starts at 1. Master pages have no real numbering and will return -1 instead.
  *
  * @cat     Document
  * @subcat  Page
@@ -3119,7 +3149,7 @@ pub.pageCount = function(pageCount) {
 pub.pageNumber = function (page) {
 
   if(arguments.length === 0) {
-    return currPage.documentOffset + 1;
+    return currPage.parent instanceof MasterSpread ? -1 : currPage.documentOffset + 1;
   }
 
   if(isString(page)) {
@@ -3131,14 +3161,14 @@ pub.pageNumber = function (page) {
   }
 
   if(page instanceof Page) {
-    return page.documentOffset + 1;
+    return page.parent instanceof MasterSpread ? -1 : page.documentOffset + 1;
   } else {
     error("pageNumber(), invalid parameter! Use page name as string or page object.");
   }
 };
 
 /**
- * @description Set the previous page of the document to be the active one. Returns new active page. If the current page is the first page, the first page will be returned.
+ * @description Set the previous page of the document to be the active one and returns the new active page. If the current page is the first page or the first master page, this page will be returned.
  *
  * @cat     Document
  * @subcat  Page
@@ -3148,12 +3178,27 @@ pub.pageNumber = function (page) {
  */
 pub.previousPage = function () {
 
-  if(currPage.documentOffset === 0) {
-    // first page
-    return currPage;
+  var pp;
+  if(currPage.parent instanceof MasterSpread) {
+    // master page
+    if(currPage.parent.pages.previousItem(currPage).isValid) {
+      pp = currPage.parent.pages.previousItem(currPage);
+    } else if(currentDoc().masterSpreads.previousItem(currPage.parent).isValid) {
+      pp = currentDoc().masterSpreads.previousItem(currPage.parent).pages.lastItem();
+    } else {
+      // first master page
+      return currPage;
+    }
+  } else {
+    // regular page
+    if(currPage.documentOffset === 0) {
+      // first page
+      return currPage;
+    }
+    pp = currentDoc().pages[currPage.documentOffset - 1];
   }
 
-  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset - 1], "previousPage");
+  return getAndUpdatePage(pp, "previousPage");
 };
 
 /**
@@ -3908,6 +3953,46 @@ var getAndUpdatePage = function(page, parentFunctionName) {
       app.activeWindow.activePage = currPage;
     }
 
+}
+
+var getMasterSpread = function(master, parentFunctionName) {
+
+  if(isString(master)) {
+
+    var ms = currentDoc().masterSpreads;
+
+    if(master.indexOf("-") > 0) {
+      // full name is presumably given
+      for (var i = 0; i < ms.length; i++) {
+        if(ms[i].name === master) {
+          master = ms[i];
+          break;
+        }
+      }
+    }
+
+    if(isString(master) && master.length <= 4) {
+      // suffix is given
+      for (var j = 0; j < ms.length; j++) {
+        if(ms[j].namePrefix === master) {
+          master = ms[j];
+          break;
+        }
+      }
+    }
+
+    if(isString(master)) {
+      var prefixErrorMsg = master.length <= 4 ? "or with prefix \"" + master + "\" " : "";
+      error(parentFunctionName + "(), the master page named \"" + master + "\" " + prefixErrorMsg + "does not exist.");
+    }
+
+  }
+
+  if(!(master instanceof MasterSpread)) {
+    error(parentFunctionName + "(), invalid master parameter! Use full master page name, master page prefix or master spread object.");
+  }
+
+  return master;
 }
 
 var textCollection = function(collection, legalContainers, container, cb) {
