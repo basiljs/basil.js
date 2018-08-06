@@ -3053,7 +3053,7 @@ pub.masterPage = function(master, pageIndex) {
 };
 
 /**
- * @description Set the next page of the document to be the active one. Returns new active page. If the current page is the last page, the last page will be returned.
+ * @description Set the next page of the document to be the active one and returns the new active page. If the current page is the last page or the last master page, this page will be returned.
  *
  * @cat     Document
  * @subcat  Page
@@ -3063,12 +3063,27 @@ pub.masterPage = function(master, pageIndex) {
  */
 pub.nextPage = function () {
 
-  if(currPage.documentOffset + 1 === currentDoc().documentPreferences.pagesPerDocument) {
-    // last page
-    return currPage;
+  var np;
+  if(currPage.parent instanceof MasterSpread) {
+    // master page
+    if(currPage.parent.pages.nextItem(currPage).isValid) {
+      np = currPage.parent.pages.nextItem(currPage);
+    } else if(currentDoc().masterSpreads.nextItem(currPage.parent).isValid) {
+      np = currentDoc().masterSpreads.nextItem(currPage.parent).pages[0];
+    } else {
+      // last master page
+      return currPage;
+    }
+  } else {
+    // regular page
+    if(currPage.documentOffset + 1 === currentDoc().documentPreferences.pagesPerDocument) {
+      // last page
+      return currPage;
+    }
+    np = currentDoc().pages[currPage.documentOffset + 1];
   }
 
-  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset + 1], "nextPage");
+  return getAndUpdatePage(np, "nextPage");
 };
 
 /**
@@ -3153,7 +3168,7 @@ pub.pageNumber = function (page) {
 };
 
 /**
- * @description Set the previous page of the document to be the active one. Returns new active page. If the current page is the first page, the first page will be returned.
+ * @description Set the previous page of the document to be the active one and returns the new active page. If the current page is the first page or the first master page, this page will be returned.
  *
  * @cat     Document
  * @subcat  Page
@@ -3163,12 +3178,27 @@ pub.pageNumber = function (page) {
  */
 pub.previousPage = function () {
 
-  if(currPage.documentOffset === 0) {
-    // first page
-    return currPage;
+  var pp;
+  if(currPage.parent instanceof MasterSpread) {
+    // master page
+    if(currPage.parent.pages.previousItem(currPage).isValid) {
+      pp = currPage.parent.pages.previousItem(currPage);
+    } else if(currentDoc().masterSpreads.previousItem(currPage.parent).isValid) {
+      pp = currentDoc().masterSpreads.previousItem(currPage.parent).pages.lastItem();
+    } else {
+      // first master page
+      return currPage;
+    }
+  } else {
+    // regular page
+    if(currPage.documentOffset === 0) {
+      // first page
+      return currPage;
+    }
+    pp = currentDoc().pages[currPage.documentOffset - 1];
   }
 
-  return getAndUpdatePage(currentDoc().pages[currPage.documentOffset - 1], "previousPage");
+  return getAndUpdatePage(pp, "previousPage");
 };
 
 /**
