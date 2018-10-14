@@ -30,7 +30,6 @@ basilTest("TypographyTests", {
     var contents = "foo bar";
 
     doc();
-    page(0);
     layer(this.myLayer);
     text(contents, 0, 0, 300, 300);
 
@@ -43,7 +42,6 @@ basilTest("TypographyTests", {
       contents2 = "bar foo";
 
     doc();
-    page(0);
     layer(this.myLayer);
     text(contents1, 0, 0, 300, 300);
     text(contents2, 50, 50, 300, 300);
@@ -58,7 +56,6 @@ basilTest("TypographyTests", {
     var contents = "Copyright: ©, Euro: €";
 
     doc();
-    page(0);
     layer(this.myLayer);
     text(contents, 0, 0, 300, 300);
 
@@ -70,7 +67,6 @@ basilTest("TypographyTests", {
     var contents = "foo\rbar\rfoobar";
 
     doc();
-    page(0);
     layer(this.myLayer);
     text(contents, 0, 0, 300, 300);
 

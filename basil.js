@@ -2956,7 +2956,7 @@ pub.addPage = function(location) {
     location = pub.AT_END;
   }
 
-  return currentDoc().pages.add(location, pub.page());
+  return getAndUpdatePage(currentDoc().pages.add(location, pub.page()), "addPage");
 };
 
 /**
@@ -3224,9 +3224,13 @@ pub.removePage = function (page) {
     error("removePage(), invalid parameter! Use page number, page name or page object!");
   }
 
+  if(page === currPage) {
+    currPage = null; // reset!
+  }
+
   page.remove();
-  currPage = null; // reset!
   currentPage();
+  getAndUpdatePage(currPage);
 };
 
 // ----------------------------------------
@@ -3952,7 +3956,7 @@ var getAndUpdatePage = function(page, parentFunctionName) {
       // focus GUI on new page, if not in HIDDEN mode
       app.activeWindow.activePage = currPage;
     }
-
+    return currPage;
 }
 
 var getMasterSpread = function(master, parentFunctionName) {
