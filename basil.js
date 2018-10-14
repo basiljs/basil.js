@@ -3224,9 +3224,13 @@ pub.removePage = function (page) {
     error("removePage(), invalid parameter! Use page number, page name or page object!");
   }
 
+  if(page === currPage) {
+    currPage = null; // reset!
+  }
+
   page.remove();
-  currPage = null; // reset!
   currentPage();
+  getAndUpdatePage(currPage);
 };
 
 // ----------------------------------------

@@ -174,7 +174,7 @@ basilTest("EnvironmentTests", {
     assert(pageCount() === 3);
 
     removePage(pageCount());
-    assert(pageNumber() === 2);
+    assert(pageNumber() === 1);
     assert(pageCount() === 2);
 
     addPage();
