@@ -7,55 +7,89 @@
 // ----------------------------------------
 
 /**
- * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `width` and `height` parameters define a rectangular area.
+ * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `w` and `h` parameters define a rectangular area. If a rectangle, an oval, a polygon or a graphic line are used instead of an x position, the given text will be placed in/on this shape.
  *
  * @cat     Typography
  * @method  text
  *
  * @param   {String} txt The text content to set in the text frame.
- * @param   {Number} x x-coordinate of text frame
+ * @param   {Number|Rectangle|Oval|Polygon|GraphicLine|TextFrame} x x-coordinate of text frame or item to place the text in or graphic line to place the text onto as a text path.
  * @param   {Number} y y-coordinate of text frame
  * @param   {Number} w width of text frame
  * @param   {Number} h height of text frame
- * @return  {TextFrame} The created text frame instance
+ * @return  {TextFrame|TextPath} The created text frame instance or the text path
+ *
+ * @example <caption>Create a text frame with a Lorem ipsum text.</caption>
+ * text(LOREM, 50, 50, 100, 200);
+ *
+ * @example <caption>Place a Lorem ipsum text inside an oval shape.</caption>
+ * var ell = ellipse(50, 50, 100, 100);
+ * text(LOREM, ell);
+ *
+ * @example <caption>Place a Lorem ipsum text as a text path onto a line.</caption>
+ * var l = line(50, 50, 200, 80);
+ * text(LOREM, l);
  */
 pub.text = function(txt, x, y, w, h) {
-  if (arguments.length !== 5) {
-    error("text(), not enough parameters to draw a text! Use: text(txt, x, y, w, h)");
-  }
   if (!(isString(txt) || isNumber(txt))) {
-    warning("text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: text(txt, x, y, w, h)");
+    error("text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: text(txt, x, y, w, h)");
   }
 
-  var textBounds = [];
-  if (currRectMode === pub.CORNER) {
-    textBounds[0] = y;
-    textBounds[1] = x;
-    textBounds[2] = y + h;
-    textBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
-    textBounds[0] = y;
-    textBounds[1] = x;
-    textBounds[2] = h;
-    textBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
-    textBounds[0] = y - (h / 2);
-    textBounds[1] = x - (w / 2);
-    textBounds[2] = y + (h / 2);
-    textBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
-    textBounds[0] = y - h;
-    textBounds[1] = x - w;
-    textBounds[2] = y + h;
-    textBounds[3] = x + w;
+  var textContainer;
+
+  if (x instanceof Rectangle ||
+      x instanceof Oval ||
+      x instanceof Polygon ||
+      x instanceof TextFrame) {
+    x.contentType = ContentType.TEXT_TYPE;
+    textContainer = x.getElements()[0];
+    textContainer.contents = txt.toString();
+  } else if (x instanceof GraphicLine) {
+    textContainer = x.textPaths.add();
+    textContainer.contents = txt.toString();
+  } else if (isNumber(x) && arguments.length === 5) {
+    var textBounds = [];
+    if (currRectMode === pub.CORNER) {
+      textBounds[0] = y;
+      textBounds[1] = x;
+      textBounds[2] = y + h;
+      textBounds[3] = x + w;
+    } else if (currRectMode === pub.CORNERS) {
+      textBounds[0] = y;
+      textBounds[1] = x;
+      textBounds[2] = h;
+      textBounds[3] = w;
+    } else if (currRectMode === pub.CENTER) {
+      textBounds[0] = y - (h / 2);
+      textBounds[1] = x - (w / 2);
+      textBounds[2] = y + (h / 2);
+      textBounds[3] = x + (w / 2);
+    } else if (currRectMode === pub.RADIUS) {
+      textBounds[0] = y - h;
+      textBounds[1] = x - w;
+      textBounds[2] = y + h;
+      textBounds[3] = x + w;
+    }
+
+    textContainer = currentPage().textFrames.add(currentLayer());
+    textContainer.contents = txt.toString();
+    textContainer.geometricBounds = textBounds;
+    textContainer.textFramePreferences.verticalJustification = currYAlign;
+
+    if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+      textContainer.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix(x, y));
+    } else {
+      textContainer.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix(x, y));
+    }
+  } else {
+    error("text(), invalid parameters. Use: text(txt, x, y, w, h) or text(txt, obj).");
   }
 
-  var textFrame = currentPage().textFrames.add(currentLayer());
-  textFrame.contents = txt.toString();
-  textFrame.geometricBounds = textBounds;
-  textFrame.textFramePreferences.verticalJustification = currYAlign;
-
-  pub.typo(textFrame, {
+  pub.typo(textContainer, {
     appliedFont: currFont,
     pointSize: currFontSize,
     fillColor: currFillColor,
@@ -65,18 +99,7 @@ pub.text = function(txt, x, y, w, h) {
     tracking: currTracking
   });
 
-
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
-    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
-  } else {
-    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
-  }
-
-  return textFrame;
+  return textContainer;
 };
 
 // ----------------------------------------
