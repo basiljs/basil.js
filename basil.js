@@ -7539,7 +7539,7 @@ var printMatrixHelper = function(elements) {
 // ----------------------------------------
 
 /**
- * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `width` and `height` parameters define a rectangular area.
+ * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `w` and `h` parameters define a rectangular area. If a rectangle, an oval, a polygon or a graphic line are used instead of an x position, the given text will be placed in/on this shape.
  *
  * @cat     Typography
  * @method  text
@@ -7549,7 +7549,18 @@ var printMatrixHelper = function(elements) {
  * @param   {Number} y y-coordinate of text frame
  * @param   {Number} w width of text frame
  * @param   {Number} h height of text frame
- * @return  {TextFrame|TextPath} The created text frame instance
+ * @return  {TextFrame|TextPath} The created text frame instance or the text path
+ *
+ * @example <caption>Create a text frame with a Lorem ipsum text.</caption>
+ * text(LOREM, 50, 50, 100, 200);
+ *
+ * @example <caption>Place a Lorem ipsum text inside an oval shape.</caption>
+ * var ell = ellipse(50, 50, 100, 100);
+ * text(LOREM, ell);
+ *
+ * @example <caption>Place a Lorem ipsum text as a text path onto a line.</caption>
+ * var l = line(50, 50, 200, 80);
+ * text(LOREM, l);
  */
 pub.text = function(txt, x, y, w, h) {
   if (!(isString(txt) || isNumber(txt))) {
