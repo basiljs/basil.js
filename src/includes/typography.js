@@ -13,49 +13,71 @@
  * @method  text
  *
  * @param   {String} txt The text content to set in the text frame.
- * @param   {Number} x x-coordinate of text frame
+ * @param   {Number|Rectangle|Oval|Polygon|GraphicLine} x x-coordinate of text frame or item to place the text in or graphic line to place the text onto as a text path.
  * @param   {Number} y y-coordinate of text frame
  * @param   {Number} w width of text frame
  * @param   {Number} h height of text frame
- * @return  {TextFrame} The created text frame instance
+ * @return  {TextFrame|TextPath} The created text frame instance
  */
 pub.text = function(txt, x, y, w, h) {
-  if (arguments.length !== 5) {
-    error("text(), not enough parameters to draw a text! Use: text(txt, x, y, w, h)");
-  }
   if (!(isString(txt) || isNumber(txt))) {
-    warning("text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: text(txt, x, y, w, h)");
+    error("text(), the first parameter has to be a string! But is something else: " + typeof txt + ". Use: text(txt, x, y, w, h)");
   }
 
-  var textBounds = [];
-  if (currRectMode === pub.CORNER) {
-    textBounds[0] = y;
-    textBounds[1] = x;
-    textBounds[2] = y + h;
-    textBounds[3] = x + w;
-  } else if (currRectMode === pub.CORNERS) {
-    textBounds[0] = y;
-    textBounds[1] = x;
-    textBounds[2] = h;
-    textBounds[3] = w;
-  } else if (currRectMode === pub.CENTER) {
-    textBounds[0] = y - (h / 2);
-    textBounds[1] = x - (w / 2);
-    textBounds[2] = y + (h / 2);
-    textBounds[3] = x + (w / 2);
-  } else if (currRectMode === pub.RADIUS) {
-    textBounds[0] = y - h;
-    textBounds[1] = x - w;
-    textBounds[2] = y + h;
-    textBounds[3] = x + w;
+  var textContainer;
+
+  if (x instanceof Rectangle ||
+      x instanceof Oval ||
+      x instanceof Polygon) {
+    x.contentType = ContentType.TEXT_TYPE;
+    textContainer = x.getElements()[0];
+    textContainer.contents = txt.toString();
+  } else if (x instanceof GraphicLine) {
+    textContainer = x.textPaths.add();
+    textContainer.contents = txt.toString();
+  } else if (isNumber(x) && arguments.length === 5) {
+    var textBounds = [];
+    if (currRectMode === pub.CORNER) {
+      textBounds[0] = y;
+      textBounds[1] = x;
+      textBounds[2] = y + h;
+      textBounds[3] = x + w;
+    } else if (currRectMode === pub.CORNERS) {
+      textBounds[0] = y;
+      textBounds[1] = x;
+      textBounds[2] = h;
+      textBounds[3] = w;
+    } else if (currRectMode === pub.CENTER) {
+      textBounds[0] = y - (h / 2);
+      textBounds[1] = x - (w / 2);
+      textBounds[2] = y + (h / 2);
+      textBounds[3] = x + (w / 2);
+    } else if (currRectMode === pub.RADIUS) {
+      textBounds[0] = y - h;
+      textBounds[1] = x - w;
+      textBounds[2] = y + h;
+      textBounds[3] = x + w;
+    }
+
+    textContainer = currentPage().textFrames.add(currentLayer());
+    textContainer.contents = txt.toString();
+    textContainer.geometricBounds = textBounds;
+    textContainer.textFramePreferences.verticalJustification = currYAlign;
+
+    if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
+      textContainer.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix(x, y));
+    } else {
+      textContainer.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix(x, y));
+    }
+  } else {
+    error("text(), invalid parameters. Use: text(txt, x, y, w, h) or text(txt, obj).");
   }
 
-  var textFrame = currentPage().textFrames.add(currentLayer());
-  textFrame.contents = txt.toString();
-  textFrame.geometricBounds = textBounds;
-  textFrame.textFramePreferences.verticalJustification = currYAlign;
-
-  pub.typo(textFrame, {
+  pub.typo(textContainer, {
     appliedFont: currFont,
     pointSize: currFontSize,
     fillColor: currFillColor,
@@ -65,18 +87,7 @@ pub.text = function(txt, x, y, w, h) {
     tracking: currTracking
   });
 
-
-  if (currRectMode === pub.CENTER || currRectMode === pub.RADIUS) {
-    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
-  } else {
-    textFrame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
-  }
-
-  return textFrame;
+  return textContainer;
 };
 
 // ----------------------------------------
