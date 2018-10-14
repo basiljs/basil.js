@@ -457,7 +457,7 @@ pub.addPage = function(location) {
     location = pub.AT_END;
   }
 
-  return currentDoc().pages.add(location, pub.page());
+  return getAndUpdatePage(currentDoc().pages.add(location, pub.page()), "addPage");
 };
 
 /**
@@ -1453,7 +1453,7 @@ var getAndUpdatePage = function(page, parentFunctionName) {
       // focus GUI on new page, if not in HIDDEN mode
       app.activeWindow.activePage = currPage;
     }
-
+    return currPage;
 }
 
 var getMasterSpread = function(master, parentFunctionName) {
