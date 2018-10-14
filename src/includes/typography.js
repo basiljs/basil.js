@@ -13,7 +13,7 @@
  * @method  text
  *
  * @param   {String} txt The text content to set in the text frame.
- * @param   {Number|Rectangle|Oval|Polygon|GraphicLine} x x-coordinate of text frame or item to place the text in or graphic line to place the text onto as a text path.
+ * @param   {Number|Rectangle|Oval|Polygon|GraphicLine|TextFrame} x x-coordinate of text frame or item to place the text in or graphic line to place the text onto as a text path.
  * @param   {Number} y y-coordinate of text frame
  * @param   {Number} w width of text frame
  * @param   {Number} h height of text frame
@@ -39,7 +39,8 @@ pub.text = function(txt, x, y, w, h) {
 
   if (x instanceof Rectangle ||
       x instanceof Oval ||
-      x instanceof Polygon) {
+      x instanceof Polygon ||
+      x instanceof TextFrame) {
     x.contentType = ContentType.TEXT_TYPE;
     textContainer = x.getElements()[0];
     textContainer.contents = txt.toString();

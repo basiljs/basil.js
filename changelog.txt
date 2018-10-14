@@ -42,6 +42,8 @@ basil.js x.x.x DAY MONTH YEAR
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
 * basil scripts will by default use the user's default units or the current units of the document,
   as well as the transformation reference point set by the user
+* text() can be used to place text into shapes or as text paths on graphic lines
+* image() now allows to place images into text frames as well
 * canvasMode() behaves a lot more reliable now
   FACING_PAGES, FACING_MARGINS, FACING_BLEEDS, fixed for 3+ page spreads
   BLEED, MARGIN, FACING_MARGINS, FACING_BLEEDS, fixed for single page in facing_pages mode
