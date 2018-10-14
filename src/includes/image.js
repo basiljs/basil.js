@@ -13,7 +13,7 @@
  * @method  image
  *
  * @param   {String|File} img The image file name in the document's data directory or a File instance.
- * @param   {Number|Rectangle|Oval|Polygon} x The `x` position on the current page or the item instance to place the image in.
+ * @param   {Number|Rectangle|Oval|Polygon|TextFrame} x The `x` position on the current page or the item instance to place the image in.
  * @param   {Number} [y] The `y` position on the current page. Ignored if `x` is not a number.
  * @param   {Number} [w] The width of the rectangle to add the image to. Ignored if `x` is not a number.
  * @param   {Number} [h] The height of the rectangle to add the image to. Ignored if `x` is not a number.
@@ -22,42 +22,48 @@
 pub.image = function(img, x, y, w, h) {
   var file = initDataFile(img),
     frame = null,
-    fitOptions = null,
+    styleFrame = true,
+    fitOptions = FitOptions.FILL_PROPORTIONALLY,
     width = null,
     height = null,
     imgErrorMsg = "image(), wrong parameters. Use:\n"
-      + "image( {String|File}, {Rectangle|Oval|Polygon} ) or\n"
+      + "image( {String|File}, {Rectangle|Oval|Polygon|TextFrame} ) or\n"
       + "image( {String|File}, x, y ) or\n"
       + "image( {String|File}, x, y, w, h )";
 
-  if(arguments.length < 2 || arguments.length === 4 || arguments.length > 5) error(imgErrorMsg);
+  if(arguments.length < 2 || arguments.length === 4 || arguments.length > 5) {
+    error(imgErrorMsg);
+  }
 
   if (x instanceof Rectangle ||
       x instanceof Oval ||
-      x instanceof Polygon) {
+      x instanceof Polygon ||
+      x instanceof TextFrame) {
     frame = x;
-    fitOptions = FitOptions.FILL_PROPORTIONALLY;
-  } else if (typeof x === "number" && typeof y === "number") {
+    styleFrame = false;
+  } else if (isNumber(x) && isNumber(y)) {
     width = 1;
     height = 1;
     if (currImageMode === pub.CORNERS) {
-      if (typeof w === "number" && typeof h === "number") {
+      if (isNumber(w) && isNumber(h)) {
         width = w - x;
         height = h - y;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
       } else if (arguments.length === 3) {
-        fitOptions = FitOptions.frameToContent;
+        fitOptions = FitOptions.FitOptions.FRAME_TO_CONTENT;
       } else {
         error(imgErrorMsg);
       }
     } else {
-      if (typeof w === "number" && typeof h === "number") {
-        if (w <= 0 || h <= 0) error("image(), invalid parameters. When using image(img, x, y, w, h) with the default imageMode CORNER, parameters w and h need to be greater than 0.");
+      if (isNumber(w) && isNumber(h)) {
+        if (w <= 0 || h <= 0) {
+          error("image(), invalid parameters. When using image(img, x, y, w, h) with the default imageMode CORNER, parameters w and h need to be greater than 0.");
+        }
         width = w;
         height = h;
         fitOptions = FitOptions.FILL_PROPORTIONALLY;
       } else if (arguments.length === 3) {
-        fitOptions = FitOptions.frameToContent;
+        fitOptions = FitOptions.FRAME_TO_CONTENT;
       } else {
         error(imgErrorMsg);
       }
@@ -71,29 +77,28 @@ pub.image = function(img, x, y, w, h) {
   }
 
   frame.place(file);
+  frame.fit(fitOptions);
 
-  if (fitOptions) {
-    frame.fit(fitOptions);
+  if(styleFrame) {
+    if (currImageMode === pub.CENTER) {
+      var bounds = frame.geometricBounds;
+      width = bounds[3] - bounds[1];
+      height = bounds[2] - bounds[0];
+      frame.move(null, [-(width / 2), -(height / 2)]);
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                         AnchorPoint.CENTER_ANCHOR,
+                         currMatrix.adobeMatrix(x, y));
+    } else {
+      frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                     AnchorPoint.TOP_LEFT_ANCHOR,
+                     currMatrix.adobeMatrix(x, y));
+    }
+
+    frame.strokeWeight = currStrokeWeight;
+    frame.strokeTint = currStrokeTint;
+    frame.strokeColor = currStrokeColor;
   }
 
-  if (currImageMode === pub.CENTER) {
-    var bounds = frame.geometricBounds;
-    width = bounds[3] - bounds[1];
-    height = bounds[2] - bounds[0];
-    frame.move(null, [-(width / 2), -(height / 2)]);
-    frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
-  } else {
-    frame.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
-  }
-
-
-  frame.strokeWeight = currStrokeWeight;
-  frame.strokeTint = currStrokeTint;
-  frame.strokeColor = currStrokeColor;
 
   return frame;
 };
