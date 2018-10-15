@@ -3870,33 +3870,39 @@ pub.placeholder = function (textFrame) {
 };
 
 /**
- * @description Returns a collection of all story objects in the given document.
- * If a callback function is given, `stories()` calls this callback function on each story object of the given document. When the callback function returns false, the loop stops and the `stories()` function returns an array of all stories up to this point.
+ * @description Returns a collection of all story objects in the given document or returns the parent story of a certain element. These elements can be text frames or text objects.
+ * If a callback function is given, `stories()` calls this callback function on each story object of the given document or on the parent story of the given element. When the callback function returns false, the loop stops and the `stories()` function returns an array of all stories up to this point.
  *
  * @cat     Document
  * @subcat  Text
  * @method  stories
  *
- * @param   {Document} doc The document instance to iterate the stories in.
+ * @param   {Document} container The document instance to iterate the stories in or the element whose parent story to get.
  * @param   {Function} [cb] Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: `story`, `loopCount`
  * @return  {Stories|Array} A collection or an array of Story objects.
  *
  * @example
- * stories(doc(), function(story, loopCount){
+ * stories(container(), function(story, loopCount){
  *   println("Number of words in each Story:");
  *   println(story.words.length);
  * });
  */
-pub.stories = function(doc, cb) {
+pub.stories = function(container, cb) {
 
-  if(doc instanceof Document) {
+  if(container instanceof Document) {
     if(cb instanceof Function) {
-      return forEach(doc.stories, cb);
+      return forEach(container.stories, cb);
     }
-    return doc.stories;
+    return container.stories;
+  } else if(container.hasOwnProperty("parentStory")) {
+    var parentStoryArray = [container.parentStory];
+    if(cb instanceof Function) {
+      return forEach(parentStoryArray, cb);
+    }
+    return parentStoryArray;
   }
 
-  error("stories(), invalid container. Use: Document.");
+  error("stories(), invalid container. Use: Document, Text Frame or Text Object.");
 };
 
 /**
