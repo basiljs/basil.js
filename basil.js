@@ -1506,14 +1506,16 @@ pub.swatch = function(){
 // ----------------------------------------
 
 /**
- * @description Used to run a function on all elements of an array. Please note the existence of the convenience methods `stories()`, `paragraphs()`, `lines()`, `words()` and `characters()` that are used to iterate through all instances of the given type in the given document.
+ * @description Used to run a function on all elements of an array. `forEach()` calls this callback function on each element of the given array. When the callback function returns false, the loop stops and an array of all elements up to this point is returned.
+ * Please note the existence of the convenience methods `stories()`, `paragraphs()`, `lines()`, `words()` and `characters()` that are used to iterate through all instances of the given type in the given document.
  *
  * @cat     Data
  * @subcat  Collections
  * @method  forEach
  *
  * @param   {Array} collection The array to be processed.
- * @param   {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+ * @param   {Function} cb The function that will be called on each element. The call will be like `function(item, i)` where `i` is the current index of the item within the array.
+ * @return  {Array} An array of the input array elements.
  */
 forEach = function(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
@@ -3467,7 +3469,7 @@ pub.group = function (pItems, name) {
 
 /**
  * @description Returns a collection of all page items in the given container. The container object can be a Document, Page, Layer, Group, Story, Page Item or Text Object.
- * If a callback function is given, `items()` calls this callback function on each page item of the given container. When the callback function returns false, the loop stops and the `items()` function returns an array of all page items that did not return false.
+ * If a callback function is given, `items()` calls this callback function on each page item of the given container. When the callback function returns false, the loop stops and the `items()` function returns an array of all page items up to this point.
  *
  * @cat     Document
  * @subcat  Page Items
@@ -3746,7 +3748,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 
 /**
  * @description Returns a collection of all character objects in the given container. The container object can be a Document, Page, Layer, Group, Story, Text Frame, Paragraph, Line or Word.
- * If a callback function is given, `characters()` calls this callback function on each character object of the given container. When the callback function returns false, the loop stops and the `characters()` function returns an array of all characters that did not return false.
+ * If a callback function is given, `characters()` calls this callback function on each character object of the given container. When the callback function returns false, the loop stops and the `characters()` function returns an array of all characters up to this point.
  *
  * @cat     Document
  * @subcat  Text
@@ -3765,7 +3767,7 @@ pub.characters = function(container, cb) {
 
 /**
  * @description Returns a collection of all line objects in the given container. The container object can be a Document, Page, Layer, Group, Story, Text Frame or Paragraph. Please note that `lines()` refers to lines of text in a text frame. If you need to construct a geometric line on a page, use `line()` instead.
- * If a callback function is given, `lines()` calls this callback function on each line object of the given container. When the callback function returns false, the loop stops and the `lines()` function returns an array of all lines that did not return false.
+ * If a callback function is given, `lines()` calls this callback function on each line object of the given container. When the callback function returns false, the loop stops and the `lines()` function returns an array of all lines up to this point.
  *
  * @cat     Document
  * @subcat  Text
@@ -3803,7 +3805,7 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
 
 /**
  * @description Returns a collection of all paragraph objects in the given container. The container object can be a Document, Page, Layer, Group, Story or Text Frame.
- * If a callback function is given, `paragraphs()` calls this callback function on each paragraph object of the given container. When the callback function returns false, the loop stops and the `paragraphs()` function returns an array of all paragraphs that did not return false.
+ * If a callback function is given, `paragraphs()` calls this callback function on each paragraph object of the given container. When the callback function returns false, the loop stops and the `paragraphs()` function returns an array of all paragraphs up to this point.
  *
  * @cat     Document
  * @subcat  Text
@@ -3843,7 +3845,7 @@ pub.placeholder = function (textFrame) {
 
 /**
  * @description Returns a collection of all story objects in the given document.
- * If a callback function is given, `stories()` calls this callback function on each story object of the given document. When the callback function returns false, the loop stops and the `stories()` function returns an array of all stories that did not return false.
+ * If a callback function is given, `stories()` calls this callback function on each story object of the given document. When the callback function returns false, the loop stops and the `stories()` function returns an array of all stories up to this point.
  *
  * @cat     Document
  * @subcat  Text
@@ -3873,7 +3875,7 @@ pub.stories = function(doc, cb) {
 
 /**
  * @description Returns a collection of all word objects in the given container. The container object can be a Document, Page, Layer, Group, Story, Text Frame, Paragraph or Line.
- * If a callback function is given, `words()` calls this callback function on each word object of the given container. When the callback function returns false, the loop stops and the `words()` function returns an array of all words that did not return false.
+ * If a callback function is given, `words()` calls this callback function on each word object of the given container. When the callback function returns false, the loop stops and the `words()` function returns an array of all words up to this point.
  *
  * @cat     Document
  * @subcat  Text
