@@ -25,10 +25,13 @@ forEach = function(collection, cb) {
     }
 
     if(cb(collection[i], i) === false) {
-      return false;
+      if(collection.hasOwnProperty("everyItem")) {
+        return collection.everyItem().getElements().slice(0, i);
+      }
+      return collection.slice(0, i);
     }
   }
-  return true;
+  return collection;
 };
 
 // ----------------------------------------
