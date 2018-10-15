@@ -370,6 +370,52 @@ pub.guideY = function (y) {
 };
 
 /**
+ * @description Sets the color or gradient used to fill shapes.
+ *
+ * @cat     Document
+ * @subcat Canvas
+ * @method  background
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} fillColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ */
+pub.background = function (fillColor) {
+  var useColor = currFillColor;
+  checkNull(fillColor);
+  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
+    useColor = fillColor;
+  } else {
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === "string") {
+        useColor = pub.swatch(arguments[0]);
+      }else{
+        useColor = pub.color(arguments[0]);
+      }
+    } else if (arguments.length === 2) {
+      useColor = pub.color(arguments[0], arguments[1]);
+    } else if (arguments.length === 3) {
+      useColor = pub.color(arguments[0], arguments[1], arguments[2]);
+    } else if (arguments.length === 4) {
+      useColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+    } else if (arguments.length === 5) {
+      useColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    } else {
+      error("background(), wrong parameters. Use:\n"
+        + "Swatch name or\n"
+        + "GRAY or\n"
+        + "R, G, B or\n"
+        + "C, M, Y, K.\n");
+    }
+  }
+  var pLayer = pub.layer();
+  var bgLayer = pub.layer("basiljs_background");
+  pub.clear(bgLayer);
+  var backgroundShape = pub.rect(0, 0, pub.width, pub.height);
+  pub.property(backgroundShape, "fillColor", useColor);
+  pub.arrange(bgLayer, pub.BACK);
+  pub.layer(pLayer);
+};
+
+/**
  * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
  *
  * @cat     Document
