@@ -3786,7 +3786,7 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
  */
 pub.characters = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame, Paragraph, Line or Word.";
   return textCollection("characters", legalContainers, container, cb);
 
 };
@@ -3799,14 +3799,14 @@ pub.characters = function(container, cb) {
  * @subcat  Text
  * @method  lines
  *
- * @param   {Document|Page|Layer|Group|Story|TextFrame|Paragraph|Line|Word} container The document, page, layer, group, story, textFrame or paragraph instance to  iterate the lines in.
+ * @param   {Document|Page|Layer|Group|Story|TextFrame|Paragraph|Line} container The document, page, layer, group, story, textFrame or paragraph instance to  iterate the lines in.
  * @param   {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: `line`, `loopCount`
  * @return  {Lines|Array} A collection or an array of Line objects.
  */
 
 pub.lines = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame or Paragraph.";
   return textCollection("lines", legalContainers, container, cb);
 
 };
@@ -3843,7 +3843,7 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
  */
 pub.paragraphs = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page or TextFrame.";
+  var legalContainers = "Document, Page, Layer, Group, Story or TextFrame.";
   return textCollection("paragraphs", legalContainers, container, cb);
 
 };
@@ -3900,6 +3900,25 @@ pub.stories = function(doc, cb) {
 };
 
 /**
+ * @description Returns a collection of all text style range objects in the given container. A text style range is a continuous range of identically formatted text (i.e., three consecutive red words in an otherwise black text of the same style would form a text style range). The container object can be a Document, Page, Layer, Group, Story, Text Frame, Paragraph, Line or Word.
+ * If a callback function is given, `textStyleRanges()` calls this callback function on each text style range object of the given container. When the callback function returns false, the loop stops and the `textStyleRanges()` function returns an array of all text style ranges up to this point.
+ *
+ * @cat     Document
+ * @subcat  Text
+ * @method  textStyleRanges
+ *
+ * @param   {Document|Page|Layer|Group|Story|TextFrame|Paragraph|Line|Word} container The document, page, layer, group, story, textFrame, paragraph, line or word instance to iterate the text style ranges in.
+ * @param   {Function} [cb] Optional: The callback function to call with each text style range. When this function returns false the loop stops. Passed arguments: `textStyleRange`, `loopCount`
+ * @return  {TextStyleRanges|Array} A collection or an array of TextStyleRange objects.
+ */
+pub.textStyleRanges = function(container, cb) {
+
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame, Paragraph, Line or Word.";
+  return textCollection("textStyleRanges", legalContainers, container, cb);
+
+};
+
+/**
  * @description Returns a collection of all word objects in the given container. The container object can be a Document, Page, Layer, Group, Story, Text Frame, Paragraph or Line.
  * If a callback function is given, `words()` calls this callback function on each word object of the given container. When the callback function returns false, the loop stops and the `words()` function returns an array of all words up to this point.
  *
@@ -3913,7 +3932,7 @@ pub.stories = function(doc, cb) {
  */
 pub.words = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame, Paragraph or Line.";
   return textCollection("words", legalContainers, container, cb);
 
 };
