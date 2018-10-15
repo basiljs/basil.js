@@ -3432,6 +3432,32 @@ pub.duplicate = function(item) {
 };
 
 /**
+ * @description Returns a collection of all graphics in the given container. The container object can be a Document, Page, Layer, Group, Story, Page Item or Text Object. This function can be used to get the graphic within a graphic frame and move it independently of its parent frame.
+ * If a callback function is given, `graphics()` calls this callback function on each graphic of the given container. When the callback function returns false, the loop stops and the `graphics()` function returns an array of all graphics up to this point.
+ *
+ * @cat     Document
+ * @subcat  Page Items
+ * @method  graphics
+ *
+ * @param   {Document|Page|Layer|Group|Story|PageItem|TextObject} container The document, page, layer, group, story, page item or text object to iterate the graphics in.
+ * @param   {Function} [cb] The callback function to call with each graphic. When this function returns false the loop stops. Passed arguments: `graphic`, `loopCount`.
+ * @return  {Array} An array of Graphics.
+ */
+pub.graphics = function(container, cb) {
+
+  if (arguments.length && container.hasOwnProperty("allGraphics")) {
+
+    if(cb instanceof Function) {
+      return forEach(container.allGraphics, cb);
+    }
+    return container.allGraphics;
+  }
+
+  error("graphics(), not a valid Graphics container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
+
+};
+
+/**
  * @description Returns the Group instance and sets it if argument Group is given. Groups items to a new group. Returns the resulting group instance. If a string is given as the only argument, the group by the given name will be returned.
  *
  * @cat     Document
@@ -3489,7 +3515,7 @@ pub.items = function(container, cb) {
     return container.allPageItems;
   }
 
-  error("items(), Not a valid PageItem container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
+  error("items(), not a valid PageItem container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
 };
 
 /**
