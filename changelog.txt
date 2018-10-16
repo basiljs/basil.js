@@ -30,6 +30,8 @@ basil.js x.x.x DAY MONTH YEAR
   allows to arrange page items or layers in z-space
 + Added property()
   sets a property of an object to a given value
++ Added graphics() to loop over graphics in a given container
++ Added textStyleRanges() to loop over text style ranges in a given container
 + Added swatch()
   returns a color or gradient of a given name
 + Added revert()

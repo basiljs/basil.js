@@ -7,14 +7,16 @@
 // ----------------------------------------
 
 /**
- * @description Used to run a function on all elements of an array. Please note the existence of the convenience methods `stories()`, `paragraphs()`, `lines()`, `words()` and `characters()` that are used to iterate through all instances of the given type in the given document.
+ * @description Used to run a function on all elements of an array. `forEach()` calls this callback function on each element of the given array. When the callback function returns false, the loop stops and an array of all elements up to this point is returned.
+ * Please note the existence of the convenience methods `stories()`, `paragraphs()`, `lines()`, `words()` and `characters()` that are used to iterate through all instances of the given type in the given document.
  *
  * @cat     Data
  * @subcat  Collections
  * @method  forEach
  *
  * @param   {Array} collection The array to be processed.
- * @param   {Function} cb The function that will be called on each element. The call will be like function(item,i) where i is the current index of the item within the array.
+ * @param   {Function} cb The function that will be called on each element. The call will be like `function(item, i)` where `i` is the current index of the item within the array.
+ * @return  {Array} An array of the input array elements.
  */
 forEach = function(collection, cb) {
   for (var i = 0, len = collection.length; i < len; i++) {
@@ -25,10 +27,13 @@ forEach = function(collection, cb) {
     }
 
     if(cb(collection[i], i) === false) {
-      return false;
+      if(collection.hasOwnProperty("everyItem")) {
+        return collection.everyItem().getElements().slice(0, i);
+      }
+      return collection.slice(0, i);
     }
   }
-  return true;
+  return collection;
 };
 
 // ----------------------------------------
