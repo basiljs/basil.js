@@ -64,7 +64,7 @@ basilTest("DataTests", {
 
   },
 
-  testHashList2: function (b) {
+  testHashList2: function () {
 
     var hash = new HashList(); // start over
 
@@ -115,7 +115,31 @@ basilTest("DataTests", {
 
   },
 
-  testIsText: function(b) {
+  testIsArray: function() {
+    var myDoc = doc();
+
+    var arr1 = [];
+    assert(isArray(arr1));
+
+    var arr2 = [1, 2, 3];
+    assert(isArray(arr2));
+
+    var arr3 = new Array;
+    assert(isArray(arr3));
+
+    assert(isArray(doc().allPageItems), "empty allPageItems array");
+
+    var txt = text(LOREM, 0, 0, 20, 20);
+
+    assert(isArray(doc().allPageItems), "non-empty allPageItems array");
+
+    assert(isArray(txt.geometricBounds));
+
+    assert(!isArray(txt.words), "collection is not an array");
+
+  },
+
+  testIsText: function() {
     var myDoc = doc();
 
     var tf = text(LOREM, 0, 0, 200, 200);

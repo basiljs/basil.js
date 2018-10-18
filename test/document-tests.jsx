@@ -33,14 +33,14 @@ basilTest("DocumentTests", {
 
     var g = graphics(doc());
 
-    assert(g.constructor.name === "Array");
+    assert(isArray(g));
     assert(g[0] instanceof Image);
 
     var gCounter = 0;
     var gcb1 = graphics(doc(), function(graphic, i) {
       gCounter++;
     })
-    assert(gcb1.constructor.name === "Array");
+    assert(isArray(gcb1));
     assert(gCounter === g.length);
     assert(gCounter === gcb1.length);
 
@@ -49,7 +49,7 @@ basilTest("DocumentTests", {
         return false;
       }
     })
-    assert(gcb2.constructor.name === "Array");
+    assert(isArray(gcb2));
     assert(gcb2[0] instanceof Image);
     assert(gcb2.length < gcb1.length);
   },

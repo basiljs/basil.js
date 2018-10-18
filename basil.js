@@ -2326,7 +2326,7 @@ pub.trimWord = function(s) {
  * @return  {Boolean} returns true if this is the case
  */
 var isArray = pub.isArray = function(obj) {
-  return Object.prototype.toString.call(obj) === "[object Array]";
+  return obj.constructor.name === "Array";
 };
 
 /**
