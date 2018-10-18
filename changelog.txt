@@ -12,6 +12,7 @@ basil.js x.x.x DAY MONTH YEAR
 + Added frameRate() to set frame rate during looping scripts
 + Added transform() function to transform page items independent of the current matrix
   and to measure current transforms of page items
++ Added point(), quad() and triangle() to draw the corresponding shapes
 + Added referencePoint() function to set the reference point for transform()
 + Added file() and folder()
   gets files and folders or creates them

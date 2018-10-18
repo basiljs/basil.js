@@ -6839,12 +6839,13 @@ pub.quad = function(x1, y1, x2, y2, x3, y3, x4, y4) {
     error("quad(), not enough parameters to draw a quad! Use: x1, y1, x2, y2, x3, y3, x4, y4");
   }
 
-  beginShape();
-    vertex(x1, y1);
-    vertex(x2, y2);
-    vertex(x3, y3);
-    vertex(x4, y4);
-  return endShape(CLOSE);
+  var q = addShape([[x1, y1], [x2, y2], [x3, y3], [x4, y4]]);
+
+  q.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                AnchorPoint.TOP_LEFT_ANCHOR,
+                currMatrix.adobeMatrix(q.geometricBounds[1], q.geometricBounds[0]));
+
+  return q;
 };
 
 /**
@@ -6953,11 +6954,13 @@ pub.triangle = function(x1, y1, x2, y2, x3, y3) {
     error("triangle(), not enough parameters to draw a triangle! Use: x1, y1, x2, y2, x3, y3");
   }
 
-  beginShape();
-    vertex(x1, y1);
-    vertex(x2, y2);
-    vertex(x3, y3);
-  return endShape(CLOSE);
+  var tri = addShape([[x1, y1], [x2, y2], [x3, y3]]);
+
+  tri.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                AnchorPoint.TOP_LEFT_ANCHOR,
+                currMatrix.adobeMatrix(tri.geometricBounds[1], tri.geometricBounds[0]));
+
+  return tri;
 };
 
 // ----------------------------------------
@@ -7062,6 +7065,20 @@ function addPolygon() {
   currPolygon.fillColor = currFillColor;
   currPolygon.fillTint = currFillTint;
   currPolygon.strokeColor = currStrokeColor;
+}
+
+function addShape(vertices) {
+  var poly = currentPage().polygons.add(currentLayer());
+
+  poly.strokeWeight = currStrokeWeight;
+  poly.strokeTint = currStrokeTint;
+  poly.fillColor = currFillColor;
+  poly.fillTint = currFillTint;
+  poly.strokeColor = currStrokeColor;
+
+  poly.paths[0].entirePath = vertices;
+
+  return poly;
 }
 
 /*
