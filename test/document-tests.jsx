@@ -7,7 +7,7 @@ if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
 
-basilTest("EnvironmentTests", {
+basilTest("DocumentTests", {
 
   setUpTest: function() {
   },
