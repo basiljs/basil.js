@@ -150,7 +150,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 };
 
 /**
- * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height.
+ * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height. If no height is specified, the value of width is used for both the width and height. If a negative height or width is specified, the absolute value is taken. The origin may be changed with the ellipseMode() function.
  *
  * @cat     Shape
  * @subcat  Primitives
@@ -163,7 +163,12 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
  * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
-  if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
+  if (!(arguments.length === 4 || arguments.length === 3)) {
+    error("ellipse(), invalid parameters to draw an ellipse! Use: x, y, w, [h]");
+  }
+  if(arguments.length === 3) {
+    h = w;
+  }
   var ellipseBounds = [];
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
@@ -187,8 +192,9 @@ pub.ellipse = function(x, y, w, h) {
     ellipseBounds[3] = x + w;
   }
 
-  if(w === 0 || h === 0)
-    {return false;}
+  if(w === 0 || h === 0) {
+    return false;
+  }
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
@@ -202,12 +208,12 @@ pub.ellipse = function(x, y, w, h) {
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
+                      AnchorPoint.CENTER_ANCHOR,
+                      currMatrix.adobeMatrix(x, y));
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
+                      AnchorPoint.TOP_LEFT_ANCHOR,
+                      currMatrix.adobeMatrix(x, y));
   }
   return newOval;
 };
@@ -246,6 +252,53 @@ pub.line = function(x1, y1, x2, y2) {
                    AnchorPoint.CENTER_ANCHOR,
                    currMatrix.adobeMatrix( (x1 + x2) / 2, (y1 + y2) / 2 ));
   return newLine;
+};
+
+/**
+ * @description Draws a point, a coordinate in space at the dimension of the current stroke weight. The first parameter is the horizontal value for the point, the second value is the vertical value for the point. The color of the point is determined by the current stroke.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  point
+ *
+ * @param   {Number} x X-coordinate of the point.
+ * @param   {Number} y Y-coordinate of the point.
+ * @return  {Oval} The point as an Oval object.
+ */
+pub.point = function(x, y) {
+  if (arguments.length !== 2 || !isNumber(x) || !isNumber(y)) {
+    error("point(), wrong parameters to draw a point! Use: x, y");
+  }
+
+  var basilUnits = {
+    pt: MeasurementUnits.POINTS,
+    mm: MeasurementUnits.MILLIMETERS,
+    cm: MeasurementUnits.CENTIMETERS,
+    inch: MeasurementUnits.INCHES,
+    px: MeasurementUnits.PIXELS
+  }
+  var unitEnum = basilUnits[currUnits];
+  var w = UnitValue(currStrokeWeight, MeasurementUnits.POINTS).as(unitEnum);
+  var h = w;
+
+  if (currEllipseMode === pub.CORNER) {
+    x -= w / 2;
+    y -= h / 2;
+  } else if (currEllipseMode === pub.CORNERS) {
+    x -= w / 2;
+    y -= h / 2;
+    w = x + w;
+    h = y + h;
+  } else if (currEllipseMode === pub.RADIUS) {
+    w /= 2;
+    h /= 2;
+  }
+
+  var p = ellipse(x, y, w, h);
+  p.fillColor = currStrokeColor;
+  p.strokeWeight = 0;
+
+  return p;
 };
 
 /**
