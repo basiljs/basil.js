@@ -302,6 +302,36 @@ pub.point = function(x, y) {
 };
 
 /**
+ * @description Draws a quad to the page. A quad is a quadrilateral, a four sided polygon. It is similar to a rectangle, but the angles between its edges are not constrained to ninety degrees. The first pair of parameters (`x1`, `y1`) sets the first vertex, the subsequent pairs proceed around the defined shape.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  quad
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @param   {Number} x3 X-coordinate of Point 3.
+ * @param   {Number} y3 Y-coordinate of Point 3.
+ * @param   {Number} x3 X-coordinate of Point 4.
+ * @param   {Number} y3 Y-coordinate of Point 4.
+ * @return  {Polygon} The new quad as a Polygon object.
+ */
+pub.quad = function(x1, y1, x2, y2, x3, y3, x4, y4) {
+  if (arguments.length !== 8) {
+    error("quad(), not enough parameters to draw a quad! Use: x1, y1, x2, y2, x3, y3, x4, y4");
+  }
+
+  beginShape();
+    vertex(x1, y1);
+    vertex(x2, y2);
+    vertex(x3, y3);
+    vertex(x4, y4);
+  return endShape(CLOSE);
+};
+
+/**
  * @description Draws a rectangle on the page.
  * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the `rectMode()` function.
  * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
@@ -385,6 +415,33 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
     }
   }
   return newRect;
+};
+
+/**
+ * @description Draws a triangle to the page. The first two arguments specify the first point, the middle two arguments specify the second point, and the last two arguments specify the third point.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  triangle
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @param   {Number} x3 X-coordinate of Point 3.
+ * @param   {Number} y3 Y-coordinate of Point 3.
+ * @return  {Polygon} The new triangle as a Polygon object.
+ */
+pub.triangle = function(x1, y1, x2, y2, x3, y3) {
+  if (arguments.length !== 6) {
+    error("triangle(), not enough parameters to draw a triangle! Use: x1, y1, x2, y2, x3, y3");
+  }
+
+  beginShape();
+    vertex(x1, y1);
+    vertex(x2, y2);
+    vertex(x3, y3);
+  return endShape(CLOSE);
 };
 
 // ----------------------------------------
