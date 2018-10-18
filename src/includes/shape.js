@@ -351,35 +351,35 @@ pub.addPath = function() {
 };
 
 /**
- * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`. The shapeMode parameter allows to close the shape (to connect the beginning and the end).
+ * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`.
  *
  * @cat     Shape
  * @subcat  Vertex
  * @method  beginShape
  *
- * @param   {String} shapeMode Set to `CLOSE` if the new path should be auto-closed.
  */
-pub.beginShape = function(shapeMode) {
+pub.beginShape = function() {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
-  if(typeof shapeMode != null) {
-    currShapeMode = shapeMode;
-  } else {
-    currShapeMode = null;
-  }
 };
 
 /**
- * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`.
+ * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`. It creates and returns a path of the previously called `vertex()` points. The `shapeMode` parameter allows to close the shape (to connect the beginning and the end).
  *
  * @cat     Shape
  * @subcat  Vertex
  * @method  endShape
  *
+ * @param   {String} shapeMode Set to `CLOSE` if the new path should be auto-closed.
  * @return  {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
-pub.endShape = function() {
+pub.endShape = function(shapeMode) {
+  if(shapeMode === pub.CLOSE) {
+    currShapeMode = shapeMode;
+  } else {
+    currShapeMode = null;
+  }
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,

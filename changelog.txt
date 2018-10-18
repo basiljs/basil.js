@@ -66,6 +66,8 @@ basil.js x.x.x DAY MONTH YEAR
 * page(), pageNumber() and removePage() now also accept page name strings as parameters
 * pageCount() can now also be used to set the doc's page count
 * previousPage() and nextPage() now work as expected
+* when drawing closed vertex paths, endShape() instead of beginShape() now takes the
+  CLOSE constant as argument
 * println() and print() can now print multiple parameters to console
 * trimWord() now correctly trims all punctuation from word borders
 * text() now respects the currently set rectangle mode
