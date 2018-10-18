@@ -150,7 +150,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 };
 
 /**
- * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height.
+ * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height. If no height is specified, the value of width is used for both the width and height. If a negative height or width is specified, the absolute value is taken. The origin may be changed with the ellipseMode() function.
  *
  * @cat     Shape
  * @subcat  Primitives
@@ -163,7 +163,12 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
  * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
-  if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
+  if (!(arguments.length === 4 || arguments.length === 3)) {
+    error("ellipse(), invalid parameters to draw an ellipse! Use: x, y, w, [h]");
+  }
+  if(arguments.length === 3) {
+    h = w;
+  }
   var ellipseBounds = [];
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
@@ -187,8 +192,9 @@ pub.ellipse = function(x, y, w, h) {
     ellipseBounds[3] = x + w;
   }
 
-  if(w === 0 || h === 0)
-    {return false;}
+  if(w === 0 || h === 0) {
+    return false;
+  }
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
@@ -202,12 +208,12 @@ pub.ellipse = function(x, y, w, h) {
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
+                      AnchorPoint.CENTER_ANCHOR,
+                      currMatrix.adobeMatrix(x, y));
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
+                      AnchorPoint.TOP_LEFT_ANCHOR,
+                      currMatrix.adobeMatrix(x, y));
   }
   return newOval;
 };
@@ -246,6 +252,84 @@ pub.line = function(x1, y1, x2, y2) {
                    AnchorPoint.CENTER_ANCHOR,
                    currMatrix.adobeMatrix( (x1 + x2) / 2, (y1 + y2) / 2 ));
   return newLine;
+};
+
+/**
+ * @description Draws a point, a coordinate in space at the dimension of the current stroke weight. The first parameter is the horizontal value for the point, the second value is the vertical value for the point. The color of the point is determined by the current stroke.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  point
+ *
+ * @param   {Number} x X-coordinate of the point.
+ * @param   {Number} y Y-coordinate of the point.
+ * @return  {Oval} The point as an Oval object.
+ */
+pub.point = function(x, y) {
+  if (arguments.length !== 2 || !isNumber(x) || !isNumber(y)) {
+    error("point(), wrong parameters to draw a point! Use: x, y");
+  }
+
+  var basilUnits = {
+    pt: MeasurementUnits.POINTS,
+    mm: MeasurementUnits.MILLIMETERS,
+    cm: MeasurementUnits.CENTIMETERS,
+    inch: MeasurementUnits.INCHES,
+    px: MeasurementUnits.PIXELS
+  }
+  var unitEnum = basilUnits[currUnits];
+  var w = UnitValue(currStrokeWeight, MeasurementUnits.POINTS).as(unitEnum);
+  var h = w;
+
+  if (currEllipseMode === pub.CORNER) {
+    x -= w / 2;
+    y -= h / 2;
+  } else if (currEllipseMode === pub.CORNERS) {
+    x -= w / 2;
+    y -= h / 2;
+    w = x + w;
+    h = y + h;
+  } else if (currEllipseMode === pub.RADIUS) {
+    w /= 2;
+    h /= 2;
+  }
+
+  var p = ellipse(x, y, w, h);
+  p.fillColor = currStrokeColor;
+  p.strokeWeight = 0;
+
+  return p;
+};
+
+/**
+ * @description Draws a quad to the page. A quad is a quadrilateral, a four sided polygon. It is similar to a rectangle, but the angles between its edges are not constrained to ninety degrees. The first pair of parameters (`x1`, `y1`) sets the first vertex, the subsequent pairs proceed around the defined shape.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  quad
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @param   {Number} x3 X-coordinate of Point 3.
+ * @param   {Number} y3 Y-coordinate of Point 3.
+ * @param   {Number} x3 X-coordinate of Point 4.
+ * @param   {Number} y3 Y-coordinate of Point 4.
+ * @return  {Polygon} The new quad as a Polygon object.
+ */
+pub.quad = function(x1, y1, x2, y2, x3, y3, x4, y4) {
+  if (arguments.length !== 8) {
+    error("quad(), not enough parameters to draw a quad! Use: x1, y1, x2, y2, x3, y3, x4, y4");
+  }
+
+  var q = addShape([[x1, y1], [x2, y2], [x3, y3], [x4, y4]]);
+
+  q.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                AnchorPoint.TOP_LEFT_ANCHOR,
+                currMatrix.adobeMatrix(q.geometricBounds[1], q.geometricBounds[0]));
+
+  return q;
 };
 
 /**
@@ -332,6 +416,35 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
     }
   }
   return newRect;
+};
+
+/**
+ * @description Draws a triangle to the page. The first two arguments specify the first point, the middle two arguments specify the second point, and the last two arguments specify the third point.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  triangle
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @param   {Number} x3 X-coordinate of Point 3.
+ * @param   {Number} y3 Y-coordinate of Point 3.
+ * @return  {Polygon} The new triangle as a Polygon object.
+ */
+pub.triangle = function(x1, y1, x2, y2, x3, y3) {
+  if (arguments.length !== 6) {
+    error("triangle(), not enough parameters to draw a triangle! Use: x1, y1, x2, y2, x3, y3");
+  }
+
+  var tri = addShape([[x1, y1], [x2, y2], [x3, y3]]);
+
+  tri.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                AnchorPoint.TOP_LEFT_ANCHOR,
+                currMatrix.adobeMatrix(tri.geometricBounds[1], tri.geometricBounds[0]));
+
+  return tri;
 };
 
 // ----------------------------------------
@@ -436,6 +549,20 @@ function addPolygon() {
   currPolygon.fillColor = currFillColor;
   currPolygon.fillTint = currFillTint;
   currPolygon.strokeColor = currStrokeColor;
+}
+
+function addShape(vertices) {
+  var poly = currentPage().polygons.add(currentLayer());
+
+  poly.strokeWeight = currStrokeWeight;
+  poly.strokeTint = currStrokeTint;
+  poly.fillColor = currFillColor;
+  poly.fillTint = currFillTint;
+  poly.strokeColor = currStrokeColor;
+
+  poly.paths[0].entirePath = vertices;
+
+  return poly;
 }
 
 /*
