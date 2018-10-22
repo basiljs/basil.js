@@ -1498,7 +1498,7 @@ pub.swatch = function(){
 }
 
 /**
- * @description Set a background on given page or document.
+ * @description Set a background on the current page.
  *
  * @cat     Color
  * @method  background
