@@ -562,3 +562,48 @@ pub.swatch = function(){
     }
   }
 }
+
+/**
+ * @description Set a background on given page or document.
+ *
+ * @cat     Color
+ * @method  background
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} background Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ */
+pub.background = function (fillColor) {
+  var useColor = currFillColor;
+  checkNull(fillColor);
+  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
+    useColor = fillColor;
+  } else {
+    if (arguments.length === 1) {
+      if (typeof arguments[0] === "string") {
+        useColor = pub.swatch(arguments[0]);
+      }else{
+        useColor = pub.color(arguments[0]);
+      }
+    } else if (arguments.length === 2) {
+      useColor = pub.color(arguments[0], arguments[1]);
+    } else if (arguments.length === 3) {
+      useColor = pub.color(arguments[0], arguments[1], arguments[2]);
+    } else if (arguments.length === 4) {
+      useColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
+    } else if (arguments.length === 5) {
+      useColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+    } else {
+      error("background(), wrong parameters. Use:\n"
+        + "Swatch name or\n"
+        + "GRAY or\n"
+        + "R, G, B or\n"
+        + "C, M, Y, K.\n");
+    }
+  }
+  var pLayer = pub.layer();
+  var bgLayer = pub.layer("basiljs_background");
+  pub.clear(bgLayer);
+  var backgroundShape = pub.rect(0, 0, pub.width, pub.height);
+  pub.property(backgroundShape, "fillColor", useColor);
+  pub.arrange(bgLayer, pub.BACK);
+  pub.layer(pLayer);
+};
