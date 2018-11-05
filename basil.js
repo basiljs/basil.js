@@ -4500,7 +4500,14 @@ var stackArray = $.stack.
             replace(/[\n]toString\(\)[\n]$/,'').
             replace(/[\[\]']+/g,'').
             split(/[\n]/);
-pub.SCRIPTNAME = stackArray[0] === "jsRunner.jsx" ? stackArray[1] : stackArray[0];
+var scriptName;
+if($.sblimeRunner) {
+  // script is run via Sublime Text
+  scriptName = stackArray[1];
+} else {
+  scriptName = stackArray[0];
+}
+pub.SCRIPTNAME = scriptName;
 
 /**
  * @description The basil version
