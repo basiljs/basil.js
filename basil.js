@@ -368,7 +368,6 @@ var addToStoryCache = null, /* tmp cache, see addToStroy(), via InDesign externa
 var init = function() {
 
   welcome();
-  populateGlobal();
 
   // -- init internal state vars --
   startTime = Date.now();
@@ -383,6 +382,9 @@ var init = function() {
   currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
+
+  registerPlugins();
+  populateGlobal();
 
   appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
@@ -534,6 +536,24 @@ var populateGlobal = function() {
       }
     }
   }
+}
+
+var registerPlugins = function() {
+  var mainPluginsFolder = Folder(File($.fileName).parent + "/plugins");
+
+  if(mainPluginsFolder.exists) {
+    var plugins = mainPluginsFolder.getFiles();
+    for (var i = plugins.length - 1; i >= 0; i--) {
+      var p = plugins[i];
+
+      if(p instanceof Folder &&
+         p.name.charAt(0) !== "_" &&
+         File(p + "/" + p.name + ".jsx").exists) {
+        app.doScript(File(p + "/" + p.name + ".jsx"), ScriptLanguage.JAVASCRIPT);
+      }
+    }
+  }
+
 }
 
 var currentDoc = function(mode) {

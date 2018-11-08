@@ -11,6 +11,7 @@ test/loop/lib/
 
 # User directories
 libraries/
+plugins/
 sketches/
 
 # Dependency directories
