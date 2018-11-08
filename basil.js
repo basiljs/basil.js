@@ -3641,15 +3641,21 @@ pub.objectStyle = function(itemOrName, props) {
 };
 
 /**
- * @description Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
+ * @description If no argument is given, returns the first currently selected object. If a page item is given as argument, the page item will be selected.
  *
  * @cat     Document
  * @subcat  Page Items
  * @method  selection
  *
+ * @param   {PageItem} [item] The page item to select.
  * @return  {Object} The first selected object.
  */
-pub.selection = function() {
+pub.selection = function(item) {
+  if(item.hasOwnProperty("select")) {
+    item.select();
+    return item;
+  }
+
   if(app.selection.length === 0) {
     error("selection(), selection is empty. Please select something.");
   }
