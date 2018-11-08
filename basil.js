@@ -3519,25 +3519,31 @@ pub.items = function(container, cb) {
 };
 
 /**
- * @description Returns the first item that is tagged with the given label in the InDesign Script Label pane (`Window -> Utilities -> Script Label`). Use this instead of `labels()`, when you know you just have one thing with that label and don't want to deal with a single-element array.
+ * @description Tags a page item with a given script label in the InDesign Script Label panel (`Window -> Utilities -> Script Label`). If only one argument is given, `label()` returns the first item that is tagged with the given label. Use this instead of `labels()`, when you know you just have one thing with that label and don't want to deal with a single-element array.
  *
  * @cat     Document
  * @subcat  Page Items
  * @method  label
  *
- * @param   {String} label The label identifier.
- * @return  {PageItem} The first page item with the given label.
+ * @param   {String|PageItem} itemOrLabel The page item to tag or the label identifier to search for.
+ * @param   {String} label The label identifier to tag the page item with.
+ * @return  {PageItem} The tagged page item or the first page item with the given label.
  */
-pub.label = function(label) {
-  checkNull(label);
-  var doc = currentDoc();
-  for (var i = 0, len = doc.pageItems.length; i < len; i++) {
-    var pageItem = doc.pageItems[i];
-    if (pageItem.label === label) {
-      return pageItem;
+pub.label = function(itemOrLabel, label) {
+  if(isString(itemOrLabel)) {
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i < len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === itemOrLabel) {
+        return pageItem;
+      }
     }
+    error("label(), no item found with the given label \"" + label + "\". Check for line breaks and whitespaces in the script label panel.");
+  } else if(itemOrLabel.hasOwnProperty("label") && isString(label)) {
+    itemOrLabel.label = label;
+    return itemOrLabel;
   }
-  error("label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("label(), invalid arguments. Use label or page item and label.");
 };
 
 /**
