@@ -886,8 +886,8 @@ pub.bounds = function (obj) {
       y1 = bounds[0] - currOriginY;
       x2 = bounds[3] - currOriginX;
       y2 = bounds[2] - currOriginY;
-      w = x2 - x1;
-      h = y2 - y1;
+      w = x2 - x1 - currOriginX;
+      h = y2 - y1 - currOriginX;
       return {"width": w, "height": h, "left": x1, "right": x2, "top": y1, "bottom": y2};
     }
     // no idea what that might be, give up
