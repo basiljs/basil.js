@@ -210,6 +210,10 @@ pub.revert = function() {
     currentDoc();
   }
 
+  if(currMode !== pub.HIDDEN && currWindowBounds.length === 4) {
+    app.activeWindow.bounds = currWindowBounds;
+  }
+
   return currDoc;
 };
 

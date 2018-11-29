@@ -383,6 +383,7 @@ var init = function() {
   currDocSettings = {};
   currDialogFolder = Folder("~");
   currMode = pub.VISIBLE;
+  currWindowBounds = [];
 
   appSettings = {
     enableRedraw: app.scriptPreferences.enableRedraw,
@@ -541,6 +542,11 @@ var currentDoc = function(mode) {
     var doc = null;
     if (app.documents.length && app.windows.length) {
       doc = app.activeDocument;
+      if(currWindowBounds.length === 4) {
+        app.activeWindow.bounds = currWindowBounds;
+      } else {
+        currWindowBounds = app.activeWindow.bounds;
+      }
       if (mode === pub.HIDDEN) {
         if (!doc.saved) {
           try {
@@ -559,6 +565,11 @@ var currentDoc = function(mode) {
       }
     } else {
       doc = app.documents.add(mode !== pub.HIDDEN);
+      if(mode !== pub.HIDDEN && currWindowBounds.length === 4) {
+        app.activeWindow.bounds = currWindowBounds;
+      } else {
+        currWindowBounds = app.activeWindow.bounds;
+      }
     }
     if(!doc.saved && !doc.modified) {
       setCurrDoc(doc, true);
@@ -2712,6 +2723,10 @@ pub.revert = function() {
     currDoc = null;
     app.documents.add();
     currentDoc();
+  }
+
+  if(currMode !== pub.HIDDEN && currWindowBounds.length === 4) {
+    app.activeWindow.bounds = currWindowBounds;
   }
 
   return currDoc;
@@ -7221,6 +7236,7 @@ pub.mode = function(mode) {
     } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
       // existing document needs to be unhidden
       currDoc.windows.add();
+      app.activeWindow.bounds = currWindowBounds;
     }
   }
 

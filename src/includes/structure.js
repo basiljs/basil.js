@@ -58,6 +58,7 @@ pub.mode = function(mode) {
     } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
       // existing document needs to be unhidden
       currDoc.windows.add();
+      app.activeWindow.bounds = currWindowBounds;
     }
   }
 
