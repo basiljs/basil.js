@@ -9,4 +9,3 @@
 // @include "string-tests.jsx";
 // @include "transform-tests.jsx";
 // @include "typography-tests.jsx";
-// @include "vertex-tests.jsx";
