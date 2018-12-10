@@ -632,8 +632,12 @@ pub.page = function(page) {
  */
 pub.pageCount = function(pageCount) {
   if(arguments.length) {
+    var pageCountPrevious = currentDoc().pages.count();
     if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
+      if(pageCount < pageCountPrevious) {
+        pub.page(currentDoc().pages.count());
+      }
     } else {
       error("pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
     }
