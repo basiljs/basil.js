@@ -3150,10 +3150,10 @@ pub.page = function(page) {
  */
 pub.pageCount = function(pageCount) {
   if(arguments.length) {
-    var pageCountPrevious = currentDoc().pages.count();
+    var selectedPage = pub.pageNumber();
     if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
-      if(pageCount < pageCountPrevious) {
+      if(pageCount < selectedPage) {
         pub.page(currentDoc().pages.count());
       }
     } else {
