@@ -2525,6 +2525,7 @@ pub.matchAll = function(aString, aRegExp) {
 // ----------------------------------------
 
 /**
+ * @summary Removes all page items (including locked ones) in the given Document, Page, Layer or Group.
  * @description Removes all page items (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a group, the group itself will be removed as well.
  *
  * @cat     Document
