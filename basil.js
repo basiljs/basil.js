@@ -222,9 +222,9 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
 //  Used with size() to set the orientation of a given page size to landscape.
 pub.LANDSCAPE = PageOrientation.LANDSCAPE;
 
-/**
-* Used with `mode()` to set performance mode. Disables screen redraw during processing.
-*/
+//
+// Used with `mode()` to set performance mode. Disables screen redraw during processing.
+//
 pub.SILENT = "silent";
 
 //  Used with `mode()` to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to `VISIBLE`. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
