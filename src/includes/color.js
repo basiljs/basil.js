@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Sets the blend mode of a page item.
  * @description Sets the Effects blendMode property of an object.
  *
  * @cat     Color
@@ -41,6 +42,7 @@ pub.blendMode = function(obj, blendMode) {
 };
 
 /**
+ * @summary Gets or creates a color.
  * @description Creates a new RGB / CMYK color and adds it to the document, or gets a color by name from the document. The default color mode is RGB.
  *
  * @cat     Color
@@ -178,6 +180,7 @@ pub.color = function() {
 };
 
 /**
+ * @summary Sets the color mode to RGB or CMYK.
  * @description Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
  *
  * @cat     Color
@@ -198,6 +201,7 @@ pub.colorMode = function(colorMode) {
 };
 
 /**
+ * @summary Sets the fill color of shapes and text.
  * @description Sets the color or gradient used to fill shapes.
  *
  * @cat     Color
@@ -238,6 +242,7 @@ pub.fill = function (fillColor) {
 };
 
 /**
+ * @summary Sets a tint for the current fill color.
  * @description Sets the tint of the color used to fill shapes.
  *
  * @cat     Color
@@ -255,6 +260,7 @@ pub.fillTint = function (tint) {
 };
 
 /**
+ * @summary Gets or creates a gradient.
  * @description Creates a new gradient and adds it to the document, or gets a gradient by name from the document.
  * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions range from 0 to 100. All parameter options allow for an additional name parameter at the end to name the new gradient. If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
  *
@@ -368,6 +374,7 @@ pub.gradient = function() {
 };
 
 /**
+ * @summary Sets the gradient mode to linear or radial.
  * @description Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`.
  *
  * @cat     Color
@@ -388,6 +395,7 @@ pub.gradientMode = function(gradientMode) {
 };
 
 /**
+ * @summary Calculates colors between two other colors.
  * @description Calculates a color or colors between two colors at a specific increment.
  * The `amt` parameter is the amount to interpolate between the two values where 0.0 equals the first color, 0.5 is half-way in between and 1.0 equals the second color. N.B.: Both colors must be either CMYK or RGB.
  *
@@ -445,6 +453,7 @@ pub.lerpColor = function (c1, c2, amt) {
 };
 
 /**
+ * @summary Disables fill color of shapes and text.
  * @description Disables filling geometry. If both `noStroke()` and `noFill()` are called, newly drawn shapes will be invisible.
  *
  * @cat     Color
@@ -455,6 +464,7 @@ pub.noFill = function () {
 };
 
 /**
+ * @summary Disables drawing a stroke around shapes.
  * @description Disables drawing the stroke. If both noStroke() and noFill() are called, newly drawn shapes will be invisible.
  *
  * @cat     Color
@@ -465,6 +475,7 @@ pub.noStroke = function () {
 };
 
 /**
+ * @summary Sets the opacity of a page item.
  * @description Sets the opacity property of an object.
  *
  * @cat     Color
@@ -483,6 +494,7 @@ pub.opacity = function(obj, opacity) {
 };
 
 /**
+ * @summary Sets the stroke color.
  * @description Sets the color or gradient used to draw lines and borders around shapes.
  *
  * @cat     Color
@@ -521,6 +533,7 @@ pub.stroke = function (strokeColor) {
 };
 
 /**
+ * @summary Sets the tint of the current stroke color.
  * @description Sets the tint of the color used to draw lines and borders around shapes.
  *
  * @cat     Color
@@ -538,6 +551,7 @@ pub.strokeTint = function (tint) {
 };
 
 /**
+ * @summary Gets a color swatch.
  * @description Gets a swatch by name.
  *
  * @cat     Color
