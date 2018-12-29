@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Executes a shell command and returns the result.
  * @description Executes a shell command and returns the result, currently Mac only.
  *
  * BE CAREFUL!
@@ -34,6 +35,7 @@ pub.shellExecute = function(cmd) {
 // ----------------------------------------
 
 /**
+ * @summary Downloads an URL to a file.
  * @description Downloads an URL to a file, currently Mac only.
  *
  * @cat     Input
@@ -133,6 +135,7 @@ pub.download = function(url, file) {
 };
 
 /**
+ * @summary Returns a file.
  * @description Returns a file object.
  * Note that the resulting file object can either refer to an already existing file or if the file does not exist, it can create a preliminary "virtual" file that refers to a file that could be created later (i.e. by an export command).
  *
@@ -173,6 +176,7 @@ pub.file = function(filePath) {
 };
 
 /**
+ * @summary Gets all files of a folder.
  * @description Gets all files of a folder and returns them in an array of file objects. The settings object can be used to restrict the search to certain file types only, to include hidden files and to include files in subfolders.
  *
  * @cat     Input
@@ -254,6 +258,7 @@ pub.files = function(folder, settings, collectedFiles) {
 };
 
 /**
+ * @summary Returns a folder.
  * @description Returns a folder object.
  * Note that the resulting folder object can either refer to an already existing folder or if the folder does not exist, it can create a preliminary "virtual" folder that refers to a folder that could be created later.
  *
@@ -300,6 +305,7 @@ pub.folder = function(folderPath) {
 };
 
 /**
+ * @summary Gets the contents of a file or loads an URL into a string.
  * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as String, it must be located in the document's data directory.
  *
  * @cat     Input
@@ -323,6 +329,7 @@ pub.loadString = function(file) {
 };
 
 /**
+ * @summary Gets the contents of a file or loads an URL into an array of its individual lines.
  * @description Reads the contents of a file or loads an URL and creates a string array of its individual lines. If the file is specified by name as string, it must be located in the document's data directory.
  *
  * @cat     Input
@@ -349,6 +356,7 @@ pub.loadStrings = function(file) {
 };
 
 /**
+ * @summary Opens a dialog to select a file.
  * @description Opens a selection dialog that allows to select one file. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
  *
  * @cat     Input
@@ -372,6 +380,7 @@ pub.selectFile = function(settings) {
 };
 
 /**
+ * @summary Opens a dialog to select multiple files.
  * @description Opens a selection dialog that allows to select one or multiple files. The settings object can be used to add a prompt text at the top of the dialog, to restrict the selection to certain file types and to set the dialog's starting folder.
  *
  * @cat     Input
@@ -400,6 +409,7 @@ pub.selectFiles = function(settings) {
 };
 
 /**
+ * @summary Opens a dialog to select a folder.
  * @description Opens a selection dialog that allows to select a folder. The settings object can be used to add a prompt text at the top of the dialog and to set the dialog's starting folder.
  *
  * @cat     Input
@@ -431,6 +441,7 @@ pub.selectFolder = function(settings) {
 // ----------------------------------------
 
 /**
+ * @summary Returns the current day of the month.
  * @description The `day()` function returns the current day as a value from `1`-`31`.
  *
  * @cat     Input
@@ -444,6 +455,7 @@ pub.day = function() {
 };
 
 /**
+ * @summary Returns the current hour.
  * @description The `hour()` function returns the current hour as a value from `0` - `23`.
  *
  * @cat     Input
@@ -457,6 +469,7 @@ pub.hour = function() {
 };
 
 /**
+ * @summary Returns the milliseconds since starting the script.
  * @description Returns the number of milliseconds (thousandths of a second) since starting the script.
  *
  * @cat     Input
@@ -470,6 +483,7 @@ pub.millis = function() {
 };
 
 /**
+ * @summary Returns the milliseconds of the current time.
  * @description The `millisecond()` function differs from `millis()`, in that it returns the exact millisecond (thousandths of a second) of the current time.
  *
  * @cat     Input
@@ -483,6 +497,7 @@ pub.millisecond = function() {
 };
 
 /**
+ * @summary Returns the current minute.
  * @description The `minute()` function returns the current minute as a value from `0` - `59`.
  *
  * @cat     Input
@@ -496,6 +511,7 @@ pub.minute = function() {
 };
 
 /**
+ * @summary Returns the current month.
  * @description The `month()` function returns the current month as a value from `1`-`12`.
  *
  * @cat     Input
@@ -509,6 +525,7 @@ pub.month = function() {
 };
 
 /**
+ * @summary Returns the current second.
  * @description The `second()` function returns the current second as a value from `0` - `59`.
  *
  * @cat     Input
@@ -522,6 +539,7 @@ pub.second = function() {
 };
 
 /**
+ * @summary Returns a timestamp.
  * @description The `timestamp()` function returns the current date formatted as `YYYYMMDD_HHMMSS` for useful unique filenaming.
  *
  * @cat     Input
@@ -543,6 +561,7 @@ pub.timestamp = function() {
 };
 
 /**
+ * @summary Returns the current day of the week.
  * @description The `weekday()` function returns the current weekday as a string from `Sunday`, `Monday`, `Tuesday` ...
  *
  * @cat     Input
@@ -557,6 +576,7 @@ pub.weekday = function() {
 };
 
 /**
+ * @summary Returns the current year.
  * @description The `year()` function returns the current year as a number (`2018`, `2019` etc).
  *
  * @cat     Input
