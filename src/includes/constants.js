@@ -2,35 +2,22 @@
 // src/includes/constants.js
 // ----------------------------------------
 
-//
-//Used with units() to set the coordinate system to points.
-//
+// Used with units() to set the coordinate system to points.
 pub.PT = "pt";
 
-//
-//Used with units() to set the coordinate system to pixels.
-//
+// Used with units() to set the coordinate system to pixels.
 pub.PX = "px";
 
-//
 //Used with units() to set the coordinate system to centimeters.
-//
-
 pub.CM = "cm";
 
-//
 // Used with units() to set the coordinate system to millimeters.
-//
 pub.MM = "mm";
 
-//
 // Used with units() to set the coordinate system to inches.
-//
 pub.IN = "inch";
 
-//
 //Used with colorMode() to set the color space.
-//
 pub.RGB = "rgb";
 
 //  Used with colorMode() to set the color space.
@@ -142,15 +129,13 @@ pub.PORTRAIT = PageOrientation.PORTRAIT;
 //  Used with size() to set the orientation of a given page size to landscape.
 pub.LANDSCAPE = PageOrientation.LANDSCAPE;
 
-//
 // Used with `mode()` to set performance mode. Disables screen redraw during processing.
-//
 pub.SILENT = "silent";
 
-//  Used with `mode()` to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to `VISIBLE`. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
+// Used with `mode()` to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to `VISIBLE`. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
 pub.HIDDEN = "hidden";
 
-//  Default mode. Used with `mode()` to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
+// Default mode. Used with `mode()` to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
 pub.VISIBLE = "visible";
 
 
