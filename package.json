@@ -11,9 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "./node_modules/.bin/exsbundlr -i src/main.js -o basil.js",
     "release": "./node_modules/.bin/exsbundlr -i src/main.js -o basil.js -p '/* Basil.js v'${npm_package_version}' '$(date '+%Y.%m.%d-%H:%M:%S')' */' && npm run docs-json",
-    "watch": "./node_modules/.bin/watch 'npm run bundle' ./src",
-    "docs-html": "./node_modules/.bin/documentation build basil.js -f html -o ./doc/",
-    "docs-json": "./node_modules/.bin/documentation build basil.js -o ./doc/api.json"
+    "watch": "./node_modules/.bin/watch 'npm run bundle' ./src"
   },
   "repository": {
     "type": "git",
@@ -60,7 +58,6 @@
   },
   "homepage": "http://basiljs.ch/",
   "devDependencies": {
-    "documentation": "^4.0.0-beta.18",
     "extendscript-bundlr": "^0.3.0",
     "watch": "^0.19.2"
   }
