@@ -15,19 +15,13 @@ basilTest("JSONTests", {
     var json = '{"foo":"bah"}';
     var notjson =  '{"foo":"bah}';
     assert(typeof (JSON.parse(json)) === 'object');
-    assert(JSON.parse('1.0000000000000001') === 1);
+    assert(JSON.parse('1.0000000000000001') === 1); //should get truncated to 1
+    assert(JSON.parse('1.00000000000001') === 1.00000000000001);
     try{
-      JSON.parse(notjson);
+      JSON.parse(notjson);// should thorw an error
     }catch(e){
       assert(true);
     }
-  },
-  testJSONFromStringWithStrangeResult: function(){
-    $.write("JSON.parse('1.000000000000001') should give a result of ");
-    var parsed = JSON.parse('1.000000000000001');
-    $.writeln(parsed);
-    $.writeln("assert(JSON.parse('1.000000000000001') === 1.000000000000001) does...");
-    assert(JSON.parse('1.000000000000001') === 1.000000000000001);
   }
 
 });
