@@ -6,7 +6,7 @@ if (!$.global.VERSION) {
 if (!basilTest) {
   // @include "../lib/basil.test.js";
 }
-basilTest("DataTests", {
+basilTest("JSONTests", {
 
   tearDown: function() {
     close(SaveOptions.no);
