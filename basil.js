@@ -4580,7 +4580,7 @@ pub.VERSION = "1.1.0";
 
 /**
  * @summary Adds an image to the document.
- * @description Adds an image to the document. If the image argument is given as a string the image file must be in the document's data directory which is in the same directory where the document is saved in. The image argument can also be a File instance which can be placed even before the document was saved. The second argument can either be the `x` position of the frame to create or an instance of a rectangle, oval or polygon to place the image in. If an `x` position is given, a `y` position must be given, too. If `x` and `y` positions are given and width and height are not given, the frame's size gets set to the original image size.
+ * @description Adds an image to the document. If the image argument is given as a string, the path can point either directly at an image in the document's data directory or be specified as an absolute path to the image file. The image argument can also be a File instance. The second argument can either be the `x` position of the frame to create or an instance of a rectangle, oval or polygon to place the image in. If an `x` position is given, a `y` position must be given, too. If `x` and `y` positions are given and width and height are not given, the frame's size gets set to the original image size.
  *
  * @cat     Image
  * @method  image
@@ -5005,7 +5005,7 @@ pub.folder = function(folderPath) {
 
 /**
  * @summary Gets the contents of a file or loads an URL into a string.
- * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as String, it must be located in the document's data directory.
+ * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
  * @cat     Input
  * @subcat  Files
@@ -5029,7 +5029,7 @@ pub.loadString = function(file) {
 
 /**
  * @summary Gets the contents of a file or loads an URL into an array of its individual lines.
- * @description Reads the contents of a file or loads an URL and creates a string array of its individual lines. If the file is specified by name as string, it must be located in the document's data directory.
+ * @description Reads the contents of a file or loads an URL and creates a string array of its individual lines. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
  * @cat     Input
  * @subcat  Files
@@ -5310,14 +5310,29 @@ var initDataFile = function(file) {
     error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
   }
 
+  var fileString = "" + file;
+
   var result = null;
   if (file instanceof File) {
     result = file;
   } else {
-    result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
+
+    // if the document has been saved, check for the file in the data folder
+    if(currentDoc().saved) {
+      result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
+      if(!result.exists) {
+        result = null;
+      }
+    }
+
+    // otherwise, assume a file path outside the data folder
+    if(!result) {
+      result = new File(file);
+    }
+
   }
   if (!result.exists) {
-    error(getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
+    error(getParentFunctionName(1) + "(), could not load file. The file \"" + fileString + "\" does not exist.");
   }
   return result;
 };
