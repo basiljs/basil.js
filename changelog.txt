@@ -12,6 +12,7 @@ basil.js x.x.x DAY MONTH YEAR
 + Added frameRate() to set frame rate during looping scripts
 + Added transform() function to transform page items independent of the current matrix
   and to measure current transforms of page items
++ Added point(), quad() and triangle() to draw the corresponding shapes
 + Added referencePoint() function to set the reference point for transform()
 + Added file() and folder()
   gets files and folders or creates them
@@ -30,6 +31,8 @@ basil.js x.x.x DAY MONTH YEAR
   allows to arrange page items or layers in z-space
 + Added property()
   sets a property of an object to a given value
++ Added graphics() to loop over graphics in a given container
++ Added textStyleRanges() to loop over text style ranges in a given container
 + Added swatch()
   returns a color or gradient of a given name
 + Added revert()
@@ -65,6 +68,8 @@ basil.js x.x.x DAY MONTH YEAR
 * page(), pageNumber() and removePage() now also accept page name strings as parameters
 * pageCount() can now also be used to set the doc's page count
 * previousPage() and nextPage() now work as expected
+* when drawing closed vertex paths, endShape() instead of beginShape() now takes the
+  CLOSE constant as argument
 * println() and print() can now print multiple parameters to console
 * trimWord() now correctly trims all punctuation from word borders
 * text() now respects the currently set rectangle mode
@@ -76,6 +81,8 @@ basil.js x.x.x DAY MONTH YEAR
 * size() now can use existing page size presets as a parameter with an optional
   second parameter for page orientation (introducing PORTRAIT and LANDSCAPE)
 * duplicate() now duplicates page items reliably in place, even when in FACING canvas modes
+* selection() can now be used to set the selection
+* label() can now be used to assign a label to a page item
 * Updated categories and sub-categories of many functions to better align to Processing/p5.js categories
   or – in case of non-Processing functions – to better reflect the InDesign categories they belong to
 * Changed all include/includepath/targetengine statements from # to //@

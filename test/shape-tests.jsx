@@ -25,26 +25,21 @@ basilTest("VertexTests", {
   testVertex: function() {
 
     beginShape();
-
-    vertex(0, 0);
-    vertex(-10, 0);
-    vertex(-10, 10);
-
+      vertex(0, 0);
+      vertex(-10, 0);
+      vertex(-10, 10);
     var shape = endShape();
+
     assert(shape instanceof GraphicLine);
     assert(shape.paths.item(0).entirePath.length === 3);
 
     beginShape();
-
-    vertex(0, 0);
-    vertex(-10, 0);
-    vertex(-10, 10);
-
+      vertex(0, 0);
+      vertex(-10, 0);
+      vertex(-10, 10);
     addPath();
-
-    vertex(0, 0);
-    vertex(-10, 0);
-
+      vertex(0, 0);
+      vertex(-10, 0);
     shape = endShape();
 
     assert(shape instanceof GraphicLine);
@@ -53,14 +48,12 @@ basilTest("VertexTests", {
 
 
     beginShape();
-
-    vertex(0, 0);
-    vertex(-10, 0);
-    vertex(-10, 10);
-
+      vertex(0, 0);
+      vertex(-10, 0);
+      vertex(-10, 10);
     shape = endShape(CLOSE);
-    assert(shape instanceof GraphicLine);
 
+    assert(shape instanceof Polygon);
     assert(shape.paths.length === 1);
     assert(shape.paths.item(0).entirePath.length === 3);
 

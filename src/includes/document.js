@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Removes all page items in a given container.
  * @description Removes all page items (including locked ones) in the given Document, Page, Layer or Group. If the selected container is a group, the group itself will be removed as well.
  *
  * @cat     Document
@@ -34,6 +35,7 @@ pub.clear = function(container) {
 };
 
 /**
+ * @summary Closes the current document.
  * @description Closes the current document. If no `saveOptions` argument is used, the user will be asked if they want to save or not.
  *
  * @cat     Document
@@ -69,6 +71,7 @@ pub.close = function(saveOptions, file) {
 };
 
 /**
+ * @summary Creates a document or gets the current one.
  * @description Sets or possibly creates the current document and returns it. If the `doc` parameter is not given, the current document gets set to the active document in the application. If no document at all is open, a new document gets created.
  *
  * @cat     Document
@@ -87,6 +90,7 @@ pub.doc = function(doc) {
 };
 
 /**
+ * @summary Creates, sets or gets a layer.
  * @description Returns the current layer if no argument is given. Sets active layer if layer object or name of existing layer is given. Newly creates layer and sets it to active if new name is given.
  *
  * @cat     Document
@@ -115,6 +119,7 @@ pub.layer = function(layer) {
 };
 
 /**
+ * @summary Sets the reference point for the `transform()` function.
  * @description Sets the reference point for transformations using the `transform()` function. The reference point will be used for all following transformations, until it is changed again. By default, the reference point is set to the top left.
  * Arguments can be the basil constants `TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`, `BOTTOM_CENTER` or `BOTTOM_RIGHT`. Alternatively the digits `1` through `9` (as they are arranged on a num pad) can be used to set the anchor point. Lastly the function can also use an InDesign anchor point enumerator to set the reference point.
  * If the function is used without any arguments the currently set reference point will be returned.
@@ -171,6 +176,7 @@ pub.referencePoint = function(rp) {
 };
 
 /**
+ * @summary Removes an InDesign object.
  * @description Removes the provided Page, Layer, PageItem, Swatch, etc.
  *
  * @cat     Document
@@ -188,6 +194,7 @@ pub.remove = function(obj) {
 };
 
 /**
+ * @summary Reverts a document to its last saved state.
  * @description Reverts the document to its last saved state. If the current document is not saved yet, this function will close the document without saving it and reopen a fresh document so as to "revert" the unsaved document. This function is helpful during development stage to start from a new or default document each time the script is run.
  *
  * @cat     Document
@@ -210,10 +217,15 @@ pub.revert = function() {
     currentDoc();
   }
 
+  if(currMode !== pub.HIDDEN && currWindowBounds.length === 4) {
+    app.activeWindow.bounds = currWindowBounds;
+  }
+
   return currDoc;
 };
 
 /**
+ * @summary Sets the units of the document.
  * @description Sets the units of the document (like right clicking the rulers). By default basil uses the units of the user's document or the user's default units.
  *
  * @cat     Document
@@ -271,6 +283,7 @@ pub.units = function (units) {
 // ----------------------------------------
 
 /**
+ * @summary Sets the document bleeds.
  * @description Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
  *
  * @cat     Document
@@ -302,6 +315,7 @@ pub.bleeds = function(top, right, bottom, left) {
 };
 
 /**
+ * @summary Sets the dimensions of the working canvas.
  * @description Use this to set the dimensions of the canvas. Choose between `PAGE` (default), `MARGIN`, `BLEED` resp. `FACING_PAGES`, `FACING_MARGINS` and `FACING_BLEEDS` for book setups with facing page. Please note: Setups with more than two facing pages are not yet supported.
  * Please note that you will loose your current MatrixTransformation. You should set the canvasMode before you attempt to use `translate()`, `rotate()` and `scale()`.
  *
@@ -330,6 +344,7 @@ pub.canvasMode = function (m) {
 };
 
 /**
+ * @summary Creates a vertical guide line.
  * @description Creates a vertical guide line at the current spread and current layer.
  *
  * @cat     Document
@@ -350,6 +365,7 @@ pub.guideX = function (x) {
 };
 
 /**
+ * @summary Creates a horizontal guide line.
  * @description Creates a horizontal guide line at the current spread and current layer.
  *
  * @cat     Document
@@ -370,6 +386,7 @@ pub.guideY = function (y) {
 };
 
 /**
+ * @summary Sets or gets the margins of a page.
  * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
  *
  * @cat     Document
@@ -407,6 +424,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
 };
 
 /**
+ * @summary Sets or gets the pasteboard margins.
  * @description Returns the current horizontal and vertical pasteboard margins and sets them if both arguements are given.
  *
  * @cat     Document
@@ -435,6 +453,7 @@ pub.pasteboard = function (h, v) {
 // ----------------------------------------
 
 /**
+ * @summary Adds a new page to the document.
  * @description Adds a new page to the document. Set the optional location parameter to either `AT_END` (default), `AT_BEGINNING`, `AFTER` or `BEFORE`. `AFTER` and `BEFORE` will use the current page as insertion point.
  *
  * @cat     Document
@@ -461,6 +480,7 @@ pub.addPage = function(location) {
 };
 
 /**
+ * @summary Applies a master page to a page.
  * @description Applies a master page to the given page.
  *
  * The `page` parameter can be given as a page object, as a page name or as a page number (numbering starts at 1).
@@ -504,6 +524,7 @@ pub.applyMasterPage = function(page, master) {
 };
 
 /**
+ * @summary Sets a master page to be the active page.
  * @description Sets a master page to be the active page. This can be used to set up and arrange page items on master pages, so they appear throughout the entire document.
  *
  * The `master` parameter describes the master spread that contains the master page. It can be given as a master spread object or as a string. If a string is used, it can either hold the master page prefix (e.g "A", "B") or the full name *including* the prefix (e.g "A-Master", "B-Master"). The latter is useful, if there are several masters using the same prefix.
@@ -554,6 +575,7 @@ pub.masterPage = function(master, pageIndex) {
 };
 
 /**
+ * @summary Jumps to the next page.
  * @description Set the next page of the document to be the active one and returns the new active page. If the current page is the last page or the last master page, this page will be returned.
  *
  * @cat     Document
@@ -588,6 +610,7 @@ pub.nextPage = function () {
 };
 
 /**
+ * @summary Jumps to a page or gets the current one.
  * @description Returns the current page and sets it if argument page is given. If page is given as string, the page will be set to the page with this name (e.g. "4", "04", "D", "IV"). If the page is given as an integer, the page will be set to the page according to this number, no matter the actual naming of the page. Numbering starts with 1 in this case. If you pass a page item the current page will be set to its containing page. If this page item is off the page (on the pasteboard) the current page will be set to the first page of its containing spread.
  *
  * @cat     Document
@@ -617,6 +640,7 @@ pub.page = function(page) {
 };
 
 /**
+ * @summary Returns the number of pages in the document.
  * @description Returns the number of all pages in the current document. If a number is given as an argument, it will set the document's page count to the given number by either adding pages or removing pages until the number is reached. If pages are added, the master page of the document's last page will be applied to the new pages.
  *
  * @cat     Document
@@ -628,8 +652,12 @@ pub.page = function(page) {
  */
 pub.pageCount = function(pageCount) {
   if(arguments.length) {
+    var selectedPage = pub.pageNumber();
     if(pub.isInteger(pageCount) && pageCount > 0 && pageCount < 10000) {
       currentDoc().documentPreferences.pagesPerDocument = pageCount;
+      if(pageCount < selectedPage) {
+        pub.page(currentDoc().pages.count());
+      }
     } else {
       error("pageCount(), wrong arguments! Use an integer between 1 and 9999 to set page count.");
     }
@@ -638,6 +666,7 @@ pub.pageCount = function(pageCount) {
 };
 
 /**
+ * @summary Returns the page number of a page.
  * @description Returns the current page number of either the current page or the given page name or page object. Numbering of pages starts at 1. Master pages have no real numbering and will return -1 instead.
  *
  * @cat     Document
@@ -669,6 +698,7 @@ pub.pageNumber = function (page) {
 };
 
 /**
+ * @summary Jumps to the previous page.
  * @description Set the previous page of the document to be the active one and returns the new active page. If the current page is the first page or the first master page, this page will be returned.
  *
  * @cat     Document
@@ -703,6 +733,7 @@ pub.previousPage = function () {
 };
 
 /**
+ * @summary Removes a page from the document.
  * @description Removes a page from the current document. This will either be the current page if the parameter page is left empty, or the given page object or the page of a specific number or name.
  *
  * @cat     Document
@@ -739,6 +770,7 @@ pub.removePage = function (page) {
 // ----------------------------------------
 
 /**
+ * @summary Applies an object style to a page item.
  * @description Applies an object style to the given page item. The object style can be given as name or as an object style instance.
  *
  * @cat     Document
@@ -770,6 +802,7 @@ pub.applyObjectStyle = function(item, style) {
 };
 
 /**
+ * @summary Arranges a page item or layer before or behind other page items and layers.
  * @description Arranges a page item or a layer before or behind other page items or layers. If using the constants `FORWARD` or `BACKWARD` the object is sent forward or back one step. The constants `FRONT` or `BACK` send the object to the very front or very back. Using `FRONT` or `BACK` together with the optional reference object, sends the object in front or behind this reference object.
  *
  * @cat     Document
@@ -826,6 +859,7 @@ pub.arrange = function(pItemOrLayer, positionOrDirection, reference) {
 };
 
 /**
+ * @summary Calculates the geometric bounds of a page item or text.
  * @description The function calculates the geometric bounds of any given page item or text. Use the `transforms()` function to modify page items. In case the object is any kind of text, additional typographic information `baseline` and `xHeight` are calculated.
  *
  * @cat     Document
@@ -898,6 +932,7 @@ pub.bounds = function (obj) {
 };
 
 /**
+ * @summary Duplicates a page or page item.
  * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use `rectMode()` to set center point.
  *
  * @cat     Document
@@ -928,6 +963,34 @@ pub.duplicate = function(item) {
 };
 
 /**
+ * @summary Runs a function on a collection of graphics in a container or returns them.
+ * @description Returns a collection of all graphics in the given container. The container object can be a Document, Page, Layer, Group, Story, Page Item or Text Object. This function can be used to get the graphic within a graphic frame and move it independently of its parent frame.
+ * If a callback function is given, `graphics()` calls this callback function on each graphic of the given container. When the callback function returns false, the loop stops and the `graphics()` function returns an array of all graphics up to this point.
+ *
+ * @cat     Document
+ * @subcat  Page Items
+ * @method  graphics
+ *
+ * @param   {Document|Page|Layer|Group|Story|PageItem|TextObject} container The document, page, layer, group, story, page item or text object to iterate the graphics in.
+ * @param   {Function} [cb] The callback function to call with each graphic. When this function returns false the loop stops. Passed arguments: `graphic`, `loopCount`.
+ * @return  {Array} An array of Graphics.
+ */
+pub.graphics = function(container, cb) {
+
+  if (arguments.length && container.hasOwnProperty("allGraphics")) {
+
+    if(cb instanceof Function) {
+      return forEach(container.allGraphics, cb);
+    }
+    return container.allGraphics;
+  }
+
+  error("graphics(), not a valid Graphics container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
+
+};
+
+/**
+ * @summary Creates a group from page items or gets a group.
  * @description Returns the Group instance and sets it if argument Group is given. Groups items to a new group. Returns the resulting group instance. If a string is given as the only argument, the group by the given name will be returned.
  *
  * @cat     Document
@@ -964,56 +1027,62 @@ pub.group = function (pItems, name) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function for each of the PageItems in the given Document, Page, Layer or Group.
+ * @summary Runs a function on a collection of page items in a container or returns them.
+ * @description Returns a collection of all page items in the given container. The container object can be a Document, Page, Layer, Group, Story, Page Item or Text Object.
+ * If a callback function is given, `items()` calls this callback function on each page item of the given container. When the callback function returns false, the loop stops and the `items()` function returns an array of all page items up to this point.
  *
  * @cat     Document
  * @subcat  Page Items
  * @method  items
  *
- * @param   {Document|Page|Layer|Group} container The container where the PageItems sit in
- * @param   {Function|Boolean} [cb] Optional: The callback function to call for each PageItem. When this function returns false the loop stops. Passed arguments: `item`, `loopCount`.
- * @return  {PageItems} A collection of PageItem objects.
+ * @param   {Document|Page|Layer|Group|Story|PageItem|TextObject} container The document, page, layer, group, story, page item or text object instance to iterate the page items in.
+ * @param   {Function} [cb] Optional: The callback function to call with each page item. When this function returns false the loop stops. Passed arguments: `item`, `loopCount`
+ * @return  {PageItems|Array} A collection or an array of page items.
  */
 pub.items = function(container, cb) {
 
-  if (container instanceof Document
-    || container instanceof Page
-    || container instanceof Layer
-    || container instanceof Group) {
+  if (arguments.length && container.hasOwnProperty("allPageItems")) {
 
-    if(arguments.length === 1 || cb === false) {
-      return container.allPageItems;
-    } else if(cb instanceof Function) {
+    if(cb instanceof Function) {
       return forEach(container.allPageItems, cb);
     }
+    return container.allPageItems;
   }
-  error("items(), Not a valid PageItem container, should be Document, Page, Layer or Group");
-  return null;
+
+  error("items(), not a valid PageItem container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
 };
 
 /**
- * @description Returns the first item that is tagged with the given label in the InDesign Script Label pane (`Window -> Utilities -> Script Label`). Use this instead of `labels()`, when you know you just have one thing with that label and don't want to deal with a single-element array.
+ * @summary Tags a page item with a script label or finds an item by label.
+ * @description Tags a page item with a given script label in the InDesign Script Label panel (`Window -> Utilities -> Script Label`). If only one argument is given, `label()` returns the first item that is tagged with the given label. Use this instead of `labels()`, when you know you just have one thing with that label and don't want to deal with a single-element array.
  *
  * @cat     Document
  * @subcat  Page Items
  * @method  label
  *
- * @param   {String} label The label identifier.
- * @return  {PageItem} The first page item with the given label.
+ * @param   {String|PageItem} itemOrLabel The page item to tag or the label identifier to search for.
+ * @param   {String} label The label identifier to tag the page item with.
+ * @return  {PageItem} The tagged page item or the first page item with the given label.
  */
-pub.label = function(label) {
-  checkNull(label);
-  var doc = currentDoc();
-  for (var i = 0, len = doc.pageItems.length; i < len; i++) {
-    var pageItem = doc.pageItems[i];
-    if (pageItem.label === label) {
-      return pageItem;
+pub.label = function(itemOrLabel, label) {
+  if(isString(itemOrLabel)) {
+    var doc = currentDoc();
+    for (var i = 0, len = doc.pageItems.length; i < len; i++) {
+      var pageItem = doc.pageItems[i];
+      if (pageItem.label === itemOrLabel) {
+        return pageItem;
+      }
     }
+    error("label(), no item found with the given label \"" + label + "\". Check for line breaks and whitespaces in the script label panel.");
+  } else if(itemOrLabel.hasOwnProperty("label") && isString(label)) {
+    itemOrLabel.label = label;
+    return itemOrLabel;
   }
-  error("label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
+  error("label(), invalid arguments. Use label or page item and label.");
 };
 
 /**
+ * @summary Runs a function on all page items of a script label or returns them.
  * @description Returns items tagged with the given label in the InDesign Script Label pane (`Window -> Utilities -> Script Label`).
  *
  * @cat     Document
@@ -1045,6 +1114,7 @@ pub.labels = function(label, cb) {
 };
 
 /**
+ * @summary Returns an item on the active page by name.
  * @description Returns the first item on the active page that is named by the given name in the Layers pane (`Window -> Layer`).
  *
  * @cat     Document
@@ -1071,6 +1141,7 @@ pub.nameOnPage = function(name) {
 };
 
 /**
+ * @summary Creates or gets an object style.
  * @description Returns the object style of a given page item or the object style with the given name. If an object style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the object style's properties.
  *
  * @cat     Document
@@ -1114,15 +1185,22 @@ pub.objectStyle = function(itemOrName, props) {
 };
 
 /**
- * @description Returns the first currently selected object. Use this if you know you only have one selected item and don't want to deal with an array.
+ * @summary Returns the first selected object or selects an object.
+ * @description If no argument is given, returns the first currently selected object. If a page item is given as argument, the page item will be selected.
  *
  * @cat     Document
  * @subcat  Page Items
  * @method  selection
  *
+ * @param   {PageItem} [item] The page item to select.
  * @return  {Object} The first selected object.
  */
-pub.selection = function() {
+pub.selection = function(item) {
+  if(item.hasOwnProperty("select")) {
+    item.select();
+    return item;
+  }
+
   if(app.selection.length === 0) {
     error("selection(), selection is empty. Please select something.");
   }
@@ -1130,6 +1208,7 @@ pub.selection = function() {
 };
 
 /**
+ * @summary Runs a function on all selected page items or returns them.
  * @description Returns the currently selected object(s)
  *
  * @cat     Document
@@ -1150,6 +1229,7 @@ pub.selections = function(cb) {
 };
 
 /**
+ * @summary Ungroups a group and returns its items.
  * @description Ungroups an existing group. Returns an array of the items that were within the group before ungroup() was called.
  *
  * @cat     Document
@@ -1184,6 +1264,7 @@ pub.ungroup = function(group) {
 // ----------------------------------------
 
 /**
+ * @summary Adds a page item or string to a story.
  * @description Adds a page item or a string to an existing story. You can control the position of the insert via the last parameter. It accepts either an insertion point or one the following constants: `AT_BEGINNING` and `AT_END`.
  *
  * @cat     Document
@@ -1246,42 +1327,48 @@ pub.addToStory = function(story, itemOrString, insertionPointorMode) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of characters in the container otherwise calls the given callback function with each character of the given document, page, story, textFrame, paragraph, line or word.
+ * @summary Runs a function on all characters in a container or returns them.
+ * @description Returns a collection of all character objects in the given container. The container object can be a Document, Page, Layer, Group, Story, Text Frame, Paragraph, Line or Word.
+ * If a callback function is given, `characters()` calls this callback function on each character object of the given container. When the callback function returns false, the loop stops and the `characters()` function returns an array of all characters up to this point.
  *
  * @cat     Document
  * @subcat  Text
  * @method  characters
  *
- * @param   {Document|Page|Story|TextFrame|Paragraph|Line|Word} container The document, page, story, textFrame, paragraph, line or word instance to  iterate the characters in.
+ * @param   {Document|Page|Layer|Group|Story|TextFrame|Paragraph|Line|Word} container The document, page, layer, group, story, textFrame, paragraph, line or word instance to  iterate the characters in.
  * @param   {Function} [cb] Optional: The callback function to call with each character. When this function returns false the loop stops. Passed arguments: `character`, `loopCount`
- * @return  {Characters} A collection of Character objects.
+ * @return  {Characters|Array} A collection or an array of Character objects.
  */
 pub.characters = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page, TextFrame, Paragraph, Line or Word.";
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame, Paragraph, Line or Word.";
   return textCollection("characters", legalContainers, container, cb);
 
 };
 
 /**
- * @description If no callback function is given it returns a Collection of lines in the container otherwise calls the given callback function with each line of the given document, page, story, textFrame or paragraph.
+ * @summary Runs a function on all text lines in a container or returns them.
+ * @description Returns a collection of all line objects in the given container. The container object can be a Document, Page, Layer, Group, Story, Text Frame or Paragraph. Please note that `lines()` refers to lines of text in a text frame. If you need to construct a geometric line on a page, use `line()` instead.
+ * If a callback function is given, `lines()` calls this callback function on each line object of the given container. When the callback function returns false, the loop stops and the `lines()` function returns an array of all lines up to this point.
  *
  * @cat     Document
  * @subcat  Text
  * @method  lines
  *
- * @param   {Document|Page|Story|TextFrame|Paragraph} container The document, page, story, textFrame or paragraph instance to iterate the lines in.
- * @param   {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: `line`, `loopCount`.
- * @return  {Lines} A collection of Line objects.
+ * @param   {Document|Page|Layer|Group|Story|TextFrame|Paragraph|Line} container The document, page, layer, group, story, textFrame or paragraph instance to  iterate the lines in.
+ * @param   {Function} [cb] Optional: The callback function to call with each line. When this function returns false the loop stops. Passed arguments: `line`, `loopCount`
+ * @return  {Lines|Array} A collection or an array of Line objects.
  */
+
 pub.lines = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page, TextFrame or Paragraph.";
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame or Paragraph.";
   return textCollection("lines", legalContainers, container, cb);
 
 };
 
 /**
+ * @summary Links two textframes.
  * @description Links the stories of two textframes to one story. Text of first textframe overflows to second one.
  *
  * @cat     Document
@@ -1300,24 +1387,27 @@ pub.linkTextFrames = function (textFrameA, textFrameB) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of paragraphs in the container otherwise calls the given callback function with each paragraph of the given document, page, story or textFrame.
+ * @summary Runs a function on all paragraphs in a container or returns them.
+ * @description Returns a collection of all paragraph objects in the given container. The container object can be a Document, Page, Layer, Group, Story or Text Frame.
+ * If a callback function is given, `paragraphs()` calls this callback function on each paragraph object of the given container. When the callback function returns false, the loop stops and the `paragraphs()` function returns an array of all paragraphs up to this point.
  *
  * @cat     Document
  * @subcat  Text
  * @method  paragraphs
  *
- * @param   {Document|Page|Story|TextFrame} container The document, story, page or textFrame instance to iterate the paragraphs in.
- * @param   {Function} [cb] Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: `para`, `loopCount`.
- * @return  {Paragraphs} A collection of Paragraph objects.
+ * @param   {Document|Page|Layer|Group|Story|TextFrame} container The document, page, layer, group, story or textFrame instance to  iterate the paragraphs in.
+ * @param   {Function} [cb] Optional: The callback function to call with each paragraph. When this function returns false the loop stops. Passed arguments: `paragraph`, `loopCount`
+ * @return  {Paragraphs|Array} A collection or an array of Paragraph objects.
  */
 pub.paragraphs = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page or TextFrame.";
+  var legalContainers = "Document, Page, Layer, Group, Story or TextFrame.";
   return textCollection("paragraphs", legalContainers, container, cb);
 
 };
 
 /**
+ * @summary Fills a text frame with placeholder text.
  * @description Fills the given text frame and all linked text frames with random placeholder text. The placeholder text will be added at the end of any already existing text in the text frame.
  *
  * @cat     Document
@@ -1339,49 +1429,78 @@ pub.placeholder = function (textFrame) {
 };
 
 /**
- * @description If no callback function is given it returns a Collection of items otherwise calls the given callback function with each story of the given document.
+ * @summary Runs a function on all stories in a container or returns them.
+ * @description Returns a collection of all story objects in the given document or returns the parent story of a certain element. These elements can be text frames or text objects.
+ * If a callback function is given, `stories()` calls this callback function on each story object of the given document or on the parent story of the given element. When the callback function returns false, the loop stops and the `stories()` function returns an array of all stories up to this point.
  *
  * @cat     Document
  * @subcat  Text
  * @method  stories
  *
- * @param   {Document} doc The document instance to iterate the stories in
- * @param   {Function} [cb] The callback function to call with each story. When this function returns `false` the loop stops. Passed arguments: `story`, `loopCount`.
- * @return  {Stories} A collection of Story objects.
+ * @param   {Document} container The document instance to iterate the stories in or the element whose parent story to get.
+ * @param   {Function} [cb] Optional: The callback function to call with each story. When this function returns false the loop stops. Passed arguments: `story`, `loopCount`
+ * @return  {Stories|Array} A collection or an array of Story objects.
  *
  * @example
- * stories(doc(), function(story, loopCount){
+ * stories(container(), function(story, loopCount){
  *   println("Number of words in each Story:");
  *   println(story.words.length);
  * });
  */
-pub.stories = function(doc, cb) {
+pub.stories = function(container, cb) {
 
-  checkNull(doc);
-
-  if(arguments.length === 1 && doc instanceof Document) {
-    return doc.stories;
-  } else if (cb instanceof Function) {
-    return forEach(doc.stories, cb);
+  if(container instanceof Document) {
+    if(cb instanceof Function) {
+      return forEach(container.stories, cb);
+    }
+    return container.stories;
+  } else if(container.hasOwnProperty("parentStory")) {
+    var parentStoryArray = [container.parentStory];
+    if(cb instanceof Function) {
+      return forEach(parentStoryArray, cb);
+    }
+    return parentStoryArray;
   }
-  error("stories(), incorrect call. Wrong parameters!");
-  return null;
+
+  error("stories(), invalid container. Use: Document, Text Frame or Text Object.");
 };
 
 /**
- * @description If no callback function is given it returns a Collection of words in the container otherwise calls the given callback function with each word of the given document, page, story, textFrame, paragraph or line.
+ * @summary Runs a function on all text style ranges in a container or returns them.
+ * @description Returns a collection of all text style range objects in the given container. A text style range is a continuous range of identically formatted text (i.e., three consecutive red words in an otherwise black text of the same style would form a text style range). The container object can be a Document, Page, Layer, Group, Story, Text Frame, Paragraph, Line or Word.
+ * If a callback function is given, `textStyleRanges()` calls this callback function on each text style range object of the given container. When the callback function returns false, the loop stops and the `textStyleRanges()` function returns an array of all text style ranges up to this point.
+ *
+ * @cat     Document
+ * @subcat  Text
+ * @method  textStyleRanges
+ *
+ * @param   {Document|Page|Layer|Group|Story|TextFrame|Paragraph|Line|Word} container The document, page, layer, group, story, textFrame, paragraph, line or word instance to iterate the text style ranges in.
+ * @param   {Function} [cb] Optional: The callback function to call with each text style range. When this function returns false the loop stops. Passed arguments: `textStyleRange`, `loopCount`
+ * @return  {TextStyleRanges|Array} A collection or an array of TextStyleRange objects.
+ */
+pub.textStyleRanges = function(container, cb) {
+
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame, Paragraph, Line or Word.";
+  return textCollection("textStyleRanges", legalContainers, container, cb);
+
+};
+
+/**
+ * @summary Runs a function on all words in a container or returns them.
+ * @description Returns a collection of all word objects in the given container. The container object can be a Document, Page, Layer, Group, Story, Text Frame, Paragraph or Line.
+ * If a callback function is given, `words()` calls this callback function on each word object of the given container. When the callback function returns false, the loop stops and the `words()` function returns an array of all words up to this point.
  *
  * @cat     Document
  * @subcat  Text
  * @method  words
  *
- * @param   {Document|Page|Story|TextFrame|Paragraph|Line} container The document, page, story, textFrame, paragraph or line instance to iterate the words in.
- * @param   {Function} [cb] The callback function to call with each word. When this function returns false the loop stops. Passed arguments: `word`, `loopCount`.
- * @return  {Words} A collection of Word objects.
+ * @param   {Document|Page|Layer|Group|Story|TextFrame|Paragraph|Line} container The document, page, layer, group, story, textFrame, paragraph or line instance to iterate the words in.
+ * @param   {Function} [cb] Optional: The callback function to call with each word. When this function returns false the loop stops. Passed arguments: `word`, `loopCount`
+ * @return  {Words|Array} A collection or an array of Word objects.
  */
 pub.words = function(container, cb) {
 
-  var legalContainers = "Document, Story, Page, TextFrame, Paragraph or Line.";
+  var legalContainers = "Document, Page, Layer, Group, Story, TextFrame, Paragraph or Line.";
   return textCollection("words", legalContainers, container, cb);
 
 };
@@ -1389,22 +1508,6 @@ pub.words = function(container, cb) {
 // ----------------------------------------
 // Document Private
 // ----------------------------------------
-
-var forEachTextCollection = function(container, collection, cb) {
-  // var collection;
-  if(container instanceof Document) {
-    collection = container.stories.everyItem()[collection];
-  } else {
-    collection = container.textFrames.everyItem()[collection];
-  }
-
-  for (var i = 0; i < collection.length; i++) {
-    if(cb(collection[i], i) === false) {
-      return false;
-    }
-  }
-  return true;
-};
 
 var getPage = function(page, parentFunctionName) {
   // get a page by number, name, page object or page item, without jumping to the page
@@ -1504,25 +1607,30 @@ var textCollection = function(collection, legalContainers, container, cb) {
 
   checkNull(container);
 
-  if(!(container.hasOwnProperty("contents") || container instanceof Document || container instanceof Page)) {
+  if(!(container.hasOwnProperty("contents") ||
+       container instanceof Document ||
+       container instanceof Page ||
+       container instanceof Layer ||
+       container instanceof Group)) {
     error(collection + "(), wrong object type. Use: " + legalContainers);
+  }
+
+  // collection
+  if(container instanceof Document) {
+    collection = container.stories.everyItem()[collection].everyItem().getElements();
+  } else if(container instanceof Page ||
+            container instanceof Layer ||
+            container instanceof Group) {
+    collection = container.textFrames.everyItem()[collection].everyItem().getElements();
+  } else {
+    collection = container[collection];
   }
 
   if(cb instanceof Function) {
     // callback function is passed
-    if (container instanceof Document || container instanceof Page) {
-      return forEachTextCollection(container, collection, cb);
-    }
-    return forEach(container[collection], cb);
-
+    return forEach(collection, cb);
+  } else {
+    return collection;
   }
-    // no callback function is passed
-  if(container instanceof Document) {
-    return container.stories.everyItem()[collection];
-  } else if (container instanceof Page) {
-    return container.textFrames.everyItem()[collection];
-  }
-  return container[collection];
-
 
 };

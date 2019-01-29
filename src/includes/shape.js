@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Sets how new ellipses are drawn.
  * @description The origin of new ellipses is modified by the `ellipseMode()` function. The default configuration is `ellipseMode(CENTER)`, which specifies the location of the ellipse as the center of the shape. The `RADIUS` mode is the same, but the `w` and `h` parameters to `ellipse()` specify the radius of the ellipse, rather than the diameter. The `CORNER` mode draws the shape from the upper-left corner of its bounding box. The `CORNERS` mode uses the four parameters to `ellipse()` to set two opposing corners of the ellipse's bounding box.
  *
  * @cat     Shape
@@ -26,6 +27,7 @@ pub.ellipseMode = function (mode) {
 };
 
 /**
+ * @summary Sets how new rectangles are drawn.
  * @description Modifies the location from which rectangles or text frames draw. The default mode is `rectMode(CORNER)`, which specifies the location to be the upper left corner of the shape and uses the `w` and `h` parameters to specify the width and height. The syntax `rectMode(CORNERS)` uses the `x` and `y` parameters of `rect()` or `text()` to set the location of one corner and uses the `w` and `h` parameters to set the opposite corner. The syntax `rectMode(CENTER)` draws the shape from its center point and uses the `w` and `h` parameters to specify the shape's width and height. The syntax `rectMode(RADIUS)` draws the shape from its center point and uses the `w` and `h` parameters to specify half of the shape's width and height.
  *
  * @cat     Shape
@@ -45,6 +47,7 @@ pub.rectMode = function (mode) {
 };
 
 /**
+ * @summary Sets the stroke width for lines and borders.
  * @description Sets the width of the stroke used for lines and the border around shapes.
  *
  * @cat     Shape
@@ -66,6 +69,7 @@ pub.strokeWeight = function (weight) {
 // ----------------------------------------
 
 /**
+ * @summary Draws an arc.
  * @description The `arc()` function draws an arc. Arcs are drawn along the outer edge of an ellipse defined by the `x`, `y`, `width` and `height` parameters. The origin or the arc's ellipse may be changed with the `ellipseMode()` function. The start and stop parameters specify the angles at which to draw the arc.
  *
  * @cat     Shape
@@ -150,7 +154,8 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 };
 
 /**
- * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height.
+ * @summary Draws an ellipse.
+ * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height. If no height is specified, the value of width is used for both the width and height. If a negative height or width is specified, the absolute value is taken. The origin may be changed with the ellipseMode() function.
  *
  * @cat     Shape
  * @subcat  Primitives
@@ -163,7 +168,12 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
  * @return  {Oval} New Oval (in InDesign Scripting terms the corresponding type is Oval, not Ellipse).
  */
 pub.ellipse = function(x, y, w, h) {
-  if (arguments.length !== 4) error("ellipse(), not enough parameters to draw an ellipse! Use: x, y, w, h");
+  if (!(arguments.length === 4 || arguments.length === 3)) {
+    error("ellipse(), invalid parameters to draw an ellipse! Use: x, y, w, [h]");
+  }
+  if(arguments.length === 3) {
+    h = w;
+  }
   var ellipseBounds = [];
   if (currEllipseMode === pub.CORNER) {
     ellipseBounds[0] = y;
@@ -187,8 +197,9 @@ pub.ellipse = function(x, y, w, h) {
     ellipseBounds[3] = x + w;
   }
 
-  if(w === 0 || h === 0)
-    {return false;}
+  if(w === 0 || h === 0) {
+    return false;
+  }
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add(currentLayer());
@@ -202,17 +213,18 @@ pub.ellipse = function(x, y, w, h) {
 
   if (currEllipseMode === pub.CENTER || currEllipseMode === pub.RADIUS) {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                       AnchorPoint.CENTER_ANCHOR,
-                       currMatrix.adobeMatrix(x, y));
+                      AnchorPoint.CENTER_ANCHOR,
+                      currMatrix.adobeMatrix(x, y));
   } else {
     newOval.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
-                   AnchorPoint.TOP_LEFT_ANCHOR,
-                   currMatrix.adobeMatrix(x, y));
+                      AnchorPoint.TOP_LEFT_ANCHOR,
+                      currMatrix.adobeMatrix(x, y));
   }
   return newOval;
 };
 
 /**
+ * @summary Draws a line.
  * @description Draws a line (a direct path between two points) to the page.
  *
  * @cat     Shape
@@ -249,6 +261,87 @@ pub.line = function(x1, y1, x2, y2) {
 };
 
 /**
+ * @summary Draws a point.
+ * @description Draws a point, a coordinate in space at the dimension of the current stroke weight. The first parameter is the horizontal value for the point, the second value is the vertical value for the point. The color of the point is determined by the current stroke.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  point
+ *
+ * @param   {Number} x X-coordinate of the point.
+ * @param   {Number} y Y-coordinate of the point.
+ * @return  {Oval} The point as an Oval object.
+ */
+pub.point = function(x, y) {
+  if (arguments.length !== 2 || !isNumber(x) || !isNumber(y)) {
+    error("point(), wrong parameters to draw a point! Use: x, y");
+  }
+
+  var basilUnits = {
+    pt: MeasurementUnits.POINTS,
+    mm: MeasurementUnits.MILLIMETERS,
+    cm: MeasurementUnits.CENTIMETERS,
+    inch: MeasurementUnits.INCHES,
+    px: MeasurementUnits.PIXELS
+  }
+  var unitEnum = basilUnits[currUnits];
+  var w = UnitValue(currStrokeWeight, MeasurementUnits.POINTS).as(unitEnum);
+  var h = w;
+
+  if (currEllipseMode === pub.CORNER) {
+    x -= w / 2;
+    y -= h / 2;
+  } else if (currEllipseMode === pub.CORNERS) {
+    x -= w / 2;
+    y -= h / 2;
+    w = x + w;
+    h = y + h;
+  } else if (currEllipseMode === pub.RADIUS) {
+    w /= 2;
+    h /= 2;
+  }
+
+  var p = ellipse(x, y, w, h);
+  p.fillColor = currStrokeColor;
+  p.strokeWeight = 0;
+
+  return p;
+};
+
+/**
+ * @summary Draws a quad.
+ * @description Draws a quad to the page. A quad is a quadrilateral, a four sided polygon. It is similar to a rectangle, but the angles between its edges are not constrained to ninety degrees. The first pair of parameters (`x1`, `y1`) sets the first vertex, the subsequent pairs proceed around the defined shape.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  quad
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @param   {Number} x3 X-coordinate of Point 3.
+ * @param   {Number} y3 Y-coordinate of Point 3.
+ * @param   {Number} x3 X-coordinate of Point 4.
+ * @param   {Number} y3 Y-coordinate of Point 4.
+ * @return  {Polygon} The new quad as a Polygon object.
+ */
+pub.quad = function(x1, y1, x2, y2, x3, y3, x4, y4) {
+  if (arguments.length !== 8) {
+    error("quad(), not enough parameters to draw a quad! Use: x1, y1, x2, y2, x3, y3, x4, y4");
+  }
+
+  var q = addShape([[x1, y1], [x2, y2], [x3, y3], [x4, y4]]);
+
+  q.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                AnchorPoint.TOP_LEFT_ANCHOR,
+                currMatrix.adobeMatrix(q.geometricBounds[1], q.geometricBounds[0]));
+
+  return q;
+};
+
+/**
+ * @summary Draws a rectangle.
  * @description Draws a rectangle on the page.
  * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the `rectMode()` function.
  * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
@@ -334,11 +427,42 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
   return newRect;
 };
 
+/**
+ * @summary Draws a triangle.
+ * @description Draws a triangle to the page. The first two arguments specify the first point, the middle two arguments specify the second point, and the last two arguments specify the third point.
+ *
+ * @cat     Shape
+ * @subcat  Primitives
+ * @method  triangle
+ *
+ * @param   {Number} x1 X-coordinate of Point 1.
+ * @param   {Number} y1 Y-coordinate of Point 1.
+ * @param   {Number} x2 X-coordinate of Point 2.
+ * @param   {Number} y2 Y-coordinate of Point 2.
+ * @param   {Number} x3 X-coordinate of Point 3.
+ * @param   {Number} y3 Y-coordinate of Point 3.
+ * @return  {Polygon} The new triangle as a Polygon object.
+ */
+pub.triangle = function(x1, y1, x2, y2, x3, y3) {
+  if (arguments.length !== 6) {
+    error("triangle(), not enough parameters to draw a triangle! Use: x1, y1, x2, y2, x3, y3");
+  }
+
+  var tri = addShape([[x1, y1], [x2, y2], [x3, y3]]);
+
+  tri.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
+                AnchorPoint.TOP_LEFT_ANCHOR,
+                currMatrix.adobeMatrix(tri.geometricBounds[1], tri.geometricBounds[0]));
+
+  return tri;
+};
+
 // ----------------------------------------
 // Shape/Vertex
 // ----------------------------------------
 
 /**
+ * @summary Adds a new path during shape drawing.
  * @description `addPath()` is used to create multi component paths. Call `addPath()` to add the vertices drawn so far to a single path. New vertices will then end up in a new path and `endShape()` will return a multi path object. All component paths will account for the setting (see `CLOSE`) given in `beginShape(shapeMode)`.
  *
  * @cat     Shape
@@ -351,35 +475,37 @@ pub.addPath = function() {
 };
 
 /**
- * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`. The shapeMode parameter allows to close the shape (to connect the beginning and the end).
+ * @summary  Starts drawing a complex path or shape.
+ * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`.
  *
  * @cat     Shape
  * @subcat  Vertex
  * @method  beginShape
  *
- * @param   {String} shapeMode Set to `CLOSE` if the new path should be auto-closed.
  */
-pub.beginShape = function(shapeMode) {
+pub.beginShape = function() {
   currVertexPoints = [];
   currPathPointer = 0;
   currPolygon = null;
-  if(typeof shapeMode != null) {
-    currShapeMode = shapeMode;
-  } else {
-    currShapeMode = null;
-  }
 };
 
 /**
- * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`.
+ * @summary Finishes drawing a complex path or shape.
+ * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`. It creates and returns a path of the previously called `vertex()` points. The `shapeMode` parameter allows to close the shape (to connect the beginning and the end).
  *
  * @cat     Shape
  * @subcat  Vertex
  * @method  endShape
  *
+ * @param   {String} shapeMode Set to `CLOSE` if the new path should be auto-closed.
  * @return  {GraphicLine|Polygon} The GraphicLine or Polygon object that was created.
  */
-pub.endShape = function() {
+pub.endShape = function(shapeMode) {
+  if(shapeMode === pub.CLOSE) {
+    currShapeMode = shapeMode;
+  } else {
+    currShapeMode = null;
+  }
   doAddPath();
   currPolygon.transform(CoordinateSpaces.PASTEBOARD_COORDINATES,
                    AnchorPoint.TOP_LEFT_ANCHOR,
@@ -388,6 +514,7 @@ pub.endShape = function() {
 };
 
 /**
+ * @summary Adds a vertex during drawing complex paths or shapes.
  * @description Shapes are constructed by connecting a series of vertices. `vertex()` is used to specify the vertex coordinates of lines and polygons. It is used exclusively between the `beginShape()` and `endShape()` functions.
  *
  * Use either `vertex(x, y)` for drawing straight corners or `vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)` for drawing bezier shapes. You can also mix the two approaches.
@@ -436,6 +563,20 @@ function addPolygon() {
   currPolygon.fillColor = currFillColor;
   currPolygon.fillTint = currFillTint;
   currPolygon.strokeColor = currStrokeColor;
+}
+
+function addShape(vertices) {
+  var poly = currentPage().polygons.add(currentLayer());
+
+  poly.strokeWeight = currStrokeWeight;
+  poly.strokeTint = currStrokeTint;
+  poly.fillColor = currFillColor;
+  poly.fillTint = currFillTint;
+  poly.strokeColor = currStrokeColor;
+
+  poly.paths[0].entirePath = vertices;
+
+  return poly;
 }
 
 /*
