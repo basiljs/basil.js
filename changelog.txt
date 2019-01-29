@@ -35,13 +35,14 @@ basil.js x.x.x DAY MONTH YEAR
 + Added textStyleRanges() to loop over text style ranges in a given container
 + Added swatch()
   returns a color or gradient of a given name
++ Added background() for Processing compatibility
+  adds a background of the given color
 + Added revert()
   reverts the document to a fresh state
 + Added SCRIPTNAME
   holds the name of the current script
 + Added isInteger()
   checks if a given variable is an integer
-+ Added background() for Processing compatibility
 
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
 * basil scripts will by default use the user's default units or the current units of the document,
