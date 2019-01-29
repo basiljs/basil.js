@@ -5241,6 +5241,34 @@ pub.folder = function(folderPath) {
 };
 
 /**
+ * @summary Gets and parses the contents of a JSON file.
+ * @description Reads the contents of a JSON file and returns an object with the data. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
+ *
+ * @cat     Input
+ * @subcat  Files
+ * @method  loadJSON
+ *
+ * @param   {String|File} file The JSON file name in the document's data directory, an absolute path to a JSON file, a File instance or an URL.
+ * @return  {Object} The resulting data object.
+ */
+pub.loadJSON = function(file) {
+
+  var jsonString;
+
+  if (isURL(file)) {
+    jsonString = getURL(file);
+  } else {
+    var inputFile = initDataFile(file),
+      data = null;
+    inputFile.open("r");
+    jsonString = inputFile.read();
+    inputFile.close();
+  }
+
+  return pub.JSON.parse(jsonString);
+};
+
+/**
  * @summary Gets the contents of a file or loads an URL into a string.
  * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
@@ -6728,6 +6756,29 @@ var println = pub.println = function() {
 // ----------------------------------------
 // Output/Files
 // ----------------------------------------
+
+/**
+ * @summary  Encodes an object to a JSON string and saves it to a JSON file.
+ * @description Encodes an object to a JSON string and saves it to a JSON file. If the given file exists it gets overridden.
+ *
+ * @cat     Output
+ * @subcat  Files
+ * @method  saveJSON
+ *
+ * @param   {String|File} file The file name or a File instance.
+ * @param   {Object} data The object to encode and save in the file.
+ * @return  {File} The JSON file the data was written to.
+ */
+pub.saveJSON = function(file, data) {
+  var jsonString = JSON.stringify(data);
+  var outputFile = initExportFile(file);
+  outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
+  outputFile.write(jsonString);
+  outputFile.close();
+  return outputFile;
+};
 
 /**
  * @summary  Exports the document as PDF.
