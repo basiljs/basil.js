@@ -8,7 +8,7 @@
 
 /**
  * @summary Adds an image to the document.
- * @description Adds an image to the document. If the image argument is given as a string the image file must be in the document's data directory which is in the same directory where the document is saved in. The image argument can also be a File instance which can be placed even before the document was saved. The second argument can either be the `x` position of the frame to create or an instance of a rectangle, oval or polygon to place the image in. If an `x` position is given, a `y` position must be given, too. If `x` and `y` positions are given and width and height are not given, the frame's size gets set to the original image size.
+ * @description Adds an image to the document. If the image argument is given as a string, the path can point either directly at an image in the document's data directory or be specified as an absolute path to the image file. The image argument can also be a File instance. The second argument can either be the `x` position of the frame to create or an instance of a rectangle, oval or polygon to place the image in. If an `x` position is given, a `y` position must be given, too. If `x` and `y` positions are given and width and height are not given, the frame's size gets set to the original image size.
  *
  * @cat     Image
  * @method  image

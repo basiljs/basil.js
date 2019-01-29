@@ -82,231 +82,140 @@ var pub = {};
 // src/includes/constants.js
 // ----------------------------------------
 
-/**
- * Used with units() to set the coordinate system to points.
- */
+// Used with units() to set the coordinate system to points.
 pub.PT = "pt";
 
-/**
- * Used with units() to set the coordinate system to pixels.
- */
+// Used with units() to set the coordinate system to pixels.
 pub.PX = "px";
 
-/**
- * Used with units() to set the coordinate system to centimeters.
- */
-
+//Used with units() to set the coordinate system to centimeters.
 pub.CM = "cm";
 
-/**
- * Used with units() to set the coordinate system to millimeters.
- */
+// Used with units() to set the coordinate system to millimeters.
 pub.MM = "mm";
 
-/**
- * Used with units() to set the coordinate system to inches.
- */
+// Used with units() to set the coordinate system to inches.
 pub.IN = "inch";
 
-/**
- * Used with colorMode() to set the color space.
- */
+//Used with colorMode() to set the color space.
 pub.RGB = "rgb";
 
-/**
- * Used with colorMode() to set the color space.
- */
+//  Used with colorMode() to set the color space.
 pub.CMYK = "cmyk";
 
-/**
- * Used with gradientMode() to set the gradient mode.
- */
+//  Used with gradientMode() to set the gradient mode.
 pub.LINEAR = "linear";
 
-/**
- * Used with gradientMode() to set the gradient mode.
- */
+//  Used with gradientMode() to set the gradient mode.
 pub.RADIAL = "radial";
 
-/**
- * Corner, used for drawing modes.
- */
+//  Corner, used for drawing modes.
 pub.CORNER = "corner";
 
-/**
- * Corners, used for drawing modes.
- */
+//  Corners, used for drawing modes.
 pub.CORNERS = "corners";
 
-/**
- * Center, used for drawing modes or used with referencePoint() to set the reference point of transformations to the center of the page item.
- */
+//  Center, used for drawing modes or used with referencePoint() to set the reference point of transformations to the center of the page item.
 pub.CENTER = "center";
 pub.CENTER_CENTER = "center";
 
-/**
- * Radius, used for drawing modes.
- */
+//  Radius, used for drawing modes.
 pub.RADIUS = "radius";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the top left of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the top left of the page item.
 pub.TOP_LEFT = "topLeft";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the top center of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the top center of the page item.
 pub.TOP_CENTER = "topCenter";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the top right of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the top right of the page item.
 pub.TOP_RIGHT = "topRight";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the center left of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the center left of the page item.
 pub.CENTER_LEFT = "centerLeft";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the center right of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the center right of the page item.
 pub.CENTER_RIGHT = "centerRight";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the bottom left of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the bottom left of the page item.
 pub.BOTTOM_LEFT = "bottomLeft";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the bottom center of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the bottom center of the page item.
 pub.BOTTOM_CENTER = "bottomCenter";
 
-/**
- * Used with referencePoint() to set the reference point of transformations to the bottom right of the page item.
- */
+//  Used with referencePoint() to set the reference point of transformations to the bottom right of the page item.
 pub.BOTTOM_RIGHT = "bottomRight";
 
-/**
- * Close, used for endShape() modes.
- */
+//  Close, used for endShape() modes.
 pub.CLOSE = "close";
 
-/**
- * Open, used for arc() modes.
- */
+//  Open, used for arc() modes.
 pub.OPEN = "open";
 
-/**
- * Chord, used for arc() modes.
- */
+//  Chord, used for arc() modes.
 pub.CHORD = "chord";
 
-/**
- * Pie, used for arc() modes.
- */
+//  Pie, used for arc() modes.
 pub.PIE = "pie";
 
-/**
- * Used with canvasMode() to set the canvas to the full current page.
- */
+//  Used with canvasMode() to set the canvas to the full current page.
 pub.PAGE = "page";
 
-/**
- * Used with canvasMode() to set the canvas to the full current page minus the margins.
- */
+//  Used with canvasMode() to set the canvas to the full current page minus the margins.
 pub.MARGIN = "margin";
 
-/**
- * Used with canvasMode() to set the canvas to the full current page plus the bleed.
- */
+//  Used with canvasMode() to set the canvas to the full current page plus the bleed.
 pub.BLEED = "bleed";
 
-/**
- * Used with canvasMode() to set the canvas to use the current facing pages.
- */
+//  Used with canvasMode() to set the canvas to use the current facing pages.
 pub.FACING_PAGES = "facing_pages";
 
-/**
- * Used with canvasMode() to set the canvas to use the current facing pages plus bleeds.
- */
+//  Used with canvasMode() to set the canvas to use the current facing pages plus bleeds.
 pub.FACING_BLEEDS = "facing_bleeds";
 
-/**
- * Used with canvasMode() to set the canvas to use the current facing pages minus margins.
- */
+//  Used with canvasMode() to set the canvas to use the current facing pages minus margins.
 pub.FACING_MARGINS = "facing_margins";
 
-/**
- * Used with addPage() to set the position of the new page in the book.
- */
+//  Used with addPage() to set the position of the new page in the book.
 pub.AT_BEGINNING = LocationOptions.AT_BEGINNING;
 
-/**
- * Used with addPage() to set the position of the new page in the book.
- */
+//  Used with addPage() to set the position of the new page in the book.
 pub.AT_END = LocationOptions.AT_END;
 
-/**
- * Used with addPage() to set the position of the new page in the book.
- */
+//  Used with addPage() to set the position of the new page in the book.
 pub.BEFORE = LocationOptions.BEFORE;
 
-/**
- * Used with addPage() to set the position of the new page in the book.
- */
+//  Used with addPage() to set the position of the new page in the book.
 pub.AFTER = LocationOptions.AFTER;
 
-/**
- * Used with addPage() to set the position of the new page in the book.
- */
+//  Used with addPage() to set the position of the new page in the book.
 pub.NONE = "noneMasterSpread";
 
-/**
- * Used with arrange() to bring a page item to the front or to bring it in front of a given reference object.
- */
+//  Used with arrange() to bring a page item to the front or to bring it in front of a given reference object.
 pub.FRONT = "front";
 
-/**
- * Used with arrange() to send a page item to the back or to send it behind a given reference object.
- */
+//  Used with arrange() to send a page item to the back or to send it behind a given reference object.
 pub.BACK = "back";
 
-/**
- * Used with arrange() to bring a page item one level forward in its layer.
- */
+//  Used with arrange() to bring a page item one level forward in its layer.
 pub.FORWARD = "forward";
 
-/**
- * Used with arrange() to send a page item one level backward in its layer.
- */
+//  Used with arrange() to send a page item one level backward in its layer.
 pub.BACKWARD = "backward";
 
-/**
- * Used with size() to set the orientation of a given page size to portrait.
- */
+//  Used with size() to set the orientation of a given page size to portrait.
 pub.PORTRAIT = PageOrientation.PORTRAIT;
 
-/**
- * Used with size() to set the orientation of a given page size to landscape.
- */
+//  Used with size() to set the orientation of a given page size to landscape.
 pub.LANDSCAPE = PageOrientation.LANDSCAPE;
 
-/**
-* Used with `mode()` to set performance mode. Disables screen redraw during processing.
-*/
+// Used with `mode()` to set performance mode. Disables screen redraw during processing.
 pub.SILENT = "silent";
 
-/**
- * Used with `mode()` to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to `VISIBLE`. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
- */
+// Used with `mode()` to set performance mode. Processes the document in background mode. The document will not be visible until the script is done or until the mode is changed back to `VISIBLE`. The document will be removed from the display list and added again after the script is done. In this mode you will likely look at InDesign with no open document for quite some time – do not work in InDesign during this time. You may want to use `println("yourMessage")` in your script and look at the console to get information about the process. Note: In order to enter this mode either a saved document needs to be open or no document at all. If you have an unsaved document open, basil will automatically save it for you. If it has not been saved before, you will be prompted to save it to your hard drive.
 pub.HIDDEN = "hidden";
 
-/**
- * Default mode. Used with `mode()` to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
- */
+// Default mode. Used with `mode()` to set performance mode. Processes the document with screen redraw, use this option to see direct results during the process. This will slow down the process in terms of processing time.
 pub.VISIBLE = "visible";
 
 
@@ -4908,7 +4817,7 @@ pub.VERSION = "1.1.0";
 
 /**
  * @summary Adds an image to the document.
- * @description Adds an image to the document. If the image argument is given as a string the image file must be in the document's data directory which is in the same directory where the document is saved in. The image argument can also be a File instance which can be placed even before the document was saved. The second argument can either be the `x` position of the frame to create or an instance of a rectangle, oval or polygon to place the image in. If an `x` position is given, a `y` position must be given, too. If `x` and `y` positions are given and width and height are not given, the frame's size gets set to the original image size.
+ * @description Adds an image to the document. If the image argument is given as a string, the path can point either directly at an image in the document's data directory or be specified as an absolute path to the image file. The image argument can also be a File instance. The second argument can either be the `x` position of the frame to create or an instance of a rectangle, oval or polygon to place the image in. If an `x` position is given, a `y` position must be given, too. If `x` and `y` positions are given and width and height are not given, the frame's size gets set to the original image size.
  *
  * @cat     Image
  * @method  image
@@ -5333,7 +5242,7 @@ pub.folder = function(folderPath) {
 
 /**
  * @summary Gets the contents of a file or loads an URL into a string.
- * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as String, it must be located in the document's data directory.
+ * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
  * @cat     Input
  * @subcat  Files
@@ -5357,7 +5266,7 @@ pub.loadString = function(file) {
 
 /**
  * @summary Gets the contents of a file or loads an URL into an array of its individual lines.
- * @description Reads the contents of a file or loads an URL and creates a string array of its individual lines. If the file is specified by name as string, it must be located in the document's data directory.
+ * @description Reads the contents of a file or loads an URL and creates a string array of its individual lines. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
  * @cat     Input
  * @subcat  Files
@@ -5638,14 +5547,29 @@ var initDataFile = function(file) {
     error(getParentFunctionName(1) + "(), invalid first argument. Use File or a String describing a file path.");
   }
 
+  var fileString = "" + file;
+
   var result = null;
   if (file instanceof File) {
     result = file;
   } else {
-    result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
+
+    // if the document has been saved, check for the file in the data folder
+    if(currentDoc().saved) {
+      result = new File(pub.projectFolder().absoluteURI + "/data/" + file);
+      if(!result.exists) {
+        result = null;
+      }
+    }
+
+    // otherwise, assume a file path outside the data folder
+    if(!result) {
+      result = new File(file);
+    }
+
   }
   if (!result.exists) {
-    error(getParentFunctionName(1) + "(), could not load file. The file \"" + result + "\" does not exist.");
+    error(getParentFunctionName(1) + "(), could not load file. The file \"" + fileString + "\" does not exist.");
   }
   return result;
 };
