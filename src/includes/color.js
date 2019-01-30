@@ -251,34 +251,7 @@ pub.colorMode = function(colorMode) {
  * @param   {String} [name] If created with numbers, a custom swatch name can be given.
  */
 pub.fill = function (fillColor) {
-
-  checkNull(fillColor);
-  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
-    currFillColor = fillColor;
-  } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currFillColor = pub.swatch(arguments[0]);
-      }else{
-        currFillColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currFillColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-    } else {
-      error("fill(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
-    }
-  }
+  currFillColor = getSwatch("fill", arguments);
 };
 
 /**
@@ -543,33 +516,7 @@ pub.opacity = function(obj, opacity) {
  * @param   {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  */
 pub.stroke = function (strokeColor) {
-  checkNull(strokeColor);
-  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
-    currStrokeColor = strokeColor;
-  } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currStrokeColor = pub.swatch(arguments[0]);
-      }else{
-        currStrokeColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currStrokeColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-    } else {
-      error("stroke(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
-    }
-  }
+  currStrokeColor = getSwatch("stroke", arguments);
 };
 
 /**
@@ -615,4 +562,34 @@ pub.swatch = function(){
       error("swatch() requires a string, the name of an existing swatch.");
     }
   }
+}
+
+// ----------------------------------------
+// Output Private
+// ----------------------------------------
+
+var getSwatch = function(callingFunctionName, args) {
+
+  var colorParam = args[0];
+  var swatch;
+
+  if (colorParam instanceof Color ||
+      colorParam instanceof Swatch ||
+      colorParam instanceof Gradient) {
+    swatch = colorParam;
+  } else if (isString(colorParam)){
+    swatch = pub.swatch(colorParam);
+  } else if(isNumber(colorParam) && args.length <= 5){
+    swatch = pub.color.apply(null, args);
+  } else {
+      error(callingFunctionName + "(), wrong parameters. Use:\n"
+        + "Color, Swatch or Gradient or\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
+        + "Name is optional.");
+  }
+
+  return swatch;
 }
