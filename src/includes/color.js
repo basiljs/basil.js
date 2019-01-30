@@ -13,34 +13,23 @@
  * @cat     Color
  * @method  background
  *
- * @param   {Color|Gradient|Swatch|Numbers|String} background Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @param   {Color|Gradient|Swatch|Numbers|String} bgColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  * @return  {Rectangle} The newly created background shape.
  */
-pub.background = function (fillColor) {
-  checkNull(fillColor);
-
-  var useColor;
-  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
-    useColor = fillColor;
-  } else if(isString(fillColor)) {
-    useColor = pub.swatch(arguments[0]);
-  } else if(isNumber(fillColor) && arguments.length < 6){
-    useColor = pub.color.apply(null, arguments);
-  } else {
-    error("background(), wrong parameters. Use:\n"
-      + "Swatch name or\n"
-      + "GRAY or\n"
-      + "R, G, B or\n"
-      + "C, M, Y, K.\n");
-  }
+pub.background = function (bgColor) {
 
   var pLayer = currentLayer();
   var bgLayer = pub.layer("basil.js Background");
+
+  var lockedState = bgLayer.locked;
+  bgLayer.locked = false;
   pub.arrange(bgLayer, pub.BACK);
 
   var backgroundShape = pub.rect(0, 0, pub.width, pub.height);
-  backgroundShape.fillColor = useColor;
+  backgroundShape.fillColor = getSwatch("background", arguments);
   backgroundShape.strokeWeight = 0;
+
+  bgLayer.locked = lockedState;
   pub.layer(pLayer);
 
   return backgroundShape;
