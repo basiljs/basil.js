@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Runs a function on all elements of an array.
  * @description Used to run a function on all elements of an array. `forEach()` calls this callback function on each element of the given array. When the callback function returns false, the loop stops and an array of all elements up to this point is returned.
  * Please note the existence of the convenience methods `stories()`, `paragraphs()`, `lines()`, `words()` and `characters()` that are used to iterate through all instances of the given type in the given document.
  *
@@ -41,6 +42,7 @@ forEach = function(collection, cb) {
 // ----------------------------------------
 
 /**
+ * @summary Converts a number to a binary string.
  * @description Converts a byte, char, int, or color to a String containing the equivalent binary notation. For example `color(0, 102, 153, 255)` will convert to the String `"11111111000000000110011010011001"`. This function can help make your geeky debugging sessions much happier.
  *
  *
@@ -69,6 +71,7 @@ pub.binary = function(num, numBits) {
 };
 
 /**
+ * @summary Converts a number to a hex number.
  * @description Convert a number to a hex representation.
  *
  * @cat     Data
@@ -85,6 +88,7 @@ pub.hex = function(value, len) {
 };
 
 /**
+ * @summary Converts a binary number string to a number.
  * @description Converts a String representation of a binary number to its equivalent integer value. For example, `unbinary("00001000")` will return `8`.
  *
  * @cat     Data
@@ -109,6 +113,7 @@ pub.unbinary = function(binaryString) {
 };
 
 /**
+ * @summary Converts a hex number to a number.
  * @description Convert a hex representation to a number.
  *
  * @cat     Data
@@ -149,6 +154,7 @@ function CSV() {
   }
 
   /**
+   * @summary Decodes a CSV string to an array.
    * @description Function parses a string as CSV-object Array.
    *
    * @cat     Data
@@ -177,6 +183,7 @@ function CSV() {
   };
 
   /**
+   * @summary Sets the delimiter of the CSV decode and encode function.
    * @description Sets the delimiter of the CSV decode and encode function.
    *
    * @cat     Data
@@ -196,6 +203,7 @@ function CSV() {
   };
 
   /**
+   * @summary Encodes an array to a CSV string.
    * @description Function convert an javascript array of objects to a CSV-string.
    *
    * @cat     Data
@@ -306,6 +314,7 @@ function CSV() {
 // ----------------------------------------
 
 /**
+ * @summary HashList is a data container to store key - value pairs.
  * @description HashList is a data container that allows you to store information as key - value pairs. As usual in JavaScript mixed types of keys and values are accepted in one HashList instance.
  *
  * @cat     Data
@@ -332,6 +341,7 @@ HashList = function () {
   }
 
   /**
+   * @summary Deletes all key - value pairs in a HashList.
    * @description Deletes all the key - value pairs in this HashList.
    *
    * @cat     Data
@@ -346,6 +356,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Gets a HashList value by its key.
    * @description This gets a value by its key.
    *
    * @cat     Data
@@ -360,6 +371,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Gets an array of all HashList keys.
    * @description Returns an array with all keys.
    *
    * @cat     Data
@@ -382,6 +394,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Gets an array of all HashList keys sorted by their values.
    * @description Returns an array of all keys that are sorted by their values from highest to lowest. Please note that this only works if you have conistently used Numbers for values.
    *
    * @cat     Data
@@ -402,6 +415,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Gets an array of all HashList keys in a sorted order from higher to lower magnitude.
    * @description Returns an array with all keys in a sorted order from higher to lower magnitude.
    *
    * @cat     Data
@@ -415,6 +429,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Gets an array of all HashList values.
    * @description Returns an array with all values.
    *
    * @cat     Data
@@ -436,6 +451,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Checks if a HashList key exists.
    * @description Checks for the existence of a given key.
    *
    * @cat     Data
@@ -451,6 +467,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Checks if a HashList value exists.
    * @description Checks if a certain value exists at least once in all of the key - value pairs.
    *
    * @cat     Data
@@ -473,6 +490,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Removes a HashList key - value pair by its key.
    * @description This removes a key - value pair by its key.
    *
    * @cat     Data
@@ -493,6 +511,7 @@ HashList = function () {
   };
 
   /**
+   * @summary Sets a HashList key - value pair.
    * @description This sets a key - value pair. If a key is already existing, the value will be updated. Please note that Functions are currently not supported as values.
    *
    * @cat     Data
@@ -525,6 +544,7 @@ HashList = function () {
 
 pub.JSON = {
   /**
+   * @summary Decodes a string to a JSON object.
    * @description Function parses and validates a string as JSON-object.
    *
    * @cat     Data
@@ -559,7 +579,8 @@ pub.JSON = {
   },
 
   /**
-   * Function convert an javascript object to a JSON-string.
+   * @summary Encodes an object to a JSON string.
+   * @description Function convert an javascript object to a JSON-string.
    *
    * @cat     Data
    * @subcat  JSON
@@ -601,6 +622,7 @@ pub.JSON = {
 // ----------------------------------------
 
 /**
+ * @summary Checks wether a string ends with a specific character or string.
  * @description Checks whether a string ends with a specific character or string.
  *
  * @cat     Data
@@ -619,6 +641,7 @@ var endsWith = pub.endsWith = function(str, suffix) {
 };
 
 /**
+ * @summary Combines an array into a string.
  * @description Combines an array of Strings into one String, each separated by the character(s) used for the separator parameter. To join arrays of ints or floats, it's necessary to first convert them to strings using `nf()` or `nfs()`.
  *
  * @cat     Data
@@ -635,6 +658,7 @@ pub.join = function(array, separator) {
 };
 
 /**
+ * @summary Formats numbers into strings, with options for leading and trailing zeros.
  * @description Utility function for formatting numbers into strings. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
  *
  * `nf()` is used to add zeros to the left and/or right of a number. This is typically for aligning a list of numbers. To remove digits from a floating-point number, use the `ceil()`, `floor()`, or `round()` functions.
@@ -654,6 +678,7 @@ pub.nf = function(value, leftDigits, rightDigits) {
 };
 
 /**
+ * @summary Formats numbers into strings, including comma separators to mark units of 1000.
  * @description Utility function for formatting numbers into strings and placing appropriate commas to mark units of 1000. There are two versions, one for formatting ints and one for formatting an array of ints. The value for the digits parameter should always be a positive integer.
  *
  * @cat     Data
@@ -671,6 +696,7 @@ pub.nfc = function(value, leftDigits, rightDigits) {
 };
 
 /**
+ * @summary Formats numbers into strings, including a leading + or -.
  * @description Utility function for formatting numbers into strings. Similar to `nf()` but puts a `+` in front of positive numbers and a `-` in front of negative numbers. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
  *
  * @cat     Data
@@ -688,6 +714,7 @@ pub.nfp = function(value, leftDigits, rightDigits) {
 };
 
 /**
+ * @summary Formats numbers into strings, including a blank space before positive numbers.
  * @description Utility function for formatting numbers into strings. Similar to `nf()` but leaves a blank space in front of positive numbers so they align with negative numbers in spite of the minus symbol. There are two versions, one for formatting floats and one for formatting ints. The values for the digits, left, and right parameters should always be positive integers.
  *
  * @cat     Data
@@ -705,6 +732,7 @@ pub.nfs = function(value, leftDigits, rightDigits) {
 };
 
 /**
+ * @summary Splits a string using a specific string or character as divider.
  * @description The `split()` function breaks a string into pieces using a character or string as the divider. The `delim` parameter specifies the character or characters that mark the boundaries between each piece. An array of strings is returned that contains each of the pieces.
  *
  * The `splitTokens()` function works in a similar fashion, except that it splits using a range of characters instead of a specific character or sequence.
@@ -723,6 +751,7 @@ pub.split = function(str, delim) {
 };
 
 /**
+ * @summary Splits a string using a list of strings as dividers.
  * @description The `splitTokens()` function splits a string at one or many character "tokens." The tokens parameter specifies the character or characters to be used as a boundary.
  *
  * If no tokens character is specified, any whitespace character is used to split. Whitespace characters include tab (`\t`), line feed (`\n`), carriage return (`\r`), form feed (`\f`), and space.
@@ -757,6 +786,7 @@ pub.splitTokens = function(str, tokens) {
 };
 
 /**
+ * @summary Checks whether a string starts with a specific character or string.
  * @description Checks whether a string starts with a specific character or string.
  *
  * @cat     Data
@@ -775,6 +805,7 @@ var startsWith = pub.startsWith = function(str, prefix) {
 };
 
 /**
+ * @summary Removes whitespace from the beginning or end of a string.
  * @description Removes whitespace characters from the beginning and end of a String. In addition to standard whitespace characters such as space, carriage return, and tab, this function also removes the Unicode "nbsp" character.
  *
  * @cat     Data
@@ -795,6 +826,7 @@ pub.trim = function(str) {
 };
 
 /**
+ * @summary Removes whitespace and punctuation from the beginning and end of a string.
  * @description Removes multiple, leading or trailing spaces and punctuation from "words". E.g. converts `"word!"` to `"word"`. Especially useful together with `words()`;
  *
  * @cat     Data
@@ -817,6 +849,7 @@ pub.trimWord = function(s) {
 // ----------------------------------------
 
 /**
+ * @summary Checks wether a var is an array.
  * @description Checks whether a var is an array, returns `true` if this is the case.
  *
  * @cat     Data
@@ -827,10 +860,14 @@ pub.trimWord = function(s) {
  * @return  {Boolean} returns true if this is the case
  */
 var isArray = pub.isArray = function(obj) {
+  if(obj === undefined || obj === null) {
+    return false;
+  }
   return obj.constructor.name === "Array";
 };
 
 /**
+ * @summary Checks wether a var is an integer.
  * @description Checks whether a var is an integer, returns `true` if this is the case.
  *
  * @cat     Data
@@ -845,6 +882,7 @@ var isInteger = pub.isInteger = function(num) {
 };
 
 /**
+ * @summary Checks wether a var is a number.
  * @description Checks whether a var is a number, returns `true if this is the case.
  *
  * @cat     Data
@@ -865,6 +903,7 @@ var isNumber = pub.isNumber = function(num) {
 };
 
 /**
+ * @summary Checks wether a var is a string.
  * @description Checks whether a var is a string, returns `true` if this is the case
  *
  * @cat     Data
@@ -879,6 +918,7 @@ var isString = pub.isString = function(str) {
 };
 
 /**
+ * @summary Checks wether a var is an InDesign text object.
  * @description Checks whether a var is an InDesign text object, returns `true` if this is the case.
  * NB: a InDesign text frame will return `false` as it is just a container holding text. So you could say that `isText()` refers to all the things inside a text frame.
  *
@@ -909,7 +949,8 @@ var isText = pub.isText = function(obj) {
 };
 
 /**
- * @description Checks whether an URL string is valid.
+ * @summary Checks wether a var is a valid URL string.
+ * @description Checks wether an URL string is valid.
  *
  * @cat     Data
  * @subcat  Type-Check

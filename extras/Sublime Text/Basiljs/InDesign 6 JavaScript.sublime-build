@@ -1,3 +1,0 @@
-{
-    "cmd": ["osascript", "$packages/Basiljs/run_idscript_6.0.scpt", "$file"]
-}

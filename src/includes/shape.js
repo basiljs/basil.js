@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Sets how new ellipses are drawn.
  * @description The origin of new ellipses is modified by the `ellipseMode()` function. The default configuration is `ellipseMode(CENTER)`, which specifies the location of the ellipse as the center of the shape. The `RADIUS` mode is the same, but the `w` and `h` parameters to `ellipse()` specify the radius of the ellipse, rather than the diameter. The `CORNER` mode draws the shape from the upper-left corner of its bounding box. The `CORNERS` mode uses the four parameters to `ellipse()` to set two opposing corners of the ellipse's bounding box.
  *
  * @cat     Shape
@@ -26,6 +27,7 @@ pub.ellipseMode = function (mode) {
 };
 
 /**
+ * @summary Sets how new rectangles are drawn.
  * @description Modifies the location from which rectangles or text frames draw. The default mode is `rectMode(CORNER)`, which specifies the location to be the upper left corner of the shape and uses the `w` and `h` parameters to specify the width and height. The syntax `rectMode(CORNERS)` uses the `x` and `y` parameters of `rect()` or `text()` to set the location of one corner and uses the `w` and `h` parameters to set the opposite corner. The syntax `rectMode(CENTER)` draws the shape from its center point and uses the `w` and `h` parameters to specify the shape's width and height. The syntax `rectMode(RADIUS)` draws the shape from its center point and uses the `w` and `h` parameters to specify half of the shape's width and height.
  *
  * @cat     Shape
@@ -45,6 +47,7 @@ pub.rectMode = function (mode) {
 };
 
 /**
+ * @summary Sets the stroke width for lines and borders.
  * @description Sets the width of the stroke used for lines and the border around shapes.
  *
  * @cat     Shape
@@ -66,6 +69,7 @@ pub.strokeWeight = function (weight) {
 // ----------------------------------------
 
 /**
+ * @summary Draws an arc.
  * @description The `arc()` function draws an arc. Arcs are drawn along the outer edge of an ellipse defined by the `x`, `y`, `width` and `height` parameters. The origin or the arc's ellipse may be changed with the `ellipseMode()` function. The start and stop parameters specify the angles at which to draw the arc.
  *
  * @cat     Shape
@@ -150,6 +154,7 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
 };
 
 /**
+ * @summary Draws an ellipse.
  * @description Draws an ellipse (oval) in the display window. An ellipse with an equal width and height is a circle. The first two parameters set the location, the third sets the width, and the fourth sets the height. If no height is specified, the value of width is used for both the width and height. If a negative height or width is specified, the absolute value is taken. The origin may be changed with the ellipseMode() function.
  *
  * @cat     Shape
@@ -219,6 +224,7 @@ pub.ellipse = function(x, y, w, h) {
 };
 
 /**
+ * @summary Draws a line.
  * @description Draws a line (a direct path between two points) to the page.
  *
  * @cat     Shape
@@ -255,6 +261,7 @@ pub.line = function(x1, y1, x2, y2) {
 };
 
 /**
+ * @summary Draws a point.
  * @description Draws a point, a coordinate in space at the dimension of the current stroke weight. The first parameter is the horizontal value for the point, the second value is the vertical value for the point. The color of the point is determined by the current stroke.
  *
  * @cat     Shape
@@ -302,6 +309,7 @@ pub.point = function(x, y) {
 };
 
 /**
+ * @summary Draws a quad.
  * @description Draws a quad to the page. A quad is a quadrilateral, a four sided polygon. It is similar to a rectangle, but the angles between its edges are not constrained to ninety degrees. The first pair of parameters (`x1`, `y1`) sets the first vertex, the subsequent pairs proceed around the defined shape.
  *
  * @cat     Shape
@@ -333,6 +341,7 @@ pub.quad = function(x1, y1, x2, y2, x3, y3, x4, y4) {
 };
 
 /**
+ * @summary Draws a rectangle.
  * @description Draws a rectangle on the page.
  * By default, the first two parameters set the location of the upper-left corner, the third sets the width, and the fourth sets the height. The way these parameters are interpreted, however, may be changed with the `rectMode()` function.
  * The fifth, sixth, seventh and eighth parameters, if specified, determine corner radius for the top-right, top-left, lower-right and lower-left corners, respectively. If only a fifth parameter is provided, all corners will be set to this radius.
@@ -419,6 +428,7 @@ pub.rect = function(x, y, w, h, tl, tr, br, bl) {
 };
 
 /**
+ * @summary Draws a triangle.
  * @description Draws a triangle to the page. The first two arguments specify the first point, the middle two arguments specify the second point, and the last two arguments specify the third point.
  *
  * @cat     Shape
@@ -452,6 +462,7 @@ pub.triangle = function(x1, y1, x2, y2, x3, y3) {
 // ----------------------------------------
 
 /**
+ * @summary Adds a new path during shape drawing.
  * @description `addPath()` is used to create multi component paths. Call `addPath()` to add the vertices drawn so far to a single path. New vertices will then end up in a new path and `endShape()` will return a multi path object. All component paths will account for the setting (see `CLOSE`) given in `beginShape(shapeMode)`.
  *
  * @cat     Shape
@@ -464,6 +475,7 @@ pub.addPath = function() {
 };
 
 /**
+ * @summary  Starts drawing a complex path or shape.
  * @description Using the `beginShape()` and `endShape()` functions allows to create more complex forms. `beginShape()` begins recording vertices for a shape and `endShape()` stops recording. After calling the `beginShape()` function, a series of `vertex()` commands must follow. To stop drawing the shape, call `endShape()`.
  *
  * @cat     Shape
@@ -478,6 +490,7 @@ pub.beginShape = function() {
 };
 
 /**
+ * @summary Finishes drawing a complex path or shape.
  * @description The `endShape()` function is the companion to `beginShape()` and may only be called after `beginShape()`. It creates and returns a path of the previously called `vertex()` points. The `shapeMode` parameter allows to close the shape (to connect the beginning and the end).
  *
  * @cat     Shape
@@ -501,6 +514,7 @@ pub.endShape = function(shapeMode) {
 };
 
 /**
+ * @summary Adds a vertex during drawing complex paths or shapes.
  * @description Shapes are constructed by connecting a series of vertices. `vertex()` is used to specify the vertex coordinates of lines and polygons. It is used exclusively between the `beginShape()` and `endShape()` functions.
  *
  * Use either `vertex(x, y)` for drawing straight corners or `vertex(x, y, xLeftHandle, yLeftHandle, xRightHandle, yRightHandle)` for drawing bezier shapes. You can also mix the two approaches.

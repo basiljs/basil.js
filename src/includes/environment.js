@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Pauses script execution for a certain amount of time.
  * @description Suspends the calling thread for a number of milliseconds.
  * During a sleep period, checks at 100 millisecond intervals to see whether the sleep should be terminated.
  *
@@ -20,6 +21,7 @@ pub.delay = function (milliseconds) {
 };
 
 /**
+ * @summary Sets the framerate of a looping script.
  * @description Sets the framerate per second to determine how often `loop()` is called per second. If the processor is not fast enough to maintain the specified rate, the frame rate will not be achieved. Setting the frame rate within `setup()` is recommended. The default rate is 25 frames per second. Calling `frameRate()` with no arguments returns the currently set framerate.
  *
  * @cat     Environment
@@ -43,6 +45,7 @@ pub.frameRate = function(fps) {
 };
 
 /**
+ * @summary The height of the current page.
  * @description System variable which stores the height of the current page.
  *
  * @cat      Environment
@@ -51,6 +54,7 @@ pub.frameRate = function(fps) {
 pub.height = null;
 
 /**
+ * @summary Inspects a var and lists its properties and methods.
  * @description Inspects a given object or any other data item and prints the result to the console. This is useful for inspecting or debugging any kind of variable or data item. The optional settings object allows to control the function's output. The following parameters can be set in the settings object:
  * - `showProps`: Show or hide properties. Default: `true`
  * - `showValues`: Show or hide values. Default: `true`
@@ -241,6 +245,7 @@ pub.inspect = function (obj, settings, level, branchArray, branchEnd) {
 };
 
 /**
+ * @summary Prints info about the current environment to the console.
  * @description Print numerous information about the current environment to the console.
  *
  * @cat     Environment
@@ -259,6 +264,7 @@ pub.printInfo = function() {
 };
 
 /**
+ * @summary Gets the current document's project folder.
  * @description Get the folder of the active document as a Folder object. Use .absoluteURI to access a string representation of the folder path.
  *
  * @cat     Environment
@@ -274,6 +280,7 @@ pub.projectFolder = function() {
 };
 
 /**
+ * @summary Sets an objects property.
  * @description Sets a property of an object or of any other given data item to the specified value. Alternatively an object of key value pairs can be used as the second argument to set several properties to specified values at once. To retrieve a list of available properties for the different data types, the inspect() method can be used.
  *
  * @cat     Environment
@@ -336,6 +343,7 @@ pub.property = function(obj, prop, value) {
 };
 
 /**
+ * @summary Sets the size of the current document.
  * @description Sets the size of the current document, if arguments are given. If only one argument is given, both the width and the height are set to this value. Alternatively, a string can be given as the first argument to apply an existing page size preset (`"A4"`, `"Letter"` etc.). In this case, either `PORTRAIT` or `LANDSCAPE` can be used as a second argument to determine the orientation of the page. If no argument is given, an object containing the current document's width and height is returned.
  *
  * @cat     Environment
@@ -403,6 +411,7 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
 };
 
 /**
+ * @summary The width of the current page.
  * @description System variable which stores the width of the current page.
  *
  * @cat      Environment
@@ -415,6 +424,7 @@ pub.width = null;
 // ----------------------------------------
 
 /**
+ * @summary The name of the current script.
  * @description The name of the current script.
  *
  * @cat      Environment
@@ -435,6 +445,7 @@ if($.sblimeRunner) {
 pub.SCRIPTNAME = scriptName;
 
 /**
+ * @summary The basil version.
  * @description The basil version
  *
  * @cat      Environment

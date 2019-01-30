@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Creates a text frame.
  * @description Creates a text frame on the current layer on the current page in the current document. The text frame gets created in the position specified by the `x` and `y` parameters. The default document font will be used unless a font is set with the `textFont()` function. The default document font size will be used unless a font size is set with the `textSize()` function. Change the color of the text with the `fill()` function. The text displays in relation to the `textAlign()` and `textYAlign()` functions. The `w` and `h` parameters define a rectangular area. If a rectangle, an oval, a polygon or a graphic line are used instead of an x position, the given text will be placed in/on this shape.
  *
  * @cat     Typography
@@ -107,6 +108,7 @@ pub.text = function(txt, x, y, w, h) {
 // ----------------------------------------
 
 /**
+ * @summary Sets the text alignment.
  * @description Sets the current horizontal and vertical text alignment.
  *
  * @cat     Typography
@@ -134,6 +136,7 @@ pub.textAlign = function(align, yAlign) {
 };
 
 /**
+ * @summary Sets the text font.
  * @description Returns the current font and sets it if argument `fontName` is given.
  *
  * @cat     Typography
@@ -167,6 +170,7 @@ pub.textFont = function(fontName, fontStyle) {
 };
 
 /**
+ * @summary Sets the text kerning.
  * @description Returns the current kerning and sets it if argument `kerning` is given.
  *
  * @cat     Typography
@@ -184,6 +188,7 @@ pub.textKerning = function(kerning) {
 };
 
 /**
+ * @summary Sets the text leading.
  * @description Returns the spacing between lines of text in units of points and sets it if argument `leading` is given.
  *
  * @cat     Typography
@@ -201,6 +206,7 @@ pub.textLeading = function(leading) {
 };
 
 /**
+ * @summary Sets the text size.
  * @description Returns the current font size in points and sets it if argument `pointSize` is given.
  *
  * @cat     Typography
@@ -218,6 +224,7 @@ pub.textSize = function(pointSize) {
 };
 
 /**
+ * @summary Sets the text tracking.
  * @description Returns the current tracking and sets it if argument `tracking` is given.
  *
  * @cat     Typography
@@ -235,6 +242,7 @@ pub.textTracking = function(tracking) {
 };
 
 /**
+ * @summary Sets text properties.
  * @description Sets text properties to the given item. If the item is not an instance the text property can be set to, the property gets set to the direct descendants of the given item, e.g. all stories of a given document.
  *
  * If no value is given and the given property is a string, the function acts as a getter and returns the corresponding value(s) in an array. This can either be an array containing the value of the concrete item (e.g. character) the values of the item's descendants (e.g. paragraphs of given text frame).
@@ -243,7 +251,7 @@ pub.textTracking = function(tracking) {
  * @subcat  Attributes
  * @method  typo
  *
- * @param   {Document|Spread|Page|Layer|Story|TextFrame|Text} item The object to apply the property to.
+ * @param   {Document|Spread|Page|Layer|Story|TextFrame|TextPath|Text} item The object to apply the property to.
  * @param   {String|Object} property The text property name or an object of key/value property/value pairs. If property is a string and no value is given, the function acts as getter.
  * @param   {String|Number|Object} [value] The value to apply to the property.
  * @return  {String[]|Number[]|Object[]} The property value(s) if the function acts as getter or the items the property was assigned to.
@@ -288,8 +296,9 @@ pub.typo = function(item, property, value) {
       pub.typo(textFrame, property, value);
     });
   } else if (item instanceof Story ||
-             item instanceof TextFrame) {
-    var paras = item.paragraphs;
+             item instanceof TextFrame ||
+             item instanceof TextPath) {
+    var paras = item instanceof TextPath ? item.texts[0].paragraphs :item.paragraphs;
     // loop backwards to prevent invalid object reference error when
     // start of para is overflown in "invisible" textFrame area after
     // applying prop to previous para(s)
@@ -307,6 +316,7 @@ pub.typo = function(item, property, value) {
 // ----------------------------------------
 
 /**
+ * @summary Applies a character style to text.
  * @description Applies a character style to the given text object, text frame or story. The character style can be given as name or as character style instance.
  *
  * @cat     Typography
@@ -342,6 +352,7 @@ pub.applyCharacterStyle = function(text, style) {
 };
 
 /**
+ * @summary Applies a paragraph style to text.
  * @description Applies a paragraph style to the given text object, text frame or story. The paragraph style can be given as name or as paragraph style instance.
  *
  * @cat     Typography
@@ -377,6 +388,7 @@ pub.applyParagraphStyle = function(text, style) {
 };
 
 /**
+ * @summary Gets a text's character style or gets a character style by name.
  * @description Returns the character style of a given text object or the character style with the given name. If a character style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the character style's properties.
  *
  * @cat     Typography
@@ -420,6 +432,7 @@ pub.characterStyle = function(textOrName, props) {
 };
 
 /**
+ * @summary Gets a text's paragraph style or gets a paragraph style by name.
  * @description Returns the paragraph style of a given text object or the paragraph style with the given name. If a paragraph style of the given name does not exist, it gets created. Optionally a props object of property name/value pairs can be used to set the paragraph style's properties.
  *
  * @cat     Typography
@@ -467,6 +480,7 @@ pub.paragraphStyle = function(textOrName, props) {
 // ----------------------------------------
 
 /**
+ * @summary A Lorem ipsum string.
  * @description Returns a Lorem ipsum string that can be used for testing.
  *
  * @cat      Typography

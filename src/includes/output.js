@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Prints a message to the console.
  * @description Prints a message to the console output in the ExtendScript editor, but unlike `println()` it doesn't return the carriage to a new line at the end.
  *
  * @cat     Output
@@ -23,6 +24,7 @@ pub.print = function() {
 };
 
 /**
+ * @summary Prints a message line to the console.
  * @description Prints a message line to the console output in the ExtendScript editor.
  *
  * @cat     Output
@@ -43,6 +45,7 @@ var println = pub.println = function() {
 // ----------------------------------------
 
 /**
+ * @summary  Exports the document as PDF.
  * @description Exports the current document as PDF to the documents folder. Please note that export options default to the last used export settings.
  *
  * @cat     Output
@@ -66,6 +69,7 @@ pub.savePDF = function(file, showOptions) {
 };
 
 /**
+ * @summary  Exports the document as PNG.
  * @description Exports the current document as PNG (or sequence of PNG files) to the documents folder. Please note, that export options default to the last used export settings.
  *
  * @cat     Output
@@ -89,6 +93,7 @@ pub.savePNG = function(file, showOptions) {
 };
 
 /**
+ * @summary Writes a string to a file.
  * @description Writes a string to a file. If the given file exists it gets overridden.
  *
  * @cat     Output
@@ -113,6 +118,7 @@ pub.saveString = function(file, string) {
 };
 
 /**
+ * @summary Writes an array of strings to a file.
  * @description Writes an array of strings to a file, one line per string. If the given file exists it gets overridden.
  *
  * @cat     Output

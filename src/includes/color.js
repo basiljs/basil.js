@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Sets the blend mode of a page item.
  * @description Sets the Effects blendMode property of an object.
  *
  * @cat     Color
@@ -41,6 +42,7 @@ pub.blendMode = function(obj, blendMode) {
 };
 
 /**
+ * @summary Gets or creates a color.
  * @description Creates a new RGB / CMYK color and adds it to the document, or gets a color by name from the document. The default color mode is RGB.
  *
  * @cat     Color
@@ -178,6 +180,7 @@ pub.color = function() {
 };
 
 /**
+ * @summary Sets the color mode to RGB or CMYK.
  * @description Sets the colormode for creating new colors with color() to RGB or CMYK. The default color mode is RGB.
  *
  * @cat     Color
@@ -198,6 +201,7 @@ pub.colorMode = function(colorMode) {
 };
 
 /**
+ * @summary Sets the fill color of shapes and text.
  * @description Sets the color or gradient used to fill shapes.
  *
  * @cat     Color
@@ -207,37 +211,11 @@ pub.colorMode = function(colorMode) {
  * @param   {String} [name] If created with numbers, a custom swatch name can be given.
  */
 pub.fill = function (fillColor) {
-
-  checkNull(fillColor);
-  if (fillColor instanceof Color || fillColor instanceof Swatch || fillColor instanceof Gradient) {
-    currFillColor = fillColor;
-  } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currFillColor = pub.swatch(arguments[0]);
-      }else{
-        currFillColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currFillColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currFillColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-    } else {
-      error("fill(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
-    }
-  }
+  currFillColor = getSwatch("fill", arguments);
 };
 
 /**
+ * @summary Sets a tint for the current fill color.
  * @description Sets the tint of the color used to fill shapes.
  *
  * @cat     Color
@@ -255,6 +233,7 @@ pub.fillTint = function (tint) {
 };
 
 /**
+ * @summary Gets or creates a gradient.
  * @description Creates a new gradient and adds it to the document, or gets a gradient by name from the document.
  * If two colors are given as the first two parameters, a gradient is created that blends between these two colors. If an array of colors is used as the first parameter, a gradient with the contained colors will be created. The colors will be distributed evenly. If additionally to this array a second array of gradient stop positions is given, the colors will be positioned at the given gradient stops. Possible gradient stop positions range from 0 to 100. All parameter options allow for an additional name parameter at the end to name the new gradient. If a string is used as the only parameter, the gradient with that name will be returned, if it exists in the document.
  *
@@ -368,6 +347,7 @@ pub.gradient = function() {
 };
 
 /**
+ * @summary Sets the gradient mode to linear or radial.
  * @description Sets the gradient mode for gradient() to `LINEAR` or `RADIAL`. The default gradient mode is `LINEAR`.
  *
  * @cat     Color
@@ -388,6 +368,7 @@ pub.gradientMode = function(gradientMode) {
 };
 
 /**
+ * @summary Calculates colors between two other colors.
  * @description Calculates a color or colors between two colors at a specific increment.
  * The `amt` parameter is the amount to interpolate between the two values where 0.0 equals the first color, 0.5 is half-way in between and 1.0 equals the second color. N.B.: Both colors must be either CMYK or RGB.
  *
@@ -445,6 +426,7 @@ pub.lerpColor = function (c1, c2, amt) {
 };
 
 /**
+ * @summary Disables fill color of shapes and text.
  * @description Disables filling geometry. If both `noStroke()` and `noFill()` are called, newly drawn shapes will be invisible.
  *
  * @cat     Color
@@ -455,6 +437,7 @@ pub.noFill = function () {
 };
 
 /**
+ * @summary Disables drawing a stroke around shapes.
  * @description Disables drawing the stroke. If both noStroke() and noFill() are called, newly drawn shapes will be invisible.
  *
  * @cat     Color
@@ -465,6 +448,7 @@ pub.noStroke = function () {
 };
 
 /**
+ * @summary Sets the opacity of a page item.
  * @description Sets the opacity property of an object.
  *
  * @cat     Color
@@ -483,6 +467,7 @@ pub.opacity = function(obj, opacity) {
 };
 
 /**
+ * @summary Sets the stroke color.
  * @description Sets the color or gradient used to draw lines and borders around shapes.
  *
  * @cat     Color
@@ -491,36 +476,11 @@ pub.opacity = function(obj, opacity) {
  * @param   {Color|Gradient|Swatch|Numbers|String} strokeColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
  */
 pub.stroke = function (strokeColor) {
-  checkNull(strokeColor);
-  if (strokeColor instanceof Color || strokeColor instanceof Swatch || strokeColor instanceof Gradient) {
-    currStrokeColor = strokeColor;
-  } else {
-    if (arguments.length === 1) {
-      if (typeof arguments[0] === "string") {
-        currStrokeColor = pub.swatch(arguments[0]);
-      }else{
-        currStrokeColor = pub.color(arguments[0]);
-      }
-    } else if (arguments.length === 2) {
-      currStrokeColor = pub.color(arguments[0], arguments[1]);
-    } else if (arguments.length === 3) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2]);
-    } else if (arguments.length === 4) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3]);
-    } else if (arguments.length === 5) {
-      currStrokeColor = pub.color(arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
-    } else {
-      error("stroke(), wrong parameters. Use:\n"
-        + "Swatch name or\n"
-        + "GRAY, [name] or\n"
-        + "R, G, B, [name] or\n"
-        + "C, M, Y, K, [name].\n"
-        + "Name is optional.");
-    }
-  }
+  currStrokeColor = getSwatch("stroke", arguments);
 };
 
 /**
+ * @summary Sets the tint of the current stroke color.
  * @description Sets the tint of the color used to draw lines and borders around shapes.
  *
  * @cat     Color
@@ -538,6 +498,7 @@ pub.strokeTint = function (tint) {
 };
 
 /**
+ * @summary Gets a color swatch.
  * @description Gets a swatch by name.
  *
  * @cat     Color
@@ -561,4 +522,34 @@ pub.swatch = function(){
       error("swatch() requires a string, the name of an existing swatch.");
     }
   }
+}
+
+// ----------------------------------------
+// Output Private
+// ----------------------------------------
+
+var getSwatch = function(callingFunctionName, args) {
+
+  var colorParam = args[0];
+  var swatch;
+
+  if (colorParam instanceof Color ||
+      colorParam instanceof Swatch ||
+      colorParam instanceof Gradient) {
+    swatch = colorParam;
+  } else if (isString(colorParam)){
+    swatch = pub.swatch(colorParam);
+  } else if(isNumber(colorParam) && args.length <= 5){
+    swatch = pub.color.apply(null, args);
+  } else {
+      error(callingFunctionName + "(), wrong parameters. Use:\n"
+        + "Color, Swatch or Gradient or\n"
+        + "Swatch name or\n"
+        + "GRAY, [name] or\n"
+        + "R, G, B, [name] or\n"
+        + "C, M, Y, K, [name].\n"
+        + "Name is optional.");
+  }
+
+  return swatch;
 }

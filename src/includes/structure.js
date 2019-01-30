@@ -7,6 +7,7 @@
 // ----------------------------------------
 
 /**
+ * @summary Sets the performance mode to allow hiding or freezing the document during script execution.
  * @description Used to set the performance mode. While modes can be switched during script execution, to use a mode for the entire script execution, `mode()` should be placed in the beginning of the script. In basil there are three different performance modes:
  *
  * - `VISIBLE` is the default mode. In this mode, during script execution the document will be processed with screen redraw, allowing to see direct results during the process. As the screen needs to redraw continuously, this is slower than the other modes.
@@ -58,6 +59,7 @@ pub.mode = function(mode) {
     } else if (mode !== pub.HIDDEN && currMode === pub.HIDDEN) {
       // existing document needs to be unhidden
       currDoc.windows.add();
+      app.activeWindow.bounds = currWindowBounds;
     }
   }
 
@@ -74,6 +76,7 @@ pub.mode = function(mode) {
 };
 
 /**
+ * @summary Stops basil from looping.
  * @description Stops basil from continuously executing the code within `loop()` and quits the script.
  *
  * @cat     Structure
