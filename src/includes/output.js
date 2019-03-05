@@ -45,6 +45,29 @@ var println = pub.println = function() {
 // ----------------------------------------
 
 /**
+ * @summary  Encodes an object to a JSON string and saves it to a JSON file.
+ * @description Encodes an object to a JSON string and saves it to a JSON file. If the given file exists it gets overridden.
+ *
+ * @cat     Output
+ * @subcat  Files
+ * @method  saveJSON
+ *
+ * @param   {String|File} file The file name or a File instance.
+ * @param   {Object} data The object to encode and save in the file.
+ * @return  {File} The JSON file the data was written to.
+ */
+pub.saveJSON = function(file, data) {
+  var jsonString = JSON.stringify(data);
+  var outputFile = initExportFile(file);
+  outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
+  outputFile.write(jsonString);
+  outputFile.close();
+  return outputFile;
+};
+
+/**
  * @summary  Exports the document as PDF.
  * @description Exports the current document as PDF to the documents folder. Please note that export options default to the last used export settings.
  *

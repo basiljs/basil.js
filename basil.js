@@ -1952,80 +1952,317 @@ HashList = function () {
 // Data/JSON
 // ----------------------------------------
 
-pub.JSON = {
-  /**
-   * @summary Decodes a string to a JSON object.
-   * @description Function parses and validates a string as JSON-object.
-   *
-   * @cat     Data
-   * @subcat  JSON
-   * @method  JSON.decode
-   *
-   * @param   {String} String to be parsed as JSON-object.
-   * @return  {Object} Returns JSON-object or throws an error if invalid JSON has been provided.
-   *
-   * @example
-   * var obj = JSON.decode(str);
-   * var str = JSON.encode(obj);
-   */
-  // From: jQuery JavaScript Library v1.7.1 http://jquery.com/
-  decode: function(data) {
-    if (typeof data !== "string" || !data) {
-      return null;
-    }
-    var rvalidchars = /^[\],:{}\s]*$/,
-      rvalidescape = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,
-      rvalidtokens = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
-      rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g;
+pub.JSON = {};
 
-    // Make sure the incoming data is actual JSON
-    // Logic borrowed from http://json.org/json2.js
-    if (rvalidchars.test(data.replace(rvalidescape, "@")
-      .replace(rvalidtokens, "]")
-      .replace(rvalidbraces, ""))) {
-      return (new Function("return " + data))();
-    }
-    error("JSON.decode(), invalid JSON: " + data);
-  },
+// slightly modified version of Douglas Crockford's json2.js
+// https://github.com/douglascrockford/JSON-js/blob/master/json2.js
+(function () {
 
-  /**
-   * @summary Encodes an object to a JSON string.
-   * @description Function convert an javascript object to a JSON-string.
-   *
-   * @cat     Data
-   * @subcat  JSON
-   * @method  JSON.encode
-   *
-   * @param   {Object} Object to be converted to a JSON-string
-   * @return  {String} Returns JSON-string
-   *
-   * @example
-   * var str = JSON.encode(obj);
-   * var obj = JSON.decode(str);
-   */
-  // From: https://gist.github.com/754454
-  encode: function(obj) {
-    var t = typeof (obj);
-    if (t !== "object" || obj === null) {
-      // simple data type
-      if (t === "string") obj = "\"" + obj + "\"";
-      return String(obj);
-    } else {
-      // recurse array or object
-      var n, v, json = [], arr = (obj && obj.constructor === Array);
+  var rx_one = /^[\],:{}\s]*$/;
+  var rx_two = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
+  var rx_three = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+  var rx_four = /(?:^|:|,)(?:\s*\[)+/g;
+  var rx_escapable = /[\\"\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+  var rx_dangerous = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
 
-      for (n in obj) {
-        v = obj[n];
-        t = typeof (v);
-        if (obj.hasOwnProperty(n)) {
-          if (t === "string") v = "\"" + v + "\""; else if (t === "object" && v !== null) v = pub.JSON.encode(v);
-          json.push((arr ? "" : "\"" + n + "\":") + String(v));
-        }
-      }
-      return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-    }
+  function f(n) {
+    return (n < 10)
+    ? "0" + n
+    : n;
   }
-};
+
+  function this_value() {
+    return this.valueOf();
+  }
+
+  if (typeof Date.prototype.toJSON !== "function") {
+
+    Date.prototype.toJSON = function () {
+
+      return isFinite(this.valueOf())
+      ? (
+        this.getUTCFullYear()
+        + "-"
+        + f(this.getUTCMonth() + 1)
+        + "-"
+        + f(this.getUTCDate())
+        + "T"
+        + f(this.getUTCHours())
+        + ":"
+        + f(this.getUTCMinutes())
+        + ":"
+        + f(this.getUTCSeconds())
+        + "Z"
+        )
+      : null;
+    };
+
+    Boolean.prototype.toJSON = this_value;
+    Number.prototype.toJSON = this_value;
+    String.prototype.toJSON = this_value;
+  }
+
+  var gap;
+  var indent;
+  var meta;
+  var rep;
+
+
+  function quote(string) {
+
+    rx_escapable.lastIndex = 0;
+    return rx_escapable.test(string)
+    ? "\"" + string.replace(rx_escapable, function (a) {
+      var c = meta[a];
+      return typeof c === "string"
+      ? c
+      : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+    }) + "\""
+    : "\"" + string + "\"";
+  }
+
+
+  function str(key, holder) {
+
+      var i;          // The loop counter.
+      var k;          // The member key.
+      var v;          // The member value.
+      var length;
+      var mind = gap;
+      var partial;
+      var value = holder[key];
+
+      if (
+        value
+        && typeof value === "object"
+        && typeof value.toJSON === "function"
+        ) {
+        value = value.toJSON(key);
+      }
+
+      if (typeof rep === "function") {
+        value = rep.call(holder, key, value);
+      }
+
+      switch (typeof value) {
+        case "string":
+        return quote(value);
+
+        case "number":
+
+        return (isFinite(value))
+        ? String(value)
+        : "null";
+
+        case "boolean":
+        case "null":
+
+        return String(value);
+
+        case "object":
+
+        if (!value) {
+          return "null";
+        }
+
+        if(value.toSource().substring(0, 7) === "resolve" ||
+         value.toSource().substring(0, 8) === "new File" ||
+         value.toSource().substring(0, 10) === "new Folder"
+         ) {
+                // ExtendScript Object
+              return quote(value.toString());
+            }
+
+            gap += indent;
+            partial = [];
+
+            if (Object.prototype.toString.apply(value) === "[object Array]") {
+
+              length = value.length;
+              for (i = 0; i < length; i += 1) {
+                partial[i] = str(i, value) || "null";
+              }
+
+              v = partial.length === 0
+              ? "[]"
+              : gap
+              ? (
+                "[\n"
+                + gap
+                + partial.join(",\n" + gap)
+                + "\n"
+                + mind
+                + "]"
+                )
+              : "[" + partial.join(",") + "]";
+              gap = mind;
+              return v;
+            }
+
+            if (rep && typeof rep === "object") {
+              length = rep.length;
+              for (i = 0; i < length; i += 1) {
+                if (typeof rep[i] === "string") {
+                  k = rep[i];
+                  v = str(k, value);
+                  if (v) {
+                    partial.push(quote(k) + (
+                      (gap)
+                      ? ": "
+                      : ":"
+                      ) + v);
+                  }
+                }
+              }
+            } else {
+
+              for (k in value) {
+                if (Object.prototype.hasOwnProperty.call(value, k)) {
+                  v = str(k, value);
+                  if (v) {
+                    partial.push(quote(k) + (
+                      (gap)
+                      ? ": "
+                      : ":"
+                      ) + v);
+                  }
+                }
+              }
+            }
+
+            v = partial.length === 0
+            ? "{}"
+            : gap
+            ? "{\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "}"
+            : "{" + partial.join(",") + "}";
+            gap = mind;
+            return v;
+          }
+        }
+
+
+      meta = {    // table of character substitutions
+        "\b": "\\b",
+        "\t": "\\t",
+        "\n": "\\n",
+        "\f": "\\f",
+        "\r": "\\r",
+        "\"": "\\\"",
+        "\\": "\\\\"
+      };
+
+      /**
+       * @summary Stringifies (encodes) an object or an array to a JSON string.
+       * @description Function converts a JavaScript object or an array to a JSON string.
+       *
+       * @cat     Data
+       * @subcat  JSON
+       * @method  JSON.stringify
+       *
+       * @param   {Object|Array} value Any JavaScript value, usually an object or array
+       * @param   {Function|Array} [replacer] Optional parameter that determines how object values are stringified for objects. It can be a function or an array of strings.
+       * @param   {Number|String} [space] Optional parameter that specifies the indentation of nested structures. If it is omitted, the text will be packed without extra whitespace. If it is a number, it will specify the number of spaces to indent at each level. If it is a string (such as `\t`), it contains the characters used to indent at each level.
+       * @return  {String} The resulting JSON string
+       *
+       * @example
+       * var str = JSON.stringify(obj);
+       */
+      pub.JSON.stringify = function (value, replacer, space) {
+
+        var i;
+        gap = "";
+        indent = "";
+
+        if (typeof space === "number") {
+          for (i = 0; i < space; i += 1) {
+            indent += " ";
+          }
+
+        } else if (typeof space === "string") {
+          indent = space;
+        }
+
+        rep = replacer;
+        if (replacer && typeof replacer !== "function" && (
+          typeof replacer !== "object"
+          || typeof replacer.length !== "number"
+          )) {
+          throw new Error("JSON.stringify");
+      }
+
+      return str("", {"": value});
+    };
+
+    /**
+     * @summary Parses (decodes) a string to a JSON object.
+     * @description Function parses (decodes) and validates a string as JSON object.
+     *
+     * @cat     Data
+     * @subcat  JSON
+     * @method  JSON.parse
+     *
+     * @param   {String} text String to be parsed as JSON object.
+     * @param   {Function} [reviver] The optional reviver parameter is a function that can filter and transform the results. It receives each of the keys and values, and its return value is used instead of the original value. If it returns what it received, then the structure is not modified. If it returns undefined then the member is deleted.
+     * @return  {Object} The resulting JSON object.
+     *
+     * @example
+     * var obj = JSON.parse(str);
+     */
+    pub.JSON.parse = function (text, reviver) {
+
+      var j;
+
+      function walk(holder, key) {
+
+        var k;
+        var v;
+        var value = holder[key];
+        if (value && typeof value === "object") {
+          for (k in value) {
+            if (Object.prototype.hasOwnProperty.call(value, k)) {
+              v = walk(value, k);
+              if (v !== undefined) {
+                value[k] = v;
+              } else {
+                delete value[k];
+              }
+            }
+          }
+        }
+        return reviver.call(holder, key, value);
+      }
+
+      text = String(text);
+      rx_dangerous.lastIndex = 0;
+      if (rx_dangerous.test(text)) {
+        text = text.replace(rx_dangerous, function (a) {
+          return (
+            "\\u"
+            + ("0000" + a.charCodeAt(0).toString(16)).slice(-4)
+            );
+        });
+      }
+
+      if (
+        rx_one.test(
+          text
+          .replace(rx_two, "@")
+          .replace(rx_three, "]")
+          .replace(rx_four, "")
+          )
+        ) {
+
+        j = eval("(" + text + ")");
+
+      return (typeof reviver === "function")
+      ? walk({"": j}, "")
+      : j;
+    }
+
+    error("JSON.parse(), text is not JSON parseable.");
+  };
+
+}());
 
 // ----------------------------------------
 // Data/String Functions
@@ -4981,6 +5218,34 @@ pub.folder = function(folderPath) {
 };
 
 /**
+ * @summary Gets and parses the contents of a JSON file.
+ * @description Reads the contents of a JSON file and returns an object with the data. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
+ *
+ * @cat     Input
+ * @subcat  Files
+ * @method  loadJSON
+ *
+ * @param   {String|File} file The JSON file name in the document's data directory, an absolute path to a JSON file, a File instance or an URL.
+ * @return  {Object} The resulting data object.
+ */
+pub.loadJSON = function(file) {
+
+  var jsonString;
+
+  if (isURL(file)) {
+    jsonString = getURL(file);
+  } else {
+    var inputFile = initDataFile(file),
+      data = null;
+    inputFile.open("r");
+    jsonString = inputFile.read();
+    inputFile.close();
+  }
+
+  return pub.JSON.parse(jsonString);
+};
+
+/**
  * @summary Gets the contents of a file or loads an URL into a string.
  * @description Reads the contents of a file or loads an URL into a String. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
@@ -6468,6 +6733,29 @@ var println = pub.println = function() {
 // ----------------------------------------
 // Output/Files
 // ----------------------------------------
+
+/**
+ * @summary  Encodes an object to a JSON string and saves it to a JSON file.
+ * @description Encodes an object to a JSON string and saves it to a JSON file. If the given file exists it gets overridden.
+ *
+ * @cat     Output
+ * @subcat  Files
+ * @method  saveJSON
+ *
+ * @param   {String|File} file The file name or a File instance.
+ * @param   {Object} data The object to encode and save in the file.
+ * @return  {File} The JSON file the data was written to.
+ */
+pub.saveJSON = function(file, data) {
+  var jsonString = JSON.stringify(data);
+  var outputFile = initExportFile(file);
+  outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
+  outputFile.write(jsonString);
+  outputFile.close();
+  return outputFile;
+};
 
 /**
  * @summary  Exports the document as PDF.

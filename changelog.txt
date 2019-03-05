@@ -29,6 +29,11 @@ basil.js x.x.x DAY MONTH YEAR
   activates and returns a master page
 + Added arrange()
   allows to arrange page items or layers in z-space
++ Added JSON.parse() and JSON.stringify() to replace JSON.decode() and JSON.encode()
+  parsing and stringifying are much more reliable now and can be controlled via
+  additional options
++ Added loadJSON() to load an parse JSON files one step
++ Added saveJSON() to stringify data and save it as JSON file in one step
 + Added property()
   sets a property of an object to a given value
 + Added graphics() to loop over graphics in a given container
@@ -95,6 +100,8 @@ The user is allowed to have his files wherever he wants.
 - b.itemX(), b.itemY(), b.itemWidth(), b.itemHeight(), b.itemPosition() and b.itemSize() are removed
   and replaced by the new transform() function
 - b.transformImage() is removed as it can be replaced by the new transform function()
+- JSON.decode() and JSON.encode() are removed and replaced by JSON.parse()
+  and JSON.stringfy()
 - b.storyCount() is removed (use stories(doc()).length instead)
 - Array.map() and Array.filter() are removed
 - b.Random.nextGaussian() is removed
