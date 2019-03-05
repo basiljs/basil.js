@@ -452,6 +452,7 @@ var registerPlugins = function() {
   var mainPluginsFolder = Folder(File($.fileName).parent + "/plugins");
 
   if(mainPluginsFolder.exists) {
+    var pluginCounter = 0;
     var plugins = mainPluginsFolder.getFiles();
     for (var i = plugins.length - 1; i >= 0; i--) {
       var p = plugins[i];
@@ -460,7 +461,14 @@ var registerPlugins = function() {
          p.name.charAt(0) !== "_" &&
          File(p + "/" + p.name + ".jsx").exists) {
         app.doScript(File(p + "/" + p.name + ".jsx"), ScriptLanguage.JAVASCRIPT);
+        pluginCounter++;
       }
+    }
+
+    if(pluginCounter > 1) {
+      println(pluginCounter + " basil.js plugins installed.");
+    } else if(pluginCounter) {
+      println("1 basil.js plugin installed.");
     }
   }
 
