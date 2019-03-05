@@ -3652,7 +3652,7 @@ pub.objectStyle = function(itemOrName, props) {
  * @return  {Object} The first selected object.
  */
 pub.selection = function(item) {
-  if(item.hasOwnProperty("select")) {
+  if(item && item.hasOwnProperty("select")) {
     item.select();
     return item;
   }
