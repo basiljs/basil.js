@@ -2283,7 +2283,11 @@ pub.JSON = {};
 pub.contains = function(searchContainer, valueToFind) {
 
   if(isString(searchContainer)) {
-    return searchContainer.indexOf(valueToFind) !== -1;
+    if(isString(valueToFind)) {
+      return searchContainer.indexOf(valueToFind) !== -1;
+    } else {
+      return false;
+    }
   } else if (isArray(searchContainer)) {
 
     var i = searchContainer.length;
@@ -2314,7 +2318,11 @@ pub.contains = function(searchContainer, valueToFind) {
 var endsWith = pub.endsWith = function(searchContainer, valueToFind) {
 
   if(isString(searchContainer)) {
-    return searchContainer.indexOf(valueToFind, searchContainer.length - valueToFind.length) !== -1;
+    if(isString(valueToFind)) {
+      return searchContainer.indexOf(valueToFind, searchContainer.length - valueToFind.length) !== -1;
+    } else {
+      return false;
+    }
   } else if (isArray(searchContainer)) {
     var len = searchContainer.length;
     if(len) {
@@ -2487,7 +2495,11 @@ pub.splitTokens = function(str, tokens) {
 var startsWith = pub.startsWith = function(searchContainer, valueToFind) {
 
   if(isString(searchContainer)) {
-    return searchContainer.indexOf(valueToFind) === 0;
+    if(isString(valueToFind)) {
+      return searchContainer.indexOf(valueToFind) === 0;
+    } else {
+      return false;
+    }
   } else if (isArray(searchContainer)) {
     if(searchContainer.length) {
       return searchContainer[0] === valueToFind;
