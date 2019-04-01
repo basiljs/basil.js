@@ -13,6 +13,10 @@ basilTest("DataTests", {
     close(SaveOptions.no);
   },
 
+// ----------------------------------------
+// Data/HashList
+// ----------------------------------------
+
   testHashList: function() {
 
     var hash = new HashList();
@@ -114,6 +118,88 @@ basilTest("DataTests", {
 
 
   },
+
+// ----------------------------------------
+// Data/String Functions
+// ----------------------------------------
+
+  testContains: function() {
+
+    var str = "The quick brown 🦊 jumps over 8 lazy dogs.";
+
+    assert(contains(str, "quick brown"), "string contains");
+    assert(contains(str, "The quick"), "string contains - beginning");
+    assert(contains(str, "lazy dogs."), "string contains - end");
+    assert(contains(str, "q"), "string contains - single character");
+    assert(contains(str, "🦊"), "string contains - special characters");
+    assert(contains(str, "The quick brown 🦊 jumps over 8 lazy dogs."), "string contains - entire string");
+
+    assert(contains(str, "quick green") === false, "string doesn't contain");
+    assert(contains(str, 8) === false, "string doesn't contain - wrong type");
+
+
+    var arr = ["Peach", 23, "Plum", 45, "Pear"];
+    var arrZero = [];
+
+    assert(contains(arr, "Plum"), "array contains");
+    assert(contains(arr, "Peach"), "array contains - first element");
+    assert(contains(arr, "Pear"), "array contains - last element");
+    assert(contains(arr, 23), "array contains - number");
+
+    assert(contains(arr, "Banana") === false, "array doesn't contain");
+    assert(contains(arrZero, "Banana") === false, "array doesn't contain - zero length");
+    assert(contains(arrZero, undefined) === false, "array doesn't contain - zero length undefined");
+  },
+
+  testEndsWith: function() {
+
+    var str = "The quick brown 🦊 jumps over 8 lazy dogs.";
+
+    assert(endsWith(str, "lazy dogs."), "string ends with");
+    assert(endsWith(str, "."), "string ends with - single character");
+    assert(endsWith(str, "🦊 jumps over 8 lazy dogs."), "string ends with - special characters");
+    assert(endsWith(str, "The quick brown 🦊 jumps over 8 lazy dogs."), "string ends with - entire string");
+
+    assert(endsWith(str, "crazy dogs.") === false, "string doesn't end with");
+    assert(endsWith(str, "quick brown") === false, "string doesn't end with - contained value");
+
+
+    var arr = ["Peach", 23, "Plum", 45, "Pear"];
+    var arrZero = [];
+
+    assert(endsWith(arr, "Pear"), "array ends with");
+
+    assert(endsWith(arr, "Plum") === false, "array doesn't end with");
+    assert(endsWith(arrZero, "Pear") === false, "array doesn't end with - zero length");
+    assert(endsWith(arrZero, undefined) === false, "array doesn't end with - zero length undefined");
+  },
+
+  testStartsWith: function() {
+
+    var str = "The quick brown 🦊 jumps over 8 lazy dogs.";
+
+    assert(startsWith(str, "The quick"), "string starts with");
+    assert(startsWith(str, "T"), "string starts with - single character");
+    assert(startsWith(str, "The quick brown 🦊"), "string starts with - special characters");
+    assert(startsWith(str, "The quick brown 🦊 jumps over 8 lazy dogs."), "string starts with - entire string");
+
+    assert(startsWith(str, "The slow") === false, "string doesn't start with");
+    assert(startsWith(str, "quick brown") === false, "string doesn't start with - contained value");
+
+
+    var arr = ["Peach", 23, "Plum", 45, "Pear"];
+    var arrZero = [];
+
+    assert(startsWith(arr, "Peach"), "array starts with");
+
+    assert(startsWith(arr, "Plum") === false, "array doesn't start with");
+    assert(startsWith(arrZero, "Peach") === false, "array doesn't start with - zero length");
+    assert(startsWith(arrZero, undefined) === false, "array doesn't start with - zero length undefined");
+  },
+
+// ----------------------------------------
+// Data/Type-Check
+// ----------------------------------------
 
   testIsArray: function() {
     var myDoc = doc();

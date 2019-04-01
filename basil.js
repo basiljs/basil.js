@@ -2269,22 +2269,70 @@ pub.JSON = {};
 // ----------------------------------------
 
 /**
- * @summary Checks wether a string ends with a specific character or string.
- * @description Checks whether a string ends with a specific character or string.
+ * @summary Checks wether a string contains a specific string or if an array contains a specific element.
+ * @description Checks wether a string contains a specific string or if an array contains a specific element.
+ *
+ * @cat     Data
+ * @subcat  String Functions
+ * @method  contains
+ *
+ * @param   {String} searchContainer A string or an array to be checked
+ * @param   {String} valueToFind The value to search for
+ * @return  {Boolean} Returns either true or false
+ */
+pub.contains = function(searchContainer, valueToFind) {
+
+  if(isString(searchContainer)) {
+    if(isString(valueToFind)) {
+      return searchContainer.indexOf(valueToFind) !== -1;
+    } else {
+      return false;
+    }
+  } else if (isArray(searchContainer)) {
+
+    var i = searchContainer.length;
+    while (i--) {
+      if (searchContainer[i] === valueToFind) {
+        return true;
+      }
+    }
+
+    return false;
+  } else {
+    error("contains(), wrong arguments. The first argument needs to be a string or an array.");
+  }
+};
+
+/**
+ * @summary Checks wether a string ends with a specific string or if an array ends with a specific element.
+ * @description Checks whether a string ends with a specific character or string or if an array ends with a specific element.
  *
  * @cat     Data
  * @subcat  String Functions
  * @method  endsWith
  *
- * @param   {String} str A string to be checked
- * @param   {String} suffix The string to look for
+ * @param   {String} searchContainer A string or array to be checked
+ * @param   {String} valueToFind The value to search for
  * @return  {Boolean} Returns either true or false
  */
-var endsWith = pub.endsWith = function(str, suffix) {
-  if(!isString(str) || !isString(suffix)) {
-    error("endsWith() requires two strings, the string to be checked and the suffix to look for.");
+var endsWith = pub.endsWith = function(searchContainer, valueToFind) {
+
+  if(isString(searchContainer)) {
+    if(isString(valueToFind)) {
+      return searchContainer.indexOf(valueToFind, searchContainer.length - valueToFind.length) !== -1;
+    } else {
+      return false;
+    }
+  } else if (isArray(searchContainer)) {
+    var len = searchContainer.length;
+    if(len) {
+      return searchContainer[len - 1] === valueToFind;
+    } else {
+      return false;
+    }
+  } else {
+    error("endsWith(), wrong arguments. The first argument needs to be a string or an array.");
   }
-  return str.indexOf(suffix, str.length - suffix.length) !== -1;
 };
 
 /**
@@ -2433,22 +2481,35 @@ pub.splitTokens = function(str, tokens) {
 };
 
 /**
- * @summary Checks whether a string starts with a specific character or string.
- * @description Checks whether a string starts with a specific character or string.
+ * @summary Checks whether a string starts with a specific string or if an array starts with a specific value.
+ * @description Checks whether a string starts with a specific character or string or if an array starts with a specific value.
  *
  * @cat     Data
  * @subcat  String Functions
  * @method  startsWith
  *
- * @param   {String} str A string to be checked
- * @param   {String} prefix The string to look for
+ * @param   {String} searchContainer A string or an array to be checked
+ * @param   {String} valueToFind The value to search for
  * @return  {Boolean} Returns either true or false
  */
-var startsWith = pub.startsWith = function(str, prefix) {
-  if(!isString(str) || !isString(prefix)) {
-    error("startsWith() requires two strings, the string to be checked and the prefix to look for.");
+var startsWith = pub.startsWith = function(searchContainer, valueToFind) {
+
+  if(isString(searchContainer)) {
+    if(isString(valueToFind)) {
+      return searchContainer.indexOf(valueToFind) === 0;
+    } else {
+      return false;
+    }
+  } else if (isArray(searchContainer)) {
+    if(searchContainer.length) {
+      return searchContainer[0] === valueToFind;
+    } else {
+      return false;
+    }
+  } else {
+    error("startsWith(), wrong arguments. The first argument needs to be a string or an array.");
   }
-  return str.indexOf(prefix) === 0;
+
 };
 
 /**
