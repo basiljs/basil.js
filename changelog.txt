@@ -42,6 +42,8 @@ basil.js x.x.x DAY MONTH YEAR
   returns a color or gradient of a given name
 + Added revert()
   reverts the document to a fresh state
++ Added contains()
+  checks if a string or an array contain specific values
 + Added SCRIPTNAME
   holds the name of the current script
 + Added isInteger()
@@ -87,6 +89,7 @@ basil.js x.x.x DAY MONTH YEAR
 * duplicate() now duplicates page items reliably in place, even when in FACING canvas modes
 * selection() can now be used to set the selection
 * label() can now be used to assign a label to a page item
+* endsWith() and startsWith() now also work for arrays
 * Updated categories and sub-categories of many functions to better align to Processing/p5.js categories
   or – in case of non-Processing functions – to better reflect the InDesign categories they belong to
 * Changed all include/includepath/targetengine statements from # to //@
