@@ -3137,7 +3137,7 @@ pub.guideY = function (y) {
   }
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  guide.fitToPage = true;
+  guide.fitToPage = (currCanvasMode === PAGE || currCanvasMode === MARGIN || currCanvasMode === BLEED);
   guide.orientation = HorizontalOrVertical.HORIZONTAL;
   guide.location = y + currOriginY;
   return guide;
