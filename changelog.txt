@@ -90,6 +90,8 @@ basil.js x.x.x DAY MONTH YEAR
 * selection() can now be used to set the selection
 * label() can now be used to assign a label to a page item
 * endsWith() and startsWith() now also work for arrays
+* guideX() and guideY() now correctly place guides in facing canvas modes
+* guideY() now places a guide spanning the entire spread when in facing canvas modes
 * Updated categories and sub-categories of many functions to better align to Processing/p5.js categories
   or – in case of non-Processing functions – to better reflect the InDesign categories they belong to
 * Changed all include/includepath/targetengine statements from # to //@

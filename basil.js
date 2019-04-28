@@ -3109,12 +3109,14 @@ pub.canvasMode = function (m) {
  * @return  {Guide} New guide line.
  */
 pub.guideX = function (x) {
-  checkNull(x);
+  if(!isNumber(x)) {
+    error("guideX(), invalid argument! Use number.");
+  }
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
   guide.fitToPage = true;
   guide.orientation = HorizontalOrVertical.VERTICAL;
-  guide.location = x;
+  guide.location = x + currOriginX;
   return guide;
 };
 
@@ -3130,12 +3132,14 @@ pub.guideX = function (x) {
  * @return  {Guide} New guide line.
  */
 pub.guideY = function (y) {
-  checkNull(y);
+  if(!isNumber(y)) {
+    error("guideY(), invalid argument! Use number.");
+  }
   var guides = currentPage().guides;
   var guide = guides.add(currentLayer());
-  guide.fitToPage = true;
+  guide.fitToPage = (currCanvasMode === PAGE || currCanvasMode === MARGIN || currCanvasMode === BLEED);
   guide.orientation = HorizontalOrVertical.HORIZONTAL;
-  guide.location = y;
+  guide.location = y + currOriginY;
   return guide;
 };
 
