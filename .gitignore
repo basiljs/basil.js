@@ -1,4 +1,5 @@
 .DS_Store
+.vscode
 basil.sublime-workspace
 *.idlk
 

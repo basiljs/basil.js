@@ -22,6 +22,10 @@ var init = function() {
   currMode = pub.VISIBLE;
   currWindowBounds = [];
 
+  if(app.properties.hasOwnProperty('activeScript')) {
+    userScriptFile = $.sblimeRunner ? $.sblimeRunner.runFile : app.activeScript;
+  }
+
   registerPlugins();
   populateGlobal();
 
@@ -178,29 +182,40 @@ var populateGlobal = function() {
 }
 
 var registerPlugins = function() {
-  var mainPluginsFolder = Folder(File($.fileName).parent + "/plugins");
 
-  if(mainPluginsFolder.exists) {
-    var pluginCounter = 0;
-    var plugins = mainPluginsFolder.getFiles();
-    for (var i = plugins.length - 1; i >= 0; i--) {
-      var p = plugins[i];
+  // global plugins, installed next to the basil.js lib
+  var globalPluginFolder = Folder(File($.fileName).parent + "/plugins");
+  if(globalPluginFolder.exists) {
+    loadPlugins(globalPluginFolder, "global");
+  }
 
-      if(p instanceof Folder &&
-         p.name.charAt(0) !== "_" &&
-         File(p + "/" + p.name + ".jsx").exists) {
-        app.doScript(File(p + "/" + p.name + ".jsx"), ScriptLanguage.JAVASCRIPT);
-        pluginCounter++;
-      }
+  if(userScriptFile) {
+    var localPluginFolder = Folder(userScriptFile.parent + "/plugins");
+    if(localPluginFolder.exists) {
+      loadPlugins(localPluginFolder, "local");
     }
+  }
+}
 
-    if(pluginCounter > 1) {
-      println(pluginCounter + " basil.js plugins installed.");
-    } else if(pluginCounter) {
-      println("1 basil.js plugin installed.");
+var loadPlugins = function(folder, scope) {
+  var counter = 0;
+  var plugins = folder.getFiles();
+  for (var i = plugins.length - 1; i >= 0; i--) {
+    var p = plugins[i];
+
+    // TODO implement some sorting
+    if(p instanceof Folder &&
+       p.name.charAt(0) !== "_" &&
+       p.name.charAt(0) !== "." &&
+       File(p + "/index.jsx").exists) {
+      app.doScript(File(p + "/index.jsx"), ScriptLanguage.JAVASCRIPT);
+      counter++;
     }
   }
 
+  if(counter) {
+    $.writeln("### Basil -> Loaded " + counter + " " + scope + " plugin" + (counter > 1 ? "s." : "."));
+  }
 }
 
 var currentDoc = function(mode) {

@@ -61,13 +61,8 @@ if($.engineName === "loop" && $.global.basilGlobal) {
 
 if(!$.global.hasOwnProperty("basilTest")) {
   // load global vars of the user script
-  var sourceScript;
-  try {
-    app.nonExistingProperty;
-  } catch(e) {
-    sourceScript = e.source;
-  }
 
+  var sourceScript = $.error.source;
   var userScript = sourceScript.replace(/[\s\S]*[#@]\s*[i]nclude\s+.+basil\.js["']*[\s;)}]*/, "");
   app.doScript(userScript);
 }
