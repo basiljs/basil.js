@@ -46,7 +46,7 @@
 
 // clearing global space if it is still populated from previous run of a loop script
 // to ensure basil methods work properly
-if($.engineName === "loop" && $.global.basilGlobal) {
+if($.global.basilGlobal) {
   for (var i = basilGlobal.length - 1; i >= 0; i--) {
     if($.global.hasOwnProperty(basilGlobal[i])) {
       try{
