@@ -1233,6 +1233,36 @@ pub.selections = function(cb) {
 };
 
 /**
+ * @summary Runs a function on a collection of text frames in a container or returns them.
+ * @description Returns a collection of all text frames in the given container. The container object can be a Document, Page, Layer, Group, Story, Page Item or Text Object. This function can be useful to cycle through linked text frames.
+ * If a text frame is given as the container, it will run the callback function on all linked text frames or return them.
+ * If a callback function is given, `textFrames()` calls this callback function on each text frame of the given container. When the callback function returns false, the loop stops and the `textFrames()` function returns an array of all text frames up to this point.
+ *
+ * @cat     Document
+ * @subcat  Page Items
+ * @method  textFrames
+ *
+ * @param   {Document|Page|Layer|Group|Story|PageItem|TextObject} container The document, page, layer, group, story, page item or text object to iterate the text frames in.
+ * @param   {Function} [cb] The callback function to call with each text frame. When this function returns false the loop stops. Passed arguments: `textFrame`, `loopCount`.
+ * @return  {Array} An array of Text Frames.
+ */
+pub.textFrames = function(container, cb) {
+
+  // WIP
+
+  // if (arguments.length && container.hasOwnProperty("textFrames") || container.hasOwn) {
+
+  //   if(cb instanceof Function) {
+  //     return forEach(container.allGraphics, cb);
+  //   }
+  //   return container.allGraphics;
+  // }
+
+  // error("graphics(), not a valid Graphics container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
+
+};
+
+/**
  * @summary Ungroups a group and returns its items.
  * @description Ungroups an existing group. Returns an array of the items that were within the group before ungroup() was called.
  *
