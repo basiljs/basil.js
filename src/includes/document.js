@@ -1118,6 +1118,38 @@ pub.labels = function(label, cb) {
 };
 
 /**
+ * @summary Runs a function on a chain of linked text frames or returns them.
+ * @description Returns an array of all linked text frames or text paths in relation to a given Text Frame, Text Path, Story or Text Object.
+ * If a callback function is given, `textFrames()` calls this callback function on each text frame of the given container. When the callback function returns false, the loop stops and the `textFrames()` function returns an array of all text frames up to this point.
+ *
+ * @cat     Document
+ * @subcat  Page Items
+ * @method  linkedTextFrames
+ *
+ * @param   {TextFrame|TextPath|Story|TextObject} item The text frame, text path, story or text object of the text frame chain.
+ * @param   {Function} [cb] The callback function to call with each text frame or text path. When this function returns false the loop stops. Passed arguments: `textFrame`, `loopCount`.
+ * @return  {Array} The array of linked text frames or text paths.
+ */
+pub.linkedTextFrames = function(item, cb) {
+
+  if (arguments.length &&
+     (item instanceof TextFrame ||
+      pub.isText(item) ||
+      item instanceof Story ||
+      item instanceof TextFrame)) {
+
+    var s = item instanceof Story ? item : item.parentStory;
+
+    if(cb instanceof Function) {
+      return forEach(s.textContainers, cb);
+    }
+    return s.textContainers;
+  }
+
+  error("linkedTextFrames(), invalid first argument. Should be Text Frame, Text Path, Story or Text Object.");
+};
+
+/**
  * @summary Returns an item on the active page by name.
  * @description Returns the first item on the active page that is named by the given name in the Layers pane (`Window -> Layer`).
  *
@@ -1234,8 +1266,7 @@ pub.selections = function(cb) {
 
 /**
  * @summary Runs a function on a collection of text frames in a container or returns them.
- * @description Returns a collection of all text frames in the given container. The container object can be a Document, Page, Layer, Group, Story, Page Item or Text Object. This function can be useful to cycle through linked text frames.
- * If a text frame is given as the container, it will run the callback function on all linked text frames or return them.
+ * @description Returns a collection of all text frames in the given container. The container object can be a Document, Page, Layer, Group, Story, Page Item or Text Object.
  * If a callback function is given, `textFrames()` calls this callback function on each text frame of the given container. When the callback function returns false, the loop stops and the `textFrames()` function returns an array of all text frames up to this point.
  *
  * @cat     Document
@@ -1248,18 +1279,15 @@ pub.selections = function(cb) {
  */
 pub.textFrames = function(container, cb) {
 
-  // WIP
+  if (arguments.length && container.hasOwnProperty("textFrames")) {
 
-  // if (arguments.length && container.hasOwnProperty("textFrames") || container.hasOwn) {
+    if(cb instanceof Function) {
+      return forEach(container.textFrames, cb);
+    }
+    return container.textFrames;
+  }
 
-  //   if(cb instanceof Function) {
-  //     return forEach(container.allGraphics, cb);
-  //   }
-  //   return container.allGraphics;
-  // }
-
-  // error("graphics(), not a valid Graphics container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
-
+  error("textFrames(), not a valid textFrames container, should be Document, Page, Layer, Group, Story, PageItem or Text Object.");
 };
 
 /**
