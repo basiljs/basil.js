@@ -37,6 +37,8 @@ basil.js x.x.x DAY MONTH YEAR
 + Added property()
   sets a property of an object to a given value
 + Added graphics() to loop over graphics in a given container
++ Added textFrames() to loop over text frames in a given container
++ Added linkedTextFrames() to loop over all linked text frames of a text frame chain
 + Added textStyleRanges() to loop over text style ranges in a given container
 + Added swatch()
   returns a color or gradient of a given name

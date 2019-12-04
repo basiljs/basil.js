@@ -106,6 +106,45 @@ basilTest("DocumentTests", {
     assert(lcb2.length < lcb1.length);
   },
 
+  testLinkedTextFrames: function() {
+    var myDoc = doc();
+
+    var tf1 = text(LOREM, 0, 0, 100, 100);
+    var tf2 = text("", 10, 10, 100, 100);
+    var tf3 = text("", 20, 20, 100, 100);
+
+    linkTextFrames(tf1, tf2);
+    linkTextFrames(tf2, tf3);
+
+    assert(isArray(linkedTextFrames(tf1)));
+    assert(isArray(linkedTextFrames(tf1.parentStory)));
+    assert(isArray(linkedTextFrames(tf1.words.anyItem())));
+    assert(linkedTextFrames(tf2).length === 3);
+
+    var ltfs = linkedTextFrames(tf3);
+
+    assert(ltfs[0] instanceof TextFrame);
+
+    var ltfCounter = 0;
+    var ltfcb1 = linkedTextFrames(tf1, function(textFrame, i) {
+      ltfCounter++;
+    })
+
+    assert(isArray(ltfcb1));
+    assert(ltfCounter === ltfs.length);
+    assert(ltfCounter === ltfcb1.length);
+
+    var ltfcb2 = linkedTextFrames(tf2, function(textFrame, i) {
+      if(textFrame.geometricBounds[0] > 15) {
+        return false;
+      }
+    })
+
+    assert(isArray(ltfcb2));
+    assert(ltfcb2[0] instanceof TextFrame);
+    assert(ltfcb2.length < ltfcb1.length);
+  },
+
   testParagraphs: function() {
     var myDoc = doc();
     var tf = text(LOREM + "\r" + LOREM + "\r" + LOREM, 0, 0, 100, 100);
@@ -163,6 +202,38 @@ basilTest("DocumentTests", {
     linkTextFrames(tf1, tf2);
     var s = stories(doc());
     assert(s.length === 1);
+  },
+
+  testTextFrames: function() {
+    var myDoc = doc();
+
+    var tf1 = text(LOREM, 0, 0, 100, 100);
+    var tf2 = text(LOREM, 10, 10, 100, 100);
+    var tf3 = text(LOREM, 20, 20, 100, 100);
+
+    var tfs = textFrames(doc());
+
+    assert(tfs instanceof TextFrames);
+    assert(tfs[0] instanceof TextFrame);
+    assert(tfs.length === 3);
+
+    var tfCounter = 0;
+    var tfcb1 = textFrames(doc(), function(textFrame, i) {
+      tfCounter++;
+    })
+    assert(tfcb1 instanceof TextFrames);
+    assert(tfCounter === tfs.length);
+    assert(tfCounter === tfcb1.length);
+
+    var tfcb2 = textFrames(doc(), function(textFrame, i) {
+      if(textFrame.geometricBounds[0] < 10) {
+        return false;
+      }
+    })
+
+    assert(isArray(tfcb2));
+    assert(tfcb2[0] instanceof TextFrame);
+    assert(tfcb2.length < tfcb1.length);
   },
 
   testTextStyleRanges: function() {

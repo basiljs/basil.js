@@ -10,7 +10,9 @@ test/loop/basil.js
 test/loop/lib/
 
 # User directories
+.vscode/
 libraries/
+plugins/
 sketches/
 
 # Dependency directories
