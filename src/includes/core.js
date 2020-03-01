@@ -146,7 +146,9 @@ var prepareLoop = function() {
 // all private from here
 
 var welcome = function() {
-  clearConsole();
+  if(!($.sblimeRunner || app.properties.activeScript)) {
+    clearConsole();
+  }
   println("Running "
       + pub.SCRIPTNAME
       + " using basil.js "

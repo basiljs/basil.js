@@ -50,6 +50,7 @@ basil.js x.x.x DAY MONTH YEAR
   holds the name of the current script
 + Added isInteger()
   checks if a given variable is an integer
++ basil scripts don't try to start ExtendScript Toolkit in the background anymore
 
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
 * basil scripts will by default use the user's default units or the current units of the document,
