@@ -378,7 +378,7 @@ pub.noiseSeed = function(seed) {
 };
 
 /**
- * @summary  Generates a random number.
+ * @summary  Generates a random number or returns a random array item.
  * @description Generates random numbers. Each time the `random()` function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call `random(5)` returns values between `0` and `5`. If two parameters are passed, it will return a float with a value between the the parameters. The function call `random(-5, 10.2)` returns values between `-5` and `10.2`.
  * One parameter sets the range from `0` to the given parameter, while with two parameters present you set the range from `val1` to `val2`.
  * If one argument is given and it is an array, returns a random element from that array.
@@ -394,9 +394,9 @@ pub.noiseSeed = function(seed) {
 pub.random = function() {
   if (arguments.length === 0) return currentRandom();
   if (arguments.length === 1) {
-    if(arguments[0] instanceof Array){
+    if(isArray(arguments[0])){
       return arguments[0][Math.floor(currentRandom() * arguments[0].length)];
-    }else{
+    } else {
       return currentRandom() * arguments[0];
     }
   }
