@@ -32,6 +32,13 @@ basilTest("MathTests", {
     assert(rand > -5 && rand < 10.2);
   },
 
+  testRandomWithArray: function() {
+    var animals = ['dog', 'cat', 'bear', 'rabbit'];
+    result = random(animals);
+
+    assert.include(animals, result);
+  },
+
   testConstrain: function() {
 
     assert(constrain(100, 0, 200) === 100);
