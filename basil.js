@@ -5351,14 +5351,15 @@ pub.folder = function(folderPath) {
  * @method  loadJSON
  *
  * @param   {String|File} file The JSON file name in the document's data directory, an absolute path to a JSON file, a File instance or an URL.
+ * @param   {String} [curlOptions] Optional Mac-only parameters when URL is used, ie. `"--user-agent 'browser agent'"`
  * @return  {Object} The resulting data object.
  */
-pub.loadJSON = function(file) {
+pub.loadJSON = function(file, curlOptions) {
 
   var jsonString;
 
   if (isURL(file)) {
-    jsonString = getURL(file);
+    jsonString = getURL(file, curlOptions);
   } else {
     var inputFile = initDataFile(file),
       data = null;
@@ -5379,11 +5380,12 @@ pub.loadJSON = function(file) {
  * @method  loadString
  *
  * @param   {String|File} file The text file name in the document's data directory or a File instance or an URL
+ * @param   {String} [curlOptions] Optional Mac-only parameters when URL is used, ie. `"--user-agent 'browser agent'"`
  * @return  {String} String file or URL content.
  */
-pub.loadString = function(file) {
+pub.loadString = function(file, curlOptions) {
   if (isURL(file)) {
-    return getURL(file);
+    return getURL(file, curlOptions);
   } else {
     var inputFile = initDataFile(file),
       data = null;
@@ -5403,11 +5405,12 @@ pub.loadString = function(file) {
  * @method  loadStrings
  *
  * @param   {String|File} file The text file name in the document's data directory or a file instance or an URL
+ * @param   {String} [curlOptions] Optional Mac-only parameters when URL is used, ie. `"--user-agent 'browser agent'"`
  * @return  {Array} Array of the individual lines in the given file or URL
  */
-pub.loadStrings = function(file) {
+pub.loadStrings = function(file, curlOptions) {
   if (isURL(file)) {
-    var result = getURL(file);
+    var result = getURL(file, curlOptions);
     return result.match(/[^\r\n]+/g);
   } else {
     var inputFile = initDataFile(file),
@@ -5659,12 +5662,42 @@ pub.year = function() {
 // Input Private
 // ----------------------------------------
 
-var getURL = function(url) {
+var getURL = function(url, curlOptions) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
-      return pub.shellExecute("curl -m 15 -L '" + url + "'");
+      curlUserOptions = '';
+      if(curlOptions != undefined){
+        curlUserOptions = curlOptions;
+      }
+      return pub.shellExecute("curl -m 15 -L '" + url + "' " + curlUserOptions);
     } else {
-      error(getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+      // Windows
+      var vbs = 'Dim str\r';
+      vbs += 'URL = "' + url + '"\r';
+      vbs += 'Set WshShell = CreateObject("WScript.Shell")\r';
+      vbs += 'Set http = CreateObject("Microsoft.XmlHttp")\r';
+      vbs += 'On Error Resume Next\r';
+      vbs += 'http.open "GET", URL, False\r';
+      vbs += 'http.send ""\r';
+      vbs += 'if err.Number = 0 Then\r';
+      vbs += 'str = http.responseText\r';
+      vbs += 'Else\r';
+      vbs += 'MsgBox("error " & Err.Number & ": " & Err.Description)\r';
+      vbs += 'End If\r';
+      vbs += 'set WshShell = Nothing\r';
+      vbs += 'Set http = Nothing\r';
+      vbs += 'Set objInDesign = CreateObject("InDesign.Application")\r';
+      vbs += 'objInDesign.ScriptArgs.SetValue "WshShellResponse", str';
+
+      try {
+        app.doScript(vbs, ScriptLanguage.VISUAL_BASIC, undefined, UndoModes.FAST_ENTIRE_SCRIPT);
+      } catch(err) {
+        error(err.message + ", line: " + err.line);
+      }
+
+      var str = app.scriptArgs.getValue("WshShellResponse");
+      app.scriptArgs.clear();
+      return str;
     }
   } else {
     error(getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
