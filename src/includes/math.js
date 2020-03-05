@@ -394,8 +394,9 @@ pub.noiseSeed = function(seed) {
 pub.random = function() {
   if (arguments.length === 0) return currentRandom();
   if (arguments.length === 1) {
-    if(isArray(arguments[0])){
-      return arguments[0][Math.floor(currentRandom() * arguments[0].length)];
+    if(arguments[0].length != undefined){
+      var argArray = Array.prototype.slice.call(arguments[0], 0);
+      return argArray[Math.floor(currentRandom() * argArray.length)];
     } else {
       return currentRandom() * arguments[0];
     }
