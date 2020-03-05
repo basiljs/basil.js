@@ -51,6 +51,7 @@ basil.js x.x.x DAY MONTH YEAR
 + Added isInteger()
   checks if a given variable is an integer
 + basil scripts don't try to start ExtendScript Toolkit in the background anymore
++ Added week() to return week number of the year
 
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
 * basil scripts will by default use the user's default units or the current units of the document,
@@ -103,6 +104,7 @@ basil.js x.x.x DAY MONTH YEAR
 * Changed the location of the basil.js library from `~/Documents/basiljs/bundle/basil.js` to `~/Documents/basiljs/basil.js` in all the example files.
 The user is allowed to have his files wherever he wants.
 * bounds() now correctly measures bounds in different canvas modes(MARGIN/BLEED etc.)
+* weekday() now returns number day of the week (0 - 6)
 
 - b.go() and b.loop() are removed (use function draw() or function loop() instead)
 - b.itemX(), b.itemY(), b.itemWidth(), b.itemHeight(), b.itemPosition() and b.itemSize() are removed

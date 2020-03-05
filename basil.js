@@ -5643,36 +5643,17 @@ pub.week = function() {
 };
 
 /**
- * @summary Returns the current day of the week.
- * @description The `weekday()` function returns the current weekday as a string from `Sunday`, `Monday`, `Tuesday` ...
+ * @summary Returns the current day number of the week.
+ * @description The `weekday()` function returns the current weekday as a value from `0` - `6` (starting Sunday).
  *
  * @cat     Input
  * @subcat  Time & Date
  * @method  weekday
  *
- * @return  {String} The current weekday name.
- */
-pub.weekday = function() {
-  var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-  return weekdays[(new Date()).getDay()];
-};
-
-/**
- * @summary Returns the current day number of the week.
- * @description The `weekdayCount()` function returns the current weekday as value from `1` - `7` (starting Monday).
- *
- * @cat     Input
- * @subcat  Time & Date
- * @method  weekdayCount
- *
  * @return  {Number} The current weekday as number.
  */
-pub.weekdayCount = function() {
-  var dt = new Date().getDay();
-  if(dt === 0) {
-    dt = 7;
-  }
-  return dt;
+pub.weekday = function() {
+  return (new Date()).getDay();
 };
 
 /**
