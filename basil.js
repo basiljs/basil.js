@@ -5351,15 +5351,15 @@ pub.folder = function(folderPath) {
  * @method  loadJSON
  *
  * @param   {String|File} file The JSON file name in the document's data directory, an absolute path to a JSON file, a File instance or an URL.
- * @param   {String} [curlOptions] Optional Mac-only parameters when URL is used, ie. `"--user-agent 'browser agent'"`
+ * @param   {String} [userAgent] Optional parameter when URL is used, to specify a user-agent making request.
  * @return  {Object} The resulting data object.
  */
-pub.loadJSON = function(file, curlOptions) {
+pub.loadJSON = function(file, userAgent) {
 
   var jsonString;
 
   if (isURL(file)) {
-    jsonString = getURL(file, curlOptions);
+    jsonString = getURL(file, userAgent);
   } else {
     var inputFile = initDataFile(file),
       data = null;
@@ -5380,12 +5380,12 @@ pub.loadJSON = function(file, curlOptions) {
  * @method  loadString
  *
  * @param   {String|File} file The text file name in the document's data directory or a File instance or an URL
- * @param   {String} [curlOptions] Optional Mac-only parameters when URL is used, ie. `"--user-agent 'browser agent'"`
+ * @param   {String} [userAgent] Optional parameter when URL is used, to specify a user-agent making request.
  * @return  {String} String file or URL content.
  */
-pub.loadString = function(file, curlOptions) {
+pub.loadString = function(file, userAgent) {
   if (isURL(file)) {
-    return getURL(file, curlOptions);
+    return getURL(file, userAgent);
   } else {
     var inputFile = initDataFile(file),
       data = null;
@@ -5405,12 +5405,12 @@ pub.loadString = function(file, curlOptions) {
  * @method  loadStrings
  *
  * @param   {String|File} file The text file name in the document's data directory or a file instance or an URL
- * @param   {String} [curlOptions] Optional Mac-only parameters when URL is used, ie. `"--user-agent 'browser agent'"`
+ * @param   {String} [userAgent] Optional parameter when URL is used, to specify a user-agent making request.
  * @return  {Array} Array of the individual lines in the given file or URL
  */
-pub.loadStrings = function(file, curlOptions) {
+pub.loadStrings = function(file, userAgent) {
   if (isURL(file)) {
-    var result = getURL(file, curlOptions);
+    var result = getURL(file, userAgent);
     return result.match(/[^\r\n]+/g);
   } else {
     var inputFile = initDataFile(file),
@@ -5662,20 +5662,24 @@ pub.year = function() {
 // Input Private
 // ----------------------------------------
 
-var getURL = function(url, curlOptions) {
+var getURL = function(url, userAgent) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
-      curlUserOptions = '';
-      if(curlOptions != undefined){
-        curlUserOptions = curlOptions;
+      curlAgent = '';
+      if(userAgent != undefined){
+        curlAgent = "--user-agent '"+userAgent+"'";
       }
-      return pub.shellExecute("curl -m 15 -L '" + url + "' " + curlUserOptions);
+      return pub.shellExecute("curl -m 15 -L '" + url + "' " + curlAgent);
     } else {
-      // Windows
+      // Windows support - Based on GetDataFromWshShell()
+      // https://community.adobe.com/t5/indesign/execute-a-vbscript-inside-a-javascript/m-p/9406203?page=1#M69766
       var vbs = 'Dim str\r';
       vbs += 'URL = "' + url + '"\r';
       vbs += 'Set WshShell = CreateObject("WScript.Shell")\r';
       vbs += 'Set http = CreateObject("Microsoft.XmlHttp")\r';
+      if(userAgent != undefined){
+        vbs += 'http.setRequestHeader "User-Agent", "'+userAgent+'"\r';
+      }
       vbs += 'On Error Resume Next\r';
       vbs += 'http.open "GET", URL, False\r';
       vbs += 'http.send ""\r';
