@@ -6114,16 +6114,21 @@ pub.noiseSeed = function(seed) {
  */
 pub.random = function() {
   if (arguments.length === 0) return currentRandom();
-  if (arguments.length === 1) {
-    if(isArray(arguments[0])){
-      return arguments[0][Math.floor(currentRandom() * arguments[0].length)];
+  var aMin = arguments[0];
+  var aMax = arguments[1];
+
+  if (isNumber(aMin)) {
+    if(isNumber(aMax)) {
+      return currentRandom() * (aMax - aMin) + aMin;
     } else {
-      return currentRandom() * arguments[0];
+      return currentRandom() * aMin;
     }
+  } else if(isArray(aMin) || aMin.hasOwnProperty("length") && isNumber(aMin.length)) {
+    var argArray = Array.prototype.slice.call(aMin, 0);
+    return argArray[Math.floor(currentRandom() * argArray.length)];
+  } else {
+    error("random(), wrong first argument. Needs to be a number or an array/collection.");
   }
-  var aMin = arguments[0],
-    aMax = arguments[1];
-  return currentRandom() * (aMax - aMin) + aMin;
 };
 
 /**
