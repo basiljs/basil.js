@@ -403,7 +403,7 @@ pub.random = function() {
       return currentRandom() * aMin;
     }
   } else if(isArray(aMin) || aMin.hasOwnProperty("length") && isNumber(aMin.length)) {
-    var argArray = Array.prototype.slice.call(arguments[0], 0);
+    var argArray = Array.prototype.slice.call(aMin, 0);
     return argArray[Math.floor(currentRandom() * argArray.length)];
   } else {
     error("random(), wrong first argument. Needs to be a number or an array/collection.");
