@@ -592,18 +592,33 @@ pub.timestamp = function() {
 };
 
 /**
- * @summary Returns the current day of the week.
- * @description The `weekday()` function returns the current weekday as a string from `Sunday`, `Monday`, `Tuesday` ...
+ * @summary Returns the current week number of the year.
+ * @description The `week()` function returns the current week as a value from `1`-`52`.
+ *
+ * @cat     Input
+ * @subcat  Time & Date
+ * @method  week
+ *
+ * @return  {Number} The current week number of the year.
+ */
+pub.week = function() {
+  var dt = new Date();
+  var dtJan = new Date(dt.getFullYear(), 0, 1);
+  return Math.ceil((((dt - dtJan) / 86400000) + dtJan.getDay() + 1) / 7);
+};
+
+/**
+ * @summary Returns the current day number of the week.
+ * @description The `weekday()` function returns the current weekday as a value from `0` - `6` (starting Sunday).
  *
  * @cat     Input
  * @subcat  Time & Date
  * @method  weekday
  *
- * @return  {String} The current weekday name.
+ * @return  {Number} The current weekday as number.
  */
 pub.weekday = function() {
-  var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-  return weekdays[(new Date()).getDay()];
+  return (new Date()).getDay();
 };
 
 /**

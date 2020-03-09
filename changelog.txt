@@ -51,6 +51,7 @@ basil.js x.x.x DAY MONTH YEAR
 + Added isInteger()
   checks if a given variable is an integer
 + basil scripts don't try to start ExtendScript Toolkit in the background anymore
++ Added week() to return week number of the year
 
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
 * basil scripts will by default use the user's default units or the current units of the document,
@@ -74,6 +75,7 @@ basil.js x.x.x DAY MONTH YEAR
   Options to show or hide properties, values and/or methods.
   Option to show only certain properties.
   Lots of minor fixes.
+* random(), now allows return a random item from an array or collection
 * page(), pageNumber() and removePage() now also accept page name strings as parameters
 * pageCount() can now also be used to set the doc's page count
 * previousPage() and nextPage() now work as expected
@@ -104,6 +106,8 @@ basil.js x.x.x DAY MONTH YEAR
 The user is allowed to have his files wherever he wants.
 * bounds() now correctly measures bounds in different canvas modes(MARGIN/BLEED etc.)
 * loadJSON(), loadString(), loadStrings() when passed a URL, can receive custom user-agent as 2nd parameter
+* weekday() now returns number day of the week (0 - 6)
+
 
 - b.go() and b.loop() are removed (use function draw() or function loop() instead)
 - b.itemX(), b.itemY(), b.itemWidth(), b.itemHeight(), b.itemPosition() and b.itemSize() are removed

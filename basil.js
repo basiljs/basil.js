@@ -5630,18 +5630,33 @@ pub.timestamp = function() {
 };
 
 /**
- * @summary Returns the current day of the week.
- * @description The `weekday()` function returns the current weekday as a string from `Sunday`, `Monday`, `Tuesday` ...
+ * @summary Returns the current week number of the year.
+ * @description The `week()` function returns the current week as a value from `1`-`52`.
+ *
+ * @cat     Input
+ * @subcat  Time & Date
+ * @method  week
+ *
+ * @return  {Number} The current week number of the year.
+ */
+pub.week = function() {
+  var dt = new Date();
+  var dtJan = new Date(dt.getFullYear(), 0, 1);
+  return Math.ceil((((dt - dtJan) / 86400000) + dtJan.getDay() + 1) / 7);
+};
+
+/**
+ * @summary Returns the current day number of the week.
+ * @description The `weekday()` function returns the current weekday as a value from `0` - `6` (starting Sunday).
  *
  * @cat     Input
  * @subcat  Time & Date
  * @method  weekday
  *
- * @return  {String} The current weekday name.
+ * @return  {Number} The current weekday as number.
  */
 pub.weekday = function() {
-  var weekdays = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
-  return weekdays[(new Date()).getDay()];
+  return (new Date()).getDay();
 };
 
 /**
@@ -6121,9 +6136,10 @@ pub.noiseSeed = function(seed) {
 };
 
 /**
- * @summary  Generates a random number.
+ * @summary  Generates a random number or returns a random array item.
  * @description Generates random numbers. Each time the `random()` function is called, it returns an unexpected value within the specified range. If one parameter is passed to the function it will return a float between zero and the value of the high parameter. The function call `random(5)` returns values between `0` and `5`. If two parameters are passed, it will return a float with a value between the the parameters. The function call `random(-5, 10.2)` returns values between `-5` and `10.2`.
  * One parameter sets the range from `0` to the given parameter, while with two parameters present you set the range from `val1` to `val2`.
+ * If one argument is given and it is an array, returns a random element from that array.
  *
  * @cat     Math
  * @subcat  Random
@@ -6131,14 +6147,25 @@ pub.noiseSeed = function(seed) {
  *
  * @param   {Number} [low] The low border of the range.
  * @param   {Number} [high] The high border of the range.
- * @return  {Number} A random number.
+ * @return  {Number|Object} A random number or a random element from array.
  */
 pub.random = function() {
   if (arguments.length === 0) return currentRandom();
-  if (arguments.length === 1) return currentRandom() * arguments[0];
-  var aMin = arguments[0],
-    aMax = arguments[1];
-  return currentRandom() * (aMax - aMin) + aMin;
+  var aMin = arguments[0];
+  var aMax = arguments[1];
+
+  if (isNumber(aMin)) {
+    if(isNumber(aMax)) {
+      return currentRandom() * (aMax - aMin) + aMin;
+    } else {
+      return currentRandom() * aMin;
+    }
+  } else if(isArray(aMin) || aMin.hasOwnProperty("length") && isNumber(aMin.length)) {
+    var argArray = Array.prototype.slice.call(aMin, 0);
+    return argArray[Math.floor(currentRandom() * argArray.length)];
+  } else {
+    error("random(), wrong first argument. Needs to be a number or an array/collection.");
+  }
 };
 
 /**
