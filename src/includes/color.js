@@ -19,19 +19,25 @@
 pub.background = function (bgColor) {
 
   var pLayer = currentLayer();
-  var bgLayer = pub.layer("basil.js Background");
+  var bgLayerName = "basil.js Background";
+  var bgLayer = pub.layer(bgLayerName);
 
   var lockedState = bgLayer.locked;
   bgLayer.locked = false;
   pub.arrange(bgLayer, pub.BACK);
+  pub.clear(bgLayer);
 
   var backgroundShape = pub.rect(0, 0, pub.width, pub.height);
   backgroundShape.fillColor = getSwatch("background", arguments);
   backgroundShape.strokeWeight = 0;
 
-  bgLayer.locked = lockedState;
-  pub.layer(pLayer);
-
+  bgLayer.locked = true;
+  if(pLayer.name != bgLayerName){
+    pub.layer(pLayer);
+  }else{
+    pub.layer('Layer 1');
+  }
+  
   return backgroundShape;
 };
 
