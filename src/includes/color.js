@@ -25,7 +25,14 @@ pub.background = function (bgColor) {
   var lockedState = bgLayer.locked;
   bgLayer.locked = false;
   pub.arrange(bgLayer, pub.BACK);
-  pub.clear(bgLayer);
+  
+  var bgItems = bgLayer.pageItems;
+  for(var i=0; i < bgItems.length; i++){
+    var curItem = bgItems[i];
+    if(curItem.parentPage.name === currentPage().name){
+      curItem.remove();
+    }
+  }
 
   var backgroundShape = pub.rect(0, 0, pub.width, pub.height);
   backgroundShape.fillColor = getSwatch("background", arguments);
