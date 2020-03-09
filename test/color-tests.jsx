@@ -165,6 +165,19 @@ basilTest("ColorTests", {
     var swatchCountEnd = myDoc.swatches.length;
 
     assert((swatchCountStart + 3) === swatchCountEnd);
+  },
+
+  testBackground: function(){
+    var myDoc = doc();
+    var bgLayerName = 'basil.js Background';
+    var docLayers = doc().layers;
+    var pages = 5;
+    for (var i=0; i < pages; i++) {
+        if (i > 0) addPage();
+        background(gradient(color(random(255), 255, 0), color(0, random(255), 255)));   
+    }
+    assert(docLayers[docLayers.length-1].name === bgLayerName);
+    assert(layer(bgLayerName).rectangles.length === pages);
   }
 });
 

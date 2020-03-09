@@ -876,14 +876,15 @@ pub.background = function (bgColor) {
   var bgLayerName = "basil.js Background";
   var bgLayer = pub.layer(bgLayerName);
 
-  var lockedState = bgLayer.locked;
   bgLayer.locked = false;
-  pub.arrange(bgLayer, pub.BACK);
+  if (currentDoc().layers[0].name === bgLayerName) {
+    pub.arrange(bgLayer, pub.BACK);
+  }
   
   var bgItems = bgLayer.pageItems;
-  for(var i=0; i < bgItems.length; i++){
+  for (var i=0; i < bgItems.length; i++) {
     var curItem = bgItems[i];
-    if(curItem.parentPage.name === currentPage().name){
+    if (curItem.parentPage === currentPage()) {
       curItem.remove();
     }
   }
@@ -893,10 +894,15 @@ pub.background = function (bgColor) {
   backgroundShape.strokeWeight = 0;
 
   bgLayer.locked = true;
-  if(pLayer.name != bgLayerName){
-    pub.layer(pLayer);
+  if (pLayer.name === bgLayerName) {
+    var docLayers = currentDoc().layers;
+    if (docLayers.length > 1) {
+      pub.layer(docLayers[0]);
+    }else{
+      pub.layer('output');
+    }
   }else{
-    pub.layer('Layer 1');
+    pub.layer(pLayer);
   }
   
   return backgroundShape;
