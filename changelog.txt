@@ -52,6 +52,10 @@ basil.js x.x.x DAY MONTH YEAR
   checks if a given variable is an integer
 + basil scripts don't try to start ExtendScript Toolkit in the background anymore
 + Added week() to return week number of the year
++ Added loadCSV() to load an parse CSV files one step
++ Added saveCSV() to stringify data and save it as CSV file in one step
++ Added CSV.parse() and CSV.stringify() to replace CSV.decode() and CSV.encode()
+  parse and stringify accept optional 2nd parameter for custom delimiter.
 
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
 * basil scripts will by default use the user's default units or the current units of the document,
@@ -116,6 +120,9 @@ The user is allowed to have his files wherever he wants.
 - b.storyCount() is removed (use stories(doc()).length instead)
 - Array.map() and Array.filter() are removed
 - b.Random.nextGaussian() is removed
+- CSV.decode() and CSV.encode() are removed and replaced by CSV.parse()
+  and CSV.stringfy()
+- CSV.delimiter() is removed and integrated as optional parameter of CSV.parse() and CSV.stringify()
 
 Special thanks to Hartmut Bohnacker for making the transform functions work in Processing style!
 

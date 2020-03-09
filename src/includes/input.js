@@ -305,6 +305,35 @@ pub.folder = function(folderPath) {
 };
 
 /**
+ * @summary Gets and parses the contents of a CSV file.
+ * @description Reads the contents of a CSV file and returns a CSV-object array with the data. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
+ *
+ * @cat     Input
+ * @subcat  Files
+ * @method  loadCSV
+ *
+ * @param   {String|File} file The CSV file name in the document's data directory, an absolute path to a CSV file, a File instance or an URL.
+ * @param   {String} [delimiter] optional character[s] used to separate data.
+ * @return  {Object} The resulting data object.
+ */
+pub.loadCSV = function(file, delimiter) {
+
+  var csvString;
+
+  if (isURL(file)) {
+    csvString = getURL(file);
+  } else {
+    var inputFile = initDataFile(file),
+      data = null;
+    inputFile.open("r");
+    csvString = inputFile.read();
+    inputFile.close();
+  }
+
+  return pub.CSV.parse(csvString, delimiter);
+};
+
+/**
  * @summary Gets and parses the contents of a JSON file.
  * @description Reads the contents of a JSON file and returns an object with the data. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
