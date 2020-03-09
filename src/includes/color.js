@@ -18,17 +18,18 @@
  */
 pub.background = function (bgColor) {
 
+  var lCount = currentDoc().layers.length;
   var pLayer = currentLayer();
   var bgLayerName = "basil.js Background";
   var bgLayer = pub.layer(bgLayerName);
 
   bgLayer.locked = false;
-  if (currentDoc().layers[0].name === bgLayerName) {
+  if (currentDoc().layers.length > lCount) {
     pub.arrange(bgLayer, pub.BACK);
   }
-  
+
   var bgItems = bgLayer.pageItems;
-  for (var i=0; i < bgItems.length; i++) {
+  for (var i = 0; i < bgItems.length; i++) {
     var curItem = bgItems[i];
     if (curItem.parentPage === currentPage()) {
       curItem.remove();
@@ -40,17 +41,19 @@ pub.background = function (bgColor) {
   backgroundShape.strokeWeight = 0;
 
   bgLayer.locked = true;
-  if (pLayer.name === bgLayerName) {
+  if (pLayer === bgLayer) {
     var docLayers = currentDoc().layers;
-    if (docLayers.length > 1) {
-      pub.layer(docLayers[0]);
-    }else{
-      pub.layer('output');
+    if (docLayers[0] === bgLayer) {
+      // bgLayer is foremost layer, create and activate new layer above
+      pub.layer(docLayers.add());
+    } else {
+      // activate layer above bgLayer
+      pub.layer(docLayers[bgLayer.index - 1]);
     }
-  }else{
+  } else {
     pub.layer(pLayer);
   }
-  
+
   return backgroundShape;
 };
 
