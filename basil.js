@@ -1566,21 +1566,21 @@ function CSV() {
   }
 
   /**
-   * @summary Decodes a CSV string to an array.
+   * @summary Parses (decodes) a CSV string to an array.
    * @description Function parses a string as CSV-object Array.
    *
    * @cat     Data
    * @subcat  CSV
-   * @method  CSV.decode
+   * @method  CSV.parse
    *
    * @param   {String} String to be parsed as CSV-object.
    * @return  {Array} Returns CSV-object Array
    *
    * @example
-   * var arr = CSV.decode(str);
-   * var str = CSV.encode(arr);
+   * var arr = CSV.parse(str);
+   * var str = CSV.stringify(arr);
    */
-  this.decode = function(text) {
+  this.parse = function(text) {
     var header;
     return parseRows(text, function(row, i) {
       if (i) {
@@ -1595,8 +1595,8 @@ function CSV() {
   };
 
   /**
-   * @summary Sets the delimiter of the CSV decode and encode function.
-   * @description Sets the delimiter of the CSV decode and encode function.
+   * @summary Sets the delimiter of the CSV parse and stringify function.
+   * @description Sets the delimiter of the CSV parse and stringify function.
    *
    * @cat     Data
    * @subcat  CSV
@@ -1615,21 +1615,21 @@ function CSV() {
   };
 
   /**
-   * @summary Encodes an array to a CSV string.
+   * @summary Stringifies (encodes) an array to a CSV string.
    * @description Function convert an javascript array of objects to a CSV-string.
    *
    * @cat     Data
    * @subcat  CSV
-   * @method  CSV.encode
+   * @method  CSV.stringify
    *
    * @param   {Array} Array to be converted to a CSV-string
    * @return  {String} Returns CSV-string
    *
    * @example
-   * var str = CSV.encode(arr);
-   * var arr = CSV.decode(str);
+   * var str = CSV.stringify(arr);
+   * var arr = CSV.parse(str);
    */
-  this.encode = function(rows) {
+  this.stringify = function(rows) {
     var csvStrings = [];
     var header = [];
     var firstRow = rows[0]; // all rows have to have the same properties keys
