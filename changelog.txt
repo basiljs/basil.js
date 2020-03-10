@@ -42,6 +42,8 @@ basil.js x.x.x DAY MONTH YEAR
 + Added textStyleRanges() to loop over text style ranges in a given container
 + Added swatch()
   returns a color or gradient of a given name
++ Added background() for Processing compatibility
+  adds a background of the given color
 + Added revert()
   reverts the document to a fresh state
 + Added contains()

@@ -863,6 +863,57 @@ var clearConsole = function() {
 // ----------------------------------------
 
 /**
+ * @summary Sets a background on the current page.
+ * @description Sets a background on the current page. The function takes the current canvas mode into account, so setting canvas mode to `FACING_PAGES` beforehand would result in the background to be drawn across the entire spread. The background will be placed on a background layer that basil creates automatically.
+ *
+ * @cat     Color
+ * @method  background
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} bgColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @return  {Rectangle} The newly created background shape.
+ */
+pub.background = function (bgColor) {
+
+  var lCount = currentDoc().layers.length;
+  var pLayer = currentLayer();
+  var bgLayerName = "basil.js Background";
+  var bgLayer = pub.layer(bgLayerName);
+
+  bgLayer.locked = false;
+  if (currentDoc().layers.length > lCount) {
+    pub.arrange(bgLayer, pub.BACK);
+  }
+
+  var bgItems = bgLayer.pageItems;
+  for (var i = 0; i < bgItems.length; i++) {
+    var curItem = bgItems[i];
+    if (curItem.parentPage === currentPage()) {
+      curItem.remove();
+    }
+  }
+
+  var backgroundShape = pub.rect(0, 0, pub.width, pub.height);
+  backgroundShape.fillColor = getSwatch("background", arguments);
+  backgroundShape.strokeWeight = 0;
+
+  bgLayer.locked = true;
+  if (pLayer === bgLayer) {
+    var docLayers = currentDoc().layers;
+    if (docLayers[0] === bgLayer) {
+      // bgLayer is foremost layer, create and activate new layer above
+      pub.layer(docLayers.add());
+    } else {
+      // activate layer above bgLayer
+      pub.layer(docLayers[bgLayer.index - 1]);
+    }
+  } else {
+    pub.layer(pLayer);
+  }
+
+  return backgroundShape;
+};
+
+/**
  * @summary Sets the blend mode of a page item.
  * @description Sets the Effects blendMode property of an object.
  *
