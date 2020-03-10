@@ -452,4 +452,4 @@ pub.SCRIPTNAME = scriptName;
  * @subcat   Constants
  * @property VERSION {String}
  */
-pub.VERSION = "1.1.0";
+pub.VERSION = "2.0.0-PRE";
