@@ -105,7 +105,9 @@ basil.js x.x.x DAY MONTH YEAR
 * Changed the location of the basil.js library from `~/Documents/basiljs/bundle/basil.js` to `~/Documents/basiljs/basil.js` in all the example files.
 The user is allowed to have his files wherever he wants.
 * bounds() now correctly measures bounds in different canvas modes(MARGIN/BLEED etc.)
+* loadJSON(), loadString(), loadStrings() when passed a URL, can receive custom user-agent as 2nd parameter
 * weekday() now returns number day of the week (0 - 6)
+
 
 - b.go() and b.loop() are removed (use function draw() or function loop() instead)
 - b.itemX(), b.itemY(), b.itemWidth(), b.itemHeight(), b.itemPosition() and b.itemSize() are removed
