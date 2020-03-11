@@ -4958,7 +4958,7 @@ pub.SCRIPTNAME = scriptName;
  * @subcat   Constants
  * @property VERSION {String}
  */
-pub.VERSION = "2.0.0-PRE";
+pub.VERSION = "2.0.0-beta";
 
 // ----------------------------------------
 // src/includes/image.js
