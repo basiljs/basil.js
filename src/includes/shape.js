@@ -548,6 +548,159 @@ pub.vertex = function() {
 };
 
 // ----------------------------------------
+// Shape/Path to Points
+// ----------------------------------------
+
+/**
+ * @summary Get points and bezier coordinates from path(s).
+ * @description Returns an object containing array of points, beziers, and both separated by paths. Intended for use with `createOutlines()` of text, but works with most pageItem paths. Accepts both single paths or a collection/group of paths. Both points and beziers will have connected lines (one big array), use paths followed by points or beziers for isolated shapes.
+ *
+ * @cat    Shape
+ * @method pathToPoints
+ * @param  {Object} obj       The pageItem(s) to process point/bezier coordinates of
+ * @param  {Number} [addPts]  Optional amount of additional interpolated points. Ignore if using beziers.
+ * @return {Object}           Returns object with following values: .points[], .beziers[], .paths[].points[], .paths[].beziers[]
+ *
+ * @example <caption>Points</caption>
+ * noFill();
+ * var myEllipse = ellipse(width / 2, height / 2, width / 2, width / 2);
+ * var pts = pathToPoints(myEllipse);
+ * var ptsExtended = pathToPoints(myEllipse, 5); // add 5 points between points
+ *
+ * noStroke();
+ * fill(0, 0, 255);
+ *
+ * // draw normal points
+ * for (var i=0; i < pts.points.length; i++) {
+ *   var pt = pts.points[i];
+ *   ellipse(pt.x, pt.y, 10, 10);
+ * }
+ *
+ * noFill();
+ * stroke(255, 0, 0);
+ * // draw extended points
+ * for (var i=0; i < ptsExtended.points.length; i++) {
+ *   var pt = ptsExtended.points[i];
+ *   ellipse(pt.x, pt.y, 10, 10);
+ * }
+ *
+ * @example <caption>Beziers from text using createOutlines()</caption>
+ * textSize(400);
+ * var myText = text("H", width/4, height/4, 500, 500);
+ * var outlines = createOutlines(myText);
+ * var pts = pathToPoints(outlines);
+ * property(outlines, "fillColor", "None");
+ *
+ * noFill();
+ * stroke(0, 255, 0);
+ *
+ * // draw bezier
+ * beginShape();
+ * for (var i=0; i < pts.beziers.length; i++) {
+ *   var pt = pts.beziers[i]; // point w/ .anchor .left .right
+ *   vertex(pt.anchor.x, pt.anchor.y, pt.left.x, pt.left.y, pt.right.x, pt.right.y);
+ * }
+ * endShape(CLOSE);
+ *
+ * // debug bezier
+ * for (var i=0; i < pts.beziers.length; i++) {
+ *   var pt = pts.beziers[i]; // point
+ *   var anchor = pt.anchor; // anchor
+ *   var left = pt.left; // left handle
+ *   var right = pt.right; // right handle
+ *   noStroke();
+ *   fill(0);
+ *   ellipse(anchor.x, anchor.y, 5, 5);
+ *   ellipse(left.x, left.y, 5, 5);
+ *   ellipse(right.x, right.y, 5, 5);
+ *   stroke(0, 255, 0);
+ *   line(anchor.x, anchor.y, left.x, left.y);
+ *   line(anchor.x, anchor.y, right.x, right.y);
+ * }
+ *
+ * @example <caption>Isolated Paths of Beziers from text using createOutlines()</caption>
+ * textSize(200);
+ * var myText = text("hello", width/4, height/4, 500, 500);
+ * var outlines = createOutlines(myText);
+ * var pts = pathToPoints(outlines);
+ * property(outlines, "fillColor", "None");
+ *
+ * noFill();
+ * stroke(0, 255, 0);
+ *
+ * // just beziers
+ * for (var p=0; p < pts.paths.length; p++) {
+ *   var path = pts.paths[p]; // each path isolated
+ *   beginShape();
+ *   for (var i=0; i<path.beziers.length; i++) {
+ *     var tp = path.beziers[i];
+ *     vertex(tp.anchor.x, tp.anchor.y, tp.left.x, tp.left.y, tp.right.x, tp.right.y);
+ *   }
+ *   endShape(CLOSE);
+ * }
+ *
+ */
+
+pub.pathToPoints = function(obj, addPts) {
+  var pz = {paths:[], points:[], beziers:[]},
+  pzGroup = false,
+  grabPoints = function(formElm) {
+    for (var j=0; j < formElm.paths.length; j++) {
+      var paths = formElm.paths[j];
+      var pzPaths = [];
+      var pzPoints = [];
+      var pzBeziers = [];
+      for (var i=0; i < paths.pathPoints.length; i++) {
+        var pt = paths.pathPoints[i];
+        var pzBezier = {
+          anchor:{x:pt.anchor[0], y:pt.anchor[1]},
+          left:{x:pt.leftDirection[0], y:pt.leftDirection[1]},
+          right:{x:pt.rightDirection[0], y:pt.rightDirection[1]}
+        };
+        pz.beziers.push(pzBezier)
+        pzBeziers.push(pzBezier)
+
+        // optionally interpolated points
+        if (addPts === undefined) {
+          var pzPoint = {x:pt.anchor[0], y:pt.anchor[1]};
+          pz.points.push(pzPoint)
+          pzPoints.push(pzPoint);
+        } else {
+          var nextPt = paths.pathPoints[(i + 1) % paths.pathPoints.length];
+          var amt = 1.0 / (addPts + 1);
+          for (var t = 0; t < 1; t += amt) {
+            var ptStep = interpolateBezier(pt, nextPt, t);
+            var pzPointStep = {x:ptStep.x, y:ptStep.y};
+            pz.points.push(pzPointStep)
+            pzPoints.push(pzPointStep);
+          }
+        }
+      }
+
+      var pzPath = {points:pzPoints, beziers:pzBeziers};
+      pz.paths.push(pzPath);
+    }
+  }
+
+  // catch grouped items
+  if (obj instanceof Group) {
+    obj = obj.pageItems;
+    pzGroup = true;
+  }
+
+  // process type as multi-line/character or single
+  if (obj instanceof Array || pzGroup) {
+    for (var k=0; k < obj.length; k++) {
+      grabPoints(obj[k]);
+    }
+  } else {
+    grabPoints(obj);
+  }
+
+  return pz;
+}
+
+// ----------------------------------------
 // Shape Private
 // ----------------------------------------
 
@@ -634,6 +787,28 @@ function doAddPath() {
   } else {
     notCalledBeginShapeError();
   }
+}
+
+/*
+ * https://stackoverflow.com/questions/4089443/find-the-tangent-of-a-point-on-a-cubic-bezier-curve
+ * https://webglfundamentals.org/webgl/lessons/webgl-3d-geometry-lathe.html
+ */
+function interpolateBezier(startPoint, endPoint, t) {
+  var newCoord = [];
+  for (var i = 0; i < 2; i++) {
+    var p1 = startPoint.anchor[i];
+    var p2 = startPoint.rightDirection[i];
+    var p3 = endPoint.leftDirection[i];
+    var p4 = endPoint.anchor[i];
+
+    var C1 = (p4 - (3.0 * p3) + (3.0 * p2) - p1);
+    var C2 = ((3.0 * p3) - (6.0 * p2) + (3.0 * p1));
+    var C3 = ((3.0 * p2) - (3.0 * p1));
+    var C4 = (p1);
+
+    newCoord[i] = (C1 * t * t * t + C2 * t * t + C3 * t + C4);
+  }
+  return {x:newCoord[0], y:newCoord[1]};
 }
 
 function notCalledBeginShapeError () {
