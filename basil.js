@@ -819,7 +819,7 @@ var getParentFunctionName = function(level) {
 }
 
 var checkNull = function (obj) {
-  if(obj === null || typeof obj === undefined) error("Received null " + obj);
+  if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
 var isEnum = function(base, value) {
@@ -7734,13 +7734,15 @@ pub.vertex = function() {
 
 /**
  * @summary Get points and bezier coordinates from path(s).
- * @description Returns an object containing array of points, beziers, and both separated by paths. Intended for use with `createOutlines()` of text, but works with most pageItem paths. Accepts both single paths or a collection/group of paths. Both points and beziers will have connected lines (one big array), use paths followed by points or beziers for isolated shapes.
+ * @description Returns an object containing an array of all points, an array of all beziers (points + their anchor points) and an array of all paths of a given path item in InDesign. Together with `createOutlines()` this can be used on text items to retrieve points, beziers and paths of text items. Accepts both single paths or a collection/group of paths.
+ * When using this on a multi path object (e.g. text with separate paths), the `paths` property can be used to loop over every path separately, whereas the properties `points` and `beziers` contain arrays for all paths combined.
+ * An optional second parameter allows to add and return additional points between existing points, which is helpful for subdividing existing paths.
  *
  * @cat    Shape
  * @method pathToPoints
- * @param  {Object} obj       The pageItem(s) to process point/bezier coordinates of
- * @param  {Number} [addPts]  Optional amount of additional interpolated points. Ignore if using beziers.
- * @return {Object}           Returns object with following values: .points[], .beziers[], .paths[].points[], .paths[].beziers[]
+ * @param  {Object} obj       The pageItem(s) to process point/bezier coordinates of.
+ * @param  {Number} [addPts]  Optional amount of additional interpolated points.
+ * @return {Object}           Returns object with the following arrays `points`, `beziers`, `paths`
  *
  * @example <caption>Points</caption>
  * noFill();
@@ -7847,7 +7849,8 @@ pub.pathToPoints = function(obj, addPts) {
           pz.points.push(pzPoint)
           pzPoints.push(pzPoint);
         } else {
-          var nextPt = paths.pathPoints[(i + 1) % paths.pathPoints.length];
+          var nextSel = (i + 1) % paths.pathPoints.length;
+          var nextPt = paths.pathPoints[nextSel];
           var amt = 1.0 / (addPts + 1);
           for (var t = 0; t < 1; t += amt) {
             var ptStep = interpolateBezier(pt, nextPt, t);

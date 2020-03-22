@@ -548,7 +548,7 @@ var getParentFunctionName = function(level) {
 }
 
 var checkNull = function (obj) {
-  if(obj === null || typeof obj === undefined) error("Received null " + obj);
+  if(obj === null || typeof obj === undefined) error("Received null object.");
 };
 
 var isEnum = function(base, value) {
