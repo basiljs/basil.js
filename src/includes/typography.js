@@ -524,7 +524,7 @@ pub.createOutlines = function(item, cb) {
         changedFill = true;
       }
     }
-    inspect(item)
+
     outlines = item.createOutlines();
 
   // check if textPath
