@@ -7734,7 +7734,7 @@ pub.vertex = function() {
 
 /**
  * @summary Get points and bezier coordinates from path(s).
- * @description Returns an object containing an array of all points, an array of all beziers (points + their anchor points) and an array of all paths of a given path item in InDesign. Together with `createOutlines()` this can be used on text items to retrieve points, beziers and paths of text items. Accepts both single paths or a collection/group of paths.
+ * @description Returns an object containing an array of all points, an array of all beziers (points + their anchor points) and an array of all paths of a given path item in InDesign. Together with `createOutlines()` this can be used on text items. Accepts both single paths or a collection/group of paths.
  * When using this on a multi path object (e.g. text with separate paths), the `paths` property can be used to loop over every path separately, whereas the properties `points` and `beziers` contain arrays for all paths combined.
  * An optional second parameter allows to add and return additional points between existing points, which is helpful for subdividing existing paths.
  *
@@ -7745,81 +7745,25 @@ pub.vertex = function() {
  * @return {Object}           Returns object with the following arrays `points`, `beziers`, `paths`
  *
  * @example <caption>Points</caption>
- * noFill();
- * var myEllipse = ellipse(width / 2, height / 2, width / 2, width / 2);
- * var pts = pathToPoints(myEllipse);
- * var ptsExtended = pathToPoints(myEllipse, 5); // add 5 points between points
+ * var pts = pathToPoints(obj);
+ * println(pts.points.length); // # of points
+ * point(pts.points[0].x, pts.points[0].y); // first point
  *
- * noStroke();
- * fill(0, 0, 255);
+ * @example <caption>Points w/ Interpolation</caption>
+ * var pts = pathToPoints(obj, 5); // adds 5 points between points
+ * println(pts.points.length); # of points
  *
- * // draw normal points
- * for (var i=0; i < pts.points.length; i++) {
- *   var pt = pts.points[i];
- *   ellipse(pt.x, pt.y, 10, 10);
- * }
+ * @example <caption>Beziers</caption>
+ * var pts = pathToPoints(obj);
+ * println(pts.beziers.length); # of beziers
+ * // vertex(pts.beziers[0].anchor.x, pts.beziers[0].anchor.y, pts.beziers[0].left.x, pts.beziers[0].left.y, pts.beziers[0].right.x, pts.beziers[0].right.y);
  *
- * noFill();
- * stroke(255, 0, 0);
- * // draw extended points
- * for (var i=0; i < ptsExtended.points.length; i++) {
- *   var pt = ptsExtended.points[i];
- *   ellipse(pt.x, pt.y, 10, 10);
- * }
- *
- * @example <caption>Beziers from text using createOutlines()</caption>
- * textSize(400);
- * var myText = text("H", width/4, height/4, 500, 500);
- * var outlines = createOutlines(myText);
- * var pts = pathToPoints(outlines);
- * property(outlines, "fillColor", "None");
- *
- * noFill();
- * stroke(0, 255, 0);
- *
- * // draw bezier
- * beginShape();
- * for (var i=0; i < pts.beziers.length; i++) {
- *   var pt = pts.beziers[i]; // point w/ .anchor .left .right
- *   vertex(pt.anchor.x, pt.anchor.y, pt.left.x, pt.left.y, pt.right.x, pt.right.y);
- * }
- * endShape(CLOSE);
- *
- * // debug bezier
- * for (var i=0; i < pts.beziers.length; i++) {
- *   var pt = pts.beziers[i]; // point
- *   var anchor = pt.anchor; // anchor
- *   var left = pt.left; // left handle
- *   var right = pt.right; // right handle
- *   noStroke();
- *   fill(0);
- *   ellipse(anchor.x, anchor.y, 5, 5);
- *   ellipse(left.x, left.y, 5, 5);
- *   ellipse(right.x, right.y, 5, 5);
- *   stroke(0, 255, 0);
- *   line(anchor.x, anchor.y, left.x, left.y);
- *   line(anchor.x, anchor.y, right.x, right.y);
- * }
- *
- * @example <caption>Isolated Paths of Beziers from text using createOutlines()</caption>
- * textSize(200);
- * var myText = text("hello", width/4, height/4, 500, 500);
- * var outlines = createOutlines(myText);
- * var pts = pathToPoints(outlines);
- * property(outlines, "fillColor", "None");
- *
- * noFill();
- * stroke(0, 255, 0);
- *
- * // just beziers
- * for (var p=0; p < pts.paths.length; p++) {
- *   var path = pts.paths[p]; // each path isolated
- *   beginShape();
- *   for (var i=0; i<path.beziers.length; i++) {
- *     var tp = path.beziers[i];
- *     vertex(tp.anchor.x, tp.anchor.y, tp.left.x, tp.left.y, tp.right.x, tp.right.y);
- *   }
- *   endShape(CLOSE);
+ * @example <caption>Isolated Paths of Points</caption>
+ * var pts = pathToPoints(obj);
+ * for (var i=0; i < pts.paths.length; i++) {
+ *   var path = pts.paths[i];
+ *   println(path.points.length); # of points
+ *   point(path.points[0].x, path.points[0].y); // first point
  * }
  *
  */
@@ -7852,6 +7796,11 @@ pub.pathToPoints = function(obj, addPts) {
           var nextSel = (i + 1) % paths.pathPoints.length;
           var nextPt = paths.pathPoints[nextSel];
           var amt = 1.0 / (addPts + 1);
+
+          if (formElm.paths[0].pathType === PathType.OPEN_PATH && i === paths.pathPoints.length-1) {
+            amt = 1; // don't interpolate end to start on open paths
+          }
+
           for (var t = 0; t < 1; t += amt) {
             var ptStep = interpolateBezier(pt, nextPt, t);
             var pzPointStep = {x:ptStep.x, y:ptStep.y};
@@ -9064,79 +9013,82 @@ pub.paragraphStyle = function(textOrName, props) {
 
 /**
  * @summary Convert text items to outlines.
- * @description Returns a polygon or array of polygons (if text is multi-line, multi-boxed, or a textPath) and optionally processes them with a callback function. Intended for use with `pathToPoints()` for getting point and bezier coordinates from outlines. Warning, InDesign requires that text have a fill color in order to createOutlines.
+ * @description Returns a polygon or array of polygons (if text is multi-line, multi-boxed, or a textPath) and optionally processes them with a callback function.
+ * Use together with `pathToPoints()` for getting point and bezier coordinates from outlines.
  *
  * @cat Typography
  * @method createOutlines
  * @param  {Story|TextFrame||Paragraph||Line||Word||Character||GraphicLine||Polygon||Oval||Rectangle} item Text or textpath to be outlined.
  * @param  {Function} [cb] Optional: The callback function to call with each polygon. Passed arguments: `obj`, `loopCounter`
- * @return {Polygon | Array of Polygons} Returns a single or array of polygons depending on text converted.
+ * @return {Array of Polygons} Returns an array of polygons.
  *
- * @example <caption>Points</caption>
+ * @example <caption>createOutlines</caption>
  * textSize(150);
- * var myText = text("Hello", width/4, height/4, 500, 800);
- * var outlines = createOutlines(myText); // create outlines
- * var pts = pathToPoints(outlines); // get points
- * // inspect(pts); // view structure
- * for (var i=0; i < pts.points.length; i++) {
- *   var pt = pts.points[i]; // each point
- *   ellipse(pt.x, pt.y, 5, 5);
- * }
- * property(outlines, "fillColor", "None");
+ * var myText = text("Hello", 0, 0, width, height);
+ * var outlines = createOutlines(myText);
  *
- * @example <caption>Points Extended</caption>
+ * @example <caption>createOutlines with Callback</caption>
  * textSize(150);
- * var myText = text("Hello", width/4, height/4, 500, 800);
- * var outlines = createOutlines(myText); // create outlines
- * var pts = pathToPoints(outlines, 4); // get points, add 4 between each point
- * for (var i=0; i < pts.points.length; i++) {
- *   var pt = pts.points[i]; // each point
- *   var s = map(i, 0, pts.points.length, .1, 5);
- *   ellipse(pt.x, pt.y, s, s);
- * }
- * property(outlines, "fillColor", "None");
- *
- * @example <caption>Path isolated Beziers</caption>
- * textSize(150);
- * var myText = text("Hello", width/4, height/4, 500, 800);
- * var outlines = createOutlines(myText); // create outlines
- * var pts = pathToPoints(outlines); // get points + beziers + paths
- * property(outlines, "fillColor", "None");
- *
- * noFill();
- * stroke(0);
- *
- * // process paths -> beziers
- * for (var p=0; p < pts.paths.length; p++) {
- *   var path = pts.paths[p]; // each path isolated
- *   beginShape();
- *   for (var i=0; i < path.beziers.length; i++) {
- *     var tp = path.beziers[i];
- *     var offset = sin(i * 5) * 15; // shift points
- *     vertex(tp.anchor.x + offset, tp.anchor.y, tp.left.x, tp.left.y, tp.right.x, tp.right.y);
- *   }
- *   endShape(CLOSE);
- * }
+ * var myText = text("Hello \nWorld", 0, 0, width, height);
+ * var outlines = createOutlines(myText, function(obj){
+ *   var pts = pathToPoints(obj);
+ * });
  *
  */
 
 
 pub.createOutlines = function(item, cb) {
-  var outlines;
+  var outlines, changedFill = false, debugCO = false;
 
-  // check textFrames, textPaths, or neither
+  // check if textFrames
   if (item.hasOwnProperty('createOutlines')) {
+    // gather whole texts (for linked textFrames)
+    item = item.parentStory.texts[0];
+
+    // catch text w/o fill or stroke
+    for (var i=0; i < item.texts.length; i++) {
+      if (item.texts[i].fillColor.name === "None" && item.texts[i].strokeColor.name === "None") {
+        item.texts[i].fillColor = color(0);
+        changedFill = true;
+      }
+    }
+    inspect(item)
     outlines = item.createOutlines();
+
+  // check if textPath
   } else if ( item instanceof GraphicLine ||
               item instanceof Oval ||
               item instanceof Rectangle ||
               item instanceof Polygon) {
+    // check shape has textPaths
     if (item.textPaths.length > 0) {
-      outlines = item.textPaths[0].texts[0].createOutlines();
+
+      item = item.textPaths[0].parentStory.texts[0];
+
+      // catch text w/o fill or stroke
+      for (var i=0; i < item.texts.length; i++) {
+        if (item.texts[i].fillColor.name === "None" && item.texts[i].strokeColor.name === "None") {
+          item.texts[i].fillColor = color(0);
+          changedFill = true;
+        }
+      }
+
+      // *** how to remove textPath holder object??
+      outlines = item.createOutlines();
     }
+
+  // error if neither
   } else {
     error("Be sure to use:\n Story | TextFrame | Paragraph | Line | Word | Character | TextPath")
     return false;
+  }
+
+  // remove tempFill for those items
+  if(changedFill){
+    for(var i=0; i< outlines.length; i++){
+      outlines[i].fillColor = "None";
+    }
+
   }
 
   // process outlines
@@ -9144,6 +9096,7 @@ pub.createOutlines = function(item, cb) {
     // multi-line text from group array
     if (outlines[0] instanceof Group) {
       outlines = ungroup(outlines[0]);
+      if (debugCO) println('group polygons'); // textframe multi-line
       if (cb instanceof Function) {
         return forEach(outlines, cb);
       } else {
@@ -9152,14 +9105,24 @@ pub.createOutlines = function(item, cb) {
     }
 
     // single polygon
+    if (debugCO) println('solo polygons/groups'); // single normal textFrame 1 line
     if (cb instanceof Function) {
-      cb(outlines[0]);
+      return forEach(outlines, cb);
     } else {
-      return outlines[0];
+      return outlines;
     }
   } else {
+    if (debugCO) println('array of polygons/groups'); // textPath, linked textFrames
 
     // collection of polygons
+    if (outlines[0] instanceof Group) {
+      outlinesGroups = [];
+      for(var i=0; i < outlines.length; i++){
+        outlinesGroups.push(ungroup(outlines[i]));
+      }
+      outlines = outlinesGroups;
+    }
+
     if (cb instanceof Function) {
       return forEach(outlines, cb);
     } else {
