@@ -485,21 +485,22 @@ pub.paragraphStyle = function(textOrName, props) {
 
 /**
  * @summary Convert text items to outlines.
- * @description Returns a polygon or array of polygons (if text is multi-line, multi-boxed, or a textPath) and optionally processes them with a callback function.
+ * @description Returns an array of polygons after outlining text and optionally processes them with a callback function.
  * Use together with `pathToPoints()` for getting point and bezier coordinates from outlines.
  *
  * @cat Typography
  * @method createOutlines
- * @param  {Story|TextFrame||Paragraph||Line||Word||Character||GraphicLine||Polygon||Oval||Rectangle} item Text or textpath to be outlined.
- * @param  {Function} [cb] Optional: The callback function to call with each polygon. Passed arguments: `obj`, `loopCounter`
+ *
+ * @param  {TextFrame|TextPath} item Text or TextPath to be outlined.
+ * @param  {Function} [cb] Optional: Callback function to use with each polygon. Passed arguments: `obj`, `loopCounter`
  * @return {Array of Polygons} Returns an array of polygons.
  *
- * @example <caption>createOutlines</caption>
+ * @example
  * textSize(150);
  * var myText = text("Hello", 0, 0, width, height);
  * var outlines = createOutlines(myText);
  *
- * @example <caption>createOutlines with Callback</caption>
+ * @example <caption>w/ Callback</caption>
  * textSize(150);
  * var myText = text("Hello \nWorld", 0, 0, width, height);
  * var outlines = createOutlines(myText, function(obj){

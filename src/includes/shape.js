@@ -553,41 +553,60 @@ pub.vertex = function() {
 
 /**
  * @summary Get points and bezier coordinates from path(s).
- * @description Returns an object containing an array of all points, an array of all beziers (points + their anchor points) and an array of all paths of a given path item in InDesign. Together with `createOutlines()` this can be used on text items. Accepts both single paths or a collection/group of paths.
+ * @description Returns an object containing an array of all points, an array of all beziers (points + their anchor points) and an array of all paths (containing its array of points + beziers) of a given pageItem in InDesign. Together with `createOutlines()` this can be used on text items. Accepts both single paths or a collection/group of paths.
  * When using this on a multi path object (e.g. text with separate paths), the `paths` property can be used to loop over every path separately, whereas the properties `points` and `beziers` contain arrays for all paths combined.
  * An optional second parameter allows to add and return additional points between existing points, which is helpful for subdividing existing paths.
  *
  * @cat    Shape
  * @method pathToPoints
  * @param  {Object} obj       The pageItem(s) to process point/bezier coordinates of.
- * @param  {Number} [addPts]  Optional amount of additional interpolated points.
+ * @param  {Number} [addPoints]  Optional amount of additional interpolated points.
  * @return {Object}           Returns object with the following arrays `points`, `beziers`, `paths`
  *
  * @example <caption>Points</caption>
  * var pts = pathToPoints(obj);
  * println(pts.points.length); // # of points
- * point(pts.points[0].x, pts.points[0].y); // first point
+ *
+ * for (var i = 0; i < pts.points.length; i++) {
+ *   var pt = pts.points[i];
+ *   point(pt.x, pt.y);
+ * }
  *
  * @example <caption>Points w/ Interpolation</caption>
  * var pts = pathToPoints(obj, 5); // adds 5 points between points
  * println(pts.points.length); # of points
  *
+ * for (var i = 0; i < pts.points.length; i++) {
+ *   var pt = pts.points[i];
+ *   point(pt.x, pt.y);
+ * }
+ *
  * @example <caption>Beziers</caption>
  * var pts = pathToPoints(obj);
  * println(pts.beziers.length); # of beziers
- * // vertex(pts.beziers[0].anchor.x, pts.beziers[0].anchor.y, pts.beziers[0].left.x, pts.beziers[0].left.y, pts.beziers[0].right.x, pts.beziers[0].right.y);
+ *
+ * beginShape();
+ * for (var i = 0; i < pts.beziers.length; i++) {
+ *   var bz = pts.beziers[i];
+ *   vertex(bz.anchor.x, bz.anchor.y, bz.left.x, bz.left.y, bz.right.x, bz.right.y);
+ * }
+ * endShape(CLOSE);
  *
  * @example <caption>Isolated Paths of Points</caption>
  * var pts = pathToPoints(obj);
+ *
  * for (var i=0; i < pts.paths.length; i++) {
  *   var path = pts.paths[i];
  *   println(path.points.length); # of points
- *   point(path.points[0].x, path.points[0].y); // first point
- * }
  *
+ *   for (var i = 0; i < path.points.length; i++) {
+ *     var pt = path.points[i];
+ *     point(pt.x, pt.y);
+ *   }
+ * }
  */
 
-pub.pathToPoints = function(obj, addPts) {
+pub.pathToPoints = function(obj, addPoints) {
   var pz = {paths:[], points:[], beziers:[]},
   pzGroup = false,
   grabPoints = function(formElm) {
@@ -607,14 +626,14 @@ pub.pathToPoints = function(obj, addPts) {
         pzBeziers.push(pzBezier)
 
         // optionally interpolated points
-        if (addPts === undefined) {
+        if (addPoints === undefined) {
           var pzPoint = {x:pt.anchor[0], y:pt.anchor[1]};
           pz.points.push(pzPoint)
           pzPoints.push(pzPoint);
         } else {
           var nextSel = (i + 1) % paths.pathPoints.length;
           var nextPt = paths.pathPoints[nextSel];
-          var amt = 1.0 / (addPts + 1);
+          var amt = 1.0 / (addPoints + 1);
 
           if (formElm.paths[0].pathType === PathType.OPEN_PATH && i === paths.pathPoints.length-1) {
             amt = 1; // don't interpolate end to start on open paths
