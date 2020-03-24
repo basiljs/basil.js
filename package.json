@@ -59,6 +59,11 @@
   "homepage": "http://basiljs.ch/",
   "devDependencies": {
     "extendscript-bundlr": "^0.3.0",
+    "tsd-jsdoc": "^2.4.0",
+    "types-for-adobe": "github:ten-A/types-for-adobe",
+    "jsdoc": "^3.6.3",
     "watch": "^0.19.2"
+  },
+  "dependencies": {
   }
 }

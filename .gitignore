@@ -1,7 +1,8 @@
 .DS_Store
 basil.sublime-workspace
 *.idlk
-
+tmp
+out
 # Test files
 test/download/data/
 test/download/lib/
