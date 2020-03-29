@@ -109,6 +109,7 @@ The user is allowed to have his files wherever he wants.
 * bounds() now correctly measures bounds in different canvas modes(MARGIN/BLEED etc.)
 * loadJSON(), loadString(), loadStrings() when passed a URL, can receive custom user-agent as 2nd parameter
 * weekday() now returns number day of the week (0 - 6)
+* margins() getter fixed to use current page
 
 
 - b.go() and b.loop() are removed (use function draw() or function loop() instead)
