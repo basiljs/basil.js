@@ -93,7 +93,7 @@ basil.js x.x.x DAY MONTH YEAR
   (Characters, Words, Lines etc.)
 * size() now can use existing page size presets as a parameter with an optional
   second parameter for page orientation (introducing PORTRAIT and LANDSCAPE)
-* duplicate() now duplicates page items reliably in place, even when in FACING canvas modes
+* duplicate() now duplicates page items reliably in place, even when in FACING canvas modes and jumps to the new page if a page is duplicated
 * selection() can now be used to set the selection
 * label() can now be used to assign a label to a page item
 * endsWith() and startsWith() now also work for arrays
