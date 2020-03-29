@@ -3744,7 +3744,7 @@ pub.bounds = function (obj) {
 
 /**
  * @summary Duplicates a page or page item.
- * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use `rectMode()` to set center point.
+ * @description Duplicates the given page after the current page or the given page item to the current page and layer. If a page is duplicated, basil.js automatically jumps to the new page.
  *
  * @cat     Document
  * @subcat  Page Items
@@ -3765,7 +3765,7 @@ pub.duplicate = function(item) {
   } else if(item instanceof Page) {
 
     var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
-    return newPage;
+    getAndUpdatePage(newPage, "duplicate");
 
   } else {
     error("Please provide a valid Page or PageItem as parameter for duplicate().");
