@@ -3198,7 +3198,7 @@ pub.guideY = function (y) {
 
 /**
  * @summary Sets or gets the margins of a page.
- * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
+ * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Optionally a page number or name can be given to set the margins of a specific page. Calling the function without any values will return the margins for the current page.
  *
  * @cat     Document
  * @subcat  Canvas
@@ -3208,30 +3208,28 @@ pub.guideY = function (y) {
  * @param   {Number} [right] Right margin.
  * @param   {Number} [bottom] Bottom margin.
  * @param   {Number} [left] Left margin.
- * @param   {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
+ * @param   {Number} [pageNumber] Page number, page name or page object of the page with margins to set; current page if left blank.
  * @return  {Object} Current page margins with the properties: `top`, `right`, `bottom`, `left`.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
+
+  var p = pageNumber ? getPage(pageNumber) : currentPage();
+  var pm = p.marginPreferences;
   if (arguments.length === 0) {
-    return {top: currentPage().marginPreferences.top,
-      right: currentPage().marginPreferences.right,
-      bottom: currentPage().marginPreferences.bottom,
-      left: currentPage().marginPreferences.left
+    return {
+      top: pm.top,
+      right: pm.right,
+      bottom: pm.bottom,
+      left: pm.left
     };
   } else if (arguments.length === 1) {
     right = bottom = left = top;
   }
-  if(pageNumber !== undefined) {
-    pub.page(pageNumber).marginPreferences.top = top;
-    pub.page(pageNumber).marginPreferences.right = right;
-    pub.page(pageNumber).marginPreferences.bottom = bottom;
-    pub.page(pageNumber).marginPreferences.left = left;
-  }else{
-    currentPage().marginPreferences.top = top;
-    currentPage().marginPreferences.right = right;
-    currentPage().marginPreferences.bottom = bottom;
-    currentPage().marginPreferences.left = left;
-  }
+
+  pm.top = top;
+  pm.right = right;
+  pm.bottom = bottom;
+  pm.left = left;
 };
 
 /**
