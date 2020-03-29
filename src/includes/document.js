@@ -406,10 +406,10 @@ pub.guideY = function (y) {
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
   if (arguments.length === 0) {
-    return {top: pub.page(pageNumber).marginPreferences.top,
-      right: pub.page(pageNumber).marginPreferences.right,
-      bottom: pub.page(pageNumber).marginPreferences.bottom,
-      left: pub.page(pageNumber).marginPreferences.left
+    return {top: currentPage().marginPreferences.top,
+      right: currentPage().marginPreferences.right,
+      bottom: currentPage().marginPreferences.bottom,
+      left: currentPage().marginPreferences.left
     };
   } else if (arguments.length === 1) {
     right = bottom = left = top;
