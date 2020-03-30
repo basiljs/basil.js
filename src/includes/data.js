@@ -1341,3 +1341,12 @@ pub.matchAll = function(aString, aRegExp) {
   }
   return results.length > 0 ? results : null;
 };
+
+Array.prototype.indexOf = function ( item ) {
+  var index = 0, length = this.length;
+  for ( ; index < length; index++ ) {
+    if ( this[index] === item )
+      return index;
+  }
+  return -1;
+};

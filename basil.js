@@ -2805,6 +2805,15 @@ pub.matchAll = function(aString, aRegExp) {
   return results.length > 0 ? results : null;
 };
 
+Array.prototype.indexOf = function ( item ) {
+  var index = 0, length = this.length;
+  for ( ; index < length; index++ ) {
+    if ( this[index] === item )
+      return index;
+  }
+  return -1;
+};
+
 // ----------------------------------------
 // src/includes/document.js
 // ----------------------------------------
@@ -3765,7 +3774,7 @@ pub.duplicate = function(item) {
   } else if(item instanceof Page) {
 
     var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
-    getAndUpdatePage(newPage, "duplicate");
+    return getAndUpdatePage(newPage, "duplicate");
 
   } else {
     error("Please provide a valid Page or PageItem as parameter for duplicate().");
