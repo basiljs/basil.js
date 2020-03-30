@@ -3765,7 +3765,7 @@ pub.duplicate = function(item) {
   } else if(item instanceof Page) {
 
     var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
-    getAndUpdatePage(newPage, "duplicate");
+    return getAndUpdatePage(newPage, "duplicate");
 
   } else {
     error("Please provide a valid Page or PageItem as parameter for duplicate().");
