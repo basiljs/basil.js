@@ -7755,7 +7755,7 @@ pub.vertex = function() {
  *
  * @example <caption>Points w/ Interpolation</caption>
  * var pts = pathToPoints(obj, 5); // adds 5 points between points
- * println(pts.points.length); # of points
+ * println(pts.points.length); // # of points
  *
  * for (var i = 0; i < pts.points.length; i++) {
  *   var pt = pts.points[i];
@@ -7764,7 +7764,7 @@ pub.vertex = function() {
  *
  * @example <caption>Beziers</caption>
  * var pts = pathToPoints(obj);
- * println(pts.beziers.length); # of beziers
+ * println(pts.beziers.length); // # of beziers
  *
  * beginShape();
  * for (var i = 0; i < pts.beziers.length; i++) {
@@ -7774,16 +7774,17 @@ pub.vertex = function() {
  * endShape(CLOSE);
  *
  * @example <caption>Isolated Paths of Points</caption>
- * var pts = pathToPoints(obj);
+ * var pts = pathToPoints(outlines, 3); // add 3 for more detail
  *
- * for (var i=0; i < pts.paths.length; i++) {
- *   var path = pts.paths[i];
- *   println(path.points.length); # of points
+ * for (var j=0; j < pts.paths.length; j++) {
+ *   var path = pts.paths[j];
  *
+ *   beginShape();
  *   for (var i = 0; i < path.points.length; i++) {
  *     var pt = path.points[i];
- *     point(pt.x, pt.y);
+ *     vertex(pt.x + random(5), pt.y);
  *   }
+ *   endShape(CLOSE);
  * }
  */
 
