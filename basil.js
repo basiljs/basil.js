@@ -863,6 +863,57 @@ var clearConsole = function() {
 // ----------------------------------------
 
 /**
+ * @summary Sets a background on the current page.
+ * @description Sets a background on the current page. The function takes the current canvas mode into account, so setting canvas mode to `FACING_PAGES` beforehand would result in the background to be drawn across the entire spread. The background will be placed on a background layer that basil creates automatically.
+ *
+ * @cat     Color
+ * @method  background
+ *
+ * @param   {Color|Gradient|Swatch|Numbers|String} bgColor Accepts a color/gradient/swatch as string name or variable. Or values: GRAY / R,G,B / C,M,Y,K.
+ * @return  {Rectangle} The newly created background shape.
+ */
+pub.background = function (bgColor) {
+
+  var lCount = currentDoc().layers.length;
+  var pLayer = currentLayer();
+  var bgLayerName = "basil.js Background";
+  var bgLayer = pub.layer(bgLayerName);
+
+  bgLayer.locked = false;
+  if (currentDoc().layers.length > lCount) {
+    pub.arrange(bgLayer, pub.BACK);
+  }
+
+  var bgItems = bgLayer.pageItems;
+  for (var i = 0; i < bgItems.length; i++) {
+    var curItem = bgItems[i];
+    if (curItem.parentPage === currentPage()) {
+      curItem.remove();
+    }
+  }
+
+  var backgroundShape = pub.rect(0, 0, pub.width, pub.height);
+  backgroundShape.fillColor = getSwatch("background", arguments);
+  backgroundShape.strokeWeight = 0;
+
+  bgLayer.locked = true;
+  if (pLayer === bgLayer) {
+    var docLayers = currentDoc().layers;
+    if (docLayers[0] === bgLayer) {
+      // bgLayer is foremost layer, create and activate new layer above
+      pub.layer(docLayers.add());
+    } else {
+      // activate layer above bgLayer
+      pub.layer(docLayers[bgLayer.index - 1]);
+    }
+  } else {
+    pub.layer(pLayer);
+  }
+
+  return backgroundShape;
+};
+
+/**
  * @summary Sets the blend mode of a page item.
  * @description Sets the Effects blendMode property of an object.
  *
@@ -3131,7 +3182,7 @@ pub.guideY = function (y) {
 
 /**
  * @summary Sets or gets the margins of a page.
- * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
+ * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Optionally a page number or name can be given to set the margins of a specific page. Calling the function without any values will return the margins for the current page.
  *
  * @cat     Document
  * @subcat  Canvas
@@ -3141,30 +3192,28 @@ pub.guideY = function (y) {
  * @param   {Number} [right] Right margin.
  * @param   {Number} [bottom] Bottom margin.
  * @param   {Number} [left] Left margin.
- * @param   {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
+ * @param   {Number} [pageNumber] Page number, page name or page object of the page with margins to set; current page if left blank.
  * @return  {Object} Current page margins with the properties: `top`, `right`, `bottom`, `left`.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
+
+  var p = pageNumber ? getPage(pageNumber) : currentPage();
+  var pm = p.marginPreferences;
   if (arguments.length === 0) {
-    return {top: pub.page(pageNumber).marginPreferences.top,
-      right: pub.page(pageNumber).marginPreferences.right,
-      bottom: pub.page(pageNumber).marginPreferences.bottom,
-      left: pub.page(pageNumber).marginPreferences.left
+    return {
+      top: pm.top,
+      right: pm.right,
+      bottom: pm.bottom,
+      left: pm.left
     };
   } else if (arguments.length === 1) {
     right = bottom = left = top;
   }
-  if(pageNumber !== undefined) {
-    pub.page(pageNumber).marginPreferences.top = top;
-    pub.page(pageNumber).marginPreferences.right = right;
-    pub.page(pageNumber).marginPreferences.bottom = bottom;
-    pub.page(pageNumber).marginPreferences.left = left;
-  }else{
-    currentPage().marginPreferences.top = top;
-    currentPage().marginPreferences.right = right;
-    currentPage().marginPreferences.bottom = bottom;
-    currentPage().marginPreferences.left = left;
-  }
+
+  pm.top = top;
+  pm.right = right;
+  pm.bottom = bottom;
+  pm.left = left;
 };
 
 /**
@@ -3677,7 +3726,7 @@ pub.bounds = function (obj) {
 
 /**
  * @summary Duplicates a page or page item.
- * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use `rectMode()` to set center point.
+ * @description Duplicates the given page after the current page or the given page item to the current page and layer. If a page is duplicated, basil.js automatically jumps to the new page.
  *
  * @cat     Document
  * @subcat  Page Items
@@ -3698,7 +3747,7 @@ pub.duplicate = function(item) {
   } else if(item instanceof Page) {
 
     var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
-    return newPage;
+    return getAndUpdatePage(newPage, "duplicate");
 
   } else {
     error("Please provide a valid Page or PageItem as parameter for duplicate().");
@@ -4891,7 +4940,7 @@ pub.SCRIPTNAME = scriptName;
  * @subcat   Constants
  * @property VERSION {String}
  */
-pub.VERSION = "1.1.0";
+pub.VERSION = "2.0.0-beta";
 
 // ----------------------------------------
 // src/includes/image.js
@@ -5364,14 +5413,15 @@ pub.loadCSV = function(file, delimiter) {
  * @method  loadJSON
  *
  * @param   {String|File} file The JSON file name in the document's data directory, an absolute path to a JSON file, a File instance or an URL.
+ * @param   {String} [userAgent] Optional parameter when URL is used, to specify a user-agent making request.
  * @return  {Object} The resulting data object.
  */
-pub.loadJSON = function(file) {
+pub.loadJSON = function(file, userAgent) {
 
   var jsonString;
 
   if (isURL(file)) {
-    jsonString = getURL(file);
+    jsonString = getURL(file, userAgent);
   } else {
     var inputFile = initDataFile(file),
       data = null;
@@ -5392,11 +5442,12 @@ pub.loadJSON = function(file) {
  * @method  loadString
  *
  * @param   {String|File} file The text file name in the document's data directory or a File instance or an URL
+ * @param   {String} [userAgent] Optional parameter when URL is used, to specify a user-agent making request.
  * @return  {String} String file or URL content.
  */
-pub.loadString = function(file) {
+pub.loadString = function(file, userAgent) {
   if (isURL(file)) {
-    return getURL(file);
+    return getURL(file, userAgent);
   } else {
     var inputFile = initDataFile(file),
       data = null;
@@ -5416,11 +5467,12 @@ pub.loadString = function(file) {
  * @method  loadStrings
  *
  * @param   {String|File} file The text file name in the document's data directory or a file instance or an URL
+ * @param   {String} [userAgent] Optional parameter when URL is used, to specify a user-agent making request.
  * @return  {Array} Array of the individual lines in the given file or URL
  */
-pub.loadStrings = function(file) {
+pub.loadStrings = function(file, userAgent) {
   if (isURL(file)) {
-    var result = getURL(file);
+    var result = getURL(file, userAgent);
     return result.match(/[^\r\n]+/g);
   } else {
     var inputFile = initDataFile(file),
@@ -5687,12 +5739,46 @@ pub.year = function() {
 // Input Private
 // ----------------------------------------
 
-var getURL = function(url) {
+var getURL = function(url, userAgent) {
   if (isURL(url)) {
     if (Folder.fs === "Macintosh") {
-      return pub.shellExecute("curl -m 15 -L '" + url + "'");
+      curlAgent = '';
+      if(userAgent != undefined){
+        curlAgent = "--user-agent '"+userAgent+"'";
+      }
+      return pub.shellExecute("curl -m 15 -L '" + url + "' " + curlAgent);
     } else {
-      error(getParentFunctionName(1) + "(), loading of strings via an URL is a Mac only feature at the moment. Sorry!");
+      // Windows support - Based on GetDataFromWshShell()
+      // https://community.adobe.com/t5/indesign/execute-a-vbscript-inside-a-javascript/m-p/9406203?page=1#M69766
+      var vbs = 'Dim str\r';
+      vbs += 'URL = "' + url + '"\r';
+      vbs += 'Set WshShell = CreateObject("WScript.Shell")\r';
+      vbs += 'Set http = CreateObject("Microsoft.XmlHttp")\r';
+      if(userAgent != undefined){
+        vbs += 'http.setRequestHeader "User-Agent", "'+userAgent+'"\r';
+      }
+      vbs += 'On Error Resume Next\r';
+      vbs += 'http.open "GET", URL, False\r';
+      vbs += 'http.send ""\r';
+      vbs += 'if err.Number = 0 Then\r';
+      vbs += 'str = http.responseText\r';
+      vbs += 'Else\r';
+      vbs += 'MsgBox("error " & Err.Number & ": " & Err.Description)\r';
+      vbs += 'End If\r';
+      vbs += 'set WshShell = Nothing\r';
+      vbs += 'Set http = Nothing\r';
+      vbs += 'Set objInDesign = CreateObject("InDesign.Application")\r';
+      vbs += 'objInDesign.ScriptArgs.SetValue "WshShellResponse", str';
+
+      try {
+        app.doScript(vbs, ScriptLanguage.VISUAL_BASIC, undefined, UndoModes.FAST_ENTIRE_SCRIPT);
+      } catch(err) {
+        error(err.message + ", line: " + err.line);
+      }
+
+      var str = app.scriptArgs.getValue("WshShellResponse");
+      app.scriptArgs.clear();
+      return str;
     }
   } else {
     error(getParentFunctionName(1) + "(), the url " + url + " is invalid. Please double check!");
