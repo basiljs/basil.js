@@ -136,6 +136,19 @@ basilTest("DataTests", {
   },
 
 // ----------------------------------------
+// Data/CSV
+// ----------------------------------------
+
+  testCSV: function(){
+    var myDoc = doc();
+    var rawData = 'name**age**color\nbob**14**red\nbev**46**orange\nfred**8**black\nsally**20**blue';
+    var data = CSV.parse(rawData, '**');
+    assert(data.length === 4);
+    assert(data[0].name === 'bob');
+    assert(typeof CSV.stringify(data) === 'string');
+  },
+
+// ----------------------------------------
 // Data/JSON
 // ----------------------------------------
 
