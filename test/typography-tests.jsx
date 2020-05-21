@@ -319,6 +319,18 @@ basilTest("TypographyTests", {
 
     assert(myRect.appliedObjectStyle === objStyle);
     assert(myRect.topLeftCornerOption === CornerOptions.ROUNDED_CORNER);
+  },
+
+  testCreateOutlines: function() {
+    textSize(100);
+    var myText = text("hello", 0, 0, width, height);
+    var outlines = createOutlines(myText);
+    assert(outlines instanceof Polygon);
+
+    var myText = text("hello \n world", 0, 0, width, height);
+    var outlines = createOutlines(myText);
+    assert(outlines instanceof Array);
+
   }
 
 });

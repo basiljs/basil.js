@@ -218,7 +218,11 @@ pub.textLeading = function(leading) {
  */
 pub.textSize = function(pointSize) {
   if (arguments.length === 1) {
-    currFontSize = pointSize;
+    if(pointSize > 0) {
+      currFontSize = pointSize;
+    }else{
+      error("textSize() must be greater than 0.");
+    }
   }
   return currFontSize;
 };
@@ -473,6 +477,131 @@ pub.paragraphStyle = function(textOrName, props) {
   }
 
   return style;
+};
+
+// ----------------------------------------
+// Typography/Outlines
+// ----------------------------------------
+
+/**
+ * @summary Convert text items to outlines.
+ * @description Returns an array of polygons after outlining text and optionally processes them with a callback function.
+ * Use together with `pathToPoints()` for getting point and bezier coordinates from outlines. If used on a text frame,
+ * all linked text frames will be converted to outlines as well.
+ *
+ * @cat Typography
+ * @method createOutlines
+ *
+ * @param  {TextFrame|TextPath} item Text or TextPath to be outlined.
+ * @param  {Function} [cb] Optional: Callback function to use with each polygon. Passed arguments: `obj`, `loopCounter`
+ * @return {Array of Polygons} Returns an array of polygons.
+ *
+ * @example <caption>Convert text to outlines</caption>
+ * textSize(150);
+ * var myText = text("Hello", 0, 0, width, height);
+ * var outlines = createOutlines(myText);
+ *
+ * @example <caption>Run a callback function on each resulting shape</caption>
+ * textSize(150);
+ * var myText = text("Hello \nWorld", 0, 0, width, height);
+ * var outlines = createOutlines(myText, function(obj){
+ *   var pts = pathToPoints(obj);
+ *   println(pts.length); // check number of points
+ * });
+ *
+ */
+
+
+pub.createOutlines = function(item, cb) {
+  var outlines, changedFill = false;
+
+  // check if textFrames
+  if (item.hasOwnProperty('createOutlines')) {
+    // gather whole texts (for linked textFrames)
+    item = item.parentStory.texts[0];
+
+    // catch text w/o fill or stroke
+    for (var i=0; i < item.texts.length; i++) {
+      if (item.texts[i].fillColor.name === "None" && item.texts[i].strokeColor.name === "None") {
+        item.texts[i].fillColor = color(0);
+        changedFill = true;
+      }
+    }
+
+    outlines = item.createOutlines();
+
+  // check if textPath
+  } else if ( item instanceof GraphicLine ||
+              item instanceof Oval ||
+              item instanceof Rectangle ||
+              item instanceof Polygon) {
+    // check shape has textPaths
+    if (item.textPaths.length > 0) {
+
+      item = item.textPaths[0].parentStory.texts[0];
+
+      // catch text w/o fill or stroke
+      for (var i=0; i < item.texts.length; i++) {
+        if (item.texts[i].fillColor.name === "None" && item.texts[i].strokeColor.name === "None") {
+          item.texts[i].fillColor = color(0);
+          changedFill = true;
+        }
+      }
+
+      // *** how to remove textPath holder object??
+      outlines = item.createOutlines();
+    }
+
+  // error if neither
+  } else {
+    error("createOutlines(), incorrect first parameter. Use:\n Story | TextFrame | Paragraph | Line | Word | Character | TextPath");
+  }
+
+  // remove tempFill for those items
+  if (changedFill) {
+    for (var i=0; i < outlines.length; i++) {
+      outlines[i].fillColor = "None";
+    }
+
+  }
+
+  // process outlines
+  if (outlines.hasOwnProperty('length') && outlines.length === 1) {
+    // multi-line text from group array
+    if (outlines[0] instanceof Group) {
+      outlines = ungroup(outlines[0]);
+      // textframe multi-line
+      if (cb instanceof Function) {
+        return forEach(outlines, cb);
+      } else {
+        return outlines;
+      }
+    }
+
+    // single polygon
+    // single normal textFrame 1 line
+    if (cb instanceof Function) {
+      return forEach(outlines, cb);
+    } else {
+      return outlines;
+    }
+  } else {
+    // textPath, linked textFrames
+    // collection of polygons
+    if (outlines[0] instanceof Group) {
+      outlinesGroups = [];
+      for (var i=0; i < outlines.length; i++) {
+        outlinesGroups.push(ungroup(outlines[i]));
+      }
+      outlines = outlinesGroups;
+    }
+
+    if (cb instanceof Function) {
+      return forEach(outlines, cb);
+    } else {
+      return outlines;
+    }
+  }
 };
 
 // ----------------------------------------

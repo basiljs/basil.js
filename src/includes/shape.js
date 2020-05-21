@@ -548,6 +548,152 @@ pub.vertex = function() {
 };
 
 // ----------------------------------------
+// Shape/Path to Points
+// ----------------------------------------
+
+/**
+ * @summary Get points and bezier coordinates from path(s).
+ * @description Returns an object containing an array of all points, an array of all beziers (points + their anchor points) and an array of all paths (containing its array of points + beziers) of a given pageItem in InDesign. Together with `createOutlines()` this can be used on text items. Accepts both single paths or a collection/group of paths.
+ * When using this on a multi path object (e.g. text with separate paths), the `paths` property can be used to loop over every path separately, whereas the properties `points` and `beziers` contain arrays for all paths combined.
+ * An optional second parameter adds interpolated points between existing points, which is helpful for subdividing existing paths.
+ *
+ * @cat    Shape
+ * @method pathToPoints
+ * @param  {Object} obj       The pageItem(s) to process point/bezier coordinates of.
+ * @param  {Number} [addPoints]  Optional amount of additional interpolated points.
+ * @return {Object}           Returns object with the following arrays `points`, `beziers`, `paths`
+ *
+ * @example <caption>Draw all points of a vector path</caption>
+ * noFill();
+ * var myCircle = ellipse(width / 2, height / 2, width / 2, width / 2);
+ * var pts = pathToPoints(myCircle);
+ *
+ * for (var i = 0; i < pts.points.length; i++) {
+ *   var pt = pts.points[i];
+ *   ellipse(pt.x, pt.y, 3, 3);
+ * }
+ *
+ * @example <caption>With Interpolation between Points</caption>
+ * noFill();
+ * var myCircle = ellipse(width / 2, height / 2, width / 2, width / 2);
+ * var pts = pathToPoints(myCircle, 5); // add 5 points between each point
+ *
+ * for (var i = 0; i < pts.points.length; i++) {
+ *   var pt = pts.points[i];
+ *   ellipse(pt.x, pt.y, 3, 3);
+ * }
+ *
+ * @example <caption>Draw Beziers and handles from Path</caption>
+ * noFill();
+ * textSize(400);
+ * var myText = text('S', 0, 0, width, height);
+ * var myOutlines = createOutlines(myText);
+ * var pts = pathToPoints(myOutlines);
+ *
+ * beginShape();
+ * for (var i = 0; i < pts.beziers.length; i++) {
+ *   var bz = pts.beziers[i];
+ *   vertex(bz.anchor.x, bz.anchor.y, bz.left.x, bz.left.y, bz.right.x, bz.right.y);
+ *   line(bz.anchor.x, bz.anchor.y, bz.left.x, bz.left.y); // left handle
+ *   line(bz.anchor.x, bz.anchor.y, bz.right.x, bz.right.y); // right handle
+ * }
+ * endShape(CLOSE);
+ *
+ * @example <caption>Separated Paths of Beziers</caption>
+ * noFill();
+ * textSize(400);
+ * var myText = text('B', 0, 0, width, height);
+ * var myOutlines = createOutlines(myText);
+ * var pts = pathToPoints(myOutlines); // add 3 for more detail
+ *
+ * for (var j = 0; j < pts.paths.length; j++) {
+ *   var path = pts.paths[j];
+ *
+ *   beginShape();
+ *     for (var i = 0; i < path.beziers.length; i++) {
+ *       var bz = path.beziers[i];
+ *       vertex(bz.anchor.x, bz.anchor.y, bz.left.x, bz.left.y, bz.right.x, bz.right.y);
+ *       line(bz.anchor.x, bz.anchor.y, bz.left.x, bz.left.y); // left handle
+ *       line(bz.anchor.x, bz.anchor.y, bz.right.x, bz.right.y); // right handle
+ *     }
+ *   endShape(CLOSE);
+ * }
+ */
+
+pub.pathToPoints = function(obj, addPoints) {
+  var pz = {paths:[], points:[], beziers:[]},
+  pzGroup = false,
+  grabPoints = function(formElm) {
+    if(formElm.hasOwnProperty('paths')){
+      for (var j=0; j < formElm.paths.length; j++) {
+        var paths = formElm.paths[j];
+        var pzPaths = [];
+        var pzPoints = [];
+        var pzBeziers = [];
+        for (var i=0; i < paths.pathPoints.length; i++) {
+          var pt = paths.pathPoints[i];
+          var pzBezier = {
+            anchor:{x:pt.anchor[0], y:pt.anchor[1]},
+            left:{x:pt.leftDirection[0], y:pt.leftDirection[1]},
+            right:{x:pt.rightDirection[0], y:pt.rightDirection[1]}
+          };
+          pz.beziers.push(pzBezier);
+          pzBeziers.push(pzBezier);
+
+          // optionally interpolated points
+          if (addPoints === undefined) {
+            var pzPoint = {x:pt.anchor[0], y:pt.anchor[1]};
+            pz.points.push(pzPoint);
+            pzPoints.push(pzPoint);
+          } else {
+            var nextSel = (i + 1) % paths.pathPoints.length;
+            var nextPt = paths.pathPoints[nextSel];
+            var amt = 1.0 / (addPoints + 1);
+
+            if (formElm.paths[0].pathType === PathType.OPEN_PATH && i === paths.pathPoints.length-1) {
+              amt = 1; // don't interpolate end to start on open paths
+            }
+
+            for (var t = 0; t < 1; t += amt) {
+              var ptStep = interpolateBezier(pt, nextPt, t);
+              var pzPointStep = {x:ptStep.x, y:ptStep.y};
+              pz.points.push(pzPointStep);
+              pzPoints.push(pzPointStep);
+            }
+          }
+        }
+
+        var pzPath = {points:pzPoints, beziers:pzBeziers};
+        pz.paths.push(pzPath);
+      }
+    }else{
+      error("pathToPoints(), no paths found. \nUse: polygon[s]");
+    }
+  };
+
+  if(obj === undefined){
+    error("pathToPoints(), no paths found. \nUse: polygon[s]");
+  }
+
+  // catch grouped items
+  if (obj instanceof Group) {
+    obj = obj.pageItems;
+    pzGroup = true;
+  }
+
+  // process type as multi-line/character or single
+  if (isArray(obj) || pzGroup) {
+    for (var k=0; k < obj.length; k++) {
+      grabPoints(obj[k]);
+    }
+  } else {
+    grabPoints(obj);
+  }
+
+  return pz;
+};
+
+// ----------------------------------------
 // Shape Private
 // ----------------------------------------
 
@@ -634,6 +780,28 @@ function doAddPath() {
   } else {
     notCalledBeginShapeError();
   }
+}
+
+/*
+ * https://stackoverflow.com/questions/4089443/find-the-tangent-of-a-point-on-a-cubic-bezier-curve
+ * https://webglfundamentals.org/webgl/lessons/webgl-3d-geometry-lathe.html
+ */
+function interpolateBezier(startPoint, endPoint, t) {
+  var newCoord = [];
+  for (var i = 0; i < 2; i++) {
+    var p1 = startPoint.anchor[i];
+    var p2 = startPoint.rightDirection[i];
+    var p3 = endPoint.leftDirection[i];
+    var p4 = endPoint.anchor[i];
+
+    var C1 = (p4 - (3.0 * p3) + (3.0 * p2) - p1);
+    var C2 = ((3.0 * p3) - (6.0 * p2) + (3.0 * p1));
+    var C3 = ((3.0 * p2) - (3.0 * p1));
+    var C4 = (p1);
+
+    newCoord[i] = (C1 * t * t * t + C2 * t * t + C3 * t + C4);
+  }
+  return {x:newCoord[0], y:newCoord[1]};
 }
 
 function notCalledBeginShapeError () {
