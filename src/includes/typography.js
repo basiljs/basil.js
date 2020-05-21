@@ -486,7 +486,8 @@ pub.paragraphStyle = function(textOrName, props) {
 /**
  * @summary Convert text items to outlines.
  * @description Returns an array of polygons after outlining text and optionally processes them with a callback function.
- * Use together with `pathToPoints()` for getting point and bezier coordinates from outlines.
+ * Use together with `pathToPoints()` for getting point and bezier coordinates from outlines. If used on a text frame,
+ * all linked text frames will be converted to outlines as well.
  *
  * @cat Typography
  * @method createOutlines
@@ -495,23 +496,24 @@ pub.paragraphStyle = function(textOrName, props) {
  * @param  {Function} [cb] Optional: Callback function to use with each polygon. Passed arguments: `obj`, `loopCounter`
  * @return {Array of Polygons} Returns an array of polygons.
  *
- * @example
+ * @example <caption>Convert text to outlines</caption>
  * textSize(150);
  * var myText = text("Hello", 0, 0, width, height);
  * var outlines = createOutlines(myText);
  *
- * @example <caption>w/ Callback</caption>
+ * @example <caption>Run a callback function on each resulting shape</caption>
  * textSize(150);
  * var myText = text("Hello \nWorld", 0, 0, width, height);
  * var outlines = createOutlines(myText, function(obj){
  *   var pts = pathToPoints(obj);
+ *   println(pts.length); // check number of points
  * });
  *
  */
 
 
 pub.createOutlines = function(item, cb) {
-  var outlines, changedFill = false, debugCO = false;
+  var outlines, changedFill = false;
 
   // check if textFrames
   if (item.hasOwnProperty('createOutlines')) {
@@ -552,24 +554,23 @@ pub.createOutlines = function(item, cb) {
 
   // error if neither
   } else {
-    error("Be sure to use:\n Story | TextFrame | Paragraph | Line | Word | Character | TextPath")
-    return false;
+    error("createOutlines(), incorrect first parameter. Use:\n Story | TextFrame | Paragraph | Line | Word | Character | TextPath");
   }
 
   // remove tempFill for those items
-  if(changedFill){
-    for(var i=0; i< outlines.length; i++){
+  if (changedFill) {
+    for (var i=0; i < outlines.length; i++) {
       outlines[i].fillColor = "None";
     }
 
   }
 
   // process outlines
-  if (outlines.length != undefined && outlines.length === 1) {
+  if (outlines.hasOwnProperty('length') && outlines.length === 1) {
     // multi-line text from group array
     if (outlines[0] instanceof Group) {
       outlines = ungroup(outlines[0]);
-      if (debugCO) println('group polygons'); // textframe multi-line
+      // textframe multi-line
       if (cb instanceof Function) {
         return forEach(outlines, cb);
       } else {
@@ -578,19 +579,18 @@ pub.createOutlines = function(item, cb) {
     }
 
     // single polygon
-    if (debugCO) println('solo polygons/groups'); // single normal textFrame 1 line
+    // single normal textFrame 1 line
     if (cb instanceof Function) {
       return forEach(outlines, cb);
     } else {
       return outlines;
     }
   } else {
-    if (debugCO) println('array of polygons/groups'); // textPath, linked textFrames
-
+    // textPath, linked textFrames
     // collection of polygons
     if (outlines[0] instanceof Group) {
       outlinesGroups = [];
-      for(var i=0; i < outlines.length; i++){
+      for (var i=0; i < outlines.length; i++) {
         outlinesGroups.push(ungroup(outlines[i]));
       }
       outlines = outlinesGroups;
@@ -602,7 +602,7 @@ pub.createOutlines = function(item, cb) {
       return outlines;
     }
   }
-}
+};
 
 // ----------------------------------------
 // Typography/Constants
