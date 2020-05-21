@@ -145,30 +145,32 @@ function CSV() {
     delimiterStr = null,
     delimiterCode = null;
 
-  initDelimiter(",");
   function initDelimiter(delimiter) {
-    reParse = new RegExp("\r\n|[" + delimiter + "\r\n]", "g"), // field separator regex
-    reFormat = new RegExp("[\"" + delimiter + "\n]"),
-    delimiterCode = delimiter.charCodeAt(0);
-    delimiterStr = delimiter;
+    var newDelimiter = delimiter || ",";
+    reParse = new RegExp("\r\n|[" + newDelimiter + "\r\n]", "g"), // field separator regex
+    reFormat = new RegExp("[\"" + newDelimiter + "\n]"),
+    delimiterCode = newDelimiter.charCodeAt(0);
+    delimiterStr = newDelimiter;
   }
 
   /**
-   * @summary Decodes a CSV string to an array.
-   * @description Function parses a string as CSV-object Array.
+   * @summary Parses (decodes) a CSV string to an array.
+   * @description Function parses a string as CSV-object Array, with optional custom delimiter.
    *
    * @cat     Data
    * @subcat  CSV
-   * @method  CSV.decode
+   * @method  CSV.parse
    *
    * @param   {String} String to be parsed as CSV-object.
+   * @param   {String} [delimiter] optional character[s] used to separate data.
    * @return  {Array} Returns CSV-object Array
    *
    * @example
-   * var arr = CSV.decode(str);
-   * var str = CSV.encode(arr);
+   * var arr = CSV.parse(str);
+   * var str = CSV.stringify(arr);
    */
-  this.decode = function(text) {
+  this.parse = function(text, delimiter) {
+    initDelimiter(delimiter);
     var header;
     return parseRows(text, function(row, i) {
       if (i) {
@@ -183,41 +185,23 @@ function CSV() {
   };
 
   /**
-   * @summary Sets the delimiter of the CSV decode and encode function.
-   * @description Sets the delimiter of the CSV decode and encode function.
+   * @summary Stringifies (encodes) an array to a CSV string.
+   * @description Function convert an javascript array of objects to a CSV-string, with optional custom delimiter.
    *
    * @cat     Data
    * @subcat  CSV
-   * @method  CSV.delimiter
-   *
-   * @param   {String} [delimiter] Optional Sets the delimiter for CSV parsing
-   * @return  {String} Returns the current delimiter if called without argument
-   */
-  this.delimiter = function(delimiter) {
-    if (arguments.length === 0) return delimiterStr;
-    if (typeof delimiter === "string") {
-      initDelimiter(delimiter);
-    } else {
-      error("CSV.delimiter, separator has to be a character or string");
-    }
-  };
-
-  /**
-   * @summary Encodes an array to a CSV string.
-   * @description Function convert an javascript array of objects to a CSV-string.
-   *
-   * @cat     Data
-   * @subcat  CSV
-   * @method  CSV.encode
+   * @method  CSV.stringify
    *
    * @param   {Array} Array to be converted to a CSV-string
+   * @param   {String} [delimiter] optional character[s] used to separate data.
    * @return  {String} Returns CSV-string
    *
    * @example
-   * var str = CSV.encode(arr);
-   * var arr = CSV.decode(str);
+   * var str = CSV.stringify(arr);
+   * var arr = CSV.parse(str);
    */
-  this.encode = function(rows) {
+  this.stringify = function(rows, delimiter) {
+    initDelimiter(delimiter);
     var csvStrings = [];
     var header = [];
     var firstRow = rows[0]; // all rows have to have the same properties keys

@@ -45,6 +45,30 @@ var println = pub.println = function() {
 // ----------------------------------------
 
 /**
+ * @summary  Encodes a CSV-object array to multi-line strings and saves it to a CSV file.
+ * @description Encodes a CSV-object array to multi-line strings and saves it to a CSV file. If the given file exists it gets overridden.
+ *
+ * @cat     Output
+ * @subcat  Files
+ * @method  saveCSV
+ *
+ * @param   {String|File} file The file name or a File instance.
+ * @param   {Object} data The object to encode and save in the file.
+ * @param   {String} [delimiter] optional character[s] used to separate data.
+ * @return  {File} The CSV file the data was written to.
+ */
+pub.saveCSV = function(file, data, delimiter) {
+  var csvString = pub.CSV.stringify(data, delimiter);
+  var outputFile = initExportFile(file);
+  outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
+  outputFile.write(csvString);
+  outputFile.close();
+  return outputFile;
+};
+
+/**
  * @summary  Encodes an object to a JSON string and saves it to a JSON file.
  * @description Encodes an object to a JSON string and saves it to a JSON file. If the given file exists it gets overridden.
  *

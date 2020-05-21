@@ -1608,30 +1608,32 @@ function CSV() {
     delimiterStr = null,
     delimiterCode = null;
 
-  initDelimiter(",");
   function initDelimiter(delimiter) {
-    reParse = new RegExp("\r\n|[" + delimiter + "\r\n]", "g"), // field separator regex
-    reFormat = new RegExp("[\"" + delimiter + "\n]"),
-    delimiterCode = delimiter.charCodeAt(0);
-    delimiterStr = delimiter;
+    var newDelimiter = delimiter || ",";
+    reParse = new RegExp("\r\n|[" + newDelimiter + "\r\n]", "g"), // field separator regex
+    reFormat = new RegExp("[\"" + newDelimiter + "\n]"),
+    delimiterCode = newDelimiter.charCodeAt(0);
+    delimiterStr = newDelimiter;
   }
 
   /**
-   * @summary Decodes a CSV string to an array.
-   * @description Function parses a string as CSV-object Array.
+   * @summary Parses (decodes) a CSV string to an array.
+   * @description Function parses a string as CSV-object Array, with optional custom delimiter.
    *
    * @cat     Data
    * @subcat  CSV
-   * @method  CSV.decode
+   * @method  CSV.parse
    *
    * @param   {String} String to be parsed as CSV-object.
+   * @param   {String} [delimiter] optional character[s] used to separate data.
    * @return  {Array} Returns CSV-object Array
    *
    * @example
-   * var arr = CSV.decode(str);
-   * var str = CSV.encode(arr);
+   * var arr = CSV.parse(str);
+   * var str = CSV.stringify(arr);
    */
-  this.decode = function(text) {
+  this.parse = function(text, delimiter) {
+    initDelimiter(delimiter);
     var header;
     return parseRows(text, function(row, i) {
       if (i) {
@@ -1646,41 +1648,23 @@ function CSV() {
   };
 
   /**
-   * @summary Sets the delimiter of the CSV decode and encode function.
-   * @description Sets the delimiter of the CSV decode and encode function.
+   * @summary Stringifies (encodes) an array to a CSV string.
+   * @description Function convert an javascript array of objects to a CSV-string, with optional custom delimiter.
    *
    * @cat     Data
    * @subcat  CSV
-   * @method  CSV.delimiter
-   *
-   * @param   {String} [delimiter] Optional Sets the delimiter for CSV parsing
-   * @return  {String} Returns the current delimiter if called without argument
-   */
-  this.delimiter = function(delimiter) {
-    if (arguments.length === 0) return delimiterStr;
-    if (typeof delimiter === "string") {
-      initDelimiter(delimiter);
-    } else {
-      error("CSV.delimiter, separator has to be a character or string");
-    }
-  };
-
-  /**
-   * @summary Encodes an array to a CSV string.
-   * @description Function convert an javascript array of objects to a CSV-string.
-   *
-   * @cat     Data
-   * @subcat  CSV
-   * @method  CSV.encode
+   * @method  CSV.stringify
    *
    * @param   {Array} Array to be converted to a CSV-string
+   * @param   {String} [delimiter] optional character[s] used to separate data.
    * @return  {String} Returns CSV-string
    *
    * @example
-   * var str = CSV.encode(arr);
-   * var arr = CSV.decode(str);
+   * var str = CSV.stringify(arr);
+   * var arr = CSV.parse(str);
    */
-  this.encode = function(rows) {
+  this.stringify = function(rows, delimiter) {
+    initDelimiter(delimiter);
     var csvStrings = [];
     var header = [];
     var firstRow = rows[0]; // all rows have to have the same properties keys
@@ -3198,7 +3182,7 @@ pub.guideY = function (y) {
 
 /**
  * @summary Sets or gets the margins of a page.
- * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
+ * @description Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Optionally a page number or name can be given to set the margins of a specific page. Calling the function without any values will return the margins for the current page.
  *
  * @cat     Document
  * @subcat  Canvas
@@ -3208,30 +3192,28 @@ pub.guideY = function (y) {
  * @param   {Number} [right] Right margin.
  * @param   {Number} [bottom] Bottom margin.
  * @param   {Number} [left] Left margin.
- * @param   {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
+ * @param   {Number} [pageNumber] Page number, page name or page object of the page with margins to set; current page if left blank.
  * @return  {Object} Current page margins with the properties: `top`, `right`, `bottom`, `left`.
  */
 pub.margins = function(top, right, bottom, left, pageNumber) {
+
+  var p = pageNumber ? getPage(pageNumber) : currentPage();
+  var pm = p.marginPreferences;
   if (arguments.length === 0) {
-    return {top: pub.page(pageNumber).marginPreferences.top,
-      right: pub.page(pageNumber).marginPreferences.right,
-      bottom: pub.page(pageNumber).marginPreferences.bottom,
-      left: pub.page(pageNumber).marginPreferences.left
+    return {
+      top: pm.top,
+      right: pm.right,
+      bottom: pm.bottom,
+      left: pm.left
     };
   } else if (arguments.length === 1) {
     right = bottom = left = top;
   }
-  if(pageNumber !== undefined) {
-    pub.page(pageNumber).marginPreferences.top = top;
-    pub.page(pageNumber).marginPreferences.right = right;
-    pub.page(pageNumber).marginPreferences.bottom = bottom;
-    pub.page(pageNumber).marginPreferences.left = left;
-  }else{
-    currentPage().marginPreferences.top = top;
-    currentPage().marginPreferences.right = right;
-    currentPage().marginPreferences.bottom = bottom;
-    currentPage().marginPreferences.left = left;
-  }
+
+  pm.top = top;
+  pm.right = right;
+  pm.bottom = bottom;
+  pm.left = left;
 };
 
 /**
@@ -3744,7 +3726,7 @@ pub.bounds = function (obj) {
 
 /**
  * @summary Duplicates a page or page item.
- * @description Duplicates the given page after the current page or the given page item to the current page and layer. Use `rectMode()` to set center point.
+ * @description Duplicates the given page after the current page or the given page item to the current page and layer. If a page is duplicated, basil.js automatically jumps to the new page.
  *
  * @cat     Document
  * @subcat  Page Items
@@ -3765,7 +3747,7 @@ pub.duplicate = function(item) {
   } else if(item instanceof Page) {
 
     var newPage = item.duplicate(LocationOptions.AFTER, pub.page());
-    return newPage;
+    return getAndUpdatePage(newPage, "duplicate");
 
   } else {
     error("Please provide a valid Page or PageItem as parameter for duplicate().");
@@ -5394,6 +5376,35 @@ pub.folder = function(folderPath) {
 };
 
 /**
+ * @summary Gets and parses the contents of a CSV file.
+ * @description Reads the contents of a CSV file and returns a CSV-object array with the data. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
+ *
+ * @cat     Input
+ * @subcat  Files
+ * @method  loadCSV
+ *
+ * @param   {String|File} file The CSV file name in the document's data directory, an absolute path to a CSV file, a File instance or an URL.
+ * @param   {String} [delimiter] optional character[s] used to separate data.
+ * @return  {Object} The resulting data object.
+ */
+pub.loadCSV = function(file, delimiter) {
+
+  var csvString;
+
+  if (isURL(file)) {
+    csvString = getURL(file);
+  } else {
+    var inputFile = initDataFile(file),
+      data = null;
+    inputFile.open("r");
+    csvString = inputFile.read();
+    inputFile.close();
+  }
+
+  return pub.CSV.parse(csvString, delimiter);
+};
+
+/**
  * @summary Gets and parses the contents of a JSON file.
  * @description Reads the contents of a JSON file and returns an object with the data. If the file is specified by name as string, the path can point either directly at a file in the document's data directory or be specified as an absolute path.
  *
@@ -6973,6 +6984,30 @@ var println = pub.println = function() {
 // ----------------------------------------
 // Output/Files
 // ----------------------------------------
+
+/**
+ * @summary  Encodes a CSV-object array to multi-line strings and saves it to a CSV file.
+ * @description Encodes a CSV-object array to multi-line strings and saves it to a CSV file. If the given file exists it gets overridden.
+ *
+ * @cat     Output
+ * @subcat  Files
+ * @method  saveCSV
+ *
+ * @param   {String|File} file The file name or a File instance.
+ * @param   {Object} data The object to encode and save in the file.
+ * @param   {String} [delimiter] optional character[s] used to separate data.
+ * @return  {File} The CSV file the data was written to.
+ */
+pub.saveCSV = function(file, data, delimiter) {
+  var csvString = pub.CSV.stringify(data, delimiter);
+  var outputFile = initExportFile(file);
+  outputFile.open("w");
+  outputFile.lineFeed = Folder.fs === "Macintosh" ? "Unix" : "Windows";
+  outputFile.encoding = "UTF-8";
+  outputFile.write(csvString);
+  outputFile.close();
+  return outputFile;
+};
 
 /**
  * @summary  Encodes an object to a JSON string and saves it to a JSON file.
