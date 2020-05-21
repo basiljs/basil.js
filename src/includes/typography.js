@@ -494,7 +494,7 @@ pub.paragraphStyle = function(textOrName, props) {
  *
  * @param  {TextFrame|TextPath} item Text or TextPath to be outlined.
  * @param  {Function} [cb] Optional: Callback function to use with each polygon. Passed arguments: `obj`, `loopCounter`
- * @return {Array of Polygons} Returns an array of polygons.
+ * @return {Array} Returns an array of polygons.
  *
  * @example <caption>Convert text to outlines</caption>
  * textSize(150);
