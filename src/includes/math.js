@@ -46,10 +46,10 @@ pub.ceil = Math.ceil;
  * @param   {Number} aMax Maximum limit.
  * @return  {Number} The constrained value.
  */
-pub.constrain = function(aNumber, aMin, aMax) {
-  if(arguments.length !== 3) error("constrain(), wrong argument count.");
-  if(aNumber <= aMin) return aMin;
-  if(aNumber >= aMax) return aMax;
+pub.constrain = function (aNumber, aMin, aMax) {
+  if (arguments.length !== 3) error("constrain(), wrong argument count.");
+  if (aNumber <= aMin) return aMin;
+  if (aNumber >= aMax) return aMax;
   return aNumber;
 };
 
@@ -67,7 +67,7 @@ pub.constrain = function(aNumber, aMin, aMax) {
  * @param   {Number} y2 The y-coordinate of the second point.
  * @return  {Number} The distance.
  */
-pub.dist = function() {
+pub.dist = function () {
   var dx, dy, dz;
   if (arguments.length === 4) {
     dx = arguments[0] - arguments[2];
@@ -117,8 +117,8 @@ pub.floor = Math.floor;
  * @param   {Number} amt Amount between 0.0 and 1.0.
  * @return  {Number} The mapped value.
  */
-pub.lerp = function(value1, value2, amt) {
-  if(arguments.length !== 3) error("lerp(), wrong argument count.");
+pub.lerp = function (value1, value2, amt) {
+  if (arguments.length !== 3) error("lerp(), wrong argument count.");
   return (value2 - value1) * amt + value1;
 };
 
@@ -148,8 +148,9 @@ pub.log = Math.log;
  * @param   {Number} [z] Coordinate, optional.
  * @return  {Number} The magnitude.
  */
-pub.mag = function(a, b, c) {
-  if(!(arguments.length === 2 || arguments.length === 3)) error("mag(), wrong argument count.");
+pub.mag = function (a, b, c) {
+  if (!(arguments.length === 2 || arguments.length === 3))
+    error("mag(), wrong argument count.");
   if (c) return Math.sqrt(a * a + b * b + c * c);
   return Math.sqrt(a * a + b * b);
 };
@@ -170,8 +171,11 @@ pub.mag = function(a, b, c) {
  * @param   {Number} ostop The end of the output range.
  * @return  {Number} The mapped value.
  */
-pub.map = function(value, istart, istop, ostart, ostop) {
-  if(arguments.length !== 5) error("map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)");
+pub.map = function (value, istart, istop, ostart, ostop) {
+  if (arguments.length !== 5)
+    error(
+      "map(), wrong argument count. Use: map(value, istart, istop, ostart, ostop)"
+    );
   return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 };
 
@@ -188,10 +192,12 @@ pub.map = function(value, istart, istop, ostart, ostop) {
  * @param   {Number} [c] Another value to be compared.
  * @return  {Number} The highest value.
  */
-pub.max = function() {
-  if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
+pub.max = function () {
+  if (arguments.length === 2)
+    return arguments[0] < arguments[1] ? arguments[1] : arguments[0];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (!("length" in numbers && numbers.length > 0)) error("max(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0))
+    error("max(), non-empty array is expected");
   var max = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (max < numbers[i]) max = numbers[i];
@@ -211,10 +217,12 @@ pub.max = function() {
  * @param   {Number} [c] Another value to be compared.
  * @return  {Number} The lowest value.
  */
-pub.min = function() {
-  if (arguments.length === 2) return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
+pub.min = function () {
+  if (arguments.length === 2)
+    return arguments[0] < arguments[1] ? arguments[0] : arguments[1];
   var numbers = arguments.length === 1 ? arguments[0] : arguments;
-  if (!("length" in numbers && numbers.length > 0)) error("min(), non-empty array is expected");
+  if (!("length" in numbers && numbers.length > 0))
+    error("min(), non-empty array is expected");
   var min = numbers[0],
     count = numbers.length;
   for (var i = 1; i < count; ++i) if (min > numbers[i]) min = numbers[i];
@@ -236,8 +244,8 @@ pub.min = function() {
  * @param   {Number} high The highest value to be expected.
  * @return  {Number} The normalized value.
  */
-pub.norm = function(aNumber, low, high) {
-  if(arguments.length !== 3) error("norm(), wrong argument count.");
+pub.norm = function (aNumber, low, high) {
+  if (arguments.length !== 3) error("norm(), wrong argument count.");
   return (aNumber - low) / (high - low);
 };
 
@@ -279,8 +287,8 @@ pub.round = Math.round;
  * @param   {Number} aNumber The value to be squared.
  * @return  {Number} Squared number.
  */
-pub.sq = function(aNumber) {
-  if(arguments.length !== 1) error("sq(), wrong argument count.");
+pub.sq = function (aNumber) {
+  if (arguments.length !== 1) error("sq(), wrong argument count.");
   return aNumber * aNumber;
 };
 
@@ -320,8 +328,9 @@ pub.sqrt = Math.sqrt;
  * @param   {Number} [z] Coordinate in z space.
  * @return  {Number} The noise value.
  */
-pub.noise = function(x, y, z) {
-  if (noiseProfile.generator === undefined) noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
+pub.noise = function (x, y, z) {
+  if (noiseProfile.generator === undefined)
+    noiseProfile.generator = new PerlinNoise(noiseProfile.seed);
   var generator = noiseProfile.generator;
   var effect = 1,
     k = 1,
@@ -330,13 +339,13 @@ pub.noise = function(x, y, z) {
     effect *= noiseProfile.fallout;
     switch (arguments.length) {
       case 1:
-        sum += effect * (1 + generator.noise1d(k * x)) / 2;
+        sum += (effect * (1 + generator.noise1d(k * x))) / 2;
         break;
       case 2:
-        sum += effect * (1 + generator.noise2d(k * x, k * y)) / 2;
+        sum += (effect * (1 + generator.noise2d(k * x, k * y))) / 2;
         break;
       case 3:
-        sum += effect * (1 + generator.noise3d(k * x, k * y, k * z)) / 2;
+        sum += (effect * (1 + generator.noise3d(k * x, k * y, k * z))) / 2;
         break;
     }
     k *= 2;
@@ -357,7 +366,7 @@ pub.noise = function(x, y, z) {
  * @param   {Number} octaves Number of octaves to be used by the noise() function.
  * @param   {Number} fallout Falloff factor for each octave.
  */
-pub.noiseDetail = function(octaves, fallout) {
+pub.noiseDetail = function (octaves, fallout) {
   noiseProfile.octaves = octaves;
   if (fallout !== undefined) noiseProfile.fallout = fallout;
 };
@@ -372,7 +381,7 @@ pub.noiseDetail = function(octaves, fallout) {
  *
  * @param   {Number} seed Noise seed value.
  */
-pub.noiseSeed = function(seed) {
+pub.noiseSeed = function (seed) {
   noiseProfile.seed = seed;
   noiseProfile.generator = undefined;
 };
@@ -391,22 +400,27 @@ pub.noiseSeed = function(seed) {
  * @param   {Number} [high] The high border of the range.
  * @return  {Number|Object} A random number or a random element from array.
  */
-pub.random = function() {
+pub.random = function () {
   if (arguments.length === 0) return currentRandom();
   var aMin = arguments[0];
   var aMax = arguments[1];
 
   if (isNumber(aMin)) {
-    if(isNumber(aMax)) {
+    if (isNumber(aMax)) {
       return currentRandom() * (aMax - aMin) + aMin;
     } else {
       return currentRandom() * aMin;
     }
-  } else if(isArray(aMin) || aMin.hasOwnProperty("length") && isNumber(aMin.length)) {
+  } else if (
+    isArray(aMin) ||
+    (aMin.hasOwnProperty("length") && isNumber(aMin.length))
+  ) {
     var argArray = Array.prototype.slice.call(aMin, 0);
     return argArray[Math.floor(currentRandom() * argArray.length)];
   } else {
-    error("random(), wrong first argument. Needs to be a number or an array/collection.");
+    error(
+      "random(), wrong first argument. Needs to be a number or an array/collection."
+    );
   }
 };
 
@@ -421,8 +435,8 @@ pub.random = function() {
  *
  * @param   {Number} seed The seed value.
  */
-pub.randomSeed = function(seed) {
-  currentRandom = (new Marsaglia(seed)).nextDouble;
+pub.randomSeed = function (seed) {
+  currentRandom = new Marsaglia(seed).nextDouble;
 };
 
 // ----------------------------------------
@@ -506,8 +520,8 @@ pub.cos = Math.cos;
  * @param   {Number} aAngle An angle in radians.
  * @return  {Number} The given angle in degree.
  */
-pub.degrees = function(aAngle) {
-  return aAngle * 180 / Math.PI;
+pub.degrees = function (aAngle) {
+  return (aAngle * 180) / Math.PI;
 };
 
 /**
@@ -521,8 +535,8 @@ pub.degrees = function(aAngle) {
  * @param   {Number} aAngle An angle in degree.
  * @return  {Number} The given angle in radians.
  */
-pub.radians = function(aAngle) {
-  return aAngle / 180 * Math.PI;
+pub.radians = function (aAngle) {
+  return (aAngle / 180) * Math.PI;
 };
 
 /**
@@ -555,8 +569,7 @@ pub.tan = Math.tan;
 // Math/Vector
 // ----------------------------------------
 
-var Vector = pub.Vector = function() {
-
+var Vector = (pub.Vector = (function () {
   /**
    * @summary A class to describe a two or three dimensional vector.
    * @description A class to describe a two or three dimensional vector. This data type stores two or three variables that are commonly used as a position, velocity, and/or acceleration. Technically, position is a point and velocity and acceleration are vectors, but this is often simplified to consider all three as vectors. For example, if you consider a rectangle moving across the screen, at any given instant it has a position (the object's location, expressed as a point.), a velocity (the rate at which the object's position changes per time unit, expressed as a vector), and acceleration (the rate at which the object's velocity changes per time unit, expressed as a vector). Since vectors represent groupings of values, we cannot simply use traditional addition/multiplication/etc. Instead, we'll need to do some "vector" math, which is made easy by the methods inside the Vector class.
@@ -570,7 +583,7 @@ var Vector = pub.Vector = function() {
    * @param   {Number} x The first vector.
    * @param   {Number} y The second vector.
    * @param   {Number} [z] The third vector.
-   * @class
+   * @class Vector
    */
   function Vector(x, y, z) {
     this.x = x || 0;
@@ -591,7 +604,7 @@ var Vector = pub.Vector = function() {
    * @return  {Number} The angle.
    * @static
    */
-  Vector.angleBetween = function(v1, v2) {
+  Vector.angleBetween = function (v1, v2) {
     return Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
   };
 
@@ -608,7 +621,7 @@ var Vector = pub.Vector = function() {
    * @return  {Number} The cross product.
    * @static
    */
-  Vector.cross = function(v1, v2) {
+  Vector.cross = function (v1, v2) {
     return v1.cross(v2);
   };
 
@@ -625,7 +638,7 @@ var Vector = pub.Vector = function() {
    * @return  {Number} The distance.
    * @static
    */
-  Vector.dist = function(v1, v2) {
+  Vector.dist = function (v1, v2) {
     return v1.dist(v2);
   };
 
@@ -642,25 +655,24 @@ var Vector = pub.Vector = function() {
    * @return  {Number} The dot product.
    * @static
    */
-  Vector.dot = function(v1, v2) {
+  Vector.dot = function (v1, v2) {
     return v1.dot(v2);
   };
 
   Vector.prototype = {
-
     /**
      * @summary Adds `x`, `y`, and `z` components to a vector or adds one vector to another.
      * @description Adds `x`, `y`, and `z` components to a vector, adds one vector to another.
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.add
-     *
+     * @method  Vector#add
+     * @instance
      * @param   {Vector|Number} v Either a full vector or an `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      */
-    add: function(v, y, z) {
+    add: function (v, y, z) {
       if (arguments.length === 1) {
         this.x += v.x;
         this.y += v.y;
@@ -678,11 +690,12 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.array
+     * @method  Vector#array
+     * @instance
      *
      * @return  {Array} The `x`, `y` and `z` components as an array of `[x,y,z]`.
      */
-    array: function() {
+    array: function () {
       return [this.x, this.y, this.z];
     },
 
@@ -692,18 +705,23 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.cross
+     * @method  Vector#cross
+     * @instance
      *
      * @param   {Vector|Number} v Either a full vector or an `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      * @return  {Number} The cross product.
      */
-    cross: function(v) {
+    cross: function (v) {
       var x = this.x,
         y = this.y,
         z = this.z;
-      return new Vector(y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
+      return new Vector(
+        y * v.z - v.y * z,
+        z * v.x - v.z * x,
+        x * v.y - v.x * y
+      );
     },
 
     /**
@@ -712,14 +730,15 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.dist
+     * @method  Vector#dist
+     * @instance
      *
      * @param   {Vector|Number} v Either a full vector or an `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      * @return  {Number} The distance.
      */
-    dist: function(v) {
+    dist: function (v) {
       var dx = this.x - v.x,
         dy = this.y - v.y,
         dz = this.z - v.z;
@@ -732,13 +751,14 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.div
+     * @method  Vector#div
+     * @instance
      *
      * @param   {Vector|Number} v Either a full vector or an `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      */
-    div: function(v) {
+    div: function (v) {
       if (typeof v === "number") {
         this.x /= v;
         this.y /= v;
@@ -756,15 +776,17 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.dot
+     * @method  Vector#dot
+     * @instance
      *
      * @param   {Vector|Number} v Either a full vector or an `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      * @return  {Number} The dot product.
      */
-    dot: function(v, y, z) {
-      if (arguments.length === 1) return this.x * v.x + this.y * v.y + this.z * v.z;
+    dot: function (v, y, z) {
+      if (arguments.length === 1)
+        return this.x * v.x + this.y * v.y + this.z * v.z;
       return this.x * v + this.y * y + this.z * z;
     },
 
@@ -774,11 +796,12 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.get
+     * @method  Vector#get
+     * @instance
      *
      * @return  {Vector} A copy of the vector.
      */
-    get: function() {
+    get: function () {
       return new Vector(this.x, this.y, this.z);
     },
 
@@ -788,11 +811,12 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.heading
+     * @method  Vector#heading
+     * @instance
      *
      * @return  {Number} A radian angle value.
      */
-    heading: function() {
+    heading: function () {
       return -Math.atan2(-this.y, this.x);
     },
 
@@ -802,11 +826,12 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.limit
+     * @method  Vector#limit
+     * @instance
      *
      * @param   {Number} high The value to scale to.
      */
-    limit: function(high) {
+    limit: function (high) {
       if (this.mag() > high) {
         this.normalize();
         this.mult(high);
@@ -819,11 +844,12 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.mag
+     * @method  Vector#mag
+     * @instance
      *
      * @return  {Number} The length.
      */
-    mag: function() {
+    mag: function () {
       var x = this.x,
         y = this.y,
         z = this.z;
@@ -836,13 +862,14 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.mult
+     * @method  Vector#mult
+     * @instance
      *
      * @param   {Vector|Number} v Either a full vector or an `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      */
-    mult: function(v) {
+    mult: function (v) {
       if (typeof v === "number") {
         this.x *= v;
         this.y *= v;
@@ -860,9 +887,10 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.normalize
+     * @method  Vector#normalize
+     * @instance
      */
-    normalize: function() {
+    normalize: function () {
       var m = this.mag();
       if (m > 0) this.div(m);
     },
@@ -873,14 +901,16 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.set
+     * @method  Vector#set
+     * @instance
      *
      * @param   {Number|Array|Vector} v Either a vector, array or `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      */
-    set: function(v, y, z) {
-      if (arguments.length === 1) this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
+    set: function (v, y, z) {
+      if (arguments.length === 1)
+        this.set(v.x || v[0] || 0, v.y || v[1] || 0, v.z || v[2] || 0);
       else {
         this.x = v;
         this.y = y;
@@ -894,13 +924,14 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.sub
+     * @method  Vector#sub
+     * @instance
      *
      * @param   {Vector|Number} v Either a full vector or an `x` component.
      * @param   {Number} [y] The `y` component.
      * @param   {Number} [z] The `z` component.
      */
-    sub: function(v, y, z) {
+    sub: function (v, y, z) {
       if (arguments.length === 1) {
         this.x -= v.x;
         this.y -= v.y;
@@ -918,25 +949,31 @@ var Vector = pub.Vector = function() {
      *
      * @cat     Math
      * @subcat  Vector
-     * @method  Vector.toString
+     * @method  Vector#toString
+     * @instance
      *
      * @return  {String} The `x`, `y` and `z` components as a string.
      */
-    toString: function() {
+    toString: function () {
       return "[" + this.x + ", " + this.y + ", " + this.z + "]";
-    }
+    },
   };
 
   function createVectorMethod(method) {
-    return function(v1, v2) {
+    return function (v1, v2) {
       var v = v1.get();
       v[method](v2);
       return v;
     };
   }
-  for (var method in Vector.prototype) if (Vector.prototype.hasOwnProperty(method) && !Vector.hasOwnProperty(method)) Vector[method] = createVectorMethod(method);
+  for (var method in Vector.prototype)
+    if (
+      Vector.prototype.hasOwnProperty(method) &&
+      !Vector.hasOwnProperty(method)
+    )
+      Vector[method] = createVectorMethod(method);
   return Vector;
-}();
+})());
 
 // ----------------------------------------
 // Math/Constants
@@ -971,7 +1008,7 @@ pub.HALF_PI = Math.PI / 2;
  * @property KAPPA {Number}
  */
 // Kappa, see: http://www.whizkidtech.redprince.net/bezier/circle/kappa/
-pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0) / 3.0);
+pub.KAPPA = (4.0 * (Math.sqrt(2.0) - 1.0)) / 3.0;
 
 /**
  * @summary Pi
@@ -1022,36 +1059,37 @@ var currentRandom = Math.random;
 function Marsaglia(i1, i2) {
   var z = i1 || 362436069,
     w = i2 || 521288629;
-  var nextInt = function() {
-    z = 36969 * (z & 65535) + (z >>> 16) & 4294967295;
-    w = 18E3 * (w & 65535) + (w >>> 16) & 4294967295;
-    return ((z & 65535) << 16 | w & 65535) & 4294967295;
+  var nextInt = function () {
+    z = (36969 * (z & 65535) + (z >>> 16)) & 4294967295;
+    w = (18e3 * (w & 65535) + (w >>> 16)) & 4294967295;
+    return (((z & 65535) << 16) | (w & 65535)) & 4294967295;
   };
-  this.nextDouble = function() {
+  this.nextDouble = function () {
     var i = nextInt() / 4294967296;
     return i < 0 ? 1 + i : i;
   };
   this.nextInt = nextInt;
 }
-Marsaglia.createRandomized = function() {
+Marsaglia.createRandomized = function () {
   var now = new Date();
-  return new Marsaglia(now / 6E4 & 4294967295, now & 4294967295);
+  return new Marsaglia((now / 6e4) & 4294967295, now & 4294967295);
 };
 
 var noiseProfile = {
   generator: undefined,
   octaves: 4,
   fallout: 0.5,
-  seed: undefined
+  seed: undefined,
 };
 
 function PerlinNoise(seed) {
-  var rnd = seed !== undefined ? new Marsaglia(seed) : Marsaglia.createRandomized();
+  var rnd =
+    seed !== undefined ? new Marsaglia(seed) : Marsaglia.createRandomized();
   var i, j;
   var perm = [];
   for (i = 0; i < 256; ++i) perm[i] = i;
   for (i = 0; i < 256; ++i) {
-    var t = perm[j = rnd.nextInt() & 255];
+    var t = perm[(j = rnd.nextInt() & 255)];
     perm[j] = perm[i];
     perm[i] = t;
   }
@@ -1076,7 +1114,7 @@ function PerlinNoise(seed) {
     return a + t * (b - a);
   }
 
-  this.noise3d = function(x, y, z) {
+  this.noise3d = function (x, y, z) {
     var X = Math.floor(x) & 255,
       Y = Math.floor(y) & 255,
       Z = Math.floor(z) & 255;
@@ -1092,10 +1130,34 @@ function PerlinNoise(seed) {
       p1 = perm[X + 1] + Y,
       p10 = perm[p1] + Z,
       p11 = perm[p1 + 1] + Z;
-    return lerp(fz, lerp(fy, lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)), lerp(fx, grad3d(perm[p01], x, y - 1, z), grad3d(perm[p11], x - 1, y - 1, z))), lerp(fy, lerp(fx, grad3d(perm[p00 + 1], x, y, z - 1), grad3d(perm[p10 + 1], x - 1, y, z - 1)), lerp(fx, grad3d(perm[p01 + 1], x, y - 1, z - 1), grad3d(perm[p11 + 1], x - 1, y - 1, z - 1))));
+    return lerp(
+      fz,
+      lerp(
+        fy,
+        lerp(fx, grad3d(perm[p00], x, y, z), grad3d(perm[p10], x - 1, y, z)),
+        lerp(
+          fx,
+          grad3d(perm[p01], x, y - 1, z),
+          grad3d(perm[p11], x - 1, y - 1, z)
+        )
+      ),
+      lerp(
+        fy,
+        lerp(
+          fx,
+          grad3d(perm[p00 + 1], x, y, z - 1),
+          grad3d(perm[p10 + 1], x - 1, y, z - 1)
+        ),
+        lerp(
+          fx,
+          grad3d(perm[p01 + 1], x, y - 1, z - 1),
+          grad3d(perm[p11 + 1], x - 1, y - 1, z - 1)
+        )
+      )
+    );
   };
 
-  this.noise2d = function(x, y) {
+  this.noise2d = function (x, y) {
     var X = Math.floor(x) & 255,
       Y = Math.floor(y) & 255;
     x -= Math.floor(x);
@@ -1104,10 +1166,18 @@ function PerlinNoise(seed) {
       fy = (3 - 2 * y) * y * y;
     var p0 = perm[X] + Y,
       p1 = perm[X + 1] + Y;
-    return lerp(fy, lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)), lerp(fx, grad2d(perm[p0 + 1], x, y - 1), grad2d(perm[p1 + 1], x - 1, y - 1)));
+    return lerp(
+      fy,
+      lerp(fx, grad2d(perm[p0], x, y), grad2d(perm[p1], x - 1, y)),
+      lerp(
+        fx,
+        grad2d(perm[p0 + 1], x, y - 1),
+        grad2d(perm[p1 + 1], x - 1, y - 1)
+      )
+    );
   };
 
-  this.noise1d = function(x) {
+  this.noise1d = function (x) {
     var X = Math.floor(x) & 255;
     x -= Math.floor(x);
     var fx = (3 - 2 * x) * x * x;
@@ -1115,6 +1185,6 @@ function PerlinNoise(seed) {
   };
 }
 
-var precision = function(num, dec) {
+var precision = function (num, dec) {
   return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
 };
