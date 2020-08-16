@@ -93316,7 +93316,7 @@ declare class XMLRuleMatchData {
  * @cat     Color
  * @method  blendMode
  *
- * @param   {object} obj The object to set blendMode of.
+ * @param   {Object} obj The object to set blendMode of.
  * @param   {Number} blendMode The blendMode must be one of the InDesign BlendMode enum values:
  *   - `BlendMode.NORMAL`
  *   - `BlendMode.MULTIPLY`
@@ -93449,7 +93449,7 @@ declare function noStroke(): void;
  * @cat     Color
  * @method  opacity
  *
- * @param   {object} obj The object to set opacity of.
+ * @param   {Object} obj The object to set opacity of.
  * @param   {Number} opacity The opacity value from 0 to 100.
  */
 declare function opacity(obj: any, opacity: number): void;
@@ -93586,7 +93586,7 @@ declare class HashList {
      * @method  HashList.get
      *
      * @param   {String} key The key to look for.
-     * @return  {object} The value.
+     * @return  {Object} The value.
      */
     static get(key: string): any;
     /**
@@ -93666,7 +93666,7 @@ declare class HashList {
      * @method  HashList.remove
      *
      * @param   {String} key The key to delete.
-     * @return  {object} The value before deletion.
+     * @return  {Object} The value before deletion.
      */
     static remove(key: string): any;
     /**
@@ -93679,7 +93679,7 @@ declare class HashList {
      *
      * @param   {String} key The key to use.
      * @param   {Object|String|Number|Boolean} value The value to set.
-     * @return  {object} The value after setting.
+     * @return  {Object} The value after setting.
      */
     static set(key: string, value: any | string | number | boolean): any;
 }
@@ -94046,7 +94046,7 @@ declare function units(units?: string): string;
  * @param   {Number} [right] Right bleed.
  * @param   {Number} [bottom] Bottom bleed.
  * @param   {Number} [left] Left bleed.
- * @return  {object} Current document bleeds settings.
+ * @return  {Object} Current document bleeds settings.
  */
 declare function bleeds(top?: number, right?: number, bottom?: number, left?: number): any;
 
@@ -94103,7 +94103,7 @@ declare function guideY(y: number): Guide;
  * @param   {Number} [bottom] Bottom margin.
  * @param   {Number} [left] Left margin.
  * @param   {Number} [pageNumber] Sets margins to selected page, currentPage() if left blank.
- * @return  {object} Current page margins with the properties: `top`, `right`, `bottom`, `left`.
+ * @return  {Object} Current page margins with the properties: `top`, `right`, `bottom`, `left`.
  */
 declare function margins(top?: number, right?: number, bottom?: number, left?: number, pageNumber?: number): any;
 
@@ -94312,7 +94312,7 @@ declare function arrange(pItemOrLayer: PageItem | Layer, positionOrDirection: st
  * @method  bounds
  *
  * @param   {PageItem|Text} obj The page item or text to calculate the geometric bounds.
- * @return  {object} Geometric bounds object with these properties: `width`, `height`, `left`, `right`, `top`, `bottom` and for text: `baseline`, `xHeight`.
+ * @return  {Object} Geometric bounds object with these properties: `width`, `height`, `left`, `right`, `top`, `bottom` and for text: `baseline`, `xHeight`.
  */
 declare function bounds(obj: PageItem | Text): any;
 
@@ -94325,7 +94325,7 @@ declare function bounds(obj: PageItem | Text): any;
  * @method  duplicate
  *
  * @param   {PageItem|Page} item The page item or page to duplicate.
- * @return  {object} The new page item or page.
+ * @return  {Object} The new page item or page.
  */
 declare function duplicate(item: PageItem | Page): any;
 
@@ -94424,7 +94424,7 @@ declare function linkedTextFrames(item: TextFrame | TextPath | Story | TextObjec
  * @subcat  Page Items
  * @method  nameOnPage
  *
- * @return  {object} The first object on the active page with the given name.
+ * @return  {Object} The first object on the active page with the given name.
  */
 declare function nameOnPage(): any;
 
@@ -94437,7 +94437,7 @@ declare function nameOnPage(): any;
  * @method  objectStyle
  *
  * @param   {PageItem|String} itemOrName A page item whose style to return or the name of the object style to return.
- * @param   {object} [props] An object of property name/value pairs to set the style's properties.
+ * @param   {Object} [props] An object of property name/value pairs to set the style's properties.
  * @return  {ObjectStyle} The object style instance.
  */
 declare function objectStyle(itemOrName: PageItem | string, props?: any): ObjectStyle;
@@ -94451,7 +94451,7 @@ declare function objectStyle(itemOrName: PageItem | string, props?: any): Object
  * @method  selection
  *
  * @param   {PageItem} [item] The page item to select.
- * @return  {object} The first selected object.
+ * @return  {Object} The first selected object.
  */
 declare function selection(item?: PageItem): any;
 
@@ -94669,8 +94669,8 @@ declare function frameRate(fps?: number): number;
  * @cat     Environment
  * @method  inspect
  *
- * @param   {object} obj An object or any other data item to be inspected.
- * @param   {object} [settings] A settings object to control the function's behavior.
+ * @param   {Object} obj An object or any other data item to be inspected.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
  * @param   {Boolean} [settings.showProps] Show or hide properties. Default: `true`
  * @param   {Boolean} [settings.showValues] Show or hide values. Default: `true`
  * @param   {Boolean} [settings.showMethods] Show or hide methods. Default: `false`
@@ -94752,7 +94752,7 @@ declare function property(obj: any, prop: string | any, value?: any): any;
  *
  * @param   {Number|String} [widthOrPageSize] The desired width of the current document or the name of a page size preset.
  * @param   {Number|String} [heightOrOrientation] The desired height of the current document. If not provided the width will be used as the height. If the first argument is a page size preset, the second argument can be used to set the orientation.
- * @return  {object} Object containing the current `width` and `height` of the document.
+ * @return  {Object} Object containing the current `width` and `height` of the document.
  *
  * @example <caption>Sets the document size to 70 x 100 units</caption>
  * size(70, 100);
@@ -94854,7 +94854,7 @@ declare function file(filePath: string): File;
  * @method  files
  *
  * @param   {Folder|String} [folder] The folder that holds the files or a string describing the path to that folder.
- * @param   {object} [settings] A settings object to control the function's behavior.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
  * @param   {String|Array} [settings.filter] Suffix(es) of file types to include. Default: `"*"` (include all file types)
  * @param   {Boolean} [settings.hidden] Hidden files will be included. Default: `false`
  * @param   {Boolean} [settings.recursive] Searches subfolders recursively for matching files. Default: `false`
@@ -94904,7 +94904,7 @@ declare function folder(folderPath?: string): Folder;
  * @method  loadJSON
  *
  * @param   {String|File} file The JSON file name in the document's data directory, an absolute path to a JSON file, a File instance or an URL.
- * @return  {object} The resulting data object.
+ * @return  {Object} The resulting data object.
  */
 declare function loadJSON(file: string | File): any;
 
@@ -94942,7 +94942,7 @@ declare function loadStrings(file: string | File): any[];
  * @subcat  Files
  * @method  selectFile
  *
- * @param   {object} [settings] A settings object to control the function's behavior.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
  * @param   {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
  * @param   {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
  * @param   {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
@@ -94968,7 +94968,7 @@ declare function selectFile(settings?: {
  * @subcat  Files
  * @method  selectFiles
  *
- * @param   {object} [settings] A settings object to control the function's behavior.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
  * @param   {String} [settings.prompt] The prompt text at the top of the file selection dialog. Default: `""` (no prompt)
  * @param   {String|Array} [settings.filter] String or an array containing strings of file endings to include in the dialog. Default: `""` (include all)
  * @param   {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
@@ -94994,7 +94994,7 @@ declare function selectFiles(settings?: {
  * @subcat  Files
  * @method  selectFolder
  *
- * @param   {object} [settings] A settings object to control the function's behavior.
+ * @param   {Object} [settings] A settings object to control the function's behavior.
  * @param   {String} [settings.prompt] The prompt text at the top of the folder selection dialog. Default: `""` (no prompt)
  * @param   {Folder|String} [settings.folder] Folder or a folder path string defining the start location of the dialog. Default: most recent dialog folder or main user folder.
  * @return  {Folder|Null} The selected folder. If the user cancels, `null` will be returned.
@@ -95858,7 +95858,7 @@ declare function println(msg: any): void;
  * @method  saveJSON
  *
  * @param   {String|File} file The file name or a File instance.
- * @param   {object} data The object to encode and save in the file.
+ * @param   {Object} data The object to encode and save in the file.
  * @return  {File} The JSON file the data was written to.
  */
 declare function saveJSON(file: string | File, data: any): File;
@@ -96454,7 +96454,7 @@ declare function applyParagraphStyle(text: TextFrame | TextObject | Story, style
  * @method  characterStyle
  *
  * @param   {Text|String} textOrName A text object whose style to return or the name of the character style to return.
- * @param   {object} [props] Optional: An object of property name/value pairs to set the style's properties.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
  * @return  {CharacterStyle} The character style instance.
  */
 declare function characterStyle(textOrName: Text | string, props?: any): CharacterStyle;
@@ -96468,7 +96468,7 @@ declare function characterStyle(textOrName: Text | string, props?: any): Charact
  * @method  paragraphStyle
  *
  * @param   {Text|String} textOrName A text object whose style to return or the name of the paragraph style to return.
- * @param   {object} [props] Optional: An object of property name/value pairs to set the style's properties.
+ * @param   {Object} [props] Optional: An object of property name/value pairs to set the style's properties.
  * @return  {ParagraphStyle} The paragraph style instance.
  */
 declare function paragraphStyle(textOrName: Text | string, props?: any): ParagraphStyle;
