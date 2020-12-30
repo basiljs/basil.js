@@ -1219,6 +1219,65 @@ pub.objectStyle = function(itemOrName, props) {
 };
 
 /**
+ * @summary Paste one page item into another.
+ * @description Paste the source page item into the destination item, which then acts like a clipping mask. Optionally, set to a variable, to immediately access the new page item inside your destination.
+ *
+ * @cat     Document
+ * @subcat  Page Items
+ * @method  pasteInto
+ *
+ * @param   {PageItem} source The page item to copy.
+ * @param   {PageItem} destination The page item to paste the source into.
+ * @return  {Object} The new page item inside the destination.
+ *
+ * @example <caption>Use ellipse as clipping mask for textframe.</caption>
+ * noStroke();
+ * textSize(50);
+ *
+ * fill(0);
+ * var myText = text(LOREM, 0, 0, width, height);
+ *
+ * noFill();
+ * var myMask = ellipse(width / 2, height / 2, width / 2, height / 2);
+ *
+ * myMaskItem = pasteInto(myText, myMask);
+ *
+ * property(myMaskItem, 'fillColor', color(0, 255, 0));
+ *
+ * @example <caption>Use ellipse as clipping mask for rect.</caption>
+ * noStroke();
+ *
+ * fill(255, 0, 0);
+ * var myRect = rect(0, 0, width / 2, height / 2);
+ *
+ * fill(0, 0, 255);
+ * var myMask = ellipse(width / 2, height / 2, width / 2, height / 2);
+ *
+ * myMaskItem = pasteInto(myRect, myMask);
+ *
+ * property(myMaskItem, 'fillColor', color(255, 0, 255));
+ */
+pub.pasteInto = function(source, destination) {
+  checkNull(source);
+  checkNull(destination);
+
+  // set source to app clipboard
+  app.selection = source;
+  app.copy();
+
+  // paste source into destination
+  app.selection = destination;
+  app.pasteInto();
+
+  // return new pageItem inside destination
+  if(destination.pageItems[0].hasOwnProperty('texts')){
+    return destination.pageItems[0].texts[0];
+  }else{
+    return destination.pageItems[0];
+  }
+};
+
+/**
  * @summary Returns the first selected object or selects an object.
  * @description If no argument is given, returns the first currently selected object. If a page item is given as argument, the page item will be selected.
  *
