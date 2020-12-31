@@ -2663,7 +2663,7 @@ var isString = pub.isString = function(str) {
 };
 
 /**
- * @summary Checks wether a var is an InDesign text object.
+ * @summary Checks whether a var is an InDesign text object.
  * @description Checks whether a var is an InDesign text object, returns `true` if this is the case.
  * NB: a InDesign text frame will return `false` as it is just a container holding text. So you could say that `isText()` refers to all the things inside a text frame.
  *
