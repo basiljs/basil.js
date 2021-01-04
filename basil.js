@@ -4052,6 +4052,9 @@ pub.pasteInto = function(source, destination) {
   checkNull(source);
   checkNull(destination);
 
+  // temp store previous selection
+  var tempSelection = app.selection;
+
   // set source to app clipboard
   app.selection = source;
   app.copy();
@@ -4059,6 +4062,9 @@ pub.pasteInto = function(source, destination) {
   // paste source into destination
   app.selection = destination;
   app.pasteInto();
+
+  // return selection
+  app.selection = tempSelection;
 
   // return new pageItem inside destination
   if(destination.pageItems[0].hasOwnProperty('texts')){
