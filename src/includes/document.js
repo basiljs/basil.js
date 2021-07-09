@@ -897,20 +897,20 @@ pub.bounds = function (obj) {
 
     return {"width": w,
             "height": h,
-            "left": x1 + currOriginX,
-            "right": x2 + currOriginX,
-            "top": y1 + currOriginY,
-            "bottom": y2 + currOriginY,
-            "baseline": baseline + currOriginY,
-            "xHeight": xHeight + currOriginY};
+            "left": x1 - currOriginX,
+            "right": x2 - currOriginX,
+            "top": y1 - currOriginY,
+            "bottom": y2 - currOriginY,
+            "baseline": baseline - currOriginY,
+            "xHeight": xHeight - currOriginY};
   } else {
     // is it a pageItem?
     if (obj.hasOwnProperty("geometricBounds")) {
       var geometricBounds = obj.geometricBounds; // [y1, x1, y2, x2]
-      x1 = geometricBounds[1] + currOriginX;
-      y1 = geometricBounds[0] + currOriginY;
-      x2 = geometricBounds[3] + currOriginX;
-      y2 = geometricBounds[2] + currOriginY;
+      x1 = geometricBounds[1] - currOriginX;
+      y1 = geometricBounds[0] - currOriginY;
+      x2 = geometricBounds[3] - currOriginX;
+      y2 = geometricBounds[2] - currOriginY;
       w = x2 - x1;
       h = y2 - y1;
       return {"width": w, "height": h, "left": x1, "right": x2, "top": y1, "bottom": y2};
@@ -918,12 +918,12 @@ pub.bounds = function (obj) {
     // everything else e.g. page, spread
     else if (obj.hasOwnProperty("bounds")) {
       var bounds = obj.bounds; // [y1, x1, y2, x2]
-      x1 = bounds[1] + currOriginX;
-      y1 = bounds[0] + currOriginY;
-      x2 = bounds[3] + currOriginX;
-      y2 = bounds[2] + currOriginY;
-      w = x2 - x1;
-      h = y2 - y1;
+      x1 = bounds[1] - currOriginX;
+      y1 = bounds[0] - currOriginY;
+      x2 = bounds[3] - currOriginX;
+      y2 = bounds[2] - currOriginY;
+      w = x2 - x1 - currOriginX;
+      h = y2 - y1 - currOriginX;
       return {"width": w, "height": h, "left": x1, "right": x2, "top": y1, "bottom": y2};
     }
     // no idea what that might be, give up
