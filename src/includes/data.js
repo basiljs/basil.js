@@ -1040,6 +1040,8 @@ pub.download = function(url, file) {
   if (isURL(url)) {
     var cmd = null;
 
+	url = "\"" + url + "\"";
+
     if (file) {
       if (file instanceof File) {
         var downloadFolder = file.parent.fsName;
