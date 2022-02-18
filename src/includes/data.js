@@ -988,7 +988,7 @@ pub.savePNG = function(file, showOptions) {
  * @param {String|File} [file] A relative file path in the project folder or a File instance
  */
 pub.download = function(url, file) {
-  var projPath = projectFolder().fsName.replace(" ", "\\ ");
+  var projPath = projectFolder().fsName.replace(/ /g, "\\ ");
   // var scriptPath = "~/Documents/basiljs/bundle/lib/download.sh";
   // This is more portable then a fixed location
   // the Script looks for the lib folder next to itself
@@ -1044,8 +1044,8 @@ pub.download = function(url, file) {
       if (file instanceof File) {
         var downloadFolder = file.parent.fsName;
         var fileName = file.displayName;
-        downloadFolder = downloadFolder.replace(" ", "\\ ");
-        fileName = fileName.replace(" ", "\\ ");
+        downloadFolder = downloadFolder.replace(/ /g, "\\ ");
+        fileName = fileName.replace(/ /g, "\\ ");
         cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
 
       } else {
@@ -1056,8 +1056,8 @@ pub.download = function(url, file) {
         if(startsWith(downloadFolder, "./")) downloadFolder.substr(2);
         if(startsWith(downloadFolder, "/")) downloadFolder.substr(1);
 
-        downloadFolder = downloadFolder.replace(" ", "\\ ");
-        fileName = fileName.replace(" ", "\\ ");
+        downloadFolder = downloadFolder.replace(/ /g, "\\ ");
+        fileName = fileName.replace(/ /g, "\\ ");
         downloadFolder = projPath + "/data/" + downloadFolder;
         cmd = ["sh", scriptPath, downloadFolder, url, fileName].join(" ");
 
