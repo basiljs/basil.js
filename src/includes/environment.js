@@ -452,4 +452,4 @@ pub.SCRIPTNAME = scriptName;
  * @subcat   Constants
  * @property VERSION {String}
  */
-pub.VERSION = "2.0.0-beta";
+pub.VERSION = "2.0.0-beta 2021-01-04";
