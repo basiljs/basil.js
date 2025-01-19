@@ -61,6 +61,7 @@ basil.js x.x.x DAY MONTH YEAR
 + Added CSV.parse() and CSV.stringify() to replace CSV.decode() and CSV.encode()
   parse and stringify accept optional 2nd parameter for custom delimiter.
 + Added pasteInto() enabling using page items as clipping masks
++ Added switchApp() to change active application at any time (MacOS only)
 
 * translate(), rotate() and scale() now behave like they do in Processing and change the current matrix
 * basil scripts will by default use the user's default units or the current units of the document,

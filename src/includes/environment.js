@@ -419,6 +419,35 @@ pub.size = function(widthOrPageSize, heightOrOrientation) {
  */
 pub.width = null;
 
+/**
+ * @summary Switch to another application (MacOS only).
+ * @description Intended for usage with Sublime Text's "Run In Indesign" workflow, 
+ * if one wants to return immediately after the script is done, ie. debug value.
+ * Since it uses AppleScript, it's currently MacOS only.
+ *
+ * @cat     Environment
+ * @method  switchApp
+ *
+ * @param   {String}[appName] name of application to switch to.
+ * 
+ * @example <caption>Switch back to Sublime Text, wait 1 second, print random value</caption>
+ * switchApp();
+ * delay(1000);
+ * println(random(9999));
+ *
+ * @example <caption>Switch to Safari</caption>
+ * switchApp("Safari");
+ */
+pub.switchApp = function(appName){
+  if (Folder.fs === "Macintosh") {
+    if(appName == undefined){
+      appName = "Sublime Text";
+    }
+    var scriptOne = 'tell application "' + appName + '"\nactivate \nend tell';
+    app.doScript(scriptOne, ScriptLanguage.APPLESCRIPT_LANGUAGE);
+  }
+}
+
 // ----------------------------------------
 // Environment/Constants
 // ----------------------------------------
@@ -452,4 +481,4 @@ pub.SCRIPTNAME = scriptName;
  * @subcat   Constants
  * @property VERSION {String}
  */
-pub.VERSION = "2.0.0-beta 2021-01-04";
+pub.VERSION = "2.0.0-beta 2025-01-19";
