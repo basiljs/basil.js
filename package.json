@@ -70,6 +70,6 @@
   },
   "dependencies": {
     "chokidar-cli": "^2.1.0",
-    "documentation": "^12.1.4"
+    "documentation": "^14.0.3"
   }
 }
